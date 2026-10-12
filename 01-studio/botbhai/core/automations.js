@@ -52,9 +52,23 @@ function judgeAds(rows, rules) {
     return { ad_id: row.ad_id, ad_name: row.ad_name, spend, leads, cpl, verdict, reason };
   });
 }
+// Validator rule: autopilot never pauses more than half the ads in one day; the worst go first, the rest wait for the owner.
+function capPauses(verdicts) {
+  const limit = Math.floor(verdicts.length / 2);
+  const ranked = verdicts.filter((v) => v.verdict === "pause").sort((a, b) => (b.cpl === null ? Infinity : b.cpl) - (a.cpl === null ? Infinity : a.cpl) || b.spend - a.spend);
+  const allowed = new Set(ranked.slice(0, limit).map((v) => v.ad_id));
+  return verdicts.map((v) => (v.verdict === "pause" && !allowed.has(v.ad_id) ? Object.assign({}, v, { verdict: "pause_suggested", reason: v.reason + " (needs your OK: daily pause limit reached)" }) : v));
+}
+// Monday summary for the owner from the last 7 days of leads.
+function weeklySummary(business, leads, nowMs) {
+  const week = leads.filter((l) => nowMs - Date.parse(l.created_at || l.updated_at) <= 7 * 864e5);
+  const by = (k, v) => week.filter((l) => l[k] === v).length;
+  const src = {}; for (const l of week) src[l.source] = (src[l.source] || 0) + 1;
+  return `📅 ${business} — last 7 days\nNew leads: ${week.length} (hot ${by("score", "hot")}, warm ${by("score", "warm")}, cold ${by("score", "cold")})\nBooked: ${by("status", "booked") + by("status", "quiz_done")} · Asked for a call: ${by("status", "callback")}\nSources: ${Object.entries(src).map(([k, n]) => `${k} ${n}`).join(", ") || "none"}`;
+}
 function adsReport(business, verdicts, autopilot) {
   const spend = verdicts.reduce((s, v) => s + v.spend, 0), leads = verdicts.reduce((s, v) => s + v.leads, 0);
-  const lines = verdicts.filter((v) => v.verdict !== "keep" && v.verdict !== "learning").map((v) => `• ${v.ad_name}: ${v.verdict === "pause" ? (autopilot ? "⏸ paused" : "⚠️ pause suggested") : "🚀 scale"} — ${v.reason}`);
+  const lines = verdicts.filter((v) => v.verdict !== "keep" && v.verdict !== "learning").map((v) => `• ${v.ad_name}: ${v.verdict === "pause" ? (autopilot ? "⏸ paused" : "⚠️ pause suggested") : v.verdict === "pause_suggested" ? "⚠️ pause suggested" : "🚀 scale"} — ${v.reason}`);
   return `📊 ${business} ads — yesterday\nSpend ₹${spend.toLocaleString("en-IN")} · Leads ${leads} · ${leads ? `₹${Math.round(spend / leads)}/lead` : "no leads"}\n` + (lines.length ? lines.join("\n") : "All ads within target. No action needed.");
 }
 
@@ -94,4 +108,4 @@ function dueRenewals(member, nowMs) {
   return due;
 }
 
-module.exports = { parseMetaLead, normalizePhone, judgeAds, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals };
+module.exports = { parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals };

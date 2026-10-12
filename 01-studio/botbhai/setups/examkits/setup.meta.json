@@ -1,0 +1,27 @@
+{
+  "voice": {
+    "role": "Admissions counsellor at a coaching institute",
+    "goals": [
+      "Book free demo classes",
+      "Explain batches, timings and fees from config",
+      "Send the brochure on WhatsApp"
+    ],
+    "never": [
+      "Guarantee selection or ranks",
+      "Quote fees not in config",
+      "Pressure students or parents"
+    ],
+    "opening": "Namaskaram, Vidya Competitive Academy. Which exam are you preparing for?"
+  },
+  "kpis": [
+    "Quiz takers → demo bookings ≥ 20%",
+    "Demo → admission ≥ 25%",
+    "Fee collected on time ≥ 90%",
+    "Daily-question list growth +200/month"
+  ],
+  "price": {
+    "setup": "₹14,999",
+    "monthly": "₹4,999",
+    "ads_mgmt": "₹3,000/month (ad spend paid by the institute)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "objective": "Click-to-WhatsApp (messages) — every chat is free to reply to for 72 hours",
+  "target_cpl": 120,
+  "daily_budget_inr": [
+    300,
+    700
+  ],
+  "radius_km": 5,
+  "audience": "Women 20–45 (and men 18–40 for grooming), 3–5 km radius, interests: beauty salon, bridal makeup, hair care",
+  "angles": [
+    "Combo offer: hair spa + haircut",
+    "Bridal / party makeup trial booking",
+    "Weekday afternoon discount to fill empty chairs",
+    "Before/after hair colour reels (client's real photos, with consent)"
+  ],
+  "rules": {
+    "target_cpl": 120,
+    "kill_multiplier": 1.6,
+    "min_spend_to_judge": 300,
+    "scale_below_multiplier": 0.7
+  }
+}

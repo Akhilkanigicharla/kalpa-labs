@@ -1,0 +1,76 @@
+{
+  "lead_welcome": {
+    "name": "bb_re_welcome",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, thanks for enquiring with {{2}} 🏡. I'm the assistant — tap *Book site visit* and I'll shortlist homes for your budget, or *Call me* for an advisor.",
+    "params": [
+      "name",
+      "business"
+    ],
+    "buttons": [
+      "Book site visit",
+      "Call me"
+    ]
+  },
+  "day_before": {
+    "name": "bb_re_reminder_day",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your site visit with {{2}} is tomorrow ({{3}}) at {{4}} in {{5}}. Reply *1* to confirm or *2* to reschedule. Free pick-up available.",
+    "params": [
+      "name",
+      "business",
+      "date",
+      "slot",
+      "area"
+    ],
+    "buttons": [
+      "Confirm",
+      "Reschedule"
+    ]
+  },
+  "two_hours": {
+    "name": "bb_re_reminder_2h",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your {{2}} site visit is at {{3}} today. Our advisor will call you 30 minutes before. 📍 {{4}}",
+    "params": [
+      "name",
+      "business",
+      "slot",
+      "address"
+    ]
+  },
+  "after_visit": {
+    "name": "bb_re_followup",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, thanks for visiting with {{2}}. Shall we share the price sheet, floor plans and home-loan estimate for {{3}}? Reply *Yes* and we'll send them.",
+    "params": [
+      "name",
+      "business",
+      "bhk"
+    ]
+  },
+  "winback": {
+    "name": "bb_re_winback",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, new launch prices are out at {{2}}. Reply *Details* for the latest {{3}} options in your budget.",
+    "params": [
+      "name",
+      "business",
+      "bhk"
+    ]
+  },
+  "owner_report": {
+    "name": "bb_owner_report",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
+    "params": [
+      "summary"
+    ]
+  }
+}

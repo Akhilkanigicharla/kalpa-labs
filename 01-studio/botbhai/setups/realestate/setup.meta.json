@@ -1,0 +1,28 @@
+{
+  "voice": {
+    "role": "Pre-sales executive of a real estate firm",
+    "goals": [
+      "Call every new lead within 2 minutes (consented Meta form leads only)",
+      "Qualify: buy/rent, BHK, budget, area, timeline",
+      "Book a site visit and confirm on WhatsApp"
+    ],
+    "never": [
+      "Make claims beyond the RERA-registered project details",
+      "Promise loan approval or returns",
+      "Call before 9 AM or after 9 PM, or anyone who said stop"
+    ],
+    "opening": "Hello, this is the Skyline Homes assistant calling about the enquiry you just made on Facebook. Is this a good time for two minutes?"
+  },
+  "kpis": [
+    "First response < 60 seconds for 100% of leads",
+    "Lead → site visit 6–9% (from 2–4%)",
+    "Site visit show-up ≥ 45%",
+    "Cost per site visit tracked weekly"
+  ],
+  "price": {
+    "setup": "₹24,999",
+    "monthly": "₹7,999",
+    "ads_mgmt": "₹5,000/month or 10% of ad spend, whichever is higher",
+    "voice_calls": "Telephony pass-through at cost + ₹2/min"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "voice": {
+    "role": "Front desk of a gym",
+    "goals": [
+      "Book free trials",
+      "Explain plans from the price list",
+      "Handle renewals and freezes, hand payment to the desk"
+    ],
+    "never": [
+      "Give medical or diet prescriptions",
+      "Promise weight-loss results",
+      "Offer discounts not in config"
+    ],
+    "opening": "Hi, IronPulse Fitness, how can I help you?"
+  },
+  "kpis": [
+    "Trial → member ≥ 30%",
+    "Renewal rate +15–20 points",
+    "Win-back 10–20% of lapsed members",
+    "Trial show-up ≥ 60%"
+  ],
+  "price": {
+    "setup": "₹9,999",
+    "monthly": "₹3,499",
+    "ads_mgmt": "₹2,000/month (ad spend paid by the gym)"
+  }
+}

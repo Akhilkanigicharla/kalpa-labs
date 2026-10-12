@@ -1,0 +1,22 @@
+{
+  "objective": "Click-to-WhatsApp: free trial offer",
+  "target_cpl": 150,
+  "daily_budget_inr": [
+    400,
+    1000
+  ],
+  "radius_km": 4,
+  "audience": "18–45 within 3–5 km, interests: fitness, weight loss, yoga; separate women-only batch ad",
+  "angles": [
+    "Free trial + body-composition check",
+    "Women-only batch with female trainers",
+    "New-year / summer transformation challenge",
+    "Member transformation stories (with consent)"
+  ],
+  "rules": {
+    "target_cpl": 150,
+    "kill_multiplier": 1.6,
+    "min_spend_to_judge": 400,
+    "scale_below_multiplier": 0.7
+  }
+}

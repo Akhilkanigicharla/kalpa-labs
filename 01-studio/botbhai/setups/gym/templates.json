@@ -1,0 +1,109 @@
+{
+  "lead_welcome": {
+    "name": "bb_gym_welcome",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hey {{1}} 💪 Your free trial at {{2}} is ready to book. Tap *Book trial* to pick a time, or *Plans* to see memberships.",
+    "params": [
+      "name",
+      "business"
+    ],
+    "buttons": [
+      "Book trial",
+      "Plans"
+    ]
+  },
+  "day_before": {
+    "name": "bb_gym_reminder_day",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your free trial at {{2}} is tomorrow ({{3}}) at {{4}}. Bring sports shoes and water. Reply *1* to confirm.",
+    "params": [
+      "name",
+      "business",
+      "date",
+      "slot"
+    ],
+    "buttons": [
+      "Confirm",
+      "Reschedule"
+    ]
+  },
+  "two_hours": {
+    "name": "bb_gym_reminder_2h",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, see you at {{2}} at {{3}} today! 📍 {{4}}",
+    "params": [
+      "name",
+      "business",
+      "slot",
+      "address"
+    ]
+  },
+  "after_visit": {
+    "name": "bb_gym_trial_followup",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, great work at your trial at {{2}}! Join this week and get the annual plan at the trial-day price. Reply *Join* and we'll send the payment link.",
+    "params": [
+      "name",
+      "business"
+    ]
+  },
+  "renew_7": {
+    "name": "bb_gym_renew_7",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your {{2}} at {{3}} ends on {{4}}. Renew this week to keep your streak going — reply *Renew* for the payment link.",
+    "params": [
+      "name",
+      "plan",
+      "business",
+      "date"
+    ]
+  },
+  "renew_3": {
+    "name": "bb_gym_renew_3",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, 3 days left on your {{2}} at {{3}} (ends {{4}}). Reply *Renew* to continue without a break.",
+    "params": [
+      "name",
+      "plan",
+      "business",
+      "date"
+    ]
+  },
+  "renew_1": {
+    "name": "bb_gym_renew_1",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your {{2}} at {{3}} ends tomorrow ({{4}}). Reply *Renew* and we'll keep your slot.",
+    "params": [
+      "name",
+      "plan",
+      "business",
+      "date"
+    ]
+  },
+  "winback": {
+    "name": "bb_gym_winback",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, we miss you at {{2}}! Come back this month and get 2 weeks free on any plan. Reply *Back* to restart.",
+    "params": [
+      "name",
+      "business"
+    ]
+  },
+  "owner_report": {
+    "name": "bb_owner_report",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
+    "params": [
+      "summary"
+    ]
+  }
+}

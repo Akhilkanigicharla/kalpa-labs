@@ -51,4 +51,21 @@ ok("renewal reminders 7/3/1 days and win-back", () => {
   assert.deepStrictEqual(A.dueRenewals({ expires_on: "2026-09-27" }, now), ["winback"]);
   assert.deepStrictEqual(A.dueRenewals({ expires_on: "2026-10-19", reminders: { renew_7: true } }, now), []);
 });
+ok("autopilot pauses at most half the ads, worst first", () => {
+  const v = A.capPauses(A.judgeAds([
+    { ad_id: "1", ad_name: "A", spend: "1000", actions: [] },
+    { ad_id: "2", ad_name: "B", spend: "1500", actions: [{ action_type: "lead", value: "1" }] },
+    { ad_id: "3", ad_name: "C", spend: "900", actions: [{ action_type: "lead", value: "1" }] },
+    { ad_id: "4", ad_name: "D", spend: "800", actions: [{ action_type: "lead", value: "4" }] }], { target_cpl: 300 }));
+  assert.deepStrictEqual(v.map((x) => x.verdict), ["pause", "pause", "pause_suggested", "scale"]);
+  assert.match(A.adsReport("X", v, true), /C: ⚠️ pause suggested/);
+});
+ok("weekly summary counts only the last 7 days", () => {
+  const now = Date.UTC(2026, 9, 12);
+  const t = A.weeklySummary("Glow Studio", [
+    { score: "hot", status: "booked", source: "whatsapp", created_at: "2026-10-10T10:00:00Z" },
+    { score: "warm", status: "callback", source: "meta_ads", created_at: "2026-10-11T10:00:00Z" },
+    { score: "hot", status: "booked", source: "whatsapp", created_at: "2026-09-01T10:00:00Z" }], now);
+  assert.match(t, /New leads: 2 \(hot 1, warm 1, cold 0\)/); assert.match(t, /Booked: 1 · Asked for a call: 1/); assert.match(t, /whatsapp 1, meta_ads 1/);
+});
 console.log(`\n${n} tests passed`);

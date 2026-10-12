@@ -103,9 +103,30 @@
         const bank = cfg.quizBank || {}; const qs = bank[state.data.service] || bank[Object.keys(bank)[0]]; const q = qs[step.n];
         return { text: `*Q${step.n + 1}/3.* ${q.q}\n` + q.o.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join("\n"), options: q.o.map((o, i) => String.fromCharCode(65 + i) + ") " + o) };
       }
-      const ch = step.choices ? choiceList(step) : null;
+      let ch = step.choices ? choiceList(step) : null;
+      if (ch && step.field === "slot") {
+        ch = freeSlots(state, ch);
+        if (!ch.length) { // that day is full: go back to the date question
+          state.step = cfg.steps.findIndex((x) => x.type === "date");
+          const day = state.data.date; delete state.data.date; delete state.data.date_iso;
+          return { text: `Sorry, ${day} is fully booked 😕 Which other day works for you?` };
+        }
+      }
       if (ch) return { text: step.ask + "\n" + ch.map((c, i) => `*${i + 1}.* ${c}`).join("\n"), options: ch };
       return { text: step.ask };
+    }
+    // Scheduling: a slot is free while bookings for that date+slot are below capacity (chairs, trainers, counsellors).
+    function freeSlots(state, slots) {
+      const cap = cfg.capacity || Infinity; const busy = state._busy || [];
+      const nowD = state.now ? new Date(state.now) : new Date();
+      const today = `${nowD.getFullYear()}-${String(nowD.getMonth() + 1).padStart(2, "0")}-${String(nowD.getDate()).padStart(2, "0")}`;
+      return slots.filter((sl) => {
+        if (state.data.date_iso === today) { // no slots in the past (30-minute buffer)
+          const m = sl.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+          if (m) { const mins = ((+m[1] % 12) + (/pm/i.test(m[3]) ? 12 : 0)) * 60 + +m[2]; if (mins < nowD.getHours() * 60 + nowD.getMinutes() + 30) return false; }
+        }
+        return busy.filter((b) => b.date_iso === state.data.date_iso && b.slot === sl).length < cap;
+      });
     }
     function bump(state, score, intent) {
       const rank = { cold: 0, warm: 1, hot: 2 };
@@ -149,7 +170,7 @@
         if (n.length < 2 || n.length > 60 || /^\d+$/.test(n)) error = "Please type the name (letters only).";
         else value = n.replace(/\b\w/g, (c) => c.toUpperCase());
       } else if (step.choices) {
-        value = pickChoice(raw, choiceList(step));
+        value = pickChoice(raw, step.field === "slot" ? freeSlots(state, choiceList(step)) : choiceList(step));
         if (!value) error = "Please choose one of the options (reply with the number).";
       } else {
         const v = String(raw).trim(); if (v.length < 2) error = "Could you type that again?"; else value = v.slice(0, 80);
@@ -161,6 +182,7 @@
     }
 
     function nextOrFinish(state, events) {
+      while (state.rescheduling && state.step < cfg.steps.length && state.data[cfg.steps[state.step].field] && !["date", "slot"].includes(cfg.steps[state.step].field)) state.step++;
       if (state.step < cfg.steps.length) return [askStep(state)];
       // finished
       const v = Object.assign(vars(), state.data);
@@ -170,6 +192,12 @@
         delete state.data.correct; delete state.data.q1; delete state.data.q2; delete state.data.q3;
       }
       state.step = -1; state.lead.status = cfg.quiz ? "quiz_done" : "booked"; bump(state, "hot", cfg.quiz ? "quiz" : "booked");
+      if (!cfg.quiz) events.push({ type: "booking", booking: { service: state.data.service || state.data.goal || state.data.bhk || null, date_iso: state.data.date_iso, slot: state.data.slot, name: state.data.name }, replaces: state.rescheduling || null });
+      if (state.rescheduling) {
+        const old = state.rescheduling; delete state.rescheduling;
+        events.push({ type: "notify_owner", text: `🔁 Rescheduled: ${state.data.name} · ${state.data.service || ""} · ${old.date} ${old.slot} → ${state.data.date} ${state.data.slot}` });
+        return [{ text: "🔁 Done, I've moved it.\n\n" + fill(cfg.confirm, v) }];
+      }
       events.push({ type: "notify_owner", text: `🔔 New ${cfg.bookWord}: ${state.data.name}` + (state.data.service ? ` · ${state.data.service}` : "") + (state.data.date ? ` · ${state.data.date} ${state.data.slot || ""}` : "") + (state.data.quiz_score ? ` · score ${state.data.quiz_score}` : "") });
       return [{ text: fill(cfg.confirm, v) }];
     }
@@ -178,15 +206,37 @@
       meta = meta || {};
       const state = JSON.parse(JSON.stringify(stateIn || newState()));
       if (meta.now) state.now = meta.now;
+      state._busy = meta.busy || [];
       state.turns++;
       const events = []; let replies = [];
-      const raw = String(text || "").trim(); const t = norm(raw);
+      const raw = String(text || "").trim(); let t = norm(raw);
+      const ref = raw.match(/\bREF-[A-Z0-9]{4}\b/i);
+      if (ref && !state.data.referred_by) {
+        state.data.referred_by = ref[0].toUpperCase(); bump(state, "warm", "referral");
+        events.push({ type: "notify_owner", text: `🤝 Referral: a friend of ${ref[0].toUpperCase()} just messaged.` });
+        t = norm(raw.replace(ref[0], "")) || "hi";
+      }
 
       if (/^(stop|unsubscribe|opt out)$/.test(t)) {
         state.optedOut = true; state.step = -1; state.lead.status = "opted_out";
         replies = [{ text: "You're unsubscribed and won't get any more messages from us. Reply *START* any time to come back." }];
       } else if (state.optedOut && !/^start$/.test(t)) {
         replies = [];
+      } else if (state.pending === "cancel") {
+        delete state.pending;
+        if (/^(yes|y|confirm|ok|haa|avunu|han|haan)\b/.test(t)) {
+          state.lead.status = "cancelled";
+          events.push({ type: "cancel_booking", booking: { date_iso: state.data.date_iso, slot: state.data.slot, service: state.data.service || null } });
+          events.push({ type: "notify_owner", text: `❌ Cancelled: ${state.data.name || "customer"} · ${state.data.service || ""} · ${state.data.date} ${state.data.slot}` });
+          replies = [{ text: `Cancelled. No worries at all 🙂 Whenever you're ready, reply *1* and I'll find you a new slot.` }];
+        } else replies = [{ text: `Okay, your booking stays as it is: ${state.data.date} at ${state.data.slot}. See you then! 👋` }];
+      } else if (state.step < 0 && state.lead.status === "booked" && /\b(reschedule|postpone|prepone|change (the )?(date|time|day|slot)|another (day|time)|move (my|the) (booking|appointment))\b/.test(t)) {
+        state.rescheduling = { date: state.data.date, slot: state.data.slot, date_iso: state.data.date_iso };
+        state.step = cfg.steps.findIndex((x) => x.type === "date");
+        replies = [{ text: `No problem! Your current booking is ${state.data.date} at ${state.data.slot}.` }, askStep(state)];
+      } else if (state.step < 0 && state.lead.status === "booked" && /\b(cancel)\b/.test(t)) {
+        state.pending = "cancel";
+        replies = [{ text: `Do you want to cancel your ${state.data.service || cfg.bookWord} on ${state.data.date} at ${state.data.slot}? Reply *YES* to cancel, or anything else to keep it.`, options: ["Yes, cancel", "Keep it"] }];
       } else if (state.step >= 0 && /^(cancel|exit|quit)$/.test(t)) {
         state.step = -1; replies = [menuReply("No problem, cancelled.")];
       } else if (state.step >= 0 && !GREET.test(t)) {
@@ -195,7 +245,10 @@
         replies = [menuReply()];
       } else if (GREET.test(t) || /^start$/.test(t)) {
         state.optedOut = false; state.step = -1;
-        const first = state.turns === 1 ? fill(cfg.greeting, vars()) : `Welcome back to *${cfg.business}* 😊`;
+        const known = meta.known || {};
+        const first = known.name
+          ? `Welcome back, ${known.name.split(" ")[0]}! 😊` + (known.lastService ? ` Same *${known.lastService}* as last time? Reply *1* and I'll find you a slot.` : "")
+          : state.turns === 1 ? fill(cfg.greeting, vars()) : `Welcome back to *${cfg.business}* 😊`;
         replies = [menuReply(first)];
       } else {
         // Menu number or keyword intent
@@ -232,11 +285,12 @@
           replies = [menuReply("Sorry, I didn't quite get that. I can help with these:")];
         }
       }
+      delete state._busy;
       return { replies, state, lead: leadSnapshot(state, meta), events };
     }
 
     return { config: cfg, handle };
   }
 
-  return { NICHES, register, createBot, newState, parseDate, pickChoice, version: "2.0.0" };
+  return { NICHES, register, createBot, newState, parseDate, pickChoice, version: "2.1.0" };
 });

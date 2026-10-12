@@ -102,6 +102,10 @@ h2{font:700 18px var(--f-display);margin:0}
 .arch div{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
 .arch b{display:block;font-size:13.5px}
 footer{color:var(--muted);font-size:12.5px}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.cardgrid figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.cardgrid img{width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.cardgrid figcaption{font-size:12.5px;color:var(--muted)}
 body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
 </style>
 
@@ -139,6 +143,7 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
       <div class="tabs" role="tablist">
         <button class="tab" role="tab" aria-selected="true" data-tab="leads">Leads dashboard</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="convo">Conversations</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="cards">Smile cards</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="widget">Website widget</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="finder">Lead finder</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="how">How it's built</button>
@@ -170,6 +175,12 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
       <div class="pane" data-pane="convo" hidden>
         <p class="note">Every message is logged so the owner can read conversations and we can improve answers. Questions the bot couldn't answer are flagged.</p>
         <div id="convo" class="stack"></div>
+      </div>
+
+      <div class="pane" data-pane="cards" hidden>
+        <h2>Smile cards: reminders people actually enjoy</h2>
+        <p class="note">Meme-style images that go out with bookings, reminders, follow-ups and festivals. All original artwork and open fonts, so there are no copyright worries for the client. Each client gets their own set with their name on it.</p>
+        <div class="cardgrid" id="cardgrid"></div>
       </div>
 
       <div class="pane" data-pane="widget" hidden>
@@ -204,7 +215,9 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
           <div><b>BotBhai engine + 4 setups</b>One engine; salon, real estate, gym and exam-kit setups plug in their own flows. 27 automated tests.</div>
           <div><b>Meta ads bot</b>Lead-form leads get a WhatsApp reply in seconds; every morning bad ads are paused and the owner gets a report.</div>
           <div><b>Voice agent</b>Pipecat + Sarvam (Telugu, Hindi, English) + Groq answers phone calls and books; web voice is free.</div>
-          <div><b>Groq Whisper</b>Optional: turns WhatsApp voice notes into text, free tier.</div>
+          <div><b>Groq Whisper</b>Turns WhatsApp voice notes into text, free tier; customers who speak get a voice note back.</div>
+          <div><b>Human touch</b>Persona, time-aware greetings, varied phrasing, Telugu/Hindi replies, empathy and real calendar slots.</div>
+          <div><b>SEO bot</b>Local landing pages with schema, Google Business posts, citations and review replies.</div>
           <div><b>GitHub Actions</b>Runs the lead finder in the cloud and saves the Excel file.</div>
         </div>
         <h2>Flow of one message</h2>
@@ -266,7 +279,13 @@ function setNiche(id) {
   $("#avatar").textContent = n.emoji; $("#bizname").textContent = n.business;
   $("#msgs").innerHTML = "";
   bubble("in", `👋 You're chatting with the *${n.business}* bot. Type *hi* or tap a button.`, ["Hi"]);
-  renderEmbed();
+  renderEmbed(); renderCards();
+}
+const CARD_SETS = { salon: ["booking_confirmed", "day_before", "two_hours", "after_visit", "winback", "festival"], gym: ["booking_confirmed", "day_before", "two_hours", "after_visit", "renew_7", "winback"], realestate: ["booking_confirmed", "day_before", "after_visit", "winback", "festival"], examkits: ["booking_confirmed", "daily_question", "day_before", "after_visit", "renew_7"] };
+const CARD_WHEN = { booking_confirmed: "Right after booking", day_before: "Day before", two_hours: "2 hours before", after_visit: "Day after the visit", winback: "Lapsed customer", festival: "Festival week", renew_7: "7 days before renewal / fee", daily_question: "Daily 7 AM question" };
+function renderCards() {
+  const g = document.getElementById("cardgrid"); if (!g) return;
+  g.innerHTML = (CARD_SETS[niche] || []).map((k) => `<figure><img loading="lazy" src="cards/demo/${niche}-${k}.png" alt="${esc(CARD_WHEN[k])} card"><figcaption>${esc(CARD_WHEN[k])}</figcaption></figure>`).join("");
 }
 
 // ---- chat rendering

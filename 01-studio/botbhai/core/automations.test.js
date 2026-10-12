@@ -68,4 +68,10 @@ ok("weekly summary counts only the last 7 days", () => {
     { score: "hot", status: "booked", source: "whatsapp", created_at: "2026-09-01T10:00:00Z" }], now);
   assert.match(t, /New leads: 2 \(hot 1, warm 1, cold 0\)/); assert.match(t, /Booked: 1 · Asked for a call: 1/); assert.match(t, /whatsapp 1, meta_ads 1/);
 });
+ok("referral: stable code + friend invite 3 days after the visit", () => {
+  const c = A.referralCode("919876543210"); assert.match(c, /^REF-[A-Z0-9]{4}$/); assert.strictEqual(c, A.referralCode("919876543210"));
+  assert.notStrictEqual(c, A.referralCode("919876543211"));
+  const lead = { status: "booked", details: { date_iso: "2026-10-13", slot: "4:00 PM", reminders: { after_visit: true } } };
+  assert.deepStrictEqual(A.dueReminders(lead, A.appointmentUtc("2026-10-13", "4:00 PM") + 75 * 3.6e6), ["refer"]);
+});
 console.log(`\n${n} tests passed`);

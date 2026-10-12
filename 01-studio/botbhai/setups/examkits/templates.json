@@ -27,7 +27,8 @@
     "buttons": [
       "Confirm",
       "Reschedule"
-    ]
+    ],
+    "card": "examkits-day_before.png"
   },
   "two_hours": {
     "name": "bb_exam_demo_2h",
@@ -50,7 +51,8 @@
       "name",
       "business",
       "service"
-    ]
+    ],
+    "card": "examkits-after_visit.png"
   },
   "renew_7": {
     "name": "bb_exam_fee_7",
@@ -62,7 +64,8 @@
       "plan",
       "business",
       "date"
-    ]
+    ],
+    "card": "examkits-renew_7.png"
   },
   "renew_1": {
     "name": "bb_exam_fee_1",
@@ -85,7 +88,8 @@
       "name",
       "exam",
       "question"
-    ]
+    ],
+    "card": "examkits-daily_question.png"
   },
   "owner_report": {
     "name": "bb_owner_report",
@@ -94,6 +98,17 @@
     "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
     "params": [
       "summary"
+    ]
+  },
+  "refer": {
+    "name": "bb_exam_refer",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, thanks for choosing {{2}}! 🙌 Know someone who'd love it too? Share your code {{3}}: they get ₹500 off the course fee, and so do you on your next visit. They just message us the code on WhatsApp.",
+    "params": [
+      "name",
+      "business",
+      "ref_code"
     ]
   }
 }

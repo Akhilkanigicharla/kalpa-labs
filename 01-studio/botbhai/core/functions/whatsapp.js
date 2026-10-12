@@ -11,7 +11,16 @@
  */
 const crypto = require("crypto");
 const { BotBhai: Botforge } = require("../../setups/index.js");
-const { db, json } = require("./_lib.js");
+const { db, json, sendImage, cardUrl } = require("./_lib.js");
+const { humanize, detectLanguage, typingDelayMs, mirrorLanguage } = require("../humanize.js");
+const sleep = (ms) => new Promise((r) => setTimeout(r, process.env.NO_DELAY ? 0 : ms));
+// Blue ticks + "typing…" bubble, like a person picking up the phone
+async function typing(phoneNumberId, messageId) {
+  try {
+    await fetch(`${GRAPH}/${phoneNumberId}/messages`, { method: "POST", headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ messaging_product: "whatsapp", status: "read", message_id: messageId, typing_indicator: { type: "text" } }) });
+  } catch (e) { /* cosmetic only */ }
+}
 const GRAPH = "https://graph.facebook.com/v21.0";
 
 function validSignature(event) {
@@ -80,19 +89,50 @@ exports.handler = async (event) => {
         else if (msg.type === "audio") text = (await transcribe(msg.audio.id)) || "";
         if (!text) { await send(phoneNumberId, contact, { text: "Sorry, I can only read text and voice notes. Reply *menu* to see options." }); continue; }
 
-        const [sess] = await db(`sessions?client_id=eq.${client.id}&contact=eq.${contact}&select=state`);
+        // Memory + calendar: who is this, and which slots are taken in the next 2 weeks?
+        const today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+        const [[sess], [prev], busy] = await Promise.all([
+          db(`sessions?client_id=eq.${client.id}&contact=eq.${contact}&select=state`),
+          db(`leads?client_id=eq.${client.id}&contact=eq.${contact}&select=name,details,status`),
+          db(`bookings?client_id=eq.${client.id}&status=eq.confirmed&date_iso=gte.${today}&select=date_iso,slot&limit=2000`),
+        ]);
+        const known = prev && prev.name ? { name: prev.name, lastService: prev.details && (prev.details.service || prev.details.goal) } : null;
+        const state0 = sess ? sess.state : Botforge.newState();
         const bot = Botforge.createBot(client.niche, client.config);
-        const out = bot.handle(sess ? sess.state : Botforge.newState(), text, { contact, profileName, source: "whatsapp" });
+        const out = bot.handle(state0, text, { contact, profileName, source: "whatsapp", busy, known });
 
-        for (const r of out.replies) await send(phoneNumberId, contact, r);
+        // Human touch: persona, greeting, variety, empathy, then the customer's own language
+        const lang = detectLanguage(text) !== "en" ? detectLanguage(text) : (state0.lang || "en");
+        out.state.lang = lang;
+        const cfg = client.config || {};
+        const h = humanize(out.replies, { setup: client.niche, business: cfg.business || client.name, persona: cfg.persona, firstContact: !sess, userText: text, contact, turn: out.state.turns, nowMs: Date.now() });
+        const replies = await mirrorLanguage(h.replies, lang, { apiKey: process.env.GROQ_API_KEY });
+        if (h.handoff) out.events.push({ type: "handoff", text: `⚠️ Unhappy customer ${profileName || contact}: "${text.slice(0, 120)}"` });
+
+        await typing(phoneNumberId, msg.id);
+        let budget = 5000; // keep the webhook well inside Meta's timeout
+        for (const r of replies) { const d = Math.min(typingDelayMs(r.text), budget); budget -= d; await sleep(d); await send(phoneNumberId, contact, r); }
+        if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL) // they spoke, so we answer with a voice note too
+          fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY || "" }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
         for (const e of out.events) if ((e.type === "notify_owner" || e.type === "handoff") && client.owner_whatsapp)
           await send(phoneNumberId, client.owner_whatsapp, { text: e.text }); // works when the owner has messaged the number in the last 24h; else use an approved template
+
+        // Calendar writes: new booking, reschedule (old slot freed), cancel
+        for (const e of out.events) {
+          if (e.type === "booking") {
+            const card = cardUrl(client, `${client.niche}-booking_confirmed.png`);
+            if (card) await sendImage(phoneNumberId, contact, card, "").catch(() => {});
+            if (e.replaces) await db(`bookings?client_id=eq.${client.id}&contact=eq.${contact}&date_iso=eq.${e.replaces.date_iso}&slot=eq.${encodeURIComponent(e.replaces.slot)}&status=eq.confirmed`, { method: "PATCH", prefer: "return=minimal", body: { status: "rescheduled" } });
+            await db("bookings", { method: "POST", prefer: "return=minimal", body: Object.assign({ client_id: client.id, contact, status: "confirmed" }, e.booking) });
+          }
+          if (e.type === "cancel_booking") await db(`bookings?client_id=eq.${client.id}&contact=eq.${contact}&date_iso=eq.${e.booking.date_iso}&slot=eq.${encodeURIComponent(e.booking.slot)}&status=eq.confirmed`, { method: "PATCH", prefer: "return=minimal", body: { status: "cancelled" } });
+        }
 
         const { niche, business, contact: _c, source, name, score, status, ...details } = out.lead;
         await Promise.all([
           db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
           db("leads?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates", body: { client_id: client.id, contact, name, score, status, details, source, updated_at: new Date().toISOString() } }),
-          db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", body: text }, ...out.replies.map((r) => ({ client_id: client.id, contact, direction: "out", body: r.text }))] }),
+          db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", body: r.text }))] }),
         ]);
       } catch (err) { console.error(err); }
     }

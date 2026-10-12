@@ -1,7 +1,7 @@
 // In-memory stand-in for Supabase REST + Meta Graph API, used only by tests.
 module.exports = function installFake(seed) {
   Object.assign(process.env, { WA_VERIFY_TOKEN: "verify", WA_ACCESS_TOKEN: "x", WA_APP_SECRET: "appsecret", SUPABASE_URL: "https://fake.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k" });
-  const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [] }, seed);
+  const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [] }, seed);
   const graph = { sent: [], calls: [], responses: {} };
   global.fetch = async (url, opts = {}) => {
     const ok = (data) => ({ ok: true, status: 200, text: async () => JSON.stringify(data), json: async () => data });
@@ -14,7 +14,8 @@ module.exports = function installFake(seed) {
     }
     const u = new URL(url); const table = u.pathname.split("/").pop(); const method = opts.method || "GET";
     const filt = (rows) => { for (const [k, v] of u.searchParams) {
-      if (v.startsWith("eq.")) rows = rows.filter((r) => String(r[k]) === v.slice(3));
+      if (v.startsWith("eq.")) rows = rows.filter((r) => String(r[k]) === decodeURIComponent(v.slice(3)));
+      if (v.startsWith("gte.")) rows = rows.filter((r) => String(r[k]) >= v.slice(4));
       if (v === "not.is.null") rows = rows.filter((r) => r[k] != null); }
       return rows; };
     if (method === "GET") return ok(filt(store[table]));

@@ -4,10 +4,10 @@ const { BotBhai: B } = require("../setups/index.js");
 const NOW = new Date(2026, 9, 12, 10, 0).toISOString(); // Mon 12 Oct 2026
 let passed = 0;
 
-function talk(niche, lines) {
-  const bot = B.createBot(niche); let state = B.newState(); const log = []; let out;
+function talk(niche, lines, meta = {}, overrides) {
+  const bot = B.createBot(niche, overrides); let state = B.newState(); const log = []; let out;
   for (const l of lines) {
-    out = bot.handle(state, l, { now: NOW, contact: "+919999999999", profileName: "Test" });
+    out = bot.handle(state, l, Object.assign({ now: NOW, contact: "+919999999999", profileName: "Test" }, meta));
     state = out.state; log.push({ you: l, bot: out.replies.map((r) => r.text).join("\n---\n"), events: out.events });
   }
   return { log, state, lead: out.lead };
@@ -53,8 +53,9 @@ ok("real estate loan faq + human handoff", () => {
   assert.ok(r.log[1].events.some((e) => e.type === "handoff")); assert.strictEqual(r.lead.status, "callback");
 });
 ok("gym trial", () => {
-  const r = talk("gym", ["hey", "free trial", "weight loss", "today", "6:00 AM", "Sai"]);
-  assert.match(r.log[5].bot, /Free trial booked[\s\S]*Weight loss[\s\S]*Mon, 12 Oct at 6:00 AM/);
+  const r = talk("gym", ["hey", "free trial", "weight loss", "today", "1", "Sai"]);
+  assert.doesNotMatch(r.log[3].bot, /6:00 AM|8:00 AM/); // it is 10 AM: morning slots already gone
+  assert.match(r.log[5].bot, /Free trial booked[\s\S]*Weight loss[\s\S]*Mon, 12 Oct at 6:00 PM/);
 });
 ok("gym plans and ladies batch", () => {
   const r = talk("gym", ["membership plans", "ladies batch?"]);
@@ -73,5 +74,36 @@ ok("opt-out silences bot until START", () => {
 ok("unknown text falls back to menu + logs unanswered", () => {
   const r = talk("salon", ["asdfgh qwerty"]);
   assert.match(r.log[0].bot, /didn't quite get that/); assert.ok(r.log[0].events.some((e) => e.type === "unanswered"));
+});
+ok("capacity: full slots are hidden, a full day asks for another day", () => {
+  const busy = [{ date_iso: "2026-10-13", slot: "11:00 AM" }, { date_iso: "2026-10-13", slot: "11:00 AM" }];
+  const r = talk("salon", ["book", "facial", "tomorrow"], { busy }, { capacity: 2 });
+  assert.doesNotMatch(r.log[2].bot, /11:00 AM/); assert.match(r.log[2].bot, /1:00 PM/);
+  const full = ["11:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"].flatMap((slot) => [{ date_iso: "2026-10-13", slot }, { date_iso: "2026-10-13", slot }]);
+  const f = talk("salon", ["book", "facial", "tomorrow", "friday", "2", "Asha"], { busy: full }, { capacity: 2 });
+  assert.match(f.log[2].bot, /fully booked/); assert.match(f.log[5].bot, /Booking confirmed[\s\S]*Fri, 16 Oct at 1:00 PM/);
+  assert.ok(f.log[5].events.some((e) => e.type === "booking" && e.booking.date_iso === "2026-10-16"));
+});
+ok("reschedule keeps service and name, tells the owner", () => {
+  const r = talk("salon", ["book", "hair spa", "tomorrow", "4:00 PM", "Priya", "can I reschedule?", "saturday", "1"]);
+  assert.match(r.log[5].bot, /current booking is Tue, 13 Oct at 4:00 PM/);
+  assert.match(r.log[7].bot, /moved it[\s\S]*Hair spa[\s\S]*Sat, 17 Oct at 11:00 AM/);
+  assert.ok(r.log[7].events.some((e) => e.type === "notify_owner" && /Rescheduled: Priya/.test(e.text)));
+  assert.ok(r.log[7].events.some((e) => e.type === "booking" && e.replaces && e.replaces.date_iso === "2026-10-13"));
+});
+ok("cancel asks for confirmation first", () => {
+  const r = talk("gym", ["trial", "weight loss", "tomorrow", "1", "Sai", "cancel my trial", "yes"]);
+  assert.match(r.log[5].bot, /Reply \*YES\* to cancel/); assert.match(r.log[6].bot, /Cancelled/);
+  assert.strictEqual(r.lead.status, "cancelled"); assert.ok(r.log[6].events.some((e) => e.type === "cancel_booking"));
+  const k = talk("gym", ["trial", "weight loss", "tomorrow", "1", "Sai", "cancel", "no"]); assert.match(k.log[6].bot, /stays as it is/);
+});
+ok("returning customer is greeted by name with last service", () => {
+  const r = talk("salon", ["hi"], { known: { name: "Priya Reddy", lastService: "Hair spa" } });
+  assert.match(r.log[0].bot, /Welcome back, Priya! 😊 Same \*Hair spa\* as last time/);
+});
+ok("referral code in the first message is captured and the owner told", () => {
+  const r = talk("salon", ["Hi! My friend gave me REF-7KQ2"]);
+  assert.match(r.log[0].bot, /How can I help/); assert.strictEqual(r.lead.referred_by, "REF-7KQ2");
+  assert.ok(r.log[0].events.some((e) => /Referral/.test(e.text)));
 });
 console.log(`\n${passed} tests passed`);

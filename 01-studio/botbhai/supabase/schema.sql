@@ -69,6 +69,15 @@ create table if not exists ad_stats (
   created_at timestamptz not null default now()
 );
 
+-- Calendar: one row per booked slot (capacity = config.capacity chairs/trainers per slot)
+create table if not exists bookings (
+  id uuid primary key default gen_random_uuid(), client_id uuid references clients(id) on delete cascade,
+  contact text not null, name text, service text, date_iso date not null, slot text not null,
+  status text not null default 'confirmed' check (status in ('confirmed','rescheduled','cancelled','completed','no_show')),
+  created_at timestamptz not null default now()
+);
+create index if not exists bookings_slot on bookings (client_id, date_iso, slot) where status = 'confirmed';
+
 -- Members / students with an expiry or fee date (gym renewals, coaching instalments). Import from Excel via Supabase table editor.
 create table if not exists members (
   id uuid primary key default gen_random_uuid(), client_id uuid references clients(id) on delete cascade,
@@ -92,6 +101,7 @@ alter table client_secrets enable row level security;
 alter table ad_stats enable row level security;
 alter table members enable row level security;
 alter table jobs enable row level security;
+alter table bookings enable row level security;
 
 -- Data retention (DPDP Act 2023: keep only what you need). Run monthly, or schedule with pg_cron:
 -- delete from messages where created_at < now() - interval '180 days';

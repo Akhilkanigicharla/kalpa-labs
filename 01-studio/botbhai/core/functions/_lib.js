@@ -33,8 +33,18 @@ async function graph(path, { method = "GET", token, body } = {}) {
 // Approved template message (needed outside the 24-hour window: lead follow-ups, reminders, renewals, owner reports)
 function sendTemplate(phoneNumberId, to, tpl, values) {
   const params = (tpl.params || []).map((k) => ({ type: "text", text: String(values[k] == null || values[k] === "" ? "-" : values[k]).slice(0, 60) }));
+  const components = params.length ? [{ type: "body", parameters: params }] : [];
+  if (tpl.card && values.card_url) components.unshift({ type: "header", parameters: [{ type: "image", image: { link: values.card_url } }] });
   return graph(`${phoneNumberId}/messages`, { method: "POST", body: { messaging_product: "whatsapp", to, type: "template",
-    template: { name: tpl.name, language: { code: tpl.language || "en" }, components: params.length ? [{ type: "body", parameters: params }] : [] } } });
+    template: { name: tpl.name, language: { code: tpl.language || "en" }, components } } });
+}
+// Public URL of a smile card for this client (cards are generated at onboarding into web/dist/cards/<card_dir>/)
+function cardUrl(client, file) {
+  if (!process.env.SITE_URL || !file) return "";
+  return `${process.env.SITE_URL}/cards/${(client.config && client.config.card_dir) || "demo"}/${file}`;
+}
+function sendImage(phoneNumberId, to, link, caption) {
+  return graph(`${phoneNumberId}/messages`, { method: "POST", body: { messaging_product: "whatsapp", to, type: "image", image: { link, caption: (caption || "").slice(0, 1024) } } });
 }
 function sendText(phoneNumberId, to, text) {
   return graph(`${phoneNumberId}/messages`, { method: "POST", body: { messaging_product: "whatsapp", to, type: "text", text: { body: text.slice(0, 4096) } } });
@@ -43,4 +53,4 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = Object.assign(module.exports, { graph, sendTemplate, sendText, templatesFor, GRAPH });
+module.exports = Object.assign(module.exports, { graph, sendTemplate, sendText, sendImage, cardUrl, templatesFor, GRAPH });

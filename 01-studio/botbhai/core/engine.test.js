@@ -1,7 +1,7 @@
 // Run: node 01-studio/botforge/engine/engine.test.js
 const assert = require("assert");
 const { BotBhai: B } = require("../setups/index.js");
-const NOW = new Date(2026, 9, 12, 10, 0).toISOString(); // Mon 12 Oct 2026
+const NOW = "2026-10-12T04:30:00.000Z"; // Mon 12 Oct 2026, 10:00 AM IST
 let passed = 0;
 
 function talk(niche, lines, meta = {}, overrides) {
@@ -17,11 +17,15 @@ function ok(name, fn) { fn(); passed++; console.log("  ✓", name); }
 console.log("BotBhai engine tests");
 ok("dates", () => {
   const now = new Date(NOW);
-  assert.strictEqual(B.parseDate("tomorrow", now).getDate(), 13);
-  assert.strictEqual(B.parseDate("friday", now).getDate(), 16);
-  assert.strictEqual(B.parseDate("monday", now).getDate(), 19);
-  assert.strictEqual(B.parseDate("15/10", now).getDate(), 15);
-  assert.strictEqual(B.parseDate("5 nov", now).getMonth(), 10);
+  assert.strictEqual(B.parseDate("tomorrow", now).getUTCDate(), 13);
+  assert.strictEqual(B.parseDate("friday", now).getUTCDate(), 16);
+  assert.strictEqual(B.parseDate("monday", now).getUTCDate(), 12); // today is Monday → today
+  assert.strictEqual(B.parseDate("next monday", now).getUTCDate(), 19);
+  assert.strictEqual(B.parseDate("15/10", now).getUTCDate(), 15);
+  assert.strictEqual(B.parseDate("5 nov", now).getUTCMonth(), 10);
+  assert.strictEqual(B.parseDate("10/10/2026", now), null); // past date with a year is rejected
+  assert.strictEqual(B.parseDate("repu", now).getUTCDate(), 13);
+  assert.strictEqual(B.parseDate("రేపు", now).getUTCDate(), 13);
   assert.strictEqual(B.parseDate("31/02", now), null);
   assert.strictEqual(B.parseDate("blah", now), null);
 });
@@ -33,7 +37,7 @@ ok("salon full booking by numbers + owner alert", () => {
 });
 ok("salon bad date then recovery, cancel", () => {
   const r = talk("salon", ["book", "facial", "someday", "friday", "cancel"]);
-  assert.match(r.log[2].bot, /couldn't read that date/); assert.match(r.log[3].bot, /Choose a time/); assert.match(r.log[4].bot, /cancelled/);
+  assert.match(r.log[2].bot, /couldn.t read that date/); assert.match(r.log[3].bot, /Choose a time/); assert.match(r.log[4].bot, /stopped/);
 });
 ok("salon booking with words", () => {
   const r = talk("salon", ["hello", "book", "hair spa", "saturday", "7:00 PM", "my name is priya"]);

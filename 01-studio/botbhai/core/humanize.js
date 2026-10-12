@@ -18,14 +18,14 @@ const PERSONAS = { salon: "Meera", realestate: "Arjun", gym: "Vikram", examkits:
 
 // ---------- language detection (script + common romanized words)
 const TE_LATN = /\b(ela|enti|undi|kavali|cheppandi|chesthara|ivvandi|repu|ivala|nenu|meeru|baagundi|ekkada|entha|chala|sare|avunu|ledu|kuda|vasthanu)\b/i;
-const HI_LATN = /\b(kya|hai|hain|chahiye|kitna|kitne|kal|aaj|mujhe|aap|kaise|kab|kahan|nahi|haan|bhai|accha|achha|theek|karna|milega)\b/i;
+const HI_LATN = /\b(kya|hain|chahiye|kitna|kitne|aaj|mujhe|aap|kaise|kab|kahan|nahi|haan|accha|achha|theek|karna|milega|karo|dijiye)\b/i; // not "hai"/"kal"/"bhai": Telugu speakers use them too
 function detectLanguage(text) {
   const s = String(text || "");
   if (/[ఀ-౿]/.test(s)) return "te";
   if (/[ऀ-ॿ]/.test(s)) return "hi";
   const te = (s.match(new RegExp(TE_LATN.source, "gi")) || []).length, hi = (s.match(new RegExp(HI_LATN.source, "gi")) || []).length;
   if (te >= 1 && te >= hi) return "te-latn";
-  if (hi >= 2 || (hi >= 1 && s.split(/\s+/).length <= 4)) return "hi-latn";
+  if (hi >= 2) return "hi-latn";
   return "en";
 }
 
@@ -49,7 +49,7 @@ const VARIANTS = [
   [/^No problem, cancelled\./, () => ["No worries, stopped it 👍", "Okay, cancelled. All good 🙂"]],
 ];
 
-const FRUSTRATION = /\b(worst|angry|bad service|waiting since|still waiting|no response|cheating|fraud|useless|bakwas|chetha|late again|disappointed|complaint|refund)\b/i;
+const FRUSTRATION = /\b(worst|angry|bad service|waiting since|still waiting|no response|no one picking|cheating|fraud|useless|bakwas|chetha|chettha|late again|disappointed|complaint|refund|pathetic|horrible|ghatiya)\b/i;
 const URGENT = /\b(urgent|asap|right now|immediately|emergency|jaldi|twaraga)\b/i;
 
 /**
@@ -57,6 +57,7 @@ const URGENT = /\b(urgent|asap|right now|immediately|emergency|jaldi|twaraga)\b/
  * Returns { replies, handoff } — handoff:true means "also alert the owner".
  */
 function humanize(replies, ctx) {
+  if (!replies || !replies.length) return { replies: [], handoff: false }; // bot is silent (opted out / human takeover): stay silent
   const persona = ctx.persona || PERSONAS[ctx.setup] || "Asha";
   const seed = `${ctx.contact || ""}:${ctx.turn || 0}`;
   let out = replies.map((r) => Object.assign({}, r));
@@ -72,6 +73,7 @@ function humanize(replies, ctx) {
   }
   if (FRUSTRATION.test(ctx.userText || "")) {
     handoff = true;
+    out = []; // no menus or "didn't get that" after a complaint: only a real apology, then a person takes over
     out.unshift({ text: pick([
       "I'm really sorry about this 🙏 I've alerted the team right now, and a person will reply to you personally.",
       "That's not the experience we want for you, I'm sorry 🙏 I've flagged it to the team; someone will reach out shortly."], seed) });

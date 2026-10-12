@@ -2,6 +2,8 @@
 // Edit per client in Supabase clients.config (overrides any field here).
 module.exports = {
   "id": "gym",
+  "capacity": 10,
+  "holidays": [{ "date": "2026-11-08", "name": "Diwali" }],
   "label": "Gym",
   "emoji": "🏋️",
   "business": "IronPulse Fitness",

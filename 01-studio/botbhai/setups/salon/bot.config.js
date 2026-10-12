@@ -2,6 +2,10 @@
 // Edit per client in Supabase clients.config (overrides any field here).
 module.exports = {
   "id": "salon",
+  "capacity": 3,
+  "enquiry_role": "bridal artist",
+  "closed_weekdays": [],
+  "holidays": [{ "date": "2026-11-08", "name": "Diwali" }],
   "label": "Salon",
   "emoji": "💇",
   "business": "Glow Studio Unisex Salon",
@@ -55,10 +59,11 @@ module.exports = {
     },
     {
       "name": "Bridal makeup",
-      "price": "from ₹15,000"
+      "price": "from ₹15,000",
+      "enquiry": true
     }
   ],
-  "bookWord": "booking",
+  "bookWord": "appointment",
   "steps": [
     {
       "field": "service",

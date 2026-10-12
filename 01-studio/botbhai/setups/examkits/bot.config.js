@@ -3,6 +3,8 @@
 module.exports = {
   // quiz questions live in quiz.js
   "id": "examkits",
+  "capacity": 30,
+  "holidays": [{ "date": "2026-11-08", "name": "Diwali" }],
   "label": "Exam kits",
   "emoji": "📚",
   "business": "Vidya Competitive Academy",

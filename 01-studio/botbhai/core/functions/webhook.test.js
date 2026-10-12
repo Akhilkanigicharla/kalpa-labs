@@ -22,14 +22,14 @@ const inbound = (msg, from = "919812345678") => {
   await inbound({ type: "text", text: { body: "hi" } });
   assert.strictEqual(sent.list[0].interactive.type, "list"); assert.match(sent.list[0].interactive.body.text, /I'm Meera/); console.log("  ✓ menu sent as WhatsApp list, persona introduced");
   assert.ok(graph.sent.some((m) => m.status === "read" && m.typing_indicator)); console.log("  ✓ blue ticks + typing indicator sent");
-  await inbound({ type: "interactive", interactive: { list_reply: { id: "o1", title: "Book a service" } } });
-  await inbound({ type: "interactive", interactive: { list_reply: { id: "o4", title: "Hair spa" } } });
+  await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Book a service", title: "Book a service" } } });
+  await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Hair spa", title: "Hair spa" } } });
   await inbound({ type: "text", text: { body: "tomorrow" } });
-  await inbound({ type: "interactive", interactive: { list_reply: { id: "o4", title: "7:00 PM" } } });
+  await inbound({ type: "interactive", interactive: { list_reply: { id: "t:7:00 PM", title: "7:00 PM" } } });
   await inbound({ type: "text", text: { body: "Ravi Teja" } });
   const confirm = sent.list.find((m) => m.type === "text" && /Booking confirmed/.test(m.text.body));
   assert.ok(confirm && /7:00 PM/.test(confirm.text.body)); console.log("  ✓ full booking over WhatsApp");
-  assert.ok(sent.list.some((m) => m.to === "919000000000" && /New booking: Ravi Teja/.test(m.text.body))); console.log("  ✓ owner alerted on WhatsApp");
+  assert.ok(sent.list.some((m) => m.to === "919000000000" && m.text && /New appointment: Ravi Teja/.test(m.text.body)), JSON.stringify(sent.list.filter((m) => m.to === "919000000000"))); console.log("  ✓ owner alerted on WhatsApp");
   const lead = store.leads[0];
   assert.strictEqual(store.leads.length, 1); assert.strictEqual(lead.score, "hot"); assert.strictEqual(lead.details.service, "Hair spa");
   console.log("  ✓ lead saved:", JSON.stringify({ name: lead.name, score: lead.score, status: lead.status, ...lead.details }));
@@ -39,7 +39,7 @@ const inbound = (msg, from = "919812345678") => {
   assert.strictEqual(store.bookings.length, 1); assert.strictEqual(store.bookings[0].slot, "7:00 PM"); console.log("  ✓ booking written to the calendar");
   // a second customer asking for the same day must not see 7:00 PM (capacity 1)
   await inbound({ type: "text", text: { body: "book" } }, "919800000002");
-  await inbound({ type: "interactive", interactive: { list_reply: { id: "o4" } } }, "919800000002");
+  await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Hair spa" } } }, "919800000002");
   await inbound({ type: "text", text: { body: "tomorrow" } }, "919800000002");
   const slotsMsg = sent.list.filter((m) => m.to === "919800000002").pop();
   const titles = slotsMsg.interactive.action.sections ? slotsMsg.interactive.action.sections[0].rows.map((r) => r.title) : slotsMsg.interactive.action.buttons.map((b) => b.reply.title);

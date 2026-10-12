@@ -1,0 +1,6 @@
+{
+  "_comment": "What is live right now. The orchestrator only spends Claude tokens where it can matter today.",
+  "active_setups": ["salon"],
+  "clients": { "salon": 0, "realestate": 0, "gym": 0, "examkits": 0 },
+  "launch_order": ["salon", "gym", "examkits", "realestate"]
+}

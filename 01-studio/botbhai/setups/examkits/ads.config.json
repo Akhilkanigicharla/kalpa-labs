@@ -1,0 +1,22 @@
+{
+  "objective": "Click-to-WhatsApp: free quiz / demo class (72-hour free messaging window)",
+  "target_cpl": 100,
+  "daily_budget_inr": [
+    500,
+    1500
+  ],
+  "radius_km": 15,
+  "audience": "18–30, Telangana/AP, interests: TSPSC, SSC, banking exams, government jobs; Telugu + English creatives",
+  "angles": [
+    "Free mock quiz: check your rank in 2 minutes",
+    "Free demo class with topper faculty",
+    "Previous-year selections (real, with consent)",
+    "Fee instalments available"
+  ],
+  "rules": {
+    "target_cpl": 100,
+    "kill_multiplier": 1.6,
+    "min_spend_to_judge": 500,
+    "scale_below_multiplier": 0.7
+  }
+}

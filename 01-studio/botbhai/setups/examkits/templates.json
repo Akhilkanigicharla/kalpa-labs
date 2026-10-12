@@ -1,0 +1,99 @@
+{
+  "lead_welcome": {
+    "name": "bb_exam_welcome",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}} 📚 Thanks for your interest in {{2}}. Tap *Free quiz* to check your level in 2 minutes, or *Demo class* to book a free class.",
+    "params": [
+      "name",
+      "business"
+    ],
+    "buttons": [
+      "Free quiz",
+      "Demo class"
+    ]
+  },
+  "day_before": {
+    "name": "bb_exam_demo_day",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your free demo class at {{2}} is tomorrow ({{3}}) at {{4}}. Reply *1* to confirm.",
+    "params": [
+      "name",
+      "business",
+      "date",
+      "slot"
+    ],
+    "buttons": [
+      "Confirm",
+      "Reschedule"
+    ]
+  },
+  "two_hours": {
+    "name": "bb_exam_demo_2h",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your demo class at {{2}} starts at {{3}} today. 📍 {{4}}",
+    "params": [
+      "name",
+      "business",
+      "slot",
+      "address"
+    ]
+  },
+  "after_visit": {
+    "name": "bb_exam_after_demo",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, hope you enjoyed the demo at {{2}}! The {{3}} batch has limited seats. Reply *Join* for fee details and instalment options.",
+    "params": [
+      "name",
+      "business",
+      "service"
+    ]
+  },
+  "renew_7": {
+    "name": "bb_exam_fee_7",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, your next {{2}} fee instalment at {{3}} is due on {{4}}. Reply *Pay* for the link.",
+    "params": [
+      "name",
+      "plan",
+      "business",
+      "date"
+    ]
+  },
+  "renew_1": {
+    "name": "bb_exam_fee_1",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, reminder: your {{2}} instalment at {{3}} is due tomorrow ({{4}}). Reply *Pay* for the link.",
+    "params": [
+      "name",
+      "plan",
+      "business",
+      "date"
+    ]
+  },
+  "daily_question": {
+    "name": "bb_exam_daily_q",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Good morning {{1}} ☀️ Today's {{2}} question: {{3}} Reply A, B, C or D.",
+    "params": [
+      "name",
+      "exam",
+      "question"
+    ]
+  },
+  "owner_report": {
+    "name": "bb_owner_report",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
+    "params": [
+      "summary"
+    ]
+  }
+}

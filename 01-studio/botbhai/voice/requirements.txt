@@ -1,0 +1,4 @@
+pipecat-ai[sarvam,groq,silero,websocket]==1.12.0
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+aiohttp==3.11.11

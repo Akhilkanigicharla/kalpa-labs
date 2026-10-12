@@ -1,0 +1,36 @@
+# Runs the BotBhai lead finder in GitHub's free cloud (nothing installed on your PC).
+# GitHub → Actions → "BotBhai lead finder" → Run workflow. Results are committed to 01-studio/botbhai/leads/.
+name: BotBhai lead finder
+on:
+  workflow_dispatch:
+    inputs:
+      city:   { description: "City (OpenStreetMap name)", default: "Hyderabad" }
+      niches: { description: "Space-separated: salon gym realestate examkits", default: "salon gym realestate examkits" }
+  push:
+    paths: [".github/workflows/leadfinder.yml", "01-studio/botbhai/leadfinder/leadfinder.py"]
+permissions:
+  contents: write
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install openpyxl==3.1.5
+      - name: Find leads
+        run: |
+          mkdir -p 01-studio/botbhai/leads
+          CITY="${{ github.event.inputs.city || 'Hyderabad' }}"
+          NICHES="${{ github.event.inputs.niches || 'salon gym realestate examkits' }}"
+          python 01-studio/botbhai/leadfinder/leadfinder.py --city "$CITY" --niche $NICHES --out "01-studio/botbhai/leads/${CITY,,}-leads"
+      - name: Save results to the repo
+        run: |
+          git config user.name "kalpa-leadfinder-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 01-studio/botbhai/leads
+          git commit -m "Lead finder: fresh lead list" || echo "no changes"
+          git push
+      - uses: actions/upload-artifact@v4
+        with: { name: leads, path: 01-studio/botbhai/leads/ }

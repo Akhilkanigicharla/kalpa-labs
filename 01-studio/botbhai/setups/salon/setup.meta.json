@@ -1,0 +1,27 @@
+{
+  "voice": {
+    "role": "Front desk of a salon",
+    "goals": [
+      "Book or reschedule a slot",
+      "Share prices from the price list only",
+      "Take bridal enquiries and hand to the owner"
+    ],
+    "never": [
+      "Promise a stylist by name unless the config lists them",
+      "Quote prices not in the price list",
+      "Give skin or medical advice"
+    ],
+    "opening": "Namaste, Glow Studio salon, how can I help you today?"
+  },
+  "kpis": [
+    "Chats → bookings ≥ 25%",
+    "No-show rate ≤ 5% (from 10–15%)",
+    "Google reviews +20/month",
+    "Repeat visit within 45 days ≥ 40%"
+  ],
+  "price": {
+    "setup": "₹9,999",
+    "monthly": "₹2,999",
+    "ads_mgmt": "₹2,000/month (ad spend paid by the salon to Meta)"
+  }
+}

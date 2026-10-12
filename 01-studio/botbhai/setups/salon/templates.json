@@ -1,0 +1,76 @@
+{
+  "lead_welcome": {
+    "name": "bb_salon_welcome",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, thanks for your interest in {{2}}! 💇 Tap *Book now* to pick a slot, or *Price list* to see services. This week: hair spa + haircut combo at a special price.",
+    "params": [
+      "name",
+      "business"
+    ],
+    "buttons": [
+      "Book now",
+      "Price list"
+    ]
+  },
+  "day_before": {
+    "name": "bb_salon_reminder_day",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, reminder: your {{2}} at {{3}} is tomorrow ({{4}}) at {{5}}. Reply *1* to confirm or *2* to reschedule.",
+    "params": [
+      "name",
+      "service",
+      "business",
+      "date",
+      "slot"
+    ],
+    "buttons": [
+      "Confirm",
+      "Reschedule"
+    ]
+  },
+  "two_hours": {
+    "name": "bb_salon_reminder_2h",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Hi {{1}}, see you at {{2}} today at {{3}}. 📍 {{4}}",
+    "params": [
+      "name",
+      "business",
+      "slot",
+      "address"
+    ]
+  },
+  "after_visit": {
+    "name": "bb_salon_review",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, thank you for visiting {{2}}! 💖 If you loved your {{3}}, a quick Google review helps us a lot: {{4}}",
+    "params": [
+      "name",
+      "business",
+      "service",
+      "review_link"
+    ]
+  },
+  "winback": {
+    "name": "bb_salon_winback",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, we miss you at {{2}}! Your next visit gets 15% off any service this month. Reply *Book* to pick a slot.",
+    "params": [
+      "name",
+      "business"
+    ]
+  },
+  "owner_report": {
+    "name": "bb_owner_report",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
+    "params": [
+      "summary"
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+// BotBhai realestate setup — WhatsApp / web / voice conversation config.
+// Edit per client in Supabase clients.config (overrides any field here).
+module.exports = {
+  "id": "realestate",
+  "label": "Real estate",
+  "emoji": "🏠",
+  "business": "Skyline Homes Realty",
+  "address": "Office 4B, Gachibowli Main Road, Hyderabad",
+  "hours": "Every day 9:30 AM – 7:30 PM (site visits on weekends too)",
+  "phone": "+91 90000 00003",
+  "greeting": "Hello 👋 Welcome to *{business}*. Tell me what you're looking for and I'll shortlist homes and book a free site visit.",
+  "menu": [
+    {
+      "key": "book",
+      "label": "Find a home + site visit"
+    },
+    {
+      "key": "prices",
+      "label": "Current projects"
+    },
+    {
+      "key": "faq:loan",
+      "label": "Home loan help"
+    },
+    {
+      "key": "hours",
+      "label": "Office location"
+    },
+    {
+      "key": "human",
+      "label": "Talk to an advisor"
+    }
+  ],
+  "catalogTitle": "Current projects",
+  "catalog": [
+    {
+      "name": "Skyline Meadows, Kollur — 2 & 3 BHK",
+      "price": "₹68L – ₹1.1Cr"
+    },
+    {
+      "name": "Skyline Crest, Tellapur — 3 BHK",
+      "price": "₹1.2Cr – ₹1.6Cr"
+    },
+    {
+      "name": "Green Acres plots, Shadnagar",
+      "price": "₹18L onwards"
+    },
+    {
+      "name": "Rentals in Gachibowli / Kondapur",
+      "price": "₹22k – ₹60k / month"
+    }
+  ],
+  "bookWord": "site visit",
+  "steps": [
+    {
+      "field": "purpose",
+      "ask": "Are you looking to buy or rent?",
+      "choices": [
+        "Buy",
+        "Rent",
+        "Invest in a plot"
+      ]
+    },
+    {
+      "field": "bhk",
+      "ask": "What size?",
+      "choices": [
+        "1 BHK",
+        "2 BHK",
+        "3 BHK",
+        "4 BHK / villa",
+        "Plot"
+      ]
+    },
+    {
+      "field": "budget",
+      "ask": "Your budget?",
+      "choices": [
+        "Under ₹50L",
+        "₹50L – ₹1Cr",
+        "₹1Cr – ₹2Cr",
+        "Above ₹2Cr",
+        "Rent under ₹40k"
+      ]
+    },
+    {
+      "field": "area",
+      "ask": "Preferred area? (e.g. Gachibowli, Kollur, Tellapur, Kompally)",
+      "type": "text"
+    },
+    {
+      "field": "date",
+      "ask": "When can you come for a free site visit? (today, tomorrow, Sunday, or 19/10)",
+      "type": "date"
+    },
+    {
+      "field": "slot",
+      "ask": "Preferred time:",
+      "choices": [
+        "10:00 AM",
+        "12:00 PM",
+        "3:00 PM",
+        "5:00 PM"
+      ]
+    },
+    {
+      "field": "name",
+      "ask": "Your name?",
+      "type": "name"
+    }
+  ],
+  "confirm": "🏡 *Site visit booked*\n👤 {name}\n🔎 {purpose} · {bhk} · {budget}\n📍 Area: {area}\n📅 {date} at {slot}\n\nAn advisor will WhatsApp you 3 matching options before the visit. Free pick-up from {address} is available.",
+  "faqs": [
+    {
+      "id": "loan",
+      "k": [
+        "loan",
+        "emi",
+        "bank",
+        "finance",
+        "hdfc",
+        "sbi"
+      ],
+      "a": "🏦 We work with SBI, HDFC and ICICI for home loans up to 80–90% of the property value. Rough EMI: ₹50L for 20 years at 8.5% ≈ ₹43,400/month. Reply *human* for a free eligibility check."
+    },
+    {
+      "k": [
+        "rera",
+        "approved",
+        "approval",
+        "legal",
+        "documents"
+      ],
+      "a": "✅ All our projects are TS-RERA registered. We share the RERA number and approved layout before your visit."
+    },
+    {
+      "k": [
+        "possession",
+        "ready to move",
+        "handover",
+        "completion"
+      ],
+      "a": "Skyline Meadows is ready to move. Skyline Crest possession is planned for Dec 2027 (as per RERA)."
+    },
+    {
+      "k": [
+        "brokerage",
+        "commission",
+        "fees"
+      ],
+      "a": "There's no brokerage on our own projects. Rentals carry a one-time fee of 15 days' rent."
+    },
+    {
+      "k": [
+        "nri"
+      ],
+      "a": "🌏 We handle NRI purchases end to end, including video site visits and power-of-attorney guidance."
+    }
+  ]
+};

@@ -1,0 +1,424 @@
+<title>BotBhai Live Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+/* Layout: a working phone (chat / voice) beside the owner's console (leads, export, setup) — the demo IS the product. */
+:root{
+  --bg:#EEF3F1; --panel:#FFFFFF; --ink:#13231F; --muted:#5C6E69; --line:#D5E0DC;
+  --accent:#0E7C66; --accent-ink:#FFFFFF; --mark:#E9A21B;
+  --chat-bg:#E4DDD3; --bubble-in:#FFFFFF; --bubble-out:#D3F4C7; --chat-ink:#111B21;
+  --hot:#D6453D; --warm:#E08A00; --cold:#5B7FA6; --ok:#1F9D55;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1715; --panel:#14211E; --ink:#E4EEEB; --muted:#93A7A1; --line:#26372F;
+  --accent:#2BB592; --accent-ink:#06120F; --mark:#F2B53A;
+  --chat-bg:#0B141A; --bubble-in:#1F2C33; --bubble-out:#005C4B; --chat-ink:#E9EDEF;
+  --hot:#FF6B61; --warm:#F5A524; --cold:#7EA6D6; --ok:#3CCB7F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1715; --panel:#14211E; --ink:#E4EEEB; --muted:#93A7A1; --line:#26372F;
+  --accent:#2BB592; --accent-ink:#06120F; --mark:#F2B53A;
+  --chat-bg:#0B141A; --bubble-in:#1F2C33; --bubble-out:#005C4B; --chat-ink:#E9EDEF;
+  --hot:#FF6B61; --warm:#F5A524; --cold:#7EA6D6; --ok:#3CCB7F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,4vw,38px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.niches{display:flex;flex-wrap:wrap;gap:8px}
+.niche{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 14px;font:600 14px var(--f-body);cursor:pointer}
+.niche[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.niche:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+/* phone */
+.phone{background:var(--chat-bg);border-radius:28px;border:8px solid var(--ink);overflow:hidden;display:flex;flex-direction:column;height:640px;max-height:80vh;min-width:0}
+.wa-top{background:#075E54;color:#fff;display:flex;align-items:center;gap:10px;padding:10px 12px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#25D366;display:grid;place-items:center;font-size:18px;flex:none}
+.wa-top b{display:block;font-size:15px;line-height:1.2}
+.wa-top small{opacity:.8;font-size:12px}
+.mode{margin-left:auto;display:flex;gap:4px}
+.mode button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:8px;padding:5px 9px;font:600 12px var(--f-body);cursor:pointer}
+.mode button[aria-pressed="true"]{background:#fff;color:#075E54}
+.msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.b{max-width:86%;padding:7px 9px 5px;border-radius:10px;color:var(--chat-ink);font-size:14px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px .5px rgba(0,0,0,.13)}
+.b.in{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:2px}
+.b.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:2px}
+.b time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
+.b a{color:#027EB5}
+.opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:92%}
+.opts button{background:var(--bubble-in);color:#027EB5;border:0;border-radius:8px;padding:7px 10px;font:600 13px var(--f-body);cursor:pointer;box-shadow:0 1px .5px rgba(0,0,0,.13)}
+.compose{display:flex;gap:6px;padding:8px;background:var(--chat-bg)}
+.compose input{flex:1;min-width:0;border:0;border-radius:20px;padding:10px 14px;font:15px var(--f-body);background:var(--bubble-in);color:var(--chat-ink)}
+.round{width:42px;height:42px;border-radius:50%;border:0;background:#00A884;color:#fff;font-size:18px;cursor:pointer;flex:none}
+.voice{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;color:var(--chat-ink)}
+.phone.voicemode .voice{display:flex}
+.phone.voicemode .msgs{flex:0 0 38%;border-bottom:1px solid rgba(0,0,0,.08)}
+.orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#5BE3B5,#0E7C66 70%);border:0;cursor:pointer;color:#fff;font:700 14px var(--f-body);box-shadow:0 0 0 0 rgba(14,124,102,.5)}
+.orb.live{animation:pulse 1.4s infinite}
+@keyframes pulse{to{box-shadow:0 0 0 22px rgba(14,124,102,0)}}
+@media (prefers-reduced-motion:reduce){.orb.live{animation:none}}
+.voice p{margin:0;max-width:30ch;font-size:13.5px;opacity:.85}
+/* console */
+.console{background:var(--panel);border:1px solid var(--line);border-radius:16px;min-width:0;display:flex;flex-direction:column}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);padding:6px 8px 0;overflow-x:auto}
+.tab{border:0;background:none;color:var(--muted);font:600 14px var(--f-body);padding:10px 12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.pane{padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font:800 26px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toolbar select,.toolbar input{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 9px;font:14px var(--f-body)}
+.btn{border:0;border-radius:9px;padding:8px 13px;font:600 14px var(--f-body);cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.spacer{flex:1}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;background:var(--bg)}
+td.mono{font-family:var(--f-mono);font-size:12.5px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700;color:#fff}
+.pill.hot{background:var(--hot)}.pill.warm{background:var(--warm)}.pill.cold{background:var(--cold)}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px;color:var(--muted);margin:1px 2px 1px 0}
+.sample{font-size:11px;color:var(--muted);font-style:italic}
+.note{font-size:13px;color:var(--muted);margin:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;z-index:9}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;font:12.5px/1.55 var(--f-mono);margin:0}
+.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 13px var(--f-body)}
+.steps b{display:block}
+h2{font:700 18px var(--f-display);margin:0}
+.stack{display:grid;gap:8px}
+.arch{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.arch div{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.arch b{display:block;font-size:13.5px}
+footer{color:var(--muted);font-size:12.5px}
+body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Bot<span>Bhai</span> — your business, booking customers while you sleep</h1>
+      <p class="sub">Pick a business, chat as a customer on the phone, and watch the lead appear in the owner's console. Same engine runs on real WhatsApp, the website chat and the voice agent.</p>
+    </div>
+    <div class="niches" id="niches" role="group" aria-label="Business type"></div>
+  </header>
+
+  <div class="grid">
+    <section class="phone" id="phone" aria-label="Customer phone">
+      <div class="wa-top">
+        <div class="avatar" id="avatar">🩺</div>
+        <div><b id="bizname">Sunrise Family Clinic</b><small id="status">online · replies instantly</small></div>
+        <div class="mode" role="group" aria-label="Mode">
+          <button id="m-chat" aria-pressed="true">Chat</button>
+          <button id="m-voice" aria-pressed="false">Voice</button>
+        </div>
+      </div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="voice" id="voice">
+        <button class="orb" id="orb" aria-label="Talk to the voice agent">Tap to talk</button>
+        <p id="vstatus">The agent speaks every reply aloud. Tap the button and speak, or tap a reply chip.</p>
+      </div>
+      <form class="compose" id="compose">
+        <input id="text" autocomplete="off" placeholder="Type a message (try: hi)" aria-label="Message">
+        <button class="round" aria-label="Send">➤</button>
+      </form>
+    </section>
+
+    <section class="console" aria-label="Owner console">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-tab="leads">Leads dashboard</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="convo">Conversations</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="widget">Website widget</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="finder">Lead finder</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="how">How it's built</button>
+      </div>
+
+      <div class="pane" data-pane="leads">
+        <div class="kpis">
+          <div class="kpi"><b id="k-total">0</b><span>Leads</span></div>
+          <div class="kpi"><b id="k-hot">0</b><span>Hot</span></div>
+          <div class="kpi"><b id="k-booked">0</b><span>Booked</span></div>
+          <div class="kpi"><b id="k-call">0</b><span>Call back</span></div>
+        </div>
+        <div class="toolbar">
+          <select id="f-niche" aria-label="Filter business"><option value="">All businesses</option></select>
+          <select id="f-score" aria-label="Filter score"><option value="">All scores</option><option>hot</option><option>warm</option><option>cold</option></select>
+          <input id="f-q" placeholder="Search name or service" aria-label="Search">
+          <span class="spacer"></span>
+          <button class="btn" id="x-xlsx">Excel (.xlsx)</button>
+          <button class="btn ghost" id="x-csv">CSV</button>
+          <button class="btn ghost" id="x-reset">Reset demo</button>
+        </div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Score</th><th>Name</th><th>Business</th><th>Wants</th><th>When</th><th>Status</th><th>Source</th><th>Updated</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table></div>
+        <p class="note" id="mode-note">Demo mode: leads live in this browser only. On a client's live dashboard they come from the database in real time.</p>
+      </div>
+
+      <div class="pane" data-pane="convo" hidden>
+        <p class="note">Every message is logged so the owner can read conversations and we can improve answers. Questions the bot couldn't answer are flagged.</p>
+        <div id="convo" class="stack"></div>
+      </div>
+
+      <div class="pane" data-pane="widget" hidden>
+        <h2>Add the bot to any website — one line</h2>
+        <p class="note">The same engine answers on the client's website. Leads from the site land in the same dashboard, tagged "web".</p>
+        <pre id="embed"></pre>
+        <button class="btn ghost" id="copy-embed">Copy code</button>
+        <h2>Voice agent</h2>
+        <p class="note">On the client's live site the voice agent listens through the browser microphone (Chrome / Android, English-India) and speaks replies. WhatsApp voice notes are transcribed for free with Groq Whisper, so customers can just talk. Phone-call agents need a paid telephony number (Exotel / Plivo) and are a paid add-on for clients later.</p>
+      </div>
+
+      <div class="pane" data-pane="finder" hidden>
+        <h2>Lead finder: who to sell BotBhai to</h2>
+        <p class="note">Pulls salons, gyms, estate agents and coaching centres for a city from OpenStreetMap (free and legal to reuse, with credit), scores each one, and writes an Excel sheet with filters, colour-coded scores and a status dropdown. It runs in GitHub's free cloud: Actions → "BotBhai lead finder" → Run.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Score</th><th>Name</th><th>Category</th><th>Phone</th><th>Website</th><th>Why BotBhai</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill hot">95</span></td><td>Example Beauty Parlour <span class="sample">sample</span></td><td>beauty</td><td class="mono">+91 9xxxx xxxxx</td><td>—</td><td>No website listed — offer a free one-page site with the bot.</td><td>new</td></tr>
+            <tr><td><span class="pill warm">70</span></td><td>Example Fitness Studio <span class="sample">sample</span></td><td>fitness_centre</td><td class="mono">+91 9xxxx xxxxx</td><td>has site</td><td>Free-trial bookings and renewal reminders on WhatsApp.</td><td>contacted</td></tr>
+            <tr><td><span class="pill cold">35</span></td><td>Example Realty <span class="sample">sample</span></td><td>estate_agent</td><td>—</td><td>has site</td><td>Qualify buyers and book site visits automatically.</td><td>new</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Score = has phone (+40), no website (+25), no listed hours (+10), has address (+10), has name (+10), has email (+5). Data © OpenStreetMap contributors.</p>
+      </div>
+
+      <div class="pane" data-pane="how" hidden>
+        <h2>What runs where (all free tiers)</h2>
+        <div class="arch">
+          <div><b>WhatsApp Cloud API</b>Meta's official API. Service replies inside 24 h are free.</div>
+          <div><b>Netlify Functions</b>Webhook, website chat and dashboard API. 125k calls/month free.</div>
+          <div><b>Supabase Postgres</b>Clients, sessions, leads, messages. 500 MB free, row-level security on.</div>
+          <div><b>BotBhai engine + 4 setups</b>One engine; salon, real estate, gym and exam-kit setups plug in their own flows. 27 automated tests.</div>
+          <div><b>Meta ads bot</b>Lead-form leads get a WhatsApp reply in seconds; every morning bad ads are paused and the owner gets a report.</div>
+          <div><b>Voice agent</b>Pipecat + Sarvam (Telugu, Hindi, English) + Groq answers phone calls and books; web voice is free.</div>
+          <div><b>Groq Whisper</b>Optional: turns WhatsApp voice notes into text, free tier.</div>
+          <div><b>GitHub Actions</b>Runs the lead finder in the cloud and saves the Excel file.</div>
+        </div>
+        <h2>Flow of one message</h2>
+        <ol class="steps">
+          <li><div><b>Customer taps an ad or texts the business's WhatsApp number</b>Meta sends the message to our webhook.</div></li>
+          <li><div><b>Webhook checks the signature</b>Forged requests are rejected, then the client is looked up by phone number ID.</div></li>
+          <li><div><b>Engine decides the reply</b>Menu, prices, FAQ, booking steps, or hand-off to a human.</div></li>
+          <li><div><b>Replies go out as WhatsApp buttons or lists</b>Customers tap instead of typing.</div></li>
+          <li><div><b>Lead saved and owner alerted</b>Score goes cold → warm → hot; the owner gets a WhatsApp ping on every booking.</div></li>
+        </ol>
+      </div>
+    </section>
+  </div>
+  <footer>BotBhai by Kalpa Labs · demo data is fictional; business names are examples.</footer>
+</div>
+
+<script>
+/*ENGINE*/
+</script>
+<script>
+(function(){
+"use strict";
+const B = window.BotBhai;
+const qs = new URLSearchParams(location.search);
+const LIVE_TOKEN = qs.get("token");          // live owner dashboard (on the deployed site)
+const LIVE_CLIENT = qs.get("client");        // live website chat for one client
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (t) => esc(t).replace(/\*([^*\n]+)\*/g, "<b>$1</b>").replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+const now = () => new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+
+// ---- sample leads so the dashboard opens in a working state (clearly marked)
+const SAMPLE = [
+  { id: "s1", sample: true, niche: "salon", business: "Glow Studio Unisex Salon", name: "Lakshmi P.", score: "hot", status: "booked", service: "Hair spa", date: "Wed, 14 Oct", slot: "4:00 PM", source: "meta_ads", contact: "+91 98xxx xxx21", updated: Date.now() - 36e5 * 3 },
+  { id: "s2", sample: true, niche: "salon", business: "Glow Studio Unisex Salon", name: "Meghana R.", score: "warm", status: "new", service: "", intents: ["prices", "faq"], source: "web", contact: "web visitor", updated: Date.now() - 36e5 * 5 },
+  { id: "s3", sample: true, niche: "realestate", business: "Skyline Homes Realty", name: "Anil Reddy", score: "hot", status: "booked", purpose: "Buy", bhk: "3 BHK", budget: "₹1Cr – ₹2Cr", area: "Tellapur", date: "Sun, 18 Oct", slot: "10:00 AM", source: "whatsapp", contact: "+91 99xxx xxx08", updated: Date.now() - 36e5 * 20 },
+  { id: "s4", sample: true, niche: "gym", business: "IronPulse Fitness", name: "Sai K.", score: "warm", status: "callback", goal: "Weight loss", source: "voice", contact: "web visitor", updated: Date.now() - 36e5 * 26 },
+  { id: "s5", sample: true, niche: "examkits", business: "Vidya Competitive Academy", name: "Ravi T.", score: "hot", status: "quiz_done", service: "TSPSC Group 2", quiz_score: "2/3", source: "whatsapp", contact: "+91 97xxx xxx55", updated: Date.now() - 36e5 * 30 },
+];
+let leads = (store.get("bf_leads", null) || SAMPLE.slice()).filter((l) => B.NICHES[l.niche]);
+let convos = store.get("bf_convos", {});
+let niche = store.get("bf_niche", "salon"); if (!B.NICHES[niche]) niche = Object.keys(B.NICHES)[0];
+let state = B.newState();
+let visitor = "v" + Math.random().toString(36).slice(2, 10);
+let speak = false;
+
+// ---- niche switcher
+const nicheBox = $("#niches"), fN = $("#f-niche");
+Object.values(B.NICHES).forEach((n) => {
+  const b = document.createElement("button"); b.className = "niche"; b.dataset.id = n.id; b.textContent = `${n.emoji} ${n.label}`;
+  b.onclick = () => setNiche(n.id); nicheBox.appendChild(b);
+  const o = document.createElement("option"); o.value = n.id; o.textContent = n.label; fN.appendChild(o);
+});
+function setNiche(id) {
+  niche = id; store.set("bf_niche", id); state = B.newState(); visitor = "v" + Math.random().toString(36).slice(2, 10);
+  const n = B.NICHES[id];
+  nicheBox.querySelectorAll(".niche").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+  $("#avatar").textContent = n.emoji; $("#bizname").textContent = n.business;
+  $("#msgs").innerHTML = "";
+  bubble("in", `👋 You're chatting with the *${n.business}* bot. Type *hi* or tap a button.`, ["Hi"]);
+  renderEmbed();
+}
+
+// ---- chat rendering
+function bubble(dir, text, options) {
+  const m = $("#msgs");
+  m.querySelectorAll(".opts").forEach((o) => o.remove());
+  const d = document.createElement("div"); d.className = "b " + dir; d.innerHTML = fmt(text) + `<time>${now()}${dir === "out" ? " ✓✓" : ""}</time>`; m.appendChild(d);
+  if (options && options.length) {
+    const o = document.createElement("div"); o.className = "opts";
+    options.forEach((label, i) => { const btn = document.createElement("button"); btn.textContent = label; btn.onclick = () => send(String(i + 1), label); o.appendChild(btn); });
+    m.appendChild(o);
+  }
+  m.scrollTop = m.scrollHeight;
+}
+async function send(text, shown) {
+  if (!text.trim()) return;
+  bubble("out", shown || text);
+  let replies;
+  if (LIVE_CLIENT) {
+    try {
+      const r = await fetch("/.netlify/functions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ client: LIVE_CLIENT, visitor, text, source: speak ? "voice" : "web" }) });
+      replies = (await r.json()).replies || [];
+    } catch (e) { replies = [{ text: "Connection problem. Please try again in a moment." }]; }
+  } else {
+    const out = B.createBot(niche).handle(state, text, { contact: "demo visitor", source: speak ? "voice" : "web" });
+    state = out.state; replies = out.replies;
+    logConvo(text, out); saveLead(out.lead);
+  }
+  $("#status").textContent = "typing…";
+  for (const r of replies) { await new Promise((ok) => setTimeout(ok, 450)); bubble("in", r.text, r.options); }
+  $("#status").textContent = "online · replies instantly";
+  if (speak && replies.length) say(replies.map((r) => r.text).join(". "));
+}
+$("#compose").addEventListener("submit", (e) => { e.preventDefault(); const t = $("#text"); send(t.value); t.value = ""; });
+
+// ---- leads
+function saveLead(l) {
+  if (!l || l.turns < 2) return; // ignore one-word drive-bys
+  const id = niche + ":" + visitor; const i = leads.findIndex((x) => x.id === id);
+  const row = Object.assign({}, l, { id, contact: "demo visitor", updated: Date.now() });
+    if (l.name == null && i >= 0) row.name = leads[i].name;
+  if (i >= 0) leads[i] = row; else leads.unshift(row);
+  store.set("bf_leads", leads); renderLeads();
+  if (i < 0) toast("New lead in the dashboard →");
+}
+function logConvo(text, out) {
+  const id = niche + ":" + visitor; const c = convos[id] || (convos[id] = { niche, business: B.NICHES[niche].business, msgs: [] });
+  c.msgs.push({ d: "in", t: text }); out.replies.forEach((r) => c.msgs.push({ d: "out", t: r.text }));
+  if (out.events.some((e) => e.type === "unanswered")) c.unanswered = (c.unanswered || 0) + 1;
+  c.msgs = c.msgs.slice(-40); store.set("bf_convos", convos); renderConvos();
+}
+function wants(l) { return [l.service, l.purpose, l.bhk, l.budget, l.area, l.goal, l.quiz_score ? "quiz " + l.quiz_score : "" ].filter(Boolean).concat(!l.service && !l.goal && !l.bhk && l.intents ? l.intents.map((x) => "asked " + x) : []).join(" · ") || "—"; }
+function when(l) { return l.date ? `${l.date}${l.slot ? " " + l.slot : ""}` : "—"; }
+function ago(t) { const m = Math.round((Date.now() - t) / 6e4); return m < 1 ? "just now" : m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " d ago"; }
+function filtered() {
+  const n = fN.value, s = $("#f-score").value, q = $("#f-q").value.toLowerCase();
+  return leads.filter((l) => (!n || l.niche === n) && (!s || l.score === s) && (!q || JSON.stringify(l).toLowerCase().includes(q)));
+}
+function renderLeads() {
+  const list = filtered();
+  $("#k-total").textContent = list.length; $("#k-hot").textContent = list.filter((l) => l.score === "hot").length;
+  $("#k-booked").textContent = list.filter((l) => l.status === "booked" || l.status === "quiz_done").length; $("#k-call").textContent = list.filter((l) => l.status === "callback").length;
+  $("#rows").innerHTML = list.map((l) => `<tr><td><span class="pill ${esc(l.score)}">${esc(l.score)}</span></td><td>${esc(l.name || "Unknown")} ${l.sample ? '<span class="sample">sample</span>' : ""}</td><td>${esc(l.business)}</td><td>${esc(wants(l))}</td><td>${esc(when(l))}</td><td><span class="tag">${esc(l.status)}</span></td><td>${esc(l.source)}</td><td>${l.updated ? ago(l.updated) : "—"}</td></tr>`).join("") || `<tr><td colspan="8">No leads yet. Chat on the phone to create one.</td></tr>`;
+}
+["#f-niche", "#f-score", "#f-q"].forEach((s) => $(s).addEventListener("input", renderLeads));
+function renderConvos() {
+  const ids = Object.keys(convos).reverse();
+  $("#convo").innerHTML = ids.length ? ids.map((id) => { const c = convos[id]; return `<div class="kpi"><span>${esc(c.business)}${c.unanswered ? ` · <b style="display:inline;font-size:12px;color:var(--hot)">${c.unanswered} unanswered</b>` : ""}</span>${c.msgs.slice(-6).map((m) => `<div style="font-size:13px"><b style="display:inline;font:600 13px var(--f-body)">${m.d === "in" ? "Customer" : "Bot"}:</b> ${esc(m.t.split("\n")[0])}</div>`).join("")}</div>`; }).join("") : '<p class="note">No conversations yet in this browser. Chat on the phone first.</p>';
+}
+
+// ---- exports (Excel + CSV)
+const COLS = ["name", "business", "niche", "score", "status", "service", "quiz_score", "purpose", "bhk", "budget", "area", "goal", "date", "slot", "source", "contact"];
+function tableRows() { return filtered().map((l) => Object.fromEntries(COLS.map((c) => [c, l[c] || ""]).concat([["updated", l.updated ? new Date(l.updated).toLocaleString() : ""], ["sample", l.sample ? "yes" : ""]]))); }
+let downloads = null;
+if (window.claude && window.claude.use) window.claude.use("downloads").then((d) => { downloads = d; }).catch(() => {});
+async function offer(filename, data, mime) {
+  if (downloads) { try { await downloads.save({ filename, data }); toast("Saved " + filename); return; } catch (e) { if (e && e.code === "declined") return; } }
+  try { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([data], { type: mime })); a.download = filename; document.body.appendChild(a); a.click(); a.remove(); toast("Downloading " + filename); }
+  catch (e) { toast("Download blocked here. Use the live dashboard."); }
+}
+$("#x-xlsx").onclick = () => {
+  if (!window.XLSX) return toast("Excel library didn't load. Try CSV.");
+  const ws = XLSX.utils.json_to_sheet(tableRows()); ws["!cols"] = COLS.concat(["updated", "sample"]).map((c) => ({ wch: c === "business" ? 26 : c === "name" ? 18 : 12 }));
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Leads");
+  const out = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  offer(`botforge-leads-${new Date().toISOString().slice(0, 10)}.xlsx`, new Uint8Array(out), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+};
+$("#x-csv").onclick = () => {
+  const rows = tableRows(); const head = Object.keys(rows[0] || { name: "" });
+  const csv = "﻿" + [head.join(",")].concat(rows.map((r) => head.map((h) => `"${String(r[h]).replace(/"/g, '""')}"`).join(","))).join("\n");
+  offer(`botforge-leads-${new Date().toISOString().slice(0, 10)}.csv`, csv, "text/csv");
+};
+const resetBtn = $("#x-reset");
+resetBtn.onclick = () => {
+  if (resetBtn.dataset.armed) { leads = SAMPLE.slice(); convos = {}; store.set("bf_leads", leads); store.set("bf_convos", convos); renderLeads(); renderConvos(); resetBtn.textContent = "Reset demo"; delete resetBtn.dataset.armed; toast("Demo reset"); }
+  else { resetBtn.dataset.armed = "1"; resetBtn.textContent = "Tap again to reset"; setTimeout(() => { resetBtn.textContent = "Reset demo"; delete resetBtn.dataset.armed; }, 3000); }
+};
+
+// ---- voice agent
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function say(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\*/g, "").replace(/https?:\/\/\S+/g, "").replace(/[•✅❌🩺💇🏠🏋️📚👤📅📍🕘📞🗺️🔥💖🏡🔎🏆📝✂️🎯🙏✨👋💪🙂😊🔔🙋🧪🚨🏦🌏👩🧑‍🏫💍🏠🎉]/gu, ""));
+  u.lang = "en-IN"; u.rate = 1.02; speechSynthesis.speak(u);
+}
+function setMode(v) {
+  speak = v; $("#phone").classList.toggle("voicemode", v); $("#m-voice").setAttribute("aria-pressed", String(v)); $("#m-chat").setAttribute("aria-pressed", String(!v));
+  if (v) say(`Hi, this is the ${B.NICHES[niche].business} voice assistant. How can I help?`); else if ("speechSynthesis" in window) speechSynthesis.cancel();
+}
+$("#m-voice").onclick = () => setMode(true); $("#m-chat").onclick = () => setMode(false);
+$("#orb").onclick = () => {
+  if (!SR) { $("#vstatus").textContent = "This browser can't listen. Replies are still spoken; type or tap a chip to answer."; return; }
+  const rec = new SR(); rec.lang = "en-IN"; rec.interimResults = false; rec.maxAlternatives = 1;
+  const orb = $("#orb"); orb.classList.add("live"); orb.textContent = "Listening…";
+  rec.onresult = (e) => { const t = e.results[0][0].transcript; $("#vstatus").textContent = `Heard: "${t}"`; send(t); };
+  rec.onerror = (e) => { $("#vstatus").textContent = e.error === "not-allowed" ? "Microphone isn't available on this page. Open the live demo site to talk; replies are still spoken here." : "Didn't catch that. Tap and try again."; };
+  rec.onend = () => { orb.classList.remove("live"); orb.textContent = "Tap to talk"; };
+  try { rec.start(); } catch (e) { rec.onerror({ error: "not-allowed" }); rec.onend(); }
+};
+
+// ---- tabs
+document.querySelectorAll(".tab").forEach((t) => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach((x) => x.setAttribute("aria-selected", String(x === t)));
+  document.querySelectorAll(".pane").forEach((p) => p.hidden = p.dataset.pane !== t.dataset.tab);
+});
+
+// ---- widget embed code
+function renderEmbed() {
+  $("#embed").textContent = `<!-- BotBhai chat for ${B.NICHES[niche].business} -->
+<script src="https://YOUR-SITE.netlify.app/widget.js"
+        data-client="CLIENT-UUID-FROM-SUPABASE" defer><\/script>`;
+}
+$("#copy-embed").onclick = () => { const t = $("#embed").textContent; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied"), () => { const r = document.createRange(); r.selectNodeContents($("#embed")); getSelection().removeAllRanges(); getSelection().addRange(r); toast("Selected — press Ctrl+C"); }); };
+
+function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 2200); }
+
+// ---- live dashboard mode (deployed site with ?token=)
+async function loadLive() {
+  try {
+    const r = await fetch("/.netlify/functions/leads?token=" + encodeURIComponent(LIVE_TOKEN)); if (!r.ok) throw new Error("token");
+    const d = await r.json();
+    leads = d.leads.map((l) => Object.assign({ business: d.client.name, niche: d.client.niche, contact: l.contact, name: l.name, score: l.score, status: l.status, source: l.source, updated: Date.parse(l.updated_at) }, l.details));
+    convos = {}; d.messages.slice().reverse().forEach((m) => { const c = convos[m.contact] || (convos[m.contact] = { business: d.client.name, msgs: [] }); c.msgs.push({ d: m.direction === "in" ? "in" : "out", t: m.body || "" }); });
+    $("#mode-note").textContent = `Live dashboard for ${d.client.name}. Refreshes every 30 seconds.`;
+    renderLeads(); renderConvos();
+  } catch (e) { $("#mode-note").textContent = "This dashboard link isn't valid. Ask Kalpa Labs for a new one."; }
+}
+
+if (qs.get("embed")) document.body.classList.add("embed");
+if (qs.get("niche") && B.NICHES[qs.get("niche")]) niche = qs.get("niche");
+setNiche(niche); renderLeads(); renderConvos();
+if (LIVE_TOKEN) { loadLive(); setInterval(loadLive, 30000); }
+})();
+</script>

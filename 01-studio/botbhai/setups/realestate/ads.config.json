@@ -1,0 +1,28 @@
+{
+  "objective": "Instant lead forms (higher intent questions: budget, BHK, timeline) + Click-to-WhatsApp for retargeting",
+  "target_cpl": 450,
+  "daily_budget_inr": [
+    1500,
+    5000
+  ],
+  "radius_km": 20,
+  "audience": "Age 28–55, 15–25 km of the project, IT corridors (Gachibowli, HITEC City, Financial District), interests: real estate, home loans, NRI (separate campaign)",
+  "angles": [
+    "Ready-to-move 2/3 BHK with price from ₹X",
+    "Free site visit with pick-up",
+    "EMI starting ₹X/month",
+    "RERA-approved, possession date"
+  ],
+  "form_questions": [
+    "Budget",
+    "BHK",
+    "When do you plan to buy? (0–3 months / 3–6 / 6+)",
+    "Preferred area"
+  ],
+  "rules": {
+    "target_cpl": 450,
+    "kill_multiplier": 1.6,
+    "min_spend_to_judge": 1500,
+    "scale_below_multiplier": 0.7
+  }
+}

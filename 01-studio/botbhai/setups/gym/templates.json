@@ -27,7 +27,8 @@
     "buttons": [
       "Confirm",
       "Reschedule"
-    ]
+    ],
+    "card": "gym-day_before.png"
   },
   "two_hours": {
     "name": "bb_gym_reminder_2h",
@@ -39,7 +40,8 @@
       "business",
       "slot",
       "address"
-    ]
+    ],
+    "card": "gym-two_hours.png"
   },
   "after_visit": {
     "name": "bb_gym_trial_followup",
@@ -49,7 +51,8 @@
     "params": [
       "name",
       "business"
-    ]
+    ],
+    "card": "gym-after_visit.png"
   },
   "renew_7": {
     "name": "bb_gym_renew_7",
@@ -61,7 +64,8 @@
       "plan",
       "business",
       "date"
-    ]
+    ],
+    "card": "gym-renew_7.png"
   },
   "renew_3": {
     "name": "bb_gym_renew_3",
@@ -95,7 +99,8 @@
     "params": [
       "name",
       "business"
-    ]
+    ],
+    "card": "gym-winback.png"
   },
   "owner_report": {
     "name": "bb_owner_report",
@@ -104,6 +109,17 @@
     "body": "Daily update from BotBhai: {{1}}. Reply to this message to see the full report.",
     "params": [
       "summary"
+    ]
+  },
+  "refer": {
+    "name": "bb_gym_refer",
+    "category": "MARKETING",
+    "language": "en",
+    "body": "Hi {{1}}, thanks for choosing {{2}}! 🙌 Know someone who'd love it too? Share your code {{3}}: they get 1 week free, and so do you on your next visit. They just message us the code on WhatsApp.",
+    "params": [
+      "name",
+      "business",
+      "ref_code"
     ]
   }
 }

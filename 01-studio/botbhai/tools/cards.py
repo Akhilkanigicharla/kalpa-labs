@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""
+BotBhai "smile cards" — meme-style WhatsApp images that make reminders and follow-ups feel human.
+
+Original artwork only: our own captions, shapes and open emoji (Noto Color Emoji, OFL/Apache) and
+open fonts (Anton, Baloo 2, Noto Sans Telugu — SIL OFL). No film stills, celebrity photos or
+copyrighted meme templates, which would expose clients to copyright and personality-rights claims.
+
+Usage:
+  python tools/cards.py --setup salon --business "Glow Studio" --out web/dist/cards/glow-studio
+  python tools/cards.py --all-demo            # every setup with sample names → web/dist/cards/demo
+Each card is 1080×1080 PNG (WhatsApp image header / image message friendly, < 300 KB).
+"""
+import argparse, os, pathlib, textwrap
+from PIL import Image, ImageDraw, ImageFont
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+FONTS = ROOT / "assets" / "fonts"
+EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
+S = 1080
+
+# palette per setup: (background, accent, deep)
+THEMES = {
+    "salon": ((255, 228, 236), (236, 72, 153), (88, 28, 63)),
+    "gym": ((222, 247, 236), (16, 185, 129), (6, 60, 45)),
+    "realestate": ((225, 236, 252), (37, 99, 235), (23, 37, 84)),
+    "examkits": ((255, 243, 214), (234, 147, 8), (84, 52, 6)),
+}
+
+# occasion → (emoji, top caption, bottom caption, small line, optional Telugu line)
+CARDS = {
+    "salon": {
+        "booking_confirmed": ("💇‍♀️", "SLOT BOOKED.", "GLOW-UP LOADING…", "See you soon at {business}", "మీ స్లాట్ రెడీ"),
+        "day_before": ("⏰", "TOMORROW'S PLAN:", "GLOW UP. NO EXCUSES.", "Reply 1 to confirm · 2 to reschedule", None),
+        "two_hours": ("💺", "THE CHAIR IS WARM.", "THE STYLIST IS READY. ARE YOU?", "See you in 2 hours", None),
+        "after_visit": ("🤳", "NEW HAIR, WHO DIS?", "TELL GOOGLE HOW GOOD YOU LOOK", "A 10-second review means a lot to us", None),
+        "winback": ("💌", "YOUR HAIR CALLED.", "IT MISSES US.", "15% off any service this month", "మళ్ళీ రండి"),
+        "festival": ("🪁", "KITES UP.", "GLOW UP.", "Festive looks · book on WhatsApp", "సంక్రాంతి శుభాకాంక్షలు"),
+    },
+    "gym": {
+        "booking_confirmed": ("💪", "TRIAL BOOKED.", "EXCUSES CANCELLED.", "Bring shoes + water bottle", None),
+        "day_before": ("🦵", "TOMORROW:", "YOUR FUTURE SELF SAYS THANKS", "Reply 1 to confirm", None),
+        "two_hours": ("👟", "SHOES? WATER?", "YOU? SEE YOU IN 2 HOURS", "{business}", None),
+        "after_visit": ("🏋️", "ONE WORKOUT DOWN.", "ONLY 364 MORE TO GO", "Join this week at the trial-day price", None),
+        "renew_7": ("📅", "YOUR PLAN ENDS SOON.", "YOUR GAINS DON'T HAVE TO.", "Reply RENEW for the payment link", None),
+        "winback": ("🥺", "THE DUMBBELLS", "ASKED ABOUT YOU.", "2 weeks free when you come back", "మళ్ళీ మొదలెడదాం"),
+    },
+    "realestate": {
+        "booking_confirmed": ("🏡", "SITE VISIT BOOKED.", "DREAM HOME: LOADING…", "Free pick-up available", None),
+        "day_before": ("☕", "SITE VISIT TOMORROW.", "ZERO PRESSURE. JUST CHAI.", "Reply 1 to confirm", None),
+        "after_visit": ("🔑", "PICTURED IT YET?", "FLOOR PLANS + EMI, ONE REPLY AWAY", "Reply YES and we'll send them", None),
+        "winback": ("📈", "RENT IS A SUBSCRIPTION.", "OWNING IS AN UPGRADE.", "New launch prices · reply DETAILS", None),
+        "festival": ("🪔", "GRUHA PRAVESHAM", "SEASON IS HERE", "Book a visit before the muhurtham", "గృహ ప్రవేశ శుభాకాంక్షలు"),
+    },
+    "examkits": {
+        "booking_confirmed": ("📚", "DEMO CLASS BOOKED.", "RANK MODE: ON", "Bring a pen. Leave the fear.", None),
+        "daily_question": ("🧠", "QUESTION OF THE DAY", "TOPPERS REPLY FIRST", "Reply A, B, C or D", "నేటి ప్రశ్న"),
+        "day_before": ("✏️", "DEMO CLASS TOMORROW.", "BRING A PEN. LEAVE THE FEAR.", "Reply 1 to confirm", None),
+        "after_visit": ("🎯", "ONE CLASS DOWN.", "YOUR RANK IS WAITING.", "Seats are filling · reply JOIN", None),
+        "renew_7": ("🗓️", "FEE DUE SOON.", "FOCUS ON SYLLABUS, NOT DATES", "Reply PAY for the link", None),
+    },
+}
+
+def font(name, size):
+    return ImageFont.truetype(str(FONTS / name), size)
+
+def emoji_image(ch, size):
+    """Noto Color Emoji is a bitmap font that only renders at 109 px; draw there, then scale."""
+    f = ImageFont.truetype(EMOJI_FONT, 109)
+    tile = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
+    ImageDraw.Draw(tile).text((80, 80), ch, font=f, embedded_color=True, anchor="mm")
+    box = tile.getbbox() or (0, 0, 160, 160)
+    tile = tile.crop(box)
+    scale = size / max(tile.size)
+    return tile.resize((max(1, int(tile.width * scale)), max(1, int(tile.height * scale))), Image.LANCZOS)
+
+def meme_text(draw, text, y, size, fill=(255, 255, 255), stroke=(20, 20, 20), max_w=S - 120):
+    """Classic meme caption: condensed caps, white with a dark outline, auto-shrinks to fit."""
+    f = font("anton-latin-400-normal.woff", size)
+    while draw.textlength(text, font=f) > max_w and size > 40:
+        size -= 4; f = font("anton-latin-400-normal.woff", size)
+    lines = [text] if draw.textlength(text, font=f) <= max_w else textwrap.wrap(text, 18)
+    for i, line in enumerate(lines):
+        draw.text((S // 2, y + i * int(size * 1.08)), line, font=f, fill=fill, stroke_width=max(4, size // 14), stroke_fill=stroke, anchor="ma")
+    return y + len(lines) * int(size * 1.08)
+
+def make_card(setup, key, business):
+    bg, accent, deep = THEMES[setup]
+    emo, top, bottom, small, te = CARDS[setup][key]
+    img = Image.new("RGB", (S, S), bg)
+    d = ImageDraw.Draw(img)
+    # soft background shapes (confetti dots + a big accent circle behind the emoji)
+    for i, (x, y, r) in enumerate([(120, 260, 18), (960, 300, 26), (180, 760, 22), (900, 720, 14), (540, 170, 10), (80, 520, 12), (1000, 520, 16)]):
+        d.ellipse((x - r, y - r, x + r, y + r), fill=accent if i % 2 == 0 else deep)
+    d.ellipse((S // 2 - 230, 290, S // 2 + 230, 750), fill=accent)
+    d.ellipse((S // 2 - 200, 320, S // 2 + 200, 720), fill=tuple(min(255, c + 40) for c in accent))
+    e = emoji_image(emo, 300)
+    img.paste(e, (S // 2 - e.width // 2, 520 - e.height // 2), e)
+    # captions
+    meme_text(d, top, 60, 120)
+    meme_text(d, bottom, 780, 92)
+    # footer pill: small line + business
+    line = small.replace("{business}", business)
+    f_small = font("baloo-2-latin-700-normal.woff", 38)
+    w = d.textlength(line, font=f_small) + 70
+    d.rounded_rectangle((S // 2 - w / 2, 905, S // 2 + w / 2, 965), radius=30, fill=deep)
+    d.text((S // 2, 935), line, font=f_small, fill=(255, 255, 255), anchor="mm")
+    d.text((S // 2, 1012), business.upper(), font=font("baloo-2-latin-800-normal.woff", 34), fill=deep, anchor="mm")
+    if te:  # a Telugu sticker in the corner — local, warm, human
+        ft = font("noto-sans-telugu-telugu-700-normal.woff", 40)
+        tw = d.textlength(te, font=ft) + 40
+        sticker = Image.new("RGBA", (int(tw), 80), (0, 0, 0, 0))
+        sd = ImageDraw.Draw(sticker)
+        sd.rounded_rectangle((0, 0, tw - 1, 79), radius=18, fill=(255, 255, 255), outline=deep, width=4)
+        sd.text((tw / 2, 40), te, font=ft, fill=deep, anchor="mm")
+        sticker = sticker.rotate(-8, expand=True, resample=Image.BICUBIC)
+        img.paste(sticker, (S - sticker.width - 40, 250), sticker)
+    return img
+
+def build(setup, business, out):
+    out = pathlib.Path(out); out.mkdir(parents=True, exist_ok=True)
+    files = []
+    for key in CARDS[setup]:
+        p = out / f"{setup}-{key}.png"
+        make_card(setup, key, business).save(p, optimize=True)
+        files.append(p)
+    return files
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--setup", choices=list(CARDS)); ap.add_argument("--business", default="Your Business")
+    ap.add_argument("--out", default=str(ROOT / "web" / "dist" / "cards" / "demo")); ap.add_argument("--all-demo", action="store_true")
+    a = ap.parse_args()
+    demo = {"salon": "Glow Studio", "gym": "IronPulse Fitness", "realestate": "Skyline Homes", "examkits": "Vidya Academy"}
+    for setup in (CARDS if a.all_demo else [a.setup]):
+        for f in build(setup, demo[setup] if a.all_demo else a.business, a.out):
+            print(f, f"{os.path.getsize(f) // 1024} KB")

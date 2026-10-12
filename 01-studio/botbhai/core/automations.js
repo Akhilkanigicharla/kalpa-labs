@@ -95,6 +95,7 @@ function dueReminders(lead, nowMs) {
   if (h <= 28 && h > 20 && !sent.day_before) due.push("day_before");
   if (h <= 3 && h > 1 && !sent.two_hours) due.push("two_hours");
   if (h <= -20 && h > -30 && !sent.after_visit) due.push("after_visit");
+  if (h <= -72 && h > -84 && !sent.refer) due.push("refer"); // 3 days later: invite a friend
   return due;
 }
 // Gym/coaching renewals: members table rows {expires_on (YYYY-MM-DD), reminders{}}
@@ -108,4 +109,10 @@ function dueRenewals(member, nowMs) {
   return due;
 }
 
-module.exports = { parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals };
+// Referral codes: short, stable per customer ("REF-7KQ2"), so word-of-mouth becomes trackable leads.
+function referralCode(contact) {
+  let h = 2166136261; for (const c of String(contact)) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
+  return "REF-" + h.toString(36).toUpperCase().slice(-4).padStart(4, "X");
+}
+
+module.exports = { referralCode, parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals };

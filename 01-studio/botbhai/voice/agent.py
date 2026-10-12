@@ -11,6 +11,7 @@ Calls: Plivo number → Answer URL https://PUBLIC_HOST/plivo/answer?client=<clie
        Exotel → Voicebot applet → wss://PUBLIC_HOST/ws?client=<client uuid>
 """
 import asyncio
+import base64
 import os
 from datetime import datetime
 
@@ -84,12 +85,21 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         websocket,
         FastAPIWebsocketParams(audio_in_enabled=True, audio_out_enabled=True, vad_analyzer=SileroVADAnalyzer()),
         transport_type, call_data)
-    stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamSTTService.Settings(model="saaras:v3"))
-    tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice="priya" if client["niche"] in ("salon", "examkits") else "rahul"))
-    llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model="llama-3.3-70b-versatile"))
-
+    vp = P.voice_profile(cfg)
     specs = P.tools(cfg)
     schemas = [FunctionSchema(name=t["name"], description=t["description"], properties=t["properties"], required=t["required"]) for t in specs]
+    gemini = os.getenv("VOICE_ENGINE") == "gemini_live"
+    if gemini:
+        # Speech-to-speech: the most natural turn-taking and interruptions. Free tier trains on data → demos only.
+        from pipecat.services.google.gemini_live.llm import GeminiLiveLLMService
+        llm = GeminiLiveLLMService(api_key=os.getenv("GOOGLE_API_KEY"), voice_id=os.getenv("GEMINI_VOICE", "Aoede"),
+                                   system_instruction=P.system_prompt(cfg), tools=ToolsSchema(standard_tools=schemas))
+    else:
+        # codemix: understands Tenglish/Hinglish the way people actually speak
+        stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), mode="codemix", settings=SarvamSTTService.Settings(model="saaras:v3"))
+        tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice=vp["voice"], pace=vp["pace"], temperature=vp["temperature"]))
+        llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model="llama-3.3-70b-versatile"))
+
     context = LLMContext(messages=[{"role": "system", "content": P.system_prompt(cfg)}], tools=ToolsSchema(standard_tools=schemas))
     agg = LLMContextAggregatorPair(context)
 
@@ -119,12 +129,14 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
     llm.register_function("book", book)
     llm.register_function("request_callback", request_callback)
 
-    pipeline = Pipeline([transport.input(), stt, agg.user(), llm, tts, transport.output(), agg.assistant()])
+    stages = [transport.input(), agg.user(), llm, transport.output(), agg.assistant()] if gemini else [transport.input(), stt, agg.user(), llm, tts, transport.output(), agg.assistant()]
+    pipeline = Pipeline(stages)
     task = PipelineWorker(pipeline, params=PipelineParams(audio_in_sample_rate=8000, audio_out_sample_rate=8000, enable_metrics=True))
 
     @transport.event_handler("on_client_connected")
     async def greet(_t, _c):
-        await task.queue_frames([TTSSpeakFrame(P.opening(cfg))])
+        if not gemini:
+            await task.queue_frames([TTSSpeakFrame(P.opening(cfg))])
 
     @transport.event_handler("on_client_disconnected")
     async def bye(_t, _c):
@@ -151,7 +163,8 @@ async def outbound_worker():
                     auth = aiohttp.BasicAuth(os.getenv("PLIVO_AUTH_ID"), os.getenv("PLIVO_AUTH_TOKEN"))
                     async with http.post(f"https://api.plivo.com/v1/Account/{os.getenv('PLIVO_AUTH_ID')}/Call/", auth=auth, json={
                         "from": frm, "to": j["payload"]["to"],
-                        "answer_url": f"https://{os.getenv('PUBLIC_HOST')}/plivo/answer?client={client['id']}", "answer_method": "POST"}) as r:
+                        "answer_url": f"https://{os.getenv('PUBLIC_HOST')}/plivo/answer?client={client['id']}", "answer_method": "POST",
+                        "machine_detection": "hangup"}) as r:  # voicemail → hang up; we follow up on WhatsApp instead
                         await sb(http, f"jobs?id=eq.{j['id']}", "PATCH", {"status": "called" if r.status < 300 else "failed", "result": {"http": r.status}}, prefer="return=minimal")
             await asyncio.sleep(30)
 
@@ -159,6 +172,39 @@ async def outbound_worker():
 @app.on_event("startup")
 async def start_worker():
     asyncio.create_task(outbound_worker())
+
+
+# ---- WhatsApp voice-note replies: the customer spoke, so the business answers in a human voice too
+@app.post("/voicenote")
+async def voicenote(request: Request):
+    if request.headers.get("X-BotBhai-Key", "") != os.getenv("VOICE_SERVER_KEY", "") or not os.getenv("VOICE_SERVER_KEY"):
+        return Response(status_code=401)
+    b = await request.json()
+    lang = {"te": "te-IN", "te-latn": "te-IN", "hi": "hi-IN", "hi-latn": "hi-IN"}.get(b.get("lang"), "en-IN")
+    cfg = P.load_setup(b.get("setup", "salon"))
+    vp = P.voice_profile(cfg)
+    text = " ".join(line for line in b["text"].replace("*", "").splitlines() if line.strip() and not line.strip().startswith(("http", "🗺")))[:480]
+    async with aiohttp.ClientSession() as http:
+        async with http.post("https://api.sarvam.ai/text-to-speech", headers={"api-subscription-key": os.getenv("SARVAM_API_KEY")},
+                             json={"text": text, "target_language_code": lang, "speaker": vp["voice"], "model": "bulbul:v3", "pace": vp["pace"], "temperature": vp["temperature"]}) as r:
+            wav = base64.b64decode((await r.json())["audios"][0])
+        ogg = await to_ogg_opus(wav)
+        form = aiohttp.FormData(); form.add_field("messaging_product", "whatsapp"); form.add_field("type", "audio/ogg")
+        form.add_field("file", ogg, filename="reply.ogg", content_type="audio/ogg")
+        tok = {"Authorization": f"Bearer {os.getenv('WA_ACCESS_TOKEN')}"}
+        async with http.post(f"https://graph.facebook.com/v21.0/{b['phone_number_id']}/media", headers=tok, data=form) as r:
+            media_id = (await r.json())["id"]
+        async with http.post(f"https://graph.facebook.com/v21.0/{b['phone_number_id']}/messages", headers=tok,
+                             json={"messaging_product": "whatsapp", "to": b["to"], "type": "audio", "audio": {"id": media_id}}) as r:
+            return {"sent": r.status < 300}
+
+
+async def to_ogg_opus(wav: bytes) -> bytes:
+    """WhatsApp voice notes must be OGG/Opus; convert with ffmpeg (installed in the Docker image)."""
+    proc = await asyncio.create_subprocess_exec("ffmpeg", "-loglevel", "error", "-i", "pipe:0", "-c:a", "libopus", "-b:a", "32k", "-f", "ogg", "pipe:1",
+                                                stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE)
+    out, _ = await proc.communicate(wav)
+    return out
 
 
 @app.get("/health")

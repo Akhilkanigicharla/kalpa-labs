@@ -2,7 +2,7 @@
 const assert = require("assert");
 const crypto = require("crypto");
 const { appointmentUtc } = require("../automations.js");
-const { store, graph } = require("./_fake.js")({
+process.env.SITE_URL = "https://botbhai.example"; const { store, graph } = require("./_fake.js")({
   clients: [
     { id: "re1", name: "Skyline Homes", niche: "realestate", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "PAGE1", meta_ad_account_id: "111", active: true, config: { business: "Skyline Homes Realty", voice_followup: true, ads_autopilot: true } },
     { id: "gy1", name: "IronPulse", niche: "gym", phone_number_id: "PN2", owner_whatsapp: "919000000002", active: true, config: { business: "IronPulse Fitness", address: "Madhapur" } },
@@ -49,7 +49,8 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
   store.members.push({ id: "M1", client_id: "gy1", phone: "919822222222", name: "Kiran", plan: "Quarterly plan", expires_on: exp, opted_out: false, reminders: {} });
   const r = await require("./reminders.js").handler();
   assert.strictEqual(r.body, "sent 2");
-  assert.ok(graph.sent.some((x) => x.to === "919811111111" && x.template.name === "bb_gym_reminder_day"));
+  const rem = graph.sent.find((x) => x.to === "919811111111" && x.template && x.template.name === "bb_gym_reminder_day");
+  assert.ok(rem); assert.strictEqual(rem.template.components[0].parameters[0].image.link, "https://botbhai.example/cards/demo/gym-day_before.png");
   assert.ok(graph.sent.some((x) => x.to === "919822222222" && x.template.name === "bb_gym_renew_7"));
   assert.ok(store.leads.find((l) => l.id === "L9").details.reminders.day_before);
   const again = await require("./reminders.js").handler(); assert.strictEqual(again.body, "sent 0");

@@ -34,6 +34,27 @@ def booking_fields(cfg: dict) -> list[dict]:
     return out
 
 
+PERSONAS = {"salon": ("Meera", "female"), "realestate": ("Arjun", "male"), "gym": ("Vikram", "male"), "examkits": ("Lakshmi", "female")}
+# Sarvam Bulbul v3 voices (best-rated Telugu/Hindi naturalness in the 2026 Indic TTS benchmark we checked)
+VOICES = {"female": "priya", "male": "rahul"}
+
+def voice_profile(cfg: dict) -> dict:
+    name, gender = PERSONAS.get(cfg.get("id"), ("Asha", "female"))
+    name = cfg.get("persona", name)
+    return {"persona": name, "voice": cfg.get("voice", VOICES[gender]), "pace": 1.05, "temperature": 0.7}
+
+HUMAN_RULES = """How to sound like a real, warm receptionist on the phone:
+- Introduce yourself once: "I'm {persona}, {business}'s assistant." If asked whether you are a person, say honestly that you're an AI assistant and offer to connect the team.
+- Short turns: one or two sentences, then stop and listen. Ask ONE question at a time.
+- Acknowledge before answering, varied and natural: "Sure", "Got it", "Achha", "Sare", "Haan ji", "Okay, one second". Never repeat the same filler twice in a row.
+- Mirror the caller: if they speak Telugu, Hindi or mix with English, answer the same way. Keep service names in English.
+- Say numbers the way people say them: "twelve hundred rupees", "four thirty in the evening", "this Saturday, the seventeenth". Never read symbols or lists aloud.
+- Confirm details by repeating them back once before booking: "So that's a hair spa, Saturday at four, for Priya. Shall I book it?"
+- If the caller interrupts, stop and follow them. If there's silence, gently check: "Are you still there?"
+- Use the caller's name after you learn it, sparingly. Smile in your voice: friendly, never pushy, never salesy.
+- End warmly: "Done! You'll get a WhatsApp confirmation in a minute. Have a lovely day."
+"""
+
 def system_prompt(cfg: dict, now: datetime | None = None) -> str:
     now = now or datetime.now(IST)
     v = cfg["_voice"]
@@ -43,7 +64,9 @@ def system_prompt(cfg: dict, now: datetime | None = None) -> str:
         f"- {f['field']}" + (f" (one of: {', '.join(f['choices'])})" if f["choices"] else " (a date, convert to YYYY-MM-DD)" if f["type"] == "date" else "")
         for f in booking_fields(cfg)
     )
-    return f"""You are the voice assistant answering phone calls for {cfg['business']}, acting as the {v['role']}.
+    vp = voice_profile(cfg)
+    return HUMAN_RULES.replace("{persona}", vp["persona"]).replace("{business}", cfg["business"]) + f"""
+You are {vp['persona']}, the voice assistant answering phone calls for {cfg['business']}, acting as the {v['role']}.
 Today is {now.strftime('%A %d %B %Y')}, time {now.strftime('%I:%M %p')} IST.
 Speak the caller's language: English, Hindi or Telugu, mixing naturally if they do. Keep every reply to one or two short sentences, because this is a phone call. Never use lists, emojis or markdown.
 
@@ -79,5 +102,8 @@ def tools(cfg: dict) -> list[dict]:
     ]
 
 
-def opening(cfg: dict) -> str:
-    return cfg["_voice"]["opening"]
+def opening(cfg: dict, now: datetime | None = None) -> str:
+    now = now or datetime.now(IST)
+    greet = "Good morning" if now.hour < 12 else "Good afternoon" if now.hour < 17 else "Good evening"
+    vp = voice_profile(cfg)
+    return f"{greet}! {cfg['business']}, this is {vp['persona']}, the AI assistant. How can I help you?"

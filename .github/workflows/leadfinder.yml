@@ -25,6 +25,11 @@ jobs:
           CITY="${{ github.event.inputs.city || 'Hyderabad' }}"
           NICHES="${{ github.event.inputs.niches || 'salon gym realestate examkits' }}"
           python 01-studio/botbhai/leadfinder/leadfinder.py --city "$CITY" --niche $NICHES --out "01-studio/botbhai/leads/${CITY,,}-leads"
+      - name: Enrich from business websites (robots.txt respected)
+        run: |
+          for f in 01-studio/botbhai/leads/*-leads.csv; do
+            python 01-studio/botbhai/leadfinder/enrich.py "$f" --out "${f%.csv}-enriched.csv" --max 300 || true
+          done
       - name: Save results to the repo
         run: |
           git config user.name "kalpa-leadfinder-bot"

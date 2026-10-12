@@ -10,4 +10,10 @@ for s in ["salon", "realestate", "gym", "examkits"]:
     t = P.tools(cfg)[0]
     assert "date" in t["properties"] and t["properties"]["date"]["description"] == "date in YYYY-MM-DD", s
     print(f"  ✓ {s}: prompt {len(sp)} chars, book fields {list(t['properties'])}")
+cfg = P.load_setup("salon")
+vp = P.voice_profile(cfg); assert vp["persona"] == "Meera" and vp["voice"] == "priya"
+sp = P.system_prompt(cfg); assert "I'm Meera, Glow Studio Unisex Salon's assistant" in sp and "twelve hundred rupees" in sp
+assert P.opening(cfg, datetime(2026, 10, 12, 19, 0, tzinfo=P.IST)).startswith("Good evening! Glow Studio Unisex Salon, this is Meera")
+assert P.voice_profile(P.load_setup("realestate"))["voice"] == "rahul"
+print("  ✓ personas, human speaking rules, time-aware opening")
 print("voice prompt tests passed")

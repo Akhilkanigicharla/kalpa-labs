@@ -5,7 +5,7 @@
  * welcome template with "Book now / Call me" buttons, alert the owner, and queue a voice call if enabled.
  */
 const crypto = require("crypto");
-const { db, json, graph, sendTemplate, sendText, templatesFor } = require("./_lib.js");
+const { db, json, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc } = require("./_lib.js");
 const { parseMetaLead } = require("../automations.js");
 
 function validSignature(event) {
@@ -33,13 +33,18 @@ exports.handler = async (event) => {
       const raw = await graph(`${v.leadgen_id}?fields=field_data,created_time,ad_id,form_id`, { token: secret && secret.meta_page_token });
       const lead = parseMetaLead(raw);
       const contact = lead.phone || `meta:${v.leadgen_id}`;
-      await db("leads?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates", body: {
-        client_id: client.id, contact, name: lead.name, score: "warm", status: "new", source: "meta_ads",
-        details: Object.assign({ email: lead.email, ad_id: lead.ad_id, form_id: lead.form_id, consent: "meta_lead_form", consent_at: lead.created_time }, lead.answers), updated_at: new Date().toISOString() } });
+      if (!(await firstTime("lead:" + v.leadgen_id))) continue; // Meta retried this lead
+      const answers = Object.assign({ email: lead.email, ad_id: lead.ad_id, form_id: lead.form_id, consent: "meta_lead_form", consent_at: lead.created_time }, lead.answers);
+      const [existing] = await db(`leads?client_id=eq.${client.id}&contact=eq.${enc(contact)}&select=id,details,status,name`);
+      if (existing) { // a known customer filled a form again: add the answers, keep their booking and history
+        await db(`leads?id=eq.${existing.id}`, { method: "PATCH", prefer: "return=minimal", body: { details: Object.assign({}, existing.details, { meta_form: answers }), name: existing.name || lead.name, updated_at: new Date().toISOString() } });
+      } else {
+        await db("leads", { method: "POST", prefer: "return=minimal", body: { client_id: client.id, contact, name: lead.name, score: "warm", status: "new", source: "meta_ads", details: answers, updated_at: new Date().toISOString() } });
+      }
       const tpl = templatesFor(client.niche);
       const cfg = client.config || {};
       if (lead.phone && client.phone_number_id) await sendTemplate(client.phone_number_id, lead.phone, tpl.lead_welcome, { name: lead.name || "there", business: cfg.business || client.name });
-      if (client.owner_whatsapp) await sendText(client.phone_number_id, client.owner_whatsapp, `🆕 Meta lead: ${lead.name || "?"} (${lead.phone || "no phone"})\n` + Object.entries(lead.answers).map(([k, a]) => `• ${k.replace(/_/g, " ")}: ${a}`).join("\n")).catch(() => {});
+      await alertOwner(client, `🆕 Meta lead: ${lead.name || "?"} (${lead.phone || "no phone"}) ` + Object.entries(lead.answers).map(([k, a]) => `${k.replace(/_/g, " ")}: ${a}`).join("; "));
       if (cfg.voice_followup && lead.phone) await db("jobs", { method: "POST", prefer: "return=minimal", body: { client_id: client.id, type: "voice_call", payload: { to: lead.phone, name: lead.name, reason: "new_meta_lead" }, run_at: new Date(Date.now() + 120000).toISOString() } });
     } catch (e) { console.error("lead failed", e.message); }
   }

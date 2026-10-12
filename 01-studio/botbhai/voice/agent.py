@@ -12,6 +12,7 @@ Calls: Plivo number → Answer URL https://PUBLIC_HOST/plivo/answer?client=<clie
 """
 import asyncio
 import base64
+import logging
 import os
 from datetime import datetime
 
@@ -44,7 +45,9 @@ async def sb(session: aiohttp.ClientSession, path: str, method="GET", body=None,
     async with session.request(method, f"{SB_URL}/rest/v1/{path}", json=body,
                                headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}", "Prefer": prefer}) as r:
         r.raise_for_status()
-        return await r.json() if r.content_length != 0 and method != "PATCH" else None
+        if method == "PATCH" or r.content_length == 0:
+            return None
+        return await r.json(content_type=None)
 
 
 async def whatsapp(session, phone_number_id: str, to: str, text: str):
@@ -106,12 +109,21 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
     async def book(params):
         a = dict(params.arguments)
         details = {k: v for k, v in a.items() if k != "name"}
-        if "date" in details:
-            details["date_iso"] = details["date"]
-            details["date"] = datetime.fromisoformat(details["date"]).strftime("%a, %d %b")
+        date_iso = details.get("date")
+        if date_iso:
+            details["date_iso"] = date_iso
+            details["date"] = datetime.fromisoformat(date_iso).strftime("%a, %d %b")
+        contact = caller or f"call:{datetime.now().timestamp():.0f}"
+        # same atomic, capacity-checked booking as WhatsApp and the website (no double booking across channels)
+        booked = await sb(http, "rpc/book_slot", "POST", {
+            "p_client": client["id"], "p_contact": contact, "p_name": a.get("name"), "p_service": details.get("service") or details.get("goal"),
+            "p_date": date_iso, "p_slot": details.get("slot"), "p_capacity": (client.get("config") or {}).get("capacity", 1), "p_source": "voice"})
+        if booked is False:
+            await params.result_callback({"status": "slot_taken", "say": "That time was just taken. Offer the caller another time."})
+            return
         await sb(http, "leads?on_conflict=client_id,contact", "POST", {
-            "client_id": client["id"], "contact": caller or f"call:{datetime.now().timestamp():.0f}", "name": a.get("name"),
-            "score": "hot", "status": "booked", "source": "voice", "details": details,
+            "client_id": client["id"], "contact": contact, "name": a.get("name"),
+            "score": "hot", "status": "booked", "source": "voice", "details": dict(details, customer_name=a.get("name")),
             "updated_at": datetime.utcnow().isoformat() + "Z"}, prefer="resolution=merge-duplicates")
         summary = ", ".join(f"{k}: {v}" for k, v in details.items() if k != "date_iso")
         await whatsapp(http, client.get("phone_number_id"), caller, f"✅ Booked with {cfg['business']} — {summary}. Reply here if anything changes.")
@@ -151,6 +163,7 @@ async def outbound_worker():
         return
     async with aiohttp.ClientSession() as http:
         while True:
+          try:
             hour = datetime.now(P.IST).hour
             if 9 <= hour < 21:
                 jobs = await sb(http, "jobs?type=eq.voice_call&status=eq.queued&order=run_at.asc&limit=5&select=*")
@@ -166,7 +179,9 @@ async def outbound_worker():
                         "answer_url": f"https://{os.getenv('PUBLIC_HOST')}/plivo/answer?client={client['id']}", "answer_method": "POST",
                         "machine_detection": "hangup"}) as r:  # voicemail → hang up; we follow up on WhatsApp instead
                         await sb(http, f"jobs?id=eq.{j['id']}", "PATCH", {"status": "called" if r.status < 300 else "failed", "result": {"http": r.status}}, prefer="return=minimal")
-            await asyncio.sleep(30)
+          except Exception:  # one bad job or network blip must never stop the caller for good
+            logging.exception("outbound worker")
+          await asyncio.sleep(30)
 
 
 @app.on_event("startup")

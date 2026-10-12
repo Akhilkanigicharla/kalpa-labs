@@ -16,7 +16,7 @@ For one client it generates (into --out):
 Usage: python seo/seo_bot.py --setup salon --config client.json --out build/glow-studio
        (client.json overrides the setup's bot.config.json: business, address, phone, whatsapp, areas, site_url)
 """
-import argparse, csv, datetime as dt, html, json, pathlib, re
+import argparse, csv, datetime as dt, html, json, pathlib, re, urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCHEMA_TYPE = {"salon": "BeautySalon", "gym": "ExerciseGym", "realestate": "RealEstateAgent", "examkits": "EducationalOrganization"}
@@ -54,7 +54,8 @@ def load(setup, overrides):
     return cfg
 
 def price_number(p):
-    m = re.search(r"[\d,]+", p.replace("L", "")); return m.group(0).replace(",", "") if m else None
+    """Only a plain single price ("₹1,200") becomes a schema.org price; ranges, lakhs/crores and 'from' prices stay text."""
+    m = re.fullmatch(r"\s*₹\s?([\d,]+)\s*", p); return m.group(1).replace(",", "") if m else None
 
 def jsonld(setup, cfg, page_url, service=None, area=None):
     biz = {"@context": "https://schema.org", "@type": SCHEMA_TYPE[setup], "name": cfg["business"], "url": cfg["site_url"],
@@ -62,7 +63,7 @@ def jsonld(setup, cfg, page_url, service=None, area=None):
            "addressRegion": "Telangana", "addressCountry": "IN"}, "openingHours": cfg["hours"], "areaServed": cfg["areas"],
            "hasOfferCatalog": {"@type": "OfferCatalog", "name": cfg["catalogTitle"], "itemListElement": [
                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": c["name"]}, "priceCurrency": "INR",
-                **({"price": price_number(c["price"])} if price_number(c["price"]) and "from" not in c["price"] else {}),
+                **({"price": price_number(c["price"])} if price_number(c["price"]) else {}),
                 "description": c["price"]} for c in cfg["catalog"]]}}
     faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": "What are your timings?", "acceptedAnswer": {"@type": "Answer", "text": cfg["hours"]}},
@@ -74,7 +75,7 @@ CSS = """:root{--ink:#1d1d1f;--muted:#5f6368;--accent:#0e7c66;--bg:#fafaf7}*{box
 
 def page(setup, cfg, title, desc, body, url, service=None, area=None):
     ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld(setup, cfg, url, service, area))
-    wa = f"https://wa.me/{cfg['whatsapp']}?text=" + html.escape(("Hi, I'd like to book " + (service or "")).strip().replace(" ", "%20"))
+    wa = html.escape(f"https://wa.me/{cfg['whatsapp']}?text=" + urllib.parse.quote(("Hi, I'd like to book " + (service or "")).strip()))
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
 <meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website">

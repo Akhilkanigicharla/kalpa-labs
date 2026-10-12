@@ -1,141 +1,136 @@
 /*
- * WhatsApp Cloud API webhook — one endpoint serves every client.
+ * WhatsApp Cloud API webhook — one endpoint serves every BotBhai client.
  * URL after deploy: https://<your-site>.netlify.app/.netlify/functions/whatsapp
  *
  * Env vars (Netlify → Site configuration → Environment variables):
- *   WA_VERIFY_TOKEN            any secret string you also type into Meta's webhook settings
- *   WA_ACCESS_TOKEN            permanent System User token from Meta Business settings
- *   WA_APP_SECRET              Meta app secret (used to verify the X-Hub-Signature-256 header)
+ *   WA_VERIFY_TOKEN     any word you also type into Meta's webhook settings
+ *   WA_ACCESS_TOKEN     System User token from Meta Business settings (secret)
+ *   WA_APP_SECRET       Meta app secret — REQUIRED in production (verifies X-Hub-Signature-256)
  *   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
- *   GROQ_API_KEY (optional)    free key from console.groq.com — transcribes WhatsApp voice notes (Whisper)
+ *   GROQ_API_KEY        free: voice-note transcription + Telugu/Hindi replies
+ *   SITE_URL            public site URL (smile-card images)
+ *   VOICE_SERVER_URL, VOICE_SERVER_KEY   optional: voice-note replies
+ *
+ * Per message: dedupe (Meta retries) → understand (text, button, list, voice note) → engine (with calendar
+ * + memory) → atomic booking in the database (capacity lock) → human touch → reply with human pacing →
+ * owner alerts → save lead without wiping other agents' data.
  */
 const crypto = require("crypto");
-const { BotBhai: Botforge } = require("../../setups/index.js");
-const { db, json, sendImage, cardUrl } = require("./_lib.js");
+const { BotBhai } = require("../../setups/index.js");
+const L = require("./_lib.js");
 const { humanize, detectLanguage, typingDelayMs, mirrorLanguage } = require("../humanize.js");
 const sleep = (ms) => new Promise((r) => setTimeout(r, process.env.NO_DELAY ? 0 : ms));
-// Blue ticks + "typing…" bubble, like a person picking up the phone
-async function typing(phoneNumberId, messageId) {
-  try {
-    await fetch(`${GRAPH}/${phoneNumberId}/messages`, { method: "POST", headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ messaging_product: "whatsapp", status: "read", message_id: messageId, typing_indicator: { type: "text" } }) });
-  } catch (e) { /* cosmetic only */ }
-}
-const GRAPH = "https://graph.facebook.com/v21.0";
+const IGNORE = new Set(["reaction", "system", "unsupported", "ephemeral", "request_welcome", "order"]);
 
 function validSignature(event) {
-  const secret = process.env.WA_APP_SECRET; if (!secret) return true; // allow during first setup only
+  const secret = process.env.WA_APP_SECRET;
+  if (!secret) return process.env.ALLOW_UNSIGNED === "1"; // only for the first local test; never in production
   const sig = event.headers["x-hub-signature-256"] || "";
   const raw = event.isBase64Encoded ? Buffer.from(event.body, "base64") : Buffer.from(event.body || "");
   const expected = "sha256=" + crypto.createHmac("sha256", secret).update(raw).digest("hex");
   return sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
-
-async function send(phoneNumberId, to, reply) {
-  let payload;
-  const opts = reply.options || [];
-  if (opts.length >= 1 && opts.length <= 3) {
-    payload = { type: "interactive", interactive: { type: "button", body: { text: reply.text.slice(0, 1024) },
-      action: { buttons: opts.map((o, i) => ({ type: "reply", reply: { id: `o${i + 1}`, title: o.slice(0, 20) } })) } } };
-  } else if (opts.length > 3 && opts.length <= 10) {
-    payload = { type: "interactive", interactive: { type: "list", body: { text: reply.text.slice(0, 1024) },
-      action: { button: "Choose", sections: [{ title: "Options", rows: opts.map((o, i) => ({ id: `o${i + 1}`, title: o.slice(0, 24), description: o.length > 24 ? o.slice(0, 72) : undefined })) }] } } };
-  } else {
-    payload = { type: "text", text: { body: reply.text.slice(0, 4096), preview_url: true } };
-  }
-  const res = await fetch(`${GRAPH}/${phoneNumberId}/messages`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" },
-    body: JSON.stringify(Object.assign({ messaging_product: "whatsapp", to }, payload)),
-  });
-  if (!res.ok) console.error("send failed", res.status, await res.text());
+async function typing(phoneNumberId, messageId) { // blue ticks + "typing…" bubble
+  try { await L.graph(`${phoneNumberId}/messages`, { method: "POST", body: { messaging_product: "whatsapp", status: "read", message_id: messageId, typing_indicator: { type: "text" } } }); } catch (e) { /* cosmetic */ }
+}
+async function transcribe(mediaId) { // voice note → text (Groq Whisper, free tier)
+  if (!process.env.GROQ_API_KEY) return null;
+  try {
+    const meta = await L.graph(mediaId);
+    const audio = await (await fetch(meta.url, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } })).arrayBuffer();
+    const form = new FormData();
+    form.append("file", new Blob([audio], { type: meta.mime_type || "audio/ogg" }), "voice.ogg");
+    form.append("model", "whisper-large-v3-turbo");
+    const r = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", { method: "POST", headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` }, body: form, signal: AbortSignal.timeout(8000) });
+    return r.ok ? (await r.json()).text : null;
+  } catch (e) { return null; }
+}
+function textOf(msg) {
+  if (msg.type === "text") return msg.text.body;
+  if (msg.type === "interactive") { const r = msg.interactive.button_reply || msg.interactive.list_reply || {}; const id = r.id || "";
+    return id.startsWith("t:") ? id.slice(2) : id.startsWith("o") ? id.slice(1) : r.title || ""; }
+  if (msg.type === "button") return msg.button.text || msg.button.payload || "";
+  return "";
 }
 
-// Voice note → text with Groq's free Whisper endpoint (optional)
-async function transcribe(mediaId) {
-  if (!process.env.GROQ_API_KEY) return null;
-  const meta = await (await fetch(`${GRAPH}/${mediaId}`, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } })).json();
-  const audio = await (await fetch(meta.url, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } })).arrayBuffer();
-  const form = new FormData();
-  form.append("file", new Blob([audio], { type: meta.mime_type || "audio/ogg" }), "voice.ogg");
-  form.append("model", "whisper-large-v3-turbo");
-  const r = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", { method: "POST", headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` }, body: form });
-  return r.ok ? (await r.json()).text : null;
+async function handleMessage(client, v, msg) {
+  const phoneNumberId = client.phone_number_id; const contact = msg.from;
+  const profileName = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || null;
+  const [[sess], [prev], busy] = await Promise.all([
+    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state`),
+    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in`),
+    L.busySlots(client.id),
+  ]);
+  const state0 = sess ? sess.state : BotBhai.newState();
+  let text = textOf(msg);
+  if (msg.type === "audio") text = (await transcribe(msg.audio.id)) || "";
+  if (!text) {
+    if (!state0.optedOut) await L.sendText(phoneNumberId, contact, "Sorry, I can read text and voice notes only 🙏 Reply *menu* to see options.").catch(() => {});
+    return;
+  }
+  // "known" = a name the customer typed in an earlier booking (not just their WhatsApp profile name)
+  const known = prev && prev.details && prev.details.customer_name ? { name: prev.details.customer_name, lastService: prev.details.service || prev.details.goal } : null;
+  const bot = BotBhai.createBot(client.niche, client.config);
+  let out = bot.handle(state0, text, { contact, profileName, source: "whatsapp", busy, known });
+
+  // Calendar first: if someone grabbed the slot a millisecond ago, offer the rest instead of a false confirmation
+  if (!(await L.applyCalendarEvents(client, contact, out.events, "whatsapp"))) {
+    const back = bot.slotTaken(out.state, busy);
+    out = Object.assign({}, out, { replies: back.replies, state: back.state, events: out.events.filter((e) => e.type !== "booking" && e.type !== "notify_owner") });
+    out.lead = Object.assign({}, out.lead, { status: back.state.lead.status, slot: undefined });
+  }
+
+  // Human touch: persona, greeting, variety, empathy, then the customer's language
+  const detected = detectLanguage(text);
+  const lang = detected !== "en" ? detected : (state0.lang || "en");
+  out.state.lang = lang;
+  const cfg = client.config || {};
+  const h = humanize(out.replies, { setup: client.niche, business: cfg.business || client.name, persona: cfg.persona, firstContact: !sess, userText: text, contact, turn: out.state.turns, nowMs: Date.now() });
+  const replies = await mirrorLanguage(h.replies, lang, { apiKey: process.env.GROQ_API_KEY });
+  if (h.handoff) { // complaint: a person takes over this chat for 2 hours
+    out.state.humanUntil = new Date(Date.now() + ((cfg.handoff_hours || 2) * 3.6e6)).toISOString();
+    out.events.push({ type: "handoff", text: `⚠️ Unhappy customer ${profileName || contact}: "${text.slice(0, 160)}" — bot paused for this chat; please reply personally.` });
+  }
+
+  if (replies.length) await typing(phoneNumberId, msg.id);
+  let budget = 4000; // stay well inside Meta's webhook timeout
+  for (const r of replies) { const d = Math.min(typingDelayMs(r.text), budget); budget -= d; await sleep(d); await L.sendReply(phoneNumberId, contact, r).catch((e) => console.error("send", e.message)); }
+  if (out.events.some((e) => e.type === "booking")) { const card = L.cardUrl(client, `${client.niche}-booking_confirmed.png`); if (card) await L.sendImage(phoneNumberId, contact, card, "").catch(() => {}); }
+  if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL && replies.length)
+    fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY || "" }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
+
+  for (const e of out.events) {
+    if (["notify_owner", "handoff", "forward_to_owner"].includes(e.type)) await L.alertOwner(client, e.text);
+    if (e.type === "opt_out") await L.db(`members?client_id=eq.${client.id}&phone=eq.${L.enc(contact)}`, { method: "PATCH", prefer: "return=minimal", body: { opted_out: true } }).catch(() => {});
+  }
+  await Promise.all([
+    L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
+    L.saveLead(client, contact, out.lead, prev),
+    L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", body: r.text }))] }),
+  ]);
 }
 
 exports.handler = async (event) => {
-  // 1) Meta verifies the webhook once with a GET
-  if (event.httpMethod === "GET") {
+  if (event.httpMethod === "GET") { // Meta verifies the webhook once
     const q = event.queryStringParameters || {};
     if (q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN) return { statusCode: 200, body: q["hub.challenge"] };
     return { statusCode: 403, body: "forbidden" };
   }
-  if (event.httpMethod !== "POST") return json(405, { error: "method" });
-  if (!validSignature(event)) return json(401, { error: "bad signature" });
-
+  if (event.httpMethod !== "POST") return L.json(405, { error: "method" });
+  if (!validSignature(event)) return L.json(401, { error: "bad signature" });
   const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
   for (const entry of body.entry || []) for (const change of entry.changes || []) {
-    const v = change.value || {}; const phoneNumberId = v.metadata && v.metadata.phone_number_id;
+    const v = change.value || {}; const pnid = v.metadata && v.metadata.phone_number_id;
     for (const msg of v.messages || []) {
       try {
-        const [client] = await db(`clients?phone_number_id=eq.${phoneNumberId}&active=eq.true&select=*`);
-        if (!client) { console.warn("no client for", phoneNumberId); continue; }
-        const contact = msg.from; const profileName = (v.contacts && v.contacts[0] && v.contacts[0].profile.name) || null;
-
-        let text = "";
-        if (msg.type === "text") text = msg.text.body;
-        else if (msg.type === "interactive") text = (msg.interactive.button_reply || msg.interactive.list_reply).id.replace(/^o/, ""); // "o2" → "2": the engine reads numbers in menus, choices and quizzes
-        else if (msg.type === "button") text = msg.button.text;
-        else if (msg.type === "audio") text = (await transcribe(msg.audio.id)) || "";
-        if (!text) { await send(phoneNumberId, contact, { text: "Sorry, I can only read text and voice notes. Reply *menu* to see options." }); continue; }
-
-        // Memory + calendar: who is this, and which slots are taken in the next 2 weeks?
-        const today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
-        const [[sess], [prev], busy] = await Promise.all([
-          db(`sessions?client_id=eq.${client.id}&contact=eq.${contact}&select=state`),
-          db(`leads?client_id=eq.${client.id}&contact=eq.${contact}&select=name,details,status`),
-          db(`bookings?client_id=eq.${client.id}&status=eq.confirmed&date_iso=gte.${today}&select=date_iso,slot&limit=2000`),
-        ]);
-        const known = prev && prev.name ? { name: prev.name, lastService: prev.details && (prev.details.service || prev.details.goal) } : null;
-        const state0 = sess ? sess.state : Botforge.newState();
-        const bot = Botforge.createBot(client.niche, client.config);
-        const out = bot.handle(state0, text, { contact, profileName, source: "whatsapp", busy, known });
-
-        // Human touch: persona, greeting, variety, empathy, then the customer's own language
-        const lang = detectLanguage(text) !== "en" ? detectLanguage(text) : (state0.lang || "en");
-        out.state.lang = lang;
-        const cfg = client.config || {};
-        const h = humanize(out.replies, { setup: client.niche, business: cfg.business || client.name, persona: cfg.persona, firstContact: !sess, userText: text, contact, turn: out.state.turns, nowMs: Date.now() });
-        const replies = await mirrorLanguage(h.replies, lang, { apiKey: process.env.GROQ_API_KEY });
-        if (h.handoff) out.events.push({ type: "handoff", text: `⚠️ Unhappy customer ${profileName || contact}: "${text.slice(0, 120)}"` });
-
-        await typing(phoneNumberId, msg.id);
-        let budget = 5000; // keep the webhook well inside Meta's timeout
-        for (const r of replies) { const d = Math.min(typingDelayMs(r.text), budget); budget -= d; await sleep(d); await send(phoneNumberId, contact, r); }
-        if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL) // they spoke, so we answer with a voice note too
-          fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY || "" }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
-        for (const e of out.events) if ((e.type === "notify_owner" || e.type === "handoff") && client.owner_whatsapp)
-          await send(phoneNumberId, client.owner_whatsapp, { text: e.text }); // works when the owner has messaged the number in the last 24h; else use an approved template
-
-        // Calendar writes: new booking, reschedule (old slot freed), cancel
-        for (const e of out.events) {
-          if (e.type === "booking") {
-            const card = cardUrl(client, `${client.niche}-booking_confirmed.png`);
-            if (card) await sendImage(phoneNumberId, contact, card, "").catch(() => {});
-            if (e.replaces) await db(`bookings?client_id=eq.${client.id}&contact=eq.${contact}&date_iso=eq.${e.replaces.date_iso}&slot=eq.${encodeURIComponent(e.replaces.slot)}&status=eq.confirmed`, { method: "PATCH", prefer: "return=minimal", body: { status: "rescheduled" } });
-            await db("bookings", { method: "POST", prefer: "return=minimal", body: Object.assign({ client_id: client.id, contact, status: "confirmed" }, e.booking) });
-          }
-          if (e.type === "cancel_booking") await db(`bookings?client_id=eq.${client.id}&contact=eq.${contact}&date_iso=eq.${e.booking.date_iso}&slot=eq.${encodeURIComponent(e.booking.slot)}&status=eq.confirmed`, { method: "PATCH", prefer: "return=minimal", body: { status: "cancelled" } });
-        }
-
-        const { niche, business, contact: _c, source, name, score, status, ...details } = out.lead;
-        await Promise.all([
-          db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
-          db("leads?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates", body: { client_id: client.id, contact, name, score, status, details, source, updated_at: new Date().toISOString() } }),
-          db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", body: r.text }))] }),
-        ]);
+        if (IGNORE.has(msg.type)) continue;                       // 👍 reactions etc. never get a bot reply
+        if (!(await L.firstTime(msg.id))) continue;               // Meta retry → already handled
+        const [client] = await L.db(`clients?phone_number_id=eq.${L.enc(pnid)}&active=eq.true&select=*`);
+        if (!client) { console.warn("no client for", pnid); continue; }
+        await handleMessage(client, v, msg);
       } catch (err) { console.error(err); }
     }
   }
-  return json(200, { ok: true }); // always 200 fast, or Meta retries
+  return L.json(200, { ok: true }); // always 200 fast, or Meta retries
 };
+exports._textOf = textOf;

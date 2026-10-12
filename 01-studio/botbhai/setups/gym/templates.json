@@ -121,5 +121,15 @@
       "business",
       "ref_code"
     ]
+  },
+  "owner_alert": {
+    "name": "bb_owner_alert",
+    "category": "UTILITY",
+    "language": "en",
+    "body": "BotBhai alert for {{1}}: {{2}} Open your dashboard for details.",
+    "params": [
+      "business",
+      "summary"
+    ]
   }
 }

@@ -13,4 +13,11 @@ for setup in ["salon", "gym", "realestate", "examkits"]:
     assert idx.count("https://wa.me/") == 1 and (out / "site" / "sitemap.xml").read_text().count("<loc>") == len(urls)
     assert sum(1 for _ in open(out / "gbp_posts.csv", encoding="utf-8-sig")) == 13
     print(f"  ✓ {setup}: {len(urls)} pages, schema {blocks[0]['@type']} + FAQPage, sitemap, 12 GBP posts, citations")
+re_cfg = S.load("realestate", {}); offers = S.jsonld("realestate", re_cfg, "x")[0]["hasOfferCatalog"]["itemListElement"]
+assert all("price" not in o for o in offers), "lakh/crore ranges must not become numeric prices"
+sal = S.jsonld("salon", S.load("salon", {}), "x")[0]["hasOfferCatalog"]["itemListElement"]
+assert sal[0]["price"] == "250" and all("price" not in o for o in sal if "from" in o["description"])
+html_ = S.page("salon", S.load("salon", {"whatsapp": "919000000002"}), "t", "d", "", "u", "Haircut & styling (women)")
+assert "text=Hi%2C%20I%27d%20like%20to%20book%20Haircut%20%26%20styling%20%28women%29" in html_.replace("&amp;", "&")
+print("  ✓ prices: only plain ₹ amounts become schema prices; WhatsApp button text is fully encoded")
 print("seo bot tests passed")

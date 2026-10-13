@@ -39,8 +39,8 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A20** b3 · K-08: Tax + SIP kit v1 with in-sheet tests (₹12.75L / ₹13L / ₹25L → 0 / 26,000 / 3,19,800 new; 1,40,400 / 1,48,200 / 5,22,600 old). Check: fixtures pass in a Python check of the formulas.
 - [ ] **A21** b3 · K-06: delivery function (Razorpay signature verify, order log, per-buyer stamped PDF with pdf-lib) built and tested with fake payloads only. Check: tests green; no secrets.
 - [ ] **A22** b3 · K-04: 14 days of daily-question posts for the Telegram channel. Check: file in `03-kits/docs/`.
-- [ ] **A23** b7 · Q7.1–Q7.3: licence note, `.gitignore` data, pinned requirements, `src/data.py` (cache + validation), `src/costs.py` (2026 Indian charges with sources). Check: pytest green on synthetic data.
-- [ ] **A24** b7 · Q7.5 + Q7.4 code: trials registry + gate (`src/gate.py`) with thresholds marked "pending CEO approval". Check: running without a log entry fails.
+- [x] **A23** b7 · Q7.1–Q7.3: licence note, `.gitignore` data, pinned requirements, `src/data.py` (cache + validation), `src/costs.py` (2026 Indian charges with sources). Check: pytest green on synthetic data. (done 2026-10-13, 1e5e4d5)
+- [x] **A24** b7 · Q7.5 + Q7.4 code: trials registry + gate (`src/gate.py`) with thresholds marked "pending CEO approval". Check: running without a log entry fails. (done 2026-10-13, 1e5e4d5)
 - [ ] **A25** b7 · Q7.6: `.github/workflows/backtest.yml` (data from Actions cache, tear-sheet artifact). Check: workflow lints; green on push.
 - [ ] **A26** b7 · Q7.9 + Q7.11: `src/paper.py` simulated next-open fills + `src/risk.py`. No broker calls. Check: dry run over 20 past days; forced breach blocked.
 - [ ] **A27** b6 · F-01 + F-02: price engine in `06-finops/src/price/` (genai-prices, INR via cached RBI/FBIL rate, paise), unknown-model guard. Check: tests with a7 fixtures.
@@ -79,7 +79,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C09** b3 · K-04: create the Telegram channel (10 min)
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
 - [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
-- [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds; sign capital rules (₹0 is fine)
+- [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

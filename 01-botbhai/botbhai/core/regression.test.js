@@ -93,4 +93,74 @@ ok("deep-scan-v2: 'hair cut kavali' never books Hair spa (split word joined firs
   assert.strictEqual(B.pickChoice("hair spa", ["Haircut (men)", "Hair spa"]), "Hair spa");
   assert.strictEqual(B.pickChoice("hair cut men", ["Haircut (men)", "Haircut & styling (women)", "Hair spa"]), "Haircut (men)");
 });
+// A01 (13 Oct 2026): MUST-list audit against docs/requirements/salon.md
+const NOW = { now: "2026-10-12T04:30:00Z" }; const BOOKED = ["book", "hair spa", "tomorrow", "4 pm", "Priya"];
+ok("A01 M1: reminder replies yes / sare / haan / ok / సరే / हाँ confirm the booking (and never count as offers consent)", () => {
+  for (const w of ["yes", "Yes", "sare", "haan", "ok", "avunu", "సరే", "हाँ", "vastanu"]) {
+    const r = talk("salon", [...BOOKED, w], NOW);
+    assert.match(r.log[5].bot, /Confirmed: Hair spa, Tue, 13 Oct at 4:00 PM/, w); assert.ok(r.log[5].events.some((e) => e.type === "confirmed"), w);
+    assert.strictEqual(r.lead.status, "booked"); assert.strictEqual(r.lead.marketing_opt_in, false, w);
+  }
+  const later = talk("salon", [...BOOKED, "menu", "sare"], NOW); // reminder arrives after other chat
+  assert.match(later.log[6].bot, /Confirmed: Hair spa/);
+  const past = talk("salon", [...BOOKED], NOW); const bot = B.createBot("salon"); past.state.now = "2026-10-15T04:30:00Z";
+  const out = bot.handle(past.state, "yes", { contact: "919999999999", now: "2026-10-15T04:30:00Z" });
+  assert.ok(!out.events.some((e) => e.type === "confirmed")); // a visit that is over is not "confirmed"
+});
+ok("A01 M5: day parts in English, Tenglish, Telugu and Hindi pick the right slot", () => {
+  const S = ["11:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"];
+  for (const [w, want] of [["sayantram", "7:00 PM"], ["సాయంత్రం", "7:00 PM"], ["शाम को", "7:00 PM"], ["madhyanam", "1:00 PM"], ["మధ్యాహ్నం", "1:00 PM"], ["poddune", "11:00 AM"], ["ఉదయం", "11:00 AM"], ["4pm", "4:00 PM"], ["4 pm", "4:00 PM"]])
+    assert.strictEqual(B.pickChoice(w, S), want, w);
+  const r = talk("salon", ["book", "facial", "tomorrow", "sayantram", "Asha"], NOW);
+  assert.match(r.log[4].bot, /Booking confirmed[\s\S]*7:00 PM/);
+});
+ok("A01 M6: 'ladies cut' / 'gents cut' pick the right haircut; 'cutting' and 'hair cut' ask men or women", () => {
+  assert.strictEqual(talk("salon", ["book", "ladies cut"], NOW).state.data.service, "Haircut & styling (women)");
+  assert.strictEqual(talk("salon", ["book", "gents cutting"], NOW).state.data.service, "Haircut (men)");
+  assert.strictEqual(talk("salon", ["book", "shave"], NOW).state.data.service, "Beard trim");
+  for (const w of ["cutting", "hair cut", "hair cutting"]) {
+    const r = talk("salon", ["book", w, "2"], NOW);
+    assert.match(r.log[1].bot, /Did you mean Haircut \(men\) or Haircut & styling \(women\)\?/, w);
+    assert.strictEqual(r.state.data.service, "Haircut & styling (women)", w);
+  }
+  const pre = talk("salon", ["repu ladies cut kavali"], NOW); // first message: service understood straight away
+  assert.match(pre.log[0].bot, /Sure! Haircut & styling \(women\), Tue, 13 Oct/);
+});
+ok("A01 M12: Telugu-script and Hindi greetings get the welcome menu", () => {
+  for (const w of ["హాయ్", "హలో", "నమస్తే", "నమస్కారం", "नमस्ते", "namasthe"]) assert.match(talk("salon", [w]).log[0].bot, /How can I help/, w);
+});
+ok("A01 M14: 'intiki vastara?' / 'can you come home' answer the home-service FAQ", () => {
+  for (const w of ["intiki vastara?", "can you come home", "ghar pe aa sakte ho"]) assert.match(talk("salon", [w]).log[0].bot, /Home service is available/, w);
+});
+// A02b (13 Oct 2026): NLU gaps from Deep Scan v2
+ok("A02b: Telugu-script booking words (with or without the zero-width joiner) start a booking", () => {
+  for (const w of ["రేపు అపాయింట్‌మెంట్ కావాలి", "రేపు అపాయింట్మెంట్ కావాలి", "స్లాట్ బుక్ చేయండి"]) assert.match(talk("salon", [w], NOW).log[0].bot, /Which service/, w);
+  const r = talk("salon", ["రేపు ఫేషియల్ బుక్ చేయండి"], NOW);
+  assert.match(r.log[0].bot, /Sure! Facial \(fruit \/ gold\), Tue, 13 Oct/); assert.match(r.log[0].bot, /Choose a time/);
+});
+ok("A02b: 'cancel' with nothing booked says so (never starts a booking); inside a flow it stops the flow", () => {
+  for (const w of ["booking cancel cheyyandi", "cancel it please", "cancel", "నా బుకింగ్ రద్దు చేయండి"]) {
+    const r = talk("salon", [w], NOW);
+    assert.match(r.log[0].bot, /nothing to cancel/, w); assert.strictEqual(r.state.step, -1, w); assert.ok(!r.log[0].events.some((e) => e.type === "cancel_booking"), w);
+  }
+  const mid = talk("salon", ["book", "facial", "cancel it please"], NOW);
+  assert.match(mid.log[2].bot, /stopped\. Nothing was changed/); assert.strictEqual(mid.state.step, -1);
+  const booked = talk("salon", [...BOOKED, "booking cancel cheyyandi", "yes"], NOW); // with a booking it still asks, then cancels
+  assert.match(booked.log[5].bot, /Do you want to cancel your Hair spa/); assert.strictEqual(booked.lead.status, "cancelled");
+});
+ok("A02b: the service named in the first message is used ('I want to book a facial')", () => {
+  const r = talk("salon", ["I want to book a facial"], NOW);
+  assert.match(r.log[0].bot, /Sure! Facial \(fruit \/ gold\)/); assert.match(r.log[0].bot, /Which day/);
+  assert.match(talk("salon", ["I want to book a hair cut"], NOW).log[0].bot, /Which service/); // still ambiguous → asks
+});
+ok("A02b: a question mid-booking is answered, then the same step is asked again (digression)", () => {
+  const r = talk("salon", ["book", "facial", "address?", "tomorrow", "price entha?", "4 pm", "timings?", "Asha"], NOW);
+  assert.match(r.log[2].bot, /Jubilee Hills[\s\S]*---[\s\S]*Which day/); assert.strictEqual(r.state.data.date_iso, "2026-10-13");
+  assert.match(r.log[4].bot, /Price list[\s\S]*Choose a time/);
+  assert.match(r.log[6].bot, /10:00 AM[\s\S]*Your name/);
+  assert.match(r.log[7].bot, /Booking confirmed[\s\S]*Asha[\s\S]*4:00 PM/);
+  const home = talk("salon", ["book", "do you do home visit?"], NOW);
+  assert.match(home.log[1].bot, /Home service is available[\s\S]*Which service/);
+  assert.match(talk("salon", ["book", "facial", "tomorrow", "4 pm", "Priya"], NOW).log[4].bot, /Booking confirmed[\s\S]*Priya/); // names are never questions
+});
 console.log(`\n${n} tests passed`);

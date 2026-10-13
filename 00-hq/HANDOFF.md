@@ -18,7 +18,7 @@ Read this first in any new Claude session, then `CLAUDE.md`, `README.md` and `00
 
 ## Interrupted work: Deep Scan v2 (the user asked for it; resume it)
 
-**Progress (13 Oct 2026, evening IST): Deep Scan v2 is COMPLETE, all 8 areas.** Reports with real runs are in every world's `research/deep-scan-v2*.md`, and the built items are ticked in ROADMAP.md (A23, A24, A27, A29, A32, A02, A06, A42, A15, A16, A34, A34b, A38, A39, A43). New follow-ups: A02b (BotBhai NLU gaps), C17 (Telugu read-through). The `Kalpa quality` workflow now runs every world's tests on each push to main; if it goes red, fixing it is the next job. Otherwise the Build sprint simply continues down the Agent queue (next unticked: A01).
+**Progress (13 Oct 2026, evening IST): Deep Scan v2 is COMPLETE, all 8 areas.** Reports with real runs are in every world's `research/deep-scan-v2*.md`, and the built items are ticked in ROADMAP.md (A23, A24, A27, A29, A32, A02, A06, A44, A15, A16, A34, A34b, A38, A39, A43). New follow-ups: A02b (BotBhai NLU gaps), C17 (Telugu read-through). The `Kalpa quality` workflow now runs every world's tests on each push to main; if it goes red, fixing it is the next job. Otherwise the Build sprint simply continues down the Agent queue (next unticked: A01).
 The user asked: scan GitHub again, in depth, for every world. Rank the most-starred and best projects (e.g. for trading, the top algorithms and frameworks by stars), prove them, and build the best into the project. "Impress me; not a basic search."
 
 How to do it **within limits** (the last attempts died at the usage limit, and running cloned repo code was blocked by the safety classifier):

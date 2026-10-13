@@ -23,7 +23,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 1. Read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.
-4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`.
+4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`. Then mark the same item built in the Kingdom game: `ArtifactData` update on `builds/<A-id>` (`done: true`, `at`, `proof` = commit) for https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1. New roadmap items get a `builds` doc too (`u` = world id, `t` = plain-English title).
 5. Append to `00-hq/log/<today IST>.md`: time, item IDs, what was built, tests run and results, anything Akhil must do (it goes to the CEO queue too).
 6. Commit as `Akhilkanigicharla <84580207+Akhilkanigicharla@users.noreply.github.com>` with a clear message, fetch + rebase, then push to `main`.
 

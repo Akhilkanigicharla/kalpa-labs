@@ -99,7 +99,7 @@ table{width:100%;border-collapse:collapse} td,th{padding:6px 4px;border-bottom:1
 </style></head><body>
 <div class="grid"><div><h1>${esc(k.title)} <span class="te" style="font-size:18px">/ ${esc(k.te)}</span></h1>
 ${k.note ? `<div class="muted">${esc(k.note)}</div>` : ""}</div>
-<div class="n"><b>${esc(inv.number)}</b><br>${esc(inv.date)}</div></div><div class="band"></div>
+<div class="n" style="white-space:nowrap"><b>${esc(inv.number)}</b><br>${esc(inv.date)}</div></div><div class="band"></div>
 <div class="grid"><div><b>${esc(inv.supplier.name)}</b><br>${esc(inv.supplier.address)}<br>${esc(inv.supplier.phone)}
 ${inv.supplier.gstin ? `<br>GSTIN ${esc(inv.supplier.gstin)}` : ""}${inv.supplier.udyam ? `<br>Udyam ${esc(inv.supplier.udyam)}` : ""}</div>
 <div><span class="muted">Bill to / <span class="te">కస్టమర్</span></span><br><b>${esc(inv.customer.name)}</b><br>${esc(inv.customer.address || "")}<br>${esc(inv.customer.phone || "")}

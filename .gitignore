@@ -7,3 +7,6 @@ __pycache__/
 .DS_Store
 01-botbhai/botbhai/web/dist/
 __pycache__/
+# b7 Trading Lab: market data and generated reports never go in git
+07-trading/data/
+07-trading/reports/

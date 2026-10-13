@@ -1,0 +1,49 @@
+---
+import { bySlug, defaults, type Lang } from "../lib/calcs";
+import { RULES } from "../lib/fin";
+interface Props { slug: string; lang: Lang }
+const { slug, lang } = Astro.props;
+const c = bySlug(slug);
+const rows = c.compute(defaults(c));
+---
+<form class="card calc" data-slug={slug} data-lang={lang} onsubmit="return false">
+  <div class="fields">
+    {c.fields.map((f) => (
+      <label>
+        <span>{f[lang]}</span>
+        {f.kind === "city"
+          ? <select name={f.id}>{[...RULES.hraMetros, "Other city"].map((x) => <option selected={x === f.value}>{x}</option>)}</select>
+          : <input name={f.id} type="number" inputmode="decimal" value={f.value} step={f.step ?? 1} min="0" />}
+      </label>
+    ))}
+  </div>
+  <output class="rows" aria-live="polite">
+    {rows.map((r) => <div class:list={["row", { big: r.big }]}><span>{r[lang]}</span><strong class:list={{ word: r.valueTe }}>{lang === "te" && r.valueTe ? r.valueTe : r.value}</strong></div>)}
+  </output>
+</form>
+<script>
+  import { bySlug } from "../lib/calcs";
+  for (const form of document.querySelectorAll<HTMLFormElement>("form.calc")) {
+    const c = bySlug(form.dataset.slug!); const lang = form.dataset.lang as "en" | "te";
+    const out = form.querySelector("output")!;
+    const run = () => {
+      const v = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      out.innerHTML = c.compute(v).map((r) => `<div class="row${r.big ? " big" : ""}"><span>${r[lang]}</span><strong${r.valueTe ? ' class="word"' : ""}>${lang === "te" && r.valueTe ? r.valueTe : r.value}</strong></div>`).join("");
+    };
+    form.addEventListener("input", run);
+  }
+</script>
+<style>
+  .fields { display: grid; gap: 12px; }
+  label { display: grid; gap: 4px; font-weight: 600; font-size: 15px; }
+  input, select { min-height: 44px; width: 100%; padding: 8px 12px; border-radius: var(--r-m); border: 1px solid var(--rule); background: var(--bg); color: var(--fg); font: 500 17px var(--f-mono); }
+  input:focus, select:focus { outline: 3px solid var(--gold); outline-offset: 1px; }
+  .rows { display: grid; gap: 2px; margin-top: 16px; border-top: 1px dashed var(--rule); padding-top: 12px; }
+  /* rows are re-rendered by the script, so their styles must be global under .rows */
+  .rows :global(.row) { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
+  .rows :global(.row strong) { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .rows :global(.row strong.word) { font-family: var(--f-body); }
+  .rows :global(.row.big strong) { font-family: var(--f-display); font-weight: 400; font-size: 30px; color: var(--accent); }
+  .rows :global(.row.big) { align-items: baseline; border-bottom: 1px solid var(--rule); padding-bottom: 10px; margin-bottom: 4px; }
+  @media (min-width: 640px) { .fields { grid-template-columns: 1fr 1fr; } }
+</style>

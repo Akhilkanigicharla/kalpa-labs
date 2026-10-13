@@ -1,0 +1,56 @@
+---
+import "../styles/tokens.css";
+interface Props { title: string; description: string; lang: "en" | "te"; path: string; jsonld?: object[] }
+const { title, description, lang, path, jsonld = [] } = Astro.props;
+const other = lang === "en" ? `/te${path}` : path.replace(/^\/te/, "") || "/";
+const canonical = new URL(path, Astro.site).toString();
+---
+<!doctype html>
+<html lang={lang === "te" ? "te" : "en-IN"}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang={lang === "en" ? "te" : "en-IN"} href={new URL(other, Astro.site).toString()} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@400;600&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@500&family=Rozha+One&display=swap" rel="stylesheet" />
+  {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+</head>
+<body>
+  <div class="temple" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href={lang === "en" ? "/" : "/te/"}>{lang === "en" ? "Money calculators" : "డబ్బు కాలిక్యులేటర్లు"}</a>
+    <a class="pill" href={other} hreflang={lang === "en" ? "te" : "en"}>{lang === "en" ? "తెలుగు" : "English"}</a>
+  </header>
+  <main><slot /></main>
+  <footer class="foot">
+    <p>{lang === "en" ? "A calculator, not financial or tax advice. Rules for tax year 2026-27, checked 13 Oct 2026." : "ఇది కాలిక్యులేటర్ మాత్రమే, ఆర్థిక లేదా పన్ను సలహా కాదు. పన్ను సంవత్సరం 2026-27 నియమాలు, 13 అక్టోబర్ 2026న తనిఖీ చేశాం."}</p>
+  </footer>
+</body>
+</html>
+<style is:global>
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 var(--f-body);
+    background-image: radial-gradient(color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px); background-size: 18px 18px; }
+  .temple { height: 10px; background:
+    radial-gradient(circle at 5px 3px, var(--gold) 2px, transparent 2.5px) 0 0 / 10px 10px,
+    linear-gradient(135deg, var(--madder) 25%, transparent 25%) 0 5px / 10px 5px, var(--hero); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 760px; margin: 0 auto; padding: 14px 16px; }
+  .brand { font-family: var(--f-display); font-size: 22px; color: var(--fg); text-decoration: none; }
+  :lang(te) .brand { font-family: var(--f-body); font-weight: 600; }
+  .pill { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--accent); text-decoration: none; font-weight: 600; }
+  main { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+  h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 6vw, 38px); line-height: 1.15; margin: 8px 0 6px; }
+  :lang(te) h1, :lang(te) h2 { font-family: var(--f-body); font-weight: 600; }
+  h2 { font-family: var(--f-display); font-weight: 400; font-size: 22px; margin: 28px 0 8px; }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .card { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-l); padding: 18px; box-shadow: var(--shadow); }
+  .foot { max-width: 760px; margin: 0 auto; padding: 16px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--rule); }
+  @media (prefers-reduced-motion: no-preference) { .card { animation: rise .25s ease-out; } @keyframes rise { from { transform: translateY(6px); opacity: .6; } } }
+</style>

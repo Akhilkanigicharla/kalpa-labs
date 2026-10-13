@@ -5,7 +5,7 @@ Agent 6 of 8 · 2026-10-13 · Discovery: GitHub topic pages (financial-calculato
 ## Top 5 findings
 
 1. **FY 2026-27 rules are verified at source and unchanged from FY 2025-26.** The Income-tax Act 2025 is in force from 1 Apr 2026, so site copy must cite the new section numbers: s.202 (new-regime slabs), s.156 (rebate, ex-87A) and s.19 (standard deduction, ex-16(ia)). The fixtures ₹12.75L / ₹13L / ₹25L = **0 / 26,000 / 3,19,800** are confirmed.
-2. **ts-fsrs (MIT, 805★, active) is the right engine for the GATE revision scheduler.** It is a TypeScript port of FSRS-6, and the same maths runs in Apps Script (plain JS) and on the site. We ran it: a simulated 120-day GATE plan gives an interval ladder of about 1 → 3 → 8 → 21 days, which beats the plan's fixed 1/3/7/21 because it adapts to each topic's "Again" presses.
+2. **ts-fsrs (MIT, 805★, active) is the right engine for the GATE revision scheduler.** It is a TypeScript port of FSRS-6, and the same maths runs in Apps Script (plain JS) and on the site. We ran ts-fsrs 5.4.2: five "Good" reviews give intervals of 0 → 2 → 11 → 46 → 163 days, and one "Again" resets the topic to the same day. Unlike the plan's fixed 1/3/7/21 ladder, it adapts to each topic's "Again" presses (Step 2).
 3. **python-telegram-bot is LGPL-3.0.** ecosyste.ms reports it as GPL-3.0, and its repo states LGPLv3. Use it only as an unmodified library. **aiogram (MIT) or grammY (MIT)** stays the pick for the deals poster.
 4. **Several India-tax repos look attractive but carry AGPL or unclear licences.** openaccountants (423★) is AGPL-3.0, hyperweavers/nidhi is AGPL-3.0, and itr-wala (857★) has a non-standard licence. These are LEARN only. Nothing new beats india-tax-guru (MIT) for correctness, and we now have our own tested `fin.ts`, so we no longer depend on it.
 5. **The site needs no theme.** AstroWind and AstroPaper (MIT) are blog themes built on Tailwind. For 10 calculator pages, plain Astro plus the Kalamkari `tokens.css` builds in seconds with zero client framework. Starlight (MIT) is worth adopting later for the Kits help docs (EN + TE i18n built in). `schema-dts` (Apache-2.0) gives typed FAQPage JSON-LD.
@@ -69,12 +69,24 @@ The `fin.ts` tests encode all three.
 
 Also screened: fasiha/ebisu (338★, Unlicense, Bayesian SRS; LEARN, but FSRS is better benchmarked), sergioteula/python-amazon-paapi (287★, MIT; ADOPT once eligible, see a5), gpoore/text2qti (239★, BSD-3; LEARN for the question-bank format), skbly7/sbi-tt-rates-historical (185★, no licence; LEARN, useful for foreign-income ITR content), amrajacivil/taxcalcindia (MIT; AVOID, wrong at ₹13L), anivar/india-tax-guru (MIT; still correct, kept as a cross-check), hyperweavers/nidhi (AGPL; AVOID). The financial-calculator and income-tax topics have no India repo above about 20★ except those listed. The niche is open, which supports building our own.
 
-## Step 2: tried it
+## Step 2: tried it (re-run 13 Oct 2026)
+
+Published npm packages only (`astro 7.3.8`, `vitest 5.0.4`, `@astrojs/sitemap 3.7.4`, `ts-fsrs`), in scratch folders; no cloned repo code was executed.
 
 | Run | Command | Result |
 |---|---|---|
-| ts-fsrs 5.x scheduler | `npm i ts-fsrs` in a scratch folder, then a 25-line script simulating one GATE topic rated Good, Good, Hard, Good… with `request_retention: 0.9` | Intervals 1 → 3 → 8 → 21 → 49 d (Good); "Again" resets to the same day with lower stability. Runs in <50 ms. Pure JS, so it ports to Apps Script. Details in `03-kits/docs/gate-fsrs-scheduler.md`. |
-| Our `fin.ts` tax engine vs hand calculation | `npx vitest run` in `05-deals/site` | See the test results at the end of this file. |
-| Astro site build | `npm run build` in `05-deals/site` | See below. |
+| ts-fsrs 5.x scheduler (MIT) | `npm i ts-fsrs@5`, our 15-line script: one GATE topic rated Good five times, `request_retention: 0.9`, fuzz off | Intervals **0 → 2 → 11 → 46 → 163 days** (the first Good is a same-day learning step); one "Again" drops stability from 163 to 4.7 and brings the card back the same day. Runs in < 50 ms, pure JS, so it ports to Apps Script for A19. **Correction:** an earlier draft of this report quoted 1 → 3 → 8 → 21 → 49 d and a `03-kits/docs/gate-fsrs-scheduler.md` file; neither was reproduced, so they are replaced by this run. |
+| Our `fin.ts` tax engine vs hand calculation | `npm test` in `05-deals/site` | **15 / 15 pass**: ₹12.75L / ₹13L / ₹25L → new 0 / 26,000 / 3,19,800 and old (₹1.5L 80C) 1,40,400 / 1,48,200 / 5,22,600; marginal relief at ₹12L; old-regime ₹5L rebate cliff; senior slabs; surcharge marginal relief at ₹50L (₹10,000 over 50L → surcharge ₹7,000) and the 25% new-regime cap; SIP ₹10k × 12% × 10y = ₹23,23,391; EMI ₹50L × 8.5% × 20y = ₹43,391; FD ₹1L × 7% × 5y = ₹1,41,478; PPF ₹1.5L × 15y = ₹40,68,209; HRA with Hyderabad at 50%. |
+| Astro site build | `npm run build` | **16 pages in 0.8 s** (7 calculators × English + Telugu, plus 2 home pages) + sitemap. |
+| Phone check | Playwright, 390 px, light + dark, 5 pages each | No sideways scroll, no script errors, typing ₹25L updates the result to ₹3,19,800 live. Found and fixed two bugs: re-rendered result rows lost their styles (Astro scoped CSS) and Telugu words fell back to a monospace font. |
 
-(Filled in after the runs; see "Results".)
+**New fact for 2026-27 found while building:** the Income-tax Rules 2026 give **Hyderabad, Bengaluru, Pune and Ahmedabad the 50% HRA limit** (it was only the four old metros). That matters for a Hyderabad audience, so the HRA page leads with it ([ClearTax](https://cleartax.in/s/hra-house-rent-allowance), [Moneylife](https://moneylife.in/article/new-income-tax-rules-from-1st-april-hra-exemption-extended-to-8-cities-fewer-forms-but-landlord-disclosure-now-mandatory/79998.html); re-check against the CBDT notification before launch). PPF stays 7.1% for Oct–Dec 2026 ([Business Today](https://www.businesstoday.in/personal-finance/story/small-savings-scheme-interest-rates-unchanged-for-q3-fy27-check-ppf-scss-ssy-rates-558892-2026-09-30)).
+
+## Step 3: what was built
+
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A15 | `05-deals/site/` Astro 7 project on the Kalamkari tokens (b5 turmeric `--l5`), `src/lib/fin.ts` (tax new + old, surcharge, cess, SIP, EMI) with sources in the header, `src/lib/fin.test.ts`, `.github/workflows/calculators.yml` | `npm test` green, `npm run build` ok | pass (15 tests, 16 pages) |
+| A16 | `src/lib/calcs.ts` (salary in hand, FD, PPF, HRA + tax, SIP, EMI) in English + Telugu, each page with `FAQPage` + `WebApplication` JSON-LD and `hreflang` pairs | fixtures pass; 390 px light + dark screenshots | pass |
+
+Telugu copy was written by Claude and needs a native speaker's read before launch (added to the CEO queue).

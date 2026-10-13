@@ -17,6 +17,8 @@ Read this first in any new Claude session, then `CLAUDE.md`, `README.md` and `00
 - **Scheduled tasks:** Kalpa Labs · Morning CEO brief (07:47), Evening check-in (20:44), **Build sprint** (11:07 and 23:07 IST; works through the ROADMAP Agent queue). IDs in `00-hq/LINKS.md`.
 
 ## Interrupted work: Deep Scan v2 (the user asked for it; resume it)
+
+**Progress (13 Oct 2026, 10:30 IST):** Area 1 (b7 trading) is DONE: report complete, A23 + A24 built and ticked (24 tests). **Next: area 2, b6 FinOps.** Note: an earlier attempt already left Step-1 drafts of `deep-scan-v2*.md` in every world's `research/` folder, and b6 already has untested code in `06-finops/src/ingest/` (5 importers) and `06-finops/src/price/fx.py` (RBI/FBIL rate cache). For each area, finish its report (Step 2 runs + Step 3 build) rather than re-doing discovery.
 The user asked: scan GitHub again, in depth, for every world. Rank the most-starred and best projects (e.g. for trading, the top algorithms and frameworks by stars), prove them, and build the best into the project. "Impress me; not a basic search."
 
 How to do it **within limits** (the last attempts died at the usage limit, and running cloned repo code was blocked by the safety classifier):

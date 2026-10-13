@@ -1,0 +1,24 @@
+# b5 calculator site: tax fixtures (vitest) + Astro build on every change. Free on GitHub Actions.
+name: b5 calculators
+on:
+  workflow_dispatch:
+  push:
+    paths: ["05-deals/site/**", ".github/workflows/calculators.yml"]
+permissions:
+  contents: read
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: 05-deals/site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with: { name: calculator-site, path: 05-deals/site/dist, retention-days: 7 }

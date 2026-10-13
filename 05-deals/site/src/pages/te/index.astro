@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import { CALCS } from "../../lib/calcs";
+const lang = "te";
+---
+<Base title="ఉచిత డబ్బు కాలిక్యులేటర్లు: పన్ను 2026-27, SIP, EMI, PPF" description="ఆదాయపు పన్ను (కొత్త vs పాత, 2026-27), చేతికి జీతం, SIP, EMI, FD, PPF, HRA కాలిక్యులేటర్లు తెలుగులో." lang={lang} path="/te/">
+  <h1>భారతదేశం కోసం డబ్బు కాలిక్యులేటర్లు</h1>
+  <p class="muted">పన్ను సంవత్సరం 2026-27 నియమాలు. తెలుగు, ఇంగ్లీష్. సైన్-అప్ అవసరం లేదు.</p>
+  <ul class="grid">{CALCS.map((c) => <li><a class="card tile" href={`/te/${c.slug}/`}><strong>{c.title[lang]}</strong><span class="muted">{c.blurb[lang]}</span></a></li>)}</ul>
+</Base>
+<style>.grid { list-style: none; padding: 0; display: grid; gap: 12px; } .tile { display: grid; gap: 4px; text-decoration: none; color: var(--fg); border-top: 4px solid var(--l5); } @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }</style>

@@ -1,0 +1,8 @@
+timestamp,request_id,user_id,model,prompt,completion,tokens_in,tokens_out
+2026-10-01T09:15:42Z,req_1001,u_17,gpt-4o-mini,"Hi, my Aadhaar is 7260 1815 9082 and PAN ABCPK1234F, please verify KYC",Thanks. I have noted your details.,41,9
+2026-10-01T09:16:03Z,req_1002,u_17,gpt-4o-mini,Call me on +91 98480 22338 or mail ravi.kumar@example.in,"Sure, we will call +91 98480 22338 shortly.",22,11
+2026-10-01T09:17:55Z,req_1003,u_22,claude-haiku-4-5,"Pay via UPI to ravik@okaxis, IFSC HDFC0001234, account ending 1234",Payment link created.,30,5
+2026-10-01T09:18:20Z,req_1004,u_22,claude-haiku-4-5,"Our GSTIN is 36ABCPK1234F1Z6, invoice ORD-551819093786",Invoice v2.11.3 generated on 2026-10-01.,28,12
+2026-10-01T09:19:41Z,req_1005,u_31,gemini-2.5-flash,card 4111 1111 1111 1111 exp 12/29,I cannot store card numbers.,12,7
+2026-10-01T09:20:12Z,req_1006,u_31,gemini-2.5-flash,"no landline, mobile 09912345678",Noted. Ticket 1728812345 opened.,9,6
+2026-10-01T09:21:30Z,req_1007,u_40,gpt-4o,Send refund to priya.s@ybl and email priya.sharma@gmail.com,Refund of 2345.00 queued.,15,6

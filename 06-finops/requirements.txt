@@ -1,0 +1,4 @@
+# b6 Ledger Peaks, pinned 2026-10-13 (proven in research/deep-scan-v2.md §4)
+genai-prices==0.1.11        # MIT, USD price data (pydantic)
+presidio-analyzer==2.2.364  # MIT, optional: PII scan runs pattern-only without it
+pytest==9.1.1

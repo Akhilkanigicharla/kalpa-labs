@@ -1,0 +1,4 @@
+{"data":[{"starting_at":"2026-10-12T00:00:00Z","ending_at":"2026-10-13T00:00:00Z","results":[
+ {"uncached_input_tokens":300000,"cache_creation":{"ephemeral_5m_input_tokens":100000,"ephemeral_1h_input_tokens":0},"cache_read_input_tokens":600000,"output_tokens":150000,"model":"claude-sonnet-4-5","workspace_id":"wrk_chatbot","service_tier":"standard"},
+ {"uncached_input_tokens":200000,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"cache_read_input_tokens":0,"output_tokens":50000,"model":"claude-haiku-4-5","workspace_id":"wrk_batchjobs","service_tier":"batch"},
+ {"uncached_input_tokens":1000,"cache_read_input_tokens":0,"output_tokens":500,"model":"claude-retired-model-2023","workspace_id":"wrk_chatbot","service_tier":"standard"}]}]}

@@ -1,0 +1,8 @@
+{"object":"page","data":[
+ {"object":"bucket","start_time":1791763200,"end_time":1791849600,"results":[
+  {"object":"organization.usage.completions.result","input_tokens":1200000,"output_tokens":300000,"input_cached_tokens":400000,"num_model_requests":1500,"project_id":"proj_support","model":"gpt-4o","batch":false},
+  {"object":"organization.usage.completions.result","input_tokens":500000,"output_tokens":100000,"input_cached_tokens":0,"num_model_requests":500,"project_id":"proj_tagging","model":"gpt-4o-mini","batch":true}]},
+ {"object":"bucket","start_time":1791849600,"end_time":1791936000,"results":[
+  {"object":"organization.usage.completions.result","input_tokens":0,"output_tokens":0,"input_cached_tokens":0,"num_model_requests":0,"project_id":"proj_support","model":"gpt-4o","batch":false},
+  {"object":"organization.usage.completions.result","input_tokens":800000,"output_tokens":200000,"input_cached_tokens":0,"num_model_requests":400,"project_id":"proj_support","model":"gpt-5","batch":false}]}
+]}

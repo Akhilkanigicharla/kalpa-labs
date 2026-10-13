@@ -1,0 +1,5 @@
+ts,provider,model,input_tokens,output_tokens,cache_read_tokens,requests,customer,feature,cost_usd
+2026-10-12,openai,gpt-4o-mini,10000,2000,0,10,acme,faq,
+2026-10-12,google,gemini-2.5-flash,40000,8000,0,20,acme,summary,
+2026-10-12,mystery,totally-unknown-model-x,5000,1000,0,5,globex,beta,
+not-a-date,openai,gpt-4o,abc,10,0,1,globex,faq,

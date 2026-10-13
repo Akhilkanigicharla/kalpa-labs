@@ -1,0 +1,6 @@
+request_id,startTime,model,custom_llm_provider,prompt_tokens,completion_tokens,spend,end_user,request_tags,metadata,cache_hit,messages
+r1,2026-10-12T10:00:00Z,gpt-4o-mini,openai,1200,300,0.00036,cust_001,"[""feature:faq""]","{}",False,"SECRET PROMPT TEXT"
+r2,2026-10-12T10:01:00Z,gemini/gemini-2.5-flash,,2000,500,0.00185,cust_002,"[""feature:summary""]","{}",False,"SECRET PROMPT TEXT"
+r3,2026-10-12T10:02:00Z,gpt-4o-mini,openai,1200,300,0,cust_001,"[""feature:faq""]","{}",True,"SECRET PROMPT TEXT"
+r4,2026-10-12T10:03:00Z,,openai,10,10,0,cust_003,"[]","{}",False,"x"
+r5,2026-10-12T10:04:00Z,anthropic/claude-sonnet-4-5,,3000,800,0.021,cust_002,"[""feature:agent""]","{""usage_object"":{""cache_read_input_tokens"":1000}}",False,"x"

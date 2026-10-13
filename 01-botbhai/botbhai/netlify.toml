@@ -1,0 +1,22 @@
+[build]
+  base    = "01-botbhai/botbhai"
+  command = "python3 build.py"   # set env SETUP=salon|realestate|gym|examkits per industry site
+  publish = "web/dist"
+  functions = "core/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["core/**", "setups/**"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "microphone=(self)"
+
+[functions."reminders"]
+  schedule = "@hourly"
+
+[functions."adsbot"]
+  schedule = "30 3 * * *"   # 9:00 AM IST daily

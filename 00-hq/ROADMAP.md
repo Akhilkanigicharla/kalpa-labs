@@ -43,12 +43,12 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A24** b7 · Q7.5 + Q7.4 code: trials registry + gate (`src/gate.py`) with thresholds marked "pending CEO approval". Check: running without a log entry fails. (done 2026-10-13, 1e5e4d5)
 - [ ] **A25** b7 · Q7.6: `.github/workflows/backtest.yml` (data from Actions cache, tear-sheet artifact). Check: workflow lints; green on push.
 - [ ] **A26** b7 · Q7.9 + Q7.11: `src/paper.py` simulated next-open fills + `src/risk.py`. No broker calls. Check: dry run over 20 past days; forced breach blocked.
-- [ ] **A27** b6 · F-01 + F-02: price engine in `06-finops/src/price/` (genai-prices, INR via cached RBI/FBIL rate, paise), unknown-model guard. Check: tests with a7 fixtures.
+- [x] **A27** b6 · F-01 + F-02: price engine in `06-finops/src/price/` (genai-prices, INR via cached RBI/FBIL rate, paise), unknown-model guard. Check: tests with a7 fixtures. (done 2026-10-13, 9f5fda1)
 - [ ] **A28** b6 · F-03: Supabase migration `06-finops/src/db/` (`usage_event`, `usage_daily`, OTel gen_ai fields, RLS). Check: SQL applies on a local Postgres.
-- [ ] **A29** b6 · F-05: importers (OpenAI, Anthropic, LiteLLM, Langfuse, generic CSV/JSONL). Check: 5 fixtures import with no rows lost.
+- [x] **A29** b6 · F-05: importers (OpenAI, Anthropic, LiteLLM, Langfuse, generic CSV/JSONL). Check: 5 fixtures import with no rows lost. (done 2026-10-13, 9f5fda1)
 - [ ] **A30** b6 · F-06: X-ray generator (2-page HTML/PDF: ₹ by feature/model/customer, savings rules, DPDP score). Check: synthetic X-ray renders.
 - [ ] **A31** b6 · F-13: framework catalogue `dpdp-2023.json` (every duty cites section/rule), ISO 42001 IDs, Art. 50 checklist. Check: validator.
-- [ ] **A32** b6 · F-15: PII scan Action (Presidio + Indian mobile/UPI/IFSC/Aadhaar/PAN recognizers, counts + hashes only). Check: synthetic fixtures.
+- [x] **A32** b6 · F-15: PII scan Action (Presidio + Indian mobile/UPI/IFSC/Aadhaar/PAN recognizers, counts + hashes only). Check: synthetic fixtures. (done 2026-10-13, 9f5fda1)
 - [ ] **A33** b6 · F-04 copy + F-11 ingest API + F-12 dashboard + F-17 alerts. Check: per PLAN.md.
 
 ### Sprint 3 · Second engine

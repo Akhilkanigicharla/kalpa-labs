@@ -41,7 +41,9 @@ VOICES = {"female": "priya", "male": "rahul"}
 def voice_profile(cfg: dict) -> dict:
     name, gender = PERSONAS.get(cfg.get("id"), ("Asha", "female"))
     name = cfg.get("persona", name)
-    return {"persona": name, "voice": cfg.get("voice", VOICES[gender]), "pace": 1.05, "temperature": 0.7}
+    lang = str(cfg.get("voice_language") or "en").lower()[:2]
+    return {"persona": name, "voice": cfg.get("voice", VOICES[gender]), "pace": 1.05, "temperature": 0.7,
+            "language": {"te": "te-IN", "hi": "hi-IN"}.get(lang, "en-IN")}
 
 HUMAN_RULES = """How to sound like a real, warm receptionist on the phone:
 - Introduce yourself once: "I'm {persona}, {business}'s assistant." If asked whether you are a person, say honestly that you're an AI assistant and offer to connect the team.

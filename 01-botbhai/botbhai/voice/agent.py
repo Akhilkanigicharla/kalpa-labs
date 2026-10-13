@@ -22,7 +22,6 @@ from fastapi.responses import Response
 
 from pipecat.adapters.schemas.function_schema import FunctionSchema
 from pipecat.adapters.schemas.tools_schema import ToolsSchema
-from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.frames.frames import TTSSpeakFrame
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
@@ -36,6 +35,7 @@ from pipecat.services.sarvam.tts import SarvamTTSService
 from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams
 
 import prompt as P
+import turns as T
 
 SB_URL, SB_KEY = os.getenv("SUPABASE_URL", ""), os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 app = FastAPI(title="BotBhai voice agent")
@@ -86,7 +86,7 @@ async def ws(websocket: WebSocket):
 async def run_call(websocket, transport_type, call_data, http, client, cfg, caller):
     transport = await _create_telephony_transport(
         websocket,
-        FastAPIWebsocketParams(audio_in_enabled=True, audio_out_enabled=True, vad_analyzer=SileroVADAnalyzer()),
+        FastAPIWebsocketParams(audio_in_enabled=True, audio_out_enabled=True),  # VAD lives in the user aggregator (turns.py)
         transport_type, call_data)
     vp = P.voice_profile(cfg)
     specs = P.tools(cfg)
@@ -100,11 +100,11 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
     else:
         # codemix: understands Tenglish/Hinglish the way people actually speak
         stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), mode="codemix", settings=SarvamSTTService.Settings(model="saaras:v3"))
-        tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice=vp["voice"], pace=vp["pace"], temperature=vp["temperature"]))
+        tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice=vp["voice"], language=T.pipecat_language(cfg), pace=vp["pace"], temperature=vp["temperature"]))
         llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model="llama-3.3-70b-versatile"))
 
     context = LLMContext(messages=[{"role": "system", "content": P.system_prompt(cfg)}], tools=ToolsSchema(standard_tools=schemas))
-    agg = LLMContextAggregatorPair(context)
+    agg = LLMContextAggregatorPair(context, user_params=T.user_params())  # VAD 0.2 s + smart-turn v3.2 (1.2 s cap)
 
     async def book(params):
         a = dict(params.arguments)

@@ -1,0 +1,12 @@
+{
+  "_note": "USD/INR reference rates (FBIL, as published on rbi.org.in 'Current Rates'). Append newest last. Refresh: python -m price.fx refresh",
+  "rates": [
+    {
+      "date": "2026-10-12",
+      "inr_per_usd": "95.7485",
+      "source": "RBI home page 'Current Rates' (FBIL reference rate, as at 1.00pm of October 12, 2026)",
+      "source_url": "https://www.rbi.org.in/Home.aspx/scripts/home.aspx",
+      "retrieved": "2026-10-13"
+    }
+  ]
+}

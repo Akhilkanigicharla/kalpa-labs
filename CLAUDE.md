@@ -3,6 +3,7 @@
 Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hyderabad, IST). Claude does the building; Akhil does accounts, decisions and selling.
 
 ## Where things are
+- `00-hq/HANDOFF.md`: current state and the next big job. Read it first.
 - `README.md`: the map of HQ + seven worlds. Each world folder has `README.md` (label card), `PLAN.md`, `research/`, `docs/`, `design/` and its code folder.
 - `00-hq/ROADMAP.md`: **the single source of what to do next.** Agent queue = your work. CEO queue = Akhil's.
 - `00-hq/PLAN.md`: company order, money and rhythm. `00-hq/LINKS.md`: artifacts, docs, scheduled tasks, accounts.

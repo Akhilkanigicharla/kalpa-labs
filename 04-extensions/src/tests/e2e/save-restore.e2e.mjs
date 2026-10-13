@@ -11,7 +11,9 @@ const server = http.createServer((req, res) => { res.setHeader("content-type", "
 const base = `http://127.0.0.1:${server.address().port}`;
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), "lifeboat-"));
 const ctx = await chromium.launchPersistentContext(profile, {
-  headless: true, executablePath: process.env.CHROME_PATH || undefined,
+  headless: true,
+  // Playwright's default headless shell can't load extensions; the full Chromium build ("chromium" channel) can.
+  ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chromium" }),
   args: ["--headless=new", `--disable-extensions-except=${ext}`, `--load-extension=${ext}`, "--no-sandbox"],
 });
 let failed = false;

@@ -15,6 +15,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 
 ### Sprint 1 · BotBhai sell-ready (b1) and design system
 - [ ] **A01** b1 · P1-W1-02/03: verify the MUST list (M1 confirm reply, M2 reminder flags, M3 IST, M5 "4pm", M6 "hair cut", M7 owner alert, M12 Telugu greeting, M13 opt-in gate, M14 home visit) against `botbhai/docs/requirements/salon.md`; fix any gap with a regression test. Check: `bash botbhai/tools/test-all.sh` green.
+- [ ] **A01b** b1 · Restyle every BotBhai screen to the Kalamkari system (`00-hq/design/`): the demo (`web/index.src.html` → `build.py` → republish artifact https://claude.ai/artifact/JYxrRm9PHrw2SCBRFRPjUi with the Artifact tool), SEO-bot site templates (`seo/seo_bot.py`, fix the WhatsApp-button contrast from a3), and smile cards (`tools/cards.py`). Check: all tests green; 390 px Playwright screenshots in light + dark, no overflow.
 - [ ] **A02** b1 · P1-W2-01: slot engine `core/slots.js` (structured hours, weekly off, holidays, special hours, "closing for today", service durations) ported from cal.diy logic (MIT, attribute). Check: new unit tests + all suites green.
 - [ ] **A03** b1 · P1-W2-04: bridal enquiry flow; owner's 9 PM done/no-show list; review ask only after completed visits. Check: T15 passes; no review ask to no-shows.
 - [ ] **A04** b1 · P1-W2-02: shared inbox phase 1 (`web/inbox.html` + `core/functions/inbox.js`): paused chats, reply as the salon, resume bot; `assigned_to`, `status` columns. Check: webhook tests extended and green.
@@ -22,12 +23,12 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A06** b1 · P1-W2-03: voice turn-taking fix in `voice/agent.py` per research a2 (Silero stop_secs 0.2, smart-turn analyzer, Sarvam TTS language). Check: `voice/test_prompt.py` passes in a venv with pipecat.
 - [ ] **A07** b1 · P1-W2-05: sales kit in `01-botbhai/docs/sales/`: A5 card (Telugu + English), proposal, client agreement with DPDP processor clause, privacy notice, objection sheet. Check: prices match PLAN.md §2.
 - [ ] **A08** b1 · P1-W1-06: cluster-1 visit sheet (SR Nagar/Ameerpet) from `botbhai/leads/hyderabad-leads.csv`: 6+ salons, map links, personalised pitch. Check: file in `01-botbhai/docs/sales/`.
-- [ ] **A09** design · Kalpa design system: `00-hq/design/DESIGN-SYSTEM.md` (colours, type, spacing, components, Telugu font rules, 390 px phone rule) + `tokens.css`. Check: every world can import it.
-- [ ] **A10** design · b1: `01-botbhai/design/` brief + HTML mockups for the owner dashboard and shared inbox (phone first). Check: renders at 390 px with no horizontal scroll (Playwright screenshot).
+- [x] **A09** design · Kalpa design system "Kalamkari": `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` + free UI toolkit (licences checked). (done 2026-10-13)
+- [ ] **A10** design · b1: `01-botbhai/design/` brief + HTML mockups for the owner dashboard and shared inbox (phone first). Use shadcn/ui-style components on the Kalamkari tokens. Check: renders at 390 px with no horizontal scroll (Playwright screenshot).
 - [ ] **A11** design · b5 + b3: calculator page and kit landing page mockups. Check: 390 px Playwright screenshot.
 - [ ] **A12** design · b6: Ledger Peaks landing + dashboard + X-ray report mockups. Check: 390 px screenshot.
 - [ ] **A13** design · b2 + b4: JobCard app screens (record → job card → invoice) and Tab Lifeboat popup/options. Check: screenshots.
-- [ ] **A14** design · HQ: Kingdom control-room refresh proposal (what to change and why) in `00-hq/design/kingdom.md`. Check: lists concrete changes only.
+- [x] **A14** design · HQ: Kingdom control room redesigned in the Kalamkari system and republished; copy in `00-hq/design/kingdom-control-room.html`. (done 2026-10-13)
 
 ### Sprint 2 · Agent-only engines (start now, 0 CEO minutes)
 - [ ] **A15** b5 · b5.W1.1: Astro site in `05-deals/site/`, `fin.ts` SIP/EMI/tax (new + old regime FY 2026-27, cite source), vitest fixtures ₹12.75L / ₹13L / ₹25L. Check: `npm test` green, `npm run build` ok.

@@ -1,0 +1,39 @@
+# Ledger Peaks · PII scan (draft for the CUSTOMER's repo, copy to .github/workflows/pii-scan.yml)
+# Scans LLM log exports for Indian PII and uploads COUNTS + HASHES only (report.json).
+# Raw values never leave the customer's runner. The salt comes from the customer's own
+# secret LP_HASH_SALT and is never printed.
+name: pii-scan
+on:
+  workflow_dispatch:
+    inputs:
+      path:
+        description: "Folder or file with log exports (csv/jsonl/json/txt)"
+        default: "logs/"
+  schedule:
+    - cron: "17 3 * * 1"   # Mondays 08:47 IST
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scanner (pattern-only Presidio, no spaCy model)
+        run: pip install "presidio-analyzer==2.2.364"
+      - name: Scan
+        env:
+          LP_HASH_SALT: ${{ secrets.LP_HASH_SALT }}
+          SCAN_PATH: ${{ github.event.inputs.path || 'logs/' }}
+        run: |
+          cd ledger-peaks/src   # where the customer vendors 06-finops/src
+          python -m pii.scan "$GITHUB_WORKSPACE/$SCAN_PATH" --engine auto --out "$GITHUB_WORKSPACE/report.json" --fail-on AADHAAR,PAN,CARD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pii-report
+          path: report.json
+          retention-days: 30

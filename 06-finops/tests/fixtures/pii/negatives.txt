@@ -1,0 +1,13 @@
+# Synthetic negatives: none of these may be reported as PII.
+2026-10-13T09:15:42.123Z INFO order 551819093786 shipped
+2026-10-13 09:15:42 INFO order 779754323194 shipped
+13/10/2026 order=957491186252 status=paid
+ts=1728812345 ts_ms=1728812345123 orders: 911471049746, 446655440000
+release v2.11.3 litellm 1.105.0 presidio 2.2.364 python 3.13.16
+ids 1234567890 2345678901 3456789012 4567890123 5678901234
+ref 1234567812345678 is not a card
+request_id=550e8400-e29b-41d4-a716-446655440000 trace=4bf92f3577b34da6a3ce929d0e0e4736
+model gpt-4o-2024-08-06 and claude-3-5-sonnet-20241022
+ping @okaxis team; local user@localhost; npm @types/node
+price 98,765.00 INR; ip 192.168.10.254; +1 415 555 0100
+invoice INV2026000123, ticket ABC-12345, build 20261013.4

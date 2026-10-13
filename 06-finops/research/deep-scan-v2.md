@@ -66,6 +66,29 @@ Below 1k but important: **pydantic/genai-prices** (337–390★, MIT, the **chos
 | Gateway / tracing | **Integrate**, never build (customer keeps LiteLLM/Langfuse/Helicone) | Crowded, VC-funded |
 | Compliance catalogue | **Build** `dpdp-2023.json`; **borrow** ISO 42001 IDs from Probo (MIT) | No DPDP framework exists in OSS |
 
-## 4. Offline runs (step 2)
+## 4. Offline runs (step 2, 13 Oct 2026)
 
-See §5 (filled after the runs below).
+Published packages only, each in its own throwaway venv; no cloned repo code was executed. All inputs are synthetic.
+
+| Package | Version | Venv size | What we ran | Result |
+|---|---|---|---|---|
+| genai-prices (PyPI) | 0.1.11 | **44 MB** (pydantic + httpx) | Priced 15 popular models and our 5 importer fixtures | Works offline from its bundled snapshot. Knows Claude Opus 4.8, GPT-5, Gemini 2.5. Maps the retired `claude-3-5-haiku-20241022` to `claude-3-5-haiku-latest`, so PLAN F-02's example is now priced; the guard is tested with a truly unknown model instead. |
+| LiteLLM price map (data only, MIT) | `main`, 4,069 entries, 2.8 MB JSON | — | `python -m price.crosscheck litellm.json` over 15 models (input, output, cache-read per million) | **15 / 15 agree within 0.5%** (genai-prices vs LiteLLM). |
+| presidio-analyzer + anonymizer | 2.2.364 | 393 MB with deps; runs **pattern-only** via a stub NLP engine, so no spaCy model download | Its India recognizers on our PII fixtures, versus our builtin recognizers | 1.4 s per scan. Presidio found every Aadhaar, PAN, GSTIN, card and email, with **0 false positives** on the negatives file, but **missed all 11 Indian mobiles, UPI IDs and IFSC codes** (it has no recognizers for them). Our builtin engine (27 MB venv, zero dependencies) found all 23 planted values. |
+
+**Four findings that changed the code:**
+
+1. **The long-context trap.** genai-prices applies per-call tiers. Pricing a daily bucket of 1M Claude Sonnet 4.5 input tokens as one call charged **$6/M instead of $3/M**; the same happens with Gemini 2.5 Pro ($2.50 vs $1.25). Every aggregated row is now priced per request and then multiplied. When a source gives no request count (the Anthropic usage report), we assume calls of 100k input or less and say so on the row. Our Anthropic fixture went from ₹623 (wrong) to ₹376.
+2. **Exact remainders.** Splitting 400,000 cached tokens over 1,500 calls leaves a remainder. Uncached, cache-read, cache-write and output tokens are now split separately, so the gpt-4o fixture prices at exactly $5.50 (the first draft was off by $0.0025 and once crashed genai-prices with "cache_read_tokens cannot exceed input_tokens").
+3. **Unknown models are never ₹0.** `claude-retired-model-2023` and `totally-unknown-model-x` land in an "unpriced" bucket with their token counts (F-02).
+4. **Reported-cost cross-check works.** A LiteLLM row whose `spend` ignored the cache discount is flagged at −12.9% (anything over 0.5% is flagged).
+
+## 5. What was built (step 3)
+
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A27 (F-01 + F-02) | `src/price/engine.py` (per-call tiers, cache, batch −50%, cache hits ₹0, paise rounded half-up, unpriced bucket, reported-cost flag), `src/price/crosscheck.py`, existing `src/price/fx.py` (FBIL rate via RBI page, stale after 7 days) | a7 fixture numbers (gpt-4o $12.50, gpt-4o-mini $0.75, Haiku 4.5 $6, Gemini 2.5 Flash $2.80 per 1M in + 1M out); INR = USD × rate in paise (₹1,196.86 for $12.50 at 95.7485) | pass |
+| A29 (F-05) | Existing `src/ingest/` importers + 5 new fixtures in `tests/fixtures/ingest/` (OpenAI usage API, Anthropic usage report, LiteLLM spend logs CSV, Langfuse observations JSONL, generic CSV) + an Anthropic console long-form case | All 5 import with **no rows lost** (every row is a record, a skip with a reason, or a merge); no prompt text or raw customer id survives | pass |
+| A32 (F-15) | `src/pii/` (builtin recognizers: IN_MOBILE, UPI_ID, IFSC, Aadhaar with Verhoeff, PAN, GSTIN check character, email, card with Luhn; optional pattern-only Presidio), `.github-workflow-drafts/pii-scan.yml` for the customer's repo | Synthetic fixtures; report holds counts + HMAC hashes only; `--fail-on` exit code | pass |
+
+`cd 06-finops && python -m pytest -q tests/` → **35 passed** with genai-prices + Presidio installed (without them, the matching tests skip).

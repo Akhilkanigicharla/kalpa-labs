@@ -1,0 +1,4 @@
+{"id":"o1","type":"GENERATION","startTime":"2026-10-12T09:00:00Z","model":"gpt-4o","usageDetails":{"input":1000,"output":200},"costDetails":{"total":0.0045},"userId":"u-77","name":"ticket-reply","metadata":{"provider":"openai"},"input":"PRIVATE","output":"PRIVATE"}
+{"id":"o2","type":"SPAN","startTime":"2026-10-12T09:00:01Z","name":"retrieval"}
+{"id":"o3","type":"GENERATION","startTime":"2026-10-12T09:00:02Z","model":"claude-haiku-4-5","usageDetails":{"input":500,"output":100,"cache_read_input_tokens":2000},"userId":"u-78","name":"classify","metadata":{"provider":"anthropic"}}
+{"id":"o4","type":"EVENT","startTime":"2026-10-12T09:00:03Z","name":"feedback"}

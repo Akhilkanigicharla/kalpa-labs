@@ -1,3 +1,4 @@
+import importlib.util
 # Run: python3 leadfinder/test_enrich.py — offline, local test server
 import http.server, os, sys, threading
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import enrich as E
@@ -21,4 +22,30 @@ assert out["Hidden"]["enriched"] == "blocked by robots.txt" and not out["Hidden"
 assert out["Booked"]["online_booking"] == "yes" and int(out["Booked"]["score"]) < 70
 assert int(g["score"]) == 90, g["score"]  # 70 +10 no booking +5 email +5 instagram, already has WhatsApp
 print("  ✓ emails, WhatsApp, Instagram found; robots.txt respected; booking-tool owners scored down")
+# ---- schema.org structured data (Deep Scan v2)
+LD = """<html><head><script type="application/ld+json">{ broken json </script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[
+ {"@type":"WebSite","name":"Lotus"},
+ {"@type":"BeautySalon","name":"Lotus Salon","email":"mailto:hello@lotus-salon.test","telephone":"+91 90000 11111",
+  "sameAs":["https://www.instagram.com/lotus.salon.hyd","https://facebook.com/lotussalonhyd"],
+  "potentialAction":{"@type":"ReserveAction","target":"https://lotus-salon.test/book"}}]}</script></head>
+<body>Write to webmaster@agency-decoy.test for site issues.</body></html>"""
+for eng in ["stdlib"] + (["extruct"] if importlib.util.find_spec("extruct") else []):
+    sd = E.structured(LD, eng)
+    assert sd["schema_type"] == "BeautySalon" and sd["email"] == "hello@lotus-salon.test", (eng, sd)
+    assert sd["phone"] == "+91 90000 11111" and sd["instagram"] == "lotus.salon.hyd" and sd["facebook"] == "lotussalonhyd", (eng, sd)
+    assert sd["online_booking"] == "yes" and sd["engine"] == eng
+x = E.extract(LD, "stdlib")
+assert x["email"] == "hello@lotus-salon.test" and x["online_booking"] == "yes" and x["schema_type"] == "BeautySalon", x
+assert E.structured("<html><body>no schema</body></html>", "stdlib") == {}
+print("  ✓ schema.org JSON-LD: @graph, mailto email beats a decoy, sameAs socials, ReserveAction = has booking")
+if importlib.util.find_spec("extruct"):
+    MD = """<div itemscope itemtype="https://schema.org/HealthClub"><span itemprop="name">Iron Gym</span>
+    <a itemprop="email" href="mailto:join@irongym.test">mail</a><span itemprop="telephone">040-1234567</span></div>"""
+    sd = E.structured(MD, "extruct")
+    assert sd["schema_type"] == "HealthClub" and sd["email"] == "join@irongym.test" and sd["phone"] == "040-1234567", sd
+    assert E.structured(MD, "stdlib") == {}   # microdata needs extruct
+    print("  ✓ microdata read with extruct (stdlib reader skips it)")
+else:
+    print("  (extruct not installed: microdata test skipped; pip install extruct==0.18.0)")
 print("enrich tests passed")

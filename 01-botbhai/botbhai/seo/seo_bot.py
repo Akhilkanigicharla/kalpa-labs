@@ -71,15 +71,21 @@ def jsonld(setup, cfg, page_url, service=None, area=None):
     ] + [{"@type": "Question", "name": f"Do you offer {f['k'][0]}?", "acceptedAnswer": {"@type": "Answer", "text": clean(f["a"], cfg)}} for f in cfg["faqs"][:4]]}
     return [biz, faq]
 
-CSS = """:root{--ink:#1d1d1f;--muted:#5f6368;--accent:#0e7c66;--bg:#fafaf7}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg)}main{max-width:760px;margin:0 auto;padding:24px 16px 80px}h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:8px 0}h2{margin-top:32px}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse}td{padding:8px 0;border-bottom:1px solid #e5e5e5}td:last-child{text-align:right;font-weight:600}.wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:block;text-align:center;background:#25d366;color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none}a{color:var(--accent)}"""
+CSS = """:root{--ink:#1d1d1f;--muted:#5f6368;--accent:#0e7c66;--bg:#fafaf7}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg)}main{max-width:760px;margin:0 auto;padding:24px 16px 80px}h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:8px 0}h2{margin-top:32px}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse}td{padding:8px 0;border-bottom:1px solid #e5e5e5}td:last-child{text-align:right;font-weight:600}.wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:block;text-align:center;background:#0e7c4a;color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none}a{color:var(--accent)}"""
 
 def page(setup, cfg, title, desc, body, url, service=None, area=None):
     ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld(setup, cfg, url, service, area))
     wa = html.escape(f"https://wa.me/{cfg['whatsapp']}?text=" + urllib.parse.quote(("Hi, I'd like to book " + (service or "")).strip()))
-    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
 <meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website">
 <style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
+
+def favicon(cfg):
+    """A small letter mark in the site's accent colour (white on #0e7c66: 5.2:1 contrast)."""
+    letter = html.escape((cfg.get("business") or "B").strip()[:1].upper())
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0e7c66"/>'
+            f'<text x="32" y="44" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">{letter}</text></svg>')
 
 def services_table(cfg):
     return "<table>" + "".join(f"<tr><td>{html.escape(c['name'])}</td><td>{html.escape(c['price'])}</td></tr>" for c in cfg["catalog"]) + "</table>"
@@ -104,6 +110,7 @@ def build(setup, cfg, out):
             urls.append(url); kw.append((c["name"], a, f"{c['name'].lower()} in {a.lower()}", f"{c['name'].lower()} near me", name))
     today = dt.date.today().isoformat()
     (site / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls) + "</urlset>")
+    (site / "favicon.svg").write_text(favicon(cfg))  # stops the /favicon 404 that Lighthouse logged as a console error
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {cfg['site_url']}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"# {cfg['business']}\n\n> {cfg['address']}. {cfg['hours']}. Phone/WhatsApp {cfg['phone']}.\n\n## {cfg['catalogTitle']}\n" + "\n".join(f"- {c['name']}: {c['price']}" for c in cfg["catalog"]) + "\n")
     with open(out / "keywords.csv", "w", newline="", encoding="utf-8-sig") as f:

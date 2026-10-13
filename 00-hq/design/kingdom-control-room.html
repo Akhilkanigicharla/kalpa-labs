@@ -1,0 +1,724 @@
+<title>Kalpa Labs Control Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Kalamkari control room. A painted-cloth "Kingdom of Kalpa": natural-dye palette (indigo, madder, turmeric),
+   block-print dot ground, temple-border bands on the hero cards. Phone first: Today answers "what do I do now?",
+   the other views sit behind a bottom tab bar on phones and a top bar on desktop. */
+:root{
+  --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --soft:#E6E6F1;
+  --accent:#2A3A8F; --accent-fg:#FFFFFF; --madder:#B23A2C; --gold:#D3940A; --flame:#C2541B;
+  --ok:#23804F; --warn:#B86E00; --bad:#C0392B;
+  --hero:#1C2463; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#5B6178; --l1:#B23A2C; --l2:#2F4FB0; --l3:#2E7D4F; --l4:#7B3F8C; --l5:#C08304; --l6:#B8235A; --l7:#13777F;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1.4px);background-size:18px 18px;color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+/* temple border: a block-printed band of lotus dots and teeth, used on hero surfaces */
+
+/* ===== game layer ===== */
+.levelcard{position:relative;border-radius:var(--r-l);padding:22px 20px 26px;color:var(--hero-fg);background:
+  radial-gradient(circle at 92% 18%,color-mix(in srgb,var(--gold) 22%,transparent) 0 70px,transparent 71px),
+  radial-gradient(circle at 92% 18%,transparent 0 84px,color-mix(in srgb,var(--gold) 30%,transparent) 85px 86px,transparent 87px),
+  var(--hero);display:grid;gap:14px;overflow:hidden;box-shadow:0 18px 40px -22px #1C2463}
+.levelcard::before,.levelcard::after{content:"";position:absolute;left:0;right:0;height:10px;background:
+  radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,
+  linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px}
+.levelcard::before{top:0;opacity:.9}
+.levelcard::after{bottom:0;transform:scaleY(-1);opacity:.9}
+.levelcard .lvl{font:400 clamp(34px,8vw,46px)/1 var(--f-display);color:var(--gold);letter-spacing:.005em;margin-top:4px}
+.levelcard .sub{color:var(--hero-mute);font-size:14.5px}
+.levelcard .sub b{color:var(--hero-fg)}
+.xpbar{height:12px;border-radius:999px;background:color-mix(in srgb,var(--hero-fg) 16%,transparent);overflow:hidden;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--hero-fg) 18%,transparent)}
+.xpbar i{display:block;height:100%;border-radius:999px;background:repeating-linear-gradient(135deg,var(--gold) 0 8px,color-mix(in srgb,var(--gold) 78%,#fff) 8px 12px);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--hero-fg) 10%,transparent);border:1px solid color-mix(in srgb,var(--hero-fg) 22%,transparent);border-radius:999px;padding:5px 12px;font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;color:var(--hero-fg)}
+
+.quest{border-radius:var(--r-l);padding:22px 18px 18px;background:var(--panel);display:grid;gap:12px;position:relative;overflow:hidden;box-shadow:var(--shadow),inset 0 0 0 1px color-mix(in srgb,var(--qc) 35%,var(--rule))}
+.quest::before{content:"";position:absolute;inset:0 0 auto 0;height:9px;background:
+  linear-gradient(135deg,var(--panel) 0 25%,transparent 25% 75%,var(--panel) 75%) 0 0/12px 12px,var(--qc)}
+.quest h2{font-size:clamp(24px,5.4vw,30px);line-height:1.12}
+.xpchip{display:inline-flex;align-items:center;gap:5px;font:600 13px var(--f-body);font-variant-numeric:tabular-nums;padding:2px 10px;border-radius:999px;background:color-mix(in srgb,var(--gold) 20%,var(--panel));color:var(--fg);border:1px solid color-mix(in srgb,var(--gold) 60%,transparent)}
+.boss{background:color-mix(in srgb,var(--bad) 14%,var(--panel));border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
+
+.worlds{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:10px}
+.world{border:0;border-radius:var(--r-m);padding:14px 12px 12px;text-align:left;cursor:pointer;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule);display:grid;gap:6px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.world::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--wc)}
+.world:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--wc),0 12px 22px -16px var(--wc)}
+.world .wname{font:400 18px/1.15 var(--f-display)}
+.world .wmeta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.world .bar{background:color-mix(in srgb,var(--wc) 14%,var(--soft))}
+
+.badges{display:flex;flex-wrap:wrap;gap:12px}
+.badge{display:grid;justify-items:center;gap:6px;width:80px;text-align:center;font-size:12px;line-height:1.25;font-weight:500}
+.badge .b{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:radial-gradient(circle,color-mix(in srgb,var(--gold) 30%,var(--panel)) 0 60%,transparent 61%),conic-gradient(from 0deg,var(--gold) 0 12.5%,var(--madder) 0 25%,var(--gold) 0 37.5%,var(--madder) 0 50%,var(--gold) 0 62.5%,var(--madder) 0 75%,var(--gold) 0 87.5%,var(--madder) 0);box-shadow:0 6px 14px -8px var(--madder)}
+.badge.locked .b{background:var(--soft);box-shadow:inset 0 0 0 1.5px dashed var(--rule);filter:grayscale(1);opacity:.55}
+.badge.locked{color:var(--muted)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+.kingdom{width:100%;max-width:580px;margin:0 auto;display:block}
+.isle{cursor:pointer}
+.isle:focus-visible circle.edge{stroke-width:5}
+.lore{border-radius:var(--r-l);padding:18px;display:grid;gap:12px;background:linear-gradient(160deg,color-mix(in srgb,var(--wc) 16%,var(--panel)),var(--panel) 70%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--wc) 40%,var(--rule))}
+.npc{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start}
+.npc .face{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:var(--panel);box-shadow:0 0 0 2px var(--wc),0 0 0 6px color-mix(in srgb,var(--wc) 18%,transparent)}
+.speech{background:var(--panel);border-radius:4px var(--r-m) var(--r-m) var(--r-m);padding:10px 12px;box-shadow:inset 0 0 0 1px var(--rule)}
+.speech b{font-family:var(--f-display);font-weight:400;font-size:1.05em}
+.wlevel{display:inline-flex;align-items:center;gap:6px;font:600 13px var(--f-body);padding:3px 11px;border-radius:999px;background:var(--wc);color:#fff}
+.chapter{display:flex;align-items:center;gap:10px;margin-top:10px}
+.chapter .num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:400 17px var(--f-display);background:var(--wc);color:#fff;flex:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--wc) 22%,transparent)}
+.chapter h3{font-size:19px}
+.bounty{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:var(--r-m);padding:12px 14px;background:color-mix(in srgb,var(--gold) 14%,var(--panel));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 50%,transparent);font-size:15px}
+.overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,#0E1230 62%,transparent);padding:16px}
+.overlay .box{position:relative;max-width:360px;width:100%;border-radius:var(--r-l);padding:30px 24px 26px;text-align:center;color:var(--hero-fg);background:var(--hero);display:grid;gap:10px;overflow:hidden;box-shadow:0 30px 60px -20px #000}
+.overlay .box::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px}
+.overlay .big{font:400 42px/1 var(--f-display);color:var(--gold)}
+.overlay .emo{font-size:54px}
+.overlay .eyebrow{color:var(--hero-mute)!important}
+.overlay .btn{background:var(--gold)!important;color:#1C2463!important;border:0!important}
+
+/* ===== base ===== */
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:16px 108px;display:grid;gap:16px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.003em}
+h1{font-size:clamp(24px,4.6vw,30px);line-height:1}
+h2{font-size:23px;line-height:1.15}
+h3{font-size:19px;line-height:1.25}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.small{font-size:14px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--gold);outline-offset:2px}
+::selection{background:color-mix(in srgb,var(--gold) 40%,transparent)}
+
+/* top bar */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:42px;height:42px;border-radius:50%;background:var(--hero);color:var(--gold);display:grid;place-items:center;font:600 22px/1 "Anek Telugu",var(--f-body);box-shadow:0 0 0 2px var(--gold),0 0 0 5px color-mix(in srgb,var(--gold) 25%,transparent)}
+.live{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin-top:4px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
+nav.tabs{display:flex;gap:4px;background:var(--panel);padding:4px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--rule)}
+nav.tabs button{border:0;background:none;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;font-size:14.5px}
+nav.tabs button:hover{color:var(--fg)}
+nav.tabs button[aria-current="page"]{background:var(--hero);color:var(--hero-fg)}
+nav.tabs button[aria-current="page"] svg{color:var(--gold)}
+nav.tabs svg{width:18px;height:18px}
+@media (max-width:760px){
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;border-radius:18px 18px 0 0;background:var(--panel);box-shadow:0 -1px 0 var(--rule),0 -12px 30px -20px color-mix(in srgb,var(--accent) 60%,transparent);justify-content:space-around;padding:6px 6px calc(8px + env(safe-area-inset-bottom,0px))}
+  nav.tabs button{flex-direction:column;gap:2px;font-size:11.5px;padding:7px 2px;flex:1;border-radius:12px}
+}
+@media (min-width:761px){.wrap{padding-block:24px 56px}}
+
+.panel{background:var(--panel);border-radius:var(--r-l);padding:18px;min-width:0;box-shadow:var(--shadow),inset 0 0 0 1px var(--rule)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:start}
+.stack{display:grid;gap:12px}
+
+/* home hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.ring{width:92px;height:92px}
+.ring text{font-family:var(--f-display)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.stat b{display:block;font:400 24px var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted)}
+.next{border-radius:var(--r-l);padding:18px;background:var(--panel);display:grid;gap:10px;box-shadow:inset 0 0 0 2px var(--accent)}
+.next h2{font-size:24px}
+.youdo{background:color-mix(in srgb,var(--accent) 8%,var(--panel));border-radius:var(--r-m);padding:12px 14px;display:grid;gap:4px;box-shadow:inset 3px 0 0 var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--rule);color:var(--muted);white-space:nowrap;background:var(--panel)}
+.chip.doing{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,var(--rule))}
+.chip.done{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 50%,var(--rule))}
+.chip.gate{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--rule))}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--rule);background:var(--panel);padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:600;min-height:46px;transition:transform .12s,background .15s,box-shadow .15s}
+.btn:hover{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.btn.primary:hover{box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 45%,transparent)}
+.btn.ghost{background:none;border-color:transparent;color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{min-height:34px;padding:6px 12px;font-size:13.5px}
+
+/* routine */
+.steps{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:58px 1fr;gap:10px}
+.step .t{font-family:var(--f-mono);font-size:12.5px;color:var(--madder);padding-top:2px;font-weight:600}
+
+/* leaderboard */
+.lb{display:grid;gap:8px}
+.lbrow{display:grid;grid-template-columns:22px 1fr 44px;gap:10px;align-items:center;border:0;background:none;padding:7px 6px;border-radius:var(--r-s);cursor:pointer;text-align:left;width:100%}
+.lbrow:hover{background:var(--soft)}
+.bar{height:7px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;border-radius:4px}
+
+/* unit chips */
+.unitbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.unitbar button{flex:none;border:0;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;font-weight:600;font-size:14px}
+.unitbar button[aria-pressed="true"]{background:var(--hero);color:var(--hero-fg);box-shadow:none}
+
+/* task cards */
+details.task{border-radius:var(--r-m);background:var(--panel);overflow:hidden;box-shadow:inset 0 0 0 1px var(--rule)}
+details.task[open]{box-shadow:inset 0 0 0 1.5px var(--accent),var(--shadow)}
+details.task summary{list-style:none;cursor:pointer;padding:13px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+details.task summary::-webkit-details-marker{display:none}
+.tick{width:24px;height:24px;border-radius:50%;border:2px solid var(--rule);display:grid;place-items:center}
+.tick.doing{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 22%,transparent)}
+.tick.done{border-color:var(--ok);background:var(--ok)}
+.tick.done::after{content:"";width:9px;height:5px;border-left:2px solid var(--panel);border-bottom:2px solid var(--panel);transform:rotate(-45deg) translate(1px,-1px)}
+.tbody{padding:0 14px 16px 50px;display:grid;gap:10px}
+.kv{display:grid;gap:8px}
+.kv div{display:grid;gap:2px}
+.kv dt{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kv dd{margin:0}
+.seg{display:inline-flex;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--rule);background:var(--panel)}
+.seg button{border:0;background:none;padding:8px 14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted);min-height:42px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.phasehead{display:flex;align-items:baseline;gap:10px;margin-top:6px}
+
+/* map */
+.mapbox{overflow-x:auto;border-top:1px solid var(--rule);margin-top:10px;padding-top:6px}
+svg text{font-family:var(--f-mono)}
+.st{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted)}
+
+/* agent org */
+.orggroup{border-radius:var(--r-m);padding:10px 12px;box-shadow:inset 0 0 0 1px var(--rule);background:var(--panel)}
+.orggroup>summary,.orgagent>summary{cursor:pointer;list-style-position:outside}
+.orgagent{padding:4px 0;border-top:1px dashed var(--rule)}
+.chips .chip.on{outline:2px solid currentColor}
+/* agents feed */
+.feed{display:grid;gap:12px}
+.msg{display:grid;grid-template-columns:36px 1fr;gap:10px}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:600 12px var(--f-mono);color:var(--gold);background:var(--hero);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 45%,transparent)}
+.bubble{background:var(--soft);border-radius:4px 14px 14px 14px;padding:10px 12px;display:grid;gap:4px;min-width:0}
+.bubble .who{font-size:12.5px;color:var(--muted)}
+.deptgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{border-radius:var(--r-m);padding:14px;display:grid;gap:6px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule)}
+
+/* plan */
+.prow{display:grid;grid-template-columns:130px 1fr 110px;gap:10px;align-items:center}
+.ptrack{height:20px;background:var(--soft);border-radius:999px;position:relative;overflow:hidden}
+.ptrack i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:999px}
+.ptrack em{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--gold) 60%,transparent) 0 4px,transparent 4px 8px)}
+@media (max-width:560px){.prow{grid-template-columns:1fr;gap:4px}.tbody{padding-left:14px}}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono)}
+.note{font-size:14px;color:var(--muted);border-left:3px solid var(--gold);padding-left:10px}
+.empty{padding:16px;border:1.5px dashed var(--rule);border-radius:var(--r-m);color:var(--muted);font-size:14.5px;background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--hero);color:var(--hero-fg);padding:10px 18px;border-radius:999px;font-size:14.5px;font-weight:600;z-index:30;box-shadow:0 0 0 2px var(--gold),0 14px 30px -12px #000}
+@media (min-width:761px){.toast{bottom:28px}}
+@media (prefers-reduced-motion:no-preference){
+  #view>*{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+  #view>*:nth-child(2){animation-delay:.05s}#view>*:nth-child(3){animation-delay:.1s}#view>*:nth-child(4){animation-delay:.15s}
+  @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark" aria-hidden="true">క</div><div><h1>Kalpa Labs</h1><div class="live"><span class="dot" id="liveDot"></span><span id="liveText">Connecting…</span></div></div></div>
+    <nav class="tabs" aria-label="Sections" id="tabs"></nav>
+  </header>
+  <main id="view" class="stack"></main>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="overlay" id="levelup" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="luTitle"><div class="emo" aria-hidden="true">👑</div><div class="eyebrow" style="color:#fff;opacity:.85">Level up!</div><div class="big" id="luTitle">Builder</div><p id="luText">You reached a new rank.</p><button class="btn" id="luClose" style="background:#fff;color:#1E1A33;border:0">Keep playing</button></div></div>
+
+<script>
+(function(){
+const PHASES=[
+  {id:0,name:"Foundation",what:"Company accounts, bank, brand, cloud workspace"},
+  {id:1,name:"Setup",what:"Each unit's tools, accounts and first build — no customers yet"},
+  {id:2,name:"Validate",what:"Talk to real customers, get the first yes or pivot"},
+  {id:3,name:"Launch",what:"Ship, take payment, deliver"},
+  {id:4,name:"Grow",what:"Repeat what works, cut what doesn't"}
+];
+const DEPTS={
+  pm:{name:"Project Management",role:"Project Manager agent",share:10,mandate:"Plans the unit's weekly sprint, picks the next task for your hour, keeps this map current and escalates blockers to you."},
+  mkt:{name:"Marketing",role:"Marketing Manager agent",share:15,mandate:"Positioning, brand voice, listings, posts, scripts and channel plans. Measures reach and leads."},
+  sales:{name:"Sales",role:"Sales Lead agent",share:10,mandate:"Lead lists, talk tracks, proposals and follow-ups. You do every real conversation; the agent prepares and logs it."},
+  tech:{name:"Technology",role:"Tech Lead agent",share:35,mandate:"Builds and maintains code, bots, apps, sites and data pipelines in cloud workspaces only."},
+  ops:{name:"Operations",role:"Operations Manager agent",share:10,mandate:"Accounts, SOPs, tool setup, support replies and the checklists you follow in the field."},
+  fin:{name:"Finance & Compliance",role:"Finance & Compliance agent",share:5,mandate:"Pricing, invoices, tax reserve, GST/ITR prep, contracts and platform rules. Flags anything that needs a CA."},
+  qa:{name:"Validation",role:"Validator agent",share:15,mandate:"Checks every other agent's output against the task's acceptance check before it reaches you. Nothing ships unvalidated."}
+};
+const DEPT_ORDER=["pm","mkt","sales","tech","ops","fin","qa"];
+const UNITS=[
+  {id:"hq",n:0,name:"HQ — Kalpa Labs",short:"HQ",color:"--l0",tokens:10,goal:"One identity, one bank account, one cloud workspace and a website that every unit uses."},
+  {id:"b1",n:1,name:"BotBhai Automation",short:"BotBhai",color:"--l1",tokens:22,goal:"Four setups (salon, real estate, gym, exam kits): WhatsApp bot, lead gen, Meta ads bot, voice agent, dashboard. ₹10–25k setup + ₹3–8k/month."},
+  {id:"b2",n:2,name:"JobCard App",short:"JobCard",color:"--l2",tokens:20,goal:"Voice-note job cards, invoices and 6-month reminders for AC and appliance technicians. ₹149–299/month."},
+  {id:"b3",n:3,name:"Exam & Money Kits",short:"Kits",color:"--l3",tokens:12,goal:"Google Sheets kits for TSPSC/APPSC/SSC aspirants or Indian tax and SIP planning. ₹199–499 each."},
+  {id:"b4",n:4,name:"Extension Lab",short:"Extensions",color:"--l4",tokens:10,goal:"One freemium Chrome extension built from real complaints in store reviews. $3–9/month or lifetime licence."},
+  {id:"b5",n:5,name:"Deals & Tools",short:"Deals",color:"--l5",tokens:8,goal:"Finance calculator site, Telugu deals Telegram channel and a newsletter earning affiliate commissions."},
+  {id:"b6",n:6,name:"AI FinOps & Governance",short:"FinOps",color:"--l6",tokens:10,goal:"Kalpa Labs' long-term flagship: shows Indian SaaS and GCC teams what every AI feature costs per customer, and turns their AI usage logs into a compliance evidence pack (DPDP, ISO 42001, EU AI Act Art. 50). ₹1,999–7,999/month, on open-source tools."},
+  {id:"b7",n:7,name:"Trading Lab",short:"Trading",color:"--l7",tokens:8,goal:"Backtested bot on legal Indian venues only. Paper-trades 90 days before any real money."}
+];
+// T(id, unit, phase, dept, title, claude, you, minutes, waitDays, check, gate)
+const T=(id,u,ph,d,t,c,y,m,w,ch,g)=>({id,u,ph,d,t,c,y,m,w:w||0,ch:ch||"Output matches the task title and you approved it.",g:!!g});
+const TASKS=[
+T("hq1","hq",0,"ops","Business Gmail and password manager","Writes a security checklist and a naming scheme for every account.","Create a business Gmail, add the Bitwarden browser extension (no desktop install) and turn on 2FA everywhere.",30,0,"2FA on for Gmail; recovery codes written on paper, not stored on the PC."),
+T("hq2","hq",0,"fin","Separate bank account for business money","Compares zero-balance savings accounts and lists the documents you need.","Open the account online with video KYC.",45,2,"Only business income and costs will flow through it."),
+T("hq3","hq",0,"fin","Udyam (MSME) registration","Pre-fills every field from your answers.","Submit on udyamregistration.gov.in with Aadhaar. It is free.",30,1,"Udyam certificate saved to Google Drive."),
+T("hq4","hq",3,"fin","Razorpay account and UPI collection (when we go public)","Prepares the KYC list and business description.","Sign up and finish KYC.",40,3,"A ₹1 test payment link pays into the business account."),
+T("hq5","hq",0,"tech","Cloud workspace, nothing on your PC","Sets up the repo structure and a README for all 7 units.","Create a GitHub account and open Codespaces in the browser.",20,0,"The repo opens in a browser Codespace with no local install."),
+T("hq6","hq",0,"tech","Supabase and Netlify accounts","Creates projects through the connected tools once you sign in.","Sign in to both with the business Gmail.",15,0,"Both projects visible from this chat."),
+T("hq7","hq",0,"mkt","Company name, logo and domain","Gives 10 name options, checks domains and drafts logo concepts.","Check 'Kalpa Labs' is free on the IP India trademark search (class 42). Buy the domain later, when we go public.",15,0,"Name not already registered as a trademark in class 42 (IP India search)."),
+T("hq8","hq",0,"tech","Company website","Builds a one-page site with a section per unit and deploys it free on a Netlify subdomain.","Review the copy and approve publishing.",20,0,"Loads on a phone; contact details correct; no unit promises a result it can't deliver."),
+T("hq9","hq",3,"ops","Invoicing and bookkeeping","Sets up an invoice template and a ledger sheet with a tax-reserve column.","Create a free Zoho Invoice account.",20,0,"A sample invoice carries your PAN and a running number."),
+T("hq10","hq",0,"pm","Daily agent schedule","Sets a morning scheduled task that prepares the day's work within each unit's token budget.","Approve the scheduled task.",10,0,"The first morning brief arrives and lists your next task."),
+T("hq11","hq",0,"qa","Foundation audit","Validator re-checks every HQ task's acceptance check and lists anything missing.","Read the audit and fix what it flags.",15,0,"Every HQ task passes its check.",true),
+
+T("b1a","b1",1,"pm","Pick the first BotBhai setup","Wrote the BotBhai Playbook: 4 setups (salon, real estate, gym, exam kits), prices, research, agent swarms.","Read the playbook and say which setup launches first (Salon recommended).",15),
+T("b1b","b1",1,"mkt","Check the BotBhai name","Searched the web: no company found using it.","Search 'BotBhai' on the IP India trademark search, classes 42 and 35.",10,0,"Screenshot of the result saved."),
+T("b1c","b1",1,"tech","Meta developer app and WhatsApp test number","Wrote the step-by-step guide in the playbook.","Create the app on developers.facebook.com, add WhatsApp, add 3 test numbers.",30,2,"A test WhatsApp message arrives on your phone."),
+T("b1d","b1",1,"tech","Go live in the cloud: site + database","Deploys the BotBhai site on Netlify and creates the free Supabase project.","Say 'deploy', switch Netlify visitor access to public, paste Groq and Sarvam keys.",20,0,"Site opens on your phone; webhook answers Meta's check."),
+T("b1e","b1",1,"qa","Show the demo","Built the live demo: chat, voice mode, leads dashboard, Excel export for all 4 setups. 36 automated checks pass.","Do one booking per setup on your phone, export the Excel, then show it to a friend playing a salon owner.",25,0,"4 bookings on the dashboard and the Excel file opens.",true),
+T("b1f","b1",1,"sales","Salon lead list for Hyderabad","Lead finder ran in GitHub's cloud: 142 salons, 114 gyms, 414 coaching/colleges mapped; 8 salons scored hot.","Open the Excel, pick 15 salons near you to visit.",15,0,"15 salons marked 'contacted' or 'demo shown'."),
+T("b1g","b1",2,"sales","Visit 15 salons with the demo","Builds a personalised demo per salon (their name, prices, address).","Walk in, show the demo on your phone, note the owner's reaction.",180,0,"Notes logged for all 15 visits."),
+T("b1h","b1",2,"sales","Close 2 paid salon pilots","Drafts the proposal, agreement and DPDP privacy notice.","Do the calls and collect the advance.",60,0,"2 signed pilots with an advance received.",true),
+T("b1i","b1",2,"tech","First salon live","Submits templates, connects the number, turns on reminders and the ads guard.","Do the handover call with the owner.",90,0,"Bot answers in under 5 seconds; first reminder delivered."),
+T("b1j","b1",3,"sales","Launch the Gym setup","Gym demo + 20-gym list from the lead finder.","Visit 10 gyms; close 1 pilot.",150,0,"1 gym pilot signed."),
+T("b1k","b1",3,"sales","Launch the Exam Kits setup","Telugu + English coaching demo with the quiz.","Visit 8 coaching institutes in Ashok Nagar and Dilsukhnagar.",150,0,"1 institute pilot signed."),
+T("b1l","b1",4,"sales","Launch the Real Estate setup","Lead-form + speed-to-lead demo with voice calling.","Meet 5 brokers in Kollur, Tellapur, Kompally.",150,0,"1 real-estate client signed."),
+T("b1m","b1",3,"mkt","Case studies and referrals","Writes case studies from real client numbers and 4 posts.","Post them; ask each client for 2 referrals.",30),
+T("b1n","b1",4,"fin","Retainers and ads management","Sends monthly reports and the ads-management offer.","Renew retainers; add ads management for 2 clients.",30,0,"₹30,000+ monthly recurring revenue."),
+
+T("b2a","b2",1,"mkt","Interview script and one-page pitch","Drafts the questions and the pitch in Telugu and English.","Review them.",15),
+T("b2b","b2",3,"ops","Google Play developer account","Writes the verification guide.","Pay $25, verify ID and verify a physical Android phone.",45,3,"Play Console shows no pending verification tasks."),
+T("b2c","b2",1,"tech","App skeleton in the cloud","Sets up an Expo project in Codespaces, the Supabase schema and EAS cloud builds.","Install Expo Go on your phone and open the preview.",20,0,"Preview opens on your phone; nothing installed on the PC."),
+T("b2d","b2",2,"sales","Interview 15 technicians","Logs and summarises every answer.","Visit AC and appliance repair shops.",180,0,"15 interviews logged with their top problem in their words."),
+T("b2e","b2",2,"sales","Pre-sell 5 spots at ₹99","Drafts the offer and a UPI payment link.","Ask for the payment.",60,0,"At least 5 paid. Fewer than 5 means pivot to the next idea.",true),
+T("b2f","b2",3,"tech","MVP: voice note to job card, invoice and reminder","Builds the app and runs tests.","Test it with the 5 pre-sold technicians.",60,0,"Works with a Telugu voice note; reminders go only to opted-in customers."),
+T("b2g","b2",3,"ops","Closed test: 12 testers for 14 days","Writes the tester invite and a tracker.","Recruit friends and technicians.",30,14,"12 testers opted in for 14 continuous days."),
+T("b2h","b2",3,"mkt","Play Store listing","Writes copy and makes screenshots in Telugu and English.","Review them.",20),
+T("b2i","b2",4,"fin","Launch with subscriptions","Sets plans at ₹149–299 a month.","Set up the merchant profile in Play Console.",30,0,"First renewal paid out to the business bank account."),
+
+T("b3a","b3",1,"pm","Choose the audience","Compares exam aspirants and personal finance on demand and competition.","Pick one.",10),
+T("b3b","b3",1,"tech","Product #1 in Google Sheets","Builds the exam tracker or the tax/SIP dashboard.","Check the syllabus or the tax figures against official sources.",45,0,"Every formula tested; content matches the official notification or tax rules."),
+T("b3c","b3",1,"ops","Storefront","Writes the product page copy.","Create a Razorpay payment page and a Gumroad store.",30),
+T("b3d","b3",1,"fin","Refund policy, licence and watermark","Drafts the policy and personalised PDF watermarks.","Approve them.",10),
+T("b3e","b3",2,"mkt","Telegram channel and 10 Pinterest pins","Drafts the posts and pins.","Post them.",30),
+T("b3f","b3",3,"sales","Launch offer to the first 100 members","Writes the launch sequence.","Announce it.",20,0,"First 10 sales or a written reason why not.",true),
+T("b3g","b3",4,"tech","Product #2 and a bundle","Builds the next product from buyer questions.","Review it.",30),
+
+T("b4a","b4",1,"pm","Pick the extension from review mining","Mines 1–3★ reviews of popular extensions and ranks 3 ideas.","Pick one.",15),
+T("b4b","b4",3,"ops","Chrome Web Store account","Explains the trader declaration.","Pay the $5 fee and declare trader status.",30),
+T("b4c","b4",1,"tech","Manifest V3 extension MVP","Builds it in Codespaces.","Load it unpacked in Chrome and test.",40,0,"Minimum permissions, no remote code, no hidden affiliate links."),
+T("b4d","b4",3,"fin","Licence payments","Adds a licence check through a merchant of record such as Dodo Payments or Gumroad.","Sign up and add the bank for payouts.",30,3,"A test purchase unlocks the paid feature."),
+T("b4e","b4",1,"mkt","Listing, privacy policy and landing page","Writes all three.","Review them.",15),
+T("b4f","b4",3,"mkt","Submit and launch","Writes Reddit and Product Hunt posts.","Submit and post.",45,3,"Approved in the store; first 100 installs.",true),
+T("b4g","b4",4,"tech","Paid features from user feedback","Builds the top-requested feature.","Test it.",20),
+
+T("b5a","b5",3,"ops","Affiliate accounts","Lists each program's rules.","Join Amazon Associates India and EarnKaro or Cuelinks.",40),
+T("b5b","b5",1,"tech","Calculator site","Builds SIP, EMI and tax-regime calculators on Netlify.","Check results against official calculators.",20,0,"Results match official calculators to the rupee."),
+T("b5c","b5",1,"mkt","Telugu deals Telegram channel","Sets the post format and schedule.","Create the channel.",15),
+T("b5d","b5",2,"mkt","Two weeks of daily deal posts","Drafts each day's posts.","Post them, about 5 minutes a day.",70),
+T("b5e","b5",2,"sales","Newsletter with SaaS affiliate links","Writes the first 2 issues.","Create a beehiiv account and send.",20),
+T("b5f","b5",3,"qa","3 qualifying Amazon sales","Tracks clicks and sales.","Review the numbers.",10,0,"3 sales within 180 days of joining, or the account closes.",true),
+
+T("b6a","b6",1,"pm","Pick the wedge","Summarises the 30-company census and 3 open niches: compliance evidence pack, INR per-customer AI margin, Aadhaar/PAN redaction.","Choose the one to test first.",10,0,"The choice names one buyer and one problem; we don't build a new gateway or router."),
+T("b6b","b6",1,"sales","List 40 people to interview","Writes the profile of an ideal interviewee and LinkedIn search terms (SaaSBoomi founders, Hyderabad GCC AI leads, CTOs of AI-wrapper SaaS).","Pick the 40 names.",30,0,"Every name is a person who pays for or approves AI tools."),
+T("b6c","b6",1,"mkt","Landing page and waitlist","Builds a one-page site on Netlify with a waitlist form.","Review and approve.",20,0,"One-line promise is clear; no claim of being 'certified compliant'."),
+T("b6d","b6",1,"mkt","Sample evidence-pack PDF","Makes a realistic sample report: AI cost per feature and customer, model inventory, DPDP / ISO 42001 / EU AI Act Art. 50 checklist.","Review it.",20,0,"States it is evidence, not certification; every regulation cited is current."),
+T("b6e","b6",2,"sales","10–15 discovery calls","Writes the call script and summarises each call.","Message 5 people a day and run 20-minute calls.",300,0,"Each call logs their monthly AI spend, who owns it, and their top compliance worry."),
+T("b6f","b6",2,"sales","Price test and pilot gate","Drafts 3 price tiers (₹1,999 / ₹7,999 / ₹40k+ GCC).","Ask for a pilot in every call.",30,0,"At least 3 say they'd pay ₹2k+/month or start a pilot. Fewer means switch to evidence-pack consulting only.",true),
+T("b6g","b6",3,"tech","v0: cost tracker and evidence PDF","Builds an OpenAI-compatible proxy on Cloudflare Workers, a Supabase dashboard and the one-click evidence PDF, reusing LiteLLM's price map.","Test it with your pilot customers.",90,0,"Stores metadata only by default (no prompt text); PII redacted at the edge."),
+T("b6h","b6",3,"fin","Data processing agreement and privacy terms","Drafts a DPA, privacy policy and sub-processor list for DPDP and GDPR.","Read them; get a lawyer review once there is revenue.",30,0,"Covers processor duties, breach notice, deletion on request and data region."),
+T("b6i","b6",3,"mkt","Open-source launch","Writes the MIT-licensed SDK README, Show HN and Product Hunt posts.","Post them and answer comments.",60,0,"100 GitHub stars or 20 signups in 2 weeks.",true),
+T("b6j","b6",4,"sales","Weekly cost teardown and paid pilots","Drafts a weekly LinkedIn post such as \"what GPT costs per support ticket\".","Edit, post, follow up with leads.",20,0,"Target ₹50k monthly revenue by month 12, or decide to pivot."),
+
+T("b7a","b7",1,"fin","Pick the legal route","Summarises the rules for NSE currency futures and FIU-registered crypto exchanges.","Choose one.",15,0,"Route is legal for an Indian resident: no offshore forex, no RBI Alert List platform."),
+T("b7b","b7",1,"tech","Backtester in Google Colab","Builds it in Colab, so it runs in the cloud.","Run it once.",20,0,"Fees, slippage and tax are modelled."),
+T("b7c","b7",1,"tech","Walk-forward test of 3 strategies","Runs the tests and writes the report.","Read the report.",15),
+T("b7d","b7",3,"ops","Broker or exchange account with API","Compares API costs and rules.","Open the account and do KYC.",45,3),
+T("b7e","b7",2,"ops","90 days of paper trading","Logs results daily through a scheduled task.","Review weekly, about 5 minutes.",60,90),
+T("b7f","b7",3,"qa","Go-live gate","Validator compares paper results with simply holding, after costs.","Decide go or no-go.",15,0,"Beats holding after fees and tax over 90 days.",true),
+T("b7g","b7",4,"ops","Live with at most ₹2k","Adds a kill switch and a ₹500 daily loss limit.","Fund the account.",15,0,"Kill switch tested before the first live order.")
+];
+const OUTLOOK={
+  hq:["Core","The shell every unit runs on. Lasts as long as any unit does."],
+  b1:["Strong now, must evolve","Demand is high for 3–5 years. As AI agents get easier to set up, owners will DIY; survive by selling outcomes (bookings, recovered leads) and local trust, not setup work."],
+  b2:["Durable if it wins a niche","Building apps gets cheap, so the moat is local language, technician trust and the customer-reminder data. Good long-term bet."],
+  b3:["At risk","AI can generate a study plan on demand. Survives only as a community with fresh, verified content and accountability."],
+  b4:["At risk","Browsers are adding built-in AI agents that replace simple extensions. Narrow B2B workflow tools last longest."],
+  b5:["Weakest","AI search and shopping agents cut clicks to affiliate sites. The Telegram community is the part that lasts."],
+  b6:["Crowded but durable niche","Cost dashboards will likely become free cloud features by 2028–30. What lasts is vendor-neutral compliance evidence, Indian rules (DPDP, RBI, IRDAI) and per-customer margin data. Aim for niche revenue or an acquisition."],
+  b7:["Learning lab, not income","Simple edges get competed away fast, and most retail traders lose. Keep it small and on paper until the gate."]
+};
+
+// ---------- State ----------
+const status={}; let reports=[]; let company=null;
+let db=null, canWrite=true, live=false;
+let tab="home", unitSel="hq", openTask=null;
+const stateOf=id=>status[id]||"todo";
+const unit=id=>UNITS.find(u=>u.id===id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const fmtMin=m=>m>=60?(Math.round(m/6)/10)+" h":m+" min";
+const ORDER=TASKS.map((t,i)=>({t,i})).sort((a,b)=>a.t.ph-b.t.ph||unit(a.t.u).n-unit(b.t.u).n||a.i-b.i).map(x=>x.t);
+const stLabel=s=>s==="done"?"Done":s==="doing"?"In progress":"Not started";
+
+
+// ---------- Game layer ----------
+const WEIGHT={hq:15,b1:20,b2:15,b3:10,b4:8,b5:7,b6:20,b7:5};
+const WORLD_ICON={hq:"🏛️",b1:"🤖",b2:"🛠️",b3:"📚",b4:"🧩",b5:"🛍️",b6:"📊",b7:"📈"};
+const xpOf=t=>Math.round(t.m*(0.5+WEIGHT[t.u]/10))+(t.g?100:0);
+const LV=[0,150,400,800,1400,2200,3300,4800,6800,9500];
+const TITLES=["Intern","Hustler","Builder","Founder","Operator","Rainmaker","Visionary","CEO","Mogul","Tycoon"];
+const statusAt={};
+const istDay=iso=>{try{return new Date(new Date(iso).getTime()+5.5*3600e3).toISOString().slice(0,10);}catch(e){return null;}};
+
+const LORE={
+  hq:{place:"The Citadel of Kalpa",npc:"Kalpa, the Wish-Tree",face:"🌳",story:"Every empire starts with strong walls. Here you forge your identity, your treasury and your home on the internet. Finish the Citadel and bridges open to every world.",reward:"Unlocks: a trusted company that banks, payment gateways and customers believe in."},
+  b1:{place:"BotBhai Bazaar",npc:"Rhea the Automaton",face:"🤖",story:"Salons, gyms, coaching centres and builders lose customers to slow replies. Hand each of them a BotBhai setup that answers in seconds, books, reminds and reports, and the city pays you every month.",reward:"Treasure: ₹10–25k per setup + ₹3–8k monthly from each client."},
+  b2:{place:"Workshop Valley",npc:"Mistri Bot",face:"🛠️",story:"Technicians lose customers they forget to call back. Give them a voice-powered job card that remembers everything, in Telugu.",reward:"Treasure: ₹149–299 a month from every technician."},
+  b3:{place:"The Library of Ranks",npc:"Guru Gyan",face:"📚",story:"Lakhs of exam warriors fight for a few thousand seats. Craft the maps and trackers that guide them to victory.",reward:"Treasure: ₹199–499 per kit, sold while you sleep."},
+  b4:{place:"Plugin Isles",npc:"Pixel the Tinkerer",face:"🧩",story:"Hidden in angry app reviews are wishes nobody granted. Find one, build the extension, and charge for the magic.",reward:"Treasure: $3–9 a month in dollars from users worldwide."},
+  b5:{place:"Bazaar Bay",npc:"Seth Sauda the Merchant",face:"🛍️",story:"Every festival sale is a gold rush. Build calculators and a deals channel, and earn a share of every purchase.",reward:"Treasure: affiliate commissions from Amazon, Flipkart and SaaS tools."},
+  b6:{place:"Ledger Peaks",npc:"Auditor Astra",face:"📊",story:"Companies' AI bills are running wild and regulators are watching. Tame the costs, prove the compliance, and become the keeper of the ledger. This is the kingdom's flagship mountain.",reward:"Treasure: ₹1,999–40,000 a month per company, the path to the 800-crore dream."},
+  b7:{place:"The Market Maze",npc:"Oracle Q",face:"🔮",story:"The maze punishes the impatient: 91 of 100 traders lose. Only those who test on paper for 90 days may enter with real coins.",reward:"Treasure: wisdom first; maybe profit later."}
+};
+const CHAPTERS=["Lay the Foundation","Forge Your Tools","Prove the Dragon Is Real","Open the Gates","Grow the Kingdom"];
+const WLEVELS=[[0,"Wild land"],[1,"Camp"],[25,"Village"],[50,"Town"],[75,"City"],[100,"Capital"]];
+const wlevel=p=>{let n="Wild land";WLEVELS.forEach(([t,l])=>{if(p>=t&&(t>0||p===0))n=l;});return p===0?"Wild land":n;};
+const unitPct=id=>{const ts=TASKS.filter(t=>t.u===id);return Math.round(ts.filter(t=>stateOf(t.id)==="done").length/ts.length*100);};
+function game(){
+  const doneT=TASKS.filter(t=>stateOf(t.id)==="done");
+  const bountyDays=new Set(doneT.map(t=>statusAt[t.id]?istDay(statusAt[t.id]):null).filter(Boolean));
+  const xp=doneT.reduce((a,t)=>a+xpOf(t),0)+bountyDays.size*25;
+  const todayIST=new Date(Date.now()+5.5*3600e3).toISOString().slice(0,10);
+  let level=1;for(let i=0;i<LV.length;i++)if(xp>=LV[i])level=i+1;
+  const cur=LV[level-1],nxt=LV[level]??null;
+  const days=new Set(Object.keys(statusAt).filter(id=>status[id]&&status[id]!=="todo").map(id=>istDay(statusAt[id])).filter(Boolean));
+  let streak=0;const d=new Date(Date.now()+5.5*3600e3);
+  if(!days.has(d.toISOString().slice(0,10)))d.setUTCDate(d.getUTCDate()-1);
+  while(days.has(d.toISOString().slice(0,10))){streak++;d.setUTCDate(d.getUTCDate()-1);}
+  const worldsStarted=new Set(TASKS.filter(t=>stateOf(t.id)!=="todo").map(t=>t.u)).size;
+  return {bountyToday:bountyDays.has(todayIST),xp,level,title:TITLES[level-1],nextTitle:nxt!=null?TITLES[level]:"",into:xp-cur,need:nxt!=null?nxt-cur:0,streak,done:doneT.length,
+    hqDone:TASKS.filter(t=>t.u==="hq").every(t=>stateOf(t.id)==="done"),gates:TASKS.filter(t=>t.g&&stateOf(t.id)==="done").length,worldsStarted,pct:doneT.length/TASKS.length};
+}
+const BADGES=[
+  {icon:"🚀",name:"First quest",how:"Complete any task",test:g=>g.done>=1},
+  {icon:"🔥",name:"3-day streak",how:"Make progress 3 days in a row",test:g=>g.streak>=3},
+  {icon:"🌟",name:"7-day streak",how:"Make progress 7 days in a row",test:g=>g.streak>=7},
+  {icon:"🏛️",name:"Foundation laid",how:"Finish every HQ task",test:g=>g.hqDone},
+  {icon:"🧭",name:"Explorer",how:"Start tasks in 4 different worlds",test:g=>g.worldsStarted>=4},
+  {icon:"⚔️",name:"Boss slayer",how:"Pass your first go/no-go gate",test:g=>g.gates>=1},
+  {icon:"🧱",name:"Builder",how:"Reach level 3",test:g=>g.level>=3},
+  {icon:"🏔️",name:"Halfway",how:"Finish half of all tasks",test:g=>g.pct>=.5}
+];
+function showLevelUp(g){const o=document.getElementById("levelup");document.getElementById("luTitle").textContent=g.title;document.getElementById("luText").textContent=`You reached level ${g.level}. ${g.nextTitle?`Next rank: ${g.nextTitle}.`:"You are the Tycoon of Kalpa Labs!"}`;o.hidden=false;confetti();document.getElementById("luClose").focus();}
+document.addEventListener("click",e=>{if(e.target&&e.target.id==="luClose")document.getElementById("levelup").hidden=true;});
+function confetti(){
+  try{if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;}catch(e){}
+  const c=document.getElementById("confetti");if(!c||!c.getContext)return;const x=c.getContext("2d");if(!x)return;
+  c.width=innerWidth;c.height=innerHeight;
+  const cols=["#B23A2C","#2F4FB0","#2E7D4F","#7B3F8C","#D3940A","#B8235A","#13777F","#F2B840"];
+  const P=Array.from({length:140},()=>({x:c.width/2,y:c.height*0.35,vx:(Math.random()-.5)*14,vy:-Math.random()*13-4,s:Math.random()*7+4,r:Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let f=0;(function tick(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});if(++f<110)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height);})();
+}
+
+// ---------- Tabs ----------
+const ICON={
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/></svg>',
+  units:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  agents:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v10H9l-5 4z"/></svg>',
+  plan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'
+};
+const TABS=[["home","Today"],["map","Kingdom"],["units","Quests"],["agents","Agents"],["plan","Plan"]];
+function renderTabs(){
+  const n=document.getElementById("tabs");
+  n.innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${tab===k?'aria-current="page"':''}>${ICON[k]}<span>${l}</span></button>`).join("");
+  n.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.tab;render();window.scrollTo({top:0});}));
+}
+
+// ---------- Writes ----------
+let toastTimer;
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2200);}
+async function setState(id,st){
+  const before=game().level;status[id]=st;statusAt[id]=new Date().toISOString();const tk=TASKS.find(t=>t.id===id);if(st==="done"){confetti();}render();const after=game();if(after.level>before)setTimeout(()=>showLevelUp(after),700);
+  if(!db||!canWrite){toast(st==="done"?`🏆 +${xpOf(tk)} XP (not saved — offline)`:"Shown here only — not saved");return;}
+  try{await db.collection("status").doc(id).set({s:st,at:new Date().toISOString()});toast(st==="done"?`🏆 Quest complete! +${xpOf(tk)} XP`:st==="doing"?"Marked in progress":"Reset to not started");}
+  catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;setLive();}toast("Couldn't save. Try again.");}
+}
+function wire(root){
+  root.querySelectorAll("[data-set]").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();setState(b.dataset.id,b.dataset.set);}));
+  root.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{const t=TASKS.find(x=>x.id===b.dataset.open);openTask=t.id;unitSel=t.u;tab="units";render();setTimeout(()=>{const el=document.getElementById("task-"+t.id);if(el)el.scrollIntoView({block:"center"});},50);}));
+  root.querySelectorAll("[data-unit]").forEach(b=>b.addEventListener("click",()=>{unitSel=b.dataset.unit;openTask=null;if(b.dataset.go)tab=b.dataset.go;render();}));
+}
+function seg(t){
+  const st=stateOf(t.id), dis=(db&&!canWrite)?"disabled":"";
+  const b=(v,l)=>`<button data-set="${v}" data-id="${t.id}" aria-pressed="${st===v}" ${dis}>${l}</button>`;
+  return `<div class="seg" role="group" aria-label="Status">${b("todo","Not started")}${b("doing","In progress")}${b("done","Done")}</div>`;
+}
+
+// ---------- Home ----------
+function ring(pct){
+  const r=38,c=2*Math.PI*r,off=c*(1-pct/100);
+  return `<svg class="ring" viewBox="0 0 92 92" role="img" aria-label="${pct}% done"><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--soft)" stroke-width="9"/><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 46 46)"/><text x="46" y="52" text-anchor="middle" font-size="20" fill="var(--fg)">${pct}%</text></svg>`;
+}
+function greeting(){const h=new Date().getHours();return h<12?"Good morning":h<17?"Good afternoon":"Good evening";}
+function viewHome(){
+  const g=game();
+  const next=ORDER.find(t=>stateOf(t.id)==="doing")||ORDER.find(t=>stateOf(t.id)!=="done");
+  const after=ORDER.filter(t=>stateOf(t.id)!=="done"&&t!==next).slice(0,2);
+  const u=next?unit(next.u):null;
+  const worlds=UNITS.map(x=>{const ts=TASKS.filter(t=>t.u===x.id);const d=ts.filter(t=>stateOf(t.id)==="done");return {x,p:Math.round(d.length/ts.length*100),xp:d.reduce((a,t)=>a+xpOf(t),0),max:ts.reduce((a,t)=>a+xpOf(t),0)};}).sort((a,b)=>b.p-a.p||WEIGHT[b.x.id]-WEIGHT[a.x.id]);
+  const left=TASKS.filter(t=>t.ph<=1&&stateOf(t.id)!=="done").reduce((a,t)=>a+t.m,0);
+  return `
+  <section class="levelcard" aria-label="Your level">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div><div class="sub">${greeting()}, Akhil · Level ${g.level}</div><div class="lvl">${esc(g.title)}</div></div>
+      <div class="pills"><span class="pill">🔥 ${g.streak}-day streak</span><span class="pill">⭐ ${g.xp} XP</span><span class="pill">✅ ${g.done}/${TASKS.length}</span></div>
+    </div>
+    <div><div class="xpbar" role="progressbar" aria-valuenow="${g.into}" aria-valuemax="${g.need}" aria-label="XP to next level"><i style="width:${g.need?Math.min(100,g.into/g.need*100):100}%"></i></div>
+    <div class="sub" style="margin-top:6px">${g.need?`${g.need-g.into} XP to <b>${esc(g.nextTitle)}</b>`:"Max level reached"} · setup done in ~${Math.ceil(left/60)} days at 1 hr/day</div></div>
+  </section>
+
+  <div class="bounty"><span>🎁 <b>Daily bounty:</b> ${g.bountyToday?"claimed today! Come back tomorrow for another +25 XP.":"complete any quest today for a bonus +25 XP."}</span><span class="xpchip">${g.bountyToday?"✓ +25":"+25"}</span></div>
+
+  ${next?`<section class="quest" style="--qc:var(${u.color})" aria-labelledby="nextTitle">
+    <div class="chips"><span class="xpchip">+${xpOf(next)} XP</span>${next.g?'<span class="xpchip boss">⚔️ Boss fight</span>':''}<span class="chip"><span class="sw" style="background:var(${u.color})"></span>${esc(u.name)}</span>${stateOf(next.id)==="doing"?'<span class="chip doing">In progress</span>':''}</div>
+    <div class="eyebrow">Today's quest · ${esc(LORE[next.u].place)} · Chapter ${next.ph+1}: ${esc(CHAPTERS[next.ph])}</div>
+    <h2 id="nextTitle">${esc(next.t)}</h2>
+    <div class="youdo"><span class="eyebrow">Your move · ${fmtMin(next.m)}${next.w?` + ~${next.w} day wait`:""}</span><span>${esc(next.y)}</span></div>
+    <p class="small">${LORE[next.u].face} <b>${esc(LORE[next.u].npc)}:</b> "${esc(next.c)}" <span class="muted">(${esc(DEPTS[next.d].role)})</span></p>
+    <p class="muted small">🎯 <b>Win condition:</b> ${esc(next.ch)}</p>
+    <div class="btnrow">${stateOf(next.id)!=="doing"?`<button class="btn" data-set="doing" data-id="${next.id}">▶ Start quest</button>`:""}<button class="btn primary" data-set="done" data-id="${next.id}">🏆 Complete (+${xpOf(next)} XP)</button><button class="btn ghost" data-open="${next.id}">Details</button></div>
+    <p class="muted small">Stuck? Ask Claude: "Walk me through ${esc(next.t)}".</p>
+  </section>`:`<section class="quest" style="--qc:var(--gold)"><h2>All quests complete 🎉</h2><p>Ask Claude for the next season.</p></section>`}
+
+  <section class="panel stack">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3>🌍 Your 8 worlds</h3><span class="muted small">Weight = how much XP each world's quests give</span></div>
+    <div class="worlds">${worlds.map((r,i)=>`<button class="world" style="--wc:var(${r.x.color})" data-unit="${r.x.id}" data-go="units"><span class="wmeta"><span>#${i+1}</span><span class="xpchip" style="font-size:11px;padding:1px 8px">×${(0.5+WEIGHT[r.x.id]/10).toFixed(1)} · ${WEIGHT[r.x.id]}%</span></span><span class="wname">${WORLD_ICON[r.x.id]} ${esc(LORE[r.x.id].place)}</span><span class="muted" style="font-size:12px">${esc(wlevel(r.p))}</span><div class="bar"><i style="width:${r.p}%;background:var(${r.x.color})"></i></div><span class="wmeta"><span>${r.p}%</span><span>${r.xp}/${r.max} XP</span></span></button>`).join("")}</div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel stack">
+      <h3>🏅 Badges</h3>
+      <div class="badges">${BADGES.map(b=>{const got=b.test(g);return `<div class="badge ${got?"":"locked"}" title="${esc(b.how)}"><div class="b" aria-hidden="true">${b.icon}</div><span>${esc(b.name)}</span></div>`;}).join("")}</div>
+    </section>
+    <section class="panel stack">
+      <h3>⏱ Your daily hour</h3>
+      <div class="steps">
+        <div class="step"><span class="t">0–10</span><span>Read the morning brief and this screen.</span></div>
+        <div class="step"><span class="t">10–50</span><span>Play today's quest. Tap <b>Start</b>, then <b>Complete</b>.</span></div>
+        <div class="step"><span class="t">50–60</span><span>Tell Claude what happened. The agents prep the next quest.</span></div>
+      </div>
+      ${after.length?`<div class="stack" style="gap:6px"><span class="eyebrow">Next quests</span>${after.map(t=>`<button class="lbrow" style="grid-template-columns:12px 1fr auto" data-open="${t.id}"><span class="sw" style="background:var(${unit(t.u).color})"></span><span>${esc(t.t)}</span><span class="xpchip" style="font-size:11px;padding:1px 8px">+${xpOf(t)}</span></button>`).join("")}</div>`:""}
+    </section>
+  </div>
+
+  <section class="panel stack">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3>💬 Team board</h3><button class="btn sm ghost" data-tabgo="agents">See all messages</button></div>
+    ${feedHtml(3)}
+  </section>`;
+}
+
+// ---------- Agent feed ----------
+function initials(n){return String(n||"?").replace(/agent/i,"").trim().split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase();}
+function feedItems(){
+  const items=[];
+  reports.forEach(r=>{
+    const d=r.data||{};
+    (d.handoffs||[]).forEach(h=>items.push({date:r.id,from:h.from,to:h.to,msg:h.msg,task:h.task}));
+    (d.agent_log||[]).forEach(a=>items.push({date:r.id,from:a.agent,to:"CEO",msg:(a.unit?a.unit+": ":"")+a.did,status:a.status}));
+    if(d.ceo_note) items.push({date:r.id,from:"Chief of Staff",to:"CEO",msg:d.ceo_note});
+  });
+  return items;
+}
+function feedHtml(limit){
+  const it=feedItems().slice(0,limit||999);
+  if(!it.length) return `<div class="empty">No messages yet. Each morning at 7:47 AM the agents post here: what they prepared, what the Validator found, and what they need from you.</div>`;
+  return `<div class="feed">${it.map(m=>`<div class="msg"><div class="av" aria-hidden="true">${esc(initials(m.from))}</div><div class="bubble"><span class="who"><b>${esc(m.from)}</b> → ${esc(m.to||"Team")} · ${esc(m.date)}${m.status?` · <span class="chip ${m.status==="validated"?"done":m.status==="blocked"?"gate":"doing"}">${esc(m.status)}</span>`:""}</span><span>${esc(m.msg)}</span>${m.task&&TASKS.find(t=>t.id===m.task)?`<button class="btn sm ghost" style="justify-self:start" data-open="${esc(m.task)}">Open task</button>`:""}</div></div>`).join("")}</div>`;
+}
+
+// ---------- Map ----------
+function viewMap(){
+  const g=game();
+  const cx=180,cy=210,R=138,others=UNITS.filter(u=>u.id!=="hq");
+  const pos={hq:{x:cx,y:cy}};others.forEach((u,i)=>{const a=-Math.PI/2+i*2*Math.PI/others.length;pos[u.id]={x:cx+R*Math.cos(a),y:cy+R*Math.sin(a)};});
+  let s=`<defs><radialGradient id="sea" cx="50%" cy="50%" r="60%"><stop offset="0%" style="stop-color:color-mix(in srgb,var(--l2) 22%,var(--panel))"/><stop offset="100%" style="stop-color:color-mix(in srgb,var(--l7) 18%,var(--panel))"/></radialGradient></defs>`;
+  s+=`<rect x="0" y="0" width="360" height="440" rx="24" fill="url(#sea)"/>`;
+  for(let i=0;i<9;i++){const y=30+i*45;s+=`<path d="M${10+(i%2)*20} ${y} q 10 -6 20 0 t 20 0" fill="none" stroke="var(--l7)" stroke-opacity=".25" stroke-width="2"/>`;}
+  others.forEach(u=>{const p=pos[u.id],started=TASKS.some(t=>t.u===u.id&&stateOf(t.id)!=="todo");s+=`<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="var(${u.color})" stroke-width="${started?5:3}" stroke-dasharray="${started?"0":"6 7"}" stroke-linecap="round" opacity="${started?.9:.45}"/>`;});
+  UNITS.forEach(u=>{const p=pos[u.id],pct=unitPct(u.id),r=u.id==="hq"?46:38,c=2*Math.PI*(r+6),off=c*(1-pct/100);
+    s+=`<g class="isle" tabindex="0" role="button" data-unit="${u.id}" data-go="units" aria-label="${esc(LORE[u.id].place)}, ${pct}% complete, ${wlevel(pct)}">
+      <circle cx="${p.x}" cy="${p.y+4}" r="${r}" fill="#000" opacity=".12"/>
+      <circle cx="${p.x}" cy="${p.y}" r="${r}" style="fill:color-mix(in srgb,var(${u.color}) 30%,var(--panel))" class="edge" stroke="var(${u.color})" stroke-width="3"/>
+      <circle cx="${p.x}" cy="${p.y}" r="${r+6}" fill="none" stroke="var(${u.color})" stroke-opacity=".2" stroke-width="5"/>
+      <circle cx="${p.x}" cy="${p.y}" r="${r+6}" fill="none" stroke="var(${u.color})" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${p.x} ${p.y})"/>
+      <text x="${p.x}" y="${p.y-2}" text-anchor="middle" font-size="${u.id==="hq"?30:24}">${u.id==="hq"?"🏰":WORLD_ICON[u.id]}</text>
+      <text x="${p.x}" y="${p.y+20}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)">${pct}%</text>
+    </g>
+    <text x="${p.x}" y="${p.y+r+20}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--fg)" style="font-family:var(--f-display)">${esc(LORE[u.id].place)}</text>`;});
+  return `<section class="panel stack"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>🗺️ The Kingdom of Kalpa</h2><span class="muted small">Level ${g.level} ${esc(g.title)}</span></div>
+  <p class="muted small">Your Citadel sits in the centre. Bridges light up when you start a world; the ring around each island fills as you finish its quests. Tap an island to enter it.</p>
+  <svg class="kingdom" viewBox="0 0 360 440" role="img" aria-label="Kingdom map of the 8 worlds">${s}</svg>
+  <div class="worlds">${UNITS.map(u=>`<button class="world" style="--wc:var(${u.color})" data-unit="${u.id}" data-go="units"><span class="wname">${WORLD_ICON[u.id]} ${esc(LORE[u.id].place)}</span><span class="muted" style="font-size:12px">${esc(wlevel(unitPct(u.id)))} · ${unitPct(u.id)}%</span></button>`).join("")}</div></section>
+  <details class="panel"><summary style="cursor:pointer;font-weight:600">🚇 Quest lines (detailed task map)</summary>
+  <div class="legend" style="margin-top:8px"><span>○ Not started</span><span style="color:var(--warn)">● In progress</span><span style="color:var(--ok)">● Done</span><span style="color:var(--bad)">◇ Boss fight</span></div>
+  <div class="mapbox"><svg id="map" role="img" aria-label="Network map of all tasks"></svg></div></details>`;
+}
+function drawMap(){
+  const svg=document.getElementById("map");if(!svg)return;
+  const rowH=54,left=92,top=42,stepX=52,bandPad=22;
+  const perPhase=PHASES.map(p=>Math.max(1,...UNITS.map(u=>TASKS.filter(t=>t.u===u.id&&t.ph===p.id).length)));
+  const bandX=[];let x=left;PHASES.forEach((p,i)=>{bandX.push(x);x+=perPhase[i]*stepX+bandPad*2;});
+  const W=x+16,H=top+UNITS.length*rowH+12;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("width",W);svg.setAttribute("height",H);
+  let s="";
+  PHASES.forEach((p,i)=>{const w=perPhase[i]*stepX+bandPad*2;s+=`<rect x="${bandX[i]}" y="${top-32}" width="${w-6}" height="${H-top+24}" rx="8" fill="var(--soft)" opacity="${i%2?0.55:1}"/><text x="${bandX[i]+10}" y="${top-14}" font-size="11" fill="var(--muted)">${i}·${p.name.toUpperCase()}</text>`;});
+  const pos={};
+  UNITS.forEach((u,r)=>{const y=top+r*rowH+rowH/2;s+=`<text x="10" y="${y+4}" font-size="12" fill="var(${u.color})">${esc(u.short)}</text>`;PHASES.forEach((p,i)=>{TASKS.filter(t=>t.u===u.id&&t.ph===p.id).forEach((t,k)=>{pos[t.id]={x:bandX[i]+bandPad+k*stepX+stepX/2-6,y};});});});
+  const hq=TASKS.filter(t=>t.u==="hq"),end=pos[hq[hq.length-1].id];
+  UNITS.forEach(u=>{const ts=TASKS.filter(t=>t.u===u.id);if(!ts.length)return;
+    if(u.id!=="hq"){const a=pos[ts[0].id],mx=end.x+26+u.n*4;s+=`<path d="M${end.x} ${end.y} H${mx} L${mx+Math.min(40,Math.abs(a.y-end.y))} ${a.y} H${a.x}" fill="none" stroke="var(${u.color})" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".35"/>`;}
+    s+=`<path d="${ts.map((t,k)=>(k?"L":"M")+pos[t.id].x+" "+pos[t.id].y).join(" ")}" fill="none" stroke="var(${u.color})" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;});
+  TASKS.forEach(t=>{const q=pos[t.id],st=stateOf(t.id),c=`var(${unit(t.u).color})`;
+    const fill=st==="done"?c:st==="doing"?"var(--warn)":"var(--panel)",stroke=st==="doing"?"var(--warn)":t.g?"var(--bad)":c;
+    const shape=t.g?`<rect x="${q.x-8}" y="${q.y-8}" width="16" height="16" transform="rotate(45 ${q.x} ${q.y})" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`:`<circle cx="${q.x}" cy="${q.y}" r="9" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`;
+    const tick=st==="done"?`<path d="M${q.x-4} ${q.y} l3 3 l5 -6" fill="none" stroke="var(--panel)" stroke-width="2.2" stroke-linecap="round" pointer-events="none"/>`:"";
+    s+=`<g class="st" tabindex="0" role="button" data-open="${t.id}" aria-label="${esc(t.t)}, ${stLabel(st)}"><title>${esc(t.t)}</title><circle cx="${q.x}" cy="${q.y}" r="20" fill="transparent"/>${shape}${tick}</g>`;});
+  svg.innerHTML=s;
+  svg.querySelectorAll(".st").forEach(g=>g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();g.dispatchEvent(new Event("click"));}}));
+  wire(svg);
+}
+
+// ---------- Units / tasks ----------
+function unitBar(go){
+  return `<div class="unitbar" role="group" aria-label="Choose a unit">${UNITS.map(x=>{const ts=TASKS.filter(t=>t.u===x.id),d=ts.filter(t=>stateOf(t.id)==="done").length;return `<button data-unit="${x.id}" ${go?`data-go="${go}"`:""} aria-pressed="${x.id===unitSel}">${WORLD_ICON[x.id]} ${esc(x.short)} <span class="mono muted small">${d}/${ts.length}</span></button>`;}).join("")}</div>`;
+}
+function taskCard(t){
+  const st=stateOf(t.id);
+  return `<details class="task" id="task-${t.id}" ${openTask===t.id?"open":""}>
+    <summary><span class="tick ${st}" aria-hidden="true"></span><span><span style="display:block;font-weight:600">${esc(t.t)}</span><span class="muted small">${esc(DEPTS[t.d].role)} · you: ${fmtMin(t.m)}${t.w?` + ${t.w}d wait`:""}</span></span><span class="chips"><span class="xpchip" style="font-size:11px;padding:1px 8px">+${xpOf(t)} XP</span>${t.g?'<span class="xpchip boss" style="font-size:11px;padding:1px 8px">⚔️ Boss</span>':""}<span class="chip ${st}">${stLabel(st)}</span></span></summary>
+    <div class="tbody">
+      <dl class="kv">
+        <div><dt>You do</dt><dd>${esc(t.y)}</dd></div>
+        <div><dt>${esc(DEPTS[t.d].role)} does</dt><dd>${esc(t.c)}</dd></div>
+        <div><dt>Validator checks</dt><dd>${esc(t.ch)}</dd></div>
+        ${t.g?`<div><dt>⚔️ Boss fight</dt><dd>Go / no-go. If it fails, this unit pauses and its budget moves to units that pass.</dd></div>`:""}
+      </dl>
+      ${seg(t)}
+    </div></details>`;
+}
+function viewUnits(){
+  const u=unit(unitSel), ts=TASKS.filter(t=>t.u===unitSel);
+  const done=ts.filter(t=>stateOf(t.id)==="done").length;
+  const byPh=PHASES.map(p=>({p,ts:ts.filter(t=>t.ph===p.id)})).filter(g=>g.ts.length);
+  const L=LORE[u.id],pct=ts.length?Math.round(done/ts.length*100):0;
+  return `${unitBar()}
+  <section class="lore" style="--wc:var(${u.color})">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h2>${WORLD_ICON[u.id]} ${esc(L.place)}</h2><span class="wlevel">${esc(wlevel(pct))} · ${pct}%</span></div>
+    <div class="npc"><div class="face" aria-hidden="true">${L.face}</div><div class="speech"><b>${esc(L.npc)}</b><br>${esc(L.story)}</div></div>
+    <div class="bar" style="height:10px"><i style="width:${pct}%;background:var(${u.color})"></i></div>
+    <div class="chips"><span class="xpchip">💰 ${esc(L.reward)}</span></div>
+    <p class="small"><b>Mission:</b> ${esc(u.goal)}</p>
+    <p class="note"><b>Future of this world (to 2035): ${esc(OUTLOOK[u.id][0])}.</b> ${esc(OUTLOOK[u.id][1])}</p>
+  </section>`
+  +`${byPh.map(g=>`<div class="chapter" style="--wc:var(${u.color})"><span class="num">${g.p.id+1}</span><div><h3>Chapter ${g.p.id+1}: ${esc(CHAPTERS[g.p.id])}</h3><span class="muted small">${esc(g.p.what)} · ${g.ts.filter(t=>stateOf(t.id)==="done").length}/${g.ts.length} quests</span></div></div><div class="stack" style="gap:8px">${g.ts.map(taskCard).join("")}</div>`).join("")}`;
+}
+
+// ---------- Agent org (generated from 00-hq/agents/registry.js by run.js export) ----------
+const ORG=[["b1.salon.prospector","Salon Prospector","b1","salon","sales","code","Find salon businesses in Hyderabad from OpenStreetMap; refresh weekly.","≥100 new businesses mapped per month","Salon Prospector Validator","every row has phone or address; no duplicates by name+location; Hyderabad bounding box only","weekly:mon",0],["b1.salon.enricher","Salon Enricher","b1","salon","sales","code","Visit each prospect's own website (robots.txt respected) for email, WhatsApp link, Instagram, booking tool.","≥30% of sites enriched","Salon Enricher Validator","robots.txt honoured; ≤1 request/second; no personal (consumer) data","weekly:mon",0],["b1.salon.scorer","Salon Lead Scorer","b1","salon","sales","code","Rank prospects: phone + no WhatsApp booking + active Instagram = best.","Top-20 list converts ≥2× the bottom-20","Salon Lead Scorer Validator","score 0–100; booking-tool owners scored down","leads enriched",0],["b1.salon.pitch","Salon Pitch Writer","b1","salon","sales","claude","Write a personal 60-word WhatsApp/email intro and a walk-in talk track per prospect, in English + Telugu.","≥20% reply rate","Salon Pitch Writer Validator","uses prospect's real name and area; no false claims or guarantees; ≤80 words; opt-out line present for cold email","weekly:tue",0],["b1.salon.demo","Salon Demo Builder","b1","salon","sales","claude","Clone the setup config with the prospect's name, prices and address so the owner sees THEIR bot.","Demo shown at every visit","Salon Demo Builder Validator","10 scripted questions answered correctly; prices match the prospect's board","visit planned",0],["b1.salon.objections","Salon Objection Coach","b1","salon","sales","claude","Prepare answers to the top objections (price, 'my staff does it', trust, WhatsApp ban fear).","Objections logged after each visit","Salon Objection Coach Validator","answers honest; no discounting below floor price","before visit",0],["b1.salon.proposal","Salon Proposal Writer","b1","salon","sales","claude","One-page proposal + agreement + DPDP privacy notice with the client's real numbers.","Proposal sent within 24 h of interest","Salon Proposal Writer Validator","scope, price, payment terms, exit clause; ROI uses the client's numbers with stated assumptions","owner interested",1],["b1.salon.nudger","Salon Follow-up Nudger","b1","salon","sales","claude","Remind Akhil whom to follow up (day 2, 5, 10 after a visit) with a ready message.","No warm prospect silent >5 days","Salon Follow-up Nudger Validator","max 3 follow-ups per prospect; stops on 'no'","daily",0],["b1.salon.onboarding","Salon Onboarding Ops","b1","salon","delivery","claude","Run the 7-step onboarding checklist: Meta business, number, payment method, templates, Page, config, 10 test chats.","Live within 5 days of signing","Salon Onboarding Ops Validator","all 7 steps ticked; test message received on owner's phone","pilot signed",1],["b1.salon.config","Salon Config Builder","b1","salon","delivery","claude","Turn the client's price list, slots, capacity, holidays and FAQs into their bot config.","0 wrong prices","Salon Config Builder Validator","every price matches the client's board; QA swarm passes with this config","onboarding",0],["b1.salon.templates","Salon Template Submitter","b1","salon","delivery","code","Submit WhatsApp templates (reminders, alerts, offers) with smile-card headers to Meta.","All templates approved","Salon Template Submitter Validator","param count matches body; utility vs marketing category correct","onboarding",0],["b1.salon.cards","Salon Card Maker","b1","salon","delivery","code","Generate the client's meme-style smile cards with their name.","Cards < 300 KB each","Salon Card Maker Validator","original artwork only (no film stills, celebrities); Telugu renders correctly","onboarding",0],["b1.salon.concierge","Salon Concierge","b1","salon","delivery","code","Answer WhatsApp and website chats 24×7: menu, prices, FAQs, booking, reschedule, cancel, handoff.","Chats→bookings ≥25%","Salon Concierge Validator","QA swarm 623/623; no invented prices; no medical/legal/financial advice","customer message",0],["b1.salon.calendar","Salon Calendar Keeper","b1","salon","delivery","code","Book atomically with capacity, closed days, holidays and IST time; never double-book across channels.","0 double bookings","Salon Calendar Keeper Validator","race test passes; past slots never offered","booking",0],["b1.salon.humanizer","Salon Human Touch","b1","salon","delivery","code","Persona, greetings, variety, empathy and Telugu/Hindi replies with a price-safe translation check.","Complaints answered with an apology in <1 min","Salon Human Touch Validator","translation keeps every ₹, time, link; AI disclosure on first contact","every reply",0],["b1.salon.speed","Salon Speed-to-Lead","b1","salon","delivery","code","Meta lead form → WhatsApp welcome in under 60 seconds, owner alert, voice call queued.","100% of leads messaged < 60 s","Salon Speed-to-Lead Validator","dedupe by leadgen id; never wipes an existing booking","Meta leadgen webhook",0],["b1.salon.voice_in","Salon Voice Receptionist","b1","salon","delivery","code","Answer phone calls in Telugu/Hindi/English and book the same fields.","≥60% of calls end in booking or callback","Salon Voice Receptionist Validator","AI disclosure; books through book_slot; repeat-back before booking","incoming call",0],["b1.salon.voice_out","Salon Voice Caller","b1","salon","delivery","code","Call consented Meta leads within 2 minutes, 9 AM–9 PM IST; voicemail → WhatsApp instead.","Connect rate ≥40%","Salon Voice Caller Validator","consent recorded; declared A2P number (TRAI); stop requests honoured","jobs.voice_call",0],["b1.salon.ads_strategist","Salon Ad Strategist","b1","salon","delivery","claude","Plan Click-to-WhatsApp/lead-form campaigns: audiences, budget, angles from ads.config.json.","Cost per lead ≤ target","Salon Ad Strategist Validator","Meta ad policy (no before/after body claims, housing rules); client's money, client's approval","weekly:mon",0],["b1.salon.creative","Salon Creative Writer","b1","salon","delivery","claude","3 ad variants per angle in English + Telugu with real photos briefed.","≥1 variant beats control each month","Salon Creative Writer Validator","no fake urgency or fake reviews; prices match config","weekly:mon",0],["b1.salon.ads_guard","Salon Ad Guardian","b1","salon","delivery","code","Each morning judge every ad by cost per lead; pause losers (≤ half a day), report to owner.","Blended cost per lead falls month on month","Salon Ad Guardian Validator","never pauses > half the ads; autopilot only with owner OK","daily:09:00",0],["b1.salon.seo","Salon SEO Page Builder","b1","salon","delivery","code","Local pages per service × area with schema, sitemap and llms.txt.","Top-10 on Google for 5 '<service> in <area>' phrases in 90 days","Salon SEO Page Builder Validator","schema validates; NAP identical everywhere; only plain ₹ prices in schema","onboarding",0],["b1.salon.gbp","Salon Google Business Poster","b1","salon","delivery","human","Publish the weekly Google Business Profile post from the 12-week calendar.","52 posts a year","Salon Google Business Poster Validator","festival dates checked against the Telangana list; real photos only","weekly:wed",1],["b1.salon.reviews","Salon Review Responder","b1","salon","delivery","claude","Draft replies to new Google reviews within 24 h by star rating.","100% of reviews answered","Salon Review Responder Validator","never offers discounts for reviews; never posts fake reviews","daily",0],["b1.salon.reminders","Salon Reminder Agent","b1","salon","delivery","code","Day-before and 2-hour reminders with smile cards; after-visit message; skip no-shows.","No-shows ≤5%","Salon Reminder Validator","one message per window; flags survive customer replies","hourly",0],["b1.salon.renewals","Salon Renewal Agent","b1","salon","delivery","planned","Renewal/fee reminders 7/3/1 days before; win-back after 15 days (opt-in only).","Renewal rate +15 points","Salon Renewal Validator","opted-out never messaged; marketing needs OFFERS opt-in","hourly",0],["b1.salon.referral","Salon Referral Agent","b1","salon","delivery","code","Give each happy customer a REF code 3 days after the visit; tag friends who use it.","≥10% of new customers via referral","Salon Referral Validator","opt-in customers only; never sent to no-shows","hourly",0],["b1.salon.reporter","Salon Reporter","b1","salon","delivery","code","Live dashboard + Excel export; Monday WhatsApp summary to the owner.","Owner opens dashboard weekly","Salon Reporter Validator","numbers match database; each client sees only their data","weekly:mon",0],["b1.salon.health","Salon Client Health Monitor","b1","salon","success","claude","Weekly: bookings, no-shows, response time, unanswered questions per client; flag risks.","No client churns without a warning 30 days earlier","Salon Client Health Monitor Validator","metrics from database only","weekly:fri",0],["b1.salon.faqgrow","Salon FAQ Grower","b1","salon","success","claude","Turn the week's 'unanswered' messages into new FAQ entries for owner approval.","Unanswered rate < 5%","Salon FAQ Grower Validator","owner approves every new answer; no medical/legal claims","weekly:fri",0],["b1.salon.upsell","Salon Upsell Spotter","b1","salon","success","claude","Spot when a client is ready for ads management, voice calls or a second branch.","≥1 upsell per 5 clients per quarter","Salon Upsell Spotter Validator","only when ROI is proven","monthly",0],["b1.realestate.prospector","Real Estate Prospector","b1","realestate","sales","code","Find real estate businesses in Hyderabad from OpenStreetMap; refresh weekly.","≥100 new businesses mapped per month","Real Estate Prospector Validator","every row has phone or address; no duplicates by name+location; Hyderabad bounding box only","weekly:mon",0],["b1.realestate.enricher","Real Estate Enricher","b1","realestate","sales","code","Visit each prospect's own website (robots.txt respected) for email, WhatsApp link, Instagram, booking tool.","≥30% of sites enriched","Real Estate Enricher Validator","robots.txt honoured; ≤1 request/second; no personal (consumer) data","weekly:mon",0],["b1.realestate.scorer","Real Estate Lead Scorer","b1","realestate","sales","code","Rank prospects: phone + no WhatsApp booking + active Instagram = best.","Top-20 list converts ≥2× the bottom-20","Real Estate Lead Scorer Validator","score 0–100; booking-tool owners scored down","leads enriched",0],["b1.realestate.pitch","Real Estate Pitch Writer","b1","realestate","sales","claude","Write a personal 60-word WhatsApp/email intro and a walk-in talk track per prospect, in English + Telugu.","≥20% reply rate","Real Estate Pitch Writer Validator","uses prospect's real name and area; no false claims or guarantees; ≤80 words; opt-out line present for cold email","weekly:tue",0],["b1.realestate.demo","Real Estate Demo Builder","b1","realestate","sales","claude","Clone the setup config with the prospect's name, prices and address so the owner sees THEIR bot.","Demo shown at every visit","Real Estate Demo Builder Validator","10 scripted questions answered correctly; prices match the prospect's board","visit planned",0],["b1.realestate.objections","Real Estate Objection Coach","b1","realestate","sales","claude","Prepare answers to the top objections (price, 'my staff does it', trust, WhatsApp ban fear).","Objections logged after each visit","Real Estate Objection Coach Validator","answers honest; no discounting below floor price","before visit",0],["b1.realestate.proposal","Real Estate Proposal Writer","b1","realestate","sales","claude","One-page proposal + agreement + DPDP privacy notice with the client's real numbers.","Proposal sent within 24 h of interest","Real Estate Proposal Writer Validator","scope, price, payment terms, exit clause; ROI uses the client's numbers with stated assumptions","owner interested",1],["b1.realestate.nudger","Real Estate Follow-up Nudger","b1","realestate","sales","claude","Remind Akhil whom to follow up (day 2, 5, 10 after a visit) with a ready message.","No warm prospect silent >5 days","Real Estate Follow-up Nudger Validator","max 3 follow-ups per prospect; stops on 'no'","daily",0],["b1.realestate.onboarding","Real Estate Onboarding Ops","b1","realestate","delivery","claude","Run the 7-step onboarding checklist: Meta business, number, payment method, templates, Page, config, 10 test chats.","Live within 5 days of signing","Real Estate Onboarding Ops Validator","all 7 steps ticked; test message received on owner's phone","pilot signed",1],["b1.realestate.config","Real Estate Config Builder","b1","realestate","delivery","claude","Turn the client's price list, slots, capacity, holidays and FAQs into their bot config.","0 wrong prices","Real Estate Config Builder Validator","every price matches the client's board; QA swarm passes with this config","onboarding",0],["b1.realestate.templates","Real Estate Template Submitter","b1","realestate","delivery","code","Submit WhatsApp templates (reminders, alerts, offers) with smile-card headers to Meta.","All templates approved","Real Estate Template Submitter Validator","param count matches body; utility vs marketing category correct","onboarding",0],["b1.realestate.cards","Real Estate Card Maker","b1","realestate","delivery","code","Generate the client's meme-style smile cards with their name.","Cards < 300 KB each","Real Estate Card Maker Validator","original artwork only (no film stills, celebrities); Telugu renders correctly","onboarding",0],["b1.realestate.concierge","Real Estate Concierge","b1","realestate","delivery","code","Answer WhatsApp and website chats 24×7: menu, prices, FAQs, booking, reschedule, cancel, handoff.","Chats→bookings ≥25%","Real Estate Concierge Validator","QA swarm 623/623; no invented prices; no medical/legal/financial advice","customer message",0],["b1.realestate.calendar","Real Estate Calendar Keeper","b1","realestate","delivery","code","Book atomically with capacity, closed days, holidays and IST time; never double-book across channels.","0 double bookings","Real Estate Calendar Keeper Validator","race test passes; past slots never offered","booking",0],["b1.realestate.humanizer","Real Estate Human Touch","b1","realestate","delivery","code","Persona, greetings, variety, empathy and Telugu/Hindi replies with a price-safe translation check.","Complaints answered with an apology in <1 min","Real Estate Human Touch Validator","translation keeps every ₹, time, link; AI disclosure on first contact","every reply",0],["b1.realestate.speed","Real Estate Speed-to-Lead","b1","realestate","delivery","code","Meta lead form → WhatsApp welcome in under 60 seconds, owner alert, voice call queued.","100% of leads messaged < 60 s","Real Estate Speed-to-Lead Validator","dedupe by leadgen id; never wipes an existing booking","Meta leadgen webhook",0],["b1.realestate.voice_in","Real Estate Voice Receptionist","b1","realestate","delivery","code","Answer phone calls in Telugu/Hindi/English and book the same fields.","≥60% of calls end in booking or callback","Real Estate Voice Receptionist Validator","AI disclosure; books through book_slot; repeat-back before booking","incoming call",0],["b1.realestate.voice_out","Real Estate Voice Caller","b1","realestate","delivery","code","Call consented Meta leads within 2 minutes, 9 AM–9 PM IST; voicemail → WhatsApp instead.","Connect rate ≥40%","Real Estate Voice Caller Validator","consent recorded; declared A2P number (TRAI); stop requests honoured","jobs.voice_call",0],["b1.realestate.ads_strategist","Real Estate Ad Strategist","b1","realestate","delivery","claude","Plan Click-to-WhatsApp/lead-form campaigns: audiences, budget, angles from ads.config.json.","Cost per lead ≤ target","Real Estate Ad Strategist Validator","Meta ad policy (no before/after body claims, housing rules); client's money, client's approval","weekly:mon",0],["b1.realestate.creative","Real Estate Creative Writer","b1","realestate","delivery","claude","3 ad variants per angle in English + Telugu with real photos briefed.","≥1 variant beats control each month","Real Estate Creative Writer Validator","no fake urgency or fake reviews; prices match config","weekly:mon",0],["b1.realestate.ads_guard","Real Estate Ad Guardian","b1","realestate","delivery","code","Each morning judge every ad by cost per lead; pause losers (≤ half a day), report to owner.","Blended cost per lead falls month on month","Real Estate Ad Guardian Validator","never pauses > half the ads; autopilot only with owner OK","daily:09:00",0],["b1.realestate.seo","Real Estate SEO Page Builder","b1","realestate","delivery","code","Local pages per service × area with schema, sitemap and llms.txt.","Top-10 on Google for 5 '<service> in <area>' phrases in 90 days","Real Estate SEO Page Builder Validator","schema validates; NAP identical everywhere; only plain ₹ prices in schema","onboarding",0],["b1.realestate.gbp","Real Estate Google Business Poster","b1","realestate","delivery","human","Publish the weekly Google Business Profile post from the 12-week calendar.","52 posts a year","Real Estate Google Business Poster Validator","festival dates checked against the Telangana list; real photos only","weekly:wed",1],["b1.realestate.reviews","Real Estate Review Responder","b1","realestate","delivery","claude","Draft replies to new Google reviews within 24 h by star rating.","100% of reviews answered","Real Estate Review Responder Validator","never offers discounts for reviews; never posts fake reviews","daily",0],["b1.realestate.reminders","Real Estate Reminder Agent","b1","realestate","delivery","code","Day-before and 2-hour reminders with smile cards; after-visit message; skip no-shows.","No-shows ≤5%","Real Estate Reminder Validator","one message per window; flags survive customer replies","hourly",0],["b1.realestate.renewals","Real Estate Renewal Agent","b1","realestate","delivery","planned","Renewal/fee reminders 7/3/1 days before; win-back after 15 days (opt-in only).","Renewal rate +15 points","Real Estate Renewal Validator","opted-out never messaged; marketing needs OFFERS opt-in","hourly",0],["b1.realestate.referral","Real Estate Referral Agent","b1","realestate","delivery","code","Give each happy customer a REF code 3 days after the visit; tag friends who use it.","≥10% of new customers via referral","Real Estate Referral Validator","opt-in customers only; never sent to no-shows","hourly",0],["b1.realestate.reporter","Real Estate Reporter","b1","realestate","delivery","code","Live dashboard + Excel export; Monday WhatsApp summary to the owner.","Owner opens dashboard weekly","Real Estate Reporter Validator","numbers match database; each client sees only their data","weekly:mon",0],["b1.realestate.health","Real Estate Client Health Monitor","b1","realestate","success","claude","Weekly: bookings, no-shows, response time, unanswered questions per client; flag risks.","No client churns without a warning 30 days earlier","Real Estate Client Health Monitor Validator","metrics from database only","weekly:fri",0],["b1.realestate.faqgrow","Real Estate FAQ Grower","b1","realestate","success","claude","Turn the week's 'unanswered' messages into new FAQ entries for owner approval.","Unanswered rate < 5%","Real Estate FAQ Grower Validator","owner approves every new answer; no medical/legal claims","weekly:fri",0],["b1.realestate.upsell","Real Estate Upsell Spotter","b1","realestate","success","claude","Spot when a client is ready for ads management, voice calls or a second branch.","≥1 upsell per 5 clients per quarter","Real Estate Upsell Spotter Validator","only when ROI is proven","monthly",0],["b1.gym.prospector","Gym Prospector","b1","gym","sales","code","Find gym businesses in Hyderabad from OpenStreetMap; refresh weekly.","≥100 new businesses mapped per month","Gym Prospector Validator","every row has phone or address; no duplicates by name+location; Hyderabad bounding box only","weekly:mon",0],["b1.gym.enricher","Gym Enricher","b1","gym","sales","code","Visit each prospect's own website (robots.txt respected) for email, WhatsApp link, Instagram, booking tool.","≥30% of sites enriched","Gym Enricher Validator","robots.txt honoured; ≤1 request/second; no personal (consumer) data","weekly:mon",0],["b1.gym.scorer","Gym Lead Scorer","b1","gym","sales","code","Rank prospects: phone + no WhatsApp booking + active Instagram = best.","Top-20 list converts ≥2× the bottom-20","Gym Lead Scorer Validator","score 0–100; booking-tool owners scored down","leads enriched",0],["b1.gym.pitch","Gym Pitch Writer","b1","gym","sales","claude","Write a personal 60-word WhatsApp/email intro and a walk-in talk track per prospect, in English + Telugu.","≥20% reply rate","Gym Pitch Writer Validator","uses prospect's real name and area; no false claims or guarantees; ≤80 words; opt-out line present for cold email","weekly:tue",0],["b1.gym.demo","Gym Demo Builder","b1","gym","sales","claude","Clone the setup config with the prospect's name, prices and address so the owner sees THEIR bot.","Demo shown at every visit","Gym Demo Builder Validator","10 scripted questions answered correctly; prices match the prospect's board","visit planned",0],["b1.gym.objections","Gym Objection Coach","b1","gym","sales","claude","Prepare answers to the top objections (price, 'my staff does it', trust, WhatsApp ban fear).","Objections logged after each visit","Gym Objection Coach Validator","answers honest; no discounting below floor price","before visit",0],["b1.gym.proposal","Gym Proposal Writer","b1","gym","sales","claude","One-page proposal + agreement + DPDP privacy notice with the client's real numbers.","Proposal sent within 24 h of interest","Gym Proposal Writer Validator","scope, price, payment terms, exit clause; ROI uses the client's numbers with stated assumptions","owner interested",1],["b1.gym.nudger","Gym Follow-up Nudger","b1","gym","sales","claude","Remind Akhil whom to follow up (day 2, 5, 10 after a visit) with a ready message.","No warm prospect silent >5 days","Gym Follow-up Nudger Validator","max 3 follow-ups per prospect; stops on 'no'","daily",0],["b1.gym.onboarding","Gym Onboarding Ops","b1","gym","delivery","claude","Run the 7-step onboarding checklist: Meta business, number, payment method, templates, Page, config, 10 test chats.","Live within 5 days of signing","Gym Onboarding Ops Validator","all 7 steps ticked; test message received on owner's phone","pilot signed",1],["b1.gym.config","Gym Config Builder","b1","gym","delivery","claude","Turn the client's price list, slots, capacity, holidays and FAQs into their bot config.","0 wrong prices","Gym Config Builder Validator","every price matches the client's board; QA swarm passes with this config","onboarding",0],["b1.gym.templates","Gym Template Submitter","b1","gym","delivery","code","Submit WhatsApp templates (reminders, alerts, offers) with smile-card headers to Meta.","All templates approved","Gym Template Submitter Validator","param count matches body; utility vs marketing category correct","onboarding",0],["b1.gym.cards","Gym Card Maker","b1","gym","delivery","code","Generate the client's meme-style smile cards with their name.","Cards < 300 KB each","Gym Card Maker Validator","original artwork only (no film stills, celebrities); Telugu renders correctly","onboarding",0],["b1.gym.concierge","Gym Concierge","b1","gym","delivery","code","Answer WhatsApp and website chats 24×7: menu, prices, FAQs, booking, reschedule, cancel, handoff.","Chats→bookings ≥25%","Gym Concierge Validator","QA swarm 623/623; no invented prices; no medical/legal/financial advice","customer message",0],["b1.gym.calendar","Gym Calendar Keeper","b1","gym","delivery","code","Book atomically with capacity, closed days, holidays and IST time; never double-book across channels.","0 double bookings","Gym Calendar Keeper Validator","race test passes; past slots never offered","booking",0],["b1.gym.humanizer","Gym Human Touch","b1","gym","delivery","code","Persona, greetings, variety, empathy and Telugu/Hindi replies with a price-safe translation check.","Complaints answered with an apology in <1 min","Gym Human Touch Validator","translation keeps every ₹, time, link; AI disclosure on first contact","every reply",0],["b1.gym.speed","Gym Speed-to-Lead","b1","gym","delivery","code","Meta lead form → WhatsApp welcome in under 60 seconds, owner alert, voice call queued.","100% of leads messaged < 60 s","Gym Speed-to-Lead Validator","dedupe by leadgen id; never wipes an existing booking","Meta leadgen webhook",0],["b1.gym.voice_in","Gym Voice Receptionist","b1","gym","delivery","code","Answer phone calls in Telugu/Hindi/English and book the same fields.","≥60% of calls end in booking or callback","Gym Voice Receptionist Validator","AI disclosure; books through book_slot; repeat-back before booking","incoming call",0],["b1.gym.voice_out","Gym Voice Caller","b1","gym","delivery","code","Call consented Meta leads within 2 minutes, 9 AM–9 PM IST; voicemail → WhatsApp instead.","Connect rate ≥40%","Gym Voice Caller Validator","consent recorded; declared A2P number (TRAI); stop requests honoured","jobs.voice_call",0],["b1.gym.ads_strategist","Gym Ad Strategist","b1","gym","delivery","claude","Plan Click-to-WhatsApp/lead-form campaigns: audiences, budget, angles from ads.config.json.","Cost per lead ≤ target","Gym Ad Strategist Validator","Meta ad policy (no before/after body claims, housing rules); client's money, client's approval","weekly:mon",0],["b1.gym.creative","Gym Creative Writer","b1","gym","delivery","claude","3 ad variants per angle in English + Telugu with real photos briefed.","≥1 variant beats control each month","Gym Creative Writer Validator","no fake urgency or fake reviews; prices match config","weekly:mon",0],["b1.gym.ads_guard","Gym Ad Guardian","b1","gym","delivery","code","Each morning judge every ad by cost per lead; pause losers (≤ half a day), report to owner.","Blended cost per lead falls month on month","Gym Ad Guardian Validator","never pauses > half the ads; autopilot only with owner OK","daily:09:00",0],["b1.gym.seo","Gym SEO Page Builder","b1","gym","delivery","code","Local pages per service × area with schema, sitemap and llms.txt.","Top-10 on Google for 5 '<service> in <area>' phrases in 90 days","Gym SEO Page Builder Validator","schema validates; NAP identical everywhere; only plain ₹ prices in schema","onboarding",0],["b1.gym.gbp","Gym Google Business Poster","b1","gym","delivery","human","Publish the weekly Google Business Profile post from the 12-week calendar.","52 posts a year","Gym Google Business Poster Validator","festival dates checked against the Telangana list; real photos only","weekly:wed",1],["b1.gym.reviews","Gym Review Responder","b1","gym","delivery","claude","Draft replies to new Google reviews within 24 h by star rating.","100% of reviews answered","Gym Review Responder Validator","never offers discounts for reviews; never posts fake reviews","daily",0],["b1.gym.reminders","Gym Reminder Agent","b1","gym","delivery","code","Day-before and 2-hour reminders with smile cards; after-visit message; skip no-shows.","No-shows ≤5%","Gym Reminder Validator","one message per window; flags survive customer replies","hourly",0],["b1.gym.renewals","Gym Renewal Agent","b1","gym","delivery","code","Renewal/fee reminders 7/3/1 days before; win-back after 15 days (opt-in only).","Renewal rate +15 points","Gym Renewal Validator","opted-out never messaged; marketing needs OFFERS opt-in","hourly",0],["b1.gym.referral","Gym Referral Agent","b1","gym","delivery","code","Give each happy customer a REF code 3 days after the visit; tag friends who use it.","≥10% of new customers via referral","Gym Referral Validator","opt-in customers only; never sent to no-shows","hourly",0],["b1.gym.reporter","Gym Reporter","b1","gym","delivery","code","Live dashboard + Excel export; Monday WhatsApp summary to the owner.","Owner opens dashboard weekly","Gym Reporter Validator","numbers match database; each client sees only their data","weekly:mon",0],["b1.gym.health","Gym Client Health Monitor","b1","gym","success","claude","Weekly: bookings, no-shows, response time, unanswered questions per client; flag risks.","No client churns without a warning 30 days earlier","Gym Client Health Monitor Validator","metrics from database only","weekly:fri",0],["b1.gym.faqgrow","Gym FAQ Grower","b1","gym","success","claude","Turn the week's 'unanswered' messages into new FAQ entries for owner approval.","Unanswered rate < 5%","Gym FAQ Grower Validator","owner approves every new answer; no medical/legal claims","weekly:fri",0],["b1.gym.upsell","Gym Upsell Spotter","b1","gym","success","claude","Spot when a client is ready for ads management, voice calls or a second branch.","≥1 upsell per 5 clients per quarter","Gym Upsell Spotter Validator","only when ROI is proven","monthly",0],["b1.examkits.prospector","Exam Kits Prospector","b1","examkits","sales","code","Find exam kits businesses in Hyderabad from OpenStreetMap; refresh weekly.","≥100 new businesses mapped per month","Exam Kits Prospector Validator","every row has phone or address; no duplicates by name+location; Hyderabad bounding box only","weekly:mon",0],["b1.examkits.enricher","Exam Kits Enricher","b1","examkits","sales","code","Visit each prospect's own website (robots.txt respected) for email, WhatsApp link, Instagram, booking tool.","≥30% of sites enriched","Exam Kits Enricher Validator","robots.txt honoured; ≤1 request/second; no personal (consumer) data","weekly:mon",0],["b1.examkits.scorer","Exam Kits Lead Scorer","b1","examkits","sales","code","Rank prospects: phone + no WhatsApp booking + active Instagram = best.","Top-20 list converts ≥2× the bottom-20","Exam Kits Lead Scorer Validator","score 0–100; booking-tool owners scored down","leads enriched",0],["b1.examkits.pitch","Exam Kits Pitch Writer","b1","examkits","sales","claude","Write a personal 60-word WhatsApp/email intro and a walk-in talk track per prospect, in English + Telugu.","≥20% reply rate","Exam Kits Pitch Writer Validator","uses prospect's real name and area; no false claims or guarantees; ≤80 words; opt-out line present for cold email","weekly:tue",0],["b1.examkits.demo","Exam Kits Demo Builder","b1","examkits","sales","claude","Clone the setup config with the prospect's name, prices and address so the owner sees THEIR bot.","Demo shown at every visit","Exam Kits Demo Builder Validator","10 scripted questions answered correctly; prices match the prospect's board","visit planned",0],["b1.examkits.objections","Exam Kits Objection Coach","b1","examkits","sales","claude","Prepare answers to the top objections (price, 'my staff does it', trust, WhatsApp ban fear).","Objections logged after each visit","Exam Kits Objection Coach Validator","answers honest; no discounting below floor price","before visit",0],["b1.examkits.proposal","Exam Kits Proposal Writer","b1","examkits","sales","claude","One-page proposal + agreement + DPDP privacy notice with the client's real numbers.","Proposal sent within 24 h of interest","Exam Kits Proposal Writer Validator","scope, price, payment terms, exit clause; ROI uses the client's numbers with stated assumptions","owner interested",1],["b1.examkits.nudger","Exam Kits Follow-up Nudger","b1","examkits","sales","claude","Remind Akhil whom to follow up (day 2, 5, 10 after a visit) with a ready message.","No warm prospect silent >5 days","Exam Kits Follow-up Nudger Validator","max 3 follow-ups per prospect; stops on 'no'","daily",0],["b1.examkits.onboarding","Exam Kits Onboarding Ops","b1","examkits","delivery","claude","Run the 7-step onboarding checklist: Meta business, number, payment method, templates, Page, config, 10 test chats.","Live within 5 days of signing","Exam Kits Onboarding Ops Validator","all 7 steps ticked; test message received on owner's phone","pilot signed",1],["b1.examkits.config","Exam Kits Config Builder","b1","examkits","delivery","claude","Turn the client's price list, slots, capacity, holidays and FAQs into their bot config.","0 wrong prices","Exam Kits Config Builder Validator","every price matches the client's board; QA swarm passes with this config","onboarding",0],["b1.examkits.templates","Exam Kits Template Submitter","b1","examkits","delivery","code","Submit WhatsApp templates (reminders, alerts, offers) with smile-card headers to Meta.","All templates approved","Exam Kits Template Submitter Validator","param count matches body; utility vs marketing category correct","onboarding",0],["b1.examkits.cards","Exam Kits Card Maker","b1","examkits","delivery","code","Generate the client's meme-style smile cards with their name.","Cards < 300 KB each","Exam Kits Card Maker Validator","original artwork only (no film stills, celebrities); Telugu renders correctly","onboarding",0],["b1.examkits.concierge","Exam Kits Concierge","b1","examkits","delivery","code","Answer WhatsApp and website chats 24×7: menu, prices, FAQs, booking, reschedule, cancel, handoff.","Chats→bookings ≥25%","Exam Kits Concierge Validator","QA swarm 623/623; no invented prices; no medical/legal/financial advice","customer message",0],["b1.examkits.calendar","Exam Kits Calendar Keeper","b1","examkits","delivery","code","Book atomically with capacity, closed days, holidays and IST time; never double-book across channels.","0 double bookings","Exam Kits Calendar Keeper Validator","race test passes; past slots never offered","booking",0],["b1.examkits.humanizer","Exam Kits Human Touch","b1","examkits","delivery","code","Persona, greetings, variety, empathy and Telugu/Hindi replies with a price-safe translation check.","Complaints answered with an apology in <1 min","Exam Kits Human Touch Validator","translation keeps every ₹, time, link; AI disclosure on first contact","every reply",0],["b1.examkits.speed","Exam Kits Speed-to-Lead","b1","examkits","delivery","code","Meta lead form → WhatsApp welcome in under 60 seconds, owner alert, voice call queued.","100% of leads messaged < 60 s","Exam Kits Speed-to-Lead Validator","dedupe by leadgen id; never wipes an existing booking","Meta leadgen webhook",0],["b1.examkits.voice_in","Exam Kits Voice Receptionist","b1","examkits","delivery","code","Answer phone calls in Telugu/Hindi/English and book the same fields.","≥60% of calls end in booking or callback","Exam Kits Voice Receptionist Validator","AI disclosure; books through book_slot; repeat-back before booking","incoming call",0],["b1.examkits.voice_out","Exam Kits Voice Caller","b1","examkits","delivery","code","Call consented Meta leads within 2 minutes, 9 AM–9 PM IST; voicemail → WhatsApp instead.","Connect rate ≥40%","Exam Kits Voice Caller Validator","consent recorded; declared A2P number (TRAI); stop requests honoured","jobs.voice_call",0],["b1.examkits.ads_strategist","Exam Kits Ad Strategist","b1","examkits","delivery","claude","Plan Click-to-WhatsApp/lead-form campaigns: audiences, budget, angles from ads.config.json.","Cost per lead ≤ target","Exam Kits Ad Strategist Validator","Meta ad policy (no before/after body claims, housing rules); client's money, client's approval","weekly:mon",0],["b1.examkits.creative","Exam Kits Creative Writer","b1","examkits","delivery","claude","3 ad variants per angle in English + Telugu with real photos briefed.","≥1 variant beats control each month","Exam Kits Creative Writer Validator","no fake urgency or fake reviews; prices match config","weekly:mon",0],["b1.examkits.ads_guard","Exam Kits Ad Guardian","b1","examkits","delivery","code","Each morning judge every ad by cost per lead; pause losers (≤ half a day), report to owner.","Blended cost per lead falls month on month","Exam Kits Ad Guardian Validator","never pauses > half the ads; autopilot only with owner OK","daily:09:00",0],["b1.examkits.seo","Exam Kits SEO Page Builder","b1","examkits","delivery","code","Local pages per service × area with schema, sitemap and llms.txt.","Top-10 on Google for 5 '<service> in <area>' phrases in 90 days","Exam Kits SEO Page Builder Validator","schema validates; NAP identical everywhere; only plain ₹ prices in schema","onboarding",0],["b1.examkits.gbp","Exam Kits Google Business Poster","b1","examkits","delivery","human","Publish the weekly Google Business Profile post from the 12-week calendar.","52 posts a year","Exam Kits Google Business Poster Validator","festival dates checked against the Telangana list; real photos only","weekly:wed",1],["b1.examkits.reviews","Exam Kits Review Responder","b1","examkits","delivery","claude","Draft replies to new Google reviews within 24 h by star rating.","100% of reviews answered","Exam Kits Review Responder Validator","never offers discounts for reviews; never posts fake reviews","daily",0],["b1.examkits.reminders","Exam Kits Reminder Agent","b1","examkits","delivery","code","Day-before and 2-hour reminders with smile cards; after-visit message; skip no-shows.","No-shows ≤5%","Exam Kits Reminder Validator","one message per window; flags survive customer replies","hourly",0],["b1.examkits.renewals","Exam Kits Renewal Agent","b1","examkits","delivery","code","Renewal/fee reminders 7/3/1 days before; win-back after 15 days (opt-in only).","Renewal rate +15 points","Exam Kits Renewal Validator","opted-out never messaged; marketing needs OFFERS opt-in","hourly",0],["b1.examkits.referral","Exam Kits Referral Agent","b1","examkits","delivery","code","Give each happy customer a REF code 3 days after the visit; tag friends who use it.","≥10% of new customers via referral","Exam Kits Referral Validator","opt-in customers only; never sent to no-shows","hourly",0],["b1.examkits.reporter","Exam Kits Reporter","b1","examkits","delivery","code","Live dashboard + Excel export; Monday WhatsApp summary to the owner.","Owner opens dashboard weekly","Exam Kits Reporter Validator","numbers match database; each client sees only their data","weekly:mon",0],["b1.examkits.health","Exam Kits Client Health Monitor","b1","examkits","success","claude","Weekly: bookings, no-shows, response time, unanswered questions per client; flag risks.","No client churns without a warning 30 days earlier","Exam Kits Client Health Monitor Validator","metrics from database only","weekly:fri",0],["b1.examkits.faqgrow","Exam Kits FAQ Grower","b1","examkits","success","claude","Turn the week's 'unanswered' messages into new FAQ entries for owner approval.","Unanswered rate < 5%","Exam Kits FAQ Grower Validator","owner approves every new answer; no medical/legal claims","weekly:fri",0],["b1.examkits.upsell","Exam Kits Upsell Spotter","b1","examkits","success","claude","Spot when a client is ready for ads management, voice calls or a second branch.","≥1 upsell per 5 clients per quarter","Exam Kits Upsell Spotter Validator","only when ROI is proven","monthly",0],["pf.dev.engine","Conversation engine Developer","b1","","platform-dev","claude","Own Conversation engine: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Conversation engine Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.engine","Conversation engine Test Agent","b1","","platform-test","code","Keep Conversation engine's tests green and add a test for every bug found.","0 regressions reach a client","Conversation engine Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.humanize","Human-touch layer Developer","b1","","platform-dev","claude","Own Human-touch layer: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Human-touch layer Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.humanize","Human-touch layer Test Agent","b1","","platform-test","code","Keep Human-touch layer's tests green and add a test for every bug found.","0 regressions reach a client","Human-touch layer Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.webhook","WhatsApp webhook Developer","b1","","platform-dev","claude","Own WhatsApp webhook: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","WhatsApp webhook Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.webhook","WhatsApp webhook Test Agent","b1","","platform-test","code","Keep WhatsApp webhook's tests green and add a test for every bug found.","0 regressions reach a client","WhatsApp webhook Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.calendar","Calendar & booking lock Developer","b1","","platform-dev","claude","Own Calendar & booking lock: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Calendar & booking lock Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.calendar","Calendar & booking lock Test Agent","b1","","platform-test","code","Keep Calendar & booking lock's tests green and add a test for every bug found.","0 regressions reach a client","Calendar & booking lock Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.automations","Reminders, renewals, referrals Developer","b1","","platform-dev","claude","Own Reminders, renewals, referrals: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Reminders, renewals, referrals Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.automations","Reminders, renewals, referrals Test Agent","b1","","platform-test","code","Keep Reminders, renewals, referrals's tests green and add a test for every bug found.","0 regressions reach a client","Reminders, renewals, referrals Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.adsbot","Meta ads guard Developer","b1","","platform-dev","claude","Own Meta ads guard: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Meta ads guard Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.adsbot","Meta ads guard Test Agent","b1","","platform-test","code","Keep Meta ads guard's tests green and add a test for every bug found.","0 regressions reach a client","Meta ads guard Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.metaleads","Meta lead follow-up Developer","b1","","platform-dev","claude","Own Meta lead follow-up: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Meta lead follow-up Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.metaleads","Meta lead follow-up Test Agent","b1","","platform-test","code","Keep Meta lead follow-up's tests green and add a test for every bug found.","0 regressions reach a client","Meta lead follow-up Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.voice","Voice agent Developer","b1","","platform-dev","claude","Own Voice agent: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Voice agent Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.voice","Voice agent Test Agent","b1","","platform-test","code","Keep Voice agent's tests green and add a test for every bug found.","0 regressions reach a client","Voice agent Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.seo","SEO bot Developer","b1","","platform-dev","claude","Own SEO bot: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","SEO bot Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.seo","SEO bot Test Agent","b1","","platform-test","code","Keep SEO bot's tests green and add a test for every bug found.","0 regressions reach a client","SEO bot Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.leadfinder","Lead finder + enricher Developer","b1","","platform-dev","claude","Own Lead finder + enricher: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Lead finder + enricher Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.leadfinder","Lead finder + enricher Test Agent","b1","","platform-test","code","Keep Lead finder + enricher's tests green and add a test for every bug found.","0 regressions reach a client","Lead finder + enricher Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.cards","Smile cards Developer","b1","","platform-dev","claude","Own Smile cards: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Smile cards Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.cards","Smile cards Test Agent","b1","","platform-test","claude","Keep Smile cards's tests green and add a test for every bug found.","0 regressions reach a client","Smile cards Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.web","Demo, dashboard, widget Developer","b1","","platform-dev","claude","Own Demo, dashboard, widget: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Demo, dashboard, widget Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.web","Demo, dashboard, widget Test Agent","b1","","platform-test","claude","Keep Demo, dashboard, widget's tests green and add a test for every bug found.","0 regressions reach a client","Demo, dashboard, widget Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.dev.kingdom","Kingdom control room UI Developer","b1","","platform-dev","claude","Own Kingdom control room UI: fix bugs, add features from the BA backlog, keep it simple.","Every change ships with a test","Kingdom control room UI Code Reviewer","tests added; no secrets in code; IST-safe dates","backlog item / bug",0],["pf.test.kingdom","Kingdom control room UI Test Agent","b1","","platform-test","claude","Keep Kingdom control room UI's tests green and add a test for every bug found.","0 regressions reach a client","Kingdom control room UI Test Auditor","tests fail when the bug is reintroduced","every commit",0],["pf.qa.swarm","QA Persona Swarm","b1","","platform-test","code","600 synthetic customers × invariants + 25 scripted BA conversations on every change.","623/623 checks","QA Persona Swarm Validator","new failures block release","every commit",0],["pf.review.code","Independent Code Reviewer","b1","","platform-quality","claude","A fresh agent hunts real bugs (reproduced) before each release.","Findings fixed within the release","Independent Code Reviewer Validator","each finding reproduced; regression test added","before release",0],["pf.review.security","Security Reviewer","b1","","platform-quality","claude","Signatures, tokens, injection, XSS, RLS, secrets in env only.","0 open high-severity issues","Security Reviewer Validator","WA_APP_SECRET set in production; RLS on every table","monthly",0],["pf.policy.dpdp","DPDP Privacy Officer","b1","","platform-quality","claude","Consent, purpose, retention (messages 180 days), deletion on request.","Every client has a privacy notice","DPDP Privacy Officer Validator","no consumer data scraped; opt-out honoured within 1 message","monthly",0],["pf.policy.whatsapp","WhatsApp Policy Checker","b1","","platform-quality","claude","Task-specific bots only, opt-in for marketing, template categories correct, quality rating watched.","Quality rating stays green","WhatsApp Policy Checker Validator","no general-purpose AI chat; marketing only to OFFERS opt-ins","weekly:mon",0],["pf.policy.ads","Meta Ads Policy Checker","b1","","platform-quality","claude","Housing special-ad category for real estate, health/body claims for gyms and salons.","0 rejected ads","Meta Ads Policy Checker Validator","special ad category set for housing","new ad",0],["pf.ops.release","Release Manager","b1","","platform-ops","claude","Run tools/test-all.sh, tag the release, write the changelog, deploy only with Akhil's 'deploy'.","No release without green tests","Release Manager Validator","all suites green; explicit go-ahead from Akhil","release",1],["pf.ops.deploy","DevOps Deployer","b1","","platform-ops","claude","Netlify site per industry (SETUP env), Supabase schema, scheduled functions.","Deploys in < 10 min","DevOps Deployer Validator","env vars present; webhook verify GET returns challenge","release approved",0],["pf.ops.uptime","Uptime Monitor","b1","","platform-ops","planned","Ping webhook and dashboard; alert Akhil if down; watch Supabase 7-day pause.","99.5% uptime","Uptime Monitor Validator","alerts reach Akhil","hourly",0],["pf.ops.cost","Cost Watcher (FinOps)","b1","","platform-ops","claude","Track Netlify credits, Supabase size, Groq/Sarvam usage; warn at 50/75/90%.","₹0 surprise bills","Cost Watcher (FinOps) Validator","numbers from provider dashboards","weekly:sun",0],["pf.ops.incident","Incident Responder","b1","","platform-ops","claude","When a client's bot misbehaves: pause it, tell the owner, fix, write a 5-line postmortem.","Owner informed within 30 min","Incident Responder Validator","postmortem has root cause + test","incident",0],["pf.docs","Docs Writer","b1","","platform-ops","claude","Keep READMEs, setup guides and the Playbook in sync with the code.","No doc older than the code it describes","Docs Writer Validator","every command in docs actually runs","release",0],["pf.pm","Product Manager","b1","","platform-pm","claude","Turn BA gaps, bugs and client feedback into a weekly 1-hour-a-day sprint.","Sprint fits Akhil's 7 hours a week","Product Manager Validator","MUST items first; each item has acceptance criteria","weekly:sun",0],["pf.ux","UX Researcher","b1","","platform-pm","claude","Read real conversations (anonymised) and find where customers get stuck.","Drop-off per step falls","UX Researcher Validator","no personal data in reports","monthly",0],["pf.a11y","Accessibility Tester","b1","","platform-test","claude","Dashboard and Kingdom: contrast, keyboard, screen-reader labels, phone width.","No blocking issues","Accessibility Tester Validator","390 px width, no horizontal scroll","UI change",0],["pf.ba.salon","Salon Business Analyst","b1","salon","platform-pm","claude","Requirements, user stories (Given/When/Then), gaps and test conversations for the Salon setup.","Every MUST gap closed before first paid client","Salon Business Analyst Validator","each story marked EXISTS/PARTIAL/GAP with code reference","before building / after pilot feedback",0],["pf.ba.realestate","Real Estate Business Analyst","b1","realestate","platform-pm","planned","Requirements, user stories (Given/When/Then), gaps and test conversations for the Real Estate setup.","Every MUST gap closed before first paid client","Real Estate Business Analyst Validator","each story marked EXISTS/PARTIAL/GAP with code reference","before building / after pilot feedback",0],["pf.ba.gym","Gym Business Analyst","b1","gym","platform-pm","planned","Requirements, user stories (Given/When/Then), gaps and test conversations for the Gym setup.","Every MUST gap closed before first paid client","Gym Business Analyst Validator","each story marked EXISTS/PARTIAL/GAP with code reference","before building / after pilot feedback",0],["pf.ba.examkits","Exam Kits Business Analyst","b1","examkits","platform-pm","planned","Requirements, user stories (Given/When/Then), gaps and test conversations for the Exam Kits setup.","Every MUST gap closed before first paid client","Exam Kits Business Analyst Validator","each story marked EXISTS/PARTIAL/GAP with code reference","before building / after pilot feedback",0],["hq.chief","Chief of Staff (Morning Brief)","hq","","hq","code","07:47 IST: pick today's quests within budget, prepare everything, post to the Team board, notify Akhil.","Brief every day","Brief Validator","only free actions while in build mode; ≤ 60 minutes of Akhil's work","daily:07:47",0],["hq.evening","Evening Reviewer","hq","","hq","code","Close the day: what got done, XP, tomorrow's first quest.","Streak kept","Evening Reviewer Validator","matches the status database","daily:21:00",0],["hq.finance","Finance Ledger","hq","","hq","planned","Record every rupee in and out; 30% tax reserve; monthly P&L.","Books closed by the 5th","Finance Ledger Validator","bank statement reconciles","monthly",0],["hq.invoice","Invoice Agent","hq","","hq","planned","Raise setup and monthly invoices; chase unpaid politely on day 3 and 7.","Collected within 7 days","Invoice Validator","Udyam number on invoice; GST only after registration","monthly",1],["hq.compliance","Compliance Calendar","hq","","hq","claude","GST threshold (₹20 L), trademark filing when public, DPDP dates, TRAI rules.","No missed deadline","Compliance Calendar Validator","dates from official sources","monthly",0],["hq.legal","Legal Drafter","hq","","hq","claude","Client agreement, privacy notice, terms; flags when a lawyer is needed.","Signed agreement for every client","Legal Drafter Validator","not legal advice; lawyer review before first use","first paid client",1],["hq.brand","Brand Guardian","hq","","hq","claude","Kalpa Labs + BotBhai names, tone, visuals consistent; trademark watch.","One voice everywhere","Brand Guardian Validator","IP India search repeated before filing","monthly",0],["hq.research","Market Researcher","hq","","hq","claude","Monthly: prices, competitors, policy changes (Meta, TRAI, DPDP) that affect any world.","No policy change surprises us","Market Researcher Validator","every claim has a source link","monthly",0],["game.questmaster","Quest Master","hq","","game","claude","Turn this registry's human-needed work into quests with XP and chapters.","Every quest ≤ 60 minutes","Quest Master Validator","each quest has a check Akhil can verify","daily:07:47",0],["game.xp","XP Auditor","hq","","game","code","XP = minutes × world weight; +100 for gates; +25 daily bounty; no XP for undone quests.","XP matches the database","XP Auditor Validator","level thresholds unchanged","quest done",0],["game.streak","Streak Keeper","hq","","game","code","Counts consecutive IST days with a finished quest.","Streak visible","Streak Keeper Validator","IST midnight boundary","quest done",0],["game.lore","Lore Writer","hq","","game","claude","World stories and guardian lines that make the next quest feel like an adventure.","Akhil reads it","Lore Writer Validator","≤ 2 sentences; true to the real task","new chapter",0],["game.badges","Badge Smith","hq","","game","code","Badges for real milestones: first demo shown, first pilot, first ₹10k month.","Badges only for real outcomes","Badge Smith Validator","linked to a status record","milestone",0],["game.herald","Notification Herald","hq","","game","code","One push a morning with today's quest; nothing else.","Opened daily","Notification Herald Validator","max 1 notification a day","daily:07:47",0],["game.ui","Kingdom UI Designer","hq","","game","claude","Keep the control room fun, readable on a phone, fast.","Today's quest visible in 1 tap","Kingdom UI Tester","phone width, dark mode, no console errors","UI change",0],["game.agents_view","Agent Org Viewer","hq","","game","code","Show this registry in the Kingdom: who works where, live vs planned.","Registry and UI agree","Agent Org Viewer Validator","counts match run.js summary","registry change",0],["b2.pm","JobCard App PM","b2","","pm","claude","Keep JobCard App's quests small, ordered and honest about timing.","Next quest always ready","JobCard App PM Validator","fits budget","weekly:sun",0],["b2.research","JobCard App Researcher","b2","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","JobCard App Researcher Validator","every claim sourced","chapter start",0],["b2.builder","JobCard App Builder","b2","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","JobCard App Builder Validator","tests + demo","go decision",0],["b2.marketer","JobCard App Marketer","b2","","marketing","planned","Find the first 10 users where they already hang out.","10 users","JobCard App Marketer Validator","no spam, no fake reviews","first version",0],["b2.validator","JobCard App Validator","b2","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","JobCard App Validator Validator","acceptance check written before work","deliverable",0],["b3.pm","Exam & Money Kits PM","b3","","pm","claude","Keep Exam & Money Kits's quests small, ordered and honest about timing.","Next quest always ready","Exam & Money Kits PM Validator","fits budget","weekly:sun",0],["b3.research","Exam & Money Kits Researcher","b3","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","Exam & Money Kits Researcher Validator","every claim sourced","chapter start",0],["b3.builder","Exam & Money Kits Builder","b3","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","Exam & Money Kits Builder Validator","tests + demo","go decision",0],["b3.marketer","Exam & Money Kits Marketer","b3","","marketing","planned","Find the first 10 users where they already hang out.","10 users","Exam & Money Kits Marketer Validator","no spam, no fake reviews","first version",0],["b3.validator","Exam & Money Kits Validator","b3","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","Exam & Money Kits Validator Validator","acceptance check written before work","deliverable",0],["b4.pm","Extension Lab PM","b4","","pm","claude","Keep Extension Lab's quests small, ordered and honest about timing.","Next quest always ready","Extension Lab PM Validator","fits budget","weekly:sun",0],["b4.research","Extension Lab Researcher","b4","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","Extension Lab Researcher Validator","every claim sourced","chapter start",0],["b4.builder","Extension Lab Builder","b4","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","Extension Lab Builder Validator","tests + demo","go decision",0],["b4.marketer","Extension Lab Marketer","b4","","marketing","planned","Find the first 10 users where they already hang out.","10 users","Extension Lab Marketer Validator","no spam, no fake reviews","first version",0],["b4.validator","Extension Lab Validator","b4","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","Extension Lab Validator Validator","acceptance check written before work","deliverable",0],["b5.pm","Deals & Tools PM","b5","","pm","claude","Keep Deals & Tools's quests small, ordered and honest about timing.","Next quest always ready","Deals & Tools PM Validator","fits budget","weekly:sun",0],["b5.research","Deals & Tools Researcher","b5","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","Deals & Tools Researcher Validator","every claim sourced","chapter start",0],["b5.builder","Deals & Tools Builder","b5","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","Deals & Tools Builder Validator","tests + demo","go decision",0],["b5.marketer","Deals & Tools Marketer","b5","","marketing","planned","Find the first 10 users where they already hang out.","10 users","Deals & Tools Marketer Validator","no spam, no fake reviews","first version",0],["b5.validator","Deals & Tools Validator","b5","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","Deals & Tools Validator Validator","acceptance check written before work","deliverable",0],["b6.pm","AI FinOps & Governance PM","b6","","pm","claude","Keep AI FinOps & Governance's quests small, ordered and honest about timing.","Next quest always ready","AI FinOps & Governance PM Validator","fits budget","weekly:sun",0],["b6.research","AI FinOps & Governance Researcher","b6","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","AI FinOps & Governance Researcher Validator","every claim sourced","chapter start",0],["b6.builder","AI FinOps & Governance Builder","b6","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","AI FinOps & Governance Builder Validator","tests + demo","go decision",0],["b6.marketer","AI FinOps & Governance Marketer","b6","","marketing","planned","Find the first 10 users where they already hang out.","10 users","AI FinOps & Governance Marketer Validator","no spam, no fake reviews","first version",0],["b6.validator","AI FinOps & Governance Validator","b6","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","AI FinOps & Governance Validator Validator","acceptance check written before work","deliverable",0],["b7.pm","Trading Lab PM","b7","","pm","claude","Keep Trading Lab's quests small, ordered and honest about timing.","Next quest always ready","Trading Lab PM Validator","fits budget","weekly:sun",0],["b7.research","Trading Lab Researcher","b7","","research","claude","Validate demand with real evidence before any build.","Go/no-go with sources","Trading Lab Researcher Validator","every claim sourced","chapter start",0],["b7.builder","Trading Lab Builder","b7","","tech","planned","Build the smallest version that can earn the first rupee.","First version in ≤ 2 weeks","Trading Lab Builder Validator","tests + demo","go decision",0],["b7.marketer","Trading Lab Marketer","b7","","marketing","planned","Find the first 10 users where they already hang out.","10 users","Trading Lab Marketer Validator","no spam, no fake reviews","first version",0],["b7.validator","Trading Lab Validator","b7","","validation","claude","Checks every deliverable in this world against its acceptance check.","Nothing reaches Akhil unchecked","Trading Lab Validator Validator","acceptance check written before work","deliverable",0]];
+const ORG_STATUS={code:["⚙","Live code","runs by itself"],claude:["🤖","Claude","Claude runs it in chats and scheduled tasks"],human:["🙋","Needs you","Claude prepares, you act"],planned:["🕒","Planned","designed, not built yet"]};
+const TEAM_LABEL={sales:"Sales — win clients",delivery:"Delivery — run the client's automation",success:"Client success","platform-dev":"Developers","platform-test":"Test agents","platform-quality":"Quality, security & policy","platform-ops":"Release & operations","platform-pm":"PM & business analysts",hq:"HQ",game:"Game & Kingdom UI",pm:"PM",research:"Research",tech:"Builders",marketing:"Marketing",validation:"Validation"};
+const SETUP_LABEL={salon:"💇 Salon",realestate:"🏠 Real Estate",gym:"🏋️ Gym",examkits:"📚 Exam Kits"};
+let orgFilter="all";
+function orgView(){
+  const rows=ORG.filter(r=>r[2]===unitSel);
+  if(!rows.length) return "";
+  const cnt=k=>rows.filter(r=>r[5]===k).length;
+  const groups={};for(const r of rows){const g=(r[3]?SETUP_LABEL[r[3]]+" · ":"")+(TEAM_LABEL[r[4]]||r[4]);(groups[g]=groups[g]||[]).push(r);}
+  const vis=r=>orgFilter==="all"||r[5]===orgFilter;
+  return `<section class="panel stack"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h2>Agent org</h2><span class="muted small">${ORG.length} agents company-wide · every one has a validator</span></div>
+  <p class="muted small">Each agent is a named job with a mission, a trigger, a token budget, a KPI and a validator that checks its work. The status tells you honestly how it runs today.</p>
+  <div class="chips" role="group" aria-label="Filter by status"><button class="chip ${orgFilter==="all"?"on":""}" data-org="all">All ${rows.length}</button>${Object.entries(ORG_STATUS).map(([k,v])=>`<button class="chip ${orgFilter===k?"on":""}" data-org="${k}" title="${esc(v[2])}">${v[0]} ${esc(v[1])} ${cnt(k)}</button>`).join("")}</div>
+  ${Object.entries(groups).map(([g,list])=>{const shown=list.filter(vis);if(!shown.length)return "";return `<details class="orggroup" ${Object.keys(groups).length<=3?"open":""}><summary><b>${esc(g)}</b> <span class="muted small">${shown.length} agent${shown.length===1?"":"s"}</span></summary><div class="stack" style="gap:6px;margin-top:8px">${shown.map(r=>`<details class="orgagent"><summary><span title="${esc(ORG_STATUS[r[5]][1])}">${ORG_STATUS[r[5]][0]}</span> ${esc(r[1])}${r[11]?' <span class="chip">needs you</span>':""}</summary><div class="small" style="margin:6px 0 4px 24px"><p>${esc(r[6])}</p><p class="muted">Trigger: ${esc(r[10])} · KPI: ${esc(r[7])}</p><p class="muted">✅ ${esc(r[8])}: ${esc(r[9])}</p></div></details>`).join("")}</div></details>`;}).join("")}
+  </section>`;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-org]");if(!b)return;orgFilter=b.dataset.org;render();});
+
+// ---------- Agents ----------
+function viewAgents(){
+  const u=unit(unitSel);
+  return `<section class="panel stack"><h2>Team board</h2><p class="muted small">How the agents talk: each morning run, every agent posts what it prepared and any handoff to another agent or to you. The Validator signs off before anything reaches you.</p>${feedHtml(40)}</section>
+  <section class="panel stack"><h2>Who works on each unit</h2>${unitBar()}
+    <p><b>You (CEO)</b> → <b style="color:var(${u.color})">${esc(u.name)} GM</b> (Claude) → 7 department agents. Budget: ${u.tokens}% of the daily Claude usage.</p>
+    <div class="deptgrid">${DEPT_ORDER.map(d=>{const D=DEPTS[d],n=TASKS.filter(t=>t.u===unitSel&&t.d===d).length;return `<div class="card"><span class="eyebrow">${esc(D.name)}</span><h3>${esc(D.role)}</h3><p class="muted small">${esc(D.mandate)}</p><div class="chips"><span class="chip">${n} task${n===1?"":"s"}</span><span class="chip">${Math.round(u.tokens*D.share)/100}% budget</span></div></div>`;}).join("")}</div>
+    <p class="note">Agents are roles Claude takes on when you chat or when a scheduled task runs. They never sign up, pay, sign or talk to customers as you, and never see your passwords.</p>
+  </section>${orgView()}`;
+}
+
+// ---------- Plan ----------
+function viewPlan(){
+  const rows=PHASES.map(p=>{const ts=TASKS.filter(t=>t.ph===p.id),m=ts.reduce((a,t)=>a+t.m,0),w=Math.max(0,...ts.map(t=>t.w));return {p,m,w,d:Math.ceil(m/60)};});
+  const total=rows.reduce((a,r)=>a+Math.max(r.d,r.w),0);let start=0;
+  const bars=rows.map(r=>{const len=Math.max(r.d,r.w),l=start/total*100;const o=`<div class="prow"><div><b>${r.p.id}·${esc(r.p.name)}</b><div class="muted small">${esc(r.p.what)}</div></div><div class="ptrack" aria-hidden="true"><i style="left:${l}%;width:${r.d/total*100}%"></i>${r.w>r.d?`<em style="left:${l+r.d/total*100}%;width:${(r.w-r.d)/total*100}%"></em>`:""}</div><div class="mono small">${fmtMin(r.m)} · ~${len}d</div></div>`;start+=len;return o;}).join("");
+  const tools=[["Code & builds","GitHub Codespaces, Expo + EAS cloud builds, Google Colab"],["Data & hosting","Supabase, Netlify, Cloudflare Pages & Workers"],["Messaging","WhatsApp Cloud API, Telegram"],["Payments","Razorpay, UPI, Dodo Payments / Gumroad, Play billing"],["Admin","Gmail, Drive & Sheets, Zoho Invoice, Bitwarden"],["AI FinOps stack","LiteLLM price map, Presidio, OpenTelemetry GenAI"],["Design","Canva"],["Paid once","Domain ~₹500–1,000/yr, Google Play $25, Chrome Web Store $5"]];
+  return `<section class="panel stack"><h2>Timeline at 1 hour a day</h2><p class="muted small">Hatched parts are waits you can't speed up (KYC, Play's 14-day test, 90 days of paper trading). Other work fills them.</p><div class="stack" style="gap:10px">${bars}</div>
+  <p class="note">Setup without customers: about ${rows[0].d+rows[1].d} one-hour days. First money most likely from the Studio or a Kit around weeks 6–10. All units launched in about 4–5 months.</p></section>
+  <section class="panel" style="padding:0"><div style="padding:16px 16px 0"><h2>Daily Claude budget</h2><p class="muted small" style="margin-top:4px">Shares of your daily usage limit. Inside each unit: Tech 35%, Marketing 15%, Validation 15%, PM 10%, Sales 10%, Ops 10%, Finance 5%.</p></div>
+  <div class="tablewrap"><table><thead><tr><th>Unit</th><th class="num">Share</th><th class="num">Done</th></tr></thead><tbody>${UNITS.map(u=>{const ts=TASKS.filter(t=>t.u===u.id);return `<tr><td><span class="sw" style="background:var(${u.color})"></span> ${esc(u.name)}</td><td class="num">${u.tokens}%</td><td class="num">${ts.filter(t=>stateOf(t.id)==="done").length}/${ts.length}</td></tr>`;}).join("")}</tbody></table></div></section>
+  <section class="panel" style="padding:0"><div style="padding:16px 16px 0"><h2>Tool stack</h2><p class="muted small" style="margin-top:4px">All cloud or browser, so your PC only needs Chrome.</p></div>
+  <div class="tablewrap"><table><tbody>${tools.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join("")}</tbody></table></div></section>
+  ${company?`<section class="panel"><h3>Company</h3><p class="small" style="margin-top:6px">${esc(company.name)} · ${esc(company.type)} · ${esc(company.udyam)} · started ${esc(company.started)} · ${esc(company.city)}</p></section>`:""}`;
+}
+
+// ---------- Render ----------
+function render(){
+  renderTabs();
+  const v=document.getElementById("view");
+  v.innerHTML=tab==="home"?viewHome():tab==="map"?viewMap():tab==="units"?viewUnits():tab==="agents"?viewAgents():viewPlan();
+  wire(v);
+  v.querySelectorAll("[data-tabgo]").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.tabgo;render();window.scrollTo({top:0});}));
+  v.querySelectorAll("details.task").forEach(d=>d.addEventListener("toggle",()=>{if(d.open)openTask=d.id.slice(5);}));
+  if(tab==="map")drawMap();
+}
+function setLive(){
+  const dot=document.getElementById("liveDot"),txt=document.getElementById("liveText");
+  if(db&&live){dot.className="dot on";txt.textContent=canWrite?"Live · saves for you everywhere":"Live · view only";}
+  else{dot.className="dot";txt.textContent="Offline · changes won't save";}
+}
+render();setLive();
+
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use){return;}
+    db=await window.claude.use("db");
+    if(!db){setLive();return;}
+    try{const user=await window.claude.use("user");if(user){const c=await user.can("data.write");if(c===false)canWrite=false;}}catch(e){}
+    db.collection("status").onSnapshot(snap=>{live=true;snap.docs.forEach(d=>{const v=d.data();if(v&&v.s){status[d.id]=v.s;if(v.at)statusAt[d.id]=v.at;}});setLive();render();},()=>{live=false;setLive();});
+    db.collection("reports").onSnapshot(snap=>{reports=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,data:d.data()||{}})).sort((a,b)=>a.id<b.id?1:-1).slice(0,14);render();},()=>{});
+    db.collection("company").onSnapshot(snap=>{const d=snap.docs.find(x=>x.id==="profile");company=d?d.data():null;if(tab==="plan")render();},()=>{});
+  }catch(e){setLive();}
+})();
+})();
+</script>
+

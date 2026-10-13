@@ -15,7 +15,8 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 3. **Licences:** MIT/Apache/BSD/ISC can be copied with attribution; MPL/LGPL only as unmodified libraries; GPL/AGPL never copied into a sold product (see `00-hq/research/BRIEF.md`).
 4. **Legal:** WhatsApp Business policy (opt-in, templates), TRAI (no unsolicited calls/SMS), DPDP (processor clause, privacy notice), ASCI disclosure for affiliate links, SEBI: b7 gives no tips and trades on paper only. No scraping of Google Maps, Justdial, Instagram or consumers' personal numbers.
 5. **Tests before ticks:** an item is `[x]` only when its check in ROADMAP.md passes. BotBhai: `bash 01-botbhai/botbhai/tools/test-all.sh`. Agents: `node 00-hq/agents/run.test.js`.
-6. Keep files where the map says. New world code goes in that world's folder; nothing at the repo root except README.md, CLAUDE.md and config.
+6. **Every UI uses the Kalpa design system** in `00-hq/design/` (tokens.css, DESIGN-SYSTEM.md, free toolkit list). No new palettes or fonts; tune per world with that world's `--lN` colour. Check light + dark at 390 px before ticking.
+7. Keep files where the map says. New world code goes in that world's folder; nothing at the repo root except README.md, CLAUDE.md and config.
 
 ## Build sprint procedure
 1. Read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).

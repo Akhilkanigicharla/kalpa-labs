@@ -58,11 +58,12 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green.
 - [ ] **A36** b2 · b2.q19 + b2.q20: Expo app scaffold (Obytes template, te/hi strings), offline voice, SQLite outbox, invoice share. Check: `tsc` + Jest green.
 - [ ] **A37** b2 · b2.q11 + b2.q15: reminders/quota cron and the "my customers" PWA. Check: tests.
-- [ ] **A38** b4 · E2 + E3: WXT scaffold in `04-extensions/src/`, save/restore core with Playwright test. Check: CI green.
-- [ ] **A39** b4 · E6 + E7: OneTab/Session Buddy importers and auto-snapshots. Check: 1,000-tab fixture passes.
+- [x] **A38** b4 · E2 + E3: WXT scaffold in `04-extensions/src/`, save/restore core with Playwright test. Check: CI green. (done 2026-10-13, ca75d3c; unit + Chromium e2e green locally, runs in the `Kalpa quality` workflow)
+- [x] **A39** b4 · E6 + E7: OneTab/Session Buddy importers and auto-snapshots. Check: 1,000-tab fixture passes. (done 2026-10-13, ca75d3c; unit + Chromium e2e green locally, runs in the `Kalpa quality` workflow)
 - [ ] **A40** b4 · E9 + E10: privacy policy/landing page and store screenshots. Check: files in place.
 - [ ] **A41** HQ · Q-HQ-05 + Q-HQ-06: invoice template (shared with A05) and legal drafts (client agreement, privacy notice, terms). Check: drafts in `00-hq/docs/legal/`.
 - [x] **A42** growth · Deep Scan v2 step 5: `enrich.py` reads schema.org data, SEO-bot WhatsApp-button contrast + favicon, Lighthouse CI workflow (`.github/workflows/lighthouse.yml`). Check: enrich + SEO tests green; `lhci autorun` passes. (done 2026-10-13, c109d4e)
+- [x] **A43** HQ · Quality workflow `.github/workflows/quality.yml`: gitleaks + actionlint + every world's tests (BotBhai, b2 with Postgres RLS, b4 with Chromium e2e, b6, b7). Check: actionlint clean; gitleaks no leaks. (done 2026-10-13, ca75d3c)
 - [ ] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green.
 
 ---

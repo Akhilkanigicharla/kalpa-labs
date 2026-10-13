@@ -1,0 +1,97 @@
+# Company-wide quality gate (free on GitHub Actions). Deep Scan v2, area 8.
+# secrets (gitleaks) + workflow lint (actionlint) + every world's tests.
+name: Kalpa quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.24" }
+      - name: Install gitleaks + actionlint (pinned Go modules)
+        run: |
+          go install github.com/zricethezav/gitleaks/v8@v8.30.1
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+      - name: Secrets scan (whole history)
+        run: "$(go env GOPATH)/bin/gitleaks git --redact --no-banner --exit-code 1 ."
+      - name: Lint workflows
+        run: "$(go env GOPATH)/bin/actionlint -color"
+
+  botbhai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: bash 01-botbhai/botbhai/tools/test-all.sh
+
+  python-worlds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: b7 Trading Lab
+        working-directory: 07-trading
+        run: |
+          pip install numpy==2.5.4 pandas==3.0.6 pyarrow==26.0.0 pytest==9.1.1
+          python -m pytest -q
+      - name: b6 Ledger Peaks
+        working-directory: 06-finops
+        run: |
+          pip install genai-prices==0.1.11 pytest==9.1.1
+          python -m pytest -q tests/
+
+  jobcard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: postgres }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: sudo apt-get install -y poppler-utils
+      - name: Core tests
+        working-directory: 02-jobcard
+        run: npm ci && npm test
+      - name: Schema + RLS tests
+        env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
+        run: bash 02-jobcard/supabase/test.sh
+
+  tab-lifeboat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: 04-extensions/src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm ci
+      - run: npm run compile
+      - run: npm run lint
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

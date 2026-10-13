@@ -5,7 +5,7 @@ a budget of ₹0–5,000, and a low-RAM PC, so everything has to run in the clou
 Netlify, Supabase, Cloudflare, Google Colab). The company stays in build mode with no spending until it goes public.
 
 **Worlds:**
-- **b1 BotBhai:** WhatsApp, voice and lead-gen automation for salons, gyms, real estate and coaching institutes. Already built at `01-studio/botbhai`.
+- **b1 BotBhai:** WhatsApp, voice and lead-gen automation for salons, gyms, real estate and coaching institutes. Already built at `01-botbhai/botbhai`.
 - **b2 JobCard:** voice-note job cards and invoices app for AC/appliance technicians. Expo, ₹149–299/month.
 - **b3 Kits:** Google Sheets kits for exam aspirants or tax/SIP, ₹199–499.
 - **b4 Extensions:** a freemium Chrome extension.

@@ -5,5 +5,5 @@ __pycache__/
 .venv/
 *.log
 .DS_Store
-01-studio/botbhai/web/dist/
+01-botbhai/botbhai/web/dist/
 __pycache__/

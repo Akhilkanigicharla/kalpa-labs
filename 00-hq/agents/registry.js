@@ -17,7 +17,7 @@
 const DAILY_TOKENS = 400000;                      // what Claude work we plan per day across the company
 const WORLD_SHARE = { hq: 10, b1: 22, b2: 20, b3: 12, b4: 10, b5: 8, b6: 10, b7: 8 }; // % (matches the Kingdom)
 const SETUPS = { salon: "Salon", realestate: "Real Estate", gym: "Gym", examkits: "Exam Kits" };
-const R = (repo) => "01-studio/botbhai/" + repo;
+const R = (repo) => "01-botbhai/botbhai/" + repo;
 
 // helper: one agent + its validator
 function A(o) {
@@ -85,7 +85,7 @@ const MODULES = [
 ];
 const platform = [];
 for (const [m, label, code, test] of MODULES) {
-  platform.push(A({ id: `pf.dev.${m}`, name: `${label} Developer`, unit: "b1", team: "platform-dev", mission: `Own ${label}: fix bugs, add features from the BA backlog, keep it simple.`, trigger: { event: "backlog item / bug" }, code: R(code).replace("01-studio/botbhai/00-hq", "00-hq"), tokens: 15000, kpi: "Every change ships with a test", validator: { name: `${label} Code Reviewer`, checks: ["tests added", "no secrets in code", "IST-safe dates"] } }));
+  platform.push(A({ id: `pf.dev.${m}`, name: `${label} Developer`, unit: "b1", team: "platform-dev", mission: `Own ${label}: fix bugs, add features from the BA backlog, keep it simple.`, trigger: { event: "backlog item / bug" }, code: R(code).replace("01-botbhai/botbhai/00-hq", "00-hq"), tokens: 15000, kpi: "Every change ships with a test", validator: { name: `${label} Code Reviewer`, checks: ["tests added", "no secrets in code", "IST-safe dates"] } }));
   platform.push(A({ id: `pf.test.${m}`, name: `${label} Test Agent`, unit: "b1", team: "platform-test", mission: `Keep ${label}'s tests green and add a test for every bug found.`, trigger: { event: "every commit" }, runs_as: m === "cards" || m === "web" || m === "kingdom" ? "claude" : "code", code: test, tokens: 0, kpi: "0 regressions reach a client", validator: { name: `${label} Test Auditor`, checks: ["tests fail when the bug is reintroduced"] } }));
 }
 platform.push(

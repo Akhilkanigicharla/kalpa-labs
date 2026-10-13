@@ -1,12 +1,21 @@
-# 🔮 The Market Maze — Trading Lab
+# 🔮 Trading Lab · world b7 (The Market Maze)
 
-Backtesting in Google Colab (Backtesting.py / vectorbt). Paper trading only until the 90-day gate.
+**What it is:** Backtesting + 90-day paper trading on legal Indian venues. Research only, no tips.
+**Status (13 Oct 2026):** Planned. Paper only. No real money until the gate passes and the CEO signs capital rules.
+**Price:** Not sold. Earns ₹0 in year 1 by design.
 
-## Status
+## What's in this folder
 
-Build mode — nothing public yet. Progress is tracked in the Kalpa Labs control room.
+| Label | File or folder | What it holds |
+|---|---|---|
+| 📋 Plan | [PLAN.md](PLAN.md) | Verdict, customer, unit economics, go-to-market, quests, kill rules, what's needed from Akhil |
+| 🔎 Research | [research/](research/) | GitHub repos checked, cloned and run: adopt / learn / avoid |
+| 📝 Docs | [docs/](docs/) | Decisions, requirements, sales material |
+| 🎨 Design | [design/](design/) | UI design brief and mockups (filled by the build sprints) |
+| 💻 Code | src/, paper/, research/trials.csv (added at quest Q7.1) | The product itself |
 
-## Folders
+## Research reports
+- [research/a8-trading.md](research/a8-trading.md)
 
-- `docs/` — research, plans and decisions
-- `src/` — code (added when the first build quest starts)
+## Next steps
+See this world's lines in [../00-hq/ROADMAP.md](../00-hq/ROADMAP.md): agent tasks run automatically in the build sprints, CEO tasks show up in the morning brief.

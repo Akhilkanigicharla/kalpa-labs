@@ -26,7 +26,7 @@ function check() {
     if (!WORLD_SHARE[a.unit]) errors.push(`${a.id}: unknown unit ${a.unit}`);
     if (a.runs_as === "code" && a.code && !a.code.startsWith("scheduled task") && !a.code.includes("artifact")) {
       const file = a.code.split(/[#\s+]/)[0];
-      if (!fs.existsSync(path.join(ROOT, file)) && !fs.existsSync(path.join(ROOT, "01-studio/botbhai", file))) errors.push(`${a.id}: code file not found: ${file}`);
+      if (!fs.existsSync(path.join(ROOT, file)) && !fs.existsSync(path.join(ROOT, "01-botbhai/botbhai", file))) errors.push(`${a.id}: code file not found: ${file}`);
     }
   }
   for (const s of ["salon", "realestate", "gym", "examkits"]) if (AGENTS.filter((a) => a.setup === s && a.team !== "platform-pm").length < 30) errors.push(`setup ${s} has an incomplete team`);

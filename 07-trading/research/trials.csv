@@ -1,0 +1,1 @@
+trial_id,logged_ist,hypothesis_id,strategy,params,data,n_configs,is_sharpe,oos_sharpe,bh_sharpe,psr,dsr,pbo,oos_trades,stress_sharpe,verdict

@@ -1,0 +1,12 @@
+# b7 Trading Lab, pinned 2026-10-13 (versions proven in research/deep-scan-v2.md, Step 2).
+# Core lab code (src/) only needs numpy + pandas; the rest is for data and tear-sheets.
+numpy==2.5.4
+pandas==3.0.6
+scipy==1.18.1
+pyarrow==26.0.0
+yfinance==1.7.0
+bt==1.4.1          # MIT, portfolio backtests (ADOPT)
+quantstats==0.0.86 # Apache-2.0, tear-sheets (ADOPT)
+pytest==9.1.1
+# NOT listed on purpose: backtesting.py (AGPL-3.0) and vectorbt (Commons Clause).
+# They were only installed in a throwaway venv for the bake-off; never import them in src/.

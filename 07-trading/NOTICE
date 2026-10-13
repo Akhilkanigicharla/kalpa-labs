@@ -1,0 +1,20 @@
+Kalpa Labs · b7 Trading Lab · third-party notices
+
+src/ is original code written by Kalpa Labs. No code was copied from any
+GPL, AGPL, LGPL or Commons-Clause project (freqtrade, backtrader,
+backtesting.py, vectorbt, pybroker, pypbo, OpenAlgo, nsepython).
+
+Methods implemented from published papers (formulas, not code):
+- Probabilistic Sharpe Ratio: Bailey & Lopez de Prado (2012), J. of Risk 15(2).
+- Deflated Sharpe Ratio: Bailey & Lopez de Prado (2014), J. Portfolio Mgmt 40(5).
+- Probability of Backtest Overfitting (CSCV): Bailey, Borwein, Lopez de Prado & Zhu (2017),
+  J. Computational Finance 20(4).
+- Time-series momentum: Moskowitz, Ooi & Pedersen (2012), JFE 104(2).
+- Volatility-managed portfolios: Moreira & Muir (2017), JF 72(4).
+
+Libraries used as unmodified dependencies (see requirements.txt):
+- bt (MIT) Copyright (c) 2014 Philippe Morissette
+- quantstats (Apache-2.0) Copyright 2019-2025 Ran Aroussi
+- pandas (BSD-3), numpy (BSD-3), scipy (BSD-3), pyarrow (Apache-2.0)
+- yfinance (Apache-2.0). Yahoo data is for personal research only; never
+  redistribute raw prices.

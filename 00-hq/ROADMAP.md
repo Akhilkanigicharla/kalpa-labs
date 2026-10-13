@@ -53,7 +53,8 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A33** b6 · F-04 copy + F-11 ingest API + F-12 dashboard + F-17 alerts. Check: per PLAN.md.
 
 ### Sprint 3 · Second engine
-- [ ] **A34** b2 · b2.q10: `02-jobcard/supabase/schema.sql` with RLS. Check: applies on local Postgres.
+- [x] **A34** b2 · b2.q10: `02-jobcard/supabase/schema.sql` with RLS. Check: applies on local Postgres. (done 2026-10-13, e6e5ffc; `bash 02-jobcard/supabase/test.sh` adds RLS tests)
+- [x] **A34b** b2 · Deep Scan v2: `02-jobcard/lib/invoice.mjs` (GST maths for unregistered/composition/regular, words, UPI, bilingual HTML for expo-print, English PDF) + `lib/parse.mjs` (transcript → job card). Check: `cd 02-jobcard && npm test`. (done 2026-10-13, e6e5ffc)
 - [ ] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green.
 - [ ] **A36** b2 · b2.q19 + b2.q20: Expo app scaffold (Obytes template, te/hi strings), offline voice, SQLite outbox, invoice share. Check: `tsc` + Jest green.
 - [ ] **A37** b2 · b2.q11 + b2.q15: reminders/quota cron and the "my customers" PWA. Check: tests.

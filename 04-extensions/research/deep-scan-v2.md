@@ -45,11 +45,11 @@ Also screened: `onetab` topic (28 repos, incl. `jianyuan/onetab-export-to-json`,
 - Pattern: storage eviction (low disk wipes data), update migrations that drop data, silent auto-save failure, and tab groups not surviving.
 
 ## Feature gaps Tab Lifeboat should win on
-1. **Proof that backups happen.** Show "Last snapshot 3 min ago" in the popup, always. Silent auto-save failure is the #1 TSM complaint. (Built: popup status line.)
-2. **Storage that survives low disk and updates.** Call `navigator.storage.persist()`, add `unlimitedStorage`, keep the DB schema versioned with forward-only migrations and a test per migration. (Built: `unlimitedStorage`, `persist()`, schema v1 with an `upgrade` hook.)
+1. **Proof that backups happen.** Show "Last snapshot 3 min ago" in the popup, always. Silent auto-save failure is the #1 TSM complaint. (Built: "Last snapshot N min ago" in the popup header.)
+2. **Storage that survives low disk and updates.** Call `navigator.storage.persist()`, add `unlimitedStorage`, keep the DB schema versioned with forward-only migrations and a test per migration. (Built: `unlimitedStorage`, `navigator.storage.persist()`, IndexedDB schema v1 with an `upgrade` hook.)
 3. **Tab groups with name + colour + collapsed state, restored exactly.** TSM and OneTab both drop or mangle groups. (Built: saved and restored, covered by unit + Playwright tests.)
 4. **Never close tabs without asking.** OneTab's "closed my windows on install" review. Save never closes anything unless the user ticks "Save and close". (Built: save is non-destructive.)
-5. **Imports that switchers trust:** OneTab text, Session Buddy v3 and v4 JSON, with a count preview ("1,000 tabs in 10 groups") before writing. (Built, 1,000-tab fixture.)
+5. **Imports that switchers trust:** OneTab text, Session Buddy v3 and v4 JSON, with a count preview ("1,000 tabs in 10 groups") before writing. (Built: preview in the popup, 1,000-tab fixtures. The Session Buddy reader is deliberately tolerant; check it on a real export, E6's CEO step.)
 6. **Restore doesn't duplicate.** Restore into new windows only; skip tabs whose URL is already open (v0.2 toggle).
 7. **Off-device backup the user owns** (Pro: Drive `drive.file`; free: one-click export JSON). Planned E13.
 
@@ -66,3 +66,26 @@ Also screened: `onetab` topic (28 repos, incl. `jianyuan/onetab-export-to-json`,
 | Vulnerabilities | **osv-scanner** weekly | add as a scheduled job later | ₹0 |
 | Workflow security | **zizmor** | after actionlint is clean | ₹0 |
 Not adopted: SonarCloud (account needed), Snyk (account + limits), trufflehog (AGPL), act (not needed).
+
+## Tried it (13 Oct 2026)
+
+Published packages only (`wxt@0.21.4`, `vitest@5.0.4`, `fake-indexeddb@6.2.5`, `idb@8.0.4`, `@biomejs/biome@2.5.15`, `playwright@1.64.0`, and `gitleaks v8.30.1` / `actionlint v1.7.12` built from their Go modules). No cloned repo code was executed.
+
+| Run | Result |
+|---|---|
+| `wxt build` | MV3 extension (background service worker + popup) in **0.8 s**, 508 kB including the bundled Kalamkari fonts |
+| Unit tests (`vitest`, fake IndexedDB, fake `chrome.*`) | **9 / 9**: OneTab text and Session Buddy v3 at **1,000 tabs** (parsed in < 200 ms), v4 collections, auto-detect, free plan keeps 3 auto snapshots and every manual/import session, Pro keeps 90 days, capture → restore keeps pinned tabs and tab-group title/colour/collapsed, skips incognito windows and `chrome://` pages |
+| **Real Chromium end-to-end** (`tests/e2e/save-restore.e2e.mjs`): load the built extension, open 3 pages, group 2 as "Research" (purple), save, close, restore | **10 / 10 checks**: all pages back, the group comes back with the same title, colour and members, the 5-minute alarm is registered, and a snapshot is under 5 minutes old |
+| `actionlint` on all 5 workflows | clean |
+| `gitleaks git` on the repo | 28 commits scanned (this clone is shallow), **no leaks** |
+| Popup at 360 px, light + dark | no overflow; checked by screenshot |
+
+Two bugs found by the tests and fixed before commit: the Session Buddy reader dropped a whole folder when one link had no URL, and deleting the IndexedDB between tests hung on an open connection (now the tests clear the store instead).
+
+## What was built
+
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A38 (E2 + E3) | `src/wxt.config.ts` (permissions: tabs, tabGroups, alarms, storage, unlimitedStorage), `src/lib/model.ts`, `src/lib/capture.ts` (save never closes tabs; restore reopens windows, pins and groups), `src/lib/store.ts` (IndexedDB), `src/entrypoints/background.ts`, popup in Kalamkari with b4 plum | `npm run compile`, `npm test`, `npm run test:e2e` | pass |
+| A39 (E6 + E7) | `src/lib/importers.ts` (OneTab text, Session Buddy v3/v4 with count preview), 5-minute `alarms` snapshots with plan limits (free 3, Pro 90 days, **pending CEO approval**), "Last snapshot" status | 1,000-tab fixtures; e2e snapshot age < 5 min | pass |
+| Quality workflow | `.github/workflows/quality.yml`: gitleaks (whole history) + actionlint, BotBhai tests, b6 + b7 pytest, b2 core + Postgres RLS tests, b4 compile/lint/unit/e2e | `actionlint` clean | pass |

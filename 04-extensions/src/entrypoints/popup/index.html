@@ -3,11 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Default Popup Title</title>
+    <title>Tab Lifeboat</title>
     <meta name="manifest.type" content="browser_action" />
   </head>
   <body>
-    <div id="app"></div>
+    <div class="temple" aria-hidden="true"></div>
+    <main>
+      <header><h1>Tab Lifeboat</h1><span id="auto" class="eyebrow">Auto-save every 5 min</span></header>
+      <button id="save" type="button" class="primary">Save all tabs</button>
+      <p class="hint">Saving never closes your tabs.</p>
+      <h2>Saved</h2>
+      <ul id="list" aria-live="polite"></ul>
+      <details id="importBox"><summary>Import from OneTab or Session Buddy</summary>
+        <textarea id="importText" rows="4" placeholder="Paste OneTab's export text or Session Buddy JSON"></textarea>
+        <p id="preview" class="hint"></p>
+        <button id="doImport" type="button" disabled>Import</button>
+      </details>
+    </main>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

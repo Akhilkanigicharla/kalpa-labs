@@ -89,8 +89,18 @@
   }
 
   // Match free text, a number, or a time ("4", "4pm", "4:30 pm", "evening") against choices.
+  // "hair cut" -> "haircut" when the glued word is a word of one of the choices, so the
+  // loose "hair" can't make "Hair spa" win (Deep Scan v2 finding, 13 Oct 2026)
+  function joinSplitWords(t, choices) {
+    const words = new Set([].concat(...choices.map((c) => norm(c).split(" "))).filter((w) => w.length >= 5));
+    const tok = t.split(" "); const out = [];
+    for (let i = 0; i < tok.length; i++) {
+      if (i + 1 < tok.length && words.has(tok[i] + tok[i + 1]) && !words.has(tok[i])) { out.push(tok[i] + tok[i + 1]); i++; } else out.push(tok[i]);
+    }
+    return out.join(" ");
+  }
   function pickChoice(input, choices) {
-    const t = norm(input); if (!t) return null;
+    const t = joinSplitWords(norm(input), choices); if (!t) return null;
     const timed = choices.filter((c) => slotMinutes(c) !== null);
     if (timed.length === choices.length) {
       const tm = t.match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm|a m|p m)?$/);

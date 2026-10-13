@@ -3,6 +3,8 @@
 set -e
 cd "$(dirname "$0")/.."
 node core/engine.test.js
+node core/slots.test.js
+node core/slots.fuzz.test.js
 node core/regression.test.js
 node core/automations.test.js
 node core/humanize.test.js

@@ -70,6 +70,35 @@ Also checked (below 30 or off-topic): [thunderbird/appointment](https://github.c
 - Answer FAQs mid-flow, then re-ask the step (Rasa digression pattern). Today an "address?" during the date step gives "couldn't read that date".
 - An explicit inbox status (`bot` / `human` / `resolved`) alongside the `humanUntil` timer (Chatwoot pattern; wacrm schema).
 - Page slot lists past 10 rows for WhatsApp interactive lists.
+- Found by the side-by-side test below: Telugu-script booking words (`అపాయింట్‌మెంట్`), "cancel" phrases when nothing is booked ("booking cancel cheyyandi" starts a booking; "cancel it please" is not understood), and the service named in an opening message ("I want to book a facial" still asks for the service).
 
-## Tried it
-(see below; filled in after the runs)
+## Tried it (13 Oct 2026)
+
+Published packages only; no cloned repo code was executed.
+
+**1. Slot engine proof (A02).** `core/slots.js` (cal.com's algorithm, MIT, ported and attributed) now has 16 unit tests (`core/slots.test.js`) covering per-day hours, lunch breaks, weekly off, named holidays, special dates that replace the weekly hours, "closing early today", minimum notice with IST rounding (11:07 AM → first slot 12:00 PM), service lengths, a 90-minute keratin at 4 PM blocking 4:30 and 5:00, capacity by peak overlap, and "any stylist" staff availability. A property test (`core/slots.fuzz.test.js`) compares the engine with a dumb minute-by-minute reference on **3,000 random salon days** (random hours, breaks, closing times, durations 15–120 min, capacity 1–3, up to 7 bookings, random "now"): **3,000 / 3,000 identical**, in 0.3 s.
+
+**2. Intent understanding: nlp.js vs BotBhai.** `@nlpjs/basic` 4.x (MIT, 6.7 MB) trained on 13 English examples across 4 intents, against BotBhai's built-in rules, on 10 real-style messages:
+
+| Message | nlp.js | BotBhai (before fix) |
+|---|---|---|
+| repu slot undi aa? hair cut kavali | book ✔ | **booked "Hair spa" ✘** (now asks which haircut) |
+| kal ka slot milega kya | book ✔ | book, date understood ✔ |
+| రేపు అపాయింట్‌మెంట్ కావాలి | ✘ | ✘ |
+| booking cancel cheyyandi | cancel ✔ | started a booking ✘ |
+| haircut entha? | price ✔ | price list ✔ |
+| rate kitna hai | ✘ | price list ✔ |
+| shop ekkada undi | ✘ | hours + address ✔ |
+| address pampandi | location ✔ | hours + address ✔ |
+| I want to book a facial | book ✔ | book ✔ (asks service again) |
+| cancel it please (nothing booked) | cancel ✔ | not understood ✘ |
+| **Score** | **7 / 10** | **6 / 10** before the fix, **7 / 10** after |
+
+Lessons: a statistical classifier generalises English and simple cancel phrasing better; BotBhai's rules win on Telugu/Hindi words for price and place and also extract the date and service in the same message. Neither handles Telugu script. **Fix shipped:** `pickChoice` now joins split words ("hair cut" → "haircut") before fuzzy matching, so "Hair spa" can no longer win on the loose word "hair" (regression test added). The other misses are listed under Gaps.
+
+## What was built
+
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A02 | `botbhai/core/slots.js` (already wired into `engine.js` with a v3.0 fallback), new `core/slots.test.js` (16) + `core/slots.fuzz.test.js` (3,000 cases), both added to `tools/test-all.sh` | new unit tests + all suites green | `bash botbhai/tools/test-all.sh` → ALL BOTBHAI TESTS PASSED |
+| bug fix | `core/engine.js` `joinSplitWords`, `core/regression.test.js` | regression test | pass |

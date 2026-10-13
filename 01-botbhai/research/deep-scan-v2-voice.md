@@ -88,5 +88,28 @@ Sarvam list prices: STT ₹30 per hour (≈ ₹0.50/min) and Bulbul v3 TTS ₹3 
 - Total ≈ ₹1.4/min of AI cost plus ₹0.5–0.8/min of telephony.
 - Nothing open beats Sarvam on Telugu naturalness per ₹ without a GPU bill. A GPU (for example a T4 at about ₹25–35/hour) only pays off above roughly 8–10 busy call-hours a day.
 
-## Tried it (CPU only)
-See the "Tried it (v2)" section below. It was filled in after the tests ran.
+## Tried it (CPU only, 13 Oct 2026)
+
+Published packages only: `pipecat-ai[sarvam,groq,google,silero,websocket]==1.12.0` in a fresh venv (628 MB with torch-free ONNX runtime). No cloned repo code was executed; no API keys were used.
+
+| What | Result |
+|---|---|
+| Silero VAD (bundled) | Loads in 0.11 s; `VADParams(stop_secs=0.2)` applied |
+| smart-turn v3.2 (`smart-turn-v3.2-cpu.onnx`, bundled) | Loads in 0.08 s; **105 ms per 8-second window** on 1 CPU thread in this sandbox (the model card says ~47 ms on a faster CPU). Fine for a turn decision. |
+| Pipecat 1.12 default | Already uses smart-turn v3 as the stop strategy, but with a **3 s** silence fallback; Telugu is not in smart-turn's training data, so a misjudged Telugu turn could wait 3 s |
+| Our `agent.py` before A06 | Put the VAD on the transport (a2: this disables barge-in in 1.12) and never set a TTS language, so Telugu/Hindi replies went through the **en-IN** voice path |
+| Sarvam settings in 1.12 | `SarvamTTSService.Settings` has a `language` field (default `Language.EN`); `te`, `hi` map to `te-IN`, `hi-IN` |
+| Whole agent | `import agent` succeeds in the venv with the pinned FastAPI/uvicorn |
+
+Not tested here (needs a phone line and paid Sarvam minutes): real Telugu calls. That is the CEO-side pilot.
+
+## What was built (A06)
+
+| File | Change |
+|---|---|
+| `botbhai/voice/turns.py` (new) | `user_params()`: Silero VAD 0.2 s + smart-turn v3.2 with a 1.2 s cap, inside `LLMUserAggregatorParams`; `pipecat_language(cfg)` from the client's `voice_language` (te/hi/en) |
+| `botbhai/voice/agent.py` | Transport VAD removed (barge-in back on); aggregator gets `T.user_params()`; Sarvam TTS gets the client's language |
+| `botbhai/voice/prompt.py` | `voice_profile()` now returns `language` (te-IN / hi-IN / en-IN) |
+| `botbhai/voice/test_turns.py` (new) | Checks the real Pipecat objects carry 0.2 s / 1.2 s / language, that `agent.py` has no transport VAD, and smart-turn latency < 500 ms; added to `tools/test-all.sh` (runs when pipecat is installed) |
+
+Check: `cd botbhai/voice && python test_prompt.py && python test_turns.py` in a venv with pipecat → both pass.

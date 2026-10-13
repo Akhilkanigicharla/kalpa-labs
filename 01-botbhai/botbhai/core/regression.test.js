@@ -87,4 +87,10 @@ ok("race: slotTaken re-offers the remaining slots", () => {
   assert.match(back.replies[0].text, /someone grabbed 4:00 PM/); assert.ok(!back.replies[1].options.includes("4:00 PM"));
   assert.notStrictEqual(back.state.lead.status, "booked");
 });
+ok("deep-scan-v2: 'hair cut kavali' never books Hair spa (split word joined first)", () => {
+  const r = talk("salon", ["repu slot undi aa? hair cut kavali"], { now: "2026-10-13T05:00:00Z" });
+  assert.ok(!/Sure! Hair spa/.test(r.log[0].bot)); assert.notStrictEqual(r.state.data.service, "Hair spa");
+  assert.strictEqual(B.pickChoice("hair spa", ["Haircut (men)", "Hair spa"]), "Hair spa");
+  assert.strictEqual(B.pickChoice("hair cut men", ["Haircut (men)", "Haircut & styling (women)", "Hair spa"]), "Haircut (men)");
+});
 console.log(`\n${n} tests passed`);

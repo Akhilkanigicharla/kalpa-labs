@@ -2,7 +2,7 @@
 
 Deep-Scan Agent 1 of 8, 2026-10-13. Follows `a8-trading.md` (read that first). This is engineering research only. It is not investment advice and does not recommend buying or selling any security. b7 trades on paper only.
 
-**Status: Step 1 written (discovery + evidence). Step 2 (engine bake-off) and Step 3 (build) results are added below as they finish.**
+**Status: complete (Steps 1–3), 13 Oct 2026.** Headline: three engines agree to within 0.005%, the gate wrongly passes only 1.3% of random walks, and on real Nifty 50 data 2007–2026 **no strategy beat simply holding the index after Indian costs**.
 
 ## How this list was made
 
@@ -97,10 +97,65 @@ Ranked by strength of out-of-sample, multi-market, multi-decade evidence, then b
 | Changed licence | OpenBB: LICENSE at HEAD (2026-10-12) now says Apache-2.0 for all files | Re-check before any reuse; earlier versions were AGPL. |
 | Permissive (OK to copy with attribution in `07-trading/NOTICE`) | bt, ccxt, qlib, FinRL, TradingAgents, ai-hedge-fund, quantstats, PyPortfolioOpt, Riskfolio-Lib (BSD-3), TA-Lib wrapper (BSD-2), zipline-reloaded, Lean, ta, pykiteconnect | Keep the copyright line and licence text in NOTICE. |
 
-## Step 2: engine bake-off
+## Step 2: engine bake-off (real runs, 13 Oct 2026)
 
-_Pending: results are added here when the runs finish._
+Method: published packages installed from PyPI into a throwaway venv (`bt 1.4.1`, `quantstats 0.0.86`, `backtesting 0.6.6`, `pandas 3.0.6`, `numpy 2.5.4`; a second venv with `pandas 2.3.3`). No cloned repo code was executed. Our own small scripts compared the engines on the **same synthetic series** (10 years, seed 7) and the same a8 SMA 10/50 crossover, costs off for the comparison.
+
+| Engine | Licence | Final equity (gross) | Gap vs ours | Time | Verdict |
+|---|---|---|---|---|---|
+| **Our `src/backtest.py`** (pandas, vectorised) | ours (MIT-able) | 0.708258 | — | **2–3 ms** | ADOPT (core) |
+| bt 1.4.1 | MIT | 0.708266 | 1.2e-5 (whole-share rounding) | 350–435 ms | ADOPT (cross-check, portfolios later) |
+| backtesting.py 0.6.6 | **AGPL-3.0** | 0.708288 | 4.2e-5 | 27–30 ms | private cross-check only, never imported in `src/` |
+
+| Metric | Ours (`src/metrics.py`, from the papers) | quantstats 0.0.86 |
+|---|---|---|
+| Sharpe (252) | -0.279929 | -0.279929 |
+| PSR | 0.188215 | 0.188215 |
+| Max drawdown | -36.4456% | -36.4456% |
+| Inverse-normal (our `_phi_inv` vs scipy) | max error 9.3e-15 | — |
+
+Findings from the runs:
+1. **Three independent engines agree to within 0.005%**, so our 60-line engine is trustworthy and 150× faster than bt, which matters for walk-forward × grid × stress runs on free CI minutes.
+2. **bt 1.4.1 bug found:** with `initial_capital=1e9` and `integer_positions=False` it crashes ("Potentially infinite loop detected") on both pandas 2 and 3; the default capital works. Use bt with default settings only.
+3. **Costs are the story:** the same SMA rule went from 0.708 gross to **0.655 net** over 10 years: 33 round trips × ~0.22% (0.1% STT each side + stamp + exchange + DP) ate 7.5% of capital.
+4. **Data validator caught two real problems in free Yahoo data:** NIFTYBEES has an **unadjusted 1:10 split on 19 Dec 2019** even with `auto_adjust=True` (two >40% "jumps"), and `^NSEI` has a 6-day hole (1 → 7 Oct 2014), which turned out to be real holidays, so the gap limit was set to 7 days. Without validation the split alone would fake a 90% crash.
+5. **PBO bias found in our own first draft:** with 3 configs, the median out-of-sample rank gives logit 0, so pure noise scores PBO ≈ 0.67 instead of 0.5. Every grid now has an even number (≥ 4) of configs, and a test enforces it.
+
+### Gate calibration (300 synthetic runs)
+
+30 random seeds × 5 strategies × 2 worlds, 20 years of daily bars each:
+
+| World | What it is | Passed the gate | Meaning |
+|---|---|---|---|
+| Random walk (8% drift, 18% vol, no edge) | Any pass is a false positive | **2 / 150 (1.3%)** | The gate almost never blesses luck |
+| Planted trend (regimes of ~1 year, ±35% drift) | A real edge exists | 62 / 150 (41%) | Strict: it misses many real edges, by design |
+
+Which criteria stopped the random walks (out of 150): beat buy-and-hold 144, survive 2× costs + 1-bar delay 145, DSR 134, PSR 113, PBO 72, ≥ 30 trades 0. The cost/delay stress and the buy-and-hold comparison do most of the work; PSR alone would have let 37 lucky series through.
+
+### Real data dry run: Nifty 50 index, 17 Sep 2007 – 31 Aug 2026 (yfinance, 4,650 bars)
+
+Scratch registry (not logged in `trials.csv`, because Q7.7 hypotheses are the CEO's call). Lab result, not advice; the index is not a recommendation.
+
+| Strategy | OOS Sharpe | Buy-and-hold Sharpe | PSR | DSR | PBO | Round trips | Stress Sharpe | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| tsmom (12-month momentum) | 0.62 | 0.62 | 0.99 | 0.98 | 0.10 | 57 | 0.27 | rejected (ties B&H; dies under stress) |
+| ma_filter | 0.40 | 0.62 | 0.94 | 0.86 | 0.87 | 92 | 0.19 | rejected |
+| tsmom_vt | 0.39 | 0.62 | 0.93 | 0.91 | 0.97 | 118 | 0.22 | rejected |
+| ma_filter_vt | 0.49 | 0.62 | 0.97 | 0.92 | 0.18 | 113 | 0.28 | rejected |
+| sma_cross (a8 control) | 0.66 | 0.62 | 0.99 | 0.96 | 0.86 | 44 | 0.39 | rejected (PBO 0.86 = lucky pick) |
+
+**Verdict: on 19 years of the Nifty 50, nothing beat holding the index after Indian delivery costs.** Time-series momentum came closest (lower drawdown, same Sharpe) but collapsed at 2× costs plus one day of delay. This matches PLAN.md's honest benchmark: the index fund is the bar, and it is hard to beat. b7 keeps its value as a lab and content source ("why our backtest lied"), not as a money machine.
 
 ## Step 3: what was built
 
-_Pending._
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A23 (Q7.1) | `.gitignore` (`07-trading/data/`, `reports/`), `requirements.txt` (pinned to the versions above), `NOTICE`, README licence note | `git check-ignore 07-trading/data/x.parquet` | passes |
+| A23 (Q7.2) | `src/data.py`: yfinance `.NS`, optional fallback, Parquet cache, validator (NaN, dupes, ≤ 0, high<low, gaps > 7 days, > 40% jumps), synthetic generator | tests on synthetic data only | pass |
+| A23 (Q7.3) | `src/costs.py`: delivery, intraday, futures, options; every rate has source URL + check date; stale after 90 days | contract-note example ₹1L buy + ₹1L sell = **₹237.82** (STT 200, NSE 6.14, SEBI 0.20, stamp 15, GST 1.14, DP 15.34) | within ₹1 |
+| A24 (Q7.4) | `src/strategies.py`, `src/backtest.py`, `src/metrics.py` (PSR, DSR, PBO-CSCV from the papers), `src/gate.py` (6 criteria, thresholds "pending CEO approval") | a8 SMA rejected on 3 random walks; planted trend passes | pass |
+| A24 (Q7.5) | `src/trials.py` + `research/trials.csv`: gate refuses unlogged or mismatched trials, verdicts can't be overwritten, DSR counts every config ever logged per hypothesis | "running without a log entry fails" | pass |
+
+`cd 07-trading && python -m pytest -q` → **24 passed** (4.4 s).
+
+**Proposed for the CEO (thresholds pending approval):** add criterion 6, Deflated Sharpe ≥ 0.95 using all configs ever tried for a hypothesis. It stopped 134/150 random walks and is the direct defence against "try 50 things, publish the best".

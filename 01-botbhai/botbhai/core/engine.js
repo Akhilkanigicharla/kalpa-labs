@@ -18,6 +18,11 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
+  // Slot engine (core/slots.js). In Node it is required; in the browser it is used if loaded first
+  // (window.BotBhaiSlots); otherwise the built-in v3.0 fixed-slot logic below is used.
+  let Slots = null;
+  try { Slots = typeof require === "function" ? require("./slots.js") : (typeof self !== "undefined" && self.BotBhaiSlots) || null; } catch (e) { Slots = null; }
+
   const NICHES = {};
   function register(cfg) { if (!cfg || !cfg.id) throw new Error("config needs an id"); NICHES[cfg.id] = cfg; return cfg; }
 
@@ -120,7 +125,7 @@
     const base = typeof nicheOrConfig === "object" ? nicheOrConfig : NICHES[nicheOrConfig]; if (!base) throw new Error("Unknown setup: " + nicheOrConfig);
     const cfg = Object.assign({}, base, overrides || {});
     const vars = () => ({ business: cfg.business, address: cfg.address, hours: cfg.hours, phone: cfg.phone });
-    const choiceList = (step) => (step.choices === "catalog" ? cfg.catalog.map((c) => c.name) : step.choices);
+    const choiceList = (step) => (step.choices === "catalog" ? cfg.catalog.map((c) => c.name) : step.choices); // "auto" = slots from schedule.hours
     const dateStep = () => cfg.steps.findIndex((x) => x.type === "date");
     const slotStep = () => cfg.steps.findIndex((x) => x.field === "slot");
     const nowOf = (state) => (state.now ? new Date(state.now) : new Date());
@@ -136,11 +141,19 @@
     }
     // Closed weekdays (0 = Sunday) and holidays: [{ date: "2026-11-08", name: "Diwali" }]
     function closedReason(dayIso, d) {
+      if (Slots) return Slots.closedReason(cfg, dayIso);
       const h = (cfg.holidays || []).find((x) => x.date === dayIso); if (h) return `we're closed for ${h.name}`;
       if ((cfg.closed_weekdays || []).includes(d.getUTCDay())) return `we're closed on ${DAYS[d.getUTCDay()][0].toUpperCase() + DAYS[d.getUTCDay()].slice(1)}s`;
       return null;
     }
+    // Bookable start times for the chosen day. Fixed list from the setup, or (choices: "auto") generated
+    // from schedule.hours; service length, staff and breaks come from cfg.schedule (see core/slots.js).
+    function freeSlotInfo(state, slots) {
+      return Slots.free({ cfg, date_iso: state.data.date_iso, now: nowOf(state), busy: state._busy || [], service: state.data.service, labels: slots === "auto" ? null : slots });
+    }
     function freeSlots(state, slots) {
+      if (Slots) return freeSlotInfo(state, slots).map((x) => x.label);
+      if (!Array.isArray(slots)) return []; // "auto" needs core/slots.js
       const cap = cfg.capacity || Infinity; const busy = state._busy || [];
       const now = nowOf(state); const today = isoOf(istToday(now)); const mins = istMinutes(now) + (cfg.lead_minutes || 30);
       return slots.filter((sl) => (state.data.date_iso !== today || slotMinutes(sl) === null || slotMinutes(sl) >= mins)
@@ -157,9 +170,13 @@
         const all = ch; ch = freeSlots(state, ch);
         if (!ch.length) {
           const day = state.data.date; const today = state.data.date_iso === isoOf(istToday(nowOf(state)));
-          const allPast = today && all.every((sl) => slotMinutes(sl) !== null && slotMinutes(sl) < istMinutes(nowOf(state)) + (cfg.lead_minutes || 30));
+          const info = Slots ? Slots.day(cfg, state.data.date_iso) : {};
+          const allPast = today && (all === "auto" || (Slots && cfg.schedule && cfg.schedule.hours)
+            ? !Slots.free({ cfg, date_iso: state.data.date_iso, now: nowOf(state), busy: [], service: state.data.service, labels: all === "auto" ? null : all }).length
+            : all.every((sl) => slotMinutes(sl) !== null && slotMinutes(sl) < istMinutes(nowOf(state)) + (cfg.lead_minutes || 30)));
           state.step = dateStep(); delete state.data.date; delete state.data.date_iso;
-          return { text: allPast ? "Today's slots are over 🌙 How about tomorrow? (or pick any other day)" : `Sorry, ${day} is fully booked 😕 Which other day works for you?`, options: ["Tomorrow", "Day after tomorrow"] };
+          const why = today && info.closingToday ? `Sorry, we're ${info.note || "closed today"} 🙏 How about tomorrow? (or pick any other day)` : allPast ? "Today's slots are over 🌙 How about tomorrow? (or pick any other day)" : `Sorry, ${day} is fully booked 😕 Which other day works for you?`;
+          return { text: why, options: ["Tomorrow", "Day after tomorrow"] };
         }
       }
       if (ch) return { text: step.ask + "\n" + ch.map((c, i) => `*${i + 1}.* ${c}`).join("\n"), options: ch };
@@ -267,6 +284,10 @@
       }
       if (error) return [{ text: error }, askStep(state)];
       state.data[step.field] = value;
+      if (step.field === "slot" && Slots && cfg.schedule && cfg.schedule.staff) { // "any stylist": give it to the first one free
+        const hit = freeSlotInfo(state, step.choices === "auto" ? "auto" : choiceList(step)).find((x) => x.label === value);
+        if (hit && hit.staff.length) state.data.staff = hit.staff[0]; else delete state.data.staff;
+      }
       state.step++;
       return nextOrFinish(state, events);
     }
@@ -284,7 +305,11 @@
       delete state.prev;
       state.step = -1; state.lead.status = cfg.quiz ? "quiz_done" : "booked"; bump(state, "hot", cfg.quiz ? "quiz" : "booked");
       const optIn = !cfg.quiz && !state.lead.marketing ? "\n\nWant member-only offers (max 2 a month)? Reply *OFFERS*." : "";
-      if (!cfg.quiz) events.push({ type: "booking", booking: { service: state.data.service || state.data.goal || state.data.bhk || null, date_iso: state.data.date_iso, slot: state.data.slot, name: state.data.name }, replaces: state.rescheduling || null });
+      if (!cfg.quiz) {
+        const booking = { service: state.data.service || state.data.goal || state.data.bhk || null, date_iso: state.data.date_iso, slot: state.data.slot, name: state.data.name };
+        if (Slots && cfg.schedule) { booking.minutes = Slots.durationOf(Slots.schedule(cfg), state.data.service); if (state.data.staff) booking.staff = state.data.staff; }
+        events.push({ type: "booking", booking, replaces: state.rescheduling || null });
+      }
       if (state.rescheduling) {
         const old = state.rescheduling; delete state.rescheduling;
         events.push({ type: "notify_owner", text: `🔁 Rescheduled: ${state.data.name} · ${state.data.service || ""} · ${old.date} ${old.slot} → ${state.data.date} ${state.data.slot}` });
@@ -299,7 +324,7 @@
       const state = JSON.parse(JSON.stringify(stateIn));
       state.lead.status = (state.prev && state.prev.status) || "new"; state.step = slotStep();
       const gone = state.data.slot; delete state.data.slot;
-      state._busy = (busy || []).concat(Array.from({ length: Math.min(cfg.capacity || 1, 1000) }, () => ({ date_iso: state.data.date_iso, slot: gone })));
+      state._busy = (busy || []).concat(Array.from({ length: Math.min(cfg.capacity || 1, 1000) }, () => ({ date_iso: state.data.date_iso, slot: gone, blocked: true })));
       const replies = [{ text: `Oops, someone grabbed ${gone} a second ago 😅 Here's what's still free:` }, askStep(state)];
       delete state._busy;
       return { replies, state };
@@ -418,5 +443,5 @@
     return { config: cfg, handle, slotTaken };
   }
 
-  return { NICHES, register, createBot, newState, parseDate, pickChoice, istToday, isoOf, version: "3.0.0" };
+  return { NICHES, register, createBot, newState, parseDate, pickChoice, istToday, isoOf, Slots, version: "3.1.0" };
 });

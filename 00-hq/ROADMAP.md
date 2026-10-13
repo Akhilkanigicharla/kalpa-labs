@@ -21,7 +21,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A03** b1 · P1-W2-04: bridal enquiry flow; owner's 9 PM done/no-show list; review ask only after completed visits. Check: T15 passes; no review ask to no-shows.
 - [ ] **A04** b1 · P1-W2-02: shared inbox phase 1 (`web/inbox.html` + `core/functions/inbox.js`): paused chats, reply as the salon, resume bot; `assigned_to`, `status` columns. Check: webhook tests extended and green.
 - [ ] **A05** b1 · P1-W2-06: manual billing: `invoices` table, invoice generator ("Invoice", no GST, Udyam no., series KL/26-27/NNN), UPI QR, paid flag. Check: sample PDF renders.
-- [ ] **A06** b1 · P1-W2-03: voice turn-taking fix in `voice/agent.py` per research a2 (Silero stop_secs 0.2, smart-turn analyzer, Sarvam TTS language). Check: `voice/test_prompt.py` passes in a venv with pipecat.
+- [x] **A06** b1 · P1-W2-03: voice turn-taking fix in `voice/agent.py` per research a2 (Silero stop_secs 0.2, smart-turn analyzer, Sarvam TTS language). Check: `voice/test_prompt.py` passes in a venv with pipecat. (done 2026-10-13, b487bcf; plus `voice/test_turns.py`)
 - [ ] **A07** b1 · P1-W2-05: sales kit in `01-botbhai/docs/sales/`: A5 card (Telugu + English), proposal, client agreement with DPDP processor clause, privacy notice, objection sheet. Check: prices match PLAN.md §2.
 - [ ] **A08** b1 · P1-W1-06: cluster-1 visit sheet (SR Nagar/Ameerpet) from `botbhai/leads/hyderabad-leads.csv`: 6+ salons, map links, personalised pitch. Check: file in `01-botbhai/docs/sales/`.
 - [x] **A09** design · Kalpa design system "Kalamkari": `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` + free UI toolkit (licences checked). (done 2026-10-13)

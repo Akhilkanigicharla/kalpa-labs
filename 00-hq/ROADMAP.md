@@ -32,8 +32,8 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A14** design · HQ: Kingdom control room redesigned in the Kalamkari system and republished; copy in `00-hq/design/kingdom-control-room.html`. (done 2026-10-13)
 
 ### Sprint 2 · Agent-only engines (start now, 0 CEO minutes)
-- [ ] **A15** b5 · b5.W1.1: Astro site in `05-deals/site/`, `fin.ts` SIP/EMI/tax (new + old regime FY 2026-27, cite source), vitest fixtures ₹12.75L / ₹13L / ₹25L. Check: `npm test` green, `npm run build` ok.
-- [ ] **A16** b5 · b5.W2.1: calculators salary, FD, PPF, HRA in English + Telugu with FAQ schema. Check: fixtures pass.
+- [x] **A15** b5 · b5.W1.1: Astro site in `05-deals/site/`, `fin.ts` SIP/EMI/tax (new + old regime FY 2026-27, cite source), vitest fixtures ₹12.75L / ₹13L / ₹25L. Check: `npm test` green, `npm run build` ok. (done 2026-10-13, 6208eb4)
+- [x] **A16** b5 · b5.W2.1: calculators salary, FD, PPF, HRA in English + Telugu with FAQ schema. Check: fixtures pass. (done 2026-10-13, 6208eb4)
 - [ ] **A17** b5 · b5.W4.1: GST, gratuity, RD calculators + Kits call-to-action. Check: 10 calculators build.
 - [ ] **A18** b5 · b5.W1.3: `05-deals/site/src/bot/post.py` Telegram poster from `queue.csv` (dry-run mode, ASCI disclosure enforced). Check: unit test.
 - [ ] **A19** b3 · K-02: GATE 2027 kit v1 (xlsx + Apps Script for Sheets): syllabus × papers, topic weights, revision scheduler, mock analyser, Lite version. Check: 25-item QA checklist in `03-kits/docs/qa.md`.
@@ -82,6 +82,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
 - [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
 - [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine)
+- [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 7 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (20 min)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

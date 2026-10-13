@@ -1,0 +1,29 @@
+# Lighthouse CI for the BotBhai SEO sites (free on GitHub Actions; Apache-2.0 tool).
+# Fails if SEO, accessibility or best-practices drop below 0.9, or on any contrast/console error.
+name: BotBhai SEO site quality
+on:
+  workflow_dispatch:
+  push:
+    paths: ["01-botbhai/botbhai/seo/**", "01-botbhai/botbhai/setups/**", ".github/workflows/lighthouse.yml"]
+permissions:
+  contents: read
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: 01-botbhai/botbhai/seo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Build the sample salon site
+        run: python seo_bot.py --setup salon --config lh-config.json --out _lh_site
+      - name: Lighthouse CI
+        run: npx --yes @lhci/cli@0.15.1 autorun
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: lighthouse-report, path: 01-botbhai/botbhai/seo/_lh_report, retention-days: 14 }

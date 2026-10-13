@@ -14,7 +14,7 @@ and a client's customers come in through ads, SEO, Google Business Profile and r
 
 Usage: python enrich.py leads.csv --out leads-enriched.csv [--max 300]
 """
-import argparse, csv, re, sys, time, urllib.parse, urllib.request, urllib.robotparser
+import argparse, csv, json, re, sys, time, urllib.parse, urllib.request, urllib.robotparser
 
 UA = "KalpaLabs-BotBhai-Enricher/1.0 (+https://github.com/Akhilkanigicharla)"
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
@@ -36,15 +36,75 @@ def fetch(url, timeout=12):
         if "html" not in r.headers.get("Content-Type", "html"): return ""
         return r.read(600_000).decode("utf-8", "ignore")
 
-def extract(html):
+# ---- schema.org structured data (Deep Scan v2): a business's own JSON-LD / microdata is more
+# reliable than regex. JSON-LD is read with the stdlib; microdata needs extruct (BSD-3,
+# scrapinghub) when installed, so the enricher still has zero required dependencies.
+LDJSON = re.compile(r"<script[^>]+type=[\"']application/ld\+json[\"'][^>]*>(.*?)</script>", re.I | re.S)
+BUSINESS_HINT = re.compile(r"Business|Salon|Spa|Store|Restaurant|Clinic|Gym|Club|Center|Centre|Organization|School|Agent|Dentist|Physician", re.I)
+
+def _flatten(items):
+    out = []
+    for it in items if isinstance(items, list) else [items]:
+        if isinstance(it, dict):
+            out.append(it)
+            out.extend(_flatten(it.get("@graph", [])))
+    return out
+
+def _types(node):
+    t = node.get("@type") or node.get("type") or []
+    t = t if isinstance(t, list) else [t]
+    return [str(x).rsplit("/", 1)[-1] for x in t]
+
+def structured(html, engine="auto"):
+    nodes = []
+    use_extruct = False
+    if engine in ("auto", "extruct"):
+        try:
+            import extruct  # noqa: F401
+            use_extruct = True
+        except ImportError:
+            if engine == "extruct": raise
+    # JSON-LD: parsed block by block ourselves. extruct 0.18 drops EVERY JSON-LD block on a page
+    # when one block is malformed (found in Deep Scan v2), so it is only used for microdata.
+    for block in LDJSON.findall(html):
+        try: nodes += _flatten(json.loads(block.strip()))
+        except ValueError: continue
+    if use_extruct:
+        import extruct
+        data = extruct.extract(html, syntaxes=["microdata"], uniform=True, errors="ignore")
+        nodes += _flatten(data.get("microdata", []))
+    biz = next((n for n in nodes if any(BUSINESS_HINT.search(t) for t in _types(n))), None)
+    if not biz: return {}
+    def first(v):
+        v = v[0] if isinstance(v, list) and v else v
+        return str(v).replace("mailto:", "").replace("tel:", "").strip() if v else ""
+    same = biz.get("sameAs") or []
+    same = same if isinstance(same, list) else [same]
+    actions = biz.get("potentialAction") or []
+    actions = actions if isinstance(actions, list) else [actions]
+    booking = any(isinstance(a, dict) and "ReserveAction" in _types(a) for a in actions) or \
+        str(biz.get("acceptsReservations", "")).lower() in ("true", "yes") or \
+        any(isinstance(a, dict) and "ReserveAction" in _types(a) for n in nodes for a in ([n.get("potentialAction")] if isinstance(n.get("potentialAction"), dict) else n.get("potentialAction") or []))
+    ig = next((m.group(1) for u in same for m in [re.search(r"instagram\.com/([A-Za-z0-9_.]{2,30})", str(u))] if m), "")
+    fb = next((m.group(1) for u in same for m in [re.search(r"facebook\.com/([A-Za-z0-9.\-]{2,60})", str(u))] if m), "")
+    return {"schema_type": _types(biz)[0], "email": first(biz.get("email")), "phone": first(biz.get("telephone")),
+            "instagram": ig, "facebook": fb, "online_booking": "yes" if booking else "",
+            "engine": "extruct" if use_extruct else "stdlib"}
+
+def extract(html, engine="auto"):
+    sd = structured(html, engine)
     emails = sorted({e for e in EMAIL.findall(html) if not SKIP_EMAIL.search(e)})
     wa = re.findall(r"(?:wa\.me/|api\.whatsapp\.com/send\?phone=)(\d{10,13})", html)
     ig = re.findall(r"instagram\.com/([A-Za-z0-9_.]{2,30})", html)
     fb = re.findall(r"facebook\.com/([A-Za-z0-9.\-]{2,60})", html)
     ig = [h for h in ig if h not in ("p", "explore", "accounts", "reel")]
-    return {"email": emails[0] if emails else "", "whatsapp_link": wa[0] if wa else "",
-            "instagram": ig[0] if ig else "", "facebook": fb[0] if fb and fb[0] not in ("sharer", "tr", "plugins") else "",
-            "online_booking": "yes" if BOOKING.search(html) else "no"}
+    out = {"email": emails[0] if emails else "", "whatsapp_link": wa[0] if wa else "",
+           "instagram": ig[0] if ig else "", "facebook": fb[0] if fb and fb[0] not in ("sharer", "tr", "plugins") else "",
+           "online_booking": "yes" if BOOKING.search(html) else "no", "schema_type": "", "phone": ""}
+    for k in ("email", "instagram", "facebook", "schema_type", "phone"):  # structured data wins over regex
+        if sd.get(k): out[k] = sd[k]
+    if sd.get("online_booking") == "yes": out["online_booking"] = "yes"
+    return out
 
 def rescore(row):
     s = int(row.get("score") or 0)
@@ -58,7 +118,7 @@ def rescore(row):
 def enrich(rows, max_sites=300, delay=1.0, fetcher=fetch):
     cache, done = {}, 0
     for r in rows:
-        for k in ("email", "whatsapp_link", "instagram", "facebook", "online_booking"): r.setdefault(k, r.get(k, ""))
+        for k in ("email", "whatsapp_link", "instagram", "facebook", "online_booking", "schema_type", "phone"): r.setdefault(k, r.get(k, ""))
         url = r.get("website", "").strip()
         if url and done < max_sites:
             if not url.startswith("http"): url = "http://" + url

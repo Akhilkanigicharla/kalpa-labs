@@ -10,3 +10,7 @@ __pycache__/
 # b7 Trading Lab: market data and generated reports never go in git
 07-trading/data/
 07-trading/reports/
+# Lighthouse CI build output
+01-botbhai/botbhai/seo/_lh_site/
+01-botbhai/botbhai/seo/_lh_report/
+.lighthouseci/

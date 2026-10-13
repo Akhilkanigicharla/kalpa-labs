@@ -90,7 +90,7 @@ Sarvam list prices: STT ₹30 per hour (≈ ₹0.50/min) and Bulbul v3 TTS ₹3 
 
 ## Tried it (CPU only, 13 Oct 2026)
 
-Published packages only: `pipecat-ai[sarvam,groq,google,silero,websocket]==1.12.0` in a fresh venv (628 MB with torch-free ONNX runtime). No cloned repo code was executed; no API keys were used.
+Published packages only: `pipecat-ai[sarvam,groq,google,silero,websocket]==1.12.0` in a fresh venv (628 MB). No cloned repo code was executed; no API keys were used.
 
 | What | Result |
 |---|---|

@@ -119,10 +119,25 @@ Verdicts: **ADOPT** (use it), **LEARN** (read it, don't depend on it), **AVOID**
 
 **Our numbering:** `JC/26-27/0001` is 13 characters, under the 16-character limit, with a fresh series each financial year from 1 April. The database enforces this (see `supabase/schema.sql`).
 
-## Starters tried (Step 2)
+## Tried it (Step 2, 13 Oct 2026)
 
-_Filled in below after the runs._
+Published npm packages and the local Postgres 16 only; no cloned repo code was executed. The Expo starters (Obytes, create-expo-stack) were **not** scaffolded here: they pull in the whole React Native toolchain (several hundred MB), and the app shell is A36's job. This step tested the riskiest parts of the stack instead.
+
+| Run | Result |
+|---|---|
+| **Telugu in a PDF with `pdf-lib@1.17.1` + `@pdf-lib/fontkit@1.1.1`** (Anek Telugu from `@fontsource/anek-telugu@5.3.0`) | **Fails three ways.** (1) fontkit's Indic shaper crashes with `regeneratorRuntime is not defined` unless a polyfill is loaded. (2) With the polyfill and `subset: true`, most Telugu glyphs **vanish** from the PDF (only "కృష్ణ", "గ్యా" and "సి ఏసీ" were left of four lines). (3) Embedding the whole font needs a TTF (a WOFF is "invalid" to poppler), and even then marks are not positioned: "స్ప్లిట్" breaks apart with gaps. |
+| Same four Telugu lines as HTML printed to PDF by Chromium (which is what `expo-print` does with the phone's WebView) | **Perfect shaping.** |
+| English invoice with pdf-lib + Anek Latin + a `qrcode@1.5.4` UPI QR | Correct A4 PDF; `pdftotext` reads every field back. One gap: fontsource's *latin* subset of Anek Latin has **no ₹ glyph**, so the PDF prints "Rs" when the font lacks it (checked with `getCharacterSet()`). |
+| `supabase/schema.sql` on Postgres 16.15 with a small `auth.uid()` stand-in | Applies twice (idempotent); all RLS tests pass (see Step 3). |
+
+**Decision (this reverses part of the stack table above):** keep `expo-print` for any invoice that contains Telugu (bilingual HTML from `lib/invoice.mjs` → the phone's WebView → PDF → share to WhatsApp). Use pdf-lib only for English PDFs made on a server or in an Edge Function. `harfbuzzjs` stays an option for later, if the server must make Telugu PDFs too.
 
 ## Built (Step 3)
 
-_Filled in below after the build._
+| Item | Files | Check | Result |
+|---|---|---|---|
+| A34 (b2.q10) | `supabase/schema.sql`: technicians, customers, job_cards, invoices, invoice_counters, amc_contracts, usage_minutes; RLS on every table; `next_invoice_no()` (atomic, `JC/26-27/0001`, new series each 1 April, ≤ 16 characters); checks such as "no GST on an unregistered or composition bill" and "a job card can't point at another technician's customer"; WhatsApp opt-in column | `bash supabase/test.sh`: technician B can't read, update, delete or insert into A's rows; series per technician and per FY; duplicates, 17-character numbers and GST on unregistered bills are rejected; signed-out users see nothing | **ALL JOBCARD SCHEMA TESTS PASSED** |
+| Invoice generator | `lib/invoice.mjs`: paise maths for the three cases (unregistered / composition / regular, with CGST+SGST vs IGST and round-off), amount in words (lakh/crore), UPI link, bilingual Kalamkari HTML, English PDF | `npm test` | pass |
+| Transcript → job card | `lib/parse.mjs`: name, phone, area, appliance, tons, brand, issues, parts with spoken prices ("gas refill 2500", "capacitor ki 450", "rendu velu aidu vandalu" = 2,500, "2.5k", Telugu digits), spoken-total check, next-service date; never invents a missing price | `npm test` (3 transcripts incl. Telugu script) | pass |
+
+`cd 02-jobcard && npm install && npm test` → **11 / 11 pass**; `bash 02-jobcard/supabase/test.sh` → passes.

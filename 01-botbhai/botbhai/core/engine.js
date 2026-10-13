@@ -39,16 +39,25 @@
   function slotMinutes(s) { const m = String(s).match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); return m ? ((+m[1] % 12) + (/pm/i.test(m[3]) ? 12 : 0)) * 60 + +m[2] : null; }
 
   // ---------------------------------------------------------------- language helpers
-  const GREET = /^(hi+|hello+|hey+|hai+|helo|hlo|namaste|namaskar|namaskaram|vanakkam|good (morning|afternoon|evening)|start|menu|main menu|options|హాయ్|హలో|నమస్కారం|नमस्ते|हाय|हेलो)(?=\s|$|[!.,?])/i;
+  const GREET = /^(hi+|hello+|hey+|hai+|helo|hlo|namaste|namasthe|namastey|namaskar|namaskaram|namaskaaram|vanakkam|good (morning|afternoon|evening)|start|menu|main menu|options|హాయ్|హలో|నమస్కారం|నమస్కారాలు|నమస్తే|नमस्ते|नमस्कार|हाय|हेलो)(?=\s|$|[!.,?])/i;
   // Tenglish / Hinglish / Telugu / Hindi words people really type
   const INTENT = {
     human: /\b(human|agent|person|call me|callback|call back|talk to|speak to|reception|advisor|owner|manager|staff)\b/,
-    book: /\b(bo+k(ing)?|bok|buk|appointment|apointment|appoint|slot|schedule|reserve|trial|quiz|test me|kavali|kaavali|chahiye|chaiye|cheyyali|cheyandi|book cheyyi|book karo|book kar do|fix cheyyi)\b|బుక్|అపాయింట్‌మెంట్|बुक/,
+    book: /\b(bo+k(ing)?|bok|buk|appointment|apointment|appoint|slot|schedule|reserve|trial|quiz|test me|kavali|kaavali|chahiye|chaiye|cheyyali|cheyandi|book cheyyi|book karo|book kar do|fix cheyyi)\b|బుక్|బుకింగ్|అపాయింట్మెంట్|అపాయింట్|స్లాట్|కావాలి|बुक|बुकिंग|अपॉइंटमेंट|चाहिए/,
     haggle: /\b(too much|costly|expensive|discount|last price|less price|reduce|kam karo|kam kijiye|thagginchandi|taggincha|tagginchandi|chestara|best price|final price)\b/,
     prices: /\b(price|prices|cost|fee|fees|charge|charges|rate|rates|how much|plans?|membership|packages?|projects?|kits?|entha|enta|ఎంత|kitna|kitne|kitni|kya rate|rate kya|price list)\b|ధర|कितना|कीमत/,
+    cancel: /\b(cancel|cancell?ed|cancellation|radhu|raddu)\b|రద్దు|క్యాన్సిల్|कैंसिल|रद्द/,
     hours: /\b(time|timing|timings|open|close|closed|hours|where|location|address|directions|map|eppudu|ekkada|kab|kahan|kidhar)\b|ఎక్కడ|ఎప్పుడు|कहाँ|कब/,
   };
-  function norm(s) { return String(s || "").toLowerCase().replace(/[^\p{L}\p{N}\p{M}\s/:\-₹.]/gu, " ").replace(/\s+/g, " ").trim(); }
+  const W = (words) => new RegExp(`(^|\\s)(${words})(?=\\s|$)`); // word boundary that also works for Telugu/Hindi script
+  const DAYPART = [
+    { re: W("morning|udayam|poddunna|poddune|subah|ఉదయం|పొద్దున|सुबह"), from: 0, to: 720 },
+    { re: W("afternoon|noon|madhyahnam|madhyanam|madhyaanam|dopahar|మధ్యాహ్నం|दोपहर"), from: 720, to: 1020 },
+    { re: W("evening|night|sayantram|saayantram|sayantra|ratri|shaam|sham|raat|సాయంత్రం|రాత్రి|शाम|रात"), from: 1020, to: 1440 },
+  ];
+  // M1: replies to the reminder ("Confirm" button, 1, yes, sare, haan, సరే)
+  const CONFIRM = /^(1|yes|y|yes confirm|ok|okay|ok confirm|confirm|confirmed|sure|will come|coming|i will come|vastanu|vasthanu|vastam|vasthamu|sare|sari|avunu|haa|haan|han|ha ji|haan ji|ji|aaunga|aaungi|aayenge|సరే|అవును|వస్తాను|हाँ|हां|हा|ठीक है|आऊंगा|आऊंगी)$/;
+  function norm(s) { return String(s || "").replace(/[\u200b-\u200d\u2060\ufeff]/g, "").toLowerCase().replace(/[^\p{L}\p{N}\p{M}\s/:\-₹.]/gu, " ").replace(/\s+/g, " ").trim(); }
   function squash(s) { return norm(s).replace(/[\s\-]/g, ""); }
   function fill(t, v) { return String(t).replace(/\{(\w+)\}/g, (m, k) => (v[k] !== undefined && v[k] !== "" ? v[k] : m)); }
   function hasWord(text, k) {
@@ -110,8 +119,8 @@
         if (hit.length === 1) return hit[0];
         if (hit.length > 1 && !ap) return hit.find((c) => /pm/i.test(c)) || hit[0]; // "4" for a salon usually means 4 PM
       }
-      const part = /\b(morning|udayam|subah)\b/.test(t) ? [0, 720] : /\b(afternoon|madhyahnam|dopahar)\b/.test(t) ? [720, 1020] : /\b(evening|night|sayantram|saayantram|shaam|raat)\b/.test(t) ? [1020, 1440] : null;
-      if (part) { const hit = choices.find((c) => slotMinutes(c) >= part[0] && slotMinutes(c) < part[1]); if (hit) return hit; }
+      const part = DAYPART.find((x) => x.re.test(t)); // "evening", "sayantram", "సాయంత్రం", "शाम"
+      if (part) { const hit = choices.find((c) => slotMinutes(c) >= part.from && slotMinutes(c) < part.to); if (hit) return hit; }
     }
     const n = parseInt(t, 10);
     if (/^\d+$/.test(t) && n >= 1 && n <= choices.length) return choices[n - 1];
@@ -126,6 +135,16 @@
     const top = scored.filter((x) => x.hits === maxHits && maxHits > 0);
     if (top.length !== 1) return null;
     return top[0].ratio >= 0.34 ? top[0].c : null;
+  }
+
+  // M6: catalog aliases ("gents cut", "ladies cut"). An alias listed on two items ("cutting") means "ask which one".
+  function aliasMatch(raw, catalog) {
+    const t = " " + norm(raw) + " ";
+    const hits = (catalog || []).filter((c) => (c.aliases || []).some((a) => t.includes(" " + norm(a) + " ")));
+    if (!hits.length) return null;
+    const best = Math.max(...hits.map((c) => Math.max(...c.aliases.filter((a) => t.includes(" " + norm(a) + " ")).map((a) => norm(a).length))));
+    const top = hits.filter((c) => c.aliases.some((a) => t.includes(" " + norm(a) + " ") && norm(a).length === best)); // longest alias wins: "ladies cutting" beats "cutting"
+    return top.length === 1 ? { hit: top[0].name } : { ambiguous: top.map((c) => c.name) };
   }
 
   function newState() { return { step: -1, data: {}, lead: { score: "cold", status: "new", intents: [] }, turns: 0, optedOut: false }; }
@@ -214,7 +233,9 @@
         const svc = cfg.steps.find((x) => x.choices === "catalog");
         if (svc) {
           const words = norm(raw).split(" ").filter((w) => /\p{L}{3,}/u.test(w) && !INTENT.book.test(w) && !INTENT.prices.test(w) && !parseDate(w, nowOf(state)) && !cfg.menu.some((m) => norm(m.label).split(" ").includes(w)));
-          const hit = words.length ? pickChoice(words.join(" "), choiceList(svc)) : null;
+          const al = aliasMatch(raw, cfg.catalog);
+          let hit = al ? al.hit || null : words.length ? pickChoice(words.join(" "), choiceList(svc)) : null;
+          if (!hit && !al && words.length > 1) { const each = [...new Set(words.map((w) => pickChoice(w, choiceList(svc))).filter(Boolean))]; if (each.length === 1) hit = each[0]; }
           const item = hit && cfg.catalog.find((c) => c.name === hit);
           if (item && !item.enquiry) { state.data[svc.field] = hit; heard.push(hit); }
         }
@@ -234,6 +255,21 @@
       events.push({ type: "handoff", text: `🙋 ${meta.profileName || state.data.name || "A customer"} (${meta.contact || "web chat"}) ${why}. The bot is paused for ${cfg.handoff_hours || 2} h for this chat; reply to them from the WhatsApp Business app.` });
     }
 
+    // A question in the middle of a booking ("address?", "price entha?") is answered, then the same step is asked again.
+    function sideQuestion(state, raw, t) {
+      const step = cfg.steps[state.step]; if (!step || step.type === "quiz") return null;
+      if (step.type === "date" && parseDate(raw, nowOf(state))) return null;
+      if (step.choices) {
+        const list = step.field === "slot" ? freeSlots(state, choiceList(step)) : choiceList(step);
+        if (/^\d{1,2}$/.test(t) || pickChoice(raw, list) || (step.choices === "catalog" && aliasMatch(raw, cfg.catalog))) return null;
+      } else if (step.type !== "date" && !/\?/.test(raw)) return null; // a name like "Priya" is never a question
+      const faq = cfg.faqs.find((q) => q.k.some((k) => k.includes(" ") && hasWord(t, k)));
+      if (faq) return { text: fill(faq.a, vars()) };
+      if (INTENT.prices.test(t)) return catalogReply();
+      if (INTENT.hours.test(t)) return hoursReply();
+      const one = cfg.faqs.find((q) => q.k.some((k) => k.length >= 4 && hasWord(t, k)));
+      return one ? { text: fill(one.a, vars()) } : null;
+    }
     function handleStep(state, raw, events, meta) {
       const step = cfg.steps[state.step];
       let value = null, error = null;
@@ -273,7 +309,9 @@
           const byRow = list[+num[1] - 1];
           if (byHour.length && !byHour.includes(byRow)) return [{ text: `Just to check: ${byHour[0]} or ${byRow}?`, options: [byHour[0], byRow] }];
         }
-        value = pickChoice(raw, list);
+        const al = step.choices === "catalog" ? aliasMatch(raw, cfg.catalog.filter((c) => list.includes(c.name))) : null;
+        if (al && al.ambiguous) return [{ text: `Did you mean ${al.ambiguous.join(" or ")}?`, options: al.ambiguous }];
+        value = (al && al.hit) || pickChoice(raw, list);
         if (!value) {
           const sqr = squash(raw); const words = norm(raw).split(" ").filter((w) => w.length >= 3);
           let close = list.filter((c) => sqr.length >= 4 && (squash(c).startsWith(sqr) || squash(c).includes(sqr)));
@@ -376,7 +414,7 @@
           events.push({ type: "notify_owner", text: `❌ Cancelled: ${state.data.name || "customer"} · ${state.data.service || ""} · ${state.data.date} ${state.data.slot}` });
           replies = [{ text: `Cancelled. No worries at all 🙂 Whenever you're ready, reply *book* and I'll find you a new slot.` }];
         } else replies = [{ text: `Okay, your booking stays as it is: ${state.data.date} at ${state.data.slot}. See you then! 👋` }];
-      } else if (booked && /^(1|confirm|confirmed|yes confirm|ok confirm|will come|coming|vastanu|vasthanu|aaunga|aaungi)$/.test(t)) {
+      } else if (booked && CONFIRM.test(t) && !(state.data.date_iso < isoOf(istToday(nowOf(state))))) { // a past visit is not "confirmed"
         state.data.confirmed = true;
         events.push({ type: "confirmed", booking: { date_iso: state.data.date_iso, slot: state.data.slot } });
         replies = [{ text: `✅ Confirmed: ${state.data.service ? state.data.service + ", " : ""}${state.data.date} at ${state.data.slot}. See you! (Reply *menu* for anything else.)` }];
@@ -388,14 +426,18 @@
         const d = parseDate(raw, nowOf(state));
         if (d && !closedReason(isoOf(d), d)) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); state.step = slotStep(); }
         replies = [head, askStep(state)];
-      } else if (booked && /\b(cancel)\b/.test(t)) {
+      } else if (booked && INTENT.cancel.test(t)) {
         state.pending = "cancel";
         replies = [{ text: `Do you want to cancel your ${state.data.service || cfg.bookWord} on ${state.data.date} at ${state.data.slot}? Reply *YES* to cancel, or anything else to keep it.`, options: ["Yes, cancel", "Keep it"] }];
       } else if (/^(offers|offer yes|yes offers)$/.test(t)) {
         state.lead.marketing = true; events.push({ type: "marketing_opt_in" });
         replies = [{ text: "Done 🎉 You'll get member-only offers, max 2 a month. Reply *STOP* any time to stop." }];
-      } else if (state.step >= 0 && /^(cancel|exit|quit|stop booking|vaddu|nahi chahiye)$/.test(t)) {
+      } else if (state.step >= 0 && (/^(cancel|exit|quit|stop booking|vaddu|nahi chahiye)$/.test(t) || (INTENT.cancel.test(t) && t.split(" ").length <= 4 && !parseDate(raw, nowOf(state))))) {
         abandonFlow(state); replies = [menuReply("No problem, stopped. Nothing was changed.")];
+      } else if (state.step < 0 && INTENT.cancel.test(t) && !/\b(policy|charges?|fee|rules?|membership|plan|subscription|order)\b/.test(t)) { // "booking cancel cheyyandi" with nothing booked
+        replies = [menuReply("You don't have an upcoming booking with us, so there's nothing to cancel 🙂")];
+      } else if (state.step >= 0 && !GREET.test(t) && sideQuestion(state, raw, t)) { // Rasa-style digression: answer, then re-ask
+        replies = [sideQuestion(state, raw, t), askStep(state)];
       } else if (state.step >= 0 && !GREET.test(t)) {
         replies = handleStep(state, raw, events, meta);
       } else if (!t) {

@@ -39,23 +39,28 @@ module.exports = {
   "catalog": [
     {
       "name": "Haircut (men)",
-      "price": "₹250"
+      "price": "₹250",
+      "aliases": ["cutting", "hair cutting", "gents cut", "gents haircut", "gents cutting", "men cut", "mens cut", "boys cut", "boy cut", "male haircut", "kids cut", "baal katwana", "jutt cutting", "జుట్టు కటింగ్", "కటింగ్"]
     },
     {
       "name": "Haircut & styling (women)",
-      "price": "₹600"
+      "price": "₹600",
+      "aliases": ["cutting", "hair cutting", "ladies cut", "ladies haircut", "ladies cutting", "ladies hair cut", "women cut", "womens cut", "girls cut", "girl cut", "female haircut", "layer cut", "step cut", "u cut", "feather cut", "hair styling", "blow dry", "కటింగ్"]
     },
     {
       "name": "Beard trim",
-      "price": "₹150"
+      "price": "₹150",
+      "aliases": ["beard", "shave", "shaving", "gaddam", "dadhi", "గడ్డం"]
     },
     {
       "name": "Hair spa",
-      "price": "₹1,200"
+      "price": "₹1,200",
+      "aliases": ["హెయిర్ స్పా", "हेयर स्पा", "spa"]
     },
     {
       "name": "Facial (fruit / gold)",
-      "price": "₹999"
+      "price": "₹999",
+      "aliases": ["facial", "gold facial", "fruit facial", "ఫేషియల్", "फेशियल"]
     },
     {
       "name": "Bridal makeup",
@@ -118,7 +123,16 @@ module.exports = {
       "k": [
         "home service",
         "at home",
-        "home visit"
+        "home visit",
+        "come home",
+        "come to my home",
+        "come to my house",
+        "intiki vastara",
+        "intiki vachi",
+        "intiki ra",
+        "ghar pe",
+        "ghar par",
+        "ghar aa"
       ],
       "a": "🏠 Home service is available within 5 km for bookings above ₹1,500."
     },

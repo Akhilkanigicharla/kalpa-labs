@@ -12,3 +12,14 @@ How they were reviewed: the session can't play videos. It read each Short's titl
 
 ## "Why the Reverse Engineer Anything Repo Gained 100k Stars in a Day" (Nate Herk, CklLenf9fNc)
 [morluto/rea](https://github.com/morluto/rea), MIT, ~255k stars, a local MCP server (`npx rea-agents setup`). Not in the connector directory; needs Node + local tools; the session's safety check blocked running it in the cloud. Akhil chose to skip it. Use only on software we own or are allowed to examine.
+
+## Update: the video description (screenshot from Akhil, 15 Oct)
+The 5 repos are: Superpowers, Taskmaster AI, Awesome GPT Image 2, Awesome Agents, I Have ADHD. (The "from scratch" guess above was wrong.)
+
+| Repo | Licence | Decision |
+|---|---|---|
+| Superpowers (obra) | MIT | Installed; CLAUDE.md uses it. |
+| [Taskmaster AI](https://npmjs.com/package/task-master-ai) (eyaltoledano/claude-task-master) | MIT **with Commons Clause** (free to use; may not be sold or hosted as a service) | Not installed: it's a local MCP (npx) and our ROADMAP.md already does PRD → tasks. Fine to use internally later; never resell it. |
+| Awesome GPT Image 2 | MIT | Idea used: Social Team `image_prompt`. |
+| Awesome Agents (likely kyrolabs/awesome-agents) | list | Reference list for future research; nothing to install. |
+| [I Have ADHD](https://github.com/ayghri/i-have-adhd) (Ayoub Ghriss) | MIT | Adapted as a `short-answers` skill (with attribution) and sent to Akhil to save. Its rules match CLAUDE.md's "Writing style for Akhil". |

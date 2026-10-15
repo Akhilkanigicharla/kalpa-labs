@@ -67,7 +67,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A45** b1 · Social Team add-on (`01-botbhai/botbhai/social/`): month plan, captions with Telugu line, ad-rule checks (ASCI/DMR/CCPA/RERA), branded images + Reels, WhatsApp approval, Instagram/Facebook publisher (official API, dry run default), analyst. Check: `python3 01-botbhai/botbhai/social/test_social.py` green. (done 2026-10-15, f90b9cd)
 - [x] **A46** HQ · Repo features from the "5 GitHub Repos" Short: Superpowers skills vendored (MIT), Taskmaster-style task engine on ROADMAP.md (`00-hq/agents/tasks.js`), short-answers repo skill (from I Have ADHD, MIT), Awesome Agents mapped to worlds. Check: `node 00-hq/agents/tasks.test.js` green and `tasks.js validate` clean. (done 2026-10-15, d6543b8)
 - [x] **A47** HQ · Kalpa marketing team for every world (`00-hq/marketing/`): brand profiles for HQ + b1–b7 in Kalpa colours and fonts, world-specific ad rules (finops, trading off, deals #ad, kits, extensions), engine generalised for links instead of WhatsApp. Check: `python3 00-hq/marketing/test_marketing.py` + `test-all.sh` green. (done 2026-10-15, cdc99f4)
-- [~] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green. (Kingdom part done 2026-10-13: quests match this roadmap, Forge of agent builds, rest-day streak, v13; still to do: agent registry + WORLD_SHARE proposal)
+- [x] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green. (done 2026-10-15, 8a01ee1; Kingdom part 2026-10-13; registry now 228 agents, proposal waits on C01 via `state.json` world_share_approved)
 
 ---
 
@@ -75,7 +75,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 
 Free items first. 💰 = costs money, waits for the go-public decision.
 
-- [ ] **C01** HQ · Q-HQ-01: read PLAN.md §1, §5a, §7 and reply "approved" or changes (15 min)
+- [ ] **C01** HQ · Q-HQ-01: read PLAN.md §1, §5a, §7 and reply "approved" or changes (15 min). Approving also switches the agents' token split to BotBhai-first (`node 00-hq/agents/run.js proposal` shows it)
 - [ ] **C02** b1 · b1c: Meta developer app + WhatsApp test number; send Claude the Phone number ID + WABA ID (never the token) (30 min)
 - [ ] **C03** b1 · b1d: say "deploy"; set Netlify visitor access to public; paste GROQ/SARVAM keys into Netlify yourself (20 min)
 - [ ] **C04** b1 · b1e: show the demo to one salon owner you know (20 min)

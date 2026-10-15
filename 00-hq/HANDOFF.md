@@ -9,7 +9,7 @@ Read this first in any new Claude session, then `CLAUDE.md`, `README.md` and `00
 
 ## Done so far
 - **BotBhai v3** built: `01-botbhai/botbhai/` (engine, WhatsApp/chat/reminders/ads/leads functions, Supabase schema, 4 setups, voice agent on Pipecat + Sarvam, SEO bot, lead finder (672 Hyderabad businesses), smile cards). `bash 01-botbhai/botbhai/tools/test-all.sh` is green (623/623 QA checks).
-- **215-agent registry** + orchestrator: `00-hq/agents/`.
+- **228-agent registry** + orchestrator: `00-hq/agents/`.
 - **Research v1:** 8 GitHub reports (a1–a8), now in each world's `research/` folder.
 - **Plans:** `00-hq/PLAN.md` (company) + each world's `PLAN.md`.
 - **Reorganised** the repo by world, with labelled READMEs, `CLAUDE.md`, `00-hq/ROADMAP.md` (agent + CEO queues), `00-hq/LINKS.md` and `00-hq/log/`. A copy sits in the user's PC at Documents\Kalpa Labs (refresh it only on request).

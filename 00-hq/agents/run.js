@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Kalpa Labs agent orchestrator: validate the registry, plan today's agent work within budgets, export for the Kingdom UI.
-//   node 00-hq/agents/run.js check | today [YYYY-MM-DD] | summary | export
+//   node 00-hq/agents/run.js check | today [YYYY-MM-DD] | summary | proposal | export
 "use strict";
 const fs = require("fs"), path = require("path");
-const { AGENTS, DAILY_TOKENS, WORLD_SHARE } = require("./registry.js");
+const { AGENTS, DAILY_TOKENS, WORLD_SHARE, PROPOSED_WORLD_SHARE } = require("./registry.js");
 const ROOT = path.resolve(__dirname, "..", "..");
 const DOW = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
@@ -15,6 +15,9 @@ function due(agent, date) {
   return false;
 }
 function runsPerDay(agent) { return agent.trigger.cron === "hourly" ? 24 : 1; }
+
+// The PLAN.md §5b split is used only after Akhil approves it (state.json "world_share_approved": true; CEO queue C01).
+function activeShare(st = {}) { return st.world_share_approved === true ? PROPOSED_WORLD_SHARE : WORLD_SHARE; }
 
 function check() {
   const errors = [], ids = new Set();
@@ -29,6 +32,10 @@ function check() {
       if (!fs.existsSync(path.join(ROOT, file)) && !fs.existsSync(path.join(ROOT, "01-botbhai/botbhai", file))) errors.push(`${a.id}: code file not found: ${file}`);
     }
   }
+  for (const [n, sh] of [["WORLD_SHARE", WORLD_SHARE], ["PROPOSED_WORLD_SHARE", PROPOSED_WORLD_SHARE]]) {
+    const total = Object.values(sh).reduce((x, y) => x + y, 0); if (total !== 100) errors.push(`${n} adds up to ${total}%, not 100%`);
+  }
+  if (Object.keys(PROPOSED_WORLD_SHARE).sort().join() !== Object.keys(WORLD_SHARE).sort().join()) errors.push("PROPOSED_WORLD_SHARE has different worlds");
   for (const s of ["salon", "realestate", "gym", "examkits"]) if (AGENTS.filter((a) => a.setup === s && a.team !== "platform-pm").length < 30) errors.push(`setup ${s} has an incomplete team`);
   return errors;
 }
@@ -42,11 +49,11 @@ function relevant(a, st) {
 }
 function plan(dateStr, st = JSON.parse(fs.readFileSync(path.join(__dirname, "state.json"), "utf8"))) {
   const date = dateStr ? new Date(dateStr + "T00:00:00Z") : new Date(Date.now() + 330 * 60000);
-  const byWorld = {};
+  const share = activeShare(st), byWorld = {};
   for (const a of AGENTS.filter((x) => due(x, date) && x.runs_as !== "planned" && relevant(x, st))) (byWorld[a.unit] = byWorld[a.unit] || []).push(a);
   const out = [];
   for (const [u, list] of Object.entries(byWorld)) {
-    const budget = Math.round(DAILY_TOKENS * WORLD_SHARE[u] / 100); let used = 0; const run = [], deferred = [];
+    const budget = Math.round(DAILY_TOKENS * share[u] / 100); let used = 0; const run = [], deferred = [];
     // code agents cost no Claude tokens; Claude agents are taken in registry order until the world's budget is used
     for (const a of list.sort((x, y) => (x.runs_as === "code" ? -1 : 1) - (y.runs_as === "code" ? -1 : 1))) {
       const cost = (a.runs_as === "code" ? 0 : a.tokens) * runsPerDay(a);
@@ -54,7 +61,7 @@ function plan(dateStr, st = JSON.parse(fs.readFileSync(path.join(__dirname, "sta
     }
     out.push({ world: u, budget, used, run, deferred });
   }
-  return { date: date.toISOString().slice(0, 10), worlds: out.sort((a, b) => a.world.localeCompare(b.world)) };
+  return { date: date.toISOString().slice(0, 10), share_pending: share !== PROPOSED_WORLD_SHARE, worlds: out.sort((a, b) => a.world.localeCompare(b.world)) };
 }
 
 function summary() {
@@ -77,12 +84,16 @@ if (require.main === module) {
   else if (cmd === "today") {
     const p = plan(arg);
     console.log(`Agent plan for ${p.date} (daily budget ${DAILY_TOKENS.toLocaleString("en-IN")} tokens)`);
+    if (p.share_pending) console.log(`⚑ Awaiting CEO approval (C01): new world split ${JSON.stringify(PROPOSED_WORLD_SHARE)} — using today's split until "world_share_approved": true in state.json`);
     for (const w of p.worlds) {
       console.log(`\n[${w.world}] ${w.run.length} agents run, ${w.deferred.length} deferred · ${w.used.toLocaleString("en-IN")}/${w.budget.toLocaleString("en-IN")} tokens`);
       for (const a of w.run) console.log(`  ${a.runs_as === "code" ? "⚙" : a.runs_as === "human" ? "🙋" : "🤖"} ${a.name} — ${a.mission}`);
       for (const a of w.deferred) console.log(`  ⏸ ${a.name} (over budget, moved to tomorrow)`);
     }
+  } else if (cmd === "proposal") {
+    console.log(`World token split: ${JSON.parse(fs.readFileSync(path.join(__dirname, "state.json"), "utf8")).world_share_approved ? "proposal APPROVED and in use" : "proposal awaiting CEO approval (C01)"}`);
+    for (const u of Object.keys(WORLD_SHARE)) console.log(`  ${u.padEnd(3)} ${String(WORLD_SHARE[u]).padStart(3)}% → ${String(PROPOSED_WORLD_SHARE[u]).padStart(3)}%`);
   } else if (cmd === "export") process.stdout.write(JSON.stringify(exportForUI()));
   else console.log(JSON.stringify(summary(), null, 2));
 }
-module.exports = { check, plan, summary, exportForUI, due, relevant };
+module.exports = { check, plan, summary, exportForUI, due, relevant, activeShare };

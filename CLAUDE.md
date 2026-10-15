@@ -8,7 +8,8 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 - `00-hq/ROADMAP.md`: **the single source of what to do next.** Agent queue = your work. CEO queue = Akhil's.
 - `00-hq/PLAN.md`: company order, money and rhythm. `00-hq/LINKS.md`: artifacts, docs, scheduled tasks, accounts.
 - `00-hq/log/YYYY-MM-DD.md`: what each session did. Append, never rewrite earlier entries.
-- `00-hq/agents/`: the 215-agent registry and orchestrator (`node 00-hq/agents/run.js today`).
+- `00-hq/agents/`: the 215-agent registry and orchestrator (`node 00-hq/agents/run.js today`), and the roadmap task engine (`node 00-hq/agents/tasks.js next|list|show|validate|stats`).
+- `00-hq/vendor/`: unmodified MIT open source we rely on (Superpowers skills). `.claude/skills/short-answers/`: how to write to Akhil.
 
 ## Hard rules
 1. **Build mode:** free tiers only. Never sign up, pay, or create accounts for Akhil. Never ask for or handle passwords, OTPs, API tokens, bank or card numbers. Secrets live in GitHub/Netlify/Supabase secrets that Akhil sets himself.
@@ -20,8 +21,8 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 7. Keep files where the map says. New world code goes in that world's folder; nothing at the repo root except README.md, CLAUDE.md and config.
 
 ## Build sprint procedure
-If the Superpowers plugin is installed (skills named `superpowers:*`), use `writing-plans` before building, `test-driven-development` while building, `systematic-debugging` on failures and `verification-before-completion` before any tick.
-1. Read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
+Use the Superpowers skills (plugin `superpowers:*`, or read `00-hq/vendor/superpowers/skills/<name>/SKILL.md` if the plugin isn't loaded): `writing-plans` before building, `test-driven-development` while building, `systematic-debugging` on failures and `verification-before-completion` before any tick.
+1. Run `node 00-hq/agents/tasks.js next` (and `validate`), then read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.
 4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`. Then mark the same item built in the Kingdom game: `ArtifactData` update on `builds/<A-id>` (`done: true`, `at`, `proof` = commit) for https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1. New roadmap items get a `builds` doc too (`u` = world id, `t` = plain-English title).

@@ -6,7 +6,7 @@ A one-person company in Hyderabad (Udyam UDYAM-TS-02-0382711), run by Akhil with
 
 | # | Folder | Label | World | What it sells | Status |
 |---|---|---|---|---|---|
-| 00 | [00-hq](00-hq/) | 🏰 HQ | The Citadel | Company plan, roadmap, agents, shared tools | Plan approved-pending, 215-agent org built |
+| 00 | [00-hq](00-hq/) | 🏰 HQ | The Citadel | Company plan, roadmap + task engine, agents, vendored skills, shared tools | Plan approved-pending, 215-agent org built |
 | b1 | [01-botbhai](01-botbhai/) | 🤖 BotBhai | Botforge | WhatsApp + voice automation for salons, gyms, coaching, real estate | **Built (v3)**, ready to sell |
 | b2 | [02-jobcard](02-jobcard/) | 🛠️ JobCard | Workshop Valley | Voice job-card + invoice app for AC technicians | Planned (build Dec–Feb) |
 | b3 | [03-kits](03-kits/) | 📚 Kits | Library of Ranks | Google Sheets kits for exams and tax | Planned (agents build Kit #1 now) |

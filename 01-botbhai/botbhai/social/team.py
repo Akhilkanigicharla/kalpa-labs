@@ -22,8 +22,8 @@ from . import analyst, approve, compliance, copywriter, design, plan, publish
 
 
 def build(setup: str, start: dt.date, weeks: int, out: pathlib.Path, *, overrides: dict | None = None,
-          photos: dict | None = None, weights: dict | None = None, render: bool = True) -> dict:
-    cfg = plan.load_setup(setup, overrides)
+          photos: dict | None = None, weights: dict | None = None, render: bool = True, cfg: dict | None = None) -> dict:
+    cfg = cfg or plan.load_setup(setup, overrides)
     out.mkdir(parents=True, exist_ok=True)
     items = []
     for i, slot in enumerate(plan.month_plan(cfg, start, weeks, weights)):

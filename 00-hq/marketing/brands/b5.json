@@ -1,0 +1,57 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "deals",
+ "business": "Deals & Tools",
+ "affiliate": true,
+ "theme": [
+  "#FBFBFD",
+  "#7B3F8C",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "SIP calculator",
+   "price": "Free"
+  },
+  {
+   "name": "EMI calculator",
+   "price": "Free"
+  },
+  {
+   "name": "Telugu deals channel"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Before taking a loan, check the total interest, not only the EMI. Our free EMI calculator shows both."
+  },
+  {
+   "id": "tip2",
+   "a": "A SIP calculator shows how monthly amounts can grow; past returns are no promise of future ones."
+  },
+  {
+   "id": "offers",
+   "a": "All calculators are free, in English and Telugu."
+  }
+ ],
+ "cta": {
+  "label": "Try the free calculators",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "TeluguDeals",
+  "EMICalculator",
+  "PersonalFinance",
+  "Hyderabad"
+ ],
+ "work_idea": "a real screenshot of the {service} in Telugu",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "the maker at the desk (a real photo)",
+ "scene": "a phone on a table showing a simple calculator, rupee notes nearby",
+ "disclaimer": "Some links are affiliate links; we may earn a small commission."
+}

@@ -1,0 +1,29 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "trading",
+ "business": "Trading Lab",
+ "enabled": false,
+ "disabled_reason": "Trading Lab is paper-only research and earns nothing; SEBI rules on unregistered finfluencers make public posts a risk",
+ "theme": [
+  "#FBFBFD",
+  "#13777F",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "Paper trading research"
+  }
+ ],
+ "faqs": [],
+ "cta": {
+  "label": "Not public",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "Research"
+ ]
+}

@@ -27,19 +27,39 @@ BLOCK = [  # (pattern, reason) - these never go out
 ]
 
 
+BY_SETUP = {  # extra blocks per Kalpa world (pattern, reason)
+    "finops": [(r"\b(100\s*%|fully|guaranteed)\s*(dpdp|iso|eu ai act)?\s*complian(t|ce)\b", "compliance can't be guaranteed; say 'evidence pack' (ASCI)"),
+               (r"\b(certified|certification)\b", "we are not a certification body; never imply certification (ASCI)"),
+               (r"\bsave\s*\d+\s*%", "savings % needs real client data behind it (ASCI substantiation)")],
+    "trading": [(r"\b(buy|sell|target|stop\s*-?loss|entry|exit|call|tip|multibagger)\b", "SEBI: no buy/sell calls or tips from an unregistered entity"),
+                (r"\b(returns?|profit|cagr|income)\b", "SEBI: no return or profit claims")],
+    "deals": [(r"\blowest\s+price\s+(ever|guaranteed)\b", "'lowest price ever' is unverifiable (ASCI)")],
+    "extensions": [],
+    "kits": [(r"\b(crack|clear)\s+(gate|upsc|tspsc)\s+(for sure|guaranteed)", "exam success can't be promised (CCPA coaching guidelines)")],
+}
+
+
 def check(caption: str, *, setup: str = "salon", paid_partnership: bool = False, cfg: dict | None = None) -> dict:
     """Returns {ok, blocked: [reasons], warnings: [reasons]}."""
     t = caption or ""
+    cfg = cfg or {}
+    paid_partnership = paid_partnership or bool(cfg.get("affiliate"))
     low = t.lower()
-    blocked = [why for pat, why in BLOCK if re.search(pat, low)]
-    warnings = []
+    blocked = [why for pat, why in BLOCK + BY_SETUP.get(setup, []) if re.search(pat, low)]
+    if cfg.get("enabled") is False:
+        blocked.append(f"posting is switched off for this brand: {cfg.get('disabled_reason', 'see its profile')}")
+    if setup == "extensions" and re.search(r"\bnever\s+(lose|loses|lost)\b", low):
+        warnings_pre = ["'never lose' is absolute: prefer 'backs up every 5 minutes' (ASCI)"]
+    else:
+        warnings_pre = []
+    warnings = list(warnings_pre)
     tags = re.findall(r"(?<!\w)#\w+", t)
     if len(tags) > 5:
         warnings.append(f"{len(tags)} hashtags; Instagram suggests 3-5")
     if len(t) > 2200:
         blocked.append("caption longer than Instagram's 2,200-character limit")
-    if "wa.me/" not in low and "whatsapp" not in low:
-        warnings.append("no WhatsApp call to action")
+    if "wa.me/" not in low and "whatsapp" not in low and "http" not in low and not (cfg.get("cta") and cfg["cta"]["url"].lower() in low):
+        warnings.append("no call to action (WhatsApp or link)")
     if paid_partnership and not re.search(r"#(ad|collab|sponsored|partnership)\b", low):
         blocked.append("paid partnership without a clear #ad/#collab label (ASCI influencer guidelines)")
     if setup == "realestate" and re.search(r"\b(bhk|plot|villa|flat|apartment|project)\b", low) and not re.search(r"rera[:\s]+\S+", low):
@@ -48,6 +68,6 @@ def check(caption: str, *, setup: str = "salon", paid_partnership: bool = False,
         warnings.append("topper/result claim: needs the student's written consent and the course they took (CCPA 2024)")
     if re.search(r"\b(before|after)\b", low) and setup in ("salon", "gym"):
         warnings.append("before/after: use real, unedited photos with the customer's written OK; results vary")
-    if "[paste" in low or "[real" in low:
+    if "[paste" in low or "[real" in low or "[add" in low:
         blocked.append("placeholder left in the caption (needs the owner's real content)")
     return {"ok": not blocked, "blocked": blocked, "warnings": warnings}

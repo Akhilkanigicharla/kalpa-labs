@@ -1,0 +1,62 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "hq",
+ "business": "Kalpa Labs",
+ "theme": [
+  "#FBFBFD",
+  "#5B6178",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "BotBhai"
+  },
+  {
+   "name": "Ledger Peaks"
+  },
+  {
+   "name": "Deals & Tools calculators"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "We build small, useful software for Indian businesses in Hyderabad, one product at a time."
+  },
+  {
+   "id": "tip2",
+   "a": "Every product we ship has tests that run on every change, so it keeps working."
+  },
+  {
+   "id": "tip3",
+   "a": "We build in public: follow along to see what works and what doesn't."
+  }
+ ],
+ "cta": {
+  "label": "See what we're building",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "BuildInPublic",
+  "Hyderabad",
+  "IndianStartups",
+  "KalpaLabs"
+ ],
+ "pillars": {
+  "tip": 0.4,
+  "work": 0.35,
+  "team": 0.25
+ },
+ "work_idea": "a screen recording of {service} working",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "Akhil at work (a real photo)",
+ "scene": "a calm founder's desk in Hyderabad with a laptop and chai",
+ "story_pillars": [
+  "tip",
+  "work"
+ ]
+}

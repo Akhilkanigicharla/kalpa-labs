@@ -66,6 +66,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A43** HQ · Quality workflow `.github/workflows/quality.yml`: gitleaks + actionlint + every world's tests (BotBhai, b2 with Postgres RLS, b4 with Chromium e2e, b6, b7). Check: actionlint clean; gitleaks no leaks. (done 2026-10-13, ca75d3c)
 - [x] **A45** b1 · Social Team add-on (`01-botbhai/botbhai/social/`): month plan, captions with Telugu line, ad-rule checks (ASCI/DMR/CCPA/RERA), branded images + Reels, WhatsApp approval, Instagram/Facebook publisher (official API, dry run default), analyst. Check: `python3 01-botbhai/botbhai/social/test_social.py` green. (done 2026-10-15, f90b9cd)
 - [x] **A46** HQ · Repo features from the "5 GitHub Repos" Short: Superpowers skills vendored (MIT), Taskmaster-style task engine on ROADMAP.md (`00-hq/agents/tasks.js`), short-answers repo skill (from I Have ADHD, MIT), Awesome Agents mapped to worlds. Check: `node 00-hq/agents/tasks.test.js` green and `tasks.js validate` clean. (done 2026-10-15, d6543b8)
+- [ ] **A47** HQ · Kalpa marketing team for every world (`00-hq/marketing/`): brand profiles for HQ + b1–b7 in Kalpa colours and fonts, world-specific ad rules (finops, trading off, deals #ad, kits, extensions), engine generalised for links instead of WhatsApp. Check: `python3 00-hq/marketing/test_marketing.py` + `test-all.sh` green.
 - [~] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green. (Kingdom part done 2026-10-13: quests match this roadmap, Forge of agent builds, rest-day streak, v13; still to do: agent registry + WORLD_SHARE proposal)
 
 ---
@@ -88,6 +89,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine)
 - [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 7 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (20 min)
 - [ ] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min)
+- [ ] **C19** HQ · When each product has a live page, paste its real link into `00-hq/marketing/brands/<world>.json` (replaces `[add link]`), and decide which worlds get an Instagram account (you create them; 10 min per world)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

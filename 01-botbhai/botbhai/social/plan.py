@@ -36,6 +36,16 @@ def load_setup(setup: str, overrides: dict | None = None) -> dict:
     return cfg
 
 
+def load_profile(path: str | pathlib.Path) -> dict:
+    """A brand profile (JSON) for any Kalpa world, not only BotBhai clients. Same keys as bot.config.json
+    (business, catalog, faqs) plus optional: cta {label,url}, cta_short, hashtags, pillars, telugu, theme, fonts,
+    work_idea, team_idea, scene, festival_line, affiliate, enabled."""
+    cfg = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    cfg.setdefault("areas", ["Hyderabad"])
+    cfg.setdefault("whatsapp", re.sub(r"\D", "", cfg.get("phone", "")))
+    return cfg
+
+
 def _pillar_sequence(n: int, weights: dict[str, float]) -> list[str]:
     """Deterministic largest-remainder spread of n slots over pillars, interleaved so no pillar repeats back to back."""
     total = sum(weights.values()) or 1
@@ -61,7 +71,7 @@ def festival_near(day: dt.date, within: int = 6) -> str | None:
 
 def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None = None) -> list[dict]:
     """Returns slots: {id, date, time, kind: reel|carousel|post|story, pillar, service, festival}."""
-    weights = weights or PILLARS
+    weights = weights or cfg.get("pillars") or PILLARS
     monday = start - dt.timedelta(days=start.weekday())
     feed = _pillar_sequence(weeks * len(FORMATS_PER_WEEK), weights)
     catalog = cfg.get("catalog") or [{"name": cfg.get("business", "")}]
@@ -81,6 +91,6 @@ def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None =
         for s in range(STORIES_PER_WEEK):
             day = wk + dt.timedelta(days=1 + s * 3)
             slots.append({"id": f"W{w + 1}-story{s + 1}", "date": max(day, start).isoformat(), "time": "10:00", "kind": "story",
-                          "pillar": "offer" if s == 0 else "proof", "service": catalog[(w * 2 + s) % len(catalog)]["name"],
+                          "pillar": (cfg.get("story_pillars") or ["offer", "proof"])[s % 2], "service": catalog[(w * 2 + s) % len(catalog)]["name"],
                           "festival": festival_near(day)})
     return sorted(slots, key=lambda x: (x["date"], x["time"]))

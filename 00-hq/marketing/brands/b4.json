@@ -1,0 +1,54 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": false,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "extensions",
+ "business": "Tab Lifeboat",
+ "theme": [
+  "#FBFBFD",
+  "#2E7D4F",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "Auto tab backup",
+   "price": "Free"
+  },
+  {
+   "name": "Restore with tab groups"
+  },
+  {
+   "name": "OneTab import"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Tab Lifeboat saves your tabs and tab groups every 5 minutes, so a crash or update doesn't wipe your research."
+  },
+  {
+   "id": "tip2",
+   "a": "Moving from OneTab or Session Buddy? Import your saved lists and see a count before anything changes."
+  },
+  {
+   "id": "offers",
+   "a": "Free with 5 restores a day; Pro coming soon."
+  }
+ ],
+ "cta": {
+  "label": "Add to Chrome",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "ChromeExtension",
+  "Productivity",
+  "TabManagement",
+  "TabLifeboat"
+ ],
+ "work_idea": "a 10-second screen recording of {service}",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "the maker at the desk (a real photo)",
+ "scene": "a laptop screen with many browser tabs, clean desk"
+}

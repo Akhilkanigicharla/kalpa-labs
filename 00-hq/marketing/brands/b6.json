@@ -1,0 +1,60 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": false,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "finops",
+ "business": "Ledger Peaks",
+ "theme": [
+  "#FBFBFD",
+  "#C08304",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "AI cost audit",
+   "price": "Rs 4,999"
+  },
+  {
+   "name": "AI cost per customer in Rs"
+  },
+  {
+   "name": "DPDP evidence pack"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Track AI spend per customer, not per month: one heavy customer can eat a whole plan's margin."
+  },
+  {
+   "id": "tip2",
+   "a": "Keep a simple record of which AI features touch personal data and why. It is the start of a DPDP evidence pack."
+  },
+  {
+   "id": "offers",
+   "a": "A one-time Rs 4,999 AI cost audit for Indian AI startups, then monthly plans from Rs 1,999."
+  }
+ ],
+ "cta": {
+  "label": "Book the AI cost audit",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "AIStartups",
+  "FinOps",
+  "DPDP",
+  "IndianSaaS"
+ ],
+ "pillars": {
+  "tip": 0.4,
+  "work": 0.25,
+  "proof": 0.15,
+  "offer": 0.2
+ },
+ "work_idea": "a real (anonymised) screenshot of a {service} report",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "the founder at work (a real photo)",
+ "scene": "a clean dashboard on a laptop showing cost charts in rupees"
+}

@@ -26,8 +26,24 @@ THEMES = {  # same palettes as tools/cards.py (bg, accent, deep)
 }
 
 
+DEFAULT_FONTS = {"display": "anton-latin-400-normal.woff", "body": "baloo-2-latin-700-normal.woff",
+                 "bold": "baloo-2-latin-800-normal.woff", "telugu": "noto-sans-telugu-telugu-700-normal.woff"}
+
+
 def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONTS / name), size)
+    path = pathlib.Path(name)
+    return ImageFont.truetype(str(path if path.is_absolute() else FONTS / name), size)
+
+
+def _hex(h: str) -> tuple:
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def palette(cfg: dict):
+    if cfg.get("theme"):
+        return tuple(_hex(c) for c in cfg["theme"])  # [bg, accent, deep] hex from the Kalpa tokens
+    return THEMES.get(cfg.get("setup", "salon"), THEMES["salon"])
 
 
 def _fit(draw, text, fname, size, max_w, min_size=36):
@@ -58,7 +74,8 @@ def frame(text: str, sub: str, cfg: dict, size=FEED, telugu: str = "", photo: st
     """One branded frame. `index` like '2/4' marks carousel slides."""
     text, sub = clean(text), clean(sub)
     telugu = re.sub(r"[!?.]", "", clean(telugu)).strip()  # Noto Sans Telugu subset has no Latin punctuation
-    bg, accent, deep = THEMES.get(cfg.get("setup", "salon"), THEMES["salon"])
+    bg, accent, deep = palette(cfg)
+    F = {**DEFAULT_FONTS, **(cfg.get("fonts") or {})}
     W, H = size
     if photo and pathlib.Path(photo).exists():
         img = ImageOps.fit(Image.open(photo).convert("RGB"), size, Image.LANCZOS)
@@ -68,34 +85,35 @@ def frame(text: str, sub: str, cfg: dict, size=FEED, telugu: str = "", photo: st
     else:
         img = Image.new("RGB", size, bg)
         d = ImageDraw.Draw(img)
-        d.ellipse((W - 520, -180, W + 160, 500), fill=accent)
+        d.ellipse((W - 420, -240, W + 140, 330), fill=accent)  # kept above the headline area
         d.ellipse((-220, H - 420, 380, H + 180), fill=tuple(min(255, c + 30) for c in accent))
         ink, y0 = deep, int(H * 0.30)
     d = ImageDraw.Draw(img)
-    f, lines = _wrap(d, text, "anton-latin-400-normal.woff", 104 if size == FEED else 120, W - 140)
+    f, lines = _wrap(d, text, F["display"], 104 if size == FEED else 120, W - 140)
     y = y0
     for line in lines:
         d.text((70, y), line, font=f, fill=ink)
         y += int(f.size * 1.08)
     if sub:
-        fs, sublines = _wrap(d, sub, "baloo-2-latin-700-normal.woff", 46, W - 140, max_lines=3)
+        fs, sublines = _wrap(d, sub, F["body"], 46, W - 140, max_lines=3)
         y += 20
         for line in sublines:
             d.text((70, y), line, font=fs, fill=ink)
             y += int(fs.size * 1.25)
     if telugu:
-        ft = _font("noto-sans-telugu-telugu-700-normal.woff", 44)
+        ft = _font(F["telugu"], 44)
         tw = d.textlength(telugu, font=ft) + 48
         d.rounded_rectangle((70, y + 24, 70 + tw, y + 104), radius=22, fill=(255, 255, 255), outline=accent, width=4)
         d.text((70 + tw / 2, y + 64), telugu, font=ft, fill=deep, anchor="mm")
     # footer: business + WhatsApp, always readable
-    fb = _font("baloo-2-latin-800-normal.woff", 40)
+    fb = _font(F["bold"], 40)
     d.rectangle((0, H - 110, W, H), fill=deep)
     d.text((70, H - 55), cfg.get("business", "").upper()[:34], font=fb, fill=(255, 255, 255), anchor="lm")
-    d.text((W - 70, H - 55), f"WhatsApp {cfg.get('phone', '')}", font=_font("baloo-2-latin-700-normal.woff", 32),
+    foot = cfg["cta"]["url"] if cfg.get("cta") else f"WhatsApp {cfg.get('phone', '')}"
+    d.text((W - 70, H - 55), foot, font=_font(F["body"], 32),
            fill=(255, 255, 255), anchor="rm")
     if index:
-        d.text((W - 70, 70), index, font=_font("baloo-2-latin-700-normal.woff", 36), fill=deep, anchor="ra")
+        d.text((W - 70, 70), index, font=_font(F["body"], 36), fill=deep, anchor="ra")
     return img
 
 

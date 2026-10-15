@@ -1,0 +1,53 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "botbhai",
+ "business": "BotBhai",
+ "theme": [
+  "#FBFBFD",
+  "#B23A2C",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "WhatsApp booking bot for salons"
+  },
+  {
+   "name": "Reminders that cut no-shows"
+  },
+  {
+   "name": "Social Team add-on"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Customers often message after the salon closes. A WhatsApp bot can answer and book them at any hour."
+  },
+  {
+   "id": "tip2",
+   "a": "A reminder the evening before helps customers remember; ask them to reply to confirm."
+  },
+  {
+   "id": "offers",
+   "a": "Set up in a day, in Telugu and English. Ask for a free demo on your own WhatsApp."
+  }
+ ],
+ "cta": {
+  "label": "Get a free demo",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "SalonOwners",
+  "WhatsAppBusiness",
+  "Hyderabad",
+  "BotBhai"
+ ],
+ "work_idea": "a real screen recording of the {service} demo",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "Akhil visiting a salon (a real photo, with the owner's OK)",
+ "scene": "a salon reception counter with a phone showing WhatsApp chats"
+}

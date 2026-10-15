@@ -1,0 +1,52 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "kits",
+ "business": "Kalpa Kits",
+ "theme": [
+  "#FBFBFD",
+  "#2F4FB0",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "GATE study planner kit",
+   "price": "Rs 199"
+  },
+  {
+   "name": "Tax & SIP planner kit",
+   "price": "Rs 299"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Plan GATE revision by subject weightage from past papers, not by the syllabus order."
+  },
+  {
+   "id": "tip2",
+   "a": "Track mock-test scores weekly; the trend matters more than any single score."
+  },
+  {
+   "id": "offers",
+   "a": "Google Sheets kits from Rs 199; bundle Rs 499. Works on your phone."
+  }
+ ],
+ "cta": {
+  "label": "Get the kit",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "GATE2027",
+  "GATEPreparation",
+  "StudyPlanner",
+  "GoogleSheets"
+ ],
+ "work_idea": "a real screenshot of the {service} in Google Sheets",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "the kit maker at the desk (a real photo)",
+ "scene": "a student's desk with a phone showing a spreadsheet"
+}

@@ -1,0 +1,54 @@
+{
+ "areas": [
+  "Hyderabad"
+ ],
+ "telugu": true,
+ "festival_line": "Wishing you and your family a happy {fest}.",
+ "setup": "jobcard",
+ "business": "JobCard",
+ "theme": [
+  "#FBFBFD",
+  "#B23A2C",
+  "#191C33"
+ ],
+ "catalog": [
+  {
+   "name": "Voice job card",
+   "price": "Free tier"
+  },
+  {
+   "name": "Invoice PDF"
+  },
+  {
+   "name": "6-month service reminder"
+  }
+ ],
+ "faqs": [
+  {
+   "id": "tip1",
+   "a": "Send every AC customer a service reminder after 6 months: it is the easiest repeat job you will get."
+  },
+  {
+   "id": "tip2",
+   "a": "Write the gas type, part numbers and the customer's complaint on every job card. It saves the next visit."
+  },
+  {
+   "id": "offers",
+   "a": "Free tier to start; Pro from Rs 149 a month when it launches for the 2027 AC season."
+  }
+ ],
+ "cta": {
+  "label": "Join the waitlist",
+  "url": "[add link]"
+ },
+ "hashtags": [
+  "ACTechnician",
+  "ACService",
+  "Hyderabad",
+  "JobCard"
+ ],
+ "work_idea": "a real job card made from a technician's voice note",
+ "work_head": "A look inside: {service}.",
+ "team_idea": "a real AC technician using JobCard (with their OK)",
+ "scene": "an AC technician's tool bag next to a split AC unit"
+}

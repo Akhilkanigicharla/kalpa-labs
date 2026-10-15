@@ -37,6 +37,8 @@ def _price(cfg: dict, service: str) -> str | None:
 
 
 def hashtags(cfg: dict, n: int = 5) -> list[str]:
+    if cfg.get("hashtags"):
+        return ["#" + re.sub(r"[^A-Za-z0-9]", "", t) for t in cfg["hashtags"]][:n]
     area = re.sub(r"[^A-Za-z]", "", (cfg.get("areas") or ["Hyderabad"])[0])
     biz = re.sub(r"[^A-Za-z0-9]", "", cfg.get("business", ""))[:24]
     tags = [area, "Hyderabad"] + NICHE_TAG.get(cfg.get("setup", ""), []) + [biz]
@@ -48,7 +50,13 @@ def hashtags(cfg: dict, n: int = 5) -> list[str]:
 
 
 def cta(cfg: dict) -> str:
+    if cfg.get("cta"):
+        return f"👉 {cfg['cta']['label']}: {cfg['cta']['url']}"
     return f"📲 Book on WhatsApp: wa.me/{cfg.get('whatsapp', '')}"
+
+
+def cta_short(cfg: dict) -> str:
+    return cfg.get("cta_short") or ("Link in bio" if cfg.get("cta") else "Book on WhatsApp")
 
 
 SCENE = {"salon": "a bright, clean unisex salon in Hyderabad with warm wooden mirrors and plants",
@@ -69,7 +77,7 @@ def image_prompt(slot: dict, cfg: dict, headline: str) -> str | None:
     fest = f", subtle {slot['festival']} decorations (diyas, marigolds)" if slot.get("festival") else ""
     return "\n".join([
         f"Subject: {slot['service']} at {cfg.get('business', '')}, shown as an inviting still life, no faces",
-        f"Scene: {SCENE.get(setup, 'a clean local business in Hyderabad')}{fest}",
+        f"Scene: {cfg.get('scene') or SCENE.get(setup, 'a clean local business in Hyderabad')}{fest}",
         "Lighting: soft natural daylight, gentle shadows",
         "Composition: subject in the lower two-thirds, empty space at the top for a headline",
         f"Text: none in the image (headline '{_plain(headline)[:60]}' is added later)",
@@ -86,39 +94,44 @@ def write(slot: dict, cfg: dict, i: int = 0) -> dict:
     fest = slot.get("festival")
     needs: list[str] = []
     price = _price(cfg, service)
+    go = cta_short(cfg)
     if p == "festival" and fest:
-        head = f"{fest} is almost here! Get festival-ready at {biz}."
-        body = f"Festive weeks fill fast. Book your {service} slot early."
-        slides = [f"{fest} is coming", f"Book {service} early", "Slots fill fast", "Book on WhatsApp"]
+        head = f"{fest} is almost here! Get festival-ready at {biz}." if not cfg.get("festival_line") else f"Happy {fest} from {biz}!"
+        body = (cfg.get("festival_line") or "Festive weeks fill fast. Book your {service} slot early.").format(service=service, fest=fest)
+        slides = [f"{fest} is coming", f"Book {service} early" if not cfg.get("festival_line") else service, "Slots fill fast" if not cfg.get("festival_line") else f"Happy {fest}", go]
     elif p == "tip":
         tip = _plain(faqs[i % len(faqs)]["a"]) if faqs else f"Ask us anything about {service}."
         head = f"Quick tip from our team ✨"
         body = tip[:260]
-        slides = ["Quick tip", tip[:90], f"Need help? We're at {cfg.get('address', 'Hyderabad').split(',')[0]}", "Book on WhatsApp"]
+        slides = ["Quick tip", tip[:90], f"Need help? We're at {cfg['address'].split(',')[0]}" if cfg.get("address") else f"More free tips from {biz}", go]
     elif p == "work":
-        head = (f"Inside {service}: take a quick look." if setup == "realestate"
+        head = (cfg["work_head"].format(service=service) if cfg.get("work_head") else f"Inside {service}: take a quick look." if setup == "realestate"
                 else f"Fresh from our {'studio' if setup == 'salon' else 'class' if setup == 'examkits' else 'floor'} today: {service}.")
         body = "Real work, real people. Tell us what you'd like next."
-        needs.append("photo: " + WORK_IDEA.get(setup, "a real photo of {service}").format(service=service))
-        slides = [service, "Before", "After", "Book on WhatsApp"]
+        needs.append("photo: " + (cfg.get("work_idea") or WORK_IDEA.get(setup, "a real photo of {service}")).format(service=service))
+        slides = [service, "Before", "After", go] if not cfg.get("work_idea") else [service, "How it works", "Real screen, real data", go]
     elif p == "proof":
         head = "What our customers say 💬"
         body = "\"[paste a real review here, with the customer's OK]\""
         needs.append("review: a real customer review and their permission to share it")
-        slides = ["Customer love", "[real review]", f"— a {biz} customer", "Book on WhatsApp"]
+        slides = ["Customer love", "[real review]", f"— a {biz} customer", go]
     elif p == "offer":
         offer = next((_plain(f["a"]) for f in faqs if f.get("id") in ("offers", "offer", "trial", "visit")), None)
         head = f"{service}{f' at {price}' if price else ''} 👇"
-        body = offer[:240] if offer else f"Message us to book {service}. We confirm in seconds."
-        slides = [service, price or "Ask for today's price", (offer or "Book in 30 seconds")[:80], "Book on WhatsApp"]
+        body = offer[:240] if offer else (f"{cfg['cta']['label']} today." if cfg.get("cta") else f"Message us to book {service}. We confirm in seconds.")
+        slides = [service, price or ("Details at the link" if cfg.get("cta") else "Ask for today's price"), (offer or ("Takes 2 minutes" if cfg.get("cta") else "Book in 30 seconds"))[:80], go]
     else:  # team
         head = f"Meet the people behind {biz} 🙌"
         body = "Friendly, trained and on time. Come say hi!"
-        needs.append("photo: " + TEAM_IDEA.get(setup, "your team at work"))
-        slides = ["Meet the team", "Trained & friendly", "On time, every time", "Book on WhatsApp"]
-    te = TE_LINE.get(p, "").replace("{fest}", TE_FESTIVAL.get(fest or "", fest or ""))
+        needs.append("photo: " + (cfg.get("team_idea") or TEAM_IDEA.get(setup, "your team at work")))
+        slides = ["Meet the team", "Trained & friendly", "On time, every time", go] if not cfg.get("team_idea") else ["Meet the builder", "Made in Hyderabad", "Built in public", go]
+    te = TE_LINE.get(p, "").replace("{fest}", TE_FESTIVAL.get(fest or "", fest or "")) if cfg.get("telugu", True) else ""
+    if te and cfg.get("cta") and p == "offer":
+        te = "ఇప్పుడే ప్రయత్నించండి!"  # "try it now" (not "book")
     tags = " ".join(hashtags(cfg))
-    caption = f"{head}\n\n{body}\n\n{te}\n\n{cta(cfg)}\n\n{tags}".strip()
+    caption = "\n\n".join(x for x in (head, body, te, cta(cfg), cfg.get("disclaimer", ""), tags) if x)
+    if cfg.get("affiliate") and "#ad" not in caption.lower():
+        caption += " #ad"  # ASCI: affiliate links carry a clear label
     if setup == "realestate":
         rera = cfg.get("rera_number")
         caption += f"\n\nTG RERA: {rera}" if rera else ""
@@ -128,7 +141,7 @@ def write(slot: dict, cfg: dict, i: int = 0) -> dict:
     if slot["kind"] == "reel":
         script = [{"sec": "0-2", "on_screen": slides[0], "shot": "hook: the result first"},
                   {"sec": "2-5", "on_screen": slides[1], "shot": "the process, 3 quick cuts"},
-                  {"sec": "5-7", "on_screen": "Book on WhatsApp", "shot": "logo + number"}]
+                  {"sec": "5-7", "on_screen": go, "shot": "logo + link" if cfg.get("cta") else "logo + number"}]
     story = f"{slides[0]} · {slides[1]}" if slot["kind"] == "story" else None
     return {"caption": caption, "headline": head, "slides": slides, "script": script, "story": story,
             "alt": f"{biz}: {head}", "needs": needs, "telugu": te, "image_prompt": image_prompt(slot, cfg, head)}

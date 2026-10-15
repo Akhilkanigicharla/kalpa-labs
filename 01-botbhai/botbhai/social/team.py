@@ -30,7 +30,7 @@ def build(setup: str, start: dt.date, weeks: int, out: pathlib.Path, *, override
         copy = copywriter.write(slot, cfg, i)
         chk = compliance.check(copy["caption"], setup=setup, cfg=cfg)
         files = [p.name for p in design.render(slot, copy, cfg, out, photos)] if render else []
-        items.append({**slot, **{k: copy[k] for k in ("caption", "headline", "alt", "needs", "script", "telugu")},
+        items.append({**slot, **{k: copy[k] for k in ("caption", "headline", "alt", "needs", "script", "telugu", "image_prompt")},
                       "check": chk, "files": files, "status": "draft"})
     with (out / "plan.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)

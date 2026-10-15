@@ -43,6 +43,11 @@ assert not C.check(c["caption"], setup="realestate")["ok"] and any("rera" in n f
 re_ok = plan.load_setup("realestate", {"rera_number": "P02400001234"})
 c = copywriter.write({"id": "x", "kind": "post", "pillar": "offer", "service": re_ok["catalog"][0]["name"], "festival": None}, re_ok)
 assert C.check(c["caption"], setup="realestate")["ok"] and "TG RERA: P02400001234" in c["caption"]
+ip = [copywriter.write(s, cfg, i) for i, s in enumerate(plan.month_plan(plan.load_setup("salon"), START, 4))]
+assert all(c["image_prompt"] is None for c, s in zip(ip, plan.month_plan(plan.load_setup("salon"), START, 4)) if s["pillar"] in ("work", "proof", "team"))
+tip = next(c["image_prompt"] for c in ip if c["image_prompt"])
+assert all(k in tip for k in ("Subject:", "Scene:", "Format:", "Avoid:")) and "faces" in tip
+print("  ✓ image prompts: structured fields for tip/offer/festival only; never for real work, reviews or team")
 print("  ✓ copywriter: captions ≤2,200 chars, 3-5 hashtags, WhatsApp CTA, Telugu line; reviews/RERA wait for the owner")
 
 BAD = {"Guaranteed results in 1 sitting": "guarantee", "100% selection in TSPSC": "100%", "Permanent hair removal": "permanent",

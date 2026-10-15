@@ -51,6 +51,34 @@ def cta(cfg: dict) -> str:
     return f"📲 Book on WhatsApp: wa.me/{cfg.get('whatsapp', '')}"
 
 
+SCENE = {"salon": "a bright, clean unisex salon in Hyderabad with warm wooden mirrors and plants",
+         "gym": "a well-lit neighbourhood gym in Hyderabad with racks of dumbbells",
+         "realestate": "a modern apartment balcony in west Hyderabad at golden hour",
+         "examkits": "a tidy study desk with notebooks, a lamp and exam books"}
+AI_OK = {"tip", "offer", "festival"}  # never AI images for work/proof/team: those must be real photos
+
+
+def image_prompt(slot: dict, cfg: dict, headline: str) -> str | None:
+    """A structured prompt for any free image model (atomic fields: subject, scene, lighting, composition, text,
+    style, format, avoid), in the spirit of 'prompt as code' libraries such as freestylefly/awesome-gpt-image-2 (MIT).
+    Only for illustrative pillars; real work, reviews and team posts need real photos."""
+    if slot["pillar"] not in AI_OK:
+        return None
+    setup = cfg.get("setup", "salon")
+    fmt = "9:16 vertical" if slot["kind"] in ("reel", "story") else "4:5 portrait"
+    fest = f", subtle {slot['festival']} decorations (diyas, marigolds)" if slot.get("festival") else ""
+    return "\n".join([
+        f"Subject: {slot['service']} at {cfg.get('business', '')}, shown as an inviting still life, no faces",
+        f"Scene: {SCENE.get(setup, 'a clean local business in Hyderabad')}{fest}",
+        "Lighting: soft natural daylight, gentle shadows",
+        "Composition: subject in the lower two-thirds, empty space at the top for a headline",
+        f"Text: none in the image (headline '{_plain(headline)[:60]}' is added later)",
+        "Style: realistic photo, warm and friendly, Indian context",
+        f"Format: {fmt}",
+        "Avoid: people's faces, before/after comparisons, logos of other brands, fake prices, any text",
+    ])
+
+
 def write(slot: dict, cfg: dict, i: int = 0) -> dict:
     """Return the copy for one slot: caption, slides (carousel), script (reel), story text, alt text, needs."""
     setup, biz, service, p = cfg.get("setup", "salon"), cfg.get("business", ""), slot["service"], slot["pillar"]
@@ -103,4 +131,4 @@ def write(slot: dict, cfg: dict, i: int = 0) -> dict:
                   {"sec": "5-7", "on_screen": "Book on WhatsApp", "shot": "logo + number"}]
     story = f"{slides[0]} · {slides[1]}" if slot["kind"] == "story" else None
     return {"caption": caption, "headline": head, "slides": slides, "script": script, "story": story,
-            "alt": f"{biz}: {head}", "needs": needs, "telugu": te}
+            "alt": f"{biz}: {head}", "needs": needs, "telugu": te, "image_prompt": image_prompt(slot, cfg, head)}

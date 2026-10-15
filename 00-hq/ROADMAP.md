@@ -64,6 +64,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A41** HQ · Q-HQ-05 + Q-HQ-06: invoice template (shared with A05) and legal drafts (client agreement, privacy notice, terms). Check: drafts in `00-hq/docs/legal/`.
 - [x] **A44** growth · Deep Scan v2 step 5: `enrich.py` reads schema.org data, SEO-bot WhatsApp-button contrast + favicon, Lighthouse CI workflow (`.github/workflows/lighthouse.yml`). Check: enrich + SEO tests green; `lhci autorun` passes. (done 2026-10-13, c109d4e)
 - [x] **A43** HQ · Quality workflow `.github/workflows/quality.yml`: gitleaks + actionlint + every world's tests (BotBhai, b2 with Postgres RLS, b4 with Chromium e2e, b6, b7). Check: actionlint clean; gitleaks no leaks. (done 2026-10-13, ca75d3c)
+- [ ] **A45** b1 · Social Team add-on (`01-botbhai/botbhai/social/`): month plan, captions with Telugu line, ad-rule checks (ASCI/DMR/CCPA/RERA), branded images + Reels, WhatsApp approval, Instagram/Facebook publisher (official API, dry run default), analyst. Check: `python3 01-botbhai/botbhai/social/test_social.py` green.
 - [~] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green. (Kingdom part done 2026-10-13: quests match this roadmap, Forge of agent builds, rest-day streak, v13; still to do: agent registry + WORLD_SHARE proposal)
 
 ---
@@ -85,6 +86,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
 - [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine)
 - [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 7 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (20 min)
+- [ ] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

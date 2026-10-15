@@ -29,4 +29,4 @@ If the Superpowers plugin is installed (skills named `superpowers:*`), use `writ
 6. Commit as `Akhilkanigicharla <84580207+Akhilkanigicharla@users.noreply.github.com>` with a clear message, fetch + rebase, then push to `main`.
 
 ## Writing style for Akhil
-Plain, short English. Say what was done and what he must do next, in that order. No jargon without a one-line explanation.
+Lead with the answer or next action; end with one next step and its time in minutes; lists of 5 items at most (adapted from the MIT i-have-adhd skill). Plain, short English. Say what was done and what he must do next, in that order. No jargon without a one-line explanation.

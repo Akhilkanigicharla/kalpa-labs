@@ -20,6 +20,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 7. Keep files where the map says. New world code goes in that world's folder; nothing at the repo root except README.md, CLAUDE.md and config.
 
 ## Build sprint procedure
+If the Superpowers plugin is installed (skills named `superpowers:*`), use `writing-plans` before building, `test-driven-development` while building, `systematic-debugging` on failures and `verification-before-completion` before any tick.
 1. Read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.

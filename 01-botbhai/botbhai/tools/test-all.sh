@@ -13,6 +13,7 @@ NO_DELAY=1 node core/functions/agents.test.js
 NO_DELAY=1 node core/functions/hardening.test.js
 node qa/swarm.test.js
 node ../../00-hq/agents/run.test.js
+node ../../00-hq/agents/tasks.test.js
 python3 leadfinder/test_leadfinder.py
 python3 leadfinder/test_enrich.py
 python3 seo/test_seo.py

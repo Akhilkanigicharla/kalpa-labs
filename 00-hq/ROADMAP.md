@@ -24,12 +24,12 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A06** b1 · P1-W2-03: voice turn-taking fix in `voice/agent.py` per research a2 (Silero stop_secs 0.2, smart-turn analyzer, Sarvam TTS language). Check: `voice/test_prompt.py` passes in a venv with pipecat. (done 2026-10-13, b487bcf; plus `voice/test_turns.py`)
 - [ ] **A07** b1 · P1-W2-05: sales kit in `01-botbhai/docs/sales/`: A5 card (Telugu + English), proposal, client agreement with DPDP processor clause, privacy notice, objection sheet. Check: prices match PLAN.md §2.
 - [ ] **A08** b1 · P1-W1-06: cluster-1 visit sheet (SR Nagar/Ameerpet) from `botbhai/leads/hyderabad-leads.csv`: 6+ salons, map links, personalised pitch. Check: file in `01-botbhai/docs/sales/`.
-- [x] **A09** design · Kalpa design system "Kalamkari": `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` + free UI toolkit (licences checked). (done 2026-10-13)
+- [x] **A09** design · Kalpa design system "Kalamkari": `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` + free UI toolkit (licences checked). Check: the three files exist and the toolkit list names each licence. (done 2026-10-13, add0d08)
 - [ ] **A10** design · b1: `01-botbhai/design/` brief + HTML mockups for the owner dashboard and shared inbox (phone first). Use shadcn/ui-style components on the Kalamkari tokens. Check: renders at 390 px with no horizontal scroll (Playwright screenshot).
 - [ ] **A11** design · b5 + b3: calculator page and kit landing page mockups. Check: 390 px Playwright screenshot.
 - [ ] **A12** design · b6: Ledger Peaks landing + dashboard + X-ray report mockups. Check: 390 px screenshot.
 - [ ] **A13** design · b2 + b4: JobCard app screens (record → job card → invoice) and Tab Lifeboat popup/options. Check: screenshots.
-- [x] **A14** design · HQ: Kingdom control room redesigned in the Kalamkari system and republished; copy in `00-hq/design/kingdom-control-room.html`. (done 2026-10-13)
+- [x] **A14** design · HQ: Kingdom control room redesigned in the Kalamkari system and republished; copy in `00-hq/design/kingdom-control-room.html`. Check: page republished; light + dark at 390 px. (done 2026-10-13, add0d08)
 
 ### Sprint 2 · Agent-only engines (start now, 0 CEO minutes)
 - [x] **A15** b5 · b5.W1.1: Astro site in `05-deals/site/`, `fin.ts` SIP/EMI/tax (new + old regime FY 2026-27, cite source), vitest fixtures ₹12.75L / ₹13L / ₹25L. Check: `npm test` green, `npm run build` ok. (done 2026-10-13, 6208eb4)
@@ -65,6 +65,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A44** growth · Deep Scan v2 step 5: `enrich.py` reads schema.org data, SEO-bot WhatsApp-button contrast + favicon, Lighthouse CI workflow (`.github/workflows/lighthouse.yml`). Check: enrich + SEO tests green; `lhci autorun` passes. (done 2026-10-13, c109d4e)
 - [x] **A43** HQ · Quality workflow `.github/workflows/quality.yml`: gitleaks + actionlint + every world's tests (BotBhai, b2 with Postgres RLS, b4 with Chromium e2e, b6, b7). Check: actionlint clean; gitleaks no leaks. (done 2026-10-13, ca75d3c)
 - [x] **A45** b1 · Social Team add-on (`01-botbhai/botbhai/social/`): month plan, captions with Telugu line, ad-rule checks (ASCI/DMR/CCPA/RERA), branded images + Reels, WhatsApp approval, Instagram/Facebook publisher (official API, dry run default), analyst. Check: `python3 01-botbhai/botbhai/social/test_social.py` green. (done 2026-10-15, f90b9cd)
+- [ ] **A46** HQ · Repo features from the "5 GitHub Repos" Short: Superpowers skills vendored (MIT), Taskmaster-style task engine on ROADMAP.md (`00-hq/agents/tasks.js`), short-answers repo skill (from I Have ADHD, MIT), Awesome Agents mapped to worlds. Check: `node 00-hq/agents/tasks.test.js` green and `tasks.js validate` clean.
 - [~] **A42** HQ · update the Kingdom control room tasks and the agent registry from these plans (new quests, WORLD_SHARE proposal flagged for CEO approval). Check: `node 00-hq/agents/run.test.js` green. (Kingdom part done 2026-10-13: quests match this roadmap, Forge of agent builds, rest-day streak, v13; still to do: agent registry + WORLD_SHARE proposal)
 
 ---

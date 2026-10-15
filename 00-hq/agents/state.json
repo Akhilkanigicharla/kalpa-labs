@@ -2,5 +2,7 @@
   "_comment": "What is live right now. The orchestrator only spends Claude tokens where it can matter today.",
   "active_setups": ["salon"],
   "clients": { "salon": 0, "realestate": 0, "gym": 0, "examkits": 0 },
+  "world_share_approved": false,
+  "_world_share": "false = PLAN.md §5b split awaits Akhil (C01). Set true after he approves; see `node 00-hq/agents/run.js proposal`.",
   "launch_order": ["salon", "gym", "examkits", "realestate"]
 }

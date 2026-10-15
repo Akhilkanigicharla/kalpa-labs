@@ -15,7 +15,10 @@
 "use strict";
 
 const DAILY_TOKENS = 400000;                      // what Claude work we plan per day across the company
-const WORLD_SHARE = { hq: 10, b1: 22, b2: 20, b3: 12, b4: 10, b5: 8, b6: 10, b7: 8 }; // % (matches the Kingdom)
+const WORLD_SHARE = { hq: 10, b1: 22, b2: 20, b3: 12, b4: 10, b5: 8, b6: 10, b7: 8 }; // % in use today (matches the Kingdom)
+// PLAN.md §5b proposal for phases A–B (BotBhai first, b2/b4 wait for their season). NOT in use until Akhil approves it
+// (CEO queue C01): then set "world_share_approved": true in state.json. Revisit on 15 Dec.
+const PROPOSED_WORLD_SHARE = { hq: 10, b1: 35, b2: 8, b3: 15, b4: 4, b5: 10, b6: 12, b7: 6 };
 const SETUPS = { salon: "Salon", realestate: "Real Estate", gym: "Gym", examkits: "Exam Kits" };
 const R = (repo) => "01-botbhai/botbhai/" + repo;
 
@@ -60,6 +63,7 @@ function setupTeam(s) {
     A({ id: id("renewals"), name: `${L} Renewal Agent`, ...t("delivery"), mission: "Renewal/fee reminders 7/3/1 days before; win-back after 15 days (opt-in only).", trigger: { cron: "hourly" }, runs_as: s === "gym" || s === "examkits" ? "code" : "planned", code: R("core/automations.js#dueRenewals"), tokens: 0, kpi: "Renewal rate +15 points", validator: { checks: ["opted-out never messaged", "marketing needs OFFERS opt-in"] } }),
     A({ id: id("referral"), name: `${L} Referral Agent`, ...t("delivery"), mission: "Give each happy customer a REF code 3 days after the visit; tag friends who use it.", trigger: { cron: "hourly" }, runs_as: "code", code: R("core/automations.js#referralCode"), tokens: 0, kpi: "≥10% of new customers via referral", validator: { checks: ["opt-in customers only", "never sent to no-shows"] } }),
     A({ id: id("reporter"), name: `${L} Reporter`, ...t("delivery"), mission: "Live dashboard + Excel export; Monday WhatsApp summary to the owner.", trigger: { cron: "weekly:mon" }, runs_as: "code", code: R("core/functions/leads.js"), tokens: 0, kpi: "Owner opens dashboard weekly", validator: { checks: ["numbers match database", "each client sees only their data"] } }),
+    A({ id: id("social"), name: `${L} Social Team`, ...t("delivery"), mission: "Paid add-on: month plan, captions with a Telugu line, branded images and Reels, ad-rule checks; posts only after the owner says OK on WhatsApp.", trigger: { cron: "monthly" }, runs_as: "code", code: R("social/team.py"), tokens: 0, human_needed: true, kpi: "Owner approves ≥ 80% of posts first time", validator: { name: `${L} Social Compliance Checker`, checks: ["ASCI/DMR/CCPA/RERA rules (social/compliance.py)", "dry run until the owner's own Meta token is set", "no post without owner OK"] } }),
     // client success
     A({ id: id("health"), name: `${L} Client Health Monitor`, ...t("success"), mission: "Weekly: bookings, no-shows, response time, unanswered questions per client; flag risks.", trigger: { cron: "weekly:fri" }, tokens: 3000, kpi: "No client churns without a warning 30 days earlier", validator: { checks: ["metrics from database only"] } }),
     A({ id: id("faqgrow"), name: `${L} FAQ Grower`, ...t("success"), mission: "Turn the week's 'unanswered' messages into new FAQ entries for owner approval.", trigger: { cron: "weekly:fri" }, inputs: ["messages where unanswered"], tokens: 3000, kpi: "Unanswered rate < 5%", validator: { checks: ["owner approves every new answer", "no medical/legal claims"] } }),
@@ -117,6 +121,10 @@ const hq = [
   A({ id: "hq.legal", name: "Legal Drafter", unit: "hq", team: "hq", mission: "Client agreement, privacy notice, terms; flags when a lawyer is needed.", trigger: { event: "first paid client" }, tokens: 10000, human_needed: true, kpi: "Signed agreement for every client", validator: { checks: ["not legal advice; lawyer review before first use"] } }),
   A({ id: "hq.brand", name: "Brand Guardian", unit: "hq", team: "hq", mission: "Kalpa Labs + BotBhai names, tone, visuals consistent; trademark watch.", trigger: { cron: "monthly" }, tokens: 2000, kpi: "One voice everywhere", validator: { checks: ["IP India search repeated before filing"] } }),
   A({ id: "hq.research", name: "Market Researcher", unit: "hq", team: "hq", mission: "Monthly: prices, competitors, policy changes (Meta, TRAI, DPDP) that affect any world.", trigger: { cron: "monthly" }, tokens: 20000, kpi: "No policy change surprises us", validator: { checks: ["every claim has a source link"] } }),
+  A({ id: "hq.sprint", name: "Build Sprint Team", unit: "hq", team: "hq", mission: "Twice a day take the next Agent-queue items in ROADMAP.md, build with tests, tick, log, push.", trigger: { cron: "daily:11:07" }, runs_as: "code", code: "scheduled task: Kalpa Labs · Build sprint", tokens: 60000, kpi: "≥ 1 roadmap item ticked per day, tests green", validator: { name: "Tests-before-ticks Checker", checks: ["item's check in ROADMAP.md passes", "log entry written", "free tiers only"] } }),
+  A({ id: "hq.tasks", name: "Roadmap Task Engine", unit: "hq", team: "hq", mission: "Read ROADMAP.md: next item, validate IDs and checks, stats for the Kingdom.", trigger: { event: "every sprint" }, runs_as: "code", code: "00-hq/agents/tasks.js", tokens: 0, kpi: "`tasks.js validate` always clean", validator: { name: "Task Engine Test Agent", checks: ["00-hq/agents/tasks.test.js green"] } }),
+  A({ id: "hq.quality", name: "Quality Gate (CI)", unit: "hq", team: "hq", mission: "On every push: secret scan, workflow lint and every world's tests.", trigger: { event: "every push" }, runs_as: "code", code: ".github/workflows/quality.yml", tokens: 0, kpi: "main always green; 0 leaked secrets", validator: { name: "CI Reviewer", checks: ["actionlint clean", "gitleaks no leaks"] } }),
+  A({ id: "hq.marketing", name: "Kalpa Marketing Team", unit: "hq", team: "hq", mission: "Month plans, captions and branded images for HQ and every world in the Kalpa design system; held until Akhil adds real links and says OK.", trigger: { cron: "monthly" }, runs_as: "code", code: "00-hq/marketing/run.py", tokens: 0, human_needed: true, kpi: "Each live world has next month's posts ready by the 25th", validator: { name: "World Ad-Rules Checker", checks: ["#ad + disclosure on affiliate posts (ASCI)", "no 'compliant/certified' claims (b6)", "trading posts off (SEBI)"] } }),
 ];
 
 // ---------------------------------------------------------------- game / UI (the Kingdom)
@@ -133,17 +141,29 @@ const game = [
 
 // ---------------------------------------------------------------- the other worlds (lean teams until their turn comes)
 const OTHER = { b2: "JobCard App", b3: "Exam & Money Kits", b4: "Extension Lab", b5: "Deals & Tools", b6: "AI FinOps & Governance", b7: "Trading Lab" };
+const BUILT = { b2: "02-jobcard/lib/invoice.mjs", b4: "04-extensions/src/wxt.config.ts", b5: "05-deals/site/astro.config.mjs", b6: "06-finops/src/ingest/importers.py", b7: "07-trading/src/gate.py" }; // world has code in the repo
 const others = [];
 for (const [u, label] of Object.entries(OTHER)) {
   const t = (x) => ({ unit: u, team: x });
   others.push(
     A({ id: `${u}.pm`, name: `${label} PM`, ...t("pm"), mission: `Keep ${label}'s quests small, ordered and honest about timing.`, trigger: { cron: "weekly:sun" }, tokens: 2000, kpi: "Next quest always ready", validator: { checks: ["fits budget"] } }),
     A({ id: `${u}.research`, name: `${label} Researcher`, ...t("research"), mission: "Validate demand with real evidence before any build.", trigger: { event: "chapter start" }, tokens: 15000, kpi: "Go/no-go with sources", validator: { checks: ["every claim sourced"] } }),
-    A({ id: `${u}.builder`, name: `${label} Builder`, ...t("tech"), mission: "Build the smallest version that can earn the first rupee.", trigger: { event: "go decision" }, runs_as: "planned", tokens: 20000, kpi: "First version in ≤ 2 weeks", validator: { checks: ["tests + demo"] } }),
-    A({ id: `${u}.marketer`, name: `${label} Marketer`, ...t("marketing"), mission: "Find the first 10 users where they already hang out.", trigger: { event: "first version" }, runs_as: "planned", tokens: 5000, kpi: "10 users", validator: { checks: ["no spam, no fake reviews"] } }),
+    A({ id: `${u}.builder`, name: `${label} Builder`, ...t("tech"), mission: "Build the smallest version that can earn the first rupee.", trigger: { event: "go decision" }, runs_as: BUILT[u] ? "claude" : "planned", tokens: 20000, kpi: "First version in ≤ 2 weeks", validator: { checks: ["tests + demo"] } }),
+    u === "b7"
+      ? A({ id: `${u}.marketer`, name: `${label} Marketer`, ...t("marketing"), mission: "Switched off: paper-only research, no public posts (SEBI finfluencer rules).", trigger: { event: "CEO decision" }, runs_as: "planned", tokens: 0, kpi: "0 public trading posts", validator: { checks: ["stays off unless Akhil and a SEBI-registered adviser say otherwise"] } })
+      : A({ id: `${u}.marketer`, name: `${label} Marketer`, ...t("marketing"), mission: `Find the first 10 users where they already hang out; posts from the Kalpa marketing team (brands/${u}.json), held until the real link is in.`, trigger: { event: "first version" }, runs_as: BUILT[u] ? "code" : "planned", code: "00-hq/marketing/run.py", tokens: 5000, human_needed: true, kpi: "10 users", validator: { checks: ["no spam, no fake reviews", "world ad rules (00-hq/marketing)"] } }),
     A({ id: `${u}.validator`, name: `${label} Validator`, ...t("validation"), mission: "Checks every deliverable in this world against its acceptance check.", trigger: { event: "deliverable" }, tokens: 3000, kpi: "Nothing reaches Akhil unchecked", validator: { checks: ["acceptance check written before work"] } }),
   );
 }
 
+// world engines already built by the sprints (each one is code with tests in its world folder)
+others.push(
+  A({ id: "b2.invoice", name: "JobCard Invoice Engine", unit: "b2", team: "tech", mission: "GST maths (unregistered/composition/regular), amount in words, UPI link, bilingual invoice; transcript → job card.", trigger: { event: "job finished" }, runs_as: "code", code: "02-jobcard/lib/invoice.mjs", tokens: 0, kpi: "Invoice totals match GST rules to the paisa", validator: { name: "JobCard Test Agent", checks: ["cd 02-jobcard && npm test", "Postgres RLS tests (supabase/test.sh)"] } }),
+  A({ id: "b4.lifeboat", name: "Tab Lifeboat Core", unit: "b4", team: "tech", mission: "Save and restore tab sessions, auto-snapshots, OneTab/Session Buddy import; all data stays in the browser.", trigger: { event: "user action" }, runs_as: "code", code: "04-extensions/src/wxt.config.ts", tokens: 0, kpi: "1,000-tab import passes; nothing leaves the device", validator: { name: "Extension E2E Tester", checks: ["unit tests", "Chromium e2e (Playwright)"] } }),
+  A({ id: "b5.calculators", name: "Telugu Calculator Site", unit: "b5", team: "tech", mission: "Static calculator pages in English + Telugu with ASCI-disclosed affiliate links.", trigger: { event: "every push" }, runs_as: "code", code: "05-deals/site/astro.config.mjs", tokens: 0, kpi: "Every calculator builds; Lighthouse passes", validator: { name: "Calculator Checker", checks: [".github/workflows/calculators.yml", "Telugu lines read by a native speaker (C17)"] } }),
+  A({ id: "b6.ingest", name: "Ledger Peaks Ingest + PII Guard", unit: "b6", team: "tech", mission: "Import cloud/AI bills, price them, scan for personal data before anything is stored.", trigger: { event: "file uploaded" }, runs_as: "code", code: "06-finops/src/ingest/importers.py", tokens: 0, kpi: "Imports reconcile to the bill total", validator: { name: "FinOps Test Agent", checks: ["06-finops tests (pytest)", "no 'compliant/certified' claims"] } }),
+  A({ id: "b7.gate", name: "Paper-Trading Gate", unit: "b7", team: "tech", mission: "Backtest with real costs, count trials, and pass a strategy only through the gate thresholds; paper only, no tips.", trigger: { event: "new strategy" }, runs_as: "code", code: "07-trading/src/gate.py", tokens: 0, kpi: "0 strategies pass without every gate criterion", validator: { name: "Trading Lab Test Agent", checks: ["07-trading tests (pytest)", "SEBI: paper only, no advice"] } }),
+);
+
 const AGENTS = [].concat(...Object.keys(SETUPS).map(setupTeam), platform, hq, game, others);
-module.exports = { AGENTS, SETUPS, DAILY_TOKENS, WORLD_SHARE };
+module.exports = { AGENTS, SETUPS, DAILY_TOKENS, WORLD_SHARE, PROPOSED_WORLD_SHARE };

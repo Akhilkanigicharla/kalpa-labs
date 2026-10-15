@@ -8,7 +8,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 - `00-hq/ROADMAP.md`: **the single source of what to do next.** Agent queue = your work. CEO queue = Akhil's.
 - `00-hq/PLAN.md`: company order, money and rhythm. `00-hq/LINKS.md`: artifacts, docs, scheduled tasks, accounts.
 - `00-hq/log/YYYY-MM-DD.md`: what each session did. Append, never rewrite earlier entries.
-- `00-hq/agents/`: the 215-agent registry and orchestrator (`node 00-hq/agents/run.js today`), and the roadmap task engine (`node 00-hq/agents/tasks.js next|list|show|validate|stats`).
+- `00-hq/agents/`: the 228-agent registry and orchestrator (`node 00-hq/agents/run.js today`), and the roadmap task engine (`node 00-hq/agents/tasks.js next|list|show|validate|stats`).
 - `00-hq/vendor/`: unmodified MIT open source we rely on (Superpowers skills). `.claude/skills/short-answers/`: how to write to Akhil.
 
 ## Hard rules

@@ -4,7 +4,7 @@ const assert = require("assert");
 const crypto = require("crypto");
 const { store, graph } = require("./_fake.js")({
   clients: [
-    { id: "s1", name: "Glow", niche: "salon", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "PAGE1", active: true, config: { capacity: 1, business: "Glow Studio", review_link: "https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4" } },
+    { id: "s1", name: "Glow", niche: "salon", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "100200300", active: true, config: { capacity: 1, business: "Glow Studio", review_link: "https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4" } },
     { id: "11111111-2222-3333-4444-555555555555", name: "Web Salon", niche: "salon", phone_number_id: "PN2", active: true, config: { capacity: 1 } },
   ],
   client_secrets: [{ client_id: "s1", meta_page_token: "pt" }],
@@ -62,10 +62,10 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     assert.ok(!r.replies.at(-1).options.includes("4:00 PM"));
   });
   await ok("#9 a Meta lead form from a booked customer keeps their booking", async () => {
-    graph.responses["LEADX"] = { field_data: [{ name: "full_name", values: ["Asha"] }, { name: "phone_number", values: ["+91 98111 00001"] }, { name: "service", values: ["Bridal"] }] };
-    const res = await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "LEADX", page_id: "PAGE1" } }] }] });
+    graph.responses["900800700"] = { field_data: [{ name: "full_name", values: ["Asha"] }, { name: "phone_number", values: ["+91 98111 00001"] }, { name: "service", values: ["Bridal"] }] };
+    const res = await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "900800700", page_id: "100200300" } }] }] });
     if (process.env.DEBUG) console.log("res", res, store.processed);
-    if (process.env.DEBUG) console.log(store.leads.filter((l) => l.contact === "919811100001"), graph.calls.filter((c) => c.path.startsWith("LEADX")));
+    if (process.env.DEBUG) console.log(store.leads.filter((l) => l.contact === "919811100001"), graph.calls.filter((c) => c.path.startsWith("900800700")));
     const lead = store.leads.find((l) => l.contact === "919811100001");
     assert.strictEqual(lead.status, "booked"); assert.ok(lead.details.slot); assert.strictEqual(lead.details.meta_form.service, "Bridal");
   });
@@ -87,6 +87,56 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     graph.failNextTextTo = "919000000001";
     await L.alertOwner(store.clients[0], "🔔 test alert");
     assert.ok(graph.sent.some((m) => m.to === "919000000001" && m.template && m.template.name === "bb_owner_alert"));
+  });
+  // ---- REA audit fixes (16 Oct 2026)
+  await ok("audit: Meta Lead Ads webhook refuses unsigned posts when the app secret is missing, and non-POST calls", async () => {
+    const saved = process.env.WA_APP_SECRET; delete process.env.WA_APP_SECRET;
+    const body = JSON.stringify({ object: "page", entry: [] });
+    assert.strictEqual((await metaleads.handler({ httpMethod: "POST", headers: {}, body })).statusCode, 401);
+    process.env.WA_APP_SECRET = saved;
+    assert.strictEqual((await metaleads.handler({ httpMethod: "PUT", headers: {}, body })).statusCode, 405);
+  });
+  await ok("audit: forged non-numeric page ids never reach the database query", async () => {
+    const before = store.leads.length;
+    await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "1", page_id: "1&active=eq.false" } }] }] });
+    assert.strictEqual(store.leads.length, before);
+  });
+  await ok("audit: website chat is rate limited per visitor (31st message in 10 min gets 429)", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    let last;
+    for (let i = 0; i < 31; i++) last = await chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "10.0.0." + i }, body: JSON.stringify({ client: c, visitor: "flooder-1", text: "hi" }) });
+    assert.strictEqual(last.statusCode, 429);
+  });
+  await ok("audit: website chat is rate limited per IP across many visitor ids", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    let last;
+    for (let i = 0; i < 121; i++) last = await chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "203.0.113.9" }, body: JSON.stringify({ client: c, visitor: "rot-" + String(i).padStart(4, "0"), text: "hi" }) });
+    assert.strictEqual(last.statusCode, 429);
+  });
+  await ok("audit: one open booking per website visitor (a second booking moves the first)", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    const web = (text) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.7" }, body: JSON.stringify({ client: c, visitor: "two-bookings", text }) }).then((r) => JSON.parse(r.body));
+    const pick = async (service) => { // book the first free slot tomorrow, whatever earlier tests left
+      await web("book"); await web(service); const r = await web("tomorrow");
+      await web(r.replies.at(-1).options[0]); await web("Rani");
+    };
+    await pick("facial"); await pick("hair spa");
+    const open = store.bookings.filter((b) => b.client_id === c && b.contact === "web:two-bookings" && b.status === "confirmed");
+    const all = store.bookings.filter((b) => b.client_id === c && b.contact === "web:two-bookings");
+    assert.strictEqual(open.length, 1, `open bookings: ${open.length}`); assert.ok(all.length >= 2 && all.some((b) => b.status === "rescheduled"), JSON.stringify(all));
+  });
+  await ok("audit: dashboard token only works in the Authorization header, and the reply has no wildcard CORS", async () => {
+    const leads = require("./leads.js");
+    store.clients[0].dashboard_token = "c".repeat(36);
+    assert.strictEqual((await leads.handler({ queryStringParameters: { token: "c".repeat(36) }, headers: {} })).statusCode, 401);
+    const r = await leads.handler({ headers: { authorization: "Bearer " + "c".repeat(36) } });
+    assert.strictEqual(r.statusCode, 200); assert.ok(!("Access-Control-Allow-Origin" in r.headers));
+  });
+  await ok("audit: database errors never carry the response body (customer text) into logs", async () => {
+    const real = global.fetch;
+    global.fetch = async () => ({ ok: false, status: 400, text: async () => JSON.stringify({ code: "22P02", message: "invalid input: Asha's phone 9811100001" }) });
+    try { await L.db("leads?x=1"); assert.fail("should throw"); } catch (e) { assert.match(e.message, /Supabase 400 22P02 on leads/); assert.doesNotMatch(e.message, /9811100001/); }
+    global.fetch = real;
   });
   console.log(`\n${n} tests passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

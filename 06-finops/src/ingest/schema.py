@@ -11,7 +11,23 @@ import os
 from dataclasses import asdict, dataclass
 from decimal import Decimal
 
-DEV_SALT = "ledger-peaks-dev-salt"  # tests only; real runs set LP_HASH_SALT
+DEV_SALT = "ledger-peaks-dev-salt"  # tests only (LP_ALLOW_DEV_SALT=1); real runs must set LP_HASH_SALT
+
+
+class MissingSaltError(RuntimeError):
+    """The public dev salt would make 'anonymised' ids reversible, so real runs refuse to start without a salt."""
+
+
+def resolve_salt(salt: str | None = None) -> str:
+    if salt:
+        return salt
+    if os.environ.get("LP_HASH_SALT"):
+        return os.environ["LP_HASH_SALT"]
+    if os.environ.get("LP_ALLOW_DEV_SALT") == "1":
+        return DEV_SALT
+    raise MissingSaltError(
+        "LP_HASH_SALT is not set. Set a long random secret (per client) before importing or scanning; "
+        "without it, hashed phone numbers and ids could be reversed.")
 
 
 @dataclass
@@ -60,7 +76,7 @@ def hash_id(value: str | None, salt: str | None = None) -> str | None:
     """Stable pseudonymous id: HMAC-SHA256(salt, value), first 16 hex chars."""
     if value is None or str(value).strip() == "":
         return None
-    key = (salt or os.environ.get("LP_HASH_SALT") or DEV_SALT).encode()
+    key = resolve_salt(salt).encode()
     digest = hmac.new(key, str(value).strip().encode(), hashlib.sha256).hexdigest()
     return "c_" + digest[:16]
 

@@ -93,8 +93,8 @@ describe("capture and restore (E3)", () => {
     expect(created[1]!.group).toBe(created[2]!.group);
     expect(Object.values(madeGroups)).toEqual([{ title: "Research", color: "purple", collapsed: true }, { title: "Bills", color: "red", collapsed: false }]);
   });
-  it("restorable() only reopens web and file URLs", () => {
-    expect(["https://x.test", "http://x.test", "file:///a.pdf"].every(restorable)).toBe(true);
-    expect(["chrome://settings", "about:blank", "javascript:alert(1)", "data:text/html,x", ""].some(restorable)).toBe(false);
+  it("restorable() only reopens web URLs (no local files from an imported list)", () => {
+    expect(["https://x.test", "http://x.test"].every(restorable)).toBe(true);
+    expect(["file:///C:/Users/a.pdf", "ftp://x.test", "chrome://settings", "about:blank", "javascript:alert(1)", "data:text/html,x", ""].some(restorable)).toBe(false);
   });
 });

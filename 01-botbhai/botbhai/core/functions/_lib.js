@@ -9,11 +9,19 @@ async function db(path, opts = {}) {
     headers: { apikey: SUPABASE_KEY(), Authorization: `Bearer ${SUPABASE_KEY()}`, "Content-Type": "application/json", Prefer: opts.prefer || "return=representation" },
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
-  if (!res.ok) throw new Error(`Supabase ${res.status}: ${await res.text()}`);
+  if (!res.ok) { // the body can echo customer text, so only the status and error code go to the logs
+    let code = ""; try { code = (JSON.parse(await res.text()) || {}).code || ""; } catch (e) { /* not json */ }
+    throw new Error(`Supabase ${res.status}${code ? " " + code : ""} on ${path.split("?")[0]}`);
+  }
   const txt = await res.text();
   return txt ? JSON.parse(txt) : null;
 }
-const json = (status, body) => ({ statusCode: status, headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }, body: JSON.stringify(body) });
+// Public endpoints (website chat) allow any origin; private ones (owner dashboard) pass cors=false: same-site only.
+const json = (status, body, cors = true) => ({ statusCode: status, headers: Object.assign({ "Content-Type": "application/json" }, cors ? { "Access-Control-Allow-Origin": "*" } : {}), body: JSON.stringify(body) });
+// Sliding-window limit kept in the database (works across function instances). true = allowed.
+async function rateHit(key, windowS, max) {
+  return (await db("rpc/rate_hit", { method: "POST", body: { p_key: key, p_window_s: windowS, p_max: max } })) !== false;
+}
 const istTodayIso = (ms = Date.now()) => new Date(ms + 330 * 60000).toISOString().slice(0, 10);
 
 // ---------- idempotency: Meta retries webhooks; each message id is handled once
@@ -114,5 +122,5 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = { db, json, enc, istTodayIso, firstTime, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { db, json, enc, rateHit, istTodayIso, firstTime, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

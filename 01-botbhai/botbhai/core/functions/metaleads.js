@@ -9,7 +9,8 @@ const { db, json, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc 
 const { parseMetaLead } = require("../automations.js");
 
 function validSignature(event) {
-  const secret = process.env.WA_APP_SECRET; if (!secret) return true;
+  const secret = process.env.WA_APP_SECRET;
+  if (!secret) return process.env.ALLOW_UNSIGNED === "1"; // fail closed, same as whatsapp.js: only for a first local test
   const sig = event.headers["x-hub-signature-256"] || "";
   const raw = event.isBase64Encoded ? Buffer.from(event.body, "base64") : Buffer.from(event.body || "");
   const expected = "sha256=" + crypto.createHmac("sha256", secret).update(raw).digest("hex");
@@ -21,13 +22,15 @@ exports.handler = async (event) => {
     const q = event.queryStringParameters || {};
     return q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN ? { statusCode: 200, body: q["hub.challenge"] } : { statusCode: 403, body: "forbidden" };
   }
+  if (event.httpMethod !== "POST") return json(405, { error: "method" });
   if (!validSignature(event)) return json(401, { error: "bad signature" });
   const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
   for (const entry of body.entry || []) for (const ch of entry.changes || []) {
     if (ch.field !== "leadgen") continue;
     try {
       const v = ch.value;
-      const [client] = await db(`clients?meta_page_id=eq.${v.page_id}&active=eq.true&select=*`);
+      if (!/^\d{1,20}$/.test(String(v.page_id || "")) || !/^\d{1,25}$/.test(String(v.leadgen_id || ""))) { console.warn("bad lead ids"); continue; }
+      const [client] = await db(`clients?meta_page_id=eq.${enc(v.page_id)}&active=eq.true&select=*`);
       if (!client) { console.warn("no client for page", v.page_id); continue; }
       const [secret] = await db(`client_secrets?client_id=eq.${client.id}&select=meta_page_token`);
       const raw = await graph(`${v.leadgen_id}?fields=field_data,created_time,ad_id,form_id`, { token: secret && secret.meta_page_token });

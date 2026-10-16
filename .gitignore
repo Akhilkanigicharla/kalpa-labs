@@ -14,3 +14,7 @@ __pycache__/
 01-botbhai/botbhai/seo/_lh_site/
 01-botbhai/botbhai/seo/_lh_report/
 .lighthouseci/
+# Lead lists hold business phone numbers (some are owners' personal mobiles: DPDP personal data).
+# Regenerate locally or in Actions: cd 01-botbhai/botbhai/leadfinder && python leadfinder.py --out ../leads
+01-botbhai/botbhai/leads/*.csv
+01-botbhai/botbhai/leads/*.xlsx

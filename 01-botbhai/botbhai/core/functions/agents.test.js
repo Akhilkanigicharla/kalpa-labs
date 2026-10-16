@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { appointmentUtc } = require("../automations.js");
 process.env.SITE_URL = "https://botbhai.example"; const { store, graph } = require("./_fake.js")({
   clients: [
-    { id: "re1", name: "Skyline Homes", niche: "realestate", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "PAGE1", meta_ad_account_id: "111", active: true, config: { business: "Skyline Homes Realty", voice_followup: true, ads_autopilot: true } },
+    { id: "re1", name: "Skyline Homes", niche: "realestate", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "100200300", meta_ad_account_id: "111", active: true, config: { business: "Skyline Homes Realty", voice_followup: true, ads_autopilot: true } },
     { id: "gy1", name: "IronPulse", niche: "gym", phone_number_id: "PN2", owner_whatsapp: "919000000002", active: true, config: { business: "IronPulse Fitness", address: "Madhapur" } },
     { id: "sa1", name: "Glow Studio", niche: "salon", phone_number_id: "PN3", owner_whatsapp: "919000000003", active: true, config: { business: "Glow Studio", review_link: "https://g.page/r/test" } },
   ],
@@ -15,9 +15,9 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
 (async () => {
   console.log("BotBhai agent tests");
   // 1. Meta lead → WhatsApp welcome within the same request
-  graph.responses["LEAD42"] = { ad_id: "AD9", form_id: "F1", created_time: "2026-10-12T06:00:00+0000", field_data: [
+  graph.responses["420042"] = { ad_id: "AD9", form_id: "F1", created_time: "2026-10-12T06:00:00+0000", field_data: [
     { name: "full_name", values: ["Anil Reddy"] }, { name: "phone_number", values: ["+91 98765 43210"] }, { name: "budget", values: ["₹1Cr – ₹2Cr"] }, { name: "bhk", values: ["3 BHK"] }] };
-  const body = JSON.stringify({ object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "LEAD42", page_id: "PAGE1", form_id: "F1", ad_id: "AD9" } }] }] });
+  const body = JSON.stringify({ object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "420042", page_id: "100200300", form_id: "F1", ad_id: "AD9" } }] }] });
   const t0 = Date.now();
   await require("./metaleads.js").handler({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(body) }, body });
   const lead = store.leads.find((l) => l.contact === "919876543210");

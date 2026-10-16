@@ -45,11 +45,14 @@ def clean(t, cfg):
 
 def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
+PLACEHOLDER_URL = "https://example.netlify.app"
+
+
 def load(setup, overrides):
     cfg = json.loads((ROOT / "setups" / setup / "bot.config.json").read_text())
     cfg.update(overrides)
     cfg.setdefault("areas", ["Jubilee Hills", "Banjara Hills", "Madhapur", "Kukatpally", "Gachibowli"])
-    cfg.setdefault("site_url", "https://example.netlify.app")
+    cfg.setdefault("site_url", PLACEHOLDER_URL)
     cfg.setdefault("whatsapp", re.sub(r"\D", "", cfg.get("phone", "")))
     return cfg
 
@@ -113,6 +116,10 @@ def services_table(cfg):
     return "<table>" + "".join(f"<tr><td>{html.escape(c['name'])}</td><td>{html.escape(c['price'])}</td></tr>" for c in cfg["catalog"]) + "</table>"
 
 def build(setup, cfg, out):
+    # A real client site needs its real address: canonical tags, sitemap and robots.txt would otherwise send
+    # Google to example.netlify.app (REA audit, 16 Oct 2026). Drafts/tests pass draft=True.
+    if cfg["site_url"].rstrip("/") == PLACEHOLDER_URL and not cfg.get("draft"):
+        raise ValueError("site_url is missing: add the client's real site address to client.json (or use --draft for a preview)")
     site = out / "site"; site.mkdir(parents=True, exist_ok=True)
     urls, kw = [], []
     nap = f"<p class='muted'>{html.escape(cfg['address'])} · {html.escape(cfg['phone'])}<br>{html.escape(cfg['hours'])}</p>"
@@ -167,7 +174,9 @@ Never offer discounts in exchange for reviews, and never post reviews on the bus
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--setup", required=True, choices=list(SCHEMA_TYPE)); ap.add_argument("--config", help="client JSON overrides"); ap.add_argument("--out", required=True)
+    ap.add_argument("--draft", action="store_true", help="preview without a real site_url (placeholder links)")
     a = ap.parse_args()
     cfg = load(a.setup, json.loads(pathlib.Path(a.config).read_text()) if a.config else {})
+    cfg["draft"] = cfg.get("draft") or a.draft
     urls = build(a.setup, cfg, pathlib.Path(a.out))
     print(f"{len(urls)} pages + sitemap, 12 GBP posts, citations and review replies → {a.out}")

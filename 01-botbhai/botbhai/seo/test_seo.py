@@ -38,7 +38,11 @@ for name, t in (("light", S.LIGHT), ("dark", S.DARK)):
         assert _ratio(t[fg], t[bg]) >= 4.5, (name, fg, bg, round(_ratio(t[fg], t[bg]), 2))
 assert _ratio("#d3940a", "#1c2463") >= 4.5  # favicon letter
 with tempfile.TemporaryDirectory() as d:
-    out = pathlib.Path(d); S.build("salon", S.load("salon", {}), out)
+    out = pathlib.Path(d); S.build("salon", S.load("salon", {"draft": True}), out)
+    try:
+        S.build("salon", S.load("salon", {}), pathlib.Path(d) / "real"); raise AssertionError("built a real site with the placeholder URL")
+    except ValueError:
+        pass
     ico = (out / "site" / "favicon.svg").read_text(); idx = (out / "site" / "index.html").read_text()
     assert ico.startswith("<svg") and ">G</text>" in ico and 'fill="#1c2463"' in ico and 'rel="icon" href="/favicon.svg"' in idx
 print("  ✓ Kalamkari tokens; WCAG AA on the WhatsApp button, links and muted text in light + dark; favicon.svg linked")

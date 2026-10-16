@@ -9,7 +9,7 @@ python -m pii.scan ../tests/fixtures/pii/ --out report.json --fail-on AADHAAR,PA
 
 - `--engine builtin` (default fallback, zero dependencies): IN_MOBILE, UPI_ID, IFSC, AADHAAR (Verhoeff check), PAN, GSTIN (check character), EMAIL, CARD (Luhn).
 - `--engine presidio` / `auto`: adds Microsoft Presidio's pattern recognizers, run **pattern-only** through a stub NLP engine, so no 400 MB spaCy model is downloaded.
-- Hashes use `ingest.schema.hash_id` (HMAC-SHA256 with the customer's `LP_HASH_SALT`).
+- Hashes use `ingest.schema.hash_id` (HMAC-SHA256 with the customer's `LP_HASH_SALT`). Without `LP_HASH_SALT` the scanner and importers **refuse to run** (the public dev salt would make hashed phone numbers reversible); tests opt in with `LP_ALLOW_DEV_SALT=1`.
 - Workflow for the customer's repo: `06-finops/.github-workflow-drafts/pii-scan.yml`.
 
 Licences: Presidio is MIT (Microsoft; now github.com/data-privacy-stack/presidio), used as an unmodified dependency. Verhoeff, Luhn and the GSTIN check-character algorithm are public. All recognizer code here is our own.

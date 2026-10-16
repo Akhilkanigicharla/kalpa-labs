@@ -117,6 +117,12 @@ def main(argv: list[str]) -> int:
         r = FxTable.load().latest()
         print(f"{r.date}  ₹{r.inr_per_usd}/USD  ({r.source})")
     elif cmd == "refresh":
+        # Reading RBI's home page HTML is fragile scraping (REA audit, 16 Oct 2026). Prefer the official reference
+        # rate typed in with `add`; the page read stays available only when asked for explicitly.
+        if "--from-rbi-home-page" not in argv:
+            print("Use: fx.py add YYYY-MM-DD <INR per USD> <source>  (official RBI/FBIL reference rate).\n"
+                  "Reading the RBI home page is opt-in: fx.py refresh --from-rbi-home-page", file=sys.stderr)
+            return 2
         r = fetch_rbi()
         print(("added " if add_rate(r) else "already have ") + f"{r.date} ₹{r.inr_per_usd}")
     elif cmd == "add" and len(argv) == 4:

@@ -28,7 +28,14 @@ const rows = c.compute(defaults(c));
     const out = form.querySelector("output")!;
     const run = () => {
       const v = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
-      out.innerHTML = c.compute(v).map((r) => `<div class="row${r.big ? " big" : ""}"><span>${r[lang]}</span><strong${r.valueTe ? ' class="word"' : ""}>${lang === "te" && r.valueTe ? r.valueTe : r.value}</strong></div>`).join("");
+      // Built with textContent, never innerHTML, so no text can ever become HTML (REA audit, 16 Oct 2026).
+      out.replaceChildren(...c.compute(v).map((r) => {
+        const row = document.createElement("div"); row.className = r.big ? "row big" : "row";
+        const label = document.createElement("span"); label.textContent = r[lang];
+        const val = document.createElement("strong"); if (r.valueTe) val.className = "word";
+        val.textContent = lang === "te" && r.valueTe ? r.valueTe : r.value;
+        row.append(label, val); return row;
+      }));
     };
     form.addEventListener("input", run);
   }

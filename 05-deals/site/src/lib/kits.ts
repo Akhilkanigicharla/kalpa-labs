@@ -27,7 +27,7 @@ export const KITS: Kit[] = [
     tiers: [
       { id: "lite", name: "Lite", price: 0, gets: ["Countdown to your exam day", "Official syllabus checklist (view-only)"] },
       { id: "kit", name: "Kit", price: 199, gets: ["Your own editable copy", "Daily log with a streak counter", "Spaced revision on days 1, 3, 7 and 21", "Weekly plan", "PDF guide + free updates"], earlyBird: { price: 99, buyers: 30, active: false } },
-      { id: "pro", name: "Kit Pro", price: 299, gets: ["Everything in Kit", "Topics weighted by previous papers (our own count from public papers)", "Mock analyser: careless vs concept errors", "Telugu and Hindi instructions tab"] },
+      { id: "pro", name: "Kit Pro", price: 299, gets: ["Everything in Kit", "Subjects weighted by GATE 2023–25 marks (published analysis, cited in the kit)", "Mock analyser: careless vs concept errors", "Telugu and Hindi instructions tab"] },
     ],
     faqs: [...SHEET_FAQ, { q: "Is this an official GATE product?", a: "No. It's an independent planning sheet by Kalpa Labs. Exam dates come from IIT Madras; always check the official GATE site." }],
   },
@@ -40,7 +40,7 @@ export const KITS: Kit[] = [
     tiers: [
       { id: "lite", name: "Lite", price: 0, gets: ["Countdown to Prelims", "Syllabus checklist (view-only)"] },
       { id: "kit", name: "Kit", price: 199, gets: ["Your own editable copy", "Daily log with a streak counter", "Spaced revision on days 1, 3, 7 and 21", "Weekly plan", "PDF guide + free updates"], earlyBird: { price: 99, buyers: 30, active: false } },
-      { id: "pro", name: "Kit Pro", price: 299, gets: ["Everything in Kit", "Topics weighted by previous papers (our own count from public papers)", "Mock analyser: careless vs concept errors", "Telugu and Hindi instructions tab"] },
+      { id: "pro", name: "Kit Pro", price: 299, gets: ["Everything in Kit", "Subjects weighted by GATE 2023–25 marks (published analysis, cited in the kit)", "Mock analyser: careless vs concept errors", "Telugu and Hindi instructions tab"] },
     ],
     faqs: [...SHEET_FAQ, { q: "Is this an official UPSC product?", a: "No. It's an independent planning sheet by Kalpa Labs. Always check upsc.gov.in for notices." }],
   },

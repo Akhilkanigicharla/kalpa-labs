@@ -84,6 +84,8 @@ jobs:
       - run: pip install openpyxl==3.1.5
       - name: Tax + SIP kit recalculated in LibreOffice vs the site's tax engine
         run: python 03-kits/tax-sip/test_kit.py
+      - name: GATE 2027 kit (Lite/Kit/Pro) recalculated in LibreOffice
+        run: python 03-kits/gate-2027/test_kit.py
 
   jobcard:
     runs-on: ubuntu-latest

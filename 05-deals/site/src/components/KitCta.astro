@@ -1,0 +1,22 @@
+---
+// Calculator → kit link (A11 / A17). Our own product, so no affiliate disclosure is needed; the full price is shown.
+import { KITS } from "../lib/kits";
+interface Props { slug: string; lang: "en" | "te" }
+const { slug, lang } = Astro.props;
+const FOR: Record<string, string> = { "income-tax": "tax-sip-2026-27", salary: "tax-sip-2026-27", sip: "tax-sip-2026-27", emi: "tax-sip-2026-27", hra: "tax-sip-2026-27" };
+const kit = KITS.find((k) => k.slug === FOR[slug]);
+const price = kit?.tiers.find((t) => t.id === "kit")?.price;
+---
+{kit && (
+  <aside class="cta">
+    <p class="eyebrow">{lang === "en" ? "Kalpa Kit" : "కల్ప కిట్"}</p>
+    <p><b>{kit.name}</b><br>{lang === "en" ? "This calculator plus HRA, 80C, 80D, a SIP goal planner and a loan sheet, saved in your own Google Drive." : "ఈ కాలిక్యులేటర్‌తో పాటు HRA, 80C, 80D, SIP లక్ష్య ప్లానర్, లోన్ షీట్: మీ Google Drive లోనే."}</p>
+    <a href={`/kits/${kit.slug}/`}>{lang === "en" ? `See the kit · ₹${price}` : `కిట్ చూడండి · ₹${price}`}</a>
+  </aside>
+)}
+<style>
+  .cta { margin: 22px 0 0; padding: 14px 16px; border-radius: var(--r-l); border: 1px solid var(--rule); border-left: 5px solid var(--gold); background: var(--panel); }
+  .cta p { margin: 0 0 8px; } .eyebrow { font: 500 11.5px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+  :lang(te) .eyebrow { font-family: var(--f-body); letter-spacing: 0; font-weight: 600; text-transform: none; }
+  .cta a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+</style>

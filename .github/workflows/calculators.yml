@@ -9,7 +9,7 @@ permissions:
 jobs:
   test-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: 05-deals/site
@@ -20,5 +20,10 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run build
+      - name: 390 px screens, light + dark (Kalpa design rules)
+        run: |
+          pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+          python scripts/screens.py
       - uses: actions/upload-artifact@v4
         with: { name: calculator-site, path: 05-deals/site/dist, retention-days: 7 }

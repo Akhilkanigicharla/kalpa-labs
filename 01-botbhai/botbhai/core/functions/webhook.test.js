@@ -52,6 +52,16 @@ const inbound = (msg, from = "919812345678") => {
   assert.strictEqual(JSON.parse(r.body).leads.length, 2); console.log("  ✓ dashboard API returns the lead");
   const r2 = await leadsApi({ headers: { authorization: "Bearer " + "b".repeat(36) } });
   assert.strictEqual(r2.statusCode, 401); console.log("  ✓ dashboard API rejects wrong token");
+  // A10: the owner dashboard's "Today" view needs the calendar, plus how many chats wait for a person
+  const dash = JSON.parse(r.body);
+  assert.ok(Array.isArray(dash.bookings) && dash.bookings.length === 1, JSON.stringify(dash.bookings));
+  assert.deepStrictEqual(Object.keys(dash.bookings[0]).sort(), ["confirmed_at", "contact", "date_iso", "name", "service", "slot", "status"]);
+  assert.strictEqual(dash.bookings[0].slot, "7:00 PM"); assert.strictEqual(dash.waiting, 0); assert.match(dash.today, /^\d{4}-\d{2}-\d{2}$/);
+  store.bookings.push({ id: "old", client_id: "c1", contact: "919811110000", name: "Old", service: "Facial", date_iso: "2020-01-01", slot: "11:00 AM", status: "completed" });
+  store.bookings.push({ id: "other", client_id: "c2", contact: "919811110001", name: "Other salon", service: "Facial", date_iso: dash.today, slot: "11:00 AM", status: "confirmed" });
+  const dash2 = JSON.parse((await leadsApi({ headers: { authorization: "Bearer " + "a".repeat(36) } })).body);
+  assert.ok(!dash2.bookings.some((b) => b.name === "Old" || b.name === "Other salon"), "only this salon's last 30 days → next 14 days");
+  console.log("  ✓ dashboard API adds this salon's bookings (last 30 → next 14 days) and the waiting-chat count");
 
   // ---------- A04 / P1-W2-02: shared inbox phase 1 (paused chats, reply as the salon, resume bot)
   const { handler: inboxApi } = require("./inbox.js");

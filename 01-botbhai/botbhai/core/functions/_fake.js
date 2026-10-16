@@ -1,7 +1,7 @@
 // In-memory stand-in for Supabase REST + Meta Graph API, used only by tests.
 module.exports = function installFake(seed) {
   Object.assign(process.env, { WA_VERIFY_TOKEN: "verify", WA_ACCESS_TOKEN: "x", WA_APP_SECRET: "appsecret", SUPABASE_URL: "https://fake.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k" });
-  const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [], processed: [] }, seed);
+  const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [], processed: [], invoices: [], invoice_counters: [] }, seed);
   const graph = { sent: [], calls: [], responses: {} };
   global.fetch = async (url, opts = {}) => {
     const ok = (data) => ({ ok: true, status: 200, text: async () => JSON.stringify(data), json: async () => data });
@@ -24,6 +24,15 @@ module.exports = function installFake(seed) {
       if (p.p_replaces_date) store.bookings.filter((b) => b.client_id === p.p_client && b.contact === p.p_contact && b.date_iso === p.p_replaces_date && b.slot === p.p_replaces_slot && b.status === "confirmed").forEach((b) => { b.status = "rescheduled"; });
       store.bookings.push({ id: "bk" + (store.bookings.length + 1), client_id: p.p_client, contact: p.p_contact, name: p.p_name, service: p.p_service, date_iso: p.p_date, slot: p.p_slot, status: "confirmed", source: p.p_source });
       return ok(true);
+    }
+    if (u.pathname.endsWith("/rpc/create_invoice")) { // same logic as the SQL function (numbering tested on real Postgres in supabase/test.sh)
+      const p = JSON.parse(opts.body); const [y, m] = p.p_issued.split("-").map(Number); const s0 = m < 4 ? y - 1 : y;
+      const fy = `${String(s0).slice(2)}-${String(s0 + 1).slice(2)}`;
+      let c = store.invoice_counters.find((x) => x.fy === fy); if (!c) store.invoice_counters.push(c = { fy, last: 0 }); c.last++;
+      const row = { id: "inv" + (store.invoices.length + 1), client_id: p.p_client, number: `KL/${fy}/${String(c.last).padStart(3, "0")}`, issued_on: p.p_issued,
+        due_on: p.p_due, period: p.p_period, bill_to: p.p_bill_to, lines: p.p_lines, total_paise: p.p_total, status: "due", paid_on: null, paid_ref: null,
+        view_key: require("crypto").randomBytes(16).toString("hex"), sent_at: null, created_at: new Date().toISOString() };
+      store.invoices.push(row); return ok(row);
     }
     if (u.pathname.endsWith("/rpc/rate_hit")) { // same logic as the SQL function
       const p = JSON.parse(opts.body); store.rate_hits = store.rate_hits || []; const now = Date.now();

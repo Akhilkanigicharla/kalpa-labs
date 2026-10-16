@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Kalpa Billing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Kalpa Labs billing (A05): Akhil's phone page. Create an invoice, send it on WhatsApp, mark it paid.
+   Kalpa design tokens (Kalamkari): copied from 00-hq/design/tokens.css; keep in sync. HQ page, so the world colour is --l0. */
+:root{
+  --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --soft:#E6E6F1;
+  --accent:#2A3A8F; --accent-fg:#FFFFFF; --madder:#B23A2C; --gold:#D3940A; --flame:#C2541B;
+  --ok:#23804F; --warn:#B86E00; --bad:#C0392B;
+  --hero:#1C2463; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#5B6178; --l1:#B23A2C; --l2:#2F4FB0; --l3:#2E7D4F; --l4:#7B3F8C; --l5:#C08304; --l6:#B8235A; --l7:#13777F;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}
+:root{ --world:var(--l0);
+  --temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px; }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1.4px);background-size:18px 18px;color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app{max-width:860px;margin:0 auto;padding:16px 16px 28px;display:flex;flex-direction:column;gap:14px}
+header.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0,transparent 0 60px,color-mix(in srgb,var(--gold) 45%,var(--hero)) 61px 62px,transparent 63px),var(--hero);color:var(--hero-fg);border-radius:var(--r-l);padding:22px 18px;box-shadow:0 18px 40px -22px #1C2463}
+header.hero::before,header.hero::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--temple);opacity:.9}
+header.hero::before{top:0}header.hero::after{bottom:0;transform:scaleY(-1)}
+.eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 4px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);line-height:1.1;margin:0}
+h2{font:400 22px/1.15 var(--f-display);margin:0}
+.demo-flag{display:inline-block;margin-left:6px;background:var(--gold);color:#191C33;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.08em;vertical-align:middle}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.kpi{background:color-mix(in srgb,var(--hero-fg) 10%,transparent);border-radius:var(--r-m);padding:8px 10px;min-width:0}
+.kpi b{display:block;font:400 21px/1.15 var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi span{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--hero-mute)}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px;min-width:0}
+.card > * + *{margin-top:12px}
+.banner{margin:0;padding:9px 12px;border-radius:var(--r-m);font-size:14px;border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);background:color-mix(in srgb,var(--warn) 10%,var(--panel))}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:9px 11px;font-size:15px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:40px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:13.5px;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.chips .chip{min-height:44px;font-size:14px;padding:8px 14px}
+.btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--accent);color:var(--accent-fg);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--rule)}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.danger{background:transparent;color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 45%,transparent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.total-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.total-line b{font:400 26px var(--f-display)}
+ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.inv{border:1px solid var(--rule);border-radius:var(--r-m);padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.inv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--rule)}
+.inv.due::before{background:var(--gold)}.inv.late::before{background:var(--bad)}.inv.paid::before{background:var(--ok)}
+.inv .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.inv .num{font:600 13px var(--f-mono)}
+.inv .amt{font:400 22px var(--f-display);font-variant-numeric:tabular-nums}
+.inv .who{font-weight:600}
+.inv .meta{color:var(--muted);font-size:13px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pill.due{background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--warn)}
+.pill.late{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.paid{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.pill.void{background:var(--soft);color:var(--muted)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.paybox{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.paybox .field{flex:1 1 160px}
+.empty{padding:20px 6px;text-align:center;color:var(--muted)}
+.signin{display:flex;flex-direction:column;gap:12px}
+.signin p{margin:0;color:var(--muted)}
+.inline{display:flex;gap:8px}.inline input{flex:1;min-width:0;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:9px 11px;font-size:15px}
+.toast{position:fixed;left:16px;right:16px;bottom:16px;margin:0 auto;max-width:520px;background:var(--hero);color:var(--hero-fg);border-radius:var(--r-m);padding:12px 14px;box-shadow:var(--shadow);font-size:14px}
+footer{color:var(--muted);font-size:12.5px;text-align:center}
+@media (max-width:420px){.row2{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <p class="eyebrow">Kalpa Labs · Billing</p>
+    <h1 id="title">Invoices</h1>
+    <div class="kpis" id="kpis" aria-live="polite"></div>
+  </header>
+
+  <section class="card signin" id="signin" hidden aria-labelledby="signin-h">
+    <h2 id="signin-h">Open billing</h2>
+    <p>Paste the billing key you saved in Netlify (BILLING_ADMIN_KEY). It stays on this phone only.</p>
+    <form id="signin-form" class="inline">
+      <label class="sr" for="key">Billing key</label>
+      <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="Billing key" required>
+      <button class="btn" type="submit">Open</button>
+    </form>
+    <p id="signin-err" role="alert"></p>
+    <details>
+      <summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">First time? Make a billing key</summary>
+      <p>This makes a random key on this phone. Copy it into Netlify → Site configuration → Environment variables as <b>BILLING_ADMIN_KEY</b>, then paste it above. Never send it in a chat.</p>
+      <div class="inline" style="margin-top:8px"><label class="sr" for="newkey">New key</label><input id="newkey" readonly class="mono" style="font-family:var(--f-mono);font-size:13px">
+      <button class="btn ghost" type="button" id="makekey">Make</button></div>
+    </details>
+    <p><a href="?demo=1">See a demo with sample invoices</a></p>
+  </section>
+
+  <div id="main" hidden>
+    <p class="banner" id="upi-warn" hidden>Invoices have no UPI QR yet. Add your business UPI ID as <b>BILLING_UPI_ID</b> in Netlify → Environment variables.</p>
+    <section class="card" aria-labelledby="new-h" style="margin-top:14px">
+      <h2 id="new-h">New invoice</h2>
+      <form id="new-form">
+        <div class="field"><label for="client">Salon</label><select id="client" required></select></div>
+        <div class="field" style="margin-top:10px"><label for="desc">What for</label><input id="desc" maxlength="140" required placeholder="BotBhai monthly plan"></div>
+        <div class="presets" id="presets" role="group" aria-label="Quick fill" style="margin-top:8px"></div>
+        <div class="row2" style="margin-top:10px">
+          <div class="field"><label for="amount">Amount (₹)</label><input id="amount" type="number" inputmode="decimal" min="1" step="0.01" required placeholder="1499"></div>
+          <div class="field"><label for="due">Due in (days)</label><input id="due" type="number" inputmode="numeric" min="0" max="90" value="7" required></div>
+        </div>
+        <div class="field" style="margin-top:10px"><label for="period">Period (optional)</label><input id="period" maxlength="40" placeholder="Nov 2026"></div>
+        <div class="total-line" style="margin-top:12px"><span>Total <b id="preview">₹0</b></span><button class="btn" type="submit" id="create">Create invoice</button></div>
+        <p class="meta" style="margin:6px 0 0;color:var(--muted);font-size:13px">No GST: Kalpa Labs isn't GST-registered. Numbers follow KL/26-27/001 automatically.</p>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="list-h" style="margin-top:14px">
+      <h2 id="list-h">Invoices</h2>
+      <div class="chips" role="group" aria-label="Filter">
+        <button class="chip" data-f="open" aria-pressed="true">To collect</button>
+        <button class="chip" data-f="late" aria-pressed="false">Overdue</button>
+        <button class="chip" data-f="paid" aria-pressed="false">Paid</button>
+        <button class="chip" data-f="all" aria-pressed="false">All</button>
+      </div>
+      <ul class="invs" id="invs"></ul>
+    </section>
+  </div>
+  <footer id="foot"></footer>
+</div>
+<p class="toast" id="toast" role="status" hidden></p>
+
+<script>
+(function () {
+  "use strict";
+  var API = "/.netlify/functions/billing", KEY = "kalpa.billing.key";
+  var params = new URLSearchParams(location.search), DEMO = params.get("demo") === "1";
+  var $ = function (id) { return document.getElementById(id); };
+  var store = { get: function () { try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } },
+                set: function (v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} } };
+  var frag = /(?:^|[#&])key=([^&]{32,200})/.exec(location.hash);
+  if (frag) { store.set(decodeURIComponent(frag[1])); history.replaceState(null, "", location.pathname + location.search); }
+  var S = { key: store.get(), filter: "open", data: null, armed: null, paying: null, busy: false };
+
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    for (var k in attrs || {}) { if (k === "text") n.textContent = attrs[k]; else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), attrs[k]); else if (attrs[k] != null) n.setAttribute(k, attrs[k]); }
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function money(p) { return "₹" + (p / 100).toLocaleString("en-IN", { minimumFractionDigits: p % 100 ? 2 : 0, maximumFractionDigits: 2 }); }
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function nice(iso) { if (!iso) return ""; var p = String(iso).slice(0, 10).split("-"); return +p[2] + " " + MON[+p[1] - 1]; }
+  function istNow() { return new Date(Date.now() + 330 * 60000); }
+  function monthLabel(offset) { var d = istNow(); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() + offset); return MON[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+  function toast(m) { var t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 4200); }
+  function state(i) { return i.status === "due" ? (i.overdue_days > 0 ? "late" : "due") : i.status; }
+
+  function call(method, body) {
+    if (DEMO) return Demo.call(method, body);
+    return fetch(API, { method: method, headers: Object.assign({ Authorization: "Bearer " + S.key }, body ? { "Content-Type": "application/json" } : {}), body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, data: d }; }); });
+  }
+  function load() {
+    return call("GET").then(function (r) {
+      if (r.status === 401) { store.set(""); S.key = ""; return showSignin("That key didn't work. Check it and paste again."); }
+      if (r.status === 503) return showSignin((r.data && r.data.error) || "Billing is switched off.");
+      if (r.status !== 200) return toast("Couldn't load invoices. Try again.");
+      S.data = r.data; render();
+    }, function () { toast("You're offline."); });
+  }
+  function act(body, done) {
+    if (S.busy) return Promise.resolve(); S.busy = true;
+    return call("POST", body).then(function (r) {
+      S.busy = false;
+      if (r.status !== 200) { toast((r.data && r.data.error) || "That didn't work."); return; }
+      S.armed = null; S.paying = null; if (done) toast(done);
+      return load().then(function () { return r.data; });
+    }, function () { S.busy = false; toast("You're offline. Nothing changed."); });
+  }
+
+  // ---------- render
+  function render() {
+    var d = S.data; if (DEMO) { $("title").textContent = "Invoices"; $("title").appendChild(el("span", { class: "demo-flag", text: "DEMO" })); }
+    $("upi-warn").hidden = d.seller.upi_ready;
+    var due = 0, late = 0, nLate = 0, paidMonth = 0, ym = istNow().toISOString().slice(0, 7);
+    d.invoices.forEach(function (i) {
+      if (i.status === "due") { due += i.total_paise; if (i.overdue_days > 0) { late += i.total_paise; nLate++; } }
+      if (i.status === "paid" && String(i.paid_on || "").slice(0, 7) === ym) paidMonth += i.total_paise;
+    });
+    var k = $("kpis"); k.textContent = "";
+    [[money(due), "To collect"], [nLate ? money(late) : "0", "Overdue" + (nLate ? " · " + nLate : "")], [money(paidMonth), "Paid in " + MON[+ym.slice(5) - 1]]].forEach(function (x) {
+      k.appendChild(el("div", { class: "kpi" }, [el("b", { text: x[0] }), el("span", { text: x[1] })]));
+    });
+    var sel = $("client"), keep = sel.value; sel.textContent = "";
+    sel.appendChild(el("option", { value: "", text: d.clients.length ? "Choose a salon" : "No clients yet" }));
+    d.clients.forEach(function (c) { sel.appendChild(el("option", { value: c.id, text: c.name + (c.active ? "" : " (paused)") })); });
+    sel.value = keep;
+    renderList();
+  }
+  function renderList() {
+    var ul = $("invs"); ul.textContent = "";
+    var names = {}; S.data.clients.forEach(function (c) { names[c.id] = c.name; });
+    var rows = S.data.invoices.filter(function (i) {
+      var s = state(i); return S.filter === "all" || (S.filter === "open" && (s === "due" || s === "late")) || S.filter === s;
+    });
+    if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "late" ? "Nothing overdue. 🙌" : "No invoices here yet." })); return; }
+    rows.forEach(function (i) {
+      var s = state(i), label = { due: "Due " + nice(i.due_on), late: i.overdue_days + "d overdue", paid: "Paid " + nice(i.paid_on), void: "Void" }[s];
+      var acts = el("div", { class: "acts" });
+      acts.appendChild(el("a", { class: "btn ghost", href: i.link, target: "_blank", rel: "noopener", text: "Open" }));
+      if (i.status === "due") {
+        acts.appendChild(el("button", { class: "btn", text: s === "late" ? "Send reminder" : i.sent_at ? "Send again" : "Send on WhatsApp",
+          onclick: function () { act({ action: s === "late" ? "remind" : "send", number: i.number }, "Sent to the salon on WhatsApp."); } }));
+        acts.appendChild(el("button", { class: "btn ok", text: "Mark paid", onclick: function () { S.paying = S.paying === i.number ? null : i.number; renderList(); } }));
+        acts.appendChild(el("button", { class: "btn danger", text: S.armed === i.number ? "Tap again to void" : "Void",
+          onclick: function () { if (S.armed === i.number) act({ action: "void", number: i.number }, "Voided. The number stays in the series."); else { S.armed = i.number; renderList(); } } }));
+      }
+      var li = el("li", { class: "inv " + s }, [
+        el("div", { class: "top" }, [el("span", { class: "who", text: names[i.client_id] || (i.bill_to && i.bill_to.name) || "Client" }), el("span", { class: "amt", text: money(i.total_paise) })]),
+        el("div", { class: "top" }, [el("span", { class: "num", text: i.number + (i.period ? " · " + i.period : "") }), el("span", { class: "pill " + s, text: label })]),
+        el("div", { class: "meta", text: "Issued " + nice(i.issued_on) + (i.sent_at ? " · sent " + nice(i.sent_at) : " · not sent yet") + (i.paid_ref ? " · UPI ref " + i.paid_ref : "") }),
+        acts,
+      ]);
+      if (S.paying === i.number) {
+        var ref = el("input", { id: "ref", inputmode: "numeric", maxlength: "35", placeholder: "12-digit UPI ref (optional)", autocomplete: "off" });
+        li.appendChild(el("div", { class: "paybox" }, [el("div", { class: "field" }, [el("label", { for: "ref", text: "UPI reference (from your UPI app)" }), ref]),
+          el("button", { class: "btn ok", text: "Save as paid", onclick: function () { act({ action: "paid", number: i.number, ref: ref.value.replace(/\s+/g, "") }, "Marked paid. 💰"); } })]));
+      }
+      ul.appendChild(li);
+    });
+  }
+
+  // ---------- new invoice form
+  var PRESETS = [
+    { t: "Monthly plan", d: function () { return "BotBhai monthly plan · " + monthLabel(0); }, a: 1499, p: function () { return monthLabel(0); } },
+    { t: "Setup fee", d: function () { return "BotBhai setup (Founding)"; }, a: 2999, p: function () { return ""; } },
+    { t: "Next month", d: function () { return "BotBhai monthly plan · " + monthLabel(1); }, a: 1499, p: function () { return monthLabel(1); } },
+  ];
+  PRESETS.forEach(function (p) {
+    $("presets").appendChild(el("button", { type: "button", class: "chip", "aria-pressed": "false", text: p.t, onclick: function (e) {
+      $("desc").value = p.d(); $("amount").value = p.a; $("period").value = p.p(); preview();
+      Array.prototype.forEach.call($("presets").children, function (b) { b.setAttribute("aria-pressed", String(b === e.currentTarget)); });
+    } }));
+  });
+  function preview() { var a = Math.round(parseFloat($("amount").value || "0") * 100); $("preview").textContent = money(a > 0 ? a : 0); }
+  $("amount").addEventListener("input", preview);
+  $("new-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var body = { action: "create", client_id: $("client").value, items: [{ desc: $("desc").value.trim(), amount: parseFloat($("amount").value) }], period: $("period").value.trim(), due_days: parseInt($("due").value, 10) };
+    if (!body.client_id) return toast("Choose a salon first.");
+    act(body, "Invoice created. Tap Send on WhatsApp when ready.").then(function (d) { if (d) { $("desc").value = ""; $("amount").value = ""; $("period").value = ""; preview(); S.filter = "open"; syncChips(); renderList(); } });
+  });
+  function syncChips() { Array.prototype.forEach.call(document.querySelectorAll(".chips .chip"), function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === S.filter)); }); }
+  Array.prototype.forEach.call(document.querySelectorAll(".chips .chip"), function (b) {
+    b.addEventListener("click", function () { S.filter = b.getAttribute("data-f"); S.armed = null; syncChips(); renderList(); });
+  });
+
+  function showSignin(err) { $("signin").hidden = false; $("main").hidden = true; $("signin-err").textContent = err || ""; }
+  function start() { $("signin").hidden = true; $("main").hidden = false; $("foot").textContent = DEMO ? "Demo: nothing is sent. Sample invoices only." : "Kalpa Labs · Udyam UDYAM-TS-02-0382711"; load(); }
+  $("makekey").addEventListener("click", function () {
+    var a = new Uint8Array(24); crypto.getRandomValues(a);
+    var k = Array.prototype.map.call(a, function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+    $("newkey").value = k; $("newkey").select();
+    if (navigator.clipboard) navigator.clipboard.writeText(k).then(function () { toast("Copied. Paste it into Netlify now."); }, function () {});
+  });
+  $("signin-form").addEventListener("submit", function (e) {
+    e.preventDefault(); var v = $("key").value.trim();
+    if (v.length < 32) { $("signin-err").textContent = "The billing key is at least 32 characters. Copy it again from Netlify."; return; }
+    S.key = v; store.set(v); $("key").value = ""; start();
+  });
+
+  // ---------- demo: same API shape, in memory, nothing sent
+  var Demo = (function () {
+    var today = istNow().toISOString().slice(0, 10), seq = 4;
+    function add(days) { var d = istNow(); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); }
+    var clients = [{ id: "c1", name: "Glow Studio", active: true }, { id: "c2", name: "Shine Unisex Salon", active: true }, { id: "c3", name: "Mirror Mirror", active: true }];
+    var invs = [
+      { number: "KL/26-27/001", client_id: "c1", period: "", issued_on: add(-20), due_on: add(-13), status: "paid", paid_on: today, paid_ref: "629812345678", total_paise: 299900, sent_at: add(-20) },
+      { number: "KL/26-27/002", client_id: "c2", period: monthLabel(0), issued_on: add(-12), due_on: add(-5), status: "due", total_paise: 149900, sent_at: add(-12) },
+      { number: "KL/26-27/003", client_id: "c3", period: monthLabel(0), issued_on: add(-1), due_on: add(6), status: "due", total_paise: 149900, sent_at: null },
+    ];
+    function view(i) { var late = i.status === "due" && i.due_on < today ? Math.round((Date.parse(today) - Date.parse(i.due_on)) / 864e5) : 0;
+      return Object.assign({}, i, { link: "#demo-" + i.number, overdue_days: late, created_at: i.issued_on }); }
+    function ok(x) { return Promise.resolve({ status: 200, data: x }); }
+    return { call: function (m, b) {
+      if (m === "GET") return ok({ seller: { name: "Kalpa Labs", upi_ready: true }, clients: clients, invoices: invs.map(view).slice().reverse() });
+      if (b.action === "create") { var a = Math.round(b.items[0].amount * 100);
+        if (!(a > 0) || !b.items[0].desc) return Promise.resolve({ status: 400, data: { error: "Fill in what for and the amount." } });
+        var n = { number: "KL/26-27/" + String(seq++).padStart(3, "0"), client_id: b.client_id, period: b.period, issued_on: today, due_on: add(b.due_days || 0), status: "due", total_paise: a, sent_at: null };
+        invs.push(n); return ok({ ok: true, invoice: view(n) }); }
+      var i = invs.filter(function (x) { return x.number === b.number; })[0];
+      if (b.action === "send" || b.action === "remind") i.sent_at = today;
+      if (b.action === "paid") { i.status = "paid"; i.paid_on = today; i.paid_ref = b.ref || null; }
+      if (b.action === "void") i.status = "void";
+      return ok({ ok: true });
+    } };
+  })();
+
+  if (DEMO || S.key) start(); else showSignin();
+})();
+</script>
+</body>
+</html>

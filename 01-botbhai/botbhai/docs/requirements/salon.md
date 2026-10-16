@@ -154,7 +154,7 @@ The Given/When/Then lines are testable. "Bot" means the WhatsApp engine and webh
 - Given a contact already has an upcoming booking and books another, then both bookings exist, both get reminders, and "cancel"/"reschedule" asks "Which booking? 1) Hair spa Sat 4 PM (you) 2) Facial Sat 4 PM (Priya)".
 - Given 2 people book together (mother + daughter), then 2 chairs at the same time are allocated, or the bot says only 1 is free.
 
-**A12. Bridal and high-value services go to enquiry, not instant booking** — **PARTIAL** (FAQ + handoff exist; F14)
+**A12. Bridal and high-value services go to enquiry, not instant booking** — **EXISTS** (A03, 16 Oct 2026: `engine.js` bridal enquiry → events + dates, budget band, people/place, name; hot lead + owner alert; trial slot offered; `bridal_full_dates` / `bridal_capacity` + `meta.bridal_holds`. Tests: `core/bridal.test.js`, swarm T15. Webhook does not pass `bridal_holds` yet: use `bridal_full_dates`.)
 - Given a catalog item has `enquiry_only: true` (bridal, engagement, pre-bridal packages > ₹10,000), when it is chosen, then the bot collects event date, event type (haldi/mehendi/wedding/reception), number of people, location (salon/venue) and budget band, creates a `hot` lead with intent `bridal`, alerts the owner with a template message within 1 minute, and offers a trial slot instead of a wedding-day slot.
 - Given the wedding date already has `config.bridal_capacity` brides held, then the bot says the artist is fully committed that day and offers the owner callback.
 
@@ -193,7 +193,7 @@ The Given/When/Then lines are testable. "Bot" means the WhatsApp engine and webh
 **C4. Unconfirmed booking handling** — **GAP**
 - Given `config.release_unconfirmed = true` and no confirmation 3 h before the slot, then the owner gets "⚠️ Ravi hasn't confirmed 4 PM". The slot is never auto-cancelled without owner approval in the pilot.
 
-**C5. Mark visit outcome (completed / no-show)** — **GAP** (F13)
+**C5. Mark visit outcome (completed / no-show)** — **EXISTS** (A03: `functions/dayclose.js` 9 PM list; owner reply parsed by `automations.parseDayClose` in `whatsapp.js`; dashboard tap still to do in A04/A10)
 - Given today's bookings, when the owner/receptionist replies to the 9 PM "close the day" WhatsApp list with "all done except 3" (or taps on the dashboard), then those bookings are set `completed` and number 3 is set `no_show`.
 - Given no input by 11 PM, then bookings stay `confirmed` and **no** review ask goes out for that day (safe default).
 
@@ -206,7 +206,7 @@ The Given/When/Then lines are testable. "Bot" means the WhatsApp engine and webh
 
 ### Epic D — Reviews & referrals
 
-**D1. Review ask after a completed visit** — **PARTIAL** (`after_visit` template with `review_link`; sent 20–30 h after slot regardless of outcome, F13)
+**D1. Review ask after a completed visit** — **EXISTS** for the gate (A03: `after_visit` + `refer` only when `bookings.status = completed`); timing is still 20–30 h after the slot because outcomes are marked at 9 PM
 - Given a booking marked `completed`, when it is 2–4 h after the visit ends (same day, still fresh), then `bb_salon_review` is sent with the Google review link `config.review_link`.
 - Given a booking that is `no_show`, `cancelled` or `rescheduled`, then no review ask is sent.
 - The ask goes to **every** completed customer. No review gating: don't send only happy customers to Google; it breaks Google's review policy.

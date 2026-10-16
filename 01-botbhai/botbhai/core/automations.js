@@ -86,16 +86,19 @@ function appointmentUtc(dateIso, slot) {
 /**
  * Given a lead row (details has date_iso, slot, reminders{}), returns the reminder keys due now.
  * Windows: "day_before" 20–28h before, "two_hours" 1–3h before, "after_visit" 20–30h after (review / feedback / next step).
+ * outcome = the bookings row status. M10: the review ask and the referral invite go ONLY to visits the owner marked
+ * "completed" in the 9 PM close-the-day list; no-shows and unmarked days get nothing (safe default).
  */
-function dueReminders(lead, nowMs) {
+function dueReminders(lead, nowMs, outcome) {
   const d = lead.details || {}; const sent = d.reminders || {};
   if (lead.status !== "booked" || !d.date_iso) return [];
   const t = appointmentUtc(d.date_iso, d.slot); if (!t) return [];
   const h = (t - nowMs) / 3.6e6; const due = [];
   if (h <= 28 && h > 20 && !sent.day_before) due.push("day_before");
   if (h <= 3 && h > 1 && !sent.two_hours) due.push("two_hours");
-  if (h <= -20 && h > -30 && !sent.after_visit) due.push("after_visit");
-  if (h <= -72 && h > -84 && !sent.refer) due.push("refer"); // 3 days later: invite a friend
+  const came = outcome === "completed";
+  if (came && h <= -20 && h > -30 && !sent.after_visit) due.push("after_visit");
+  if (came && h <= -72 && h > -84 && !sent.refer) due.push("refer"); // 3 days later: invite a friend
   return due;
 }
 // Gym/coaching renewals: members table rows {expires_on (YYYY-MM-DD), reminders{}}
@@ -109,10 +112,45 @@ function dueRenewals(member, nowMs) {
   return due;
 }
 
+// ---------- M10: the owner's 9 PM "close the day" list and their reply
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function dayLabel(iso) { const d = new Date(iso + "T00:00:00Z"); return `${DAYS[d.getUTCDay()]}, ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; }
+/** bookings: today's confirmed rows {id, name, service, slot}. Returns { text, ids } (ids in list order) or null if none. */
+function dayCloseList(bookings, dateIso) {
+  if (!bookings || !bookings.length) return null;
+  const rows = bookings.slice().sort((a, b) => (slotToMinutes(a.slot) ?? 9999) - (slotToMinutes(b.slot) ?? 9999));
+  const lines = rows.map((b, i) => `${i + 1}. ${b.slot} · ${b.name || "Customer"}${b.service ? " · " + b.service : ""}`);
+  return { ids: rows.map((b) => b.id), text: `🌙 Close the day: ${dayLabel(dateIso)}\n${lines.join("\n")}\n\nWho came? Reply *all done*, or *all done except 2* (2 didn't come), or *no show 2 3*.\nOnly people marked done get the review request.` };
+}
+const NUMS = (s) => (String(s).match(/\d{1,3}/g) || []).map(Number);
+/** Owner's reply → { completed: [n], no_show: [n] } (1-based list numbers), or null if it isn't a close-the-day reply. */
+function parseDayClose(text, count) {
+  const t = String(text || "").toLowerCase().replace(/[’']/g, "").trim();
+  if (!count) return null;
+  const all = Array.from({ length: count }, (_, i) => i + 1);
+  const inRange = (xs) => [...new Set(xs)].filter((x) => x >= 1 && x <= count);
+  const ALL = /\b(all|anni|andaru|sab|everyone|everybody)\b[^\d]*\b(done|came|ok|okay|vacharu|vachcharu|vachharu|ayyayi|ayyindi|aaye|ho gaye|hogaye|aa gaye)\b|^(all done|done all|anni ayyayi|sab ho gaye|sab aa gaye)\b/;
+  const NOSHOW = /(no[\s-]?show|didnt come|did not come|not come|absent|raledu|raaledu|nahi aaye|nahi aaya|nahi aayi)/;
+  const EXCEPT = /\b(except|but|tappa|chhodke|chodke|minus)\b/;
+  if (ALL.test(t) || /^\s*(done|came|ok|okay)\b[^\d]*\b(except|but|tappa|chhodke|chodke|minus)\b/.test(t)) {
+    const rest = t.split(EXCEPT).length > 1 ? t.split(EXCEPT).slice(1).join(" ") : NOSHOW.test(t) ? t : "";
+    const ns = inRange(NUMS(rest));
+    return { completed: all.filter((x) => !ns.includes(x)), no_show: ns };
+  }
+  if (!NOSHOW.test(t) && !/\bdone\b|\bcame\b|\bvacharu\b/.test(t)) return null;
+  const out = { completed: [], no_show: [] };
+  for (const part of t.split(/[,;\n]|\band\b/)) {
+    if (NOSHOW.test(part)) out.no_show.push(...NUMS(part));
+    else if (/\bdone\b|\bcame\b|\bvacharu\b/.test(part)) out.completed.push(...NUMS(part));
+  }
+  out.no_show = inRange(out.no_show); out.completed = inRange(out.completed).filter((x) => !out.no_show.includes(x));
+  return out.completed.length || out.no_show.length ? out : null;
+}
+
 // Referral codes: short, stable per customer ("REF-7KQ2"), so word-of-mouth becomes trackable leads.
 function referralCode(contact) {
   let h = 2166136261; for (const c of String(contact)) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
   return "REF-" + h.toString(36).toUpperCase().slice(-4).padStart(4, "X");
 }
 
-module.exports = { referralCode, parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals };
+module.exports = { referralCode, parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals, dayCloseList, parseDayClose };

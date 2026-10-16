@@ -147,6 +147,65 @@
     return top.length === 1 ? { hit: top[0].name } : { ambiguous: top.map((c) => c.name) };
   }
 
+  // ---------------------------------------------------------------- bridal / high-value enquiries (A12, T15)
+  // Wedding words that open the enquiry flow (only for setups whose catalog has an `enquiry: true` item).
+  const BRIDAL = /\b(bridal|bride|wedding|marriage|pelli|pelliki|shaadi|shadi|engagement|nischitartham|haldi|mehendi|mehndi|sangeet|muhurtham|muhurat)\b|పెళ్లి|పెళ్ళి|शादी|दुल्हन/;
+  const EVENT_TYPES = [
+    ["wedding", /\b(wedding|marriage|pelli|pelliki|shaadi|shadi|muhurtham|muhurat)\b|పెళ్లి|పెళ్ళి|शादी/],
+    ["haldi", /\b(haldi|pasupu|mangala ?snanam)\b|హల్దీ|हल्दी/],
+    ["mehendi", /\b(mehendi|mehndi|henna)\b|మెహందీ|मेहंदी/],
+    ["sangeet", /\bsangeet\b|संगीत/],
+    ["engagement", /\b(engagement|nischitartham|ring ceremony)\b/],
+    ["reception", /\breception\b/],
+  ];
+  const MON = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
+  // "22 Jan", "Jan 22nd", "22/1", or "20th" (month taken from another date in the same message)
+  function clauseDate(c, monthCtx, now) {
+    let m = c.match(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of\\s+)?(${MON})[a-z]*\\b`));
+    if (m) return parseDate(`${m[1]} ${m[2]}`, now);
+    m = c.match(new RegExp(`\\b(${MON})[a-z]*\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`));
+    if (m) return parseDate(`${m[2]} ${m[1]}`, now);
+    m = c.match(/\b\d{1,2}\s*[\/\-.]\s*\d{1,2}(?:\s*[\/\-.]\s*\d{2,4})?\b/);
+    if (m) return parseDate(m[0], now);
+    m = c.match(/\b(\d{1,2})(?:st|nd|rd|th)\b/);
+    if (m && monthCtx) return parseDate(`${m[1]} ${monthCtx}`, now);
+    return null;
+  }
+  // Returns [{ type, date_iso }] in the order the customer wrote them.
+  function parseEvents(raw, now) {
+    const low = String(raw || "").toLowerCase();
+    const mc = low.match(new RegExp(`\\b(${MON})[a-z]*\\b`)); const monthCtx = mc ? mc[1] : null;
+    const out = []; let orphan = null;
+    for (const c of low.split(/[,;\n&]|\band\b|\balso\b|\bthen\b/)) {
+      const types = EVENT_TYPES.filter(([, re]) => re.test(c)).map(([k]) => k);
+      const d = clauseDate(c, monthCtx, now); const iso = d ? isoOf(d) : null;
+      if (types.length) for (const k of types) { if (!out.some((e) => e.type === k)) out.push({ type: k, date_iso: iso }); }
+      else if (iso) { const open = out.find((e) => !e.date_iso); if (open) open.date_iso = iso; else if (!orphan) orphan = iso; }
+    }
+    if (orphan && !out.some((e) => e.type === "wedding")) out.unshift({ type: "wedding", date_iso: orphan });
+    return out;
+  }
+  // "50k", "₹40,000", "1.5 lakh", "75 thousand" → rupees; anything vaguer → null (never guessed)
+  function parseBudget(raw) {
+    const t = String(raw || "").toLowerCase().replace(/(\d),(?=\d)/g, "$1");
+    for (const m of t.matchAll(/(\d+(?:\.\d+)?)\s*(k\b|thousand|lakhs?\b|lacs?\b|l\b)?/g)) {
+      const v = parseFloat(m[1]); const unit = m[2] || "";
+      if (/^k|thousand/.test(unit)) return Math.round(v * 1e3);
+      if (/^(l|lakh|lac)/.test(unit)) return Math.round(v * 1e5);
+      if (v >= 1000) return Math.round(v);
+    }
+    return null;
+  }
+  // Customer's name from "my name is priya", "Sravani garu" → "Priya" / "Sravani"
+  function nameFrom(raw) {
+    let n = String(raw).trim().replace(/^(my name is|i am|i'm|this is|name|naa peru|na peru|mera naam|naam)\s*[:\-]?\s*/i, "").replace(/\s+(hai|ji|garu)$/i, "");
+    let forOther = false;
+    const fo = n.match(/^(?:it'?s\s+)?for\s+(?:my\s+)?(?:friend|sister|brother|wife|husband|mother|mom|father|dad|daughter|son|cousin|colleague)?\s*(.+)$/i);
+    if (fo) { n = fo[1].trim(); forOther = true; }
+    if (n.length < 2 || n.length > 60 || /^\d+$/.test(n)) return { error: "Please type the name (letters only)." };
+    return { value: n.replace(/(^|\s)(\p{L})/gu, (m, s, c) => s + c.toUpperCase()), forOther };
+  }
+
   function newState() { return { step: -1, data: {}, lead: { score: "cold", status: "new", intents: [] }, turns: 0, optedOut: false }; }
 
   // ---------------------------------------------------------------- bot
@@ -222,6 +281,7 @@
         name: state.data.name || (meta.known && meta.known.name) || meta.profileName || null,
         score: state.lead.score, status: state.lead.status, intents: state.lead.intents.slice(), turns: state.turns,
         marketing_opt_in: !!state.lead.marketing, customer_name: state.data.name || undefined, // the name they typed (not the WhatsApp profile name)
+        bridal: state.bridal ? (({ asking, tries, ...rest }) => rest)(state.bridal) : undefined,
       });
     }
     function startFlow(state, meta, raw) {
@@ -253,6 +313,91 @@
       const now = nowOf(state);
       state.humanUntil = new Date(now.getTime() + (cfg.handoff_hours || 2) * 3.6e6).toISOString();
       events.push({ type: "handoff", text: `🙋 ${meta.profileName || state.data.name || "A customer"} (${meta.contact || "web chat"}) ${why}. The bot is paused for ${cfg.handoff_hours || 2} h for this chat; reply to them from the WhatsApp Business app.` });
+    }
+
+    // ---- Bridal enquiry (M8 / A12 / T15): package price from the catalog, events + dates, budget, name →
+    // hot lead + owner alert; then offer a trial slot. The wedding day itself is never sold as a 1-hour slot.
+    const enquiryItem = () => (cfg.catalog || []).find((c) => c.enquiry);
+    const trialName = () => cfg.enquiry_trial || `${enquiryItem().name} trial`;
+    const cap = (k) => k[0].toUpperCase() + k.slice(1);
+    const eventsLine = (evs) => evs.map((e) => `${cap(e.type)} ${e.date_iso ? fmtDate(new Date(e.date_iso + "T00:00:00Z")) : "(date to confirm)"}`).join(" · ");
+    const BUDGET_BANDS = () => cfg.bridal_budget_bands || [[0, "under 20k"], [20000, "20k–40k"], [40000, "40k–75k"], [75000, "75k+"]];
+    const ASK = {
+      events: "Which events, and on which dates? (e.g. *wedding 22 Jan, haldi 20 Jan*)",
+      budget: "What budget do you have in mind for the whole package? (e.g. *50k*, or *not decided*)",
+      name: "Lovely! And your name, please?",
+    };
+    function absorbBridal(state, raw) { // people / place can come in any message
+      const b = state.bridal; const low = String(raw || "").toLowerCase();
+      for (const e of parseEvents(raw, nowOf(state))) { const have = b.events.find((x) => x.type === e.type); if (!have) b.events.push(e); else if (e.date_iso) have.date_iso = e.date_iso; }
+      const ppl = low.match(/\b(\d{1,2})\s*(people|persons|members|ladies|girls|faces|bridesmaids|mandi)\b/); if (ppl) b.people = +ppl[1];
+      if (/\b(venue|function hall|kalyana mandapam|hotel|resort)\b/.test(low)) b.location = "venue";
+      else if (/\b(at home|our home|my home|house|intiki|intlo)\b/.test(low)) b.location = "home";
+      else if (/\b(at|in) (the )?(salon|parlour|parlor)\b/.test(low)) b.location = "salon";
+    }
+    function bridalFull(state, meta) {
+      const evs = state.bridal.events; const w = evs.find((e) => e.type === "wedding" && e.date_iso) || evs.find((e) => e.date_iso); if (!w) return null;
+      const holds = (meta.bridal_holds || []).filter((h) => h.date_iso === w.date_iso).length;
+      return (cfg.bridal_full_dates || []).includes(w.date_iso) || (cfg.bridal_capacity && holds >= cfg.bridal_capacity) ? w : null;
+    }
+    function bridalNext(state, meta, events, head) {
+      const b = state.bridal; const lead = head ? [head] : [];
+      const full = bridalFull(state, meta);
+      if (full) {
+        b.asking = null; b.full_date = full.date_iso; state.lead.status = "callback";
+        handoff(state, meta, events, `asked for bridal makeup on ${fmtDate(new Date(full.date_iso + "T00:00:00Z"))}, a date you marked full`);
+        return [...lead, { text: `So sorry 🙏 our ${cfg.enquiry_role || "artist"} is fully committed on ${fmtDate(new Date(full.date_iso + "T00:00:00Z"))}. I've asked the owner to call you; they may be able to suggest another artist or arrangement.` }];
+      }
+      if (!b.events.length && !b.note) { b.asking = "events"; return [...lead, { text: ASK.events }]; }
+      if (!b.budget_band) { b.asking = "budget"; return [...lead, { text: ASK.budget }]; }
+      if (!b.name) { b.asking = "name"; return [...lead, { text: ASK.name }]; }
+      return bridalFinish(state, meta, events, lead);
+    }
+    function bridalStart(state, raw, meta, events, item) {
+      state.step = -1; delete state.prev; delete state.rescheduling;
+      state.bridal = { service: item.name, events: [], asking: "events", tries: 0 };
+      if (meta.known && meta.known.name) state.bridal.name = meta.known.name;
+      bump(state, "hot", "bridal"); state.lead.status = "callback";
+      absorbBridal(state, raw);
+      const intro = `💍 Congratulations! Our *${item.name}* packages are *${item.price}*, and every package includes a trial.` + (state.bridal.events.length ? `\n📅 ${eventsLine(state.bridal.events)}` : "");
+      return bridalNext(state, meta, events, { text: intro });
+    }
+    function bridalAnswer(state, raw, t, meta, events) {
+      const b = state.bridal;
+      if (b.asking === "events") {
+        const before = b.events.length; absorbBridal(state, raw);
+        if (b.events.length > before) return bridalNext(state, meta, events, { text: `Got it 👍\n📅 ${eventsLine(b.events)}` });
+        b.tries++;
+        if (b.tries >= 2 || /\b(not (fixed|decided|final)|don'?t know|dont know|tbd|later|no idea)\b/.test(t)) { b.note = String(raw).trim().slice(0, 120); return bridalNext(state, meta, events, { text: "No problem, our artist will confirm dates with you 👍" }); }
+        return [{ text: "Sorry, I couldn't catch a date 🙏 " + ASK.events + " Or just say *not fixed yet*." }];
+      }
+      if (b.asking === "budget") {
+        absorbBridal(state, raw);
+        const inr = parseBudget(raw);
+        if (inr) { b.budget_inr = inr; b.budget_band = BUDGET_BANDS().filter(([min]) => inr >= min).pop()[1]; }
+        else { b.budget_band = "not decided"; if (!/\b(not|no|decide|deciding|flexible|any)\b/.test(t)) b.budget_note = String(raw).trim().slice(0, 80); }
+        return bridalNext(state, meta, events, null);
+      }
+      if (b.asking === "name") {
+        const nm = nameFrom(raw); if (nm.error) return [{ text: nm.error }];
+        b.name = nm.value; return bridalNext(state, meta, events, null);
+      }
+      b.asking = null; return [menuReply()];
+    }
+    function bridalFinish(state, meta, events, lead) {
+      const b = state.bridal; b.asking = null; delete b.tries;
+      state.data.name = b.name; state.data.service = b.service; state.lead.status = "callback"; bump(state, "hot", "bridal");
+      const budget = b.budget_inr ? `budget about ${b.budget_inr.toLocaleString("en-IN")} (${b.budget_band})` : `budget ${b.budget_band}`;
+      const bits = [eventsLine(b.events) || "dates to confirm", budget, b.people ? `${b.people} people` : "", b.location ? `at ${b.location}` : "", b.note ? `note: "${b.note}"` : ""].filter(Boolean);
+      events.push({ type: "bridal_enquiry", enquiry: Object.assign({ contact: meta.contact || null }, b) });
+      events.push({ type: "notify_owner", text: `💍 Bridal enquiry (hot lead): ${b.name} (${meta.contact || "web chat"}) · ${bits.join(" · ")}. Please call within 15 minutes; muhurtham dates fill fast.` });
+      return [...lead, { text: `Thank you, ${b.name.split(" ")[0]} 💛 Our ${cfg.enquiry_role || "team"} has your details and will WhatsApp you shortly (${cfg.hours}).\n\nWould you like to book your *bridal trial* now? It's included in the package.`, options: ["Book a bridal trial", "Talk to the artist"] }];
+    }
+    function startTrial(state) {
+      state.prev = { data: JSON.parse(JSON.stringify(state.data)), status: state.lead.status };
+      state.step = 0; state.data = { service: trialName() }; if (state.bridal.name) state.data.name = state.bridal.name;
+      bump(state, "hot", "trial");
+      return [{ text: `Lovely! Let's book your *${trialName()}* 💄 Type *cancel* any time to stop.` }, ...nextOrFinish(state, [])];
     }
 
     // A question in the middle of a booking ("address?", "price entha?") is answered, then the same step is asked again.
@@ -296,11 +441,8 @@
           else { value = fmtDate(d); state.data.date_iso = isoOf(d); }
         }
       } else if (step.type === "name") {
-        let n = String(raw).trim().replace(/^(my name is|i am|i'm|this is|name|naa peru|na peru|mera naam|naam)\s*[:\-]?\s*/i, "").replace(/\s+(hai|ji|garu)$/i, "");
-        const forOther = n.match(/^(?:it'?s\s+)?for\s+(?:my\s+)?(?:friend|sister|brother|wife|husband|mother|mom|father|dad|daughter|son|cousin|colleague)?\s*(.+)$/i);
-        if (forOther) { n = forOther[1].trim(); state.data.booked_for_someone = true; }
-        if (n.length < 2 || n.length > 60 || /^\d+$/.test(n)) error = "Please type the name (letters only).";
-        else value = n.replace(/(^|\s)(\p{L})/gu, (m, s, c) => s + c.toUpperCase());
+        const nm = nameFrom(raw); if (nm.forOther) state.data.booked_for_someone = true;
+        if (nm.error) error = nm.error; else value = nm.value;
       } else if (step.choices) {
         const list = step.field === "slot" ? freeSlots(state, choiceList(step)) : choiceList(step);
         const num = norm(raw).match(/^(\d{1,2})$/);
@@ -321,10 +463,9 @@
         }
         else if (step.choices === "catalog") {
           const item = cfg.catalog.find((c) => c.name === value);
-          if (item && item.enquiry) { // e.g. bridal: needs a consultation, not a 1-hour slot
-            state.data.service = value; bump(state, "hot", "enquiry"); state.lead.status = "callback"; state.step = -1; delete state.prev;
-            handoff(state, meta, events, `asked about ${value}`);
-            return [{ text: `${value} needs a quick chat with our ${cfg.enquiry_role || "team"} first, so we get every detail right 💛 I've passed your number on; they'll WhatsApp you shortly (${cfg.hours}).` }];
+          if (item && item.enquiry) { // e.g. bridal: an enquiry with dates + budget, never a 1-hour slot (M8)
+            if (state.prev) { state.data = state.prev.data; }
+            return bridalStart(state, "", meta, events, item);
           }
         }
       } else {
@@ -398,7 +539,7 @@
       if (/^(stop|unsubscribe|opt out|stop messages)$/.test(t) && state.optedOut) {
         replies = []; // already unsubscribed: say nothing more
       } else if (/^(stop|unsubscribe|opt out|stop messages)$/.test(t)) {
-        state.optedOut = true; state.step = -1; state.lead.status = "opted_out"; state.lead.marketing = false;
+        state.optedOut = true; state.step = -1; state.lead.status = "opted_out"; state.lead.marketing = false; if (state.bridal) state.bridal.asking = null;
         events.push({ type: "opt_out" });
         replies = [{ text: "You're unsubscribed and won't get any more messages from us. Reply *START* any time to come back." }];
       } else if (state.optedOut && !/^start$/.test(t)) {
@@ -414,6 +555,14 @@
           events.push({ type: "notify_owner", text: `❌ Cancelled: ${state.data.name || "customer"} · ${state.data.service || ""} · ${state.data.date} ${state.data.slot}` });
           replies = [{ text: `Cancelled. No worries at all 🙂 Whenever you're ready, reply *book* and I'll find you a new slot.` }];
         } else replies = [{ text: `Okay, your booking stays as it is: ${state.data.date} at ${state.data.slot}. See you then! 👋` }];
+      } else if (state.bridal && state.bridal.asking && (/^(cancel|exit|quit|stop|vaddu|nahi chahiye)$/.test(t) || (INTENT.cancel.test(t) && t.split(" ").length <= 4))) {
+        state.bridal.asking = null; replies = [menuReply("No problem, stopped. Nothing was changed.")];
+      } else if (state.bridal && state.bridal.asking && !(GREET.test(t) && t.split(" ").length <= 2)) {
+        replies = bridalAnswer(state, raw, t, meta, events);
+      } else if (state.step < 0 && state.bridal && !state.bridal.asking && /\btrial\b/.test(t) && enquiryItem()) {
+        replies = startTrial(state);
+      } else if (state.step < 0 && enquiryItem() && BRIDAL.test(t) && !INTENT.cancel.test(t) && !/\b(reschedule|postpone|prepone)\b/.test(t)) {
+        replies = bridalStart(state, raw, meta, events, enquiryItem());
       } else if (booked && CONFIRM.test(t) && !(state.data.date_iso < isoOf(istToday(nowOf(state))))) { // a past visit is not "confirmed"
         state.data.confirmed = true;
         events.push({ type: "confirmed", booking: { date_iso: state.data.date_iso, slot: state.data.slot } });
@@ -444,6 +593,7 @@
         replies = [menuReply()];
       } else if (GREET.test(t) || /^(start|bot)$/.test(t)) {
         if (state.step >= 0) abandonFlow(state);
+        if (state.bridal) state.bridal.asking = null;
         state.optedOut = false; delete state.humanUntil;
         const known = meta.known || {};
         const first = known.name
@@ -495,5 +645,5 @@
     return { config: cfg, handle, slotTaken };
   }
 
-  return { NICHES, register, createBot, newState, parseDate, pickChoice, istToday, isoOf, Slots, version: "3.1.0" };
+  return { NICHES, register, createBot, newState, parseDate, pickChoice, parseEvents, parseBudget, istToday, isoOf, Slots, version: "3.2.0" };
 });

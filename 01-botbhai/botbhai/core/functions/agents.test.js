@@ -6,6 +6,7 @@ process.env.SITE_URL = "https://botbhai.example"; const { store, graph } = requi
   clients: [
     { id: "re1", name: "Skyline Homes", niche: "realestate", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "PAGE1", meta_ad_account_id: "111", active: true, config: { business: "Skyline Homes Realty", voice_followup: true, ads_autopilot: true } },
     { id: "gy1", name: "IronPulse", niche: "gym", phone_number_id: "PN2", owner_whatsapp: "919000000002", active: true, config: { business: "IronPulse Fitness", address: "Madhapur" } },
+    { id: "sa1", name: "Glow Studio", niche: "salon", phone_number_id: "PN3", owner_whatsapp: "919000000003", active: true, config: { business: "Glow Studio", review_link: "https://g.page/r/test" } },
   ],
   client_secrets: [{ client_id: "re1", meta_page_token: "pt", meta_ads_token: "at" }],
 });
@@ -55,5 +56,33 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
   assert.ok(store.leads.find((l) => l.id === "L9").details.reminders.day_before);
   const again = await require("./reminders.js").handler(); assert.strictEqual(again.body, "sent 0");
   console.log("  ✓ reminder agent: trial reminder + renewal sent once, not repeated");
+
+  // 4. M10: 9 PM close-the-day list → owner replies "all done except 2" → review ask only to the one who came
+  const visit = Date.now() - 24 * 3.6e6; const vd = new Date(visit + 330 * 60000);
+  const vIso = vd.toISOString().slice(0, 10); const vh = vd.getUTCHours(), vm = vd.getUTCMinutes();
+  const vSlot = `${((vh + 11) % 12) + 1}:${String(vm).padStart(2, "0")} ${vh >= 12 ? "PM" : "AM"}`;
+  for (const [id, contact, name] of [["B1", "919833333331", "Priya"], ["B2", "919833333332", "Ravi"]]) {
+    store.bookings.push({ id, client_id: "sa1", contact, name, service: "Hair spa", date_iso: vIso, slot: vSlot, status: "confirmed" });
+    store.leads.push({ id: "L" + id, client_id: "sa1", contact, name, status: "booked", marketing_opt_in: true, details: { service: "Hair spa", date_iso: vIso, slot: vSlot, reminders: { day_before: "x", two_hours: "x" } } });
+  }
+  await require("./reminders.js").handler();
+  assert.ok(!graph.sent.some((x) => x.template && x.template.name === "bb_salon_review"), "no review ask before the owner closes the day");
+  const dc = await require("./dayclose.js").handler({ queryStringParameters: { date: vIso } });
+  assert.strictEqual(dc.body, "lists sent 1");
+  const list = graph.sent.filter((x) => x.to === "919000000003" && x.text && /Close the day/.test(x.text.body)).pop();
+  assert.ok(list && /1\. .*Priya/.test(list.text.body) && /2\. .*Ravi/.test(list.text.body), JSON.stringify(list));
+  const ownerSession = store.sessions.find((x) => x.client_id === "sa1" && x.contact === "919000000003");
+  assert.deepStrictEqual(ownerSession.state.dayclose.ids, ["B1", "B2"]);
+  const ob = JSON.stringify({ entry: [{ changes: [{ value: { metadata: { phone_number_id: "PN3" }, contacts: [{ profile: { name: "Owner" } }], messages: [{ from: "919000000003", id: "wamid.owner1", type: "text", text: { body: "all done except 2" } }] } }] }] });
+  await require("./whatsapp.js").handler({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(ob) }, body: ob });
+  assert.strictEqual(store.bookings.find((b) => b.id === "B1").status, "completed");
+  assert.strictEqual(store.bookings.find((b) => b.id === "B2").status, "no_show");
+  assert.ok(graph.sent.some((x) => x.to === "919000000003" && x.text && /1 done, 1 no-show/.test(x.text.body)), "owner gets a summary");
+  assert.ok(!graph.sent.some((x) => x.to === "919000000003" && x.interactive), "owner's reply is not treated as a customer chat");
+  assert.ok(!store.sessions.find((x) => x.contact === "919000000003").state.dayclose, "list closed after the reply");
+  await require("./reminders.js").handler();
+  assert.ok(graph.sent.some((x) => x.to === "919833333331" && x.template && x.template.name === "bb_salon_review"), "review ask to the one who came");
+  assert.ok(!graph.sent.some((x) => x.to === "919833333332" && x.template && x.template.name === "bb_salon_review"), "no review ask to the no-show");
+  console.log("  ✓ M10: 9 PM list to owner, 'all done except 2' marks completed/no-show, review ask only to the completed visit");
   console.log("\nagent tests passed");
 })().catch((e) => { console.error(e); process.exit(1); });

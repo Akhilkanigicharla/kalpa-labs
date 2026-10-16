@@ -66,11 +66,13 @@ ok("BA: Tenglish/Hinglish understood and pre-filled ('repu hair spa kavali', 'ki
 ok("BA: 'home visit' answers the home-service FAQ instead of booking", () => {
   assert.match(talk("salon", ["do you do home visit?"]).log[0].bot, /Home service is available/);
 });
-ok("BA: bridal makeup is an enquiry → owner handoff, bot pauses, 'bot' resumes", () => {
-  const r = talk("salon", ["book", "bridal makeup", "is the trial included?", "bot"], { now: "2026-10-12T04:30:00Z" });
-  assert.match(r.log[1].bot, /quick chat with our bridal artist/); assert.ok(r.log[1].events.some((e) => e.type === "handoff"));
-  assert.strictEqual(r.log[2].bot, ""); assert.ok(r.log[2].events.some((e) => e.type === "forward_to_owner"));
-  assert.match(r.log[3].bot, /How can I help/);
+ok("BA: bridal makeup is an enquiry (A03) → details, owner alert; 'talk to the artist' pauses the bot, 'bot' resumes", () => {
+  const r = talk("salon", ["book", "bridal makeup", "wedding 22 jan", "50k", "Asha", "Talk to the artist", "is the trial included?", "bot"], { now: "2026-10-12T04:30:00Z" });
+  assert.match(r.log[1].bot, /from ₹15,000/); assert.ok(!r.log.some((l) => l.events.some((e) => e.type === "booking")));
+  assert.ok(r.log[4].events.some((e) => e.type === "notify_owner" && /Bridal enquiry/.test(e.text)));
+  assert.ok(r.log[5].events.some((e) => e.type === "handoff"));
+  assert.strictEqual(r.log[6].bot, ""); assert.ok(r.log[6].events.some((e) => e.type === "forward_to_owner"));
+  assert.match(r.log[7].bot, /How can I help/);
 });
 ok("BA: returning customer is not asked their name again", () => {
   const r = talk("salon", ["book", "facial", "tomorrow", "4 pm"], { now: "2026-10-12T04:30:00Z", known: { name: "Priya Reddy" } });

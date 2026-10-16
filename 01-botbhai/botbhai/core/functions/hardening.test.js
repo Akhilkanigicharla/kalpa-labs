@@ -78,6 +78,7 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     const h = d.getUTCHours(), mm = d.getUTCMinutes(); const slot = `${((h + 11) % 12) + 1}:${String(mm).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
     store.leads.push({ id: "R1", client_id: "s1", contact: "915555555555", name: "No Consent", status: "booked", marketing_opt_in: false, details: { date_iso: iso, slot, reminders: { after_visit: "x" } } });
     store.leads.push({ id: "R2", client_id: "s1", contact: "916666666666", name: "Said Yes", status: "booked", marketing_opt_in: true, details: { date_iso: iso, slot, reminders: { after_visit: "x" } } });
+    for (const c of ["915555555555", "916666666666"]) store.bookings.push({ id: "RB" + c, client_id: "s1", contact: c, date_iso: iso, slot, status: "completed" }); // both came (M10)
     await reminders.handler();
     assert.ok(!graph.sent.some((m) => m.to === "915555555555" && m.template && /refer/.test(m.template.name)));
     assert.ok(graph.sent.some((m) => m.to === "916666666666" && m.template && /refer/.test(m.template.name)));

@@ -1,5 +1,7 @@
 /*
- * Follow-up agent — runs hourly. Booking reminders (24 h and 2 h before) cut no-shows; the after-visit
+ * Follow-up agent — runs hourly. After-visit review asks and referrals go only to visits marked done in the
+ * owner's 9 PM close-the-day list (dayclose.js); no-shows and unmarked days get nothing.
+ * Booking reminders (24 h and 2 h before) cut no-shows; the after-visit
  * message asks for a Google review (salon), feedback + next step (real estate), or check-in (gym/coaching).
  * Renewal reminders 7/3/1 days before expiry and a win-back 15 days after, from the members table.
  */
@@ -14,10 +16,10 @@ exports.handler = async () => {
     // only bookings from 4 days ago onwards: the after-visit and referral windows end within 84 hours
     const since = istTodayIso(now - 4 * 864e5);
     const leads = await db(`leads?client_id=eq.${c.id}&status=eq.booked&details->>date_iso=gte.${since}&select=id,contact,name,details,marketing_opt_in&order=updated_at.desc&limit=2000`);
-    const noShows = new Set((await db(`bookings?client_id=eq.${c.id}&status=eq.no_show&date_iso=gte.${since}&select=contact,date_iso`)).map((b) => b.contact + b.date_iso));
-    for (const l of leads) for (const key of dueReminders({ status: "booked", details: l.details }, now)) {
+    // M10: only visits the owner marked "completed" in the 9 PM list get the review ask / referral invite
+    const completed = new Set((await db(`bookings?client_id=eq.${c.id}&status=eq.completed&date_iso=gte.${since}&select=contact,date_iso`)).map((b) => b.contact + b.date_iso));
+    for (const l of leads) for (const key of dueReminders({ status: "booked", details: l.details }, now, completed.has(l.contact + l.details.date_iso) ? "completed" : "unmarked")) {
       if (!tpl[key] || l.contact.startsWith("web:")) continue;
-      if ((key === "after_visit" || key === "refer") && noShows.has(l.contact + l.details.date_iso)) continue; // never thank someone who didn't come
       if (tpl[key].category === "MARKETING" && !l.marketing_opt_in) continue; // promotional messages need opt-in
       try {
         await sendTemplate(c.phone_number_id, l.contact, tpl[key], Object.assign({ business: cfg.business || c.name, review_link: cfg.review_link || "", address: cfg.address || "", card_url: cardUrl(c, tpl[key].card), ref_code: referralCode(l.contact) }, l.details, { name: l.name || "there" }));

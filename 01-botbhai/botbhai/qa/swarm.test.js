@@ -103,8 +103,13 @@ T("T12", "6 PM IST: only 7 PM offered today", () => {
 });
 T("T13", "closed weekday refused", () => { assert.match(run("salon", ["book", "facial", "tuesday"]).log[2].bot, /closed on Tuesdays/); });
 T("T14", "Diwali refused", () => { assert.match(run("salon", ["book", "facial", "8/11"]).log[2].bot, /closed for Diwali/); });
-T("T15", "bridal = enquiry + handoff, never a 1-hour slot", () => {
-  const r = run("salon", ["book", "Bridal makeup"]); assert.match(r.log[1].bot, /bridal artist/); assert.ok(!r.log[1].events.some((e) => e.type === "booking"));
+T("T15", "bridal enquiry: package info, event dates + budget collected, hot owner alert, trial offered, never a 1-hour slot", () => {
+  const r = run("salon", ["Hi, bridal makeup for wedding on 22 Jan, haldi on 20th also. Price?", "around 50k budget", "Sravani"]);
+  assert.match(r.log[0].bot, /from ₹15,000/); assert.match(r.log[0].bot, /Wedding Fri, 22 Jan · Haldi Wed, 20 Jan/);
+  assert.ok(!r.log.some((l) => l.events.some((e) => e.type === "booking")));
+  const alert = r.log[2].events.find((e) => e.type === "notify_owner"); assert.ok(alert && /Sravani[\s\S]*Wedding Fri, 22 Jan[\s\S]*50,000/.test(alert.text));
+  assert.strictEqual(r.state.lead.score, "hot"); assert.ok(r.log[2].options.includes("Book a bridal trial"));
+  const m = run("salon", ["book", "Bridal makeup"]); assert.match(m.log[1].bot, /which dates/i); assert.ok(!m.log[1].events.some((e) => e.type === "booking"));
 });
 T("T16", "haggling: fixed prices, real offer only", () => {
   const r = run("salon", ["facial 999 too much, 600 ki chestara?"]); assert.match(r.log[0].bot, /prices are fixed/); assert.match(r.log[0].bot, /20% off facials/);

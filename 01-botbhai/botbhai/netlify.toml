@@ -18,5 +18,8 @@
 [functions."reminders"]
   schedule = "@hourly"
 
+[functions."dayclose"]
+  schedule = "30 15 * * *"  # 9:00 PM IST daily: owner's close-the-day list (M10)
+
 [functions."adsbot"]
   schedule = "30 3 * * *"   # 9:00 AM IST daily

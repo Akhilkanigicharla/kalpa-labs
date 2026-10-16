@@ -18,6 +18,7 @@
 const crypto = require("crypto");
 const { BotBhai } = require("../../setups/index.js");
 const L = require("./_lib.js");
+const { parseDayClose } = require("../automations.js");
 const { humanize, detectLanguage, typingDelayMs, mirrorLanguage } = require("../humanize.js");
 const sleep = (ms) => new Promise((r) => setTimeout(r, process.env.NO_DELAY ? 0 : ms));
 const IGNORE = new Set(["reaction", "system", "unsupported", "ephemeral", "request_welcome", "order"]);
@@ -53,6 +54,19 @@ function textOf(msg) {
   return "";
 }
 
+// M10: the owner answers the 9 PM list ("all done except 3"). Returns true when the message was that answer.
+async function closeTheDay(client, state, text) {
+  const dc = state.dayclose; const res = parseDayClose(text, dc.ids.length); if (!res) return false;
+  const set = async (nums, status) => { for (const n of nums) await L.db(`bookings?id=eq.${L.enc(dc.ids[n - 1])}&client_id=eq.${client.id}`, { method: "PATCH", prefer: "return=minimal", body: { status } }); };
+  await set(res.completed, "completed"); await set(res.no_show, "no_show");
+  const left = dc.ids.length - res.completed.length - res.no_show.length;
+  const msg = `✅ Day closed: ${res.completed.length} done, ${res.no_show.length} no-show` + (left ? `, ${left} not marked (no review ask for them)` : "") + ". Review requests go to the ones who came. Thank you!";
+  await L.sendText(client.phone_number_id, client.owner_whatsapp, msg).catch((e) => console.error("dayclose reply", e.message));
+  const next = Object.assign({}, state); delete next.dayclose;
+  await L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: client.id, contact: client.owner_whatsapp, state: next, updated_at: new Date().toISOString() } });
+  return true;
+}
+
 async function handleMessage(client, v, msg) {
   const phoneNumberId = client.phone_number_id; const contact = msg.from;
   const profileName = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || null;
@@ -64,6 +78,7 @@ async function handleMessage(client, v, msg) {
   const state0 = sess ? sess.state : BotBhai.newState();
   let text = textOf(msg);
   if (msg.type === "audio") text = (await transcribe(msg.audio.id)) || "";
+  if (contact === client.owner_whatsapp && state0.dayclose && (await closeTheDay(client, state0, text))) return;
   if (!text) {
     if (!state0.optedOut) await L.sendText(phoneNumberId, contact, "Sorry, I can read text and voice notes only 🙏 Reply *menu* to see options.").catch(() => {});
     return;

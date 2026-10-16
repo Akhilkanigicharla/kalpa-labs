@@ -40,7 +40,9 @@ ok("booking reminders fire once in each window", () => {
   const appt = A.appointmentUtc("2026-10-13", "4:00 PM");
   assert.deepStrictEqual(A.dueReminders(lead, appt - 24 * 3.6e6), ["day_before"]);
   assert.deepStrictEqual(A.dueReminders(lead, appt - 2 * 3.6e6), ["two_hours"]);
-  assert.deepStrictEqual(A.dueReminders(lead, appt + 24 * 3.6e6), ["after_visit"]);
+  assert.deepStrictEqual(A.dueReminders(lead, appt + 24 * 3.6e6), [], "no review ask until the owner marks the visit done (M10)");
+  assert.deepStrictEqual(A.dueReminders(lead, appt + 24 * 3.6e6, "completed"), ["after_visit"]);
+  assert.deepStrictEqual(A.dueReminders(lead, appt + 24 * 3.6e6, "no_show"), [], "never thank a no-show");
   lead.details.reminders.two_hours = true; assert.deepStrictEqual(A.dueReminders(lead, appt - 2 * 3.6e6), []);
   assert.deepStrictEqual(A.dueReminders({ status: "callback", details: lead.details }, appt - 24 * 3.6e6), []);
 });
@@ -72,6 +74,28 @@ ok("referral: stable code + friend invite 3 days after the visit", () => {
   const c = A.referralCode("919876543210"); assert.match(c, /^REF-[A-Z0-9]{4}$/); assert.strictEqual(c, A.referralCode("919876543210"));
   assert.notStrictEqual(c, A.referralCode("919876543211"));
   const lead = { status: "booked", details: { date_iso: "2026-10-13", slot: "4:00 PM", reminders: { after_visit: true } } };
-  assert.deepStrictEqual(A.dueReminders(lead, A.appointmentUtc("2026-10-13", "4:00 PM") + 75 * 3.6e6), ["refer"]);
+  assert.deepStrictEqual(A.dueReminders(lead, A.appointmentUtc("2026-10-13", "4:00 PM") + 75 * 3.6e6, "completed"), ["refer"]);
+  assert.deepStrictEqual(A.dueReminders(lead, A.appointmentUtc("2026-10-13", "4:00 PM") + 75 * 3.6e6, "confirmed"), []);
+});
+ok("M10: 9 PM close-the-day list numbers today's visits by time", () => {
+  const list = A.dayCloseList([
+    { id: "b2", name: "Ravi", service: "Hair spa", slot: "4:00 PM" }, { id: "b1", name: "Priya", service: "Facial (fruit / gold)", slot: "11:00 AM" },
+    { id: "b3", name: null, service: null, slot: "7:00 PM" }], "2026-10-12");
+  assert.deepStrictEqual(list.ids, ["b1", "b2", "b3"]);
+  assert.match(list.text, /Mon, 12 Oct/); assert.match(list.text, /1\. 11:00 AM · Priya · Facial/); assert.match(list.text, /3\. 7:00 PM · Customer/);
+  assert.match(list.text, /all done except/); assert.strictEqual(A.dayCloseList([], "2026-10-12"), null);
+});
+ok("M10: owner replies parsed (all done / except / no show / done N / Telugu + Hindi)", () => {
+  const P = A.parseDayClose;
+  assert.deepStrictEqual(P("all done", 4), { completed: [1, 2, 3, 4], no_show: [] });
+  assert.deepStrictEqual(P("All done except 3", 4), { completed: [1, 2, 4], no_show: [3] });
+  assert.deepStrictEqual(P("done except 2,4", 4), { completed: [1, 3], no_show: [2, 4] });
+  assert.deepStrictEqual(P("no show 2 3", 4), { completed: [], no_show: [2, 3] });
+  assert.deepStrictEqual(P("2 didn't come", 3), { completed: [], no_show: [2] });
+  assert.deepStrictEqual(P("done 1 3, no show 2", 3), { completed: [1, 3], no_show: [2] });
+  assert.deepStrictEqual(P("anni ayyayi 2 raledu", 3), { completed: [1, 3], no_show: [2] });
+  assert.deepStrictEqual(P("sab ho gaye", 2), { completed: [1, 2], no_show: [] });
+  assert.deepStrictEqual(P("all done except 9", 3), { completed: [1, 2, 3], no_show: [] }, "out-of-range numbers ignored");
+  assert.strictEqual(P("hi", 3), null); assert.strictEqual(P("what time tomorrow?", 3), null); assert.strictEqual(P("all done", 0), null);
 });
 console.log(`\n${n} tests passed`);

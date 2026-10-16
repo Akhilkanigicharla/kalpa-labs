@@ -4,6 +4,8 @@ module.exports = {
   "id": "salon",
   "capacity": 3,
   "enquiry_role": "bridal artist",
+  "enquiry_trial": "Bridal makeup trial",
+  "bridal_full_dates": [],
   "closed_weekdays": [],
   "holidays": [{ "date": "2026-11-08", "name": "Diwali" }],
   "label": "Salon",

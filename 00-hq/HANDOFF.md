@@ -1,4 +1,14 @@
-# Handoff · state of Kalpa Labs at 13 Oct 2026, 10:00 IST
+# Handoff · state of Kalpa Labs (updated 16 Oct 2026)
+
+## Latest (13–16 Oct 2026): start here in a new chat
+- **Built since the last update:** BotBhai Social Team (A45, `01-botbhai/botbhai/social/`), marketing team for every world in Kalpa colours (A47, `00-hq/marketing/`; b7 switched off for SEBI), Superpowers skills vendored + roadmap task engine `node 00-hq/agents/tasks.js next|validate` + short-answers skill (A46), REA outsider audit fixed (A48, `00-hq/research/rea-audit-2026-10-16.md`).
+- **Akhil's PC:** has Node.js 24 + REA (`rea-agents@6.4.0`) in Claude desktop config and Claude Code (`claude mcp add rea`). REA works only in sessions running on his PC, not cloud chats. Superpowers plugin is on his account.
+- **Next agent work:** run `node 00-hq/agents/tasks.js next`. Open audit follow-ups: A49 (SEO pages), A50 (Turnstile), A51 (Vault), A52 (self-host fonts); A53 blocked on payment account (C16).
+- **Next CEO work:** C01 (approve PLAN.md), C04/C05 (salon demo + list), C06, C11, C18 (Social Team price), C19 (real links), C20 (only if repo goes public).
+- **Standing preferences:** research GitHub/papers/web before building; short action-first replies (`.claude/skills/short-answers/`); keep chats short, save progress to the repo.
+
+---
+# Earlier handoff (13 Oct 2026, 10:00 IST)
 
 Read this first in any new Claude session, then `CLAUDE.md`, `README.md` and `00-hq/ROADMAP.md`.
 

@@ -9,7 +9,7 @@ BotBhai sells **four separate setups**, each a complete system for one industry:
 | Gym | gyms, yoga and fitness studios | `setups/gym` |
 | Exam Kits | coaching institutes for TSPSC, SSC, RRB, banking | `setups/examkits` |
 
-Every setup contains: WhatsApp chatbot · lead-generation bot (Meta lead forms + Click-to-WhatsApp) · Meta ads bot · voice agent · follow-up/reminder agent · owner dashboard with Excel export · its own agent swarm with validators. Read the setup's README for price, flows, templates, ads playbook and onboarding checklist.
+Every setup contains: WhatsApp chatbot · lead-generation bot (Meta lead forms + Click-to-WhatsApp) · Meta ads bot · voice agent · follow-up/reminder agent · owner dashboard with Excel export · shared inbox (`web/inbox.html`: take over a chat, reply from the salon number, hand back to the bot) · its own agent swarm with validators. Read the setup's README for price, flows, templates, ads playbook and onboarding checklist.
 
 ## How it fits together
 ```

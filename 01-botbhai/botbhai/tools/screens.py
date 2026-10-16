@@ -40,6 +40,11 @@ def pages(tmp):
         out.append((f"demo-{tab}", demo, True, f"document.querySelector('[data-tab={tab}]').click()"))
     out.append(("demo-voice", demo, True, "document.getElementById('m-voice').click()"))
     out.append(("demo-embed", demo + "?embed=1", True, None))
+    inbox = (ROOT / "web" / "dist" / "inbox.html").as_uri()
+    out.append(("inbox-signin", inbox, True, None))
+    out.append(("inbox-list", inbox + "?demo=1", True, None))
+    out.append(("inbox-chat", inbox + "?demo=1&open=919812345678", True, None))
+    out.append(("inbox-notes", inbox + "?demo=1&open=919812345678", True, "document.querySelector('details.more').open = true"))
     out.append(("seo-home", (site / "site" / "index.html").as_uri(), True, None))
     first = sorted((site / "site").glob("*-in-*.html"))[0]
     out.append(("seo-service", first.as_uri(), True, None))

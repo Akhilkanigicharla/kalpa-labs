@@ -19,5 +19,6 @@ head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="v
 (dist / "index.html").write_text(head + page + "</body></html>")
 (dist / "artifact.html").write_text(page)
 shutil.copy(root / "web" / "widget.js", dist / "widget.js")
+shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
 subprocess.check_call([sys.executable, str(root / "tools" / "cards.py"), "--all-demo", "--out", str(dist / "cards" / "demo")], stdout=subprocess.DEVNULL)
 print("built", ", ".join(setups), "+ smile cards →", dist)

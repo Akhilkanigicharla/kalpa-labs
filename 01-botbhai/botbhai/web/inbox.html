@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>BotBhai Inbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Shared inbox, phase 1 (A04). Phone first: list → chat. Two columns from 900 px.
+   Kalpa design tokens (Kalamkari): copied from 00-hq/design/tokens.css; keep in sync. */
+:root{
+  --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --soft:#E6E6F1;
+  --accent:#2A3A8F; --accent-fg:#FFFFFF; --madder:#B23A2C; --gold:#D3940A; --flame:#C2541B;
+  --ok:#23804F; --warn:#B86E00; --bad:#C0392B;
+  --hero:#1C2463; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#5B6178; --l1:#B23A2C; --l2:#2F4FB0; --l3:#2E7D4F; --l4:#7B3F8C; --l5:#C08304; --l6:#B8235A; --l7:#13777F;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}
+:root{
+  --world:var(--l1);
+  --chat-bg:color-mix(in srgb,var(--soft) 70%,var(--bg));
+  --bubble-in:var(--panel); --bubble-bot:color-mix(in srgb,var(--muted) 12%,var(--panel)); --bubble-staff:color-mix(in srgb,var(--accent) 15%,var(--panel));
+  --temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+html,body{height:100%}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1.4px);background-size:18px 18px;color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app{max-width:1180px;margin:0 auto;padding:16px 16px 24px;display:flex;flex-direction:column;gap:14px;min-height:100%}
+header.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0,transparent 0 60px,color-mix(in srgb,var(--gold) 45%,var(--hero)) 61px 62px,transparent 63px),var(--hero);color:var(--hero-fg);border-radius:var(--r-l);padding:22px 18px 22px;box-shadow:0 18px 40px -22px #1C2463}
+header.hero::before,header.hero::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--temple);opacity:.9}
+header.hero::before{top:0}header.hero::after{bottom:0;transform:scaleY(-1)}
+.eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 4px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);line-height:1.1;margin:0}
+.hero .row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:end;justify-content:space-between}
+.hero small{color:var(--hero-mute)}
+.counts{display:flex;gap:8px;flex-wrap:wrap}
+.count{background:color-mix(in srgb,var(--hero-fg) 12%,transparent);border-radius:999px;padding:4px 12px;font:600 12.5px var(--f-mono)}
+.count b{color:var(--gold);font-weight:600}
+.demo-flag{display:inline-block;margin-left:6px;background:var(--gold);color:#191C33;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.08em;vertical-align:middle}
+/* layout */
+.split{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;flex:1;min-height:0}
+@media (min-width:900px){.split{grid-template-columns:minmax(0,360px) minmax(0,1fr)}.split .back{display:none}}
+@media (max-width:899px){.split.open .list{display:none}.split:not(.open) .thread{display:none}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0}
+/* list */
+.list{display:flex;flex-direction:column;overflow:hidden}
+.chips{display:flex;gap:6px;padding:10px;border-bottom:1px solid var(--rule);overflow-x:auto;scrollbar-width:thin}
+.chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
+.convos{list-style:none;margin:0;padding:6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.convo{width:100%;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;background:none;border:0;border-radius:var(--r-m);padding:10px 8px;cursor:pointer;min-height:64px}
+.convo:hover{background:var(--soft)}
+.convo[aria-current="true"]{background:color-mix(in srgb,var(--accent) 12%,var(--panel))}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:400 18px var(--f-display);color:var(--hero-fg);background:radial-gradient(circle,var(--hero) 0 60%,transparent 61%),conic-gradient(var(--gold) 0 25%,var(--madder) 0 50%,var(--gold) 0 75%,var(--madder) 0)}
+.convo .who{display:flex;gap:6px;align-items:baseline;min-width:0}
+.convo .who b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.convo .prev{display:block;color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.convo time{font:400 11.5px var(--f-mono);color:var(--muted);white-space:nowrap}
+.side{display:flex;flex-direction:column;align-items:end;gap:4px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pill.human{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.bot{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.pill.resolved{background:var(--soft);color:var(--muted)}
+.tag{font:600 11px var(--f-mono);color:var(--muted)}
+.empty{padding:28px 18px;text-align:center;color:var(--muted)}
+/* thread */
+.thread{display:flex;flex-direction:column;overflow:hidden;min-height:70vh}
+.thead{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.thead .title{flex:1;min-width:0}
+.thead .title b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thead .title a{font:400 12.5px var(--f-mono);color:var(--muted)}
+.iconbtn{min-width:44px;min-height:44px;border-radius:50%;border:1px solid var(--rule);background:none;cursor:pointer;font-size:18px;line-height:1}
+.banner{margin:10px 12px 0;padding:9px 12px;border-radius:var(--r-m);font-size:14px;border:1px solid}
+.banner.human{background:color-mix(in srgb,var(--bad) 9%,var(--panel));border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
+.banner.warn{background:color-mix(in srgb,var(--warn) 10%,var(--panel));border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.banner.ok{background:color-mix(in srgb,var(--ok) 9%,var(--panel));border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px}
+.btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--accent);color:var(--accent-fg)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--rule)}
+.btn.warmth{background:var(--madder);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:6px;background:var(--chat-bg);min-height:240px}
+.b{max-width:86%;padding:7px 10px 5px;border-radius:10px;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 1px .5px rgba(0,0,0,.13)}
+.b.customer{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:2px}
+.b.bot{background:var(--bubble-bot);align-self:flex-end;border-top-right-radius:2px}
+.b.staff{background:var(--bubble-staff);align-self:flex-end;border-top-right-radius:2px}
+.b .by{display:block;font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+.b.staff .by{color:var(--accent)}
+.b time{display:block;text-align:right;font:400 10.5px var(--f-mono);color:var(--muted);margin-top:2px}
+details.more{border-top:1px solid var(--rule);padding:4px 12px 10px}
+details.more summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.field label{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea,.compose textarea,.signin input{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:9px 11px;font-size:15px}
+.field textarea{min-height:76px;resize:vertical}
+.inline{display:flex;gap:8px}.inline input{flex:1;min-width:0}
+.compose{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--rule);align-items:end}
+.compose textarea{flex:1;min-width:0;resize:none;max-height:140px;border-radius:20px;padding:10px 14px}
+.send{width:48px;height:48px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-fg);font-size:19px;cursor:pointer;flex:none}
+.send:disabled{opacity:.45;cursor:not-allowed}
+.hint{padding:0 12px 10px;color:var(--muted);font-size:13px;margin:0}
+/* sign in */
+.signin{padding:22px 18px;display:flex;flex-direction:column;gap:12px;max-width:520px}
+.signin h2{font:400 24px/1.15 var(--f-display);margin:0}
+.signin p{margin:0;color:var(--muted)}
+.toast{position:fixed;left:16px;right:16px;bottom:16px;margin:0 auto;max-width:520px;background:var(--hero);color:var(--hero-fg);border-radius:var(--r-m);padding:12px 14px;box-shadow:var(--shadow);font-size:14px}
+.toast[hidden]{display:none}
+.rise{animation:rise .3s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.rise{animation:none}}
+footer{color:var(--muted);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <p class="eyebrow">BotBhai · Shared inbox</p>
+    <div class="row">
+      <h1 id="biz">Inbox</h1>
+      <div class="counts" id="counts" aria-live="polite"></div>
+    </div>
+    <small id="sub">Chats the bot passed to you, in one place. Reply as the salon; hand back to the bot when done.</small>
+  </header>
+
+  <section class="card signin" id="signin" hidden aria-labelledby="signin-h">
+    <h2 id="signin-h">Open your inbox</h2>
+    <p>Paste the dashboard key from your BotBhai setup message. It stays on this phone only.</p>
+    <form id="signin-form" class="inline">
+      <label class="sr" for="key">Dashboard key</label>
+      <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="36-character key" required>
+      <button class="btn" type="submit">Open</button>
+    </form>
+    <p id="signin-err" role="alert"></p>
+    <p><a href="?demo=1">See a demo with sample chats</a></p>
+  </section>
+
+  <main class="split" id="split" hidden>
+    <section class="card list" aria-label="Conversations">
+      <div class="chips" role="group" aria-label="Filter">
+        <button class="chip" data-f="human" aria-pressed="true">Needs you</button>
+        <button class="chip" data-f="bot" aria-pressed="false">Bot</button>
+        <button class="chip" data-f="resolved" aria-pressed="false">Done</button>
+        <button class="chip" data-f="all" aria-pressed="false">All</button>
+      </div>
+      <ul class="convos" id="convos"></ul>
+    </section>
+    <section class="card thread" id="thread" aria-label="Chat">
+      <div class="empty" id="pick">Pick a chat on the left.</div>
+    </section>
+  </main>
+  <footer><span id="foot"></span></footer>
+</div>
+<p class="toast" id="toast" role="status" hidden></p>
+
+<script>
+(function () {
+  "use strict";
+  var API = "/.netlify/functions/inbox", KEY = "botbhai.inbox.key", POLL_MS = 15000;
+  var params = new URLSearchParams(location.search);
+  var DEMO = params.get("demo") === "1";
+  var $ = function (id) { return document.getElementById(id); };
+  var store = { get: function () { try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } },
+                set: function (v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} } };
+  // A setup link can carry the key in the #fragment (never sent to any server); save it and wipe it from the address bar.
+  var frag = /(?:^|[#&])key=([a-f0-9-]{36})/i.exec(location.hash);
+  if (frag) { store.set(frag[1]); history.replaceState(null, "", location.pathname + location.search); }
+
+  var S = { key: store.get(), filter: "human", list: [], open: null, thread: null, client: null, timer: null, busy: false };
+
+  // ---------- helpers
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    for (var k in attrs || {}) { if (k === "text") n.textContent = attrs[k]; else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), attrs[k]); else if (attrs[k] != null) n.setAttribute(k, attrs[k]); }
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  var tz = { timeZone: "Asia/Kolkata" };
+  function when(iso) {
+    if (!iso) return "";
+    var d = new Date(iso), now = new Date();
+    var sameDay = d.toLocaleDateString("en-IN", tz) === now.toLocaleDateString("en-IN", tz);
+    return sameDay ? d.toLocaleTimeString("en-IN", Object.assign({ hour: "numeric", minute: "2-digit" }, tz)) : d.toLocaleDateString("en-IN", Object.assign({ day: "numeric", month: "short" }, tz));
+  }
+  function clock(iso) { return iso ? new Date(iso).toLocaleTimeString("en-IN", Object.assign({ hour: "numeric", minute: "2-digit" }, tz)) : ""; }
+  function label(c) { return c.name || (c.channel === "web" ? "Website visitor" : "+" + c.contact.replace(/^(\d{2})(\d{5})(\d+)$/, "$1 $2 $3")); }
+  function initial(c) { return (c.name || (c.channel === "web" ? "W" : "#")).trim().charAt(0).toUpperCase(); }
+  var STATUS = { human: "Needs you", bot: "Bot", resolved: "Done" };
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 4200); }
+
+  // ---------- data
+  function call(method, body, query) {
+    if (DEMO) return Demo.call(method, body, query);
+    var url = API + (query ? "?" + new URLSearchParams(query) : "");
+    return fetch(url, { method: method, headers: Object.assign({ Authorization: "Bearer " + S.key }, body ? { "Content-Type": "application/json" } : {}), body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, data: d }; }); });
+  }
+  function load() {
+    return call("GET").then(function (r) {
+      if (r.status === 401) { store.set(""); S.key = ""; showSignin("That key didn't work. Check it and paste again."); return; }
+      if (r.status !== 200) { toast("Couldn't load chats. Retrying soon."); return; }
+      S.client = r.data.client; S.list = r.data.conversations || []; renderHead(); renderList();
+      if (S.open) return openChat(S.open, true);
+    }).catch(function () { toast("You're offline. Retrying soon."); });
+  }
+  function openChat(contact, quiet) {
+    S.open = contact; $("split").classList.add("open"); renderList();
+    return call("GET", null, { contact: contact }).then(function (r) {
+      if (r.status !== 200) { if (!quiet) toast("Couldn't open that chat."); return; }
+      S.thread = r.data; renderThread(quiet);
+    });
+  }
+  function act(action, extra) {
+    if (S.busy || !S.open) return Promise.resolve();
+    S.busy = true;
+    return call("POST", Object.assign({ action: action, contact: S.open }, extra || {})).then(function (r) {
+      S.busy = false;
+      if (r.status !== 200) { toast((r.data && r.data.message) || "That didn't work. Try again."); return false; }
+      var done = { take_over: "You've taken over. The bot is quiet for this chat.", resume: "The bot is back on this chat.", resolve: "Marked done. The bot answers new messages.", assign: "Saved.", note: "Note saved." }[action];
+      if (done) toast(done);
+      return load().then(function () { return true; });
+    }, function () { S.busy = false; toast("You're offline. Nothing was sent."); return false; });
+  }
+
+  // ---------- render
+  function renderHead() {
+    var c = S.client || {}; $("biz").textContent = c.name || "Inbox";
+    if (DEMO) $("biz").appendChild(el("span", { class: "demo-flag", text: "DEMO" }));
+    var n = { human: 0, bot: 0, resolved: 0 }; S.list.forEach(function (x) { n[x.status] = (n[x.status] || 0) + 1; });
+    var counts = $("counts"); counts.textContent = "";
+    counts.appendChild(el("span", { class: "count" }, [el("b", { text: String(n.human) }), " need you"]));
+    counts.appendChild(el("span", { class: "count" }, [el("b", { text: String(n.bot) }), " with bot"]));
+    document.title = (n.human ? "(" + n.human + ") " : "") + "BotBhai Inbox";
+  }
+  function renderList() {
+    var ul = $("convos"); ul.textContent = "";
+    var rows = S.list.filter(function (c) { return S.filter === "all" || c.status === S.filter; });
+    if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "human" ? "Nobody is waiting for you. 🙌 The bot has it." : "No chats here yet." })); return; }
+    rows.forEach(function (c) {
+      var prev = c.last ? (c.last.author === "staff" ? "You: " : c.last.author === "bot" ? "Bot: " : "") + c.last.body : "";
+      ul.appendChild(el("li", null, [el("button", { class: "convo", "aria-current": String(S.open === c.contact), onclick: function () { openChat(c.contact); } }, [
+        el("span", { class: "av", "aria-hidden": "true", text: initial(c) }),
+        el("span", { style: "min-width:0" }, [el("span", { class: "who" }, [el("b", { text: label(c) }), c.assigned_to ? el("span", { class: "tag", text: "· " + c.assigned_to }) : null]), el("span", { class: "prev", text: prev })]),
+        el("span", { class: "side" }, [el("time", { text: when(c.last ? c.last.created_at : c.updated_at) }), el("span", { class: "pill " + c.status, text: STATUS[c.status] })]),
+      ])]));
+    });
+  }
+  function renderThread(quiet) {
+    var box = $("thread"), t = S.thread, c = t.conversation;
+    var keepDraft = $("reply") ? $("reply").value : "";
+    var keepNote = $("notes") && document.activeElement === $("notes") ? $("notes").value : null;
+    box.textContent = "";
+    box.appendChild(el("div", { class: "thead" }, [
+      el("button", { class: "iconbtn back", "aria-label": "Back to chats", text: "←", onclick: function () { S.open = null; S.thread = null; $("split").classList.remove("open"); renderList(); } }),
+      el("span", { class: "av", "aria-hidden": "true", text: initial(c) }),
+      el("div", { class: "title" }, [el("b", { text: label(c) }), c.channel === "whatsapp" ? el("a", { href: "tel:+" + c.contact, text: "+" + c.contact }) : el("span", { class: "tag", text: "Website chat" })]),
+      el("span", { class: "pill " + c.status, text: STATUS[c.status] }),
+    ]));
+    if (c.status === "human") box.appendChild(el("p", { class: "banner human", text: "🙋 You're handling this chat. The bot stays quiet until " + clock(c.human_until) + ", or until you tap Resume bot." }));
+    if (c.opted_out) box.appendChild(el("p", { class: "banner warn", text: "This customer replied STOP. WhatsApp rules: don't message them unless they write START." }));
+    else if (c.channel === "web") box.appendChild(el("p", { class: "banner warn", text: "Website visitors have no WhatsApp number, so you can't reply from here. Their details are in the dashboard." }));
+    else if (!c.window_open) box.appendChild(el("p", { class: "banner warn", text: "Their last message was over 24 hours ago. WhatsApp only allows approved templates now, so call them instead." }));
+
+    box.appendChild(el("div", { class: "actions" }, [
+      c.status !== "human" ? el("button", { class: "btn warmth", onclick: function () { act("take_over"); }, text: "Take over" }) : el("button", { class: "btn", onclick: function () { act("resume"); }, text: "Resume bot" }),
+      c.status !== "resolved" ? el("button", { class: "btn ghost", onclick: function () { act("resolve"); }, text: "Mark done" }) : null,
+    ]));
+
+    var msgs = el("div", { class: "msgs", id: "msgs", role: "log", "aria-label": "Messages" });
+    (t.messages || []).forEach(function (m) {
+      var who = m.author === "staff" ? "You" : m.author === "bot" ? "Bot" : null;
+      msgs.appendChild(el("div", { class: "b " + m.author }, [who ? el("span", { class: "by", text: who }) : null, m.body || "", el("time", { text: clock(m.created_at) })]));
+    });
+    if (!(t.messages || []).length) msgs.appendChild(el("p", { class: "empty", text: "No messages yet." }));
+    box.appendChild(msgs);
+
+    var canReply = c.channel === "whatsapp" && !c.opted_out && c.window_open;
+    var ta = el("textarea", { id: "reply", rows: "1", placeholder: canReply ? "Reply as " + ((S.client && S.client.name) || "the salon") + "…" : "Replying is off for this chat", "aria-label": "Your reply", maxlength: "4096" });
+    ta.value = keepDraft; ta.disabled = !canReply;
+    ta.addEventListener("input", function () { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 140) + "px"; });
+    ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send(); });
+    var btn = el("button", { class: "send", "aria-label": "Send", text: "➤", onclick: function () { send(); } }); btn.disabled = !canReply;
+    function send() {
+      var v = ta.value.trim(); if (!v || !canReply) return;
+      btn.disabled = true;
+      act("reply", { text: v }).then(function (ok) { if (ok) { ta.value = ""; if ($("reply")) $("reply").value = ""; } else btn.disabled = false; });
+    }
+    box.appendChild(el("div", { class: "compose" }, [ta, btn]));
+    if (canReply) box.appendChild(el("p", { class: "hint", text: "Sent from your WhatsApp Business number. Replying pauses the bot for this chat." }));
+
+    var who = el("input", { id: "assign", value: c.assigned_to || "", placeholder: "Staff name", maxlength: "40" });
+    var notes = el("textarea", { id: "notes", maxlength: "2000", placeholder: "Only your team sees this" }); notes.value = keepNote != null ? keepNote : c.notes || "";
+    box.appendChild(el("details", { class: "more" }, [el("summary", { text: "Assign & notes" + (c.assigned_to ? " · " + c.assigned_to : "") }),
+      el("div", { class: "field" }, [el("label", { for: "assign", text: "Who's handling it" }), el("div", { class: "inline" }, [who, el("button", { class: "btn ghost", text: "Save", onclick: function () { act("assign", { assigned_to: who.value }); } })])]),
+      el("div", { class: "field" }, [el("label", { for: "notes", text: "Private notes" }), notes, el("div", null, [el("button", { class: "btn ghost", text: "Save note", onclick: function () { act("note", { notes: notes.value }); } })])]),
+    ]));
+    msgs.scrollTop = msgs.scrollHeight;
+    if (!quiet && keepNote == null && innerWidth >= 900 && canReply) ta.focus({ preventScroll: true });
+  }
+  function showSignin(err) { $("signin").hidden = false; $("split").hidden = true; $("signin-err").textContent = err || ""; stop(); }
+  function start() {
+    $("signin").hidden = true; $("split").hidden = false;
+    $("foot").textContent = DEMO ? "Demo: nothing is sent. Sample chats only." : "Updates every 15 seconds while this page is open.";
+    load(); stop(); S.timer = setInterval(function () { if (document.visibilityState === "visible") load(); }, POLL_MS);
+  }
+  function stop() { if (S.timer) clearInterval(S.timer); S.timer = null; }
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible" && S.timer) load(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (b) {
+    b.addEventListener("click", function () {
+      S.filter = b.getAttribute("data-f");
+      Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      renderList();
+    });
+  });
+  $("signin-form").addEventListener("submit", function (e) {
+    e.preventDefault(); var v = $("key").value.trim();
+    if (!/^[a-f0-9-]{36}$/i.test(v)) { $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; return; }
+    S.key = v; store.set(v); $("key").value = ""; start();
+  });
+
+  // ---------- demo: the same API shape, in memory, nothing sent
+  var Demo = (function () {
+    var t0 = Date.now(), m = function (min) { return new Date(t0 - min * 60000).toISOString(); };
+    var data = [
+      { contact: "919812345678", name: "Ravi Teja", status: "human", human_until: new Date(t0 + 95 * 60000).toISOString(), assigned_to: "Lakshmi", notes: "Waited 30 min on Saturday. Offer 20% on next visit.", last_inbound_at: m(3), msgs: [
+        ["in", "customer", "hi", 42], ["out", "bot", "Hi Ravi! 😊 Welcome back to Glow Studio. Same *Hair spa* again?", 42],
+        ["in", "customer", "worst service last time, waited 30 min, no one picked phone", 6],
+        ["out", "bot", "I'm really sorry about that, Ravi 🙏 I've told the owner right now; someone will reply to you personally.", 6],
+        ["in", "customer", "ok waiting", 3] ] },
+      { contact: "919800000002", name: "Sravani", status: "human", human_until: new Date(t0 + 50 * 60000).toISOString(), last_inbound_at: m(12), msgs: [
+        ["in", "customer", "bridal makeup ki rate entha? 14 Dec", 15], ["out", "bot", "Congratulations! 💐 Bridal packages start at ₹15,000. 14 Dec is marked full, so I've asked the owner to call you.", 15],
+        ["in", "customer", "talk to owner please", 12] ] },
+      { contact: "919700000003", name: "Priya", status: "bot", last_inbound_at: m(25), msgs: [
+        ["in", "customer", "book facial tomorrow 4pm", 26], ["out", "bot", "Booking confirmed ✅ Facial · Sat, 17 Oct · 4:00 PM. See you!", 25] ] },
+      { contact: "web:visitor8842", name: null, status: "bot", last_inbound_at: m(60), msgs: [
+        ["in", "customer", "do you do keratin?", 61], ["out", "bot", "Yes! Keratin is ₹3,500 and takes about 90 minutes. Want me to book it?", 60] ] },
+      { contact: "919600000005", name: "Anil", status: "resolved", last_inbound_at: m(60 * 30), msgs: [
+        ["in", "customer", "parking undha?", 60 * 30], ["out", "staff", "Yes Anil, 2 bike spots in front and car parking at the mall basement.", 60 * 30 - 5] ] },
+    ];
+    function view(d) {
+      var last = d.msgs[d.msgs.length - 1];
+      return { contact: d.contact, name: d.name, status: d.status === "human" && new Date(d.human_until) < new Date() ? "bot" : d.status, human_until: d.human_until || null,
+        assigned_to: d.assigned_to || null, notes: d.notes || "", opted_out: false, channel: d.contact.indexOf("web:") === 0 ? "web" : "whatsapp",
+        window_open: Date.now() - new Date(d.last_inbound_at).getTime() < 864e5, updated_at: m(last[3]),
+        last: { direction: last[0], author: last[1], body: last[2], created_at: m(last[3]) } };
+    }
+    var rank = { human: 0, bot: 1, resolved: 2 };
+    function ok(x) { return Promise.resolve({ status: 200, data: x }); }
+    function call(method, body, query) {
+      if (method === "GET" && !query) return ok({ client: { name: "Glow Studio", niche: "salon", hold_hours: 12 }, conversations: data.map(view).sort(function (a, b) { return rank[a.status] - rank[b.status]; }) });
+      var d = data.filter(function (x) { return x.contact === ((query && query.contact) || (body && body.contact)); })[0];
+      if (!d) return Promise.resolve({ status: 404, data: { error: "no such conversation" } });
+      if (method === "GET") return ok({ conversation: view(d), messages: d.msgs.map(function (x) { return { direction: x[0], author: x[1], body: x[2], created_at: m(x[3]) }; }) });
+      var hold = function () { d.status = "human"; d.human_until = new Date(Date.now() + 12 * 3.6e6).toISOString(); };
+      if (body.action === "reply") {
+        if (d.contact.indexOf("web:") === 0) return Promise.resolve({ status: 400, data: { message: "Website visitors have no WhatsApp number." } });
+        d.msgs.push(["out", "staff", body.text, 0]); hold();
+      } else if (body.action === "take_over") hold();
+      else if (body.action === "resume") { d.status = "bot"; d.human_until = null; }
+      else if (body.action === "resolve") { d.status = "resolved"; d.human_until = null; }
+      else if (body.action === "assign") d.assigned_to = body.assigned_to || null;
+      else if (body.action === "note") d.notes = body.notes;
+      return ok({ ok: true });
+    }
+    return { call: call };
+  })();
+
+  if (DEMO) start(); else if (S.key) start(); else showSignin();
+  if (DEMO && params.get("open")) openChat(params.get("open"));
+})();
+</script>
+</body>
+</html>

@@ -67,6 +67,14 @@ async function closeTheDay(client, state, text) {
   return true;
 }
 
+// With the shared inbox deployed (SITE_URL set), the owner replies from inbox.html instead of the WhatsApp Business app,
+// which can't send from a Cloud-API number unless coexistence is set up.
+function inboxHint(text) {
+  if (!process.env.SITE_URL) return text;
+  const link = `open the inbox to reply: ${process.env.SITE_URL}/inbox.html`;
+  return /reply to them from the WhatsApp Business app/.test(text) ? text.replace("reply to them from the WhatsApp Business app", link) : `${text} ${link}`;
+}
+
 async function handleMessage(client, v, msg) {
   const phoneNumberId = client.phone_number_id; const contact = msg.from;
   const profileName = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || null;
@@ -115,13 +123,15 @@ async function handleMessage(client, v, msg) {
     fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
 
   for (const e of out.events) {
-    if (["notify_owner", "handoff", "forward_to_owner"].includes(e.type)) await L.alertOwner(client, e.text);
+    if (["notify_owner", "handoff", "forward_to_owner"].includes(e.type)) await L.alertOwner(client, e.type === "handoff" ? inboxHint(e.text) : e.text);
     if (e.type === "opt_out") await L.db(`members?client_id=eq.${client.id}&phone=eq.${L.enc(contact)}`, { method: "PATCH", prefer: "return=minimal", body: { opted_out: true } }).catch(() => {});
   }
   await Promise.all([
-    L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
+    // Inbox columns (A04): assigned_to and notes are left out on purpose, so a new message never wipes them.
+    L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: Object.assign(
+      { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString(), last_inbound_at: new Date().toISOString() }, L.inboxStatus(out.state)) }),
     L.saveLead(client, contact, out.lead, prev),
-    L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", body: r.text }))] }),
+    L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", author: "bot", body: r.text }))] }),
   ]);
 }
 
@@ -149,3 +159,4 @@ exports.handler = async (event) => {
   return L.json(200, { ok: true }); // always 200 fast, or Meta retries
 };
 exports._textOf = textOf;
+exports._inboxHint = inboxHint;

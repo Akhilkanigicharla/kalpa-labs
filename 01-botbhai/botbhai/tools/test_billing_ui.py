@@ -3,7 +3,7 @@
 
 1. The sample invoice's QR, rendered by Chromium, is scanned with OpenCV and must equal the UPI link exactly.
 2. The invoice prints to a one-page A4 PDF whose text (pdftotext) has every required field and no GST wording.
-   The PDF is saved as 01-botbhai/docs/billing/sample-invoice.pdf for Akhil to look at.
+   `--save` refreshes the committed copy in 01-botbhai/docs/billing/sample-invoice.pdf for Akhil to look at.
 3. billing.html (demo mode) at 390 px: quick-fill, create, mark paid with a UPI ref, two-tap void; no JS errors.
 """
 import pathlib, subprocess, sys, tempfile
@@ -36,8 +36,7 @@ def main():
         assert pg.evaluate("(() => { const w = document.querySelector('.tablewrap'); return w.scrollWidth <= w.clientWidth; })()"), "invoice table scrolls sideways on a phone"
         print("  ✓ invoice page fits 390 px")
 
-        DOCS.mkdir(parents=True, exist_ok=True)
-        pdf = DOCS / "sample-invoice.pdf"
+        pdf = DIST / "sample-invoice.pdf"  # build output (ignored by git); the committed copy is refreshed only with --save
         pg.emulate_media(media="print")
         pg.pdf(path=str(pdf), format="A4", print_background=True, prefer_css_page_size=True)
         pages = int([l for l in subprocess.check_output(["pdfinfo", str(pdf)], text=True).splitlines() if l.startswith("Pages:")][0].split()[1])
@@ -49,7 +48,9 @@ def main():
         for bad in ["Tax Invoice", "GSTIN", "CGST", "SGST", "IGST", "Save as PDF"]:
             assert bad not in text, f"PDF must not contain {bad!r}"
         assert pages == 1, f"sample invoice should be 1 page, got {pages}"
-        print(f"  ✓ sample PDF renders: 1 A4 page, all fields, no GST words, no screen buttons → {pdf.relative_to(ROOT.parent.parent)}")
+        if "--save" in sys.argv or not (DOCS / "sample-invoice.pdf").exists():
+            DOCS.mkdir(parents=True, exist_ok=True); (DOCS / "sample-invoice.pdf").write_bytes(pdf.read_bytes())
+        print("  ✓ sample PDF renders: 1 A4 page, all fields, no GST words, no screen buttons")
 
         pg = b.new_page(viewport={"width": 390, "height": 844})
         pg.on("pageerror", lambda e: errs.append(str(e)))

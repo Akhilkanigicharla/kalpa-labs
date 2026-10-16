@@ -16,6 +16,9 @@ test("FY invoice series, ≤ 16 characters, resets on 1 April", () => {
   assert.equal(invoiceNo(1, "2026-10-13"), "JC/26-27/0001");
   assert.equal(invoiceNo(42, "2027-03-31"), "JC/26-27/0042");
   assert.equal(invoiceNo(1, "2027-04-01"), "JC/27-28/0001");
+  // instants are read in IST, like the SQL next_invoice_no(): 00:30 IST on 1 April is the new year
+  assert.equal(invoiceNo(1, new Date("2027-03-31T19:00:00Z")), "JC/27-28/0001");
+  assert.equal(invoiceNo(9, new Date("2027-03-31T18:00:00Z")), "JC/26-27/0009");
   assert.throws(() => invoiceNo(1, "2026-10-13", "JOBCARD"), /16 characters/);
 });
 

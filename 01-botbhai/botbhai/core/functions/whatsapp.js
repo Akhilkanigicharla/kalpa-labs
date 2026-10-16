@@ -111,8 +111,8 @@ async function handleMessage(client, v, msg) {
   let budget = 4000; // stay well inside Meta's webhook timeout
   for (const r of replies) { const d = Math.min(typingDelayMs(r.text), budget); budget -= d; await sleep(d); await L.sendReply(phoneNumberId, contact, r).catch((e) => console.error("send", e.message)); }
   if (out.events.some((e) => e.type === "booking")) { const card = L.cardUrl(client, `${client.niche}-booking_confirmed.png`); if (card) await L.sendImage(phoneNumberId, contact, card, "").catch(() => {}); }
-  if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL && replies.length)
-    fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY || "" }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
+  if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL && process.env.VOICE_SERVER_KEY && replies.length)
+    fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
 
   for (const e of out.events) {
     if (["notify_owner", "handoff", "forward_to_owner"].includes(e.type)) await L.alertOwner(client, e.text);

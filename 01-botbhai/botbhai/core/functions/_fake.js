@@ -25,6 +25,12 @@ module.exports = function installFake(seed) {
       store.bookings.push({ id: "bk" + (store.bookings.length + 1), client_id: p.p_client, contact: p.p_contact, name: p.p_name, service: p.p_service, date_iso: p.p_date, slot: p.p_slot, status: "confirmed", source: p.p_source });
       return ok(true);
     }
+    if (u.pathname.endsWith("/rpc/rate_hit")) { // same logic as the SQL function
+      const p = JSON.parse(opts.body); store.rate_hits = store.rate_hits || []; const now = Date.now();
+      const n = store.rate_hits.filter((h) => h.key === p.p_key && h.at > now - p.p_window_s * 1000).length;
+      if (n >= p.p_max) return ok(false);
+      store.rate_hits.push({ key: p.p_key, at: now }); return ok(true);
+    }
     const get = (r, k) => (k.includes("->>") ? (r[k.split("->>")[0]] || {})[k.split("->>")[1]] : r[k]);
     const filt = (rows) => { for (const [k0, v] of u.searchParams) { const k = k0;
       if (v.startsWith("eq.")) rows = rows.filter((r) => String(get(r, k)) === decodeURIComponent(v.slice(3)));

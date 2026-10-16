@@ -163,9 +163,39 @@ begin
 end $$;
 drop trigger if exists job_cards_same_owner on public.job_cards;
 create trigger job_cards_same_owner before insert or update on public.job_cards for each row execute function public.same_owner_check();
+-- an invoice's customer AND job card must both be the same technician's
+create or replace function public.invoice_owner_check() returns trigger language plpgsql as $$
+begin
+  if new.customer_id is not null and not exists (select 1 from public.customers c where c.id = new.customer_id and c.technician_id = new.technician_id) then
+    raise exception 'customer belongs to another technician';
+  end if;
+  if new.job_card_id is not null and not exists (select 1 from public.job_cards j where j.id = new.job_card_id and j.technician_id = new.technician_id) then
+    raise exception 'job card belongs to another technician';
+  end if;
+  return new;
+end $$;
 drop trigger if exists invoices_same_owner on public.invoices;
-create trigger invoices_same_owner before insert or update on public.invoices for each row execute function public.same_owner_check();
+create trigger invoices_same_owner before insert or update on public.invoices for each row execute function public.invoice_owner_check();
+drop trigger if exists amc_same_owner on public.amc_contracts;
+create trigger amc_same_owner before insert or update on public.amc_contracts for each row execute function public.same_owner_check();
+
+-- the paid plan is set only by the server (after payment), never by the technician's own app
+create or replace function public.plan_guard() returns trigger language plpgsql as $$
+begin
+  if current_user in ('authenticated', 'anon') and
+     ((tg_op = 'INSERT' and new.plan <> 'free') or (tg_op = 'UPDATE' and new.plan is distinct from old.plan)) then
+    raise exception 'plan can only be changed by the server' using errcode = 'insufficient_privilege';
+  end if;
+  return new;
+end $$;
+drop trigger if exists technicians_plan_guard on public.technicians;
+create trigger technicians_plan_guard before insert or update on public.technicians for each row execute function public.plan_guard();
 
 grant usage on schema public to authenticated;
-grant select, insert, update, delete on public.technicians, public.customers, public.job_cards, public.invoices, public.amc_contracts to authenticated;
+grant select, insert, update, delete on public.technicians, public.customers, public.job_cards, public.amc_contracts to authenticated;
+-- issued invoices are permanent (GST): the app may add them and mark them paid, never edit amounts or delete.
+-- To undo a bill, issue a credit note (a new invoice row) instead.
+revoke update, delete on public.invoices from authenticated;
+grant select, insert on public.invoices to authenticated;
+grant update (paid) on public.invoices to authenticated;
 grant select on public.usage_minutes, public.invoice_counters to authenticated;

@@ -23,17 +23,29 @@ from . import __version__
 from . import recognizers as builtin
 
 try:  # reuse the FinOps hashing so hashes match ingest's pseudonymous ids
-    from ingest.schema import DEV_SALT, hash_id
-except Exception:  # vendored without ingest/: identical algorithm
+    from ingest.schema import DEV_SALT, MissingSaltError, hash_id, resolve_salt
+except ImportError:  # vendored without ingest/: identical algorithm
     import hashlib
     import hmac
 
     DEV_SALT = "ledger-peaks-dev-salt"  # same as ingest.schema
 
+    class MissingSaltError(RuntimeError):
+        pass
+
+    def resolve_salt(salt=None):
+        if salt:
+            return salt
+        if os.environ.get("LP_HASH_SALT"):
+            return os.environ["LP_HASH_SALT"]
+        if os.environ.get("LP_ALLOW_DEV_SALT") == "1":
+            return DEV_SALT
+        raise MissingSaltError("LP_HASH_SALT is not set; refusing to hash with the public dev salt")
+
     def hash_id(value, salt=None):
         if value is None or str(value).strip() == "":
             return None
-        key = (salt or os.environ.get("LP_HASH_SALT") or DEV_SALT).encode()
+        key = resolve_salt(salt).encode()
         return "c_" + hmac.new(key, str(value).strip().encode(), hashlib.sha256).hexdigest()[:16]
 
 SCAN_EXT = {".csv", ".tsv", ".jsonl", ".ndjson", ".json", ".txt", ".log", ".md"}
@@ -127,6 +139,7 @@ def find_all(text: str, engine: str, agree: dict | None = None):
 def scan(paths: Iterable[str], engine: str = "auto", salt: str | None = None) -> dict:
     engine = resolve_engine(engine)
     salt_source = "arg" if salt else ("env" if os.environ.get("LP_HASH_SALT") else "dev-default")
+    resolve_salt(salt)  # fail before reading any file when no real salt is set
     totals: Counter = Counter()
     per_file: dict[str, dict] = {}
     hashes: dict[str, set] = defaultdict(set)

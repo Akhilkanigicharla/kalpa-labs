@@ -1,8 +1,9 @@
 /* Kalamkari tokens (00-hq/design/tokens.css) tuned with b4 plum (--l4). Fonts are bundled from @fontsource (OFL). */
-@import "@fontsource/anek-latin/400.css";
-@import "@fontsource/anek-latin/600.css";
-@import "@fontsource/rozha-one/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
+/* Latin woff2 only (Chrome reads woff2): the full @fontsource CSS shipped every script and .woff too (~516 KB). */
+@font-face { font-family: "Anek Latin"; font-weight: 400; font-display: swap; src: url("@fontsource/anek-latin/files/anek-latin-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Anek Latin"; font-weight: 600; font-display: swap; src: url("@fontsource/anek-latin/files/anek-latin-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Rozha One"; font-weight: 400; font-display: swap; src: url("@fontsource/rozha-one/files/rozha-one-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; font-display: swap; src: url("@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
 :root {
   --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --accent:#7B3F8C; --accent-fg:#fff;
   --madder:#B23A2C; --gold:#D3940A; --hero:#1C2463; --bad:#C0392B;

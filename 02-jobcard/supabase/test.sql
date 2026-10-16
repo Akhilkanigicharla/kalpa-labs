@@ -29,6 +29,18 @@ do $$ begin
   exception when check_violation then null; end;
 end $$;
 
+-- ---- audit fixes (REA, 16 Oct 2026): A cannot self-upgrade, invoices are permanent except "paid"
+do $$ declare c int; begin
+  begin update public.technicians set plan = 'pro'; raise exception 'self-upgrade to pro accepted';
+  exception when insufficient_privilege then null; end;
+  update public.technicians set business_name = 'Ravi Cooling'; get diagnostics c = row_count; assert c = 1, 'profile edit blocked';
+  update public.invoices set paid = true; get diagnostics c = row_count; assert c = 1, 'marking paid blocked';
+  begin update public.invoices set payable_paise = 1; raise exception 'invoice amount edited after issue';
+  exception when insufficient_privilege then null; end;
+  begin delete from public.invoices; raise exception 'invoice deleted';
+  exception when insufficient_privilege then null; end;
+end $$;
+
 -- ---- technician B sees nothing of A's and cannot write into A's account
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b', false);
 do $$ declare c int; a_customer uuid; begin
@@ -42,7 +54,8 @@ do $$ declare c int; a_customer uuid; begin
         raise exception 'B wrote a row into A''s account';
   exception when insufficient_privilege then null; end;
   update public.job_cards set status = 'cancelled'; get diagnostics c = row_count; assert c = 0, 'B updated A''s job card';
-  delete from public.invoices; get diagnostics c = row_count; assert c = 0, 'B deleted A''s invoice';
+  begin delete from public.invoices; raise exception 'B deleted an invoice';
+  exception when insufficient_privilege then null; end;   -- nobody can delete invoices (GST), so B can't either
   begin insert into public.invoice_counters values ('00000000-0000-0000-0000-00000000000b', '26-27', 100);
         raise exception 'B wrote its own counter directly';
   exception when insufficient_privilege then null; end;
@@ -56,6 +69,24 @@ do $$ begin
   begin insert into public.job_cards (customer_id, appliance) select id, 'ac' from a_cust;
         raise exception 'B linked A''s customer';
   exception when raise_exception then if sqlerrm like 'B linked%' then raise; end if; end;
+end $$;
+
+-- B cannot point an invoice at A's job card, nor an AMC at A's customer
+reset role;
+create temp table a_job as select id from public.job_cards limit 1;
+grant select on a_job to authenticated;
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b', false);
+do $$ begin
+  begin insert into public.invoices (job_card_id, number, fy, kind, lines, taxable_paise, payable_paise) select id, 'JC/26-27/0050', '26-27', 'unregistered', '[{}]', 1, 1 from a_job;
+        raise exception 'B billed A''s job card';
+  exception when raise_exception then if sqlerrm like 'B billed%' then raise; end if; end;
+  begin insert into public.amc_contracts (customer_id, starts_on, ends_on, price_paise) select id, '2026-11-01', '2027-11-01', 100 from a_cust;
+        raise exception 'B made an AMC for A''s customer';
+  exception when raise_exception then if sqlerrm like 'B made%' then raise; end if; end;
+  begin insert into public.technicians (id, name, phone, plan) values ('00000000-0000-0000-0000-00000000000c', 'X', '9000055555', 'pro');
+        raise exception 'new profile created as pro';
+  exception when insufficient_privilege then null; end;
 end $$;
 
 -- ---- no signed-in user: nothing visible, no numbers

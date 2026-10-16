@@ -48,9 +48,9 @@ const inbound = (msg, from = "919812345678") => {
   await inbound({ type: "text", text: { body: "hi" } });
   assert.match(sent.list.filter((m) => m.to === "919812345678").pop().interactive.body.text, /Welcome back, Ravi! 😊 Same \*Hair spa\*/); console.log("  ✓ returning customer recognised");
   const { handler: leadsApi } = require("./leads.js");
-  const r = await leadsApi({ queryStringParameters: { token: "a".repeat(36) } });
+  const r = await leadsApi({ headers: { authorization: "Bearer " + "a".repeat(36) } });
   assert.strictEqual(JSON.parse(r.body).leads.length, 2); console.log("  ✓ dashboard API returns the lead");
-  const r2 = await leadsApi({ queryStringParameters: { token: "b".repeat(36) } });
+  const r2 = await leadsApi({ headers: { authorization: "Bearer " + "b".repeat(36) } });
   assert.strictEqual(r2.statusCode, 401); console.log("  ✓ dashboard API rejects wrong token");
   console.log("\nwebhook tests passed");
 })().catch((e) => { console.error(e); process.exit(1); });

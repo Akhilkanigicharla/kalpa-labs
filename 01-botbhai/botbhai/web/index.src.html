@@ -2,7 +2,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- SheetJS is used only to WRITE the Excel export (the 0.18.5 advisories are in file parsing, which we never do).
+     Pinned with Subresource Integrity (hash from cdnjs) so a changed CDN file is refused (REA audit, 16 Oct 2026). -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 /* Layout: a working phone (chat / voice) beside the owner's console (leads, export, setup) — the demo IS the product. */
 /* Kalpa design tokens (Kalamkari): copied from 00-hq/design/tokens.css; keep in sync. */
@@ -453,7 +455,7 @@ function toast(msg) { const d = document.createElement("div"); d.className = "to
 // ---- live dashboard mode (deployed site with ?token=)
 async function loadLive() {
   try {
-    const r = await fetch("/.netlify/functions/leads?token=" + encodeURIComponent(LIVE_TOKEN)); if (!r.ok) throw new Error("token");
+    const r = await fetch("/.netlify/functions/leads", { headers: { Authorization: "Bearer " + LIVE_TOKEN } }); if (!r.ok) throw new Error("token");
     const d = await r.json();
     leads = d.leads.map((l) => Object.assign({ business: d.client.name, niche: d.client.niche, contact: l.contact, name: l.name, score: l.score, status: l.status, source: l.source, updated: Date.parse(l.updated_at) }, l.details));
     convos = {}; d.messages.slice().reverse().forEach((m) => { const c = convos[m.contact] || (convos[m.contact] = { business: d.client.name, msgs: [] }); c.msgs.push({ d: m.direction === "in" ? "in" : "out", t: m.body || "" }); });

@@ -105,6 +105,22 @@ end $$;
 revoke execute on function book_slot from public, anon, authenticated;
 create index if not exists bookings_slot on bookings (client_id, date_iso, slot) where status = 'confirmed';
 
+-- Rate limiter for the public website chat (anyone on the internet can call it).
+-- rate_hit returns false once a key has had p_max hits inside the last p_window_s seconds.
+create table if not exists rate_hits (key text not null, at timestamptz not null default now());
+create index if not exists rate_hits_key_at on rate_hits (key, at);
+create or replace function rate_hit(p_key text, p_window_s int, p_max int)
+returns boolean language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  perform pg_advisory_xact_lock(hashtext(p_key));
+  select count(*) into n from rate_hits where key = p_key and at > now() - make_interval(secs => p_window_s);
+  if n >= p_max then return false; end if;
+  insert into rate_hits (key) values (p_key);
+  return true;
+end $$;
+revoke execute on function rate_hit from public, anon, authenticated;
+
 -- Members / students with an expiry or fee date (gym renewals, coaching instalments). Import from Excel via Supabase table editor.
 create table if not exists members (
   id uuid primary key default gen_random_uuid(), client_id uuid references clients(id) on delete cascade,
@@ -130,6 +146,8 @@ alter table members enable row level security;
 alter table jobs enable row level security;
 alter table bookings enable row level security;
 alter table processed enable row level security;
+alter table rate_hits enable row level security;
+-- housekeeping (daily): delete from rate_hits where at < now() - interval '1 day';
 -- housekeeping (monthly): delete from processed where at < now() - interval '30 days';
 
 -- Data retention (DPDP Act 2023: keep only what you need). Run monthly, or schedule with pg_cron:

@@ -11,7 +11,9 @@ export const COLORS: GroupColor[] = ["grey", "blue", "red", "yellow", "green", "
 
 /** Pages Chrome won't let an extension reopen, or that are pointless to save. */
 export function restorable(url: string): boolean {
-  return /^(https?|ftp|file):\/\//i.test(url); // chrome://, about:, data:, javascript: are skipped on restore
+  // Web pages only. file:// is refused so an imported list can't make the browser open local files;
+  // chrome://, about:, data:, javascript: and ftp (dropped by Chrome) are skipped on restore.
+  return /^https?:\/\//i.test(url);
 }
 
 export function countTabs(s: Pick<Session, "windows">): { tabs: number; groups: number; windows: number } {

@@ -176,3 +176,15 @@ def test_presidio_pattern_only_matches_builtin(builtin_report):
 @pytest.mark.skipif(not HAS_PRESIDIO, reason="presidio-analyzer not installed")
 def test_presidio_no_false_positives_on_negatives():
     assert list(presidio_engine.find(NEG.read_text())) == []
+
+
+def test_refuses_without_salt(monkeypatch):
+    """REA audit 16 Oct 2026: with no salt the public dev salt made hashes reversible; now it refuses."""
+    import pytest
+    from ingest.schema import MissingSaltError
+    monkeypatch.delenv("LP_HASH_SALT", raising=False)
+    monkeypatch.delenv("LP_ALLOW_DEV_SALT", raising=False)
+    with pytest.raises(MissingSaltError):
+        scan([str(FX)], engine="builtin")
+    with pytest.raises(MissingSaltError):
+        hash_id("+919848022338")

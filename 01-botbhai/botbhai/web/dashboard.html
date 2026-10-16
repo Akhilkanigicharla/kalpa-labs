@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>BotBhai Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Owner dashboard (A10). Brief: 01-botbhai/design/BRIEF.md. Phone first: bottom tabs under 760 px.
+   Kalpa design tokens (Kalamkari): copied from 00-hq/design/tokens.css; keep in sync. */
+:root{
+  --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --soft:#E6E6F1;
+  --accent:#2A3A8F; --accent-fg:#FFFFFF; --madder:#B23A2C; --gold:#D3940A; --flame:#C2541B;
+  --ok:#23804F; --warn:#B86E00; --bad:#C0392B;
+  --hero:#1C2463; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#5B6178; --l1:#B23A2C; --l2:#2F4FB0; --l3:#2E7D4F; --l4:#7B3F8C; --l5:#C08304; --l6:#B8235A; --l7:#13777F;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --soft:#1F2552;
+  --accent:#9AABFF; --accent-fg:#0E1230; --madder:#F0745F; --gold:#F2B840; --flame:#F08A4B;
+  --ok:#5BD08F; --warn:#F2B840; --bad:#FF7A6B;
+  --hero:#1B2266; --hero-fg:#F6F2E8; --hero-mute:#B9BDE0;
+  --l0:#A5A9C6; --l1:#F0745F; --l2:#7C98FF; --l3:#5BD08F; --l4:#C792E0; --l5:#F2B840; --l6:#FF6F9F; --l7:#45C6CF;
+  color-scheme:dark}
+:root{ --world:var(--l1);
+  --temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px; }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+html,body{min-height:100%}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1.4px);background-size:18px 18px;color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app{max-width:900px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
+header.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0,transparent 0 60px,color-mix(in srgb,var(--gold) 45%,var(--hero)) 61px 62px,transparent 63px),var(--hero);color:var(--hero-fg);border-radius:var(--r-l);padding:22px 18px 20px;box-shadow:0 18px 40px -22px #1C2463}
+header.hero::before,header.hero::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--temple);opacity:.9}
+header.hero::before{top:0}header.hero::after{bottom:0;transform:scaleY(-1)}
+.eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 4px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);line-height:1.1;margin:0}
+h2{font:400 21px/1.15 var(--f-display);margin:0}
+.hero small{color:var(--hero-mute)}
+.demo-flag{display:inline-block;margin-left:6px;background:var(--gold);color:#191C33;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.08em;vertical-align:middle}
+/* tabs: top on wide screens, bottom bar on phones */
+.tabs{display:flex;gap:6px}
+.tab{min-height:44px;border:1px solid var(--rule);background:var(--panel);color:var(--muted);font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;position:relative}
+.tab[aria-selected="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
+.badge{min-width:20px;height:20px;border-radius:999px;background:var(--bad);color:#fff;font:600 11.5px/20px var(--f-mono);text-align:center;padding:0 6px}
+@media (max-width:759px){
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--rule);padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px;box-shadow:0 -8px 24px -18px rgba(0,0,0,.4)}
+  .tab{flex:1;flex-direction:column;gap:0;border:0;background:none;border-radius:var(--r-m);padding:4px 2px;font-size:12px;min-height:52px}
+  .tab .ico{font-size:19px;line-height:1.1}
+  .tab[aria-selected="true"]{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+  .tab .badge{position:absolute;top:2px;right:calc(50% - 22px)}
+}
+@media (min-width:760px){.tab .ico{display:none}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px;min-width:0}
+.card > * + *{margin-top:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kpi{position:relative;overflow:hidden;border:1px solid var(--rule);border-radius:var(--r-m);padding:14px 12px 10px;background:var(--panel);text-align:left;cursor:pointer;min-height:92px}
+.kpi::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(135deg,var(--world) 0 25%,transparent 25% 50%,var(--world) 50% 75%,transparent 75%) 0 0/8px 6px,color-mix(in srgb,var(--world) 30%,transparent)}
+.kpi b{display:block;font:400 30px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi span{font:600 10.5px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.kpi.alert b{color:var(--bad)}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.slot{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+.slot:last-child{border-bottom:0}
+.slot time{font:600 13px var(--f-mono);color:var(--muted)}
+.slot .who{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot .what{color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot.past{opacity:.6}
+.slot.now{background:color-mix(in srgb,var(--gold) 10%,transparent);border-radius:var(--r-s);padding-inline:6px;margin-inline:-6px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pill.booked{background:color-mix(in srgb,var(--l2) 16%,transparent);color:var(--l2)}
+.pill.sure{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.pill.came{background:var(--soft);color:var(--muted)}
+.pill.noshow,.pill.hot{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.cancelled{background:var(--soft);color:var(--muted);text-decoration:line-through}
+.pill.warm{background:color-mix(in srgb,var(--flame) 16%,transparent);color:var(--flame)}
+.pill.cold{background:color-mix(in srgb,var(--l2) 14%,transparent);color:var(--l2)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:var(--muted)}.small{font-size:13px}
+.empty{padding:22px 6px;text-align:center;color:var(--muted)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
+.search{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:9px 12px;font-size:15px}
+.leads{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.lead{border:1px solid var(--rule);border-radius:var(--r-m);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.lead .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.lead b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lead a.tel{font:400 13px var(--f-mono);text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:560px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.bars{display:flex;align-items:flex-end;gap:4px;height:120px;padding-top:8px}
+.bar{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%}
+.bar i{display:block;width:100%;max-width:26px;border-radius:5px 5px 2px 2px;background:var(--world);min-height:2px}
+.bar.today i{background:var(--gold)}
+.bar span{font:400 10px var(--f-mono);color:var(--muted)}
+.btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--accent);color:var(--accent-fg);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--rule)}
+.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:10px 0}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
+.signin{display:flex;flex-direction:column;gap:12px}.signin p{margin:0;color:var(--muted)}
+.inline{display:flex;gap:8px}.inline input{flex:1;min-width:0;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:9px 11px;font-size:15px}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));margin:0 auto;max-width:520px;background:var(--hero);color:var(--hero-fg);border-radius:var(--r-m);padding:12px 14px;box-shadow:var(--shadow);font-size:14px;z-index:9}
+footer{color:var(--muted);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <p class="eyebrow">BotBhai · Owner dashboard</p>
+    <h1 id="biz">Your salon</h1>
+    <small id="today-label"></small>
+  </header>
+
+  <section class="card signin" id="signin" hidden aria-labelledby="signin-h">
+    <h2 id="signin-h">Open your dashboard</h2>
+    <p>Paste the key from your BotBhai setup message. It stays on this phone only, and also opens your inbox.</p>
+    <form id="signin-form" class="inline">
+      <label class="sr" for="key">Dashboard key</label>
+      <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="36-character key" required>
+      <button class="btn" type="submit">Open</button>
+    </form>
+    <p id="signin-err" role="alert"></p>
+    <p><a href="?demo=1">See a demo with sample data</a></p>
+  </section>
+
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections" hidden>
+    <button class="tab" role="tab" data-tab="today" aria-selected="true"><span class="ico" aria-hidden="true">📅</span>Today</button>
+    <button class="tab" role="tab" data-tab="leads" aria-selected="false"><span class="ico" aria-hidden="true">👥</span>Leads</button>
+    <a class="tab" id="inbox-tab" href="inbox.html" aria-selected="false"><span class="ico" aria-hidden="true">💬</span>Inbox<span class="badge" id="waiting" hidden></span></a>
+    <button class="tab" role="tab" data-tab="report" aria-selected="false"><span class="ico" aria-hidden="true">📈</span>Report</button>
+  </nav>
+
+  <main id="main" hidden>
+    <section id="pane-today" role="tabpanel" aria-label="Today">
+      <div class="kpis" id="kpis"></div>
+      <div class="card" style="margin-top:14px"><div class="row"><h2>Today's bookings</h2><span class="muted small" id="tomorrow"></span></div><ul class="timeline" id="timeline"><li><div class="skeleton"></div><div class="skeleton"></div></li></ul></div>
+    </section>
+    <section id="pane-leads" role="tabpanel" aria-label="Leads" hidden>
+      <div class="card">
+        <h2>Leads</h2>
+        <div class="chips" role="group" aria-label="Filter">
+          <button class="chip" data-f="hot" aria-pressed="true">Hot</button>
+          <button class="chip" data-f="callback" aria-pressed="false">Call back</button>
+          <button class="chip" data-f="booked" aria-pressed="false">Booked</button>
+          <button class="chip" data-f="all" aria-pressed="false">All</button>
+        </div>
+        <label class="sr" for="q">Search leads</label><input class="search" id="q" type="search" placeholder="Search name, service or number">
+        <ul class="leads" id="leads"></ul>
+      </div>
+    </section>
+    <section id="pane-report" role="tabpanel" aria-label="Report" hidden>
+      <div class="card">
+        <h2>Last 30 days</h2>
+        <div class="stats" id="stats"></div>
+        <div><p class="eyebrow" style="color:var(--muted)">Bookings per day · last 14 days</p><div class="bars" id="bars" role="img"></div></div>
+        <p class="muted small" id="sources"></p>
+        <div class="row"><button class="btn ghost" id="dl-leads">Download leads (Excel)</button><button class="btn ghost" id="dl-bookings">Download bookings (Excel)</button></div>
+      </div>
+    </section>
+  </main>
+  <footer id="foot"></footer>
+</div>
+<p class="toast" id="toast" role="status" hidden></p>
+
+<script>
+(function () {
+  "use strict";
+  var API = "/.netlify/functions/leads", KEY = "botbhai.inbox.key"; // same key as the inbox: one sign-in for both
+  var params = new URLSearchParams(location.search), DEMO = params.get("demo") === "1";
+  var $ = function (id) { return document.getElementById(id); };
+  var store = { get: function () { try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } },
+                set: function (v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} } };
+  var frag = /(?:^|[#&])key=([a-f0-9-]{36})/i.exec(location.hash);
+  if (frag) { store.set(frag[1]); history.replaceState(null, "", location.pathname + location.search); }
+  var S = { key: store.get(), data: null, tab: params.get("tab") || "today", filter: "hot", q: "", timer: null };
+
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    for (var k in attrs || {}) { if (k === "text") n.textContent = attrs[k]; else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), attrs[k]); else if (attrs[k] != null) n.setAttribute(k, attrs[k]); }
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  function istIso(ms) { return new Date((ms == null ? Date.now() : ms) + 330 * 60000).toISOString().slice(0, 10); }
+  function addDays(iso, n) { return new Date(Date.parse(iso) + n * 864e5).toISOString().slice(0, 10); }
+  function nice(iso) { var d = new Date(iso + "T00:00:00Z"); return DAY[d.getUTCDay()] + ", " + d.getUTCDate() + " " + MON[d.getUTCMonth()]; }
+  function mins(slot) { var m = /^(\d{1,2}):(\d{2})\s*([AP]M)$/i.exec(slot || ""); if (!m) return 9999; var h = +m[1] % 12 + (/p/i.test(m[3]) ? 12 : 0); return h * 60 + +m[2]; }
+  function nowMins() { var d = new Date(Date.now() + 330 * 60000); return d.getUTCHours() * 60 + d.getUTCMinutes(); }
+  function phone(c) { var d = String(c || "").replace(/\D/g, ""); return /^91\d{10}$/.test(d) ? "+91 " + d.slice(2, 7) + " " + d.slice(7) : (d ? "+" + d : ""); }
+  function ago(iso) { if (!iso) return ""; var s = (Date.now() - Date.parse(iso)) / 1000; if (s < 3600) return Math.max(1, Math.round(s / 60)) + " min ago"; if (s < 86400) return Math.round(s / 3600) + " h ago"; return Math.round(s / 86400) + " d ago"; }
+  function toast(m) { var t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 3600); }
+  var STATUS = { confirmed: ["booked", "Booked"], completed: ["came", "Came"], no_show: ["noshow", "Didn't come"], cancelled: ["cancelled", "Cancelled"], rescheduled: ["cancelled", "Moved"] };
+  var LEAD = { new: "New", booked: "Booked", callback: "Call back", quiz_done: "Quiz done", opted_out: "Said STOP", won: "Won", lost: "Lost", cancelled: "Cancelled" };
+  var SRC = { whatsapp: "WhatsApp", web: "Website", voice: "Voice", meta_ads: "Facebook ad" };
+  function statusOf(b) { if (b.status === "confirmed" && b.confirmed_at) return ["sure", "Confirmed"]; return STATUS[b.status] || ["came", b.status]; }
+
+  // ---------- data
+  function load() {
+    var p = DEMO ? Promise.resolve({ status: 200, data: Demo() }) :
+      fetch(API, { headers: { Authorization: "Bearer " + S.key } }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, data: d }; }); });
+    return p.then(function (r) {
+      if (r.status === 401) { store.set(""); S.key = ""; return showSignin("That key didn't work. Check it and paste again."); }
+      if (r.status !== 200) return toast("Couldn't load. Retrying soon.");
+      S.data = r.data; render();
+    }, function () { toast(S.data ? "You're offline: showing the last data." : "You're offline. Retrying soon."); });
+  }
+
+  // ---------- render
+  function render() {
+    var d = S.data, today = d.today || istIso();
+    $("biz").textContent = (d.client && d.client.name) || "Your salon"; if (DEMO) $("biz").appendChild(el("span", { class: "demo-flag", text: "DEMO" }));
+    $("today-label").textContent = nice(today) + " · updated " + new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" });
+    var w = $("waiting"); w.hidden = !d.waiting; w.textContent = d.waiting || "";
+    $("inbox-tab").href = "inbox.html" + (DEMO ? "?demo=1" : "");
+    var todays = (d.bookings || []).filter(function (b) { return b.date_iso === today; }).sort(function (a, b) { return mins(a.slot) - mins(b.slot); });
+    var live = todays.filter(function (b) { return b.status !== "cancelled" && b.status !== "rescheduled"; });
+    var sure = live.filter(function (b) { return b.confirmed_at || b.status === "completed"; }).length;
+    var k = $("kpis"); k.textContent = "";
+    [[live.length, "Bookings today", function () { $("timeline").scrollIntoView({ behavior: "smooth" }); }, false],
+     [sure, "Confirmed", function () { $("timeline").scrollIntoView({ behavior: "smooth" }); }, false],
+     [d.waiting || 0, "Need you", function () { location.href = $("inbox-tab").href; }, !!d.waiting]].forEach(function (x) {
+      k.appendChild(el("button", { class: "kpi" + (x[3] ? " alert" : ""), onclick: x[2] }, [el("b", { text: String(x[0]) }), el("span", { text: x[1] })]));
+    });
+    var tl = $("timeline"); tl.textContent = "";
+    if (!todays.length) tl.appendChild(el("li", { class: "empty", text: "No bookings today yet. Share your WhatsApp link on Instagram and Google so customers can book." }));
+    var nm = nowMins();
+    todays.forEach(function (b) {
+      var st = statusOf(b), m = mins(b.slot), cls = "slot" + (m + 45 < nm ? " past" : m <= nm && nm < m + 45 ? " now" : "");
+      tl.appendChild(el("li", { class: cls }, [el("time", { text: b.slot }), el("div", { style: "min-width:0" }, [el("div", { class: "who", text: b.name || phone(b.contact) || "Customer" }), el("div", { class: "what", text: (b.service || "Visit") + (b.name && b.contact && b.contact.indexOf("web:") !== 0 ? " · " + phone(b.contact) : "") })]), el("span", { class: "pill " + st[0], text: st[1] })]));
+    });
+    var tom = (d.bookings || []).filter(function (b) { return b.date_iso === addDays(today, 1) && b.status === "confirmed"; }).length;
+    $("tomorrow").textContent = tom ? "Tomorrow: " + tom : "";
+    renderLeads(); renderReport(today); show(S.tab);
+  }
+  function renderLeads() {
+    var ul = $("leads"); ul.textContent = "";
+    var q = S.q.trim().toLowerCase();
+    var rows = (S.data.leads || []).filter(function (l) {
+      var f = S.filter === "all" || (S.filter === "hot" && l.score === "hot") || l.status === S.filter;
+      var hay = [l.name, l.contact, l.details && (l.details.service || l.details.goal)].join(" ").toLowerCase();
+      return f && (!q || hay.indexOf(q) >= 0);
+    }).slice(0, 100);
+    if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: q ? "No lead matches that search." : "No leads here yet." })); return; }
+    rows.forEach(function (l) {
+      var dt = l.details || {}, tel = phone(l.contact), web = String(l.contact || "").indexOf("web:") === 0;
+      ul.appendChild(el("li", { class: "lead" }, [
+        el("div", { class: "top" }, [el("b", { text: l.name || dt.customer_name || (web ? "Website visitor" : tel) }), el("span", { class: "pill " + (l.score || "cold"), text: l.score || "cold" })]),
+        el("div", { class: "muted small", text: [dt.service || dt.goal, dt.date ? dt.date + (dt.slot ? " " + dt.slot : "") : "", LEAD[l.status] || l.status, SRC[l.source] || l.source].filter(Boolean).join(" · ") }),
+        el("div", { class: "row" }, [web ? el("span", { class: "muted small", text: "Website chat" }) : el("a", { class: "tel", href: "tel:" + tel.replace(/\s/g, ""), text: tel }), el("span", { class: "muted small", text: ago(l.updated_at) })]),
+      ]));
+    });
+  }
+  function renderReport(today) {
+    var from = addDays(today, -30), bs = (S.data.bookings || []).filter(function (b) { return b.date_iso >= from && b.date_iso <= today; });
+    var n = function (s) { return bs.filter(function (b) { return b.status === s; }).length; };
+    var came = n("completed"), no = n("no_show"), marked = came + no;
+    var st = $("stats"); st.textContent = "";
+    [[bs.filter(function (b) { return b.status !== "rescheduled"; }).length, "Bookings"], [came, "Came"], [no, "Didn't come"], [marked ? Math.round(no / marked * 100) + "%" : "–", "No-show rate"]].forEach(function (x) {
+      st.appendChild(el("div", { class: "kpi", style: "cursor:default" }, [el("b", { text: String(x[0]) }), el("span", { text: x[1] })]));
+    });
+    var bars = $("bars"); bars.textContent = ""; var days = [], max = 1;
+    for (var i = 13; i >= 0; i--) { var iso = addDays(today, -i), c = (S.data.bookings || []).filter(function (b) { return b.date_iso === iso && b.status !== "cancelled" && b.status !== "rescheduled"; }).length; days.push([iso, c]); max = Math.max(max, c); }
+    days.forEach(function (x) { bars.appendChild(el("div", { class: "bar" + (x[0] === today ? " today" : ""), title: nice(x[0]) + ": " + x[1] }, [el("i", { style: "height:" + Math.max(2, Math.round(x[1] / max * 88)) + "px" }), el("span", { text: String(+x[0].slice(8)) })])); });
+    bars.setAttribute("aria-label", "Bookings per day for the last 14 days: " + days.map(function (x) { return nice(x[0]) + " " + x[1]; }).join(", "));
+    var src = {}; (S.data.leads || []).forEach(function (l) { src[l.source || "whatsapp"] = (src[l.source || "whatsapp"] || 0) + 1; });
+    $("sources").textContent = "Where leads came from: " + Object.keys(src).map(function (k) { return (SRC[k] || k) + " " + src[k]; }).join(" · ");
+  }
+  function show(tab) {
+    S.tab = tab;
+    ["today", "leads", "report"].forEach(function (t) { $("pane-" + t).hidden = t !== tab; });
+    Array.prototype.forEach.call(document.querySelectorAll(".tab[data-tab]"), function (b) { b.setAttribute("aria-selected", String(b.getAttribute("data-tab") === tab)); });
+  }
+
+  // ---------- Excel download (CSV with BOM so Excel reads Telugu and ₹; cells that start with = + - @ are neutralised)
+  function csv(rows) { return "﻿" + rows.map(function (r) { return r.map(function (v) { v = v == null ? "" : String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }).join(","); }).join("\r\n"); }
+  function download(name, rows) { var a = el("a", { href: URL.createObjectURL(new Blob([csv(rows)], { type: "text/csv;charset=utf-8" })), download: name }); document.body.appendChild(a); a.click(); a.remove(); }
+  $("dl-leads").addEventListener("click", function () {
+    download("botbhai-leads-" + istIso() + ".csv", [["Name", "Phone", "Score", "Status", "Service", "Date", "Slot", "Source", "Updated"]].concat((S.data.leads || []).map(function (l) { var d = l.details || {}; return [l.name || d.customer_name, phone(l.contact), l.score, l.status, d.service || d.goal, d.date, d.slot, l.source, l.updated_at]; })));
+  });
+  $("dl-bookings").addEventListener("click", function () {
+    download("botbhai-bookings-" + istIso() + ".csv", [["Date", "Time", "Name", "Phone", "Service", "Status"]].concat((S.data.bookings || []).map(function (b) { return [b.date_iso, b.slot, b.name, phone(b.contact), b.service, statusOf(b)[1]]; })));
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".tab[data-tab]"), function (b) { b.addEventListener("click", function () { show(b.getAttribute("data-tab")); }); });
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (b) {
+    b.addEventListener("click", function () { S.filter = b.getAttribute("data-f"); Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (x) { x.setAttribute("aria-pressed", String(x === b)); }); renderLeads(); });
+  });
+  $("q").addEventListener("input", function (e) { S.q = e.target.value; renderLeads(); });
+  function showSignin(err) { $("signin").hidden = false; $("main").hidden = true; $("tabs").hidden = true; $("signin-err").textContent = err || ""; if (S.timer) clearInterval(S.timer); }
+  function start() {
+    $("signin").hidden = true; $("main").hidden = false; $("tabs").hidden = false;
+    $("foot").textContent = DEMO ? "Demo: sample data, nothing is sent." : "Updates every minute while open.";
+    load(); if (!DEMO) S.timer = setInterval(function () { if (document.visibilityState === "visible") load(); }, 60000);
+  }
+  $("signin-form").addEventListener("submit", function (e) {
+    e.preventDefault(); var v = $("key").value.trim();
+    if (!/^[a-f0-9-]{36}$/i.test(v)) { $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; return; }
+    S.key = v; store.set(v); $("key").value = ""; start();
+  });
+
+  // ---------- demo data, built around today so it always looks live
+  function Demo() {
+    var t = istIso(), b = [], names = ["Ravi Teja", "Sravani", "Priya", "Anil", "Lakshmi", "Kiran", "Deepika", "Suresh", "Meena", "Rahul"], svc = ["Haircut", "Hair spa", "Facial", "Threading", "Beard trim", "Keratin", "Bridal trial"];
+    var slots = ["10:00 AM", "11:00 AM", "12:30 PM", "2:00 PM", "4:00 PM", "5:30 PM", "7:00 PM"];
+    slots.forEach(function (s, i) { b.push({ contact: "9198480" + String(10000 + i * 37), name: names[i], service: svc[i % svc.length], date_iso: t, slot: s, status: i === 5 ? "cancelled" : "confirmed", confirmed_at: i % 3 !== 2 ? t + "T03:00:00Z" : null }); });
+    for (var dd = 1; dd <= 30; dd++) for (var j = 0; j < (dd * 7) % 5 + 2; j++) b.push({ contact: "9198481" + String(20000 + dd * 10 + j), name: names[(dd + j) % names.length], service: svc[(dd + j) % svc.length], date_iso: addDays(t, -dd), slot: slots[j % slots.length], status: (dd + j) % 9 === 0 ? "no_show" : (dd + j) % 11 === 0 ? "cancelled" : "completed", confirmed_at: null });
+    b.push({ contact: "919848012345", name: "Sita", service: "Hair spa", date_iso: addDays(t, 1), slot: "11:00 AM", status: "confirmed", confirmed_at: null });
+    var leads = names.map(function (n, i) { return { contact: i === 9 ? "web:visitor" + i : "9198480" + String(30000 + i * 41), name: n, score: ["hot", "warm", "cold"][i % 3], status: ["booked", "callback", "new"][i % 3], details: { service: svc[i % svc.length], date: i % 3 === 0 ? nice(t) : "", slot: i % 3 === 0 ? slots[i % slots.length] : "" }, source: ["whatsapp", "web", "meta_ads", "voice"][i % 4], updated_at: new Date(Date.now() - i * 5400e3).toISOString() }; });
+    return { client: { name: "Glow Studio", niche: "salon" }, today: t, leads: leads, messages: [], bookings: b, waiting: 2 };
+  }
+
+  if (DEMO || S.key) start(); else showSignin();
+})();
+</script>
+</body>
+</html>

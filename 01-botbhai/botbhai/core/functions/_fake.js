@@ -44,6 +44,7 @@ module.exports = function installFake(seed) {
     const filt = (rows) => { for (const [k0, v] of u.searchParams) { const k = k0;
       if (v.startsWith("eq.")) rows = rows.filter((r) => String(get(r, k)) === decodeURIComponent(v.slice(3)));
       if (v.startsWith("gte.")) rows = rows.filter((r) => get(r, k) != null && String(get(r, k)) >= v.slice(4));
+      if (v.startsWith("lte.")) rows = rows.filter((r) => get(r, k) != null && String(get(r, k)) <= v.slice(4));
       if (v === "not.is.null") rows = rows.filter((r) => get(r, k) != null); }
       return rows; };
     if (method === "GET") return ok(filt(store[table]));

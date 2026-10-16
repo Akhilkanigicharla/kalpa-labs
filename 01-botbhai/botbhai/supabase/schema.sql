@@ -215,6 +215,6 @@ alter table invoices enable row level security;
 -- insert into clients (name, niche, phone_number_id, owner_whatsapp, config)
 -- values ('Glow Studio', 'salon', '123456789012345', '919876543210',
 --         '{"business":"Glow Studio","address":"Jubilee Hills","phone":"+91 98765 43210","review_link":"https://g.page/r/..."}');
--- select name, dashboard_token from clients;   -- → https://<site>/dashboard.html?token=<dashboard_token>
+-- select name, dashboard_token from clients;   -- → https://<site>/dashboard.html#key=<dashboard_token>  (owner dashboard + inbox; the #key part never reaches a server)
 -- Shared inbox for the same client: https://<site>/inbox.html#key=<dashboard_token>  (the #key part never reaches a server;
 -- the page saves it on that phone and wipes it from the address bar). Optional config: "inbox_hold_hours" (default 12).

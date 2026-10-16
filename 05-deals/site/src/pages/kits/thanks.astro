@@ -1,0 +1,34 @@
+---
+// Razorpay Payment Page → "Redirect after payment" → https://<site>/kits/thanks/  (Razorpay adds ?razorpay_payment_id=…)
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Thank you | Kalpa Kits" description="Your kit is ready." lang="en" path="/kits/thanks/" noAlt>
+  <h1>Thank you!</h1>
+  <div class="card" id="box" aria-live="polite"><p id="msg">Confirming your payment…</p><div id="go" hidden>
+    <p><a class="btn" id="copy" href="#" rel="noopener">Open your kit (Make a copy)</a></p>
+    <p><a id="pdf" href="#">Download your guide (PDF)</a></p>
+    <p class="muted small">Bookmark this page: the links keep working. Your Razorpay receipt has your payment ID.</p></div></div>
+  <p class="muted small">Problem? Email aakhiil51458@gmail.com with your payment ID. <a href="/legal/refunds/">Refunds</a> · <a href="/legal/delivery/">Delivery</a></p>
+  <script>
+    const p = new URLSearchParams(location.search).get("razorpay_payment_id") || new URLSearchParams(location.search).get("p") || "";
+    const msg = document.getElementById("msg")!, go = document.getElementById("go")!;
+    let tries = 0;
+    async function check() {
+      if (!/^pay_[A-Za-z0-9]{6,40}$/.test(p)) { msg.textContent = "We couldn't find a payment ID in this link. Please use the link from your payment, or email us."; return; }
+      try {
+        const s = await (await fetch("/api/kit?p=" + encodeURIComponent(p), { cache: "no-store" })).json();
+        if (s.state === "paid" && s.copyUrl) {
+          msg.textContent = "Payment confirmed: " + s.name + ".";
+          (document.getElementById("copy") as HTMLAnchorElement).href = s.copyUrl;
+          (document.getElementById("pdf") as HTMLAnchorElement).href = "/api/kit-guide?p=" + encodeURIComponent(p);
+          go.hidden = false; return;
+        }
+        if (s.state === "review") { msg.textContent = "We've received your payment and are checking it. You'll get your kit by email within a few hours (payment ID " + p + ")."; return; }
+      } catch (e) { /* offline: retry */ }
+      if (++tries < 20) setTimeout(check, 3000);
+      else msg.textContent = "Still confirming. Your payment is safe; refresh in a minute, or email us with payment ID " + p + ".";
+    }
+    check();
+  </script>
+</Base>
+<style>.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); text-decoration: none; font-weight: 600; } .small { font-size: 13px; }</style>

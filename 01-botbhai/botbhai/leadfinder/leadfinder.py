@@ -40,9 +40,29 @@ def overpass(query, retries=3):
                 last = e; time.sleep(10 * (attempt + 1))
     raise SystemExit(f"Overpass failed: {last}")
 
-def build_query(city, tags):
+def build_query(city, tags, near=None, radius=1000):
+    """Whole city by default; with near=(lat, lon) only a walking cluster (Overpass "around" filter, radius in metres)."""
+    if near:
+        parts = "".join(f'nwr(around:{int(radius)},{near[0]},{near[1]})[{t}];' for t in tags)
+        return f'[out:json][timeout:60];({parts});out center tags;'
     parts = "".join(f'nwr[{t}](area.city);' for t in tags)
     return f'[out:json][timeout:170];area["name"="{city}"]["boundary"="administrative"]->.city;({parts});out center tags;'
+
+def parse_near(text):
+    try:
+        lat, lon = (float(x) for x in str(text).split(","))
+    except ValueError:
+        raise SystemExit(f"--near must be 'lat,lon', got {text!r}")
+    if not (6 <= lat <= 37 and 68 <= lon <= 98):
+        raise SystemExit(f"--near {text!r} is outside India")
+    return lat, lon
+
+def is_late(hours):
+    """True if any opening range ends at or after 9 PM (or runs past midnight): their WhatsApps keep coming late."""
+    import re
+    for a, b in re.findall(r"(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})", hours or ""):
+        if b >= "21:00" or b < a: return True
+    return False
 
 def phone_of(t):
     for k in ("contact:phone", "phone", "contact:mobile", "mobile", "contact:whatsapp"):
@@ -60,8 +80,8 @@ def score(row):
     if row["name"]: s += 10
     return s
 
-def collect(city, niche):
-    res = overpass(build_query(city, NICHE_TAGS[niche]))
+def collect(city, niche, near=None, radius=1000):
+    res = overpass(build_query(city, NICHE_TAGS[niche], near, radius))
     seen, rows = set(), []
     for el in res.get("elements", []):
         t = el.get("tags", {}); name = t.get("name", "").strip()
@@ -80,6 +100,8 @@ def collect(city, niche):
             "lat": lat, "lon": lon,
             "maps_link": f"https://www.openstreetmap.org/{el['type']}/{el['id']}",
             "osm_id": f"{el['type']}/{el['id']}",
+            "kind": t.get("hairdresser") or t.get("beauty") or t.get("female") and "ladies" or "",
+            "late": is_late(t.get("opening_hours", "")),
         }
         row["score"] = score(row)
         row["why_botbhai"] = PITCH[niche] + ("" if row["website"] else " No website listed — offer a free one-page site with the bot.")
@@ -88,7 +110,7 @@ def collect(city, niche):
     rows.sort(key=lambda r: -r["score"])
     return rows
 
-COLS = ["score", "name", "category", "phone", "email", "website", "opening_hours", "address", "maps_link", "why_botbhai", "status", "notes", "lat", "lon", "osm_id", "niche"]
+COLS = ["score", "name", "category", "phone", "email", "website", "opening_hours", "address", "maps_link", "why_botbhai", "status", "notes", "lat", "lon", "osm_id", "niche", "kind", "late"]  # new columns go last: the sheet formulas use fixed letters
 
 def write_csv(path, rows):
     with open(path, "w", newline="", encoding="utf-8-sig") as f:  # utf-8-sig opens cleanly in Excel
@@ -128,12 +150,14 @@ def main():
     ap.add_argument("--city", default="Hyderabad")
     ap.add_argument("--niche", nargs="+", default=["salon", "gym", "realestate", "examkits"], choices=list(NICHE_TAGS))
     ap.add_argument("--out", default="leads")
+    ap.add_argument("--near", help="only a walking cluster around 'lat,lon' (e.g. Ameerpet metro 17.4375,78.4482)")
+    ap.add_argument("--radius", type=int, default=1200, help="cluster radius in metres (with --near)")
     ap.add_argument("--from-json", help="offline mode: build files from a saved Overpass JSON (testing)")
     a = ap.parse_args()
     by_niche = {}
     for n in a.niche:
         print(f"→ {n} in {a.city} …", file=sys.stderr)
-        by_niche[n] = collect(a.city, n)
+        by_niche[n] = collect(a.city, n, parse_near(a.near) if a.near else None, a.radius)
         print(f"  {len(by_niche[n])} businesses, {sum(1 for r in by_niche[n] if r['phone'])} with phone", file=sys.stderr)
         time.sleep(5)  # be polite to the free public server
     allrows = [r for rows in by_niche.values() for r in rows]

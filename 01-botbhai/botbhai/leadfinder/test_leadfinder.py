@@ -15,7 +15,7 @@ from openpyxl import load_workbook; wb = load_workbook(out+".xlsx"); print(wb.sh
 print("leadfinder offline test passed")
 # --- A08: one walking cluster (Overpass "around" filter), salon type kept for the pitch
 q2 = lf.build_query("Hyderabad", lf.NICHE_TAGS["salon"], near=(17.4375, 78.4482), radius=1200)
-assert 'nwr(around:1200,17.4375,78.4482)[shop~"^(hairdresser|beauty|cosmetics)$"];' in q2 and "area" not in q2, q2
+assert 'nwr(around:1200,17.4375,78.4482)[shop~"^(hairdresser|beauty)$"];' in q2 and "area" not in q2, q2
 fake["elements"].append({"type":"node","id":5,"lat":17.438,"lon":78.449,"tags":{"shop":"hairdresser","hairdresser":"unisex","name":"Style Unisex","opening_hours":"Mo-Su 10:00-22:00"}})
 rows2 = lf.collect("Hyderabad", "salon", near=(17.4375, 78.4482), radius=1200)
 r5 = next(r for r in rows2 if r["name"] == "Style Unisex"); assert r5["kind"] == "unisex" and r5["late"] is True, r5
@@ -27,3 +27,5 @@ for bad in ["17.4,78.4", "abc", "95,78", "17.4,78.4,1"]:
 assert lf.parse_near("17.4375, 78.4482") == (17.4375, 78.4482)
 print("leadfinder cluster test passed")
 assert lf.COLS[0] == "score" and lf.COLS[3] == "phone" and lf.COLS[5] == "website" and lf.COLS[10] == "status", "xlsx formulas use fixed column letters"
+assert not any("cosmetics" in t for t in lf.NICHE_TAGS["salon"]), "cosmetics shops are retail, not appointment salons"
+assert 'shop~"^(hairdresser|beauty)$"' in lf.NICHE_TAGS["salon"][0]

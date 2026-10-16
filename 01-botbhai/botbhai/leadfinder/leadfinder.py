@@ -15,7 +15,7 @@ import argparse, csv, json, sys, time, urllib.parse, urllib.request
 
 ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 NICHE_TAGS = {
-    "salon":      ['shop~"^(hairdresser|beauty|cosmetics)$"', 'amenity="spa"'],
+    "salon":      ['shop~"^(hairdresser|beauty)$"', 'amenity="spa"'],  # not cosmetics: retail shops take no appointments
     "gym":        ['leisure~"^(fitness_centre|sports_centre)$"', 'sport~"^(fitness|yoga|crossfit)$"'],
     "realestate": ['office~"^(estate_agent|property_management)$"', 'shop="estate_agent"'],
     "examkits":   ['amenity~"^(college|training|prep_school)$"', 'office="educational_institution"'],

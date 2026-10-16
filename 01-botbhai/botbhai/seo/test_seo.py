@@ -27,14 +27,19 @@ def _lum(h):
     return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
 def _ratio(a, b):
     hi, lo = sorted([_lum(a), _lum(b)], reverse=True); return (hi + 0.05) / (lo + 0.05)
-wa_bg = re.search(r"\.wa\{[^}]*background:(#[0-9a-f]{6});color:(#[0-9a-f]{3,6})", S.CSS)
-fg = wa_bg.group(2) if len(wa_bg.group(2)) == 7 else "#ffffff"
-assert _ratio(fg, wa_bg.group(1)) >= 4.5, ("WhatsApp button contrast", _ratio(fg, wa_bg.group(1)))
-root = dict(re.findall(r"--(\w+):(#[0-9a-f]{6})", S.CSS))
-assert _ratio(root["accent"], root["bg"]) >= 4.5 and _ratio(root["muted"], root["bg"]) >= 4.5 and _ratio("#ffffff", "#0e7c66") >= 4.5
+# A01b: Kalamkari tokens in both themes; the WhatsApp button must stay AA (hero-fg on hero) in light AND dark
+assert ".wa{" in S.CSS and "background:var(--hero);color:var(--hero-fg)" in S.CSS and "prefers-color-scheme:dark" in S.CSS
+_tok = (pathlib.Path(__file__).parents[3] / "00-hq/design/tokens.css").read_text().split("@media")
+for block, theme in ((_tok[0], S.LIGHT), (_tok[1], S.DARK)):
+    TOKENS = {k: v.lower() for k, v in re.findall(r"--([a-z0-9-]+):(#[0-9A-Fa-f]{6})", block)}
+    for k, v in theme.items(): assert TOKENS[k] == v, ("not a Kalamkari token", k, v)
+for name, t in (("light", S.LIGHT), ("dark", S.DARK)):
+    for fg, bg in (("hero-fg", "hero"), ("accent", "bg"), ("accent", "panel"), ("muted", "bg"), ("fg", "panel")):
+        assert _ratio(t[fg], t[bg]) >= 4.5, (name, fg, bg, round(_ratio(t[fg], t[bg]), 2))
+assert _ratio("#d3940a", "#1c2463") >= 4.5  # favicon letter
 with tempfile.TemporaryDirectory() as d:
     out = pathlib.Path(d); S.build("salon", S.load("salon", {}), out)
     ico = (out / "site" / "favicon.svg").read_text(); idx = (out / "site" / "index.html").read_text()
-    assert ico.startswith("<svg") and ">G</text>" in ico and 'rel="icon" href="/favicon.svg"' in idx
-print("  ✓ WCAG AA contrast on the WhatsApp button, links and muted text; favicon.svg linked")
+    assert ico.startswith("<svg") and ">G</text>" in ico and 'fill="#1c2463"' in ico and 'rel="icon" href="/favicon.svg"' in idx
+print("  ✓ Kalamkari tokens; WCAG AA on the WhatsApp button, links and muted text in light + dark; favicon.svg linked")
 print("seo bot tests passed")

@@ -71,7 +71,29 @@ def jsonld(setup, cfg, page_url, service=None, area=None):
     ] + [{"@type": "Question", "name": f"Do you offer {f['k'][0]}?", "acceptedAnswer": {"@type": "Answer", "text": clean(f["a"], cfg)}} for f in cfg["faqs"][:4]]}
     return [biz, faq]
 
-CSS = """:root{--ink:#1d1d1f;--muted:#5f6368;--accent:#0e7c66;--bg:#fafaf7}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg)}main{max-width:760px;margin:0 auto;padding:24px 16px 80px}h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:8px 0}h2{margin-top:32px}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse}td{padding:8px 0;border-bottom:1px solid #e5e5e5}td:last-child{text-align:right;font-weight:600}.wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:block;text-align:center;background:#0e7c4a;color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none}a{color:var(--accent)}"""
+# Kalpa "Kalamkari" design system (00-hq/design/tokens.css), trimmed to what a client site needs. Light + dark.
+# The WhatsApp button is hero indigo with a turmeric ring: AA contrast in both themes (test_seo.py checks it).
+LIGHT = {"bg": "#eeedf3", "panel": "#fbfbfd", "fg": "#191c33", "muted": "#5d6079", "rule": "#dcdbe7", "accent": "#2a3a8f",
+         "hero": "#1c2463", "hero-fg": "#f6f2e8", "gold": "#d3940a", "madder": "#b23a2c"}
+DARK = {"bg": "#0e1230", "panel": "#161b42", "fg": "#ecebf7", "muted": "#a3a7cc", "rule": "#2a3060", "accent": "#9aabff",
+        "hero": "#1b2266", "hero-fg": "#f6f2e8", "gold": "#f2b840", "madder": "#f0745f"}
+FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;600;700&family=Anek+Telugu:wght@400;600&display=swap">')
+def _vars(d): return ";".join(f"--{k}:{v}" for k, v in d.items())
+CSS = (":root{" + _vars(LIGHT) + ";--f-display:'Rozha One','Noto Serif',Georgia,serif;--f-body:'Anek Latin','Anek Telugu',system-ui,-apple-system,'Segoe UI',sans-serif;"
+       "--temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px}"
+       "@media (prefers-color-scheme:dark){:root{" + _vars(DARK) + ";color-scheme:dark}}"
+       "*{box-sizing:border-box}body{margin:0;font:17px/1.6 var(--f-body);color:var(--fg);background-color:var(--bg);"
+       "background-image:radial-gradient(color-mix(in srgb,var(--accent) 12%,transparent) 1px,transparent 1.4px);background-size:18px 18px}"
+       "body::before{content:'';display:block;height:10px;background:var(--temple)}"
+       "main{max-width:760px;margin:0 auto;padding:24px 16px 104px}"
+       "h1,h2{font-family:var(--f-display);font-weight:400;letter-spacing:.005em;text-wrap:balance}"
+       "h1{font-size:clamp(30px,7vw,44px);line-height:1.1;margin:8px 0;color:var(--fg)}h2{font-size:24px;margin:36px 0 8px}h3{font-size:17px;margin:20px 0 4px}"
+       ".muted{color:var(--muted)}table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--rule);border-radius:12px;overflow:hidden}"
+       "td{padding:10px 12px;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}td:last-child{text-align:right;font-weight:600;white-space:nowrap}"
+       ".wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:flex;align-items:center;justify-content:center;min-height:52px;"
+       "text-align:center;background:var(--hero);color:var(--hero-fg);font-weight:700;padding:14px;border-radius:999px;text-decoration:none;"
+       "box-shadow:0 0 0 3px var(--gold),0 12px 28px -12px #1c2463}a{color:var(--accent)}a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}")
 
 def page(setup, cfg, title, desc, body, url, service=None, area=None):
     ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld(setup, cfg, url, service, area))
@@ -79,13 +101,13 @@ def page(setup, cfg, title, desc, body, url, service=None, area=None):
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
 <meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website">
-<style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
+{FONTS}<style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
 
 def favicon(cfg):
-    """A small letter mark in the site's accent colour (white on #0e7c66: 5.2:1 contrast)."""
+    """A small letter mark: turmeric on hero indigo (5.4:1 contrast), the Kalamkari pair."""
     letter = html.escape((cfg.get("business") or "B").strip()[:1].upper())
-    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0e7c66"/>'
-            f'<text x="32" y="44" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">{letter}</text></svg>')
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1c2463"/>'
+            f'<text x="32" y="44" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#d3940a" text-anchor="middle">{letter}</text></svg>')
 
 def services_table(cfg):
     return "<table>" + "".join(f"<tr><td>{html.escape(c['name'])}</td><td>{html.escape(c['price'])}</td></tr>" for c in cfg["catalog"]) + "</table>"

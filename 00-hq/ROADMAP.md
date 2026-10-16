@@ -19,7 +19,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A02** b1 · P1-W2-01: slot engine `core/slots.js` (structured hours, weekly off, holidays, special hours, "closing for today", service durations) ported from cal.diy logic (MIT, attribute). Check: new unit tests + all suites green. (done 2026-10-13, f0b8d27)
 - [x] **A02b** b1 · NLU gaps from Deep Scan v2 (`01-botbhai/research/deep-scan-v2-chat.md`): Telugu-script booking words, "cancel" when nothing is booked, service named in the first message, FAQ mid-flow then re-ask (Rasa digression). Check: regression tests for each + all suites green. (done 2026-10-13, 14079ae)
 - [x] **A03** b1 · P1-W2-04: bridal enquiry flow; owner's 9 PM done/no-show list; review ask only after completed visits. Check: T15 passes; no review ask to no-shows. (done 2026-10-16, 4b766d6; `core/bridal.test.js`, swarm T15, agents M10 test)
-- [ ] **A04** b1 · P1-W2-02: shared inbox phase 1 (`web/inbox.html` + `core/functions/inbox.js`): paused chats, reply as the salon, resume bot; `assigned_to`, `status` columns. Check: webhook tests extended and green.
+- [x] **A04** b1 · P1-W2-02: shared inbox phase 1 (`web/inbox.html` + `core/functions/inbox.js`): paused chats, reply as the salon, resume bot; `assigned_to`, `status` columns. Check: webhook tests extended and green. (done 2026-10-16, 08b6409; 20 webhook checks, 8 inbox screens, `tools/test_inbox_ui.py`)
 - [ ] **A05** b1 · P1-W2-06: manual billing: `invoices` table, invoice generator ("Invoice", no GST, Udyam no., series KL/26-27/NNN), UPI QR, paid flag. Check: sample PDF renders.
 - [x] **A06** b1 · P1-W2-03: voice turn-taking fix in `voice/agent.py` per research a2 (Silero stop_secs 0.2, smart-turn analyzer, Sarvam TTS language). Check: `voice/test_prompt.py` passes in a venv with pipecat. (done 2026-10-13, b487bcf; plus `voice/test_turns.py`)
 - [ ] **A07** b1 · P1-W2-05: sales kit in `01-botbhai/docs/sales/`: A5 card (Telugu + English), proposal, client agreement with DPDP processor clause, privacy notice, objection sheet. Check: prices match PLAN.md §2.
@@ -97,6 +97,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min)
 - [ ] **C19** HQ · When each product has a live page, paste its real link into `00-hq/marketing/brands/<world>.json` (replaces `[add link]`), and decide which worlds get an Instagram account (you create them; 10 min per world)
 - [ ] **C20** HQ · Before the GitHub repo is ever made public: say "purge leads" and Claude removes the old lead lists (business phone numbers) from git history. Nothing to do while the repo stays private (1 min)
+- [ ] **C21** b1 · Try the new shared inbox on your phone: open the BotBhai site's `/inbox.html?demo=1`, tap a chat, tap Take over, send a reply, tap Resume bot. Tell Claude anything confusing. When a salon goes live, paste the updated `supabase/schema.sql` into Supabase → SQL Editor once (safe to re-run) (10 min)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

@@ -1,0 +1,46 @@
+---
+import Base from "../../layouts/Base.astro";
+import KitCard from "../../components/KitCard.astro";
+import { KITS, kitBySlug } from "../../lib/kits";
+export function getStaticPaths() { return KITS.map((k) => ({ params: { kit: k.slug } })); }
+const k = kitBySlug(Astro.params.kit!);
+const product = { "@context": "https://schema.org", "@type": "Product", name: k.name, description: k.short, brand: { "@type": "Brand", name: "Kalpa Labs" },
+  offers: k.tiers.filter((t) => t.price > 0).map((t) => ({ "@type": "Offer", name: t.name, price: String(t.price), priceCurrency: "INR", availability: t.buyUrl ? "https://schema.org/InStock" : "https://schema.org/PreOrder" })) };
+const faq = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: k.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+---
+<Base title={`${k.name} | Google Sheets kit`} description={k.short} lang="en" path={`/kits/${k.slug}/`} jsonld={[product, faq]} noAlt>
+  <p class="eyebrow">Kalpa Kits · Google Sheets</p>
+  <h1>{k.name}</h1>
+  <p class="lead">{k.short}</p>
+  <p class="te" lang="te">{k.te}</p>
+  <p class="date"><b>{k.date.label}</b><br><span class="muted small">Source: {k.date.source}</span></p>
+
+  <figure class="preview card" aria-label="A slice of the kit's sheet">
+    <div class="bar"><span></span><span></span><span></span><b>{k.name}</b></div>
+    <div class="scroll"><table><thead><tr>{k.preview.cols.map((c) => <th>{c}</th>)}</tr></thead>
+    <tbody>{k.preview.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody></table></div>
+    <figcaption class="muted small">How the sheet is laid out (example rows).</figcaption>
+  </figure>
+
+  <h2>Who it's for</h2><p>{k.who}</p>
+  <h2>Choose</h2>
+  <div class="tiers">{k.tiers.map((t) => <KitCard tier={t} kit={k.slug} featured={t.id === "kit"} />)}</div>
+  <p class="muted small">The price you see is the full price: no GST, no fees added. Paid by UPI or card through Razorpay. <a href="/legal/refunds/">Refunds within 7 days</a> if it isn't as described.</p>
+
+  <h2>Questions</h2>
+  {k.faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+  <p><a href="/kits/">All kits</a> · <a href="/">Free calculators</a></p>
+</Base>
+<style>
+  .eyebrow { font: 600 12px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin: 14px 0 0; }
+  .lead { font-size: 18px; margin: 4px 0; } .te { color: var(--accent); margin: 0 0 10px; } .small { font-size: 13px; }
+  .date { border-left: 4px solid var(--gold); padding: 6px 12px; background: var(--panel); border-radius: 0 var(--r-m) var(--r-m) 0; }
+  .preview { padding: 0; overflow: hidden; margin: 18px 0 0; }
+  .bar { display: flex; gap: 6px; align-items: center; padding: 8px 12px; background: var(--hero); color: var(--hero-fg); font-size: 13px; }
+  .bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--hero-mute); opacity: .6; } .bar b { margin-left: 6px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .scroll { overflow-x: auto; } table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 340px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap; } th { font: 500 11px var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--soft); }
+  td:first-child { font-weight: 600; } figcaption { padding: 6px 12px 10px; }
+  .tiers { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+  details { border-bottom: 1px solid var(--rule); padding: 10px 0; } summary { cursor: pointer; font-weight: 600; min-height: 32px; }
+</style>

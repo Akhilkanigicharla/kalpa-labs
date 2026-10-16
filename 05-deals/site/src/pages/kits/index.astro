@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { KITS, LADDER, priceLabel } from "../../lib/kits";
+const list = { "@context": "https://schema.org", "@type": "ItemList", itemListElement: KITS.map((k, i) => ({ "@type": "ListItem", position: i + 1, url: `/kits/${k.slug}/`, name: k.name })) };
+---
+<Base title="Kalpa Kits: Google Sheets for exams and money" description="Phone-friendly Google Sheets kits for GATE 2027, UPSC 2027 and salary tax + SIP planning. No account, no app." lang="en" path="/kits/" jsonld={[list]} noAlt>
+  <h1>Kits: Google Sheets that plan for you</h1>
+  <p class="muted">Copy into your own Google Drive with one tap. Works in the Sheets app on any phone. Telugu instructions included.</p>
+  <ul class="kits">{KITS.map((k) => (
+    <li><a class="card kit" href={`/kits/${k.slug}/`}><b>{k.name}</b><span>{k.short}</span>
+      <span class="row"><span class="d">{k.date.label}</span><span class="p">from {priceLabel(k.tiers.find((t) => t.price > 0)!)}</span></span></a></li>))}
+  </ul>
+  <h2>Prices</h2>
+  <table class="prices"><tbody>
+    {LADDER.map((r) => <tr><td>{r.label}</td><td>{r.price ? `₹${r.price.toLocaleString("en-IN")}` : "Free"}</td></tr>)}
+  </tbody></table>
+  <p class="muted small">Full prices: no GST, no fees added. <a href="/legal/refunds/">Refunds</a> · <a href="/legal/delivery/">Delivery</a> · <a href="/legal/terms/">Terms</a></p>
+</Base>
+<style>
+  .kits { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px; }
+  .kit { display: flex; flex-direction: column; gap: 4px; color: var(--fg); text-decoration: none; border-top: 5px solid var(--gold); }
+  .kit b { font-size: 17px; } .kit > span { color: var(--muted); }
+  .row { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .d { font: 500 12.5px var(--f-mono); color: var(--muted); } .p { font-weight: 600; color: var(--accent); }
+  .prices { width: 100%; border-collapse: collapse; } .prices td { padding: 10px 6px; border-bottom: 1px solid var(--rule); } .prices td:last-child { text-align: right; font-weight: 600; white-space: nowrap; }
+  .small { font-size: 13px; }
+</style>

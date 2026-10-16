@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Calculator from "../../components/Calculator.astro";
+import KitCta from "../../components/KitCta.astro";
 import { CALCS, bySlug } from "../../lib/calcs";
 export function getStaticPaths() { return CALCS.map((c) => ({ params: { calc: c.slug } })); }
 const lang = "te";
@@ -12,6 +13,7 @@ const app = { "@context": "https://schema.org", "@type": "WebApplication", name:
   <h1>{c.title[lang]}</h1>
   <p class="muted">{c.blurb[lang]}</p>
   <Calculator slug={c.slug} lang={lang} />
+  <KitCta slug={c.slug} lang={lang} />
   <h2>ప్రశ్నలు</h2>
   {c.faqs.map((f) => <details><summary>{f.q[lang]}</summary><p>{f.a[lang]}</p></details>)}
   <p><a href="/te/">అన్ని కాలిక్యులేటర్లు</a></p>

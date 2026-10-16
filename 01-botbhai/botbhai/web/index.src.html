@@ -271,7 +271,10 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
 "use strict";
 const B = window.BotBhai;
 const qs = new URLSearchParams(location.search);
-const LIVE_TOKEN = qs.get("token");          // live owner dashboard (on the deployed site)
+// Live owner dashboard link: https://<site>/#token=<dashboard_token>. The part after # never reaches the server or its
+// logs; an old ?token= link still works once and is then wiped from the address bar and history.
+const LIVE_TOKEN = new URLSearchParams(location.hash.slice(1)).get("token") || qs.get("token");
+if (LIVE_TOKEN && history.replaceState) history.replaceState(null, "", location.pathname + location.search.replace(/([?&])token=[^&]*&?/, "$1").replace(/[?&]$/, ""));
 const LIVE_CLIENT = qs.get("client");        // live website chat for one client
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -452,7 +455,7 @@ $("#copy-embed").onclick = () => { const t = $("#embed").textContent; (navigator
 
 function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 2200); }
 
-// ---- live dashboard mode (deployed site with ?token=)
+// ---- live dashboard mode (deployed site with #token=)
 async function loadLive() {
   try {
     const r = await fetch("/.netlify/functions/leads", { headers: { Authorization: "Bearer " + LIVE_TOKEN } }); if (!r.ok) throw new Error("token");

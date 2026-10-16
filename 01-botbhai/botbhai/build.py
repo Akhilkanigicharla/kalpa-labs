@@ -20,5 +20,7 @@ head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="v
 (dist / "artifact.html").write_text(page)
 shutil.copy(root / "web" / "widget.js", dist / "widget.js")
 shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
+shutil.copy(root / "web" / "billing.html", dist / "billing.html")  # Kalpa billing (A05); calls /.netlify/functions/billing
+subprocess.check_call(["node", str(root / "tools" / "sample_invoice.js"), str(dist / "invoice-sample.html")])  # sample invoice page
 subprocess.check_call([sys.executable, str(root / "tools" / "cards.py"), "--all-demo", "--out", str(dist / "cards" / "demo")], stdout=subprocess.DEVNULL)
 print("built", ", ".join(setups), "+ smile cards →", dist)

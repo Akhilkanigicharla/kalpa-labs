@@ -155,6 +155,42 @@ create table if not exists jobs (
   status text not null default 'queued', result jsonb, created_at timestamptz not null default now()
 );
 
+-- Billing (A05 / P1-W2-06): Kalpa Labs → salon invoices. "Invoice" (no GST: CGST Act s.32(1)), Udyam on every invoice,
+-- one series per financial year KL/26-27/001 (≤ 16 characters). Rules + sources: 01-botbhai/research/billing-scan.md
+create table if not exists invoice_counters (fy text primary key, last int not null default 0);
+create table if not exists invoices (
+  id          uuid primary key default gen_random_uuid(),
+  client_id   uuid not null references clients(id) on delete restrict,  -- invoices outlive a cancelled client (books)
+  number      text unique not null check (number ~ '^KL/[0-9]{2}-[0-9]{2}/[0-9]{3,6}$' and length(number) <= 16),
+  issued_on   date not null default (now() at time zone 'Asia/Kolkata')::date,
+  due_on      date,
+  period      text,                               -- e.g. 'Nov 2026'
+  bill_to     jsonb not null,                     -- name/address/phone as they were on the invoice date
+  lines       jsonb not null,                     -- [{desc, qty, rate_paise}]
+  total_paise bigint not null check (total_paise > 0),
+  status      text not null default 'due' check (status in ('due','paid','void')),  -- void keeps the number: never delete
+  paid_on     date,
+  paid_ref    text,                               -- UPI reference (UTR) typed by Akhil; never a bank account number
+  view_key    text unique not null default encode(gen_random_bytes(16), 'hex'),       -- the salon's no-login link
+  sent_at     timestamptz,
+  created_at  timestamptz not null default now()
+);
+create index if not exists invoices_client on invoices (client_id, issued_on desc);
+-- Number + insert in one transaction, so the series never skips or repeats.
+create or replace function create_invoice(p_client uuid, p_issued date, p_due date, p_period text, p_bill_to jsonb, p_lines jsonb, p_total bigint)
+returns invoices language plpgsql security definer set search_path = public as $$
+declare v_fy text; v_seq int; v_row invoices;
+begin
+  v_fy := to_char(p_issued - interval '3 months', 'YY') || '-' || to_char(p_issued + interval '9 months', 'YY');
+  insert into invoice_counters (fy, last) values (v_fy, 1)
+    on conflict (fy) do update set last = invoice_counters.last + 1 returning last into v_seq;
+  insert into invoices (client_id, number, issued_on, due_on, period, bill_to, lines, total_paise)
+  values (p_client, 'KL/' || v_fy || '/' || lpad(v_seq::text, 3, '0'), p_issued, p_due, p_period, p_bill_to, p_lines, p_total)
+  returning * into v_row;
+  return v_row;
+end $$;
+revoke execute on function create_invoice from public, anon, authenticated;
+
 -- Lock everything down: no public access. The anon key can read nothing.
 alter table clients  enable row level security;
 alter table sessions enable row level security;
@@ -167,6 +203,8 @@ alter table jobs enable row level security;
 alter table bookings enable row level security;
 alter table processed enable row level security;
 alter table rate_hits enable row level security;
+alter table invoice_counters enable row level security;
+alter table invoices enable row level security;
 -- housekeeping (daily): delete from rate_hits where at < now() - interval '1 day';
 -- housekeeping (monthly): delete from processed where at < now() - interval '30 days';
 

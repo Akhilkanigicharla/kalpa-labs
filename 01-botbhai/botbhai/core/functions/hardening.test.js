@@ -73,6 +73,13 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     const link = store.clients[0].config.review_link;
     assert.strictEqual(L.tplParam(link), link); assert.strictEqual(L.tplParam("a\nb\tc     d"), "a b c   d");
   });
+  await ok("a long alert that ends in a link keeps the whole link in a template (inbox hand-off)", async () => {
+    const url = "https://botbhai-glow-studio-ameerpet-hyderabad.netlify.app/inbox.html";
+    const text = "🙋 Ravi Teja (919812345678) asked for bridal makeup on Sat, 14 Dec, a date you marked full. The bot is paused for 2 h for this chat; open the inbox to reply: " + url;
+    const p = L.tplParam(text);
+    assert.ok(p.length <= 200, String(p.length)); assert.ok(p.endsWith(url), p); assert.match(p, /^🙋 Ravi Teja/); assert.match(p, /… https/);
+    assert.strictEqual(L.tplParam("short note https://x.y/z"), "short note https://x.y/z");
+  });
   await ok("consent: promotional reminders (referral) skip customers without OFFERS opt-in", async () => {
     const appt = Date.now() - 75 * 3.6e6; const d = new Date(appt + 330 * 60000); const iso = d.toISOString().slice(0, 10);
     const h = d.getUTCHours(), mm = d.getUTCMinutes(); const slot = `${((h + 11) % 12) + 1}:${String(mm).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;

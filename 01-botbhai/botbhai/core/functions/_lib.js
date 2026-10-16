@@ -83,7 +83,11 @@ async function graph(path, { method = "GET", token, body } = {}) {
 function tplParam(v) {
   const s = String(v == null || v === "" ? "-" : v);
   if (/^https?:\/\//.test(s)) return s;
-  return s.replace(/[\n\t]+/g, " ").replace(/ {4,}/g, "   ").slice(0, 200);
+  const t = s.replace(/[\n\t]+/g, " ").replace(/ {4,}/g, "   ");
+  if (t.length <= 200) return t;
+  const m = t.match(/\s(https?:\/\/\S+)$/); // an alert that ends in a link (inbox, invoice): shorten the words, never the link
+  if (m && m[1].length < 150) return t.slice(0, 200 - m[1].length - 2).trimEnd() + "… " + m[1];
+  return t.slice(0, 200);
 }
 function sendTemplate(phoneNumberId, to, tpl, values) {
   const params = (tpl.params || []).map((k) => ({ type: "text", text: tplParam(values[k]) }));

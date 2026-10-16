@@ -42,6 +42,7 @@ b3 earns money by selling copy-to-your-Drive Google Sheets kits for ₹199–499
   - a spaced-revision scheduler (1/3/7/21 days);
   - a mock-test analyser that separates careless from concept errors;
   - a countdown and a weekly plan.
+- (A19 note) GATE CS v1 weights come from the GO Classes 2023–25 marks analysis, cited in the kit; a count of our own from the papers is a later Pro upgrade.
 - **Tax kit** includes:
   - old vs new regime with 87A marginal relief and cess, checked against india-tax-guru fixtures;
   - HRA, 80C and 80D inputs;

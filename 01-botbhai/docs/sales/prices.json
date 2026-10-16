@@ -1,0 +1,48 @@
+{
+  "_source": "01-botbhai/PLAN.md §2 'Salon price ladder' (tools/test_sales_kit.py fails if they differ)",
+  "currency": "INR",
+  "tiers": [
+    {
+      "id": "founding",
+      "name": "Founding",
+      "setup": 2999,
+      "monthly": 1499,
+      "monthly_after": 1999,
+      "monthly_after_month": 4,
+      "note": "First 3 salons; price fixed for 12 months",
+      "gives": "Standard features. In return: a baseline from your register, a testimonial, and use of anonymised numbers"
+    },
+    {
+      "id": "lite",
+      "name": "Lite",
+      "setup": 1999,
+      "monthly": 999,
+      "gives": "WhatsApp bot (prices, FAQ, booking, reschedule/cancel), 24 h + 2 h reminders, owner alerts, dashboard + Excel"
+    },
+    {
+      "id": "standard",
+      "name": "Standard",
+      "setup": 4999,
+      "monthly": 2999,
+      "gives": "Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site, web voice, monthly ROI report"
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "setup": 9999,
+      "monthly": 4999,
+      "gives": "Standard plus Meta ads management (you pay ad spend) and a phone voice receptionist (300 min included, then ₹3/min)"
+    }
+  ],
+  "terms": {
+    "setup_split": "50% on signing, 50% at go-live",
+    "lock_in": "none on monthly plans",
+    "annual_prepay": "2 months free",
+    "live_in_days": 10
+  },
+  "whatsapp_fees": {
+    "lite_no_marketing": 290,
+    "typical": 660,
+    "paid_by": "the salon, directly to Meta on its own WhatsApp account"
+  }
+}

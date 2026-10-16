@@ -1,0 +1,14 @@
+{
+  "_note": "Example only (made-up salon). Copy this file per real salon, fill it from the walk-in answers, then: node botbhai/tools/sales_kit.js proposal <file> <out.html>",
+  "name": "Glow Studio",
+  "area": "Ameerpet",
+  "owner": "Lakshmi",
+  "owner_phone": "+91 90000 00000",
+  "date": "16 Oct 2026",
+  "after9_per_week": 12,
+  "noshows_last_saturday": 3,
+  "phone_answerer": "Nobody: owner calls back",
+  "avg_ticket": 600,
+  "tier": "founding",
+  "marketing": true
+}

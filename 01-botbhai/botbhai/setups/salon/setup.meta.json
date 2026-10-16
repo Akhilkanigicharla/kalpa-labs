@@ -20,8 +20,9 @@
     "Repeat visit within 45 days ≥ 40%"
   ],
   "price": {
-    "setup": "₹9,999",
+    "setup": "₹4,999",
     "monthly": "₹2,999",
-    "ads_mgmt": "₹2,000/month (ad spend paid by the salon to Meta)"
+    "tier": "Standard (full ladder: 01-botbhai/docs/sales/prices.json = PLAN.md §2)",
+    "ads_mgmt": "included in Pro (₹9,999 + ₹4,999/month); the salon pays ad spend to Meta"
   }
 }

@@ -36,7 +36,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A16** b5 · b5.W2.1: calculators salary, FD, PPF, HRA in English + Telugu with FAQ schema. Check: fixtures pass. (done 2026-10-13, 6208eb4)
 - [ ] **A17** b5 · b5.W4.1: GST, gratuity, RD calculators + Kits call-to-action. Check: 10 calculators build.
 - [ ] **A18** b5 · b5.W1.3: `05-deals/site/src/bot/post.py` Telegram poster from `queue.csv` (dry-run mode, ASCI disclosure enforced). Check: unit test.
-- [ ] **A19** b3 · K-02: GATE 2027 kit v1 (xlsx + Apps Script for Sheets): syllabus × papers, topic weights, revision scheduler, mock analyser, Lite version. Check: 25-item QA checklist in `03-kits/docs/qa.md`.
+- [x] **A19** b3 · K-02: GATE 2027 kit v1 (xlsx + Apps Script for Sheets): syllabus × papers, topic weights, revision scheduler, mock analyser, Lite version. Check: 25-item QA checklist in `03-kits/docs/qa.md`. (done 2026-10-16, b6fab38; CS v1 Lite/Kit/Pro in `03-kits/products/`; 18 of 25 QA checks automated)
 - [x] **A20** b3 · K-08: Tax + SIP kit v1 with in-sheet tests (₹12.75L / ₹13L / ₹25L → 0 / 26,000 / 3,19,800 new; 1,40,400 / 1,48,200 / 5,22,600 old). Check: fixtures pass in a Python check of the formulas. (done 2026-10-16, 373ab59; `03-kits/products/Kalpa-Tax-SIP-Planner-2026-27.xlsx`, 157 cases = fin.ts in LibreOffice)
 - [ ] **A21** b3 · K-06: delivery function (Razorpay signature verify, order log, per-buyer stamped PDF with pdf-lib) built and tested with fake payloads only. Check: tests green; no secrets.
 - [ ] **A22** b3 · K-04: 14 days of daily-question posts for the Telegram channel. Check: file in `03-kits/docs/`.

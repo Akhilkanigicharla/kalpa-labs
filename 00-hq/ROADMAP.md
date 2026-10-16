@@ -37,7 +37,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [ ] **A17** b5 · b5.W4.1: GST, gratuity, RD calculators + Kits call-to-action. Check: 10 calculators build.
 - [ ] **A18** b5 · b5.W1.3: `05-deals/site/src/bot/post.py` Telegram poster from `queue.csv` (dry-run mode, ASCI disclosure enforced). Check: unit test.
 - [ ] **A19** b3 · K-02: GATE 2027 kit v1 (xlsx + Apps Script for Sheets): syllabus × papers, topic weights, revision scheduler, mock analyser, Lite version. Check: 25-item QA checklist in `03-kits/docs/qa.md`.
-- [ ] **A20** b3 · K-08: Tax + SIP kit v1 with in-sheet tests (₹12.75L / ₹13L / ₹25L → 0 / 26,000 / 3,19,800 new; 1,40,400 / 1,48,200 / 5,22,600 old). Check: fixtures pass in a Python check of the formulas.
+- [x] **A20** b3 · K-08: Tax + SIP kit v1 with in-sheet tests (₹12.75L / ₹13L / ₹25L → 0 / 26,000 / 3,19,800 new; 1,40,400 / 1,48,200 / 5,22,600 old). Check: fixtures pass in a Python check of the formulas. (done 2026-10-16, 373ab59; `03-kits/products/Kalpa-Tax-SIP-Planner-2026-27.xlsx`, 157 cases = fin.ts in LibreOffice)
 - [ ] **A21** b3 · K-06: delivery function (Razorpay signature verify, order log, per-buyer stamped PDF with pdf-lib) built and tested with fake payloads only. Check: tests green; no secrets.
 - [ ] **A22** b3 · K-04: 14 days of daily-question posts for the Telegram channel. Check: file in `03-kits/docs/`.
 - [x] **A23** b7 · Q7.1–Q7.3: licence note, `.gitignore` data, pinned requirements, `src/data.py` (cache + validation), `src/costs.py` (2026 Indian charges with sources). Check: pytest green on synthetic data. (done 2026-10-13, 1e5e4d5)

@@ -4,6 +4,7 @@
 - **Built since the last update:** BotBhai Social Team (A45, `01-botbhai/botbhai/social/`), marketing team for every world in Kalpa colours (A47, `00-hq/marketing/`; b7 switched off for SEBI), Superpowers skills vendored + roadmap task engine `node 00-hq/agents/tasks.js next|validate` + short-answers skill (A46), REA outsider audit fixed (A48, `00-hq/research/rea-audit-2026-10-16.md`).
 - **Akhil's PC:** has Node.js 24 + REA (`rea-agents@6.4.0`) in Claude desktop config and Claude Code (`claude mcp add rea`). REA works only in sessions running on his PC, not cloud chats. Superpowers plugin is on his account.
 - **Built 16 Oct (afternoon):** A04 shared inbox (`01-botbhai/botbhai/web/inbox.html` + `core/functions/inbox.js`, commit 08b6409).
+- **Built 16 Oct (late, 2):** A10 owner dashboard `01-botbhai/botbhai/web/dashboard.html` (+ brief `01-botbhai/design/BRIEF.md`).
 - **Built 16 Oct (late):** A08 Cluster 1 visit sheet (`01-botbhai/docs/sales/visit-cluster1.pdf`); lead finder runs on Actions again (private 7-day artifact, `near`/`radius` inputs).
 - **Built 16 Oct (night):** A07 sales kit (`01-botbhai/docs/sales/`: card, proposal, agreement, privacy notice, objections; prices.json = PLAN §2).
 - **Built 16 Oct (evening):** A05 billing (`01-botbhai/botbhai/web/billing.html`, `core/functions/billing.js`, sample PDF in `01-botbhai/docs/billing/`); CI now runs BotBhai's browser + SQL checks.

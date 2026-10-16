@@ -65,6 +65,12 @@ async function saveLead(client, contact, lead, prev) {
     marketing_opt_in: !!marketing_opt_in || !!(prev && prev.marketing_opt_in && status !== "opted_out"), updated_at: new Date().toISOString() } });
 }
 
+// ---------- shared inbox (A04): the sessions.status/human_until columns mirror the engine's humanUntil timer
+function inboxStatus(state, nowMs = Date.now()) {
+  const until = state && state.humanUntil ? new Date(state.humanUntil) : null;
+  return until && until.getTime() > nowMs ? { status: "human", human_until: until.toISOString() } : { status: "bot", human_until: null };
+}
+
 // ---------- WhatsApp senders
 const GRAPH = "https://graph.facebook.com/v21.0";
 async function graph(path, { method = "GET", token, body } = {}) {
@@ -122,5 +128,5 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = { db, json, enc, rateHit, istTodayIso, firstTime, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { db, json, enc, rateHit, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

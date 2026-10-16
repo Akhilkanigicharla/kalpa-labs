@@ -56,6 +56,26 @@ create table if not exists messages (
 );
 create index if not exists messages_client_contact on messages (client_id, contact, created_at);
 
+-- Shared inbox (A04 / P1-W2-02). Column ideas from ArnasDon/wacrm migrations (MIT, © its authors):
+-- an explicit bot/human/resolved status next to the engine's humanUntil timer, who owns the chat, and private notes.
+-- Safe to re-run on an existing database.
+alter table sessions add column if not exists status text not null default 'bot';
+alter table sessions add column if not exists assigned_to text;       -- staff first name, e.g. 'Lakshmi'
+alter table sessions add column if not exists human_until timestamptz; -- mirror of state.humanUntil (bot paused until)
+alter table sessions add column if not exists notes text;              -- private to the salon, never sent to the customer
+alter table sessions add column if not exists last_inbound_at timestamptz; -- WhatsApp 24-hour customer-service window
+do $$ begin
+  alter table sessions add constraint sessions_status_check check (status in ('bot','human','resolved'));
+exception when duplicate_object then null; end $$;
+update sessions set status = 'human', human_until = (state->>'humanUntil')::timestamptz
+  where state->>'humanUntil' is not null and (state->>'humanUntil')::timestamptz > now() and status = 'bot';
+create index if not exists sessions_inbox on sessions (client_id, status, updated_at desc);
+alter table messages add column if not exists author text not null default 'bot';
+do $$ begin
+  alter table messages add constraint messages_author_check check (author in ('customer','bot','staff'));
+exception when duplicate_object then null; end $$;
+update messages set author = 'customer' where direction = 'in' and author = 'bot'; -- rows logged before this column existed
+
 -- Tokens live apart from client data (service role only)
 create table if not exists client_secrets (
   client_id        uuid primary key references clients(id) on delete cascade,
@@ -158,3 +178,5 @@ alter table rate_hits enable row level security;
 -- values ('Glow Studio', 'salon', '123456789012345', '919876543210',
 --         '{"business":"Glow Studio","address":"Jubilee Hills","phone":"+91 98765 43210","review_link":"https://g.page/r/..."}');
 -- select name, dashboard_token from clients;   -- → https://<site>/dashboard.html?token=<dashboard_token>
+-- Shared inbox for the same client: https://<site>/inbox.html#key=<dashboard_token>  (the #key part never reaches a server;
+-- the page saves it on that phone and wipes it from the address bar). Optional config: "inbox_hold_hours" (default 12).

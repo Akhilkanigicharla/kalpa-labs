@@ -32,14 +32,25 @@ jobs:
 
   botbhai:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    # Postgres runs the schema test (supabase/test.sh); Playwright + OpenCV + poppler run the 390 px screens,
+    # the inbox and billing click-throughs, the QR scan and the invoice PDF check. Versions are the ones proven locally.
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: postgres }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install openpyxl==3.1.5 pillow==12.3.0
+      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils postgresql-client
+      - run: pip install openpyxl==3.1.5 pillow==12.3.0 playwright==1.56.0 opencv-python-headless==5.0.0.93 numpy==2.5.4
+      - run: python -m playwright install --with-deps chromium
       - run: bash 01-botbhai/botbhai/tools/test-all.sh
 
   python-worlds:

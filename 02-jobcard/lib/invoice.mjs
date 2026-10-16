@@ -16,9 +16,12 @@ export const SAC = { home: "998715", commercial: "998717", install: "998736" };
 const GST_RATE = 0.18;
 const STATE_CODES = { Telangana: "36", "Andhra Pradesh": "37", Karnataka: "29", Maharashtra: "27", "Tamil Nadu": "33" };
 
-/** Financial-year series number: JC/26-27/0001 (≤ 16 characters, fresh every 1 April). */
+/** Financial-year series number: JC/26-27/0001 (≤ 16 characters, fresh every 1 April).
+ *  A "YYYY-MM-DD" string is that calendar date; any other date/instant is read in IST (as the SQL next_invoice_no does),
+ *  so an invoice made at 00:30 IST on 1 April starts the new series. */
 export function invoiceNo(seq, date = new Date(), prefix = "JC") {
-  const d = new Date(date); const y = d.getUTCFullYear() - (d.getUTCMonth() < 3 ? 1 : 0);
+  const d = typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(date + "T00:00:00Z") : new Date(new Date(date).getTime() + 330 * 60000);
+  const y = d.getUTCFullYear() - (d.getUTCMonth() < 3 ? 1 : 0);
   const fy = `${String(y).slice(2)}-${String(y + 1).slice(2)}`;
   const no = `${prefix}/${fy}/${String(seq).padStart(4, "0")}`;
   if (no.length > 16) throw new Error(`invoice number ${no} is longer than 16 characters (GST Rule 46/49)`);

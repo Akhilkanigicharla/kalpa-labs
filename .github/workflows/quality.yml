@@ -71,6 +71,20 @@ jobs:
           pip install genai-prices==0.1.11 pytest==9.1.1
           python -m pytest -q tests/
 
+  kits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends libreoffice-calc-nogui
+      - run: pip install openpyxl==3.1.5
+      - name: Tax + SIP kit recalculated in LibreOffice vs the site's tax engine
+        run: python 03-kits/tax-sip/test_kit.py
+
   jobcard:
     runs-on: ubuntu-latest
     timeout-minutes: 10

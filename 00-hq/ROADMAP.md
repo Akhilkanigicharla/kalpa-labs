@@ -27,7 +27,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A09** design · Kalpa design system "Kalamkari": `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` + free UI toolkit (licences checked). Check: the three files exist and the toolkit list names each licence. (done 2026-10-13, add0d08)
 - [x] **A10** design · b1: `01-botbhai/design/` brief + HTML mockups for the owner dashboard and shared inbox (phone first). Use shadcn/ui-style components on the Kalamkari tokens. Check: renders at 390 px with no horizontal scroll (Playwright screenshot). (done 2026-10-16, e30f44a; brief `01-botbhai/design/BRIEF.md`; the dashboard is a working page `botbhai/web/dashboard.html`, `?demo=1` is the mockup; 44 screens at 390 px)
 - [x] **A11** design · b5 + b3: calculator page and kit landing page mockups. Check: 390 px Playwright screenshot. (done 2026-10-16, d2b035b; built as real pages on the calculator site: `/kits/`, 3 kit pages, 6 policy pages; `05-deals/site/scripts/screens.py` 52 screens)
-- [ ] **A12** design · b6: Ledger Peaks landing + dashboard + X-ray report mockups. Check: 390 px screenshot.
+- [x] **A12** design · b6: Ledger Peaks landing + dashboard + X-ray report mockups. Check: 390 px screenshot. (done 2026-10-17, c4adae4; `06-finops/design/`, numbers from the real price engine via `sample.py`, `screens.py` 12 screens light + dark, `tests/test_design.py`)
 - [ ] **A13** design · b2 + b4: JobCard app screens (record → job card → invoice) and Tab Lifeboat popup/options. Check: screenshots.
 - [x] **A14** design · HQ: Kingdom control room redesigned in the Kalamkari system and republished; copy in `00-hq/design/kingdom-control-room.html`. Check: page republished; light + dark at 390 px. (done 2026-10-13, add0d08)
 

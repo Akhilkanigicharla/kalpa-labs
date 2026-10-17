@@ -1,9 +1,10 @@
 // Calculator definitions shared by the pages (server render) and the browser script.
 // English + Telugu copy. Telugu text needs a native speaker's check before launch (CEO queue).
-import { compareRegimes, emi, fd, hra, inr, ppf, salary, sip } from "./fin";
+import { compareRegimes, emi, fd, gratuity, gst, hra, inr, inrPaise, ppf, rd, RULES, salary, sip } from "./fin";
 
 export type Lang = "en" | "te";
-export interface Field { id: string; en: string; te: string; value: number | string; step?: number; kind?: "number" | "city" }
+export interface Option { value: string; en: string; te: string }
+export interface Field { id: string; en: string; te: string; value: number | string; step?: number; kind?: "number" | "city" | "select"; options?: Option[] }
 export interface Row { en: string; te: string; value: string; valueTe?: string; big?: boolean } // valueTe: a word, not a number
 export interface Faq { q: Record<Lang, string>; a: Record<Lang, string> }
 export interface Calc {
@@ -194,6 +195,103 @@ export const CALCS: Calc[] = [
         a: { en: "The lowest of: HRA received, 50% (metro) or 40% of salary, and rent minus 10% of salary.", te: "ఈ మూడింటిలో తక్కువది: వచ్చిన HRA, జీతంలో 50% (మెట్రో) లేదా 40%, అద్దె − జీతంలో 10%." } },
       { q: { en: "Can I claim HRA in the new regime?", te: "కొత్త విధానంలో HRA క్లెయిమ్ చేయవచ్చా?" },
         a: { en: "No, HRA exemption is available only in the old regime.", te: "లేదు, HRA మినహాయింపు పాత విధానంలో మాత్రమే." } },
+    ],
+  },
+  {
+    slug: "gst",
+    title: { en: "GST calculator (add or remove GST, 2026 rates)", te: "GST కాలిక్యులేటర్ (GST కలపండి లేదా తీసేయండి, 2026 రేట్లు)" },
+    blurb: { en: "GST 2.0 rates: 5%, 18%, 40%, and 3% on gold. Shows CGST + SGST or IGST.", te: "GST 2.0 రేట్లు: 5%, 18%, 40%, బంగారంపై 3%. CGST + SGST లేదా IGST చూపిస్తుంది." },
+    fields: [
+      { id: "amount", en: "Amount (₹)", te: "మొత్తం (₹)", value: 1000, step: 1 },
+      { id: "rate", en: "GST rate", te: "GST రేటు", value: "18", kind: "select",
+        options: RULES.gstRates.map((r) => ({ value: String(r), en: `${r}%`, te: `${r}%` })) },
+      { id: "mode", en: "The amount is", te: "ఈ మొత్తం", value: "add", kind: "select", options: [
+        { value: "add", en: "before GST (add GST)", te: "GST లేకుండా (GST కలపండి)" },
+        { value: "remove", en: "including GST (remove GST)", te: "GST తో కలిపి (GST తీసేయండి)" }] },
+      { id: "supply", en: "Buyer is in", te: "కొనేవారు ఉన్నది", value: "same", kind: "select", options: [
+        { value: "same", en: "the same state (CGST + SGST)", te: "అదే రాష్ట్రం (CGST + SGST)" },
+        { value: "other", en: "another state (IGST)", te: "వేరే రాష్ట్రం (IGST)" }] },
+    ],
+    compute: (v) => {
+      const g = gst(n(v.amount), Number(v.rate) || 18, v.mode === "remove" ? "remove" : "add");
+      const split: Row[] = v.supply === "other"
+        ? [{ en: "IGST", te: "IGST", value: inrPaise(g.tax) }]
+        : [{ en: "CGST", te: "CGST", value: inrPaise(g.half) }, { en: "SGST", te: "SGST", value: inrPaise(g.half) }];
+      return [
+        { en: v.mode === "remove" ? "Price before GST" : "Price with GST", te: v.mode === "remove" ? "GST లేని ధర" : "GST తో ధర", value: inrPaise(v.mode === "remove" ? g.base : g.total), big: true },
+        { en: "GST", te: "GST", value: inrPaise(g.tax) },
+        ...split,
+        { en: v.mode === "remove" ? "Price including GST" : "Price before GST", te: v.mode === "remove" ? "GST తో ధర" : "GST లేని ధర", value: inrPaise(v.mode === "remove" ? g.total : g.base) },
+      ];
+    },
+    faqs: [
+      { q: { en: "How do I remove GST from a price?", te: "ధర నుండి GST ఎలా తీసేయాలి?" },
+        a: { en: "Price before GST = price including GST × 100 ÷ (100 + rate). For 18%: ₹1,180 × 100 ÷ 118 = ₹1,000, so the GST is ₹180.", te: "GST లేని ధర = GST తో ధర × 100 ÷ (100 + రేటు). 18%కి: ₹1,180 × 100 ÷ 118 = ₹1,000, GST ₹180." } },
+      { q: { en: "What are the GST rates now?", te: "ఇప్పుడు GST రేట్లు ఎంత?" },
+        a: { en: "Since 22 September 2025 (GST 2.0): 5% for most essentials, 18% standard, 40% for luxury and sin goods, 3% for gold and silver. Check your item's rate on cbic-gst.gov.in.", te: "22 సెప్టెంబర్ 2025 నుండి (GST 2.0): చాలా అవసరాలకు 5%, సాధారణంగా 18%, విలాస/హానికర వస్తువులకు 40%, బంగారం, వెండికి 3%. మీ వస్తువు రేటు cbic-gst.gov.in లో చూడండి." } },
+      { q: { en: "When is it CGST + SGST and when IGST?", te: "CGST + SGST ఎప్పుడు, IGST ఎప్పుడు?" },
+        a: { en: "Sale inside your state: half CGST, half SGST. Sale to another state: the full rate as IGST.", te: "మీ రాష్ట్రంలోనే అమ్మితే: సగం CGST, సగం SGST. వేరే రాష్ట్రానికి అమ్మితే: మొత్తం రేటు IGSTగా." } },
+    ],
+  },
+  {
+    slug: "gratuity",
+    title: { en: "Gratuity calculator (new Labour Code rules)", te: "గ్రాట్యుటీ కాలిక్యులేటర్ (కొత్త లేబర్ కోడ్ నియమాలు)" },
+    blurb: { en: "15 days' wages for every year, ₹20 lakh ceiling. Includes the Labour Code 50% wage rule from 21 Nov 2025.", te: "ప్రతి ఏడాదికి 15 రోజుల వేతనం, గరిష్టం ₹20 లక్షలు. 21 నవంబర్ 2025 నుండి లేబర్ కోడ్ 50% వేతన నియమంతో." },
+    fields: [
+      { id: "wages", en: "Last monthly basic + DA (₹)", te: "చివరి నెల బేసిక్ + DA (₹)", value: 50000, step: 1000 },
+      { id: "total", en: "Total monthly pay, all allowances (₹, optional)", te: "నెల మొత్తం జీతం, అన్ని అలవెన్సులు (₹, ఐచ్ఛికం)", value: 0, step: 1000 },
+      { id: "years", en: "Years of service", te: "సర్వీస్ సంవత్సరాలు", value: 10, step: 1 },
+      { id: "months", en: "Extra months", te: "అదనపు నెలలు", value: 7, step: 1 },
+      { id: "type", en: "Job type", te: "ఉద్యోగ రకం", value: "permanent", kind: "select", options: [
+        { value: "permanent", en: "Permanent", te: "పర్మనెంట్" }, { value: "fixed", en: "Fixed-term contract", te: "ఫిక్స్‌డ్-టర్మ్ కాంట్రాక్ట్" }] },
+    ],
+    compute: (v) => {
+      const g = gratuity({ wages: n(v.wages), totalPay: n(v.total), years: n(v.years), months: Math.min(11, n(v.months)), fixedTerm: v.type === "fixed" });
+      if (!g.eligible) return [
+        { en: "Gratuity", te: "గ్రాట్యుటీ", value: inr(0), big: true },
+        { en: "Why", te: "ఎందుకు", value: v.type === "fixed" ? "Needs 1 year of service" : "Needs 5 years of service", valueTe: v.type === "fixed" ? "1 ఏడాది సర్వీస్ కావాలి" : "5 ఏళ్ల సర్వీస్ కావాలి" },
+      ];
+      return [
+        { en: "Gratuity", te: "గ్రాట్యుటీ", value: inr(g.amount), big: true },
+        { en: "Years counted", te: "లెక్కలోకి వచ్చిన సంవత్సరాలు", value: String(g.completedYears) },
+        { en: "Monthly wages used", te: "లెక్కించిన నెల వేతనం", value: inr(g.wagesUsed) },
+        { en: "Tax-free part", te: "పన్ను లేని భాగం", value: inr(g.taxFree) },
+        ...(g.capped ? [{ en: "Formula amount (above the ₹20 lakh ceiling)", te: "ఫార్ములా మొత్తం (₹20 లక్షల పరిమితి పైన)", value: inr(g.formula) }] : []),
+      ];
+    },
+    faqs: [
+      { q: { en: "How is gratuity calculated?", te: "గ్రాట్యుటీ ఎలా లెక్కిస్తారు?" },
+        a: { en: "Last monthly wages × 15 ÷ 26 × completed years. Part of a year over 6 months counts as a full year. ₹50,000 for 10 years 7 months: 50,000 × 15 ÷ 26 × 11 = ₹3,17,308.", te: "చివరి నెల వేతనం × 15 ÷ 26 × పూర్తి సంవత్సరాలు. 6 నెలలకు మించిన భాగం పూర్తి ఏడాదిగా లెక్క. ₹50,000కి 10 ఏళ్లు 7 నెలలు: 50,000 × 15 ÷ 26 × 11 = ₹3,17,308." } },
+      { q: { en: "What changed with the new Labour Codes?", te: "కొత్త లేబర్ కోడ్‌లతో ఏమి మారింది?" },
+        a: { en: "From 21 November 2025, if allowances are more than half your pay, the extra counts as wages, so gratuity can go up. Fixed-term employees qualify after 1 year instead of 5.", te: "21 నవంబర్ 2025 నుండి, అలవెన్సులు జీతంలో సగం కంటే ఎక్కువైతే, అదనపు భాగం వేతనంగా లెక్క, కాబట్టి గ్రాట్యుటీ పెరగవచ్చు. ఫిక్స్‌డ్-టర్మ్ ఉద్యోగులకు 5 ఏళ్లకు బదులు 1 ఏడాదికే అర్హత." } },
+      { q: { en: "Is gratuity taxed?", te: "గ్రాట్యుటీపై పన్ను ఉందా?" },
+        a: { en: "For private employees covered by the law, up to ₹20 lakh in a lifetime is tax-free (Income-tax Act 2025, Schedule II; section 10(10) of the 1961 Act). Government employees' gratuity is fully tax-free.", te: "చట్టం వర్తించే ప్రైవేట్ ఉద్యోగులకు జీవితకాలంలో ₹20 లక్షల వరకు పన్ను లేదు (ఆదాయపు పన్ను చట్టం 2025, షెడ్యూల్ II; 1961 చట్టం సెక్షన్ 10(10)). ప్రభుత్వ ఉద్యోగుల గ్రాట్యుటీకి పూర్తిగా పన్ను లేదు." } },
+    ],
+  },
+  {
+    slug: "rd",
+    title: { en: "RD calculator (bank and post office recurring deposit)", te: "RD కాలిక్యులేటర్ (బ్యాంక్, పోస్టాఫీస్ రికరింగ్ డిపాజిట్)" },
+    blurb: { en: "Monthly deposit, quarterly compounding. Post office 5-year RD: 6.7% for Oct–Dec 2026.", te: "నెలవారీ డిపాజిట్, త్రైమాసిక చక్రవడ్డీ. పోస్టాఫీస్ 5 ఏళ్ల RD: అక్టో–డిసెం 2026కి 6.7%." },
+    fields: [
+      { id: "monthly", en: "Monthly deposit (₹)", te: "నెలవారీ డిపాజిట్ (₹)", value: 10000, step: 500 },
+      { id: "rate", en: "Interest rate a year (%)", te: "వార్షిక వడ్డీ రేటు (%)", value: Math.round(RULES.postOfficeRd * 1000) / 10, step: 0.05 },
+      { id: "years", en: "Years", te: "సంవత్సరాలు", value: 5, step: 1 },
+    ],
+    compute: (v) => {
+      const r = rd(n(v.monthly), pct(v.rate), n(v.years));
+      return [
+        { en: "Maturity value", te: "మెచ్యూరిటీ విలువ", value: inr(r.value), big: true },
+        { en: "You deposit", te: "మీరు జమ చేసేది", value: inr(r.deposited) },
+        { en: "Interest earned", te: "వచ్చే వడ్డీ", value: inr(r.interest) },
+      ];
+    },
+    faqs: [
+      { q: { en: "What is the post office RD rate now?", te: "ఇప్పుడు పోస్టాఫీస్ RD రేటు ఎంత?" },
+        a: { en: "6.7% a year for October–December 2026, unchanged. ₹10,000 a month for 5 years becomes about ₹7.14 lakh.", te: "అక్టోబర్–డిసెంబర్ 2026కి ఏడాదికి 6.7%, మార్పు లేదు. నెలకు ₹10,000 చొప్పున 5 ఏళ్లు వేస్తే సుమారు ₹7.14 లక్షలు." } },
+      { q: { en: "How is RD maturity calculated?", te: "RD మెచ్యూరిటీ ఎలా లెక్కిస్తారు?" },
+        a: { en: "Each monthly deposit earns interest compounded every quarter until maturity, so earlier deposits grow more.", te: "ప్రతి నెల డిపాజిట్‌కు మెచ్యూరిటీ వరకు ప్రతి త్రైమాసికం చక్రవడ్డీ వస్తుంది, కాబట్టి ముందు వేసినవి ఎక్కువ పెరుగుతాయి." } },
+      { q: { en: "Is RD interest taxable?", te: "RD వడ్డీపై పన్ను ఉందా?" },
+        a: { en: "Yes, at your slab rate, like FD interest. Banks deduct TDS above the yearly threshold.", te: "అవును, FD వడ్డీలాగే మీ స్లాబ్ రేటు ప్రకారం. వార్షిక పరిమితి దాటితే బ్యాంకులు TDS కట్ చేస్తాయి." } },
     ],
   },
 ];

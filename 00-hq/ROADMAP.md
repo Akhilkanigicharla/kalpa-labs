@@ -93,7 +93,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
 - [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
 - [ ] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine)
-- [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 7 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (20 min)
+- [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 10 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (25 min)
 - [ ] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min)
 - [ ] **C19** HQ · When each product has a live page, paste its real link into `00-hq/marketing/brands/<world>.json` (replaces `[add link]`), and decide which worlds get an Instagram account (you create them; 10 min per world)
 - [ ] **C20** HQ · Before the GitHub repo is ever made public: say "purge leads" and Claude removes the old lead lists (business phone numbers) from git history. Nothing to do while the repo stays private (1 min)

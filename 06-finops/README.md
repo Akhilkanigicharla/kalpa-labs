@@ -2,7 +2,7 @@
 
 **What it is:** AI cost per customer in ₹ + DPDP / ISO 42001 / EU AI Act evidence pack for Indian AI startups (flagship).
 **Status (13 Oct 2026):** Planned. Price engine and importers are built by agents first; selling starts 16 Nov with a ₹4,999 audit.
-**Price:** ₹4,999 audit, then ₹1,999 / ₹3,999 / ₹7,999 per month.
+**Price:** ₹4,999 audit, then ₹1,999 / ₹4,999 / ₹7,999 per month (PLAN.md §2).
 
 ## What's in this folder
 

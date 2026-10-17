@@ -102,6 +102,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C23** b1 · Before the first salon signs: have a lawyer (or the CA at Q-HQ-15) read `01-botbhai/docs/sales/agreement.pdf` and `privacy-notice.pdf`, and a Telugu speaker read the card's front side. Print 20 A5 cards double-sided (≈₹200 at a local print shop, only when visits start) (30 min)
 - [ ] **C24** b3 · Before Razorpay KYC (Q-HQ-09): read the 6 policy pages (`/legal/…` on the calculator site, text in `05-deals/site/src/lib/kits.ts`), confirm the 7-day refund rule, and give Claude the full business address from your Udyam certificate for the Contact page (it shows only "Hyderabad, Telangana" now). Then make one Razorpay Payment Page per kit and send Claude the links (15 min)
 - [ ] **C25** b1 · At BotBhai go-live: Netlify → kalpa-botbhai → Site configuration → Access & security → Visitor access → protect **non-production deploys only**. Today every visitor (and WhatsApp's webhook) hits a Netlify login (2 min)
+- [ ] **C26** b6 · F-04: open the Ledger Peaks mockups (`06-finops/design/landing.html`, `xray.html`, `dashboard.html`; how to open: `06-finops/design/BRIEF.md`) and approve the name "Ledger Peaks", the headline "Which customer is your AI bill eating?" and the price ladder, or say what to change (15 min)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

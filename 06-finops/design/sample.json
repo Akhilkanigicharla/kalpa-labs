@@ -1,0 +1,295 @@
+{
+ "company": "Chaiwala AI (sample)",
+ "period": {
+  "from": "2026-10-12",
+  "to": "2026-10-18",
+  "days": 7
+ },
+ "fx": {
+  "date": "2026-10-12",
+  "inr_per_usd": "95.7485",
+  "source": "RBI home page 'Current Rates' (FBIL reference rate, as at 1.00pm of October 12, 2026)"
+ },
+ "total_week": 2348347,
+ "total_month": 10203567,
+ "rows": 189,
+ "calls": 54091,
+ "by_model": {
+  "claude-sonnet-4-5": 1365532,
+  "gpt-4o": 676612,
+  "gemini-2.5-flash": 275615,
+  "gpt-4o-mini": 30588
+ },
+ "by_feature": {
+  "support_reply": 1365532,
+  "classify": 676612,
+  "rag_search": 275615,
+  "summarise": 30588
+ },
+ "by_day": {
+  "2026-10-12": 345375,
+  "2026-10-13": 362808,
+  "2026-10-14": 379841,
+  "2026-10-15": 345375,
+  "2026-10-16": 396960,
+  "2026-10-17": 276299,
+  "2026-10-18": 241689
+ },
+ "customers": [
+  {
+   "name": "Biryani Bazaar",
+   "id": "c_d63f6363743af20e",
+   "week": 1419728,
+   "month": 6168718,
+   "revenue_month": 5999900,
+   "margin_pct": -2.8,
+   "calls": 30736,
+   "by_feature": {
+    "support_reply": 881081,
+    "rag_search": 132172,
+    "summarise": 15822,
+    "classify": 390653
+   },
+   "month_after_top_idea": 4573178,
+   "margin_after_top_idea_pct": 23.8
+  },
+  {
+   "name": "Kirana Cloud",
+   "id": "c_ae27e6c7b42ee08a",
+   "week": 478608,
+   "month": 2079551,
+   "revenue_month": 3499900,
+   "margin_pct": 40.6,
+   "calls": 11900,
+   "by_feature": {
+    "support_reply": 254535,
+    "rag_search": 75527,
+    "summarise": 7910,
+    "classify": 140636
+   },
+   "month_after_top_idea": 1505156,
+   "margin_after_top_idea_pct": 57.0
+  },
+  {
+   "name": "MedPlus Lite",
+   "id": "c_a40a3aaef4f37d5d",
+   "week": 220908,
+   "month": 959845,
+   "revenue_month": 1999900,
+   "margin_pct": 52.0,
+   "calls": 5304,
+   "by_feature": {
+    "support_reply": 117478,
+    "rag_search": 37762,
+    "summarise": 3164,
+    "classify": 62504
+   },
+   "month_after_top_idea": 704564,
+   "margin_after_top_idea_pct": 64.8
+  },
+  {
+   "name": "Auto Adda",
+   "id": "c_7a8566db3df6cd9e",
+   "week": 134481,
+   "month": 584319,
+   "revenue_month": 999900,
+   "margin_pct": 41.6,
+   "calls": 3399,
+   "by_feature": {
+    "support_reply": 68528,
+    "rag_search": 16965,
+    "summarise": 2109,
+    "classify": 46879
+   },
+   "month_after_top_idea": 392857,
+   "margin_after_top_idea_pct": 60.7
+  },
+  {
+   "name": "Saree Studio",
+   "id": "c_3bc067caff84b22c",
+   "week": 63277,
+   "month": 274938,
+   "revenue_month": 499900,
+   "margin_pct": 45.0,
+   "calls": 1903,
+   "by_feature": {
+    "support_reply": 29369,
+    "rag_search": 9413,
+    "summarise": 1055,
+    "classify": 23440
+   },
+   "month_after_top_idea": 179201,
+   "margin_after_top_idea_pct": 64.2
+  },
+  {
+   "name": "Tiffin Tracker",
+   "id": "c_7ba307ce17cffaeb",
+   "week": 31345,
+   "month": 136194,
+   "revenue_month": 299900,
+   "margin_pct": 54.6,
+   "calls": 849,
+   "by_feature": {
+    "support_reply": 14541,
+    "rag_search": 3776,
+    "summarise": 528,
+    "classify": 12500
+   },
+   "month_after_top_idea": 85136,
+   "margin_after_top_idea_pct": 71.6
+  }
+ ],
+ "unpriced": {
+  "models": [
+   "sarvam/sarvam-m"
+  ],
+  "rows": 21,
+  "tokens": 2196400,
+  "calls": 1292
+ },
+ "savings": [
+  {
+   "id": "downgrade",
+   "title": "Classify with gpt-4o-mini instead of gpt-4o",
+   "feature": "classify",
+   "now": 676612,
+   "after": 40599,
+   "assumption": "a 1-word label task; test 200 real tickets first and keep gpt-4o if accuracy drops more than 2 points",
+   "saved_week": 636013,
+   "by_customer_week": {
+    "c_d63f6363743af20e": 367213,
+    "c_ae27e6c7b42ee08a": 132197,
+    "c_a40a3aaef4f37d5d": 58753,
+    "c_7a8566db3df6cd9e": 44065,
+    "c_3bc067caff84b22c": 22034,
+    "c_7ba307ce17cffaeb": 11751
+   },
+   "saved_month": 2763476
+  },
+  {
+   "id": "cache",
+   "title": "Cache the repeated support prompt",
+   "feature": "support_reply",
+   "now": 1365532,
+   "after": 894735,
+   "assumption": "70% of each support_reply input is the same system prompt and FAQ block (today 10% is cached); Anthropic charges 10% for cache reads",
+   "saved_week": 470797,
+   "by_customer_week": {
+    "c_d63f6363743af20e": 303773,
+    "c_ae27e6c7b42ee08a": 87758,
+    "c_a40a3aaef4f37d5d": 40502,
+    "c_7a8566db3df6cd9e": 23625,
+    "c_3bc067caff84b22c": 10125,
+    "c_7ba307ce17cffaeb": 5014
+   },
+   "saved_month": 2045612
+  },
+  {
+   "id": "batch",
+   "title": "Run nightly summaries through the Batch API",
+   "feature": "summarise",
+   "now": 30588,
+   "after": 15297,
+   "assumption": "summaries can wait up to 24 h; OpenAI Batch API is 50% off",
+   "saved_week": 15291,
+   "by_customer_week": {
+    "c_d63f6363743af20e": 7911,
+    "c_ae27e6c7b42ee08a": 3954,
+    "c_a40a3aaef4f37d5d": 1581,
+    "c_7a8566db3df6cd9e": 1054,
+    "c_3bc067caff84b22c": 528,
+    "c_7ba307ce17cffaeb": 263
+   },
+   "saved_month": 66439
+  }
+ ],
+ "savings_month": 4875527,
+ "gst_rcm_month": 1836642,
+ "dpdp": {
+  "score": 12,
+  "of": 20,
+  "questions": [
+   {
+    "q": "Do you have a written list of every AI feature that touches personal data?",
+    "ok": true
+   },
+   {
+    "q": "Is the purpose of each AI feature written in your privacy notice?",
+    "ok": true
+   },
+   {
+    "q": "Does the notice name the AI providers you send data to?",
+    "ok": false
+   },
+   {
+    "q": "Is there a consent or other lawful basis recorded for each purpose?",
+    "ok": true
+   },
+   {
+    "q": "Can a user withdraw consent as easily as they gave it?",
+    "ok": false
+   },
+   {
+    "q": "Do you strip phone numbers, Aadhaar and PAN before prompts leave India?",
+    "ok": false
+   },
+   {
+    "q": "Do you know which provider regions (US, EU, India) receive your data?",
+    "ok": true
+   },
+   {
+    "q": "Do provider contracts say they won't train on your data?",
+    "ok": true
+   },
+   {
+    "q": "Are prompts and outputs deleted on a fixed schedule?",
+    "ok": false
+   },
+   {
+    "q": "Is the retention period written down per feature?",
+    "ok": false
+   },
+   {
+    "q": "Can you find and delete one user's data across AI logs on request?",
+    "ok": false
+   },
+   {
+    "q": "Is there a named person who answers data requests (grievance officer)?",
+    "ok": true
+   },
+   {
+    "q": "Do you log who accessed AI logs and when?",
+    "ok": true
+   },
+   {
+    "q": "Is access to raw prompts limited to named staff?",
+    "ok": true
+   },
+   {
+    "q": "Do you have a breach plan that covers your AI provider leaking data?",
+    "ok": false
+   },
+   {
+    "q": "Could you tell the Data Protection Board and users within 72 hours?",
+    "ok": false
+   },
+   {
+    "q": "Do you tell users when they are talking to an AI, not a person?",
+    "ok": true
+   },
+   {
+    "q": "Are children's accounts blocked or handled with parental consent?",
+    "ok": true
+   },
+   {
+    "q": "Have you checked whether you could be a Significant Data Fiduciary?",
+    "ok": true
+   },
+   {
+    "q": "Is this checklist reviewed at least once a year?",
+    "ok": true
+   }
+  ]
+ },
+ "weeks_per_month": "4.345"
+}

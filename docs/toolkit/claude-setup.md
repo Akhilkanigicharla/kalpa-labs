@@ -65,7 +65,7 @@ Source: [perplexityai/modelcontextprotocol](https://github.com/perplexityai/mode
 claude mcp add -s user perplexity -e PERPLEXITY_API_KEY=$env:PERPLEXITY_API_KEY -- npx -y @perplexity-ai/mcp-server
 ```
 
-Note: `claude mcp add -e` saves the value in your user Claude config (`~\.claude.json`). If you prefer it never be written there, use the repo's [`.mcp.json`](../../.mcp.json) instead. That file reads `${PERPLEXITY_API_KEY}` from the environment at start-up.
+Note: `claude mcp add -e` saves the value in your user Claude config (`~\.claude.json`). Perplexity was taken out of the repo's `.mcp.json` on 18 Oct (paid key; see `cloud-sessions.md`). If Akhil pays for it, add it back there with `${PERPLEXITY_API_KEY}` so the key is read from the environment, never written into the repo.
 
 ### 3d. Rea (already installed, nothing to do)
 `claude mcp list` should show `rea`. Audit notes: `00-hq/research/rea-audit-2026-10-16.md`.

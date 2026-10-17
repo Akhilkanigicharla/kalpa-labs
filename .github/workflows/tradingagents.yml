@@ -1,0 +1,101 @@
+# b7 Trading Lab: TradingAgents research desk (paper research only, never trades).
+# Source: TauricResearch/TradingAgents (Apache-2.0), pinned to the v0.7.0 merge commit.
+# See 07-trading/research/tradingagents.md for the vetting notes and rules.
+# Needs ONE repo secret that Akhil sets himself: OPENROUTER_API_KEY (Settings → Secrets → Actions).
+# Free OpenRouter models allow ~50 requests/day; one run uses many of them, so run at most once a week.
+name: b7 TradingAgents research (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ticker:
+        description: "Yahoo ticker. Year-1 plan = NSE/BSE cash only, e.g. RELIANCE.NS, TCS.NS, NIFTYBEES.NS"
+        required: true
+        default: "NIFTYBEES.NS"
+      date:
+        description: "Analysis date YYYY-MM-DD (blank = today, IST)"
+        required: false
+        default: ""
+      analysts:
+        description: "market,news,fundamentals,sentiment (fewer = fewer model calls)"
+        required: false
+        default: "market,news,fundamentals"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tradingagents
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TRADINGAGENTS_LLM_PROVIDER: openrouter
+      TRADINGAGENTS_QUICK_THINK_LLM: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+      TRADINGAGENTS_DEEP_THINK_LLM: nvidia/nemotron-3-super-120b-a12b:free
+      TRADINGAGENTS_OUTPUT_LANGUAGE: English
+      TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
+      TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
+      TRADINGAGENTS_LLM_MAX_RETRIES: "4"
+      TRADINGAGENTS_BENCHMARK_TICKER: "^NSEI"
+      TRADINGAGENTS_NO_UPDATE_CHECK: "1"
+      TRADINGAGENTS_RESULTS_DIR: ${{ github.workspace }}/ta-out/reports
+      TRADINGAGENTS_CACHE_DIR: ${{ github.workspace }}/ta-out/cache
+      TRADINGAGENTS_MEMORY_LOG_PATH: ${{ github.workspace }}/ta-out/memory.md
+      SEC_EDGAR_USER_AGENT: "Kalpa Labs research 84580207+Akhilkanigicharla@users.noreply.github.com"
+    steps:
+      - name: Check the secret is set
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "::error::Add the OPENROUTER_API_KEY repo secret first (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+
+      - name: Check the ticker is allowed by the year-1 plan
+        env:
+          TICKER: ${{ inputs.ticker }}
+        run: |
+          case "$TICKER" in
+            *.NS|*.BO|^NSEI) echo "OK: $TICKER" ;;
+            *) echo "::error::$TICKER is outside the year-1 plan (NSE/BSE cash only, see 07-trading/PLAN.md §2a)."; exit 1 ;;
+          esac
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install TradingAgents v0.7.0 (pinned commit)
+        run: |
+          python -m pip install --upgrade pip
+          pip install "git+https://github.com/TauricResearch/TradingAgents@e8f5503e9b86d5c2710b0c76b1f686703968c9df"
+
+      - name: Run the research desk
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TICKER: ${{ inputs.ticker }}
+          ANALYSTS: ${{ inputs.analysts }}
+          RUN_DATE: ${{ inputs.date }}
+        run: |
+          mkdir -p ta-out
+          D="${RUN_DATE:-$(TZ=Asia/Kolkata date +%F)}"
+          tradingagents --ticker "$TICKER" --date "$D" --analysts "$ANALYSTS" --save --no-show 2>&1 | tee ta-out/run.log
+
+      - name: Add the research-only notice
+        if: always()
+        run: |
+          mkdir -p ta-out
+          printf '%s\n' "RESEARCH ONLY. Not investment advice. Paper trading only (SEBI). LLM output varies run to run." \
+            "A rating here is an input to Quant's bull-bear desk and Guard's review, then the lab gate (walk-forward, costs, PBO)." > ta-out/README.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tradingagents-${{ inputs.ticker }}-${{ github.run_id }}
+          path: ta-out/
+          if-no-files-found: warn
+          retention-days: 30

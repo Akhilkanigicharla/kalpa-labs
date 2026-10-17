@@ -6,22 +6,41 @@
     "TRADINGAGENTS_NO_UPDATE_CHECK": "1",
     "HEADROOM_TELEMETRY": "off"
   },
-  "extraKnownMarketplaces": {
-    "claude-plugins-official": {
-      "source": { "source": "github", "repo": "anthropics/claude-plugins-official" }
-    }
-  },
-  "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true
-  },
   "enableAllProjectMcpServers": true,
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/toolkit-status.sh\"", "timeout": 20 }
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/toolkit-status.sh\"",
+            "timeout": 20
+          }
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
+    "hyperframes@hyperframes": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "hyperframes": {
+      "source": {
+        "source": "github",
+        "repo": "heygen-com/hyperframes",
+        "ref": "v0.8.169",
+        "sparsePaths": [
+          ".claude-plugin",
+          "skills"
+        ]
+      }
+    }
   }
 }

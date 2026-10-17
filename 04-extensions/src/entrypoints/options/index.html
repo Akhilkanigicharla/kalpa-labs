@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Lifeboat · backups and settings</title>
+    <meta name="manifest.open_in_tab" content="true" />
+  </head>
+  <body class="page">
+    <div class="temple" aria-hidden="true"></div>
+    <main class="wrap">
+      <header class="top">
+        <div><span class="eyebrow">Tab Lifeboat</span><h1>Backups and settings</h1></div>
+        <span id="plan" class="pill">Free</span>
+      </header>
+
+      <section class="card proof" aria-labelledby="h-proof">
+        <h2 id="h-proof">Your tabs are safe</h2>
+        <div class="stats">
+          <div><b id="st-last">–</b><span>last auto-snapshot</span></div>
+          <div><b id="st-sessions">–</b><span>saved sessions</span></div>
+          <div><b id="st-tabs">–</b><span>tabs inside them</span></div>
+        </div>
+        <p id="st-persist" class="hint"></p>
+      </section>
+
+      <section class="card" aria-labelledby="h-auto">
+        <h2 id="h-auto">Automatic snapshots</h2>
+        <p>Every <b id="every">5</b> minutes Tab Lifeboat quietly copies all open windows, tabs and tab groups. Nothing is closed.</p>
+        <ul class="ticks">
+          <li><b>Free:</b> keeps the last <span id="free-n">3</span> snapshots.</li>
+          <li><b>Pro:</b> keeps <span id="pro-d">90</span> days of history, so you can go back to any day.</li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="h-file">
+        <h2 id="h-file">Backup file</h2>
+        <p>One file with every saved session. Keep it in Drive, email it to yourself, or copy it to a new computer.</p>
+        <button id="download" type="button" class="primary">Download backup file</button>
+        <p id="download-msg" class="hint" role="status"></p>
+        <label class="file">Restore from a backup file
+          <input id="restore-file" type="file" accept="application/json,.json" />
+        </label>
+        <p id="restore-preview" class="hint" role="status"></p>
+        <button id="restore-go" type="button" hidden>Add these sessions</button>
+      </section>
+
+      <section class="card" aria-labelledby="h-import">
+        <h2 id="h-import">Move in from OneTab or Session Buddy</h2>
+        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup. You see the count before anything is saved.</p>
+        <textarea id="importText" rows="4" aria-label="OneTab text or Session Buddy JSON" placeholder="https://example.com | Example"></textarea>
+        <p id="preview" class="hint" role="status"></p>
+        <button id="doImport" type="button" disabled>Import</button>
+      </section>
+
+      <section class="card" aria-labelledby="h-list">
+        <div class="row"><h2 id="h-list">Saved sessions</h2>
+          <input id="q" type="search" placeholder="Search names" aria-label="Search saved sessions" /></div>
+        <ul id="list" class="sessions" aria-live="polite"></ul>
+      </section>
+
+      <section class="card pro" aria-labelledby="h-pro">
+        <span class="eyebrow">Pro · opens soon</span>
+        <h2 id="h-pro">Backups that look after themselves</h2>
+        <ul class="ticks">
+          <li>90 days of snapshot history</li>
+          <li>Daily backup to your own Google Drive (only files it creates)</li>
+          <li>One-click restore on a new computer</li>
+        </ul>
+        <p class="prices"><span>Founding lifetime <b>$19 / ₹899</b> (first 50)</span><span>Yearly <b>$12 / ₹499</b></span><span>Lifetime <b>$29 / ₹1,199</b></span></p>
+        <p class="hint">A licence key, not a subscription: nothing renews by itself.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-priv">
+        <h2 id="h-priv">Privacy</h2>
+        <p>Your tabs stay on this computer. No account, no analytics, no servers. Tab Lifeboat only uses the tabs, tab groups, alarms and storage permissions.</p>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

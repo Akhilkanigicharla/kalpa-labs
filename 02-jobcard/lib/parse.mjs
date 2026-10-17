@@ -74,7 +74,7 @@ export function parseTranscript(raw, { now = new Date() } = {}) {
 
   const phone = text.replace(/(\d)[\s-](?=\d)/g, "$1").match(/(?:\+?91)?([6-9]\d{9})\b/);
   if (phone) card.customer.phone = phone[1];
-  const name = text.match(/(?:customer|name|peru|పేరు|naam)\s*(?:is|:|-)?\s*([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/) ||
+  const name = text.match(/(?:[Cc]ustomer|[Nn]ame|[Pp]eru|పేరు|[Nn]aam)\s*(?:is|:|-)?\s*([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/) || // keyword may be capitalised by STT; the name must be
                text.match(/\b([A-Z][a-z]+)\s+(?:garu|gaaru|గారు|ji)\b/);
   if (name) card.customer.name = name[1];
   const area = text.match(/\b(Ameerpet|SR Nagar|Kukatpally|Madhapur|Gachibowli|Kondapur|Miyapur|Begumpet|Jubilee Hills|Banjara Hills|Secunderabad|Dilsukhnagar|LB Nagar|Uppal|Mehdipatnam|Tolichowki|Manikonda|Kompally|Bachupally)\b/i); // "Ameerpet lo", "in Ameerpet"

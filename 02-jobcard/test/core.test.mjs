@@ -108,3 +108,12 @@ test("never invents: unknown amounts stay null and gaps are listed", () => {
   const off = parseTranscript("split AC gas refill 2500 total 3000 phone 9123456780");
   assert.equal(off.total_check, "spoken 3000 vs parts 2500");
 });
+
+test("customer name after a capitalised keyword (found while building the A13 screens)", () => {
+  // speech-to-text capitalises the first word of a sentence: "Customer Anjali, Madhapur …"
+  assert.equal(parseTranscript("Customer Anjali, Madhapur, phone 90000 55555, Samsung fridge").customer.name, "Anjali");
+  assert.equal(parseTranscript("Name: Kiran Kumar, LG split AC").customer.name, "Kiran Kumar");
+  assert.equal(parseTranscript("Peru Ravi, Kukatpally").customer.name, "Ravi");
+  // a lowercase word after the keyword is still not a name
+  assert.equal(parseTranscript("customer ki gas refill 2500").customer.name, undefined);
+});

@@ -67,6 +67,13 @@ export const LADDER: { tier: string; label: string; price: number }[] = [
   { tier: "Institute licence (B2B)", label: "Institute licence, 50 students", price: 2999 },
 ];
 export const kitBySlug = (s: string) => { const k = KITS.find((x) => x.slug === s); if (!k) throw new Error(`no kit ${s}`); return k; };
+/** Calculator → kit link (A11 / A17), following the PLAN.md "Kit cross-sell" column. `same`: the kit has this very calculator,
+ *  so the copy may say "this calculator plus…"; otherwise it says what the kit adds. GST and gratuity have no kit (PLAN: "—"). */
+export const CALC_KIT: Record<string, { kit: string; same: boolean }> = {
+  "income-tax": { kit: "tax-sip-2026-27", same: true }, salary: { kit: "tax-sip-2026-27", same: false }, sip: { kit: "tax-sip-2026-27", same: true },
+  emi: { kit: "tax-sip-2026-27", same: true }, hra: { kit: "tax-sip-2026-27", same: true }, ppf: { kit: "tax-sip-2026-27", same: false },
+  rd: { kit: "tax-sip-2026-27", same: false },
+};
 export const priceLabel = (t: Tier) => (t.price === 0 ? "Free" : `₹${t.price}`);
 
 // ---------- seller details and the policy pages (Razorpay activation + Consumer Protection (E-Commerce) Rules 2020)

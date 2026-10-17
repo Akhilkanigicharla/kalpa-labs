@@ -2,7 +2,7 @@
  * Kalpa calculators: money maths for India, tax year 2026-27 (FY 2026-27).
  * A calculator, not advice. Every rule cites its source; the Tax Rules Watcher re-checks on 1 Feb.
  *
- * Sources (checked 13 Oct 2026, see ../../research/deep-scan-v2.md):
+ * Sources (checked 13 Oct 2026, see ../../research/deep-scan-v2.md; GST, gratuity and RD rules checked 17 Oct 2026, see RULES):
  *  - Slabs, rebate, standard deduction: Income-tax Act 2025 s.202 (new regime), s.156 (rebate, ex-87A),
  *    s.19 (standard deduction); Finance Bill 2026 changed no rates. https://www.indiabudget.gov.in/doc/memo.pdf
  *    https://www.incometaxindia.gov.in/w/tax-rates-and-computation
@@ -34,6 +34,14 @@ export const RULES = {
   ppfMaxPerYear: 150000,
   telanganaProfTaxMonthly: 200,
   pfWageCeiling: 15000,
+  // A17 · GST 2.0 slabs from 22 Sept 2025 (56th GST Council): 5%, 18%, 40%; 3% gold/silver, 0.25% rough diamonds/stones
+  gstRates: [5, 18, 40, 3, 0.25],
+  // Payment of Gratuity Act 1972 s.4 / Code on Social Security 2020 s.53 (in force 21 Nov 2025): 15 days' wages per year,
+  // a month = 26 working days, ceiling ₹20 lakh; tax-free up to ₹20 lakh (Income-tax Act 2025 Schedule II; s.10(10) of the 1961 Act)
+  gratuityCeiling: 2000000,
+  gratuityMinYears: 5,
+  // Post office 5-year RD, Oct–Dec 2026 (Ministry of Finance quarterly notification, unchanged)
+  postOfficeRd: 0.067,
 };
 
 const round10 = (x: number) => Math.round(x / 10) * 10; // s.288A/288B style rounding to the nearest ₹10
@@ -149,3 +157,32 @@ export function salary(ctc: number, opts: { basicPct?: number; pfOnFullBasic?: b
 }
 
 export const inr = (x: number) => "₹" + Math.round(x).toLocaleString("en-IN");
+/** ₹ with paise only when there are paise: ₹1,180 · ₹4.95 · ₹103.90 */
+export const inrPaise = (x: number) => { const r = Math.round(x * 100) / 100; return "₹" + r.toLocaleString("en-IN", Number.isInteger(r) ? {} : { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+const r2 = (x: number) => Math.round(x * 100) / 100;
+/** Add GST to a price, or take it out of a GST-inclusive price. Paise kept; `half` is CGST = SGST inside one state. */
+export function gst(amount: number, ratePct: number, mode: "add" | "remove") {
+  const base = mode === "add" ? r2(amount) : r2((amount * 100) / (100 + ratePct));
+  const total = mode === "add" ? r2(amount + (amount * ratePct) / 100) : r2(amount);
+  const tax = r2(total - base);
+  return { base, tax, total, half: tax / 2 };
+}
+
+/** Gratuity for an employee covered by the Act/Code. `wages` = monthly basic + DA; `totalPay` = monthly total pay (optional). */
+export function gratuity(i: { wages: number; totalPay?: number; years: number; months: number; fixedTerm?: boolean }) {
+  const wagesUsed = Math.max(i.wages, 0.5 * (i.totalPay || 0)); // Code on Social Security 2020 s.2(88): allowances over 50% count as wages
+  const completedYears = Math.floor(i.years) + (i.months > 6 ? 1 : 0); // "every completed year … or part thereof in excess of six months"
+  const served = i.years + i.months / 12;
+  const eligible = i.fixedTerm ? served >= 1 : served >= RULES.gratuityMinYears || (i.years === 4 && i.months >= 8); // 240 days in year 5 (s.2A)
+  const formula = Math.round((wagesUsed * 15 / 26) * completedYears);
+  const amount = eligible ? Math.min(formula, RULES.gratuityCeiling) : 0;
+  return { wagesUsed, completedYears, eligible, formula, amount, capped: eligible && formula > RULES.gratuityCeiling, taxFree: Math.min(amount, RULES.gratuityCeiling) };
+}
+
+/** Recurring deposit, quarterly compounding (banks and India Post): each instalment grows (1 + r/4)^(months left / 3). */
+export function rd(monthly: number, annualRate: number, years: number) {
+  const n = Math.round(years * 12), i = annualRate / 4;
+  let value = 0; for (let m = 1; m <= n; m++) value += monthly * Math.pow(1 + i, m / 3);
+  return { deposited: monthly * n, value: Math.round(value), interest: Math.round(value) - monthly * n };
+}

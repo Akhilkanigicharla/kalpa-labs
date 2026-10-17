@@ -13,6 +13,8 @@ const rows = c.compute(defaults(c));
         <span>{f[lang]}</span>
         {f.kind === "city"
           ? <select name={f.id}>{[...RULES.hraMetros, "Other city"].map((x) => <option selected={x === f.value}>{x}</option>)}</select>
+          : f.kind === "select"
+          ? <select name={f.id}>{f.options!.map((o) => <option value={o.value} selected={o.value === String(f.value)}>{o[lang]}</option>)}</select>
           : <input name={f.id} type="number" inputmode="decimal" value={f.value} step={f.step ?? 1} min="0" />}
       </label>
     ))}
@@ -44,6 +46,7 @@ const rows = c.compute(defaults(c));
   .fields { display: grid; gap: 12px; }
   label { display: grid; gap: 4px; font-weight: 600; font-size: 15px; }
   input, select { min-height: 44px; width: 100%; padding: 8px 12px; border-radius: var(--r-m); border: 1px solid var(--rule); background: var(--bg); color: var(--fg); font: 500 17px var(--f-mono); }
+  select { font-family: var(--f-body); } /* options are words (Telugu too), never the mono face */
   input:focus, select:focus { outline: 3px solid var(--gold); outline-offset: 1px; }
   .rows { display: grid; gap: 2px; margin-top: 16px; border-top: 1px dashed var(--rule); padding-top: 12px; }
   /* rows are re-rendered by the script, so their styles must be global under .rows */

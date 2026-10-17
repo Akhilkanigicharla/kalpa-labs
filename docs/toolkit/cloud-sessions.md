@@ -24,11 +24,15 @@
 | Jev (hosted) | n8n gateway credits | n8n agents + Smart Router workflow |
 | jevos (local) | MCP `kalpa-jev` | Akhil's PC only, Claude Code |
 
-## 4. Waiting for Akhil's OK (third-party code)
-The session's safety check blocked installing these into sessions automatically, because they are third-party code that would run in every session. They are vetted ADOPT items in `TOOLKIT.md`. Say "approve skills" and the next session adds them (project-scoped, pinned):
-1. `mattpocock/skills` → grill-me (MIT)
-2. `cloudflare/security-audit-skill` → security-audit (MIT)
-3. `emilkowalski/skills` (MIT)
-4. `heygen-com/hyperframes` plugin (Apache-2.0)
+## 4. Approved third-party skills (installed 18 Oct, Akhil: "approveskills")
+Committed in `.claude/skills/` (pinned by hash in `/skills-lock.json`, licences in `.claude/skills/THIRD_PARTY.md`), so every cloud session and Claude Code in this repo has them:
 
-Better route that needs no repo change: install them once as claude.ai account skills/plugins, and they load in every session like section 1.
+| Skill | Use it for | Agent/world |
+|---|---|---|
+| `grill-me` / `grilling` (Matt Pocock) | Stress-test a plan with rounds of questions before building | Kalpa, every world's PLAN.md |
+| `security-audit` (Cloudflare) | Security review of our own code before BotBhai or any site goes live | Vigil, Probe; b1, b5, b6 |
+| `emil-design-eng`, `animate`, `animate-expo`, `mobile-native`, `review-animations`, `break-ui`, `prototype`, `pick-ui-library` (Emil Kowalski) | UI polish, motion, phone feel, worst-case data tests, quick variants | Pixel, Lens, Forge; all UIs (Kalamkari rules still win) |
+
+Plugin: **HyperFrames** `hyperframes@hyperframes` pinned to `v0.8.169` (HTML → video; skills only). Render with `npx hyperframes@0.8.169`, not `@latest`.
+
+Left out on purpose from Emil's set: `write-swift`, `apple-design`, `ask-sonner`, `animation-*`, `improve-animations`, `find-animation-opportunities` (no iOS work; others overlap the ones above).

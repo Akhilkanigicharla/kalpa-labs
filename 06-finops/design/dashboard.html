@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ledger Peaks · dashboard (mockup)</title>
+<link rel="stylesheet" href="../../00-hq/design/tokens.css">
+<link rel="stylesheet" href="lp.css">
+<style>
+body{padding-bottom:84px}
+.bar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px}
+.bar-top .who{font-size:14px;text-align:right}
+.kpis{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.kpis .card{padding:14px;text-decoration:none;color:inherit;display:block}
+.kpis .card:first-child{grid-column:1/-1}
+.kpis .big{font-size:30px}
+.kpis .card:first-child .big{font-size:40px}
+main{display:grid;gap:14px;padding-bottom:20px}
+.view{display:none;gap:14px}
+.view.on{display:grid}
+.cust li .name{font-weight:700}
+.cust li .sub{font-size:13px;color:var(--muted)}
+.cust li .m{font:600 14px/1.4 var(--f-mono)}
+.tabs{position:fixed;inset:auto 0 0 0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--panel);border-top:1px solid var(--rule);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.tabs button{min-height:52px;border:0;background:transparent;color:var(--muted);font:600 13px/1.2 var(--f-body);border-radius:999px;cursor:pointer;display:grid;place-items:center;gap:2px}
+.tabs button[aria-selected="true"]{background:var(--hero);color:var(--hero-fg)}
+.tabs svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75}
+@media (min-width:760px){
+  body{padding-bottom:0}
+  .tabs{position:static;display:flex;gap:6px;background:transparent;border:0;padding:0 0 6px}
+  .tabs button{padding:0 18px;display:flex}
+  .kpis{grid-template-columns:2fr 1fr 1fr}.kpis .card:first-child{grid-column:auto}
+  .view.on.two{grid-template-columns:1fr 1fr}
+}
+.idea .save{font:400 26px/1.1 var(--f-display);color:var(--ok)}
+.check li{grid-template-columns:auto 1fr}
+.dot{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 13px/1 var(--f-mono)}
+.dot.y{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.dot.n{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+</style>
+</head>
+<body>
+<div class="hero"><div class="temple"></div>
+  <div class="wrap bar-top">
+    <a class="logo" href="landing.html" id="logo">Ledger Peaks</a>
+    <div class="who"><b data-lp="company" data-lp-fmt="raw"></b><br><span class="muted"><span data-lp="period.from" data-lp-fmt="date"></span> – <span data-lp="period.to" data-lp-fmt="date"></span> · Growth plan</span></div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:14px">
+  <nav class="tabs" role="tablist" aria-label="Dashboard sections" id="tabs"></nav>
+  <main>
+    <section class="view on" id="v-overview" role="tabpanel" aria-label="Overview">
+      <div class="kpis">
+        <a class="card cap" href="#" data-go="customers"><p class="eyebrow">AI bill · this month (projected)</p><p class="big num" data-lp="total_month"></p><p class="muted" style="margin:0;font-size:14px">This week <span class="num" data-lp="total_week"></span> · <span data-lp="calls" data-lp-fmt="int"></span> calls</p></a>
+        <a class="card" href="#" data-go="customers"><p class="eyebrow">Losing money</p><p class="big num" style="color:var(--bad)" id="k-loss"></p><p class="muted" style="margin:0;font-size:14px">customer<span id="k-loss-s"></span></p></a>
+        <a class="card" href="#" data-go="savings"><p class="eyebrow">Savings found</p><p class="big num" style="color:var(--ok)" data-lp="savings_month"></p><p class="muted" style="margin:0;font-size:14px">a month, 3 ideas</p></a>
+      </div>
+      <div class="card"><h3>Cost per day <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><div id="chart"></div></div>
+      <div class="card note" id="unpriced" style="box-shadow:none"></div>
+      <div class="card"><h3>By feature <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><ul class="rows" id="feat"></ul></div>
+      <div class="card"><h3>By model <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><ul class="rows" id="model"></ul></div>
+    </section>
+
+    <section class="view" id="v-customers" role="tabpanel" aria-label="Customers">
+      <div class="card cap"><h3>Margin per customer</h3><p class="muted" style="font-size:14px">Monthly AI cost against the plan revenue you uploaded. Names come from your own revenue file, kept in this browser; we store only hashed ids.</p><ul class="rows cust" id="cust"></ul></div>
+    </section>
+
+    <section class="view" id="v-savings" role="tabpanel" aria-label="Savings"><div id="ideas" style="display:grid;gap:14px"></div></section>
+
+    <section class="view" id="v-evidence" role="tabpanel" aria-label="Evidence">
+      <div class="card cap" style="display:flex;gap:14px;align-items:center"><div class="medal"><span id="score"></span></div><div><h3 style="margin:0">DPDP readiness</h3><p class="muted" style="margin:0;font-size:14px">out of <span data-lp="dpdp.of" data-lp-fmt="int"></span>. Full rules apply from May 2027. A checklist, not legal advice.</p></div></div>
+      <div class="card"><h3>What's missing</h3><ul class="rows check" id="gaps"></ul></div>
+      <div class="card"><h3>Monthly evidence pack</h3><p>DPDP duty map, ISO 42001 control IDs, EU AI Act Art. 50 checklist, model + region inventory and PII-exposure counts.</p><button class="btn btn-primary" type="button" disabled aria-disabled="true">Download October pack (mockup)</button></div>
+    </section>
+  </main>
+</div>
+<script id="lp-data" type="application/json">{"company":"Chaiwala AI (sample)","period":{"from":"2026-10-12","to":"2026-10-18","days":7},"fx":{"date":"2026-10-12","inr_per_usd":"95.7485","source":"RBI home page 'Current Rates' (FBIL reference rate, as at 1.00pm of October 12, 2026)"},"total_week":2348347,"total_month":10203567,"rows":189,"calls":54091,"by_model":{"claude-sonnet-4-5":1365532,"gpt-4o":676612,"gemini-2.5-flash":275615,"gpt-4o-mini":30588},"by_feature":{"support_reply":1365532,"classify":676612,"rag_search":275615,"summarise":30588},"by_day":{"2026-10-12":345375,"2026-10-13":362808,"2026-10-14":379841,"2026-10-15":345375,"2026-10-16":396960,"2026-10-17":276299,"2026-10-18":241689},"customers":[{"name":"Biryani Bazaar","id":"c_d63f6363743af20e","week":1419728,"month":6168718,"revenue_month":5999900,"margin_pct":-2.8,"calls":30736,"by_feature":{"support_reply":881081,"rag_search":132172,"summarise":15822,"classify":390653},"month_after_top_idea":4573178,"margin_after_top_idea_pct":23.8},{"name":"Kirana Cloud","id":"c_ae27e6c7b42ee08a","week":478608,"month":2079551,"revenue_month":3499900,"margin_pct":40.6,"calls":11900,"by_feature":{"support_reply":254535,"rag_search":75527,"summarise":7910,"classify":140636},"month_after_top_idea":1505156,"margin_after_top_idea_pct":57.0},{"name":"MedPlus Lite","id":"c_a40a3aaef4f37d5d","week":220908,"month":959845,"revenue_month":1999900,"margin_pct":52.0,"calls":5304,"by_feature":{"support_reply":117478,"rag_search":37762,"summarise":3164,"classify":62504},"month_after_top_idea":704564,"margin_after_top_idea_pct":64.8},{"name":"Auto Adda","id":"c_7a8566db3df6cd9e","week":134481,"month":584319,"revenue_month":999900,"margin_pct":41.6,"calls":3399,"by_feature":{"support_reply":68528,"rag_search":16965,"summarise":2109,"classify":46879},"month_after_top_idea":392857,"margin_after_top_idea_pct":60.7},{"name":"Saree Studio","id":"c_3bc067caff84b22c","week":63277,"month":274938,"revenue_month":499900,"margin_pct":45.0,"calls":1903,"by_feature":{"support_reply":29369,"rag_search":9413,"summarise":1055,"classify":23440},"month_after_top_idea":179201,"margin_after_top_idea_pct":64.2},{"name":"Tiffin Tracker","id":"c_7ba307ce17cffaeb","week":31345,"month":136194,"revenue_month":299900,"margin_pct":54.6,"calls":849,"by_feature":{"support_reply":14541,"rag_search":3776,"summarise":528,"classify":12500},"month_after_top_idea":85136,"margin_after_top_idea_pct":71.6}],"unpriced":{"models":["sarvam/sarvam-m"],"rows":21,"tokens":2196400,"calls":1292},"savings":[{"id":"downgrade","title":"Classify with gpt-4o-mini instead of gpt-4o","feature":"classify","now":676612,"after":40599,"assumption":"a 1-word label task; test 200 real tickets first and keep gpt-4o if accuracy drops more than 2 points","saved_week":636013,"by_customer_week":{"c_d63f6363743af20e":367213,"c_ae27e6c7b42ee08a":132197,"c_a40a3aaef4f37d5d":58753,"c_7a8566db3df6cd9e":44065,"c_3bc067caff84b22c":22034,"c_7ba307ce17cffaeb":11751},"saved_month":2763476},{"id":"cache","title":"Cache the repeated support prompt","feature":"support_reply","now":1365532,"after":894735,"assumption":"70% of each support_reply input is the same system prompt and FAQ block (today 10% is cached); Anthropic charges 10% for cache reads","saved_week":470797,"by_customer_week":{"c_d63f6363743af20e":303773,"c_ae27e6c7b42ee08a":87758,"c_a40a3aaef4f37d5d":40502,"c_7a8566db3df6cd9e":23625,"c_3bc067caff84b22c":10125,"c_7ba307ce17cffaeb":5014},"saved_month":2045612},{"id":"batch","title":"Run nightly summaries through the Batch API","feature":"summarise","now":30588,"after":15297,"assumption":"summaries can wait up to 24 h; OpenAI Batch API is 50% off","saved_week":15291,"by_customer_week":{"c_d63f6363743af20e":7911,"c_ae27e6c7b42ee08a":3954,"c_a40a3aaef4f37d5d":1581,"c_7a8566db3df6cd9e":1054,"c_3bc067caff84b22c":528,"c_7ba307ce17cffaeb":263},"saved_month":66439}],"savings_month":4875527,"gst_rcm_month":1836642,"dpdp":{"score":12,"of":20,"questions":[{"q":"Do you have a written list of every AI feature that touches personal data?","ok":true},{"q":"Is the purpose of each AI feature written in your privacy notice?","ok":true},{"q":"Does the notice name the AI providers you send data to?","ok":false},{"q":"Is there a consent or other lawful basis recorded for each purpose?","ok":true},{"q":"Can a user withdraw consent as easily as they gave it?","ok":false},{"q":"Do you strip phone numbers, Aadhaar and PAN before prompts leave India?","ok":false},{"q":"Do you know which provider regions (US, EU, India) receive your data?","ok":true},{"q":"Do provider contracts say they won't train on your data?","ok":true},{"q":"Are prompts and outputs deleted on a fixed schedule?","ok":false},{"q":"Is the retention period written down per feature?","ok":false},{"q":"Can you find and delete one user's data across AI logs on request?","ok":false},{"q":"Is there a named person who answers data requests (grievance officer)?","ok":true},{"q":"Do you log who accessed AI logs and when?","ok":true},{"q":"Is access to raw prompts limited to named staff?","ok":true},{"q":"Do you have a breach plan that covers your AI provider leaking data?","ok":false},{"q":"Could you tell the Data Protection Board and users within 72 hours?","ok":false},{"q":"Do you tell users when they are talking to an AI, not a person?","ok":true},{"q":"Are children's accounts blocked or handled with parental consent?","ok":true},{"q":"Have you checked whether you could be a Significant Data Fiduciary?","ok":true},{"q":"Is this checklist reviewed at least once a year?","ok":true}]},"weeks_per_month":"4.345"}</script>
+<script src="lp.js"></script>
+<script>
+const { data, rs, el, feat } = LP;
+document.getElementById('logo').insertAdjacentHTML('afterbegin', LP.LOGO);
+LP.fill();
+// tabs
+const ICON = { overview: '<path d="M3 13h4v8H3zM10 8h4v13h-4zM17 3h4v18h-4z"/>', customers: '<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-5.5"/>',
+  savings: '<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>', evidence: '<path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/>' };
+const tabs = document.getElementById('tabs');
+function go(id) {
+  for (const b of tabs.children) b.setAttribute('aria-selected', String(b.dataset.v === id));
+  for (const v of document.querySelectorAll('.view')) v.classList.toggle('on', v.id === 'v-' + id);
+  window.scrollTo(0, 0);
+}
+for (const id of Object.keys(ICON)) {
+  const b = el('button', { role: 'tab', type: 'button', 'data-v': id, 'aria-selected': String(id === 'overview') });
+  b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[id]}</svg>`;
+  b.append(id[0].toUpperCase() + id.slice(1)); b.onclick = () => go(id); tabs.append(b);
+}
+document.querySelectorAll('[data-go]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); go(a.dataset.go); }));
+// overview
+const losers = data.customers.filter((c) => c.margin_pct < 0);
+document.getElementById('k-loss').textContent = losers.length;
+document.getElementById('k-loss-s').textContent = losers.length === 1 ? '' : 's';
+LP.dayChart(document.getElementById('chart'));
+LP.rows(document.getElementById('feat'), data.by_feature);
+LP.rows(document.getElementById('model'), data.by_model, (m) => m);
+const u = data.unpriced, up = document.getElementById('unpriced');
+up.append(el('b', {}, 'Unpriced: ', u.models.join(', ')), el('br'),
+  `${u.calls.toLocaleString('en-IN')} calls (${u.tokens.toLocaleString('en-IN')} tokens) use a model with no public price. They are not in the totals. Add your contract rate to include them.`);
+// customers
+const cust = document.getElementById('cust');
+for (const c of data.customers) {
+  const loss = c.margin_pct < 0, used = Math.min(100, (c.month * 100) / c.revenue_month);
+  cust.append(el('li', {}, el('div', {}, el('div', { class: 'name' }, c.name), el('div', { class: 'sub num' }, c.id)),
+    el('div', { style: 'text-align:right' }, el('span', { class: 'pill ' + (loss ? 'bad' : c.margin_pct < 45 ? 'warn' : 'ok') }, (loss ? '' : '+') + c.margin_pct + '% margin'),
+      el('div', { class: 'sub num' }, `${rs(c.month)} AI / ${rs(c.revenue_month)} plan`)),
+    el('div', { class: 'bar', title: 'Share of plan revenue spent on AI' }, el('i', { style: `width:${used}%;background:${loss ? 'var(--bad)' : 'var(--world)'}` }))));
+}
+// savings
+const ideas = document.getElementById('ideas');
+data.savings.forEach((s, i) => ideas.append(el('div', { class: 'card cap idea' },
+  el('p', { class: 'eyebrow' }, `Idea ${i + 1} · ${feat(s.feature)}`), el('h3', {}, s.title),
+  el('p', { class: 'save num' }, `save ~${rs(s.saved_month)}/mo`),
+  el('p', { class: 'muted num', style: 'font-size:14px' }, `This week ${rs(s.now)} → ${rs(s.after)}`),
+  el('p', { style: 'font-size:14px;margin:0' }, el('b', {}, 'Assumes: '), s.assumption))));
+// evidence
+document.getElementById('score').textContent = data.dpdp.score;
+const gaps = document.getElementById('gaps');
+for (const q of data.dpdp.questions.filter((x) => !x.ok)) gaps.append(el('li', {}, el('span', { class: 'dot n', 'aria-label': 'missing' }, '✕'), el('span', {}, q.q)));
+</script>
+</body>
+</html>

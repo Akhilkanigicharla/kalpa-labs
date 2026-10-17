@@ -18,3 +18,5 @@ __pycache__/
 # Regenerate locally or in Actions: cd 01-botbhai/botbhai/leadfinder && python leadfinder.py --out ../leads
 01-botbhai/botbhai/leads/*.csv
 01-botbhai/botbhai/leads/*.xlsx
+# b6 Ledger Peaks mockup screenshots (regenerate: python3 06-finops/design/screens.py)
+06-finops/design/screens/

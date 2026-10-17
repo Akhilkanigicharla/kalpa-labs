@@ -1,7 +1,8 @@
 import { captureAll, restore } from "../lib/capture";
 import { detectAndParse } from "../lib/importers";
+import { backupFileName, parseBackup, toBackup } from "../lib/backup";
 import { countTabs } from "../lib/model";
-import { deleteSession, getSession, listSessions, pruneAuto, putSession } from "../lib/store";
+import { LIMITS, deleteSession, getSession, listSessions, pruneAuto, putSession } from "../lib/store";
 
 export const SNAPSHOT_MINUTES = 5;
 
@@ -32,12 +33,15 @@ export default defineBackground(() => {
       switch (msg.type) {
         case "save": { const s = await captureAll(br, "manual", msg.name); await putSession(s); return { ok: true, session: s, counts: countTabs(s) }; }
         case "snapshot": return { ok: true, session: await snapshot() };
-        case "status": { const { lastSnapshot } = await browser.storage.local.get("lastSnapshot"); return { ok: true, lastSnapshot: lastSnapshot ?? null, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false }; }
+        case "status": { const { lastSnapshot } = await browser.storage.local.get("lastSnapshot"); return { ok: true, lastSnapshot: lastSnapshot ?? null, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false, plan: await plan(), every: SNAPSHOT_MINUTES, limits: LIMITS }; }
         case "list": return { ok: true, sessions: (await listSessions()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) })) };
         case "restore": { const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" }; return { ok: true, ...(await restore(br, s)) }; }
         case "delete": await deleteSession(msg.id!); return { ok: true };
         case "preview-import": { const p = detectAndParse(msg.text ?? ""); return { ok: true, tabs: p.tabs, groups: p.groups, skipped: p.skipped, format: p.format }; }
         case "import": { const p = detectAndParse(msg.text ?? ""); await putSession(p.session); return { ok: true, id: p.session.id, tabs: p.tabs, groups: p.groups }; }
+        case "export": { const now = Date.now(); return { ok: true, fileName: backupFileName(now), json: JSON.stringify(toBackup(await listSessions(), now)) }; }
+        case "preview-backup": { const p = parseBackup(msg.text ?? ""); return { ok: true, sessions: p.sessions.length, tabs: p.tabs, groups: p.groups, skipped: p.skipped }; }
+        case "restore-backup": { const p = parseBackup(msg.text ?? ""); for (const s of p.sessions) await putSession(s); return { ok: true, sessions: p.sessions.length, tabs: p.tabs }; }
         default: return { ok: false, error: "unknown message" };
       }
     })().then(reply, (e) => reply({ ok: false, error: String(e) }));

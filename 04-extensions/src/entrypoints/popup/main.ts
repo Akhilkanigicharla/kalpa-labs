@@ -43,4 +43,5 @@ async function status() {
   const mins = r.lastSnapshot ? Math.round((Date.now() - r.lastSnapshot) / 60000) : null;
   $("auto").textContent = mins === null ? "Auto-save every 5 min" : mins < 1 ? "Last snapshot just now" : `Last snapshot ${mins} min ago`;
 }
+$("more").addEventListener("click", () => void browser.runtime.openOptionsPage());
 void refresh(); void status();

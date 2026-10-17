@@ -20,3 +20,6 @@ __pycache__/
 01-botbhai/botbhai/leads/*.xlsx
 # b6 Ledger Peaks mockup screenshots (regenerate: python3 06-finops/design/screens.py)
 06-finops/design/screens/
+# b2 JobCard + b4 Tab Lifeboat screen PNGs (regenerate: python3 02-jobcard/design/screens.py; cd 04-extensions/src && npm run test:screens)
+02-jobcard/design/screens/
+04-extensions/design/screens/

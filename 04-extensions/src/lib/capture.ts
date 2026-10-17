@@ -20,7 +20,7 @@ export async function captureAll(br: Br, kind: Session["kind"] = "manual", name?
     });
   }
   const d = new Date();
-  return { id: newId(), kind, createdAt: d.getTime(), windows, name: name ?? (kind === "auto" ? `Auto snapshot ${d.toLocaleString()}` : `Saved ${d.toLocaleString()}`) };
+  return { id: newId(), kind, createdAt: d.getTime(), windows, name: name ?? `${kind === "auto" ? "Auto snapshot" : "Saved"} ${stamp(d)}` };
 }
 
 /** Reopens every window of a session with pinned tabs and tab groups (title, colour, collapsed). Never closes anything. */
@@ -47,4 +47,9 @@ export async function restore(br: Br, s: Session): Promise<{ windows: number; ta
     }
   }
   return { windows: s.windows.length, tabs, skipped };
+}
+
+/** "17 Oct, 8:46 pm": short, unambiguous for Indian and UK/US readers alike (no 10/17 vs 17/10 confusion). */
+export function stamp(d: Date) {
+  return `${d.getDate()} ${d.toLocaleString("en-GB", { month: "short" })}, ${d.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }).toLowerCase().replace(/\s+/g, " ")}`;
 }

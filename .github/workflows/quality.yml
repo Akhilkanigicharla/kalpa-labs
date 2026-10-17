@@ -107,6 +107,11 @@ jobs:
       - name: Schema + RLS tests
         env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
         run: bash 02-jobcard/supabase/test.sh
+      - name: App screens at 390 px, light + dark (A13)
+        run: |
+          pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+          python3 02-jobcard/design/screens.py
 
   tab-lifeboat:
     runs-on: ubuntu-latest
@@ -124,3 +129,4 @@ jobs:
       - run: npm test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: node tests/e2e/screens.e2e.mjs   # popup + options, light + dark, backup file round trip (A13)

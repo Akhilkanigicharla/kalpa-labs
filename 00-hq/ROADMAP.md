@@ -34,7 +34,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 ### Sprint 2 · Agent-only engines (start now, 0 CEO minutes)
 - [x] **A15** b5 · b5.W1.1: Astro site in `05-deals/site/`, `fin.ts` SIP/EMI/tax (new + old regime FY 2026-27, cite source), vitest fixtures ₹12.75L / ₹13L / ₹25L. Check: `npm test` green, `npm run build` ok. (done 2026-10-13, 6208eb4)
 - [x] **A16** b5 · b5.W2.1: calculators salary, FD, PPF, HRA in English + Telugu with FAQ schema. Check: fixtures pass. (done 2026-10-13, 6208eb4)
-- [ ] **A17** b5 · b5.W4.1: GST, gratuity, RD calculators + Kits call-to-action. Check: 10 calculators build.
+- [x] **A17** b5 · b5.W4.1: GST, gratuity, RD calculators + Kits call-to-action. Check: 10 calculators build. (done 2026-10-17, 059e577; 10 calculators × EN/TE build (33 pages); `calcs.test.ts` + 10 new `fin.test.ts` cases; 66 screens)
 - [ ] **A18** b5 · b5.W1.3: `05-deals/site/src/bot/post.py` Telegram poster from `queue.csv` (dry-run mode, ASCI disclosure enforced). Check: unit test.
 - [x] **A19** b3 · K-02: GATE 2027 kit v1 (xlsx + Apps Script for Sheets): syllabus × papers, topic weights, revision scheduler, mock analyser, Lite version. Check: 25-item QA checklist in `03-kits/docs/qa.md`. (done 2026-10-16, b6fab38; CS v1 Lite/Kit/Pro in `03-kits/products/`; 18 of 25 QA checks automated)
 - [x] **A20** b3 · K-08: Tax + SIP kit v1 with in-sheet tests (₹12.75L / ₹13L / ₹25L → 0 / 26,000 / 3,19,800 new; 1,40,400 / 1,48,200 / 5,22,600 old). Check: fixtures pass in a Python check of the formulas. (done 2026-10-16, 373ab59; `03-kits/products/Kalpa-Tax-SIP-Planner-2026-27.xlsx`, 157 cases = fin.ts in LibreOffice)

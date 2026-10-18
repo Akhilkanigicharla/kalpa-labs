@@ -142,3 +142,5 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - run: node tests/e2e/screens.e2e.mjs   # popup + options, light + dark, backup file round trip (A13)
+      - run: node tests/e2e/store.e2e.mjs     # store images from the real extension, sizes checked (A40)
+      - run: node tests/e2e/site.e2e.mjs      # policy/landing site at 390 + 1280 px, light + dark (A40)

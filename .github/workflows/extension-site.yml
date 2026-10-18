@@ -1,0 +1,27 @@
+# Publishes the Tab Lifeboat privacy policy + landing page (04-extensions/site) to GitHub Pages (A40, E9).
+# Akhil, once: Settings → Pages → Source "GitHub Actions"; Settings → Secrets and variables → Actions → Variables →
+# CONTACT_EMAIL = the support address shown in the policy. The build refuses to publish without it.
+name: Tab Lifeboat site
+on:
+  push:
+    branches: [main]
+    paths: ["04-extensions/site/**", "04-extensions/store/*.png", "00-hq/design/tokens.css", ".github/workflows/extension-site.yml"]
+  workflow_dispatch:
+permissions: { contents: read, pages: write, id-token: write }
+concurrency: { group: extension-site, cancel-in-progress: true }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: { name: github-pages, url: "${{ steps.pages.outputs.page_url }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: node 04-extensions/site/build.mjs --release
+        env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL }}" }
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: 04-extensions/site/_dist }
+      - id: pages
+        uses: actions/deploy-pages@v4

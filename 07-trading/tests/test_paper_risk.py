@@ -40,10 +40,16 @@ def test_position_size_cap():
 
 def test_max_open_positions():
     b = book()
-    for i in range(5):
+    for i in range(3):
         assert not risk.submit(buy(qty=1, sym=f"S{i}"), b).blocked
-    assert "max_open_positions" in risk.check(buy(qty=1, sym="S5"), b)
+    assert "max_open_positions" in risk.check(buy(qty=1, sym="S3"), b)
     assert risk.check(buy(qty=1, sym="S0"), b) == []          # adding to an open one is fine
+
+
+def test_limits_never_looser_than_guard():
+    # Guard (b7 risk agent): 1% risk/trade, 5% daily stop, 3 open, stop mandatory.
+    L = risk.LIMITS
+    assert L["per_trade_risk"] <= 0.01 and L["daily_loss"] <= 0.05 and L["max_open_positions"] <= 3
 
 
 def test_buy_needs_a_stop_below_entry():

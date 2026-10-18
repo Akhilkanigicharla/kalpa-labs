@@ -13,3 +13,5 @@
 | Groq free key serves `qwen/qwen3.8-27b` with 7,000 input tokens/min on this account | VERIFIED (live) | 2026-10-18 | n8n call_agent runs + Groq 429 message |
 | NVIDIA key in n8n lists only `nemotron-3-nano-omni-30b-a3b-reasoning` | VERIFIED (live) | 2026-10-18 | n8n discover_agent_assets |
 | Mistral: no free Experiment plan on Akhil's account | VERIFIED (Akhil checked) | 2026-10-18 | Akhil |
+| WhatsApp Cloud API works without Meta business verification; new business portfolios get a messaging limit of 250 unique recipients per 24 h (replies inside a customer-started window don't count); verification or 2,000 good template sends raises it to 2,000 | VERIFIED | 2026-10-18 | developers.facebook.com/docs/whatsapp/messaging-limits; blueticks.co (Aug 2026) |
+| n8n agent Kalpa (free NVIDIA model) launch review said "16 Nov unrealistic without WhatsApp API approval today" | WRONG (overstated) | 2026-10-18 | no approval needed to start (row above); real path = C02 Meta app + C14 SIM number + template approval for reminders |

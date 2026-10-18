@@ -1,6 +1,6 @@
 # JobCard site on Netlify (free). Base directory: 02-jobcard
 [build]
-  command = "npm ci"
+  command = "npm ci && node web/build.mjs"   # needs SUPABASE_URL + SUPABASE_ANON_KEY (public) in Netlify env
   publish = "web"
 
 [functions]
@@ -12,3 +12,8 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"

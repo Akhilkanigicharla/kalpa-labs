@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { installFake, sign } from "./fake.mjs";
 
-const TECH = { id: "t1", name: "Ravi", phone: "9000022222", business_name: "Ravi Cooling Services", address: "SR Nagar, Hyderabad", gst_kind: "unregistered", state: "Telangana", language: "te", plan: "free", upi_vpa: "ravi@okaxis" };
+const TECH = { id: "t1", name: "Ravi", phone: "9000022222", business_name: "Ravi Cooling Services", address: "SR Nagar, Hyderabad", gst_kind: "unregistered", state: "Telangana", language: "te", plan: "pro", upi_vpa: "ravi@okaxis" };
 const fx = installFake({ technicians: [{ ...TECH }] });
 const { handler, cardText, mergeCard } = await import("../bot/functions/jobcard.js");
 const notes = JSON.parse(fs.readFileSync(new URL("./fixtures/notes.json", import.meta.url)));
@@ -99,4 +99,26 @@ test("cardText and mergeCard are pure", () => {
   const b = mergeCard(a, { customer: { phone: "9000033333" }, parts: [{ desc: "Gas refill", qty: 1, rate: 2600 }], issues: ["gas_leak"] });
   assert.equal(a.parts[0].rate, 2500); assert.equal(b.parts[0].rate, 2600); assert.equal(b.customer.name, "Sita"); assert.equal(b.customer.phone, "9000033333");
   assert.match(cardText(b, "en"), /Split AC/);
+});
+
+test("quota: free plan stops at 20 voice minutes and 10 bills a month; Pro goes on", async () => {
+  const { istMonth, voiceQuota, cardQuota } = await import("../lib/quota.mjs");
+  assert.deepEqual(voiceQuota("free", 1199), { limitSeconds: 1200, usedSeconds: 1199, leftSeconds: 1, blocked: false, warn: true });
+  assert.equal(voiceQuota("free", 1200).blocked, true); assert.equal(voiceQuota("pro", 1200).blocked, false); assert.equal(voiceQuota("pro", 9000).blocked, true);
+  assert.equal(cardQuota("free", 9).blocked, false); assert.equal(cardQuota("free", 10).blocked, true); assert.equal(cardQuota("pro", 9999).blocked, false);
+  assert.equal(istMonth(Date.parse("2026-10-31T19:00:00Z")), "2026-11-01"); // 00:30 IST on 1 Nov
+
+  fx.store.technicians.push({ ...TECH, id: "t2", phone: "9000044444", plan: "free", language: "en" });
+  const from = "919000044444";
+  fx.store.usage_minutes.push({ technician_id: "t2", month: istMonth(), seconds: 1200 });
+  fx.nextVoice = { text: "gas refill 2500", seconds: 30 }; const before = fx.store.usage_minutes.find((u) => u.technician_id === "t2").seconds;
+  await inbound({ type: "audio", audio: { id: "Q1" } }, from);
+  assert.match(last().text.body, /used this month's 20 voice minutes/);
+  assert.equal(fx.store.usage_minutes.find((u) => u.technician_id === "t2").seconds, before, "no STT call, nothing metered");
+
+  const now = new Date().toISOString();
+  for (let i = 0; i < 10; i++) fx.store.job_cards.push({ id: "old" + i, technician_id: "t2", visited_at: now });
+  const bills = fx.store.invoices.length;
+  await inbound(text("gas refill 2500, customer Sita 9000033333"), from); await inbound(okBtn, from);
+  assert.match(last().text.body, /free plan makes 10 bills a month/); assert.equal(fx.store.invoices.length, bills);
 });

@@ -106,6 +106,8 @@ do $$ begin
   exception when insufficient_privilege then null; end;
   begin perform count(*) from public.bot_sessions; raise exception 'app read bot sessions';
   exception when insufficient_privilege then null; end;
+  begin insert into public.reminder_sends values ('00000000-0000-0000-0000-00000000000a', current_date, 5); raise exception 'app wrote reminder log';
+  exception when insufficient_privilege then null; end;
 end $$;
 reset role;
 set role service_role;

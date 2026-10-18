@@ -18,6 +18,7 @@
 import crypto from "node:crypto";
 import { parseTranscript } from "../../lib/parse.mjs";
 import { computeInvoice, invoicePDF, upiLink, SAC } from "../../lib/invoice.mjs";
+import { cardQuota, istMonth, voiceQuota } from "../../lib/quota.mjs";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
 const IGNORE = new Set(["reaction", "system", "unsupported", "ephemeral", "request_welcome", "order"]);
@@ -64,7 +65,9 @@ const S = {
         editAsk: "Send the change as a voice note or text, e.g. \"capacitor 450\" or \"customer Sita 9000033333\".",
         needRates: "I still need the amount for:", needParts: "I didn't hear any work or amounts. Please say what you did and the price.",
         saved: "Saved. Bill {no} for {amt} is below — forward it to the customer.", none: "No job card is waiting. Send a voice note after the job.",
-        noPdf: "Saved bill {no} for {amt}. Open the JobCard app to share the Telugu bill." },
+        noPdf: "Saved bill {no} for {amt}. Open the JobCard app to share the Telugu bill.",
+        quota: "You've used this month's {min} voice minutes. Type the job instead, or upgrade to Pro (150 min) — reply PRO.",
+        cards: "The free plan makes {n} bills a month and this month's are used. Upgrade to Pro for unlimited bills — reply PRO." },
   te: { unknown: "ఈ నంబర్ JobCard లో లేదు. ముందు JobCard యాప్‌లో చేరండి, తర్వాత పని వివరాలు వాయిస్ నోట్‌గా పంపండి.",
         deaf: "క్షమించండి, వాయిస్ నోట్ వినిపించలేదు. పని టైప్ చేయండి, ఉదా. \"Split AC gas refill 2500, customer Sita 9000033333\".",
         long: "నోట్ 2 నిమిషాల కంటే ఎక్కువ ఉంది. పని, ధరలు మాత్రమే చెప్పి చిన్న నోట్ పంపండి.",
@@ -72,7 +75,9 @@ const S = {
         editAsk: "మార్పు వాయిస్ లేదా టెక్స్ట్‌గా పంపండి, ఉదా. \"capacitor 450\".",
         needRates: "వీటి ధర ఇంకా కావాలి:", needParts: "పని లేదా ధరలు వినిపించలేదు. ఏం చేశారో, ధర ఎంతో చెప్పండి.",
         saved: "సేవ్ అయింది. బిల్ {no}, మొత్తం {amt} కింద ఉంది — కస్టమర్‌కి ఫార్వర్డ్ చేయండి.", none: "ఏ జాబ్ కార్డ్ పెండింగ్‌లో లేదు. పని అయ్యాక వాయిస్ నోట్ పంపండి.",
-        noPdf: "బిల్ {no} ({amt}) సేవ్ అయింది. తెలుగు బిల్ కోసం JobCard యాప్ ఓపెన్ చేయండి." },
+        noPdf: "బిల్ {no} ({amt}) సేవ్ అయింది. తెలుగు బిల్ కోసం JobCard యాప్ ఓపెన్ చేయండి.",
+        quota: "ఈ నెల {min} వాయిస్ నిమిషాలు అయిపోయాయి. పని టైప్ చేయండి, లేదా Pro (150 నిమిషాలు) తీసుకోండి — PRO అని పంపండి.",
+        cards: "ఫ్రీ ప్లాన్‌లో నెలకు {n} బిల్లులు మాత్రమే, ఈ నెలవి అయిపోయాయి. అపరిమిత బిల్లుల కోసం Pro — PRO అని పంపండి." },
   hi: { unknown: "यह नंबर JobCard में नहीं है। पहले JobCard ऐप में जुड़ें, फिर काम का वॉइस नोट भेजें।",
         deaf: "माफ़ कीजिए, वॉइस नोट सुनाई नहीं दिया। काम टाइप करें, जैसे \"Split AC gas refill 2500, customer Sita 9000033333\"।",
         long: "नोट 2 मिनट से लंबा है। सिर्फ़ काम और दाम बताकर छोटा नोट भेजें।",
@@ -80,7 +85,9 @@ const S = {
         editAsk: "बदलाव वॉइस या टेक्स्ट में भेजें, जैसे \"capacitor 450\"।",
         needRates: "इनका दाम अभी चाहिए:", needParts: "काम या दाम सुनाई नहीं दिया। क्या किया और कितने का, बताइए।",
         saved: "सेव हो गया। बिल {no}, कुल {amt} नीचे है — ग्राहक को फ़ॉरवर्ड करें।", none: "कोई जॉब कार्ड बाकी नहीं है। काम के बाद वॉइस नोट भेजें।",
-        noPdf: "बिल {no} ({amt}) सेव हो गया। हिंदी/तेलुगु बिल के लिए JobCard ऐप खोलें।" },
+        noPdf: "बिल {no} ({amt}) सेव हो गया। हिंदी/तेलुगु बिल के लिए JobCard ऐप खोलें।",
+        quota: "इस महीने के {min} वॉइस मिनट खत्म हो गए। काम टाइप करें, या Pro (150 मिनट) लें — PRO भेजें।",
+        cards: "फ़्री प्लान में महीने के {n} बिल होते हैं, इस महीने के हो गए। अनलिमिटेड बिल के लिए Pro — PRO भेजें।" },
 };
 const say = (lang, key, vars = {}) => (S[lang] || S.en)[key].replace(/\{(\w+)\}/g, (_, k) => vars[k]);
 const rs = (rupees) => "₹" + Number(rupees).toLocaleString("en-IN");
@@ -135,7 +142,8 @@ async function saveJob(tech, card) {
   }
   const [job] = await db("job_cards", { method: "POST", prefer: "return=representation", body: {
     technician_id: tech.id, customer_id: customer ? customer.id : null, status: "invoiced", appliance: card.appliance || null, brand: card.brand || null,
-    capacity_tons: card.capacity_tons || null, issues: card.issues || [], parts: card.parts, transcript: card.notes || null, next_service: card.next_service || null } });
+    capacity_tons: card.capacity_tons || null, issues: card.issues || [], parts: card.parts, transcript: card.notes || null, next_service: card.next_service || null,
+    visited_at: new Date().toISOString() } });
   const sac = (card.issues || []).includes("installation") ? SAC.install : SAC.home;
   const t = computeInvoice({ kind: tech.gst_kind || "unregistered", lines: card.parts.map((p) => ({ desc: p.desc, sac, qty: p.qty || 1, rate: p.rate })),
     supplierState: tech.state || "Telangana", placeOfSupply: tech.state || "Telangana" });
@@ -188,6 +196,8 @@ async function handleMessage(pnid, msg) {
     const unpriced = pending.parts.filter((p) => p.rate == null);
     if (!pending.parts.length) return sendText(pnid, from, say(lang, "needParts"));
     if (unpriced.length) return sendText(pnid, from, `${say(lang, "needRates")} ${unpriced.map((p) => p.desc).join(", ")}`);
+    const cq = cardQuota(tech.plan, (await db(`job_cards?technician_id=eq.${tech.id}&visited_at=gte.${encodeURIComponent(istMonth() + "T00:00:00+05:30")}&select=id`)).length);
+    if (cq.blocked) return sendText(pnid, from, say(lang, "cards", { n: cq.limit }));
     const saved = await saveJob(tech, pending);
     await keep(null);
     const amt = rs(saved.t.payable / 100); const bytes = await billPdf(tech, saved);
@@ -198,6 +208,9 @@ async function handleMessage(pnid, msg) {
 
   let text = msg.type === "text" ? msg.text.body : "";
   if (msg.type === "audio") {
+    const [use] = await db(`usage_minutes?technician_id=eq.${tech.id}&month=eq.${istMonth()}&select=seconds`);
+    const vq = voiceQuota(tech.plan, use && use.seconds);
+    if (vq.blocked) return sendText(pnid, from, say(lang, "quota", { min: vq.limitSeconds / 60 }));
     const heard = await transcribe(msg.audio.id, lang);
     if (heard && heard.seconds) await rpc("add_usage", { p_tech: tech.id, p_seconds: heard.seconds }).catch(() => {});
     if (heard && heard.seconds > MAX_VOICE_S) return sendText(pnid, from, say(lang, "long"));

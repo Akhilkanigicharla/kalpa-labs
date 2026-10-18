@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kalpa Labs · AI helpers for Indian small businesses</title>
+<meta name="description" content="Kalpa Labs, Hyderabad: AI helpers that answer your customers on WhatsApp in Telugu, Hindi and English. Free pilot for the first salons from 16 Nov 2026.">
+<meta name="theme-color" content="#1C2463">
+<meta property="og:title" content="Kalpa Labs · AI helpers for Indian small businesses">
+<meta property="og:description" content="BotBhai answers salon customers on WhatsApp in Telugu, Hindi and English, books slots and reminds them. Founding salons wanted.">
+<link rel="preload" href="fonts/rozha-one-latin-400-normal.woff" as="font" type="font/woff" crossorigin>
+<style>
+@font-face{font-family:"Rozha One";src:url(fonts/rozha-one-latin-400-normal.woff) format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-600-normal.woff) format("woff");font-weight:400 600;font-display:swap}
+@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-700-normal.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"Anek Telugu";src:url(fonts/anek-telugu-telugu-400-normal.woff) format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Anek Telugu";src:url(fonts/anek-telugu-telugu-700-normal.woff) format("woff");font-weight:700;font-display:swap}
+/* Kalamkari tokens (00-hq/design/tokens.css) */
+:root{--bg:#EEEDF3;--panel:#FBFBFD;--fg:#191C33;--muted:#5D6079;--rule:#DCDBE7;--soft:#E6E6F1;--accent:#2A3A8F;--accent-fg:#fff;--madder:#B23A2C;--gold:#D3940A;--ok:#23804F;--warn:#B86E00;--hero:#1C2463;--hero-fg:#F6F2E8;--hero-mute:#B9BDE0;
+ --l0:#5B6178;--l1:#B23A2C;--l2:#2F4FB0;--l3:#2E7D4F;--l4:#7B3F8C;--l5:#C08304;--l6:#B8235A;--l7:#13777F;
+ --f-display:"Rozha One","Noto Serif",Georgia,serif;--f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+ --r-s:8px;--r-m:12px;--r-l:18px;--shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 14px 30px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+ --wa:#0b8a5a;--wa-bg:#e7ddd3;--bubble-in:#ffffff;--bubble-out:#d9fdd3;--bubble-fg:#111b21;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0E1230;--panel:#161B42;--fg:#ECEBF7;--muted:#A3A7CC;--rule:#2A3060;--soft:#1F2552;--accent:#9AABFF;--accent-fg:#0E1230;--madder:#F0745F;--gold:#F2B840;--ok:#5BD08F;--warn:#F2B840;--hero:#1B2266;
+ --l0:#A5A9C6;--l1:#F0745F;--l2:#7C98FF;--l3:#5BD08F;--l4:#C792E0;--l5:#F2B840;--l6:#FF6F9F;--l7:#45C6CF;--wa-bg:#0b141a;--bubble-in:#202c33;--bubble-out:#005c4b;--bubble-fg:#e9edef;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0E1230;--panel:#161B42;--fg:#ECEBF7;--muted:#A3A7CC;--rule:#2A3060;--soft:#1F2552;--accent:#9AABFF;--accent-fg:#0E1230;--madder:#F0745F;--gold:#F2B840;--ok:#5BD08F;--warn:#F2B840;--hero:#1B2266;
+ --l0:#A5A9C6;--l1:#F0745F;--l2:#7C98FF;--l3:#5BD08F;--l4:#C792E0;--l5:#F2B840;--l6:#FF6F9F;--l7:#45C6CF;--wa-bg:#0b141a;--bubble-in:#202c33;--bubble-out:#005c4b;--bubble-fg:#e9edef;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 var(--f-body);
+ background-image:radial-gradient(color-mix(in srgb,var(--accent) 14%,transparent) 1px,transparent 1.4px);background-size:18px 18px}
+a{color:var(--accent)}
+img,svg{max-width:100%}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.1;margin:0;text-wrap:balance}
+[lang=te] h1,[lang=te] h2,[lang=te] h3,.te h1,.te h2,.te h3{font-family:var(--f-body);font-weight:700}
+.eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:0 1.3rem;border-radius:999px;border:0;font:600 16px var(--f-body);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:var(--gold);color:#1a1300;box-shadow:0 8px 20px -8px color-mix(in srgb,var(--gold) 70%,transparent)}
+.btn-ghost{background:transparent;color:inherit;border:1.5px solid currentColor}
+.btn-acc{background:var(--accent);color:var(--accent-fg)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--panel) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+header.top .wrap{display:flex;align-items:center;gap:1rem;min-height:64px}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--fg);font:400 22px var(--f-display)}
+.brand svg{width:34px;height:34px}
+nav.links{display:flex;gap:1.2rem;margin-left:auto}
+nav.links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:15px}
+nav.links a:hover{color:var(--fg)}
+.lang{display:flex;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--panel)}
+.lang button{border:0;background:transparent;color:var(--muted);font:600 14px var(--f-body);min-height:36px;padding:0 .8rem;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--hero);color:var(--hero-fg)}
+@media (max-width:860px){nav.links{display:none}.lang{margin-left:auto}header .btn-cta{display:none}}
+/* hero */
+.hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
+.temple{height:12px;background:radial-gradient(circle at 6px 3px,var(--gold) 2.2px,transparent 2.6px) 0 0/12px 12px repeat-x,
+ linear-gradient(135deg,transparent 50%,var(--madder) 50%) 0 6px/12px 6px repeat-x,linear-gradient(225deg,transparent 50%,var(--madder) 50%) 0 6px/12px 6px repeat-x}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding-block:clamp(36px,7vw,84px)}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.2rem,6vw,4.1rem);margin:.7rem 0 1rem}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lead{font-size:clamp(1.05rem,2.2vw,1.25rem);color:var(--hero-mute);max-width:36ch;margin:0 0 1.6rem}
+.hero .ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.hero .btn-ghost{color:var(--hero-fg)}
+.trust{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1.6rem;color:var(--hero-mute);font-size:14px}
+.trust span{display:flex;align-items:center;gap:.4rem}
+.trust svg{width:18px;height:18px;color:var(--gold)}
+.mandala{position:absolute;right:-180px;top:-160px;width:560px;height:560px;opacity:.09;pointer-events:none}
+/* phone demo */
+.phone{width:min(360px,100%);margin-inline:auto;border-radius:38px;padding:12px;background:#0b0d1a;box-shadow:0 30px 70px -30px #000a,inset 0 0 0 2px #2a2f55}
+.screen{border-radius:28px;overflow:hidden;background:var(--wa-bg);display:flex;flex-direction:column;height:560px}
+.wa-head{background:var(--wa);color:#fff;display:flex;align-items:center;gap:.6rem;padding:.75rem .9rem}
+.wa-head .av{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.wa-head .av svg{width:28px;height:28px}
+.wa-head b{display:block;font-size:15px}.wa-head small{opacity:.85;font-size:12px}
+.chat{flex:1;overflow-y:auto;padding:.9rem .7rem;display:flex;flex-direction:column;gap:.45rem;scroll-behavior:smooth}
+.msg{max-width:82%;padding:.5rem .7rem .35rem;border-radius:12px;font-size:14.5px;line-height:1.4;color:var(--bubble-fg);box-shadow:0 1px 1px #0002;animation:pop .28s ease-out both;overflow-wrap:anywhere}
+.msg.in{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:4px}
+.msg.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:4px}
+.msg time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
+.typing{align-self:flex-start;background:var(--bubble-in);border-radius:12px;padding:.6rem .8rem;display:flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+.chips{display:flex;gap:.4rem;overflow-x:auto;padding:.55rem .6rem;background:color-mix(in srgb,var(--wa-bg) 85%,#000 4%);scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border:1px solid var(--wa);color:var(--wa);background:var(--bubble-in);border-radius:999px;min-height:38px;padding:0 .85rem;font:600 13.5px var(--f-body);cursor:pointer}
+:root[data-theme=dark] .chips button{color:#5BD08F;border-color:#5BD08F}
+.demo-note{text-align:center;color:var(--hero-mute);font-size:13px;margin-top:.7rem}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+/* live strip */
+.strip{margin-top:-28px;position:relative;z-index:2}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:18px}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat b{display:block;font:400 clamp(1.7rem,4vw,2.4rem)/1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat b.gold{color:var(--gold)}.stat b.madder{color:var(--madder)}
+/* sections */
+section.s{padding-block:clamp(56px,8vw,96px)}
+.s-head{max-width:720px;margin-bottom:2rem}
+.s-head h2{font-size:clamp(1.8rem,4.2vw,2.8rem);margin:.6rem 0 .6rem}
+.s-head p{color:var(--muted);margin:0;font-size:1.08rem}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0}
+/* products */
+.ptabs{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem;scrollbar-width:none;margin-bottom:1rem}
+.ptabs::-webkit-scrollbar{display:none}
+.ptabs button{flex:none;border:1px solid var(--rule);background:var(--panel);color:var(--fg);border-radius:999px;min-height:44px;padding:0 1rem;font:600 15px var(--f-body);cursor:pointer;display:flex;align-items:center;gap:.45rem}
+.ptabs button i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.ptabs button[aria-selected=true]{background:var(--c);color:#fff;border-color:var(--c)}
+.pview{display:grid;grid-template-columns:1.1fr .9fr;gap:0;overflow:hidden}
+@media (max-width:860px){.pview{grid-template-columns:1fr}}
+.pview .txt{padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:.9rem;border-top:6px solid var(--c)}
+.pview h3{font-size:clamp(1.6rem,3.6vw,2.3rem)}
+.pview .for{color:var(--muted);margin:0}
+.pview ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.pview li{display:flex;gap:.6rem;align-items:flex-start}
+.pview li svg{flex:none;width:20px;height:20px;color:var(--c);margin-top:2px}
+.pill{display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.25rem .75rem;font:600 13px var(--f-body);background:color-mix(in srgb,var(--pc) 14%,transparent);color:var(--pc);width:max-content}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.pview .art{background:color-mix(in srgb,var(--c) 12%,var(--panel));display:grid;place-items:center;padding:24px;min-height:260px}
+.pview .art svg{width:min(260px,80%);height:auto}
+.pview .price{font:400 1.7rem var(--f-display)}
+/* how */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.step{padding:22px;display:flex;flex-direction:column;gap:.6rem}
+.step .n{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--hero);color:var(--gold);font:400 20px var(--f-display)}
+.step h3{font-size:1.4rem}
+.step p{margin:0;color:var(--muted)}
+/* team */
+.team{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.mate{flex:0 0 150px;scroll-snap-align:start;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.mate svg{width:76px;height:100px}
+.mate b{font-weight:700}.mate span{font-size:13px;color:var(--muted)}
+/* offer + workshop */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.offer{padding:clamp(22px,4vw,36px);display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden}
+.offer .big{font:400 clamp(2.2rem,5vw,3.2rem)/1 var(--f-display)}
+.offer .big small{font:600 15px var(--f-body);color:var(--muted)}
+.offer ul{margin:0;padding-left:1.2rem;color:var(--fg);display:flex;flex-direction:column;gap:.35rem}
+.ribbon{position:absolute;top:18px;right:-44px;transform:rotate(35deg);background:var(--gold);color:#1a1300;font:700 12px var(--f-body);padding:.35rem 3rem;letter-spacing:.06em}
+.dark-card{background:var(--hero);color:var(--hero-fg);border-color:transparent}
+.dark-card .muted{color:var(--hero-mute)}
+form.signup{display:grid;gap:.7rem}
+form.signup label{font-weight:600;font-size:14px;display:grid;gap:.3rem}
+form.signup input{min-height:48px;border-radius:12px;border:1px solid var(--rule);background:var(--panel);color:var(--fg);padding:0 .9rem;font:400 16px var(--f-body)}
+form.signup .consent{display:flex;gap:.6rem;align-items:flex-start;font-weight:400;font-size:13.5px}
+form.signup .consent input{min-height:auto;width:20px;height:20px;margin-top:2px}
+.form-msg{font-weight:600;color:var(--ok);min-height:1.4em}
+.hp{position:absolute;left:-9999px}
+/* faq */
+details{border-bottom:1px solid var(--rule);padding:1rem 0}
+details summary{cursor:pointer;font-weight:700;font-size:1.08rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+details summary::after{content:"+";font:400 1.6rem/1 var(--f-display);color:var(--gold);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:.6rem 0 0;color:var(--muted)}
+/* founder */
+.founder{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:center;padding:clamp(22px,4vw,36px)}
+@media (max-width:640px){.founder{grid-template-columns:1fr}}
+.founder svg{width:120px;height:120px}
+footer{border-top:1px solid var(--rule);padding-block:36px 64px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between}
+/* bottom bar (phone) */
+.mbar{display:none}
+@media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--rule)}
+ .mbar .btn{flex:1;min-height:46px;font-size:15px}
+ footer{padding-bottom:110px}}
+/* robot animations */
+.limb{transform-box:fill-box;transform-origin:50% 4%}
+@media (prefers-reduced-motion:no-preference){
+ .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+ .reveal.in{opacity:1;transform:none}
+ .working .arm-a{animation:typeA .4s ease-in-out infinite alternate}.working .arm-b{animation:typeB .4s ease-in-out infinite alternate}
+ .waving .arm-b{animation:wave 1.8s ease-in-out infinite}
+ .working .torso,.waving .torso{animation:breathe 3s ease-in-out infinite}
+ .glow{animation:glow 2.2s ease-in-out infinite}
+ .mandala{animation:spin 120s linear infinite}
+ @keyframes typeA{from{transform:rotate(-58deg)}to{transform:rotate(-46deg)}}
+ @keyframes typeB{from{transform:rotate(48deg)}to{transform:rotate(60deg)}}
+ @keyframes wave{0%,55%,100%{transform:rotate(150deg)}65%{transform:rotate(120deg)}75%{transform:rotate(165deg)}85%{transform:rotate(125deg)}}
+ @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+ @keyframes glow{0%,100%{opacity:1}50%{opacity:.35}}
+ @keyframes spin{to{transform:rotate(360deg)}}
+}
+.te .en-only{display:none}.en .te-only{display:none}
+</style>
+</head>
+<body class="en">
+<header class="top">
+ <div class="wrap">
+  <a class="brand" href="#top" aria-label="Kalpa Labs home"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#1C2463"/><g fill="#D3940A"><circle cx="20" cy="9" r="2.6"/><circle cx="31" cy="20" r="2.6"/><circle cx="20" cy="31" r="2.6"/><circle cx="9" cy="20" r="2.6"/></g><path d="M20 12c4 4 4 12 0 16-4-4-4-12 0-16z" fill="#B23A2C"/><circle cx="20" cy="20" r="2.4" fill="#F6F2E8"/></svg>Kalpa Labs</a>
+  <nav class="links" aria-label="Main">
+   <a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#workshop" data-i="nav_workshop">Workshop</a><a href="#faq" data-i="nav_faq">FAQ</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="te" aria-pressed="false">తెలుగు</button></div>
+  <a class="btn btn-gold btn-cta" href="#founding" data-i="cta_salon">Get a free salon pilot</a>
+ </div>
+</header>
+
+<main id="top">
+<section class="hero" aria-labelledby="h1">
+ <div class="temple" aria-hidden="true"></div>
+ <svg class="mandala" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#D3940A" stroke-width="1.2"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="40"/></g><g fill="#D3940A" id="petals"></g></svg>
+ <div class="wrap">
+  <div>
+   <div class="eyebrow" data-i="eyebrow">Hyderabad · AI helpers for small businesses</div>
+   <h1 id="h1" data-i="h1" data-html="1">Your customers get a reply in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
+   <p class="lead" data-i="lead">BotBhai answers salon customers on WhatsApp, books the slot, sends reminders and tells you when a human is needed. The first salons get a free 14-day pilot from 16 November.</p>
+   <div class="ctas"><a class="btn btn-gold" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Try the demo</a></div>
+   <div class="trust">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg><span data-i="trust1">Official WhatsApp API, opt-in only</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg><span data-i="trust2">No app to install</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span data-i="trust3">Udyam-registered MSME</span></span>
+   </div>
+  </div>
+  <div id="demo">
+   <div class="phone" role="region" aria-label="BotBhai demo chat">
+    <div class="screen">
+     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Lakshmi Beauty Salon</b><small data-i="online">BotBhai · online</small></div></div>
+     <div class="chat" id="chat" aria-live="polite"></div>
+     <div class="chips" id="chips"></div>
+    </div>
+   </div>
+   <p class="demo-note" data-i="demo_note">Demo conversation with a sample salon. Tap a question to try it.</p>
+  </div>
+ </div>
+ <div class="temple" aria-hidden="true"></div>
+</section>
+
+<div class="wrap strip">
+ <div class="stats reveal">
+  <div class="stat"><b class="gold" id="cd-pilot">—</b><span data-i="st_pilot">days to Pilot Day (16 Nov)</span></div>
+  <div class="stat"><b id="cd-launch">—</b><span data-i="st_launch">days to public launch (13 Dec)</span></div>
+  <div class="stat"><b class="madder">22</b><span data-i="st_agents">AI agents working with one human founder</span></div>
+  <div class="stat"><b>3</b><span data-i="st_langs">languages: Telugu, Hindi, English</span></div>
+ </div>
+</div>
+
+<section class="s" id="products">
+ <div class="wrap">
+  <div class="s-head reveal"><div class="eyebrow" data-i="p_eye">What we build</div><h2 data-i="p_h">Small, honest tools for real Indian work</h2><p data-i="p_p">Each product does one job well. Prices are in rupees, and nothing locks you in.</p></div>
+  <div class="ptabs" role="tablist" id="ptabs"></div>
+  <div class="card pview reveal" id="pview" role="tabpanel"></div>
+ </div>
+</section>
+
+<section class="s" id="how" style="padding-top:0">
+ <div class="wrap">
+  <div class="s-head reveal"><div class="eyebrow" data-i="h_eye">How BotBhai works</div><h2 data-i="h_h">From "slot undha?" to a confirmed booking</h2></div>
+  <div class="steps">
+   <div class="card step reveal"><div class="n">1</div><h3 data-i="s1h">Customer messages</h3><p data-i="s1p">On WhatsApp or your website, in Telugu, Hindi, English, or a mix. "Repu" is understood as tomorrow.</p></div>
+   <div class="card step reveal"><div class="n">2</div><h3 data-i="s2h">BotBhai answers</h3><p data-i="s2p">Prices, timings and free slots from your own salon details. It never makes up a price; anything unsure goes to your staff.</p></div>
+   <div class="card step reveal"><div class="n">3</div><h3 data-i="s3h">You stay in control</h3><p data-i="s3p">Booking confirmed, reminders 24 h and 2 h before, and a daily list for the owner. Take over any chat with one tap.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="s" id="team" style="padding-top:0">
+ <div class="wrap">
+  <div class="s-head reveal"><div class="eyebrow" data-i="t_eye">Meet the team</div><h2 data-i="t_h">One founder. 22 AI teammates.</h2><p data-i="t_p">Kalpa Labs runs on free, open AI models. Every claim we make is fact-checked by an audit agent before it goes public.</p></div>
+  <div class="team" id="teamrow"></div>
+ </div>
+</section>
+
+<section class="s" id="founding" style="padding-top:0">
+ <div class="wrap two">
+  <div class="card offer reveal" style="--c:var(--l1)">
+   <div class="ribbon" data-i="ribbon">3 SPOTS</div>
+   <div class="eyebrow" data-i="f_eye">Founding salons</div>
+   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="f_h">Free 14-day pilot, then founding prices</h2>
+   <div class="big">₹1,499<small data-i="f_per"> / month for months 1–3</small></div>
+   <ul>
+    <li data-i="f1">₹2,999 one-time setup, done for you</li>
+    <li data-i="f2">WhatsApp bot, bookings, reminders, owner alerts, dashboard</li>
+    <li data-i="f3">Telugu, Hindi and English</li>
+    <li data-i="f4">Optional Social Team add-on: ₹999 / month</li>
+   </ul>
+   <a class="btn btn-gold" href="#signup" data-i="f_cta" data-pick="salon">Ask for a pilot</a>
+   <p class="muted" style="margin:0;color:var(--muted);font-size:14px" data-i="f_small">No payment until the pilot ends and you say yes.</p>
+  </div>
+  <div class="card offer dark-card reveal" id="workshop">
+   <div class="eyebrow" data-i="w_eye">Live workshop · Telugu</div>
+   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="w_h">"Claude Code with me": build 3 small AI tools in 90 minutes</h2>
+   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when"> · Sun 29 Nov, 11:00 AM IST · Google Meet</small></div>
+   <p class="muted" data-i="w_p">For beginners. We learn together; this is not an expert course and nobody promises income. You leave with what you built, the recording and a prompt sheet. Full refund within 7 days if it was not useful.</p>
+   <a class="btn btn-gold" href="#signup" data-i="w_cta" data-pick="workshop">Reserve a seat</a>
+  </div>
+ </div>
+</section>
+
+<section class="s" id="signup" style="padding-top:0">
+ <div class="wrap two">
+  <div class="reveal">
+   <div class="eyebrow" data-i="g_eye">Say hello</div>
+   <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin:.6rem 0" data-i="g_h">Tell us what you need. Akhil replies personally.</h2>
+   <p style="color:var(--muted)" data-i="g_p">We use your number only to reply about this request. No spam, no sharing, ever.</p>
+  </div>
+  <form class="card signup reveal" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" style="padding:22px">
+   <input type="hidden" name="form-name" value="contact">
+   <p class="hp"><label>Company <input name="company" tabindex="-1" autocomplete="off"></label></p>
+   <label><span data-i="l_interest">I'm interested in</span>
+    <select name="interest" id="interest" style="min-height:48px;border-radius:12px;border:1px solid var(--rule);background:var(--panel);color:var(--fg);padding:0 .8rem;font:400 16px var(--f-body)">
+     <option value="salon" data-i="o_salon">BotBhai for my salon (free pilot)</option>
+     <option value="workshop" data-i="o_workshop">Workshop seat · ₹299 · 29 Nov</option>
+     <option value="kits" data-i="o_kits">Exam / money kits</option>
+     <option value="other" data-i="o_other">Something else</option>
+    </select></label>
+   <label><span data-i="l_name">Your name</span><input name="name" required autocomplete="name"></label>
+   <label><span data-i="l_phone">WhatsApp number</span><input name="phone" required inputmode="tel" autocomplete="tel" pattern="[0-9+ ]{10,15}" placeholder="+91"></label>
+   <label class="consent"><input type="checkbox" name="consent" required><span data-i="l_consent">I agree that Kalpa Labs may contact me on WhatsApp about this request. I can ask for my data to be deleted any time.</span></label>
+   <button class="btn btn-acc" type="submit" data-i="l_send">Send</button>
+   <div class="form-msg" id="formmsg" role="status"></div>
+  </form>
+ </div>
+</section>
+
+<section class="s" id="faq" style="padding-top:0">
+ <div class="wrap" style="max-width:820px">
+  <div class="s-head reveal"><div class="eyebrow" data-i="q_eye">Questions</div><h2 data-i="q_h">Straight answers</h2></div>
+  <details class="reveal"><summary data-i="q1">Will my customers know it's a bot?</summary><p data-i="a1">Yes. BotBhai says it is an automated assistant at the start of a chat, and hands over to your staff whenever asked.</p></details>
+  <details class="reveal"><summary data-i="q2">What if it gives a wrong answer?</summary><p data-i="a2">It only uses the prices and timings you give us. If it is not sure, or the customer is upset, it hands the chat to you instead of guessing.</p></details>
+  <details class="reveal"><summary data-i="q3">Do I need a computer or a new phone number?</summary><p data-i="a3">No computer. You need one WhatsApp number for the salon; we help you set it up during the pilot.</p></details>
+  <details class="reveal"><summary data-i="q4">Is my customers' data safe?</summary><p data-i="a4">We follow India's DPDP Act: we act only on your instructions, keep data in your salon's account, and delete it when you ask. Messages go only to customers who opted in.</p></details>
+  <details class="reveal"><summary data-i="q5">You are new. Why should I trust you?</summary><p data-i="a5">Fair question. We have no customers yet, so the first salons get a free pilot and pay nothing unless it helps. You can stop any time.</p></details>
+ </div>
+</section>
+
+<section class="s" style="padding-top:0">
+ <div class="wrap">
+  <div class="card founder reveal">
+   <svg viewBox="-34 -66 68 74" aria-hidden="true"><g data-human="1"></g></svg>
+   <div><div class="eyebrow" data-i="fo_eye">Built in public</div><h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);margin:.5rem 0" data-i="fo_h">"I build the tools I wish my neighbours' shops had."</h2><p style="margin:0;color:var(--muted)" data-i="fo_p">Akhil Kanigicharla, founder. Kalpa Labs is a one-person company in Hyderabad with an AI team. Follow the launch, and tell us what to build next.</p></div>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div><b style="color:var(--fg)">Kalpa Labs</b> · <span data-i="ft1">Hyderabad, Telangana · Udyam-registered MSME (proprietorship)</span></div>
+  <div data-i="ft2">Prices include no hidden fees. No income promises, ever.</div>
+  <div>© 2026 Kalpa Labs</div>
+ </div>
+</footer>
+<div class="mbar"><a class="btn btn-gold" href="#founding" data-i="mb1">Free salon pilot</a><a class="btn btn-ghost" href="#workshop" data-i="mb2">₹299 workshop</a></div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.append(e);return e;};
+/* humanoid mini robot */
+function bot(g,color,mode){
+ const SH='#eef1f5',J='#2a2e35',E='#c9ced6';
+ el('ellipse',{cx:0,cy:1,rx:12,ry:3.6,fill:'#000',opacity:.15},g);
+ const r=el('g',{class:mode||'working'},g);
+ [-3.6,3.6].forEach(x=>{const L=el('g',{},r);el('rect',{x:x-3,y:-33,width:6,height:16,rx:3,fill:SH,stroke:E,'stroke-width':.6},L);el('circle',{cx:x,cy:-17,r:2.4,fill:J},L);el('rect',{x:x-2.7,y:-17,width:5.4,height:15,rx:2.6,fill:SH,stroke:E,'stroke-width':.6},L);el('rect',{x:x-3.6,y:-3,width:7.6,height:3.4,rx:1.6,fill:J},L);});
+ const T=el('g',{class:'torso'},r);
+ el('rect',{x:-7.5,y:-37,width:15,height:6,rx:2.5,fill:J},T);
+ el('path',{d:'M-10.5 -58 Q0 -61 10.5 -58 L8 -36 Q0 -34 -8 -36 Z',fill:SH,stroke:E,'stroke-width':.7},T);
+ el('circle',{cx:0,cy:-49,r:2.2,fill:color,class:'glow'},T);
+ [[-12.5,'arm-a'],[12.5,'arm-b']].forEach(([x,c])=>{const A=el('g',{class:'limb '+c},T);el('rect',{x:x-2.4,y:-57,width:4.8,height:13,rx:2.4,fill:SH,stroke:E,'stroke-width':.6},A);el('circle',{cx:x,cy:-44,r:1.9,fill:J},A);el('rect',{x:x-2.2,y:-44,width:4.4,height:11,rx:2.2,fill:SH,stroke:E,'stroke-width':.6},A);el('circle',{cx:x,cy:-32.5,r:2.3,fill:J},A);});
+ el('rect',{x:-2.2,y:-62,width:4.4,height:5,rx:1.5,fill:J},T);
+ el('ellipse',{cx:0,cy:-69,rx:7.2,ry:8.4,fill:SH,stroke:E,'stroke-width':.7},T);
+ el('path',{d:'M-6 -71 Q0 -77 6 -71 L5.4 -64 Q0 -61.5 -5.4 -64 Z',fill:'#0d0f13'},T);
+ el('rect',{x:-4,y:-69.5,width:8,height:1.6,rx:.8,fill:color,class:'glow'},T);
+}
+function human(g){
+ el('ellipse',{cx:0,cy:2,rx:18,ry:5,fill:'#000',opacity:.12},g);
+ el('rect',{x:-13,y:-32,width:26,height:34,rx:10,fill:'#2563eb'},g);
+ el('path',{d:'M-4 -32 L0 -26 L4 -32z',fill:'#fff'},g);
+ el('circle',{cx:0,cy:-43,r:11,fill:'#a9714b'},g);
+ el('path',{d:'M-11 -44 Q-11 -58 0 -58 Q11 -58 11 -44 Q8 -51 0 -50.5 Q-8 -51 -11 -44z',fill:'#1e1a17'},g);
+ el('circle',{cx:-4,cy:-43,r:1.4,fill:'#1e1a17'},g);el('circle',{cx:4,cy:-43,r:1.4,fill:'#1e1a17'},g);
+ el('path',{d:'M-3.5 -38 Q0 -35 3.5 -38',stroke:'#1e1a17','stroke-width':1.4,fill:'none','stroke-linecap':'round'},g);
+}
+document.querySelectorAll('[data-bot]').forEach(g=>bot(g,g.dataset.bot,'waving'));
+document.querySelectorAll('[data-human]').forEach(g=>human(g));
+const petals=document.getElementById('petals');for(let i=0;i<16;i++){const a=i/16*Math.PI*2;el('circle',{cx:100+Math.cos(a)*83,cy:100+Math.sin(a)*83,r:5},petals);el('circle',{cx:100+Math.cos(a+.2)*55,cy:100+Math.sin(a+.2)*55,r:3},petals);}
+
+/* ---------- i18n ---------- */
+const TE={nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'డెమో చూడండి',
+eyebrow:'హైదరాబాద్ · చిన్న వ్యాపారాలకు AI సహాయకులు',h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
+lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
+trust1:'అధికారిక WhatsApp API, అనుమతితో మాత్రమే',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'BotBhai · ఆన్‌లైన్',demo_note:'ఒక నమూనా సెలూన్‌తో డెమో సంభాషణ. ప్రశ్నను నొక్కి ప్రయత్నించండి.',
+st_pilot:'పైలట్ డేకి రోజులు (16 నవం)',st_launch:'పబ్లిక్ లాంచ్‌కి రోజులు (13 డిసెం)',st_agents:'ఒక వ్యవస్థాపకుడితో పనిచేసే AI ఏజెంట్లు',st_langs:'భాషలు: తెలుగు, హిందీ, ఇంగ్లీష్',
+p_eye:'మేము తయారు చేసేవి',p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
+h_eye:'BotBhai ఎలా పనిచేస్తుంది',h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
+s2h:'BotBhai జవాబు',s2p:'మీ సెలూన్ వివరాల నుంచే ధరలు, సమయాలు, ఖాళీ స్లాట్లు. ధరను ఎప్పుడూ ఊహించదు; సందేహం ఉంటే మీ సిబ్బందికి పంపుతుంది.',s3h:'నియంత్రణ మీదే',s3p:'బుకింగ్ కన్ఫర్మ్, 24 గం, 2 గం ముందు రిమైండర్లు, యజమానికి రోజువారీ జాబితా. ఏ చాట్‌నైనా ఒక్క ట్యాప్‌తో మీరు తీసుకోవచ్చు.',
+t_eye:'టీమ్‌ను కలవండి',t_h:'ఒక వ్యవస్థాపకుడు. 22 AI సహచరులు.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. మేము చెప్పే ప్రతి విషయాన్ని ఒక ఆడిట్ ఏజెంట్ ముందుగా ధృవీకరిస్తుంది.',
+ribbon:'3 స్థానాలు',f_eye:'ఫౌండింగ్ సెలూన్లు',f_h:'14 రోజుల ఉచిత పైలట్, తర్వాత ఫౌండింగ్ ధరలు',f_per:' / నెల, మొదటి 3 నెలలు',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
+w_eye:'లైవ్ వర్క్‌షాప్ · తెలుగు',w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:' · ఆది 29 నవం, ఉ. 11:00 · Google Meet',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. మీరు నిర్మించినవి, రికార్డింగ్, ప్రాంప్ట్ షీట్ మీతో. ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'సీటు బుక్ చేయండి',
+g_eye:'పలకరించండి',g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
+l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా సెలూన్‌కు BotBhai (ఉచిత పైలట్)',o_workshop:'వర్క్‌షాప్ సీటు · ₹299 · 29 నవం',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
+q_eye:'ప్రశ్నలు',q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మీ సెలూన్ ఖాతాలోనే, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
+fo_eye:'బహిరంగంగా నిర్మిస్తున్నాం',fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
+ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'ఉచిత సెలూన్ పైలట్',mb2:'₹299 వర్క్‌షాప్'};
+const EN={}; document.querySelectorAll('[data-i]').forEach(e=>{EN[e.dataset.i]=e.dataset.html?e.innerHTML:e.textContent;});
+let lang='en'; try{lang=localStorage.getItem('kl-lang')||'en';}catch(e){}
+function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';document.body.className=l;
+ document.querySelectorAll('[data-i]').forEach(e=>{const k=e.dataset.i;const v=(l==='te'?TE[k]:null)??EN[k];if(v==null)return;if(e.dataset.html)e.innerHTML=v;else e.textContent=v;});
+ document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
+ try{localStorage.setItem('kl-lang',l);}catch(e){}
+ renderProducts(); resetChat();}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+/* ---------- countdown ---------- */
+function cd(){const d=t=>Math.max(0,Math.ceil((new Date(t)-Date.now())/864e5));
+ document.getElementById('cd-pilot').textContent=d('2026-11-16T00:00:00+05:30');document.getElementById('cd-launch').textContent=d('2026-12-13T06:12:00+05:30');}
+cd(); setInterval(cd,60000);
+
+/* ---------- products ---------- */
+const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+const P=[
+ {id:'botbhai',c:'--l1',name:'BotBhai',st:['Pilot from 16 Nov','16 నవం నుంచి పైలట్'],stc:'--warn',
+  for:['For salons, gyms and coaching centres','సెలూన్లు, జిమ్‌లు, కోచింగ్ సెంటర్ల కోసం'],
+  pts:[['WhatsApp + website chat in 3 languages','3 భాషల్లో WhatsApp + వెబ్‌సైట్ చాట్'],['Bookings, 24 h and 2 h reminders','బుకింగ్స్, 24 గం, 2 గం రిమైండర్లు'],['Owner alerts and a one-tap shared inbox','యజమాని అలర్ట్స్, ఒక ట్యాప్ షేర్డ్ ఇన్‌బాక్స్']],
+  price:['Free pilot, then ₹1,499/mo','ఉచిత పైలట్, తర్వాత ₹1,499/నెల'],cta:'#founding',art:'chat'},
+ {id:'kits',c:'--l3',name:'Exam & Money Kits',st:['Launching 13 Dec','13 డిసెం లాంచ్'],stc:'--ok',
+  for:['For GATE aspirants and salaried savers','GATE అభ్యర్థులు, జీతం పొందేవారి కోసం'],
+  pts:[['GATE 2027 120-day tracker in Google Sheets','Google Sheetsలో GATE 2027 120 రోజుల ట్రాకర్'],['Tax regime + SIP goal planner FY 2026-27','పన్ను విధానం + SIP లక్ష్య ప్లానర్ 2026-27'],['GATE Study Coach skill pack for Claude','Claude కోసం GATE స్టడీ కోచ్ స్కిల్ ప్యాక్']],
+  price:['₹199–499, yours to keep','₹199–499, ఎప్పటికీ మీదే'],cta:'#signup',art:'sheet'},
+ {id:'deals',c:'--l5',name:'Telugu Deals',st:['Channel from 16 Nov','16 నవం నుంచి ఛానల్'],stc:'--warn',
+  for:['For smart shoppers who read Telugu','తెలుగు చదివే తెలివైన కొనుగోలుదారుల కోసం'],
+  pts:[['3–5 checked deals a day on Telegram','టెలిగ్రామ్‌లో రోజుకు 3–5 చెక్ చేసిన డీల్స్'],['Free tax, SIP, EMI calculators in Telugu','తెలుగులో ఉచిత పన్ను, SIP, EMI కాలిక్యులేటర్లు'],['Every affiliate link marked #ad','ప్రతి అఫిలియేట్ లింక్‌కి #ad గుర్తు']],
+  price:['Free','ఉచితం'],cta:'#signup',art:'tag'},
+ {id:'jobcard',c:'--l2',name:'JobCard',st:['In testing','పరీక్షలో ఉంది'],stc:'--l0',
+  for:['For AC and appliance technicians','AC, ఉపకరణాల టెక్నీషియన్ల కోసం'],
+  pts:[['Speak a voice note, get a job card','వాయిస్ నోట్ చెప్పండి, జాబ్ కార్డ్ పొందండి'],['GST bill with a UPI pay code','UPI పే కోడ్‌తో GST బిల్'],['Works offline, Telugu and English','ఆఫ్‌లైన్‌లో, తెలుగు, ఇంగ్లీష్‌లో']],
+  price:['Free while testing','పరీక్ష సమయంలో ఉచితం'],cta:'#signup',art:'card'},
+ {id:'lifeboat',c:'--l4',name:'Tab Lifeboat',st:['In testing','పరీక్షలో ఉంది'],stc:'--l0',
+  for:['For people with 100 browser tabs','100 బ్రౌజర్ ట్యాబ్స్ ఉండేవారి కోసం'],
+  pts:[['Save and restore every tab, with groups','గ్రూప్‌లతో సహా ప్రతి ట్యాబ్ సేవ్, రీస్టోర్'],['Auto-saves every 5 minutes','ప్రతి 5 నిమిషాలకు ఆటో-సేవ్'],['Imports OneTab and Session Buddy','OneTab, Session Buddy నుంచి దిగుమతి']],
+  price:['Free','ఉచితం'],cta:'#signup',art:'tabs'},
+ {id:'ledger',c:'--l6',name:'Ledger Peaks',st:['For teams, 2027','టీమ్‌ల కోసం, 2027'],stc:'--l0',
+  for:['For software teams using AI','AI వాడే సాఫ్ట్‌వేర్ టీమ్‌ల కోసం'],
+  pts:[['Which customer is your AI bill eating?','మీ AI బిల్‌ను ఏ కస్టమర్ తింటున్నారు?'],['Rupee costs by feature and model','ఫీచర్, మోడల్ వారీగా రూపాయి ఖర్చు'],['DPDP readiness score','DPDP సంసిద్ధత స్కోర్']],
+  price:['Early access','ముందస్తు ప్రవేశం'],cta:'#signup',art:'chart'}];
+const ART={
+ chat:'<svg viewBox="0 0 200 160"><rect x="20" y="16" width="120" height="34" rx="12" fill="#fff"/><rect x="60" y="62" width="120" height="34" rx="12" fill="#d9fdd3"/><rect x="20" y="108" width="100" height="34" rx="12" fill="#fff"/><g fill="#8a8fa8"><rect x="32" y="28" width="80" height="6" rx="3"/><rect x="72" y="74" width="90" height="6" rx="3"/><rect x="32" y="120" width="60" height="6" rx="3"/></g></svg>',
+ sheet:'<svg viewBox="0 0 200 160"><rect x="24" y="18" width="152" height="124" rx="10" fill="#fff"/><g stroke="#cfd3e0"><path d="M24 48h152M24 78h152M24 108h152M74 18v124M124 18v124"/></g><rect x="80" y="54" width="38" height="18" rx="4" fill="#2E7D4F" opacity=".8"/><rect x="130" y="84" width="38" height="18" rx="4" fill="#D3940A" opacity=".8"/></svg>',
+ tag:'<svg viewBox="0 0 200 160"><path d="M40 30h70l60 60-50 50-80-80z" fill="#fff"/><circle cx="62" cy="52" r="8" fill="#C08304"/><text x="92" y="108" font-size="26" font-family="Georgia" fill="#B23A2C">-40%</text></svg>',
+ card:'<svg viewBox="0 0 200 160"><rect x="44" y="14" width="112" height="132" rx="12" fill="#fff"/><circle cx="100" cy="50" r="18" fill="#2F4FB0" opacity=".85"/><g fill="#8a8fa8"><rect x="62" y="82" width="76" height="6" rx="3"/><rect x="62" y="96" width="56" height="6" rx="3"/><rect x="62" y="110" width="66" height="6" rx="3"/></g></svg>',
+ tabs:'<svg viewBox="0 0 200 160"><g fill="#fff"><rect x="20" y="30" width="50" height="22" rx="6"/><rect x="74" y="30" width="50" height="22" rx="6"/><rect x="128" y="30" width="50" height="22" rx="6"/><rect x="20" y="56" width="158" height="80" rx="8"/></g><path d="M60 110q40-40 80 0" stroke="#7B3F8C" stroke-width="6" fill="none"/></svg>',
+ chart:'<svg viewBox="0 0 200 160"><rect x="20" y="18" width="160" height="124" rx="10" fill="#fff"/><g fill="#B8235A"><rect x="44" y="90" width="18" height="36" rx="4"/><rect x="74" y="66" width="18" height="60" rx="4"/><rect x="104" y="46" width="18" height="80" rx="4"/><rect x="134" y="76" width="18" height="50" rx="4" opacity=".55"/></g></svg>'};
+let cur='botbhai';
+function renderProducts(){const L=lang==='te'?1:0; const tabs=document.getElementById('ptabs'), v=document.getElementById('pview');
+ tabs.replaceChildren(...P.map(p=>{const b=document.createElement('button');b.type='button';b.role='tab';b.setAttribute('aria-selected',String(p.id===cur));b.style.setProperty('--c','var('+p.c+')');b.append(document.createElement('i'),document.createTextNode(p.name));b.addEventListener('click',()=>{cur=p.id;renderProducts();});return b;}));
+ const p=P.find(x=>x.id===cur); v.style.setProperty('--c','var('+p.c+')');
+ v.innerHTML='<div class="txt"><span class="pill" style="--pc:var('+p.stc+')"><i></i><span class="st"></span></span><h3></h3><p class="for"></p><ul>'+p.pts.map(()=>'<li>'+CHK+'<span></span></li>').join('')+'</ul><div class="price"></div><a class="btn btn-acc" style="width:max-content"></a></div><div class="art">'+ART[p.art]+'</div>';
+ v.querySelector('.st').textContent=p.st[L]; v.querySelector('h3').textContent=p.name; v.querySelector('.for').textContent=p.for[L];
+ v.querySelectorAll('li span').forEach((s,i)=>s.textContent=p.pts[i][L]); v.querySelector('.price').textContent=p.price[L];
+ const a=v.querySelector('a'); a.href=p.cta; a.textContent=L?'ఆసక్తి ఉంది':'I\'m interested'; a.addEventListener('click',()=>{const sel=document.getElementById('interest'); sel.value=p.id==='botbhai'?'salon':p.id==='kits'?'kits':'other';});}
+
+/* ---------- chat demo ---------- */
+const CONV={
+ en:[{q:'Is there a haircut slot tomorrow evening?',a:['Namaste! I\'m the salon\'s automated assistant.','Tomorrow (Mon 19 Oct) we have 5:30 PM and 6:30 PM free for a haircut. Which one shall I hold?']},
+  {q:'How much for haircut + beard trim?',a:['Haircut ₹250, beard trim ₹100: ₹350 together. Shall I book both?']},
+  {q:'Book 6:30 PM please',a:['Done ✅ Haircut + beard trim, Mon 19 Oct, 6:30 PM.','I\'ll remind you tomorrow at 4:30 PM. Reply CANCEL any time.']},
+  {q:'I want to talk to a person',a:['Sure, connecting you to our staff now. Someone will reply here shortly 🙏']}],
+ te:[{q:'రేపు సాయంత్రం హెయిర్‌కట్ స్లాట్ ఉందా?',a:['నమస్తే! నేను సెలూన్ ఆటోమేటెడ్ సహాయకుడిని.','రేపు (సోమ 19 అక్టో) హెయిర్‌కట్‌కి సా. 5:30, 6:30 ఖాళీ ఉన్నాయి. ఏది ఉంచమంటారు?']},
+  {q:'హెయిర్‌కట్ + బియర్డ్ ట్రిమ్ ఎంత?',a:['హెయిర్‌కట్ ₹250, బియర్డ్ ట్రిమ్ ₹100: రెండూ కలిపి ₹350. రెండూ బుక్ చేయమంటారా?']},
+  {q:'6:30 బుక్ చేయండి',a:['అయిపోయింది ✅ హెయిర్‌కట్ + బియర్డ్ ట్రిమ్, సోమ 19 అక్టో, సా. 6:30.','రేపు సా. 4:30కి గుర్తు చేస్తాను. రద్దు కోసం ఎప్పుడైనా CANCEL అని పంపండి.']},
+  {q:'మనిషితో మాట్లాడాలి',a:['తప్పకుండా, మా సిబ్బందికి కలుపుతున్నాను. త్వరలో ఇక్కడే జవాబిస్తారు 🙏']}]};
+const chat=document.getElementById('chat'), chips=document.getElementById('chips');
+let used=new Set(), busy=false, timers=[];
+const now=()=>new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'});
+function bubble(t,side){const m=document.createElement('div');m.className='msg '+side;m.textContent=t;const tm=document.createElement('time');tm.textContent=now()+(side==='out'?' ✓✓':'');m.append(tm);chat.append(m);chat.scrollTop=chat.scrollHeight;}
+function ask(i){if(busy)return;busy=true;const c=CONV[lang][i];used.add(i);renderChips();bubble(c.q,'out');
+ let delay=reduce?50:500;c.a.forEach((line,k)=>{timers.push(setTimeout(()=>{const ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';chat.append(ty);chat.scrollTop=chat.scrollHeight;
+  timers.push(setTimeout(()=>{ty.remove();bubble(line,'in');if(k===c.a.length-1){busy=false;renderChips();}},reduce?50:Math.min(1600,500+line.length*14)));},delay));delay+=reduce?100:Math.min(2200,900+line.length*16);});}
+function renderChips(){chips.replaceChildren(...CONV[lang].map((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=c.q;b.disabled=busy;if(used.has(i))b.style.opacity='.55';b.addEventListener('click',()=>ask(i));return b;}));}
+function resetChat(){timers.forEach(clearTimeout);timers=[];busy=false;used=new Set();chat.replaceChildren();renderChips();
+ if(!reduce) timers.push(setTimeout(()=>ask(0),900)); else ask(0);}
+
+/* ---------- team ---------- */
+const TEAM=[['Kalpa','Chief of staff','#2A3A8F'],['Chitti','WhatsApp helper','#25D366'],['Scout','Finds customers','#B23A2C'],['Kavi','Writer','#2E7D4F'],['Adi','Ads & copy','#C08304'],['Lens','Brand look','#7B3F8C'],['Pixel','Designer','#13777F'],['Forge','Engineer','#2F4FB0'],['Vigil','Fact-checker','#B8235A'],['Guard','Risk checks','#5B6178'],['Deal','Deals hunter','#D3940A'],['Echo','Librarian','#2A3A8F']];
+const row=document.getElementById('teamrow');
+row.replaceChildren(...TEAM.map(([n,r,c],i)=>{const d=document.createElement('div');d.className='card mate';const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','-24 -82 48 86');s.setAttribute('aria-hidden','true');const g=el('g',{style:'animation-delay:'+(i*.13)+'s'},s);bot(g,c,i===0?'waving':'working');const b=document.createElement('b');b.textContent=n;const sp=document.createElement('span');sp.textContent=r;d.append(s,b,sp);return d;}));
+
+/* ---------- form ---------- */
+document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;}));
+const form=document.querySelector('form.signup'), msg=document.getElementById('formmsg');
+form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;
+ const data=new URLSearchParams(new FormData(form)).toString();
+ try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data}); if(!r.ok) throw 0;
+  msg.style.color='var(--ok)';msg.textContent=lang==='te'?'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.':'Thank you! Akhil will reply on WhatsApp soon.';form.reset();}
+ catch(err){msg.style.color='var(--madder)';msg.textContent=lang==='te'?'పంపడం కాలేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.':'That did not send. Please try again in a minute.';}});
+
+/* ---------- reveal ---------- */
+if(!reduce&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{rootMargin:'0px 0px -8% 0px'});document.querySelectorAll('.reveal').forEach(n=>io.observe(n));}
+else document.querySelectorAll('.reveal').forEach(n=>n.classList.add('in'));
+
+setLang(lang);
+})();
+</script>
+</body>
+</html>

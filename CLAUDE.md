@@ -22,6 +22,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 
 ## Build sprint procedure
 Use the Superpowers skills (plugin `superpowers:*`, or read `00-hq/vendor/superpowers/skills/<name>/SKILL.md` if the plugin isn't loaded): `writing-plans` before building, `test-driven-development` while building, `systematic-debugging` on failures and `verification-before-completion` before any tick.
+0. **Two sessions may run at once.** Read `00-hq/TEAM.md`: take only your lane's items, and claim an item (push) before building it.
 1. Run `node 00-hq/agents/tasks.js next` (and `validate`), then read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.

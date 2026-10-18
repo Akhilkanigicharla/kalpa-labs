@@ -1,0 +1,14 @@
+# JobCard site on Netlify (free). Base directory: 02-jobcard
+[build]
+  command = "npm ci"
+  publish = "web"
+
+[functions]
+  directory = "bot/functions"
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

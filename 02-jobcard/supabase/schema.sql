@@ -199,3 +199,50 @@ revoke update, delete on public.invoices from authenticated;
 grant select, insert on public.invoices to authenticated;
 grant update (paid) on public.invoices to authenticated;
 grant select on public.usage_minutes, public.invoice_counters to authenticated;
+
+-- ---------------------------------------------------------------- WhatsApp bot + cron (server only; A35, A37)
+-- The bot runs with the service_role key. These tables have RLS on and no policies, so the app can't see them.
+create table if not exists public.wa_processed (   -- Meta retries a webhook: each message id is handled once
+  id   text primary key,
+  at   timestamptz not null default now()
+);
+create table if not exists public.bot_sessions (   -- the job card waiting for the technician's ✅ / edit
+  technician_id uuid primary key references public.technicians(id) on delete cascade,
+  pending       jsonb,
+  updated_at    timestamptz not null default now()
+);
+alter table public.wa_processed enable row level security;
+alter table public.bot_sessions enable row level security;
+revoke all on public.wa_processed, public.bot_sessions from authenticated, anon;
+
+-- Same numbering as next_invoice_no(), for a server acting for one technician (the WhatsApp bot).
+create or replace function public.next_invoice_no_for(p_tech uuid, p_date date default (now() at time zone 'Asia/Kolkata')::date)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_fy text := public.fy_of(p_date); v_seq int;
+begin
+  if p_tech is null then raise exception 'no technician'; end if;
+  insert into public.invoice_counters (technician_id, fy, last_seq) values (p_tech, v_fy, 1)
+  on conflict (technician_id, fy) do update set last_seq = invoice_counters.last_seq + 1
+  returning last_seq into v_seq;
+  return 'JC/' || v_fy || '/' || lpad(v_seq::text, 4, '0');
+end $$;
+revoke all on function public.next_invoice_no_for(uuid, date) from public, authenticated, anon;
+
+-- Adds voice seconds to this month's meter (IST month) and returns the month's total.
+create or replace function public.add_usage(p_tech uuid, p_seconds int)
+returns int language plpgsql security definer set search_path = public as $$
+declare v_month date := date_trunc('month', now() at time zone 'Asia/Kolkata')::date; v_total int;
+begin
+  if p_seconds < 0 then raise exception 'negative seconds'; end if;
+  insert into public.usage_minutes (technician_id, month, seconds) values (p_tech, v_month, p_seconds)
+  on conflict (technician_id, month) do update set seconds = usage_minutes.seconds + excluded.seconds
+  returning seconds into v_total;
+  return v_total;
+end $$;
+revoke all on function public.add_usage(uuid, int) from public, authenticated, anon;
+
+do $$ begin
+  if exists (select 1 from pg_roles where rolname = 'service_role') then
+    grant execute on function public.next_invoice_no_for(uuid, date), public.add_usage(uuid, int) to service_role;
+  end if;
+end $$;

@@ -1,0 +1,22 @@
+[
+  { "note": "Split AC gas leak undi, gas refill 2500, capacitor 450, customer Sita 9000033333", "payable": 2950 },
+  { "note": "Customer Ravi 9876543210 Ameerpet, Voltas window AC not cooling, capacitor 450, service charge 300", "payable": 750 },
+  { "note": "LG fridge not cooling, gas refill 1800, customer Lakshmi 9123456789", "payable": 1800 },
+  { "note": "Daikin 1.5 ton split AC jet service 600, Kukatpally, customer Anil 9988776655", "payable": 600 },
+  { "note": "Samsung washing machine not starting, PCB repair 1200, service charge 250, customer Meena 9000011111", "payable": 1450 },
+  { "note": "split AC water leak, jet service 700, customer Prasad 9000022222, next service 4 months", "payable": 700 },
+  { "note": "Customer Kiran 9000044444 Madhapur Blue Star split AC compressor 9500, gas refill 2500, total 12000", "payable": 12000 },
+  { "note": "window AC noise vastundi, fan motor 1600, customer Raju 9000055555", "payable": 1600 },
+  { "note": "Hitachi split AC installation, copper pipe 1200, service charge 1500, customer Srinivas 9000066666", "payable": 2700 },
+  { "note": "capacitor rendu velu, customer Padma 9000077777 split AC", "payable": 2000 },
+  { "note": "gas refill moodu velu, LG split AC, customer Venkat 9000088888, malli 6 months", "payable": 3000 },
+  { "note": "Customer Rani 9000099999 fridge not cooling gas refill 2200 capacitor 350", "payable": 2550 },
+  { "note": "Carrier AC not cooling, gas refill 2600, fan motor 1400, customer Suresh 9100022222", "payable": 4000 },
+  { "note": "Godrej fridge noise, fan motor 900, customer Usha 9100033333", "payable": 900 },
+  { "note": "split AC PCB repair 2000, service charge 300, total 2300, customer Ramesh 9100044444", "payable": 2300 },
+  { "note": "Panasonic window AC gas refill 2400, capacitor 400, customer Gopi 9100055555 Uppal", "payable": 2800 },
+  { "note": "Whirlpool washing machine water leak, service charge 350, customer Swathi 9100066666", "payable": 350 },
+  { "note": "Voltas split AC jet service 650, customer Mahesh 9100077777 Miyapur", "payable": 650 },
+  { "note": "Haier fridge not starting, PCB repair 1500, customer Divya 9100088888", "payable": 1500 },
+  { "note": "split AC gas refill 2500, capacitor 450, total 3000, customer Hari 9100099999", "payable": 2950 }
+]

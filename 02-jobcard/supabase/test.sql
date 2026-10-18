@@ -96,5 +96,27 @@ do $$ declare c int; begin
   begin perform public.next_invoice_no(); raise exception 'anonymous got an invoice number';
   exception when raise_exception then if sqlerrm like 'anonymous%' then raise; end if; end;
 end $$;
+-- ---- bot-only tables and functions (A35): closed to the app, open to the server
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ begin
+  begin perform public.next_invoice_no_for('00000000-0000-0000-0000-00000000000b'); raise exception 'app took another technician''s number';
+  exception when insufficient_privilege then null; end;
+  begin perform public.add_usage('00000000-0000-0000-0000-00000000000a', -999); raise exception 'app reset its own meter';
+  exception when insufficient_privilege then null; end;
+  begin perform count(*) from public.bot_sessions; raise exception 'app read bot sessions';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+set role service_role;
+do $$ declare n text; s int; begin
+  n := public.next_invoice_no_for('00000000-0000-0000-0000-00000000000b', '2026-10-13');
+  assert n like 'JC/26-27/%', n;
+  s := public.add_usage('00000000-0000-0000-0000-00000000000b', 40);
+  s := public.add_usage('00000000-0000-0000-0000-00000000000b', 50); assert s = 90, s::text;
+  insert into public.wa_processed (id) values ('wamid.1');
+  begin insert into public.wa_processed (id) values ('wamid.1'); raise exception 'duplicate message id accepted';
+  exception when unique_violation then null; end;
+end $$;
 reset role;
 select 'ALL JOBCARD SCHEMA TESTS PASSED' as result;

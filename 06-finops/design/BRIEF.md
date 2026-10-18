@@ -33,3 +33,7 @@ Open them from the repo (they load `../../00-hq/design/tokens.css` and the self-
 - F-04: Akhil approves the name and the copy (CEO queue), then the landing moves to an Astro page on Netlify.
 - A30 (F-06): the real X-ray generator reuses `xray.html` as its template, fed by an uploaded export instead of `sample.py`.
 - A33 (F-12): the real dashboard reads Supabase (A28) instead of the inline sample.
+
+## The real generator (A30, F-06)
+`python3 06-finops/src/xray/generate.py usage.csv --company "Acme AI" --revenue revenue.csv --dpdp answers.json --out xray.html --pdf`
+(or `--synthetic` for the demo) fills this same `xray.html` from an uploaded export: any importer format, ₹ from the real engine, 3 savings ideas from generic rules (cache / smaller model / Batch API, one per feature so they never double count), margins only when a revenue file is given, DPDP "not answered" until the client answers. The output is one self-contained file (tokens, CSS, fonts and script inlined; no external requests) that prints as 2 A4 pages. Tests: `06-finops/tests/test_xray.py`.

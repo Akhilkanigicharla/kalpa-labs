@@ -1,0 +1,54 @@
+# b7 Trading Lab backtest (Q7.6, roadmap A25). Free on GitHub Actions.
+# Market data lives only in the Actions cache (refreshed weekly), never in git.
+# Output: an HTML tear-sheet artifact. Research only, paper only, no broker calls, no secrets.
+name: Trading Lab backtest
+on:
+  push:
+    branches: [main]
+    paths:
+      - "07-trading/src/**"
+      - "07-trading/tests/**"
+      - "07-trading/requirements.txt"
+      - ".github/workflows/backtest.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: backtest-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: 07-trading
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install pinned research packages
+        run: pip install numpy==2.5.4 pandas==3.0.6 pyarrow==26.0.0 yfinance==1.7.0 pytest==9.1.1
+      - name: Week number (cache key)
+        id: week
+        run: echo "w=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+      - name: Market data cache (never committed)
+        uses: actions/cache@v4
+        with:
+          path: 07-trading/data
+          key: nse-daily-${{ steps.week.outputs.w }}
+      - name: Lab tests (synthetic data)
+        run: python -m pytest -q
+      - name: Tear-sheet, Nifty 50
+        run: python -m src.tearsheet --symbol ^NSEI --out reports
+      - name: No market data tracked in git
+        working-directory: .
+        run: |
+          git check-ignore -q 07-trading/data/x.parquet
+          test -z "$(git ls-files 07-trading | grep -E '\.parquet$' || true)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tearsheet
+          path: 07-trading/reports/*.html
+          retention-days: 30
+          if-no-files-found: error

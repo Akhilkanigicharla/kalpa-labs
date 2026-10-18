@@ -7,7 +7,7 @@ Rules enforced (fractions of the pot unless stated):
   per_trade_risk      a buy may risk at most 0.5% of the pot from entry to its stop
   no_stop             a buy must carry a stop below its entry price
   position_size       one position may be at most 20% of the pot
-  max_open_positions  at most 5 open positions
+  max_open_positions  at most 3 open positions (Guard; §5a draft said 5)
   daily_loss          a loss of >= 1% today means no new buys today
   weekly_loss         >= 2% this ISO week: no new buys this week
   monthly_loss        >= 4% this month: no new buys for the rest of the month
@@ -27,7 +27,7 @@ from pathlib import Path
 LIMITS = {
     "per_trade_risk": 0.005,
     "position_size": 0.20,
-    "max_open_positions": 5,
+    "max_open_positions": 3,   # Guard: 3 open (stricter than §5a draft 5)
     "daily_loss": 0.01,
     "weekly_loss": 0.02,
     "monthly_loss": 0.04,

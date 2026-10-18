@@ -173,7 +173,7 @@ L1 starts with ₹10,000, orders placed by Akhil by hand, for 3 months. After th
 
 1. **Keep company and trading money separate.** The Kalpa Labs ₹0–5,000 budget and its business bank account **never** fund trading, and trading losses are never covered by Kalpa revenue. Trading uses a separate personal bank account and demat. (Legally it is the same PAN, but separate accounts keep operating cash and books clean.)
 2. **Size of the trading pot:** the smaller of **₹25,000** and **5% of liquid savings**, and only money Akhil could lose entirely without changing his life. No loans, credit cards, margin (MTF) or pledging.
-3. **Per trade:** at most **0.5% of the pot at risk** (₹125 on ₹25k), measured from entry to stop. At most 20% of the pot in any one position, and at most 5 open positions.
+3. **Per trade:** at most **0.5% of the pot at risk** (₹125 on ₹25k), measured from entry to stop. At most 20% of the pot in any one position, and at most 3 open positions (Guard limit; was 5).
 4. **Per day:** loss of **1% or more** means no new orders that day. **Per week:** 2%. **Per month:** loss of 4% or more means pause for the rest of the month and review.
 5. **Drawdown of 10% from the pot's peak:** live trading stops and the strategy goes back to paper (kill criterion K3).
 6. **No top-ups after a loss.** The pot can only grow from realised profit or from a written, dated decision made when the pot is at its peak. Profit above the cap is withdrawn every quarter.

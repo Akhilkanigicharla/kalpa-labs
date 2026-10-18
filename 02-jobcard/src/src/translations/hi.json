@@ -1,0 +1,59 @@
+{
+  "jobcard": {
+    "bill": "बिल बनाकर भेजें",
+    "billed": "बिल {{number}} तैयार",
+    "customer": "ग्राहक",
+    "heard": "मैंने क्या सुना",
+    "hold": "दबाकर बोलिए",
+    "listening": "सुन रहा हूँ… रोकने के लिए दबाएँ",
+    "machine": "मशीन",
+    "mic_denied": "काम रिकॉर्ड करने के लिए माइक की अनुमति दें",
+    "missing": "सुनाई नहीं दिया: {{fields}}",
+    "offline": "सिग्नल नहीं? फिर भी रिकॉर्ड होगा।",
+    "pending": "{{count}} सिंक बाकी",
+    "phone": "फ़ोन",
+    "price_needed": "{{parts}} का दाम बताइए",
+    "save": "काम सेव करें",
+    "saved": "फ़ोन में सेव हो गया",
+    "spoke_total": "आपने {{spoken}} कहा; आइटम का जोड़ {{sum}} है",
+    "synced": "सब सिंक हो गया",
+    "tab": "रिकॉर्ड",
+    "title": "नया काम",
+    "total": "कुल",
+    "type_instead": "या काम टाइप करें",
+    "unknown": "?",
+    "work": "काम"
+  },
+  "onboarding": {
+    "message": "काम बोलिए। बिल भेजिए।"
+  },
+  "settings": {
+    "about": "बारे में",
+    "app_name": "ऐप का नाम",
+    "english": "English",
+    "generale": "सामान्य",
+    "github": "Github",
+    "hindi": "हिन्दी (Hindi)",
+    "language": "भाषा",
+    "links": "लिंक",
+    "logout": "लॉग आउट",
+    "more": "और",
+    "privacy": "प्राइवेसी पॉलिसी",
+    "rate": "रेट करें",
+    "share": "शेयर",
+    "support": "सहायता",
+    "support_us": "हमारी मदद करें",
+    "telugu": "తెలుగు (Telugu)",
+    "terms": "शर्तें",
+    "theme": {
+      "dark": "डार्क",
+      "light": "लाइट",
+      "system": "फ़ोन जैसा",
+      "title": "थीम"
+    },
+    "title": "सेटिंग्स",
+    "version": "वर्ज़न",
+    "website": "वेबसाइट"
+  },
+  "welcome": "काम बोलिए। बिल भेजिए।"
+}

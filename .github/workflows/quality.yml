@@ -108,6 +108,9 @@ jobs:
       - name: Core tests
         working-directory: 02-jobcard
         run: npm ci && npm test
+      - name: Expo app, tsc + Jest (A36)
+        working-directory: 02-jobcard/src
+        run: corepack enable && pnpm install --frozen-lockfile && pnpm type-check && CI=1 pnpm test
       - name: Schema + RLS tests
         env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
         run: bash 02-jobcard/supabase/test.sh

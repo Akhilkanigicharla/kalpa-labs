@@ -15,3 +15,9 @@
 | Mistral: no free Experiment plan on Akhil's account | VERIFIED (Akhil checked) | 2026-10-18 | Akhil |
 | WhatsApp Cloud API works without Meta business verification; new business portfolios get a messaging limit of 250 unique recipients per 24 h (replies inside a customer-started window don't count); verification or 2,000 good template sends raises it to 2,000 | VERIFIED | 2026-10-18 | developers.facebook.com/docs/whatsapp/messaging-limits; blueticks.co (Aug 2026) |
 | n8n agent Kalpa (free NVIDIA model) launch review said "16 Nov unrealistic without WhatsApp API approval today" | WRONG (overstated) | 2026-10-18 | no approval needed to start (row above); real path = C02 Meta app + C14 SIM number + template approval for reminders |
+| DPDP Rules 2025: Rules 1, 2, 17–21 on publication; Rule 4 after 1 year; Rules 3, 5–16, 22, 23 after 18 months (Gazette 13 Nov 2025 → 13 May 2027) | VERIFIED | 2026-10-18 | dpdpa.com Rule 1 text; Baker Botts "India notifies final rules"; PLAN.md May 2027 |
+| DPDP Rule 6(1)(e) one-year log retention; Rule 7(2) detailed Board report within 72 hours; Rule 8(2) 48-hour erasure warning; Rule 14(3) grievances within 90 days | VERIFIED | 2026-10-18 | dpdpa.com rule pages; Baker Botts (Rules 6, 7); LinkedIn MeitY summary (Rule 8) |
+| DPDP Act Schedule penalties: s.8(5) ₹250 cr, s.8(6) ₹200 cr, s.9 ₹200 cr, s.10 ₹150 cr, other ₹50 cr | VERIFIED | 2026-10-18 | MeitY Gazette PDF of the Act; dpdpa.com s.8 page |
+| EU AI Act Art. 50 applies from 2 Aug 2026 | VERIFIED | 2026-10-18 | Goodwin alert (Aug 2026); artificialintelligenceact.eu Art. 50 |
+| AI Omnibus (Reg. 2026/1744) gives generative systems on the market before 2 Aug 2026 until 2 Dec 2026 for Art. 50(2) marking | UNVERIFIED (one source) | 2026-10-18 | Goodwin alert only |
+| Probo ISO42001-2023.json is MIT, 70 control IDs + titles | VERIFIED | 2026-10-18 | live clone, commit f4afe40, LICENSE file |

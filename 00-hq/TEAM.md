@@ -8,6 +8,7 @@ Akhil runs two Claude cloud sessions on this repo at the same time. GitHub `main
 |---|---|---|
 | **A** | session `kalpa-labs-a5` (this file's author) | b7 A26 → b6 A28, A30, A31, A33 |
 | **B** | the other cloud session | b2 A35, A36, A37 → b4 A40 → b1 A49, A50, A51 → design A52 |
+| **C** | third cloud session (added 18 Oct) | b2 A35, A36, A37 → b4 A40 (taken from lane B's unclaimed list) |
 
 New items added later: the lane whose world it is takes it (b6/b7 → A; b1/b2/b3/b4/b5/HQ/design → B).
 

@@ -55,12 +55,12 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 ### Sprint 3 · Second engine
 - [x] **A34** b2 · b2.q10: `02-jobcard/supabase/schema.sql` with RLS. Check: applies on local Postgres. (done 2026-10-13, e6e5ffc; `bash 02-jobcard/supabase/test.sh` adds RLS tests)
 - [x] **A34b** b2 · Deep Scan v2: `02-jobcard/lib/invoice.mjs` (GST maths for unregistered/composition/regular, words, UPI, bilingual HTML for expo-print, English PDF) + `lib/parse.mjs` (transcript → job card). Check: `cd 02-jobcard && npm test`. (done 2026-10-13, e6e5ffc)
-- [ ] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green.
-- [ ] **A36** b2 · b2.q19 + b2.q20: Expo app scaffold (Obytes template, te/hi strings), offline voice, SQLite outbox, invoice share. Check: `tsc` + Jest green.
-- [ ] **A37** b2 · b2.q11 + b2.q15: reminders/quota cron and the "my customers" PWA. Check: tests.
+- [~] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green. (claimed: lane C, 2026-10-18)
+- [~] **A36** b2 · b2.q19 + b2.q20: Expo app scaffold (Obytes template, te/hi strings), offline voice, SQLite outbox, invoice share. Check: `tsc` + Jest green. (claimed: lane C, 2026-10-18)
+- [~] **A37** b2 · b2.q11 + b2.q15: reminders/quota cron and the "my customers" PWA. Check: tests. (claimed: lane C, 2026-10-18)
 - [x] **A38** b4 · E2 + E3: WXT scaffold in `04-extensions/src/`, save/restore core with Playwright test. Check: CI green. (done 2026-10-13, ca75d3c; unit + Chromium e2e green locally, runs in the `Kalpa quality` workflow)
 - [x] **A39** b4 · E6 + E7: OneTab/Session Buddy importers and auto-snapshots. Check: 1,000-tab fixture passes. (done 2026-10-13, ca75d3c; unit + Chromium e2e green locally, runs in the `Kalpa quality` workflow)
-- [ ] **A40** b4 · E9 + E10: privacy policy/landing page and store screenshots. Check: files in place.
+- [~] **A40** b4 · E9 + E10: privacy policy/landing page and store screenshots. Check: files in place. (claimed: lane C, 2026-10-18)
 - [x] **A41** HQ · Q-HQ-05 + Q-HQ-06: invoice template (shared with A05) and legal drafts (client agreement, privacy notice, terms). Check: drafts in `00-hq/docs/legal/`. (done 2026-10-16, b2f49e6; `00-hq/docs/legal/` indexes the invoice (A05), agreement + salon privacy notice (A07), kit policies (A11) and adds Kalpa's own website privacy notice + terms; reviews are C23/C24)
 - [x] **A44** growth · Deep Scan v2 step 5: `enrich.py` reads schema.org data, SEO-bot WhatsApp-button contrast + favicon, Lighthouse CI workflow (`.github/workflows/lighthouse.yml`). Check: enrich + SEO tests green; `lhci autorun` passes. (done 2026-10-13, c109d4e)
 - [x] **A43** HQ · Quality workflow `.github/workflows/quality.yml`: gitleaks + actionlint + every world's tests (BotBhai, b2 with Postgres RLS, b4 with Chromium e2e, b6, b7). Check: actionlint clean; gitleaks no leaks. (done 2026-10-13, ca75d3c)

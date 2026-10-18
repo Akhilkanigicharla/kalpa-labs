@@ -87,6 +87,14 @@ nav.links a:hover{color:var(--fg)}
 .chips::-webkit-scrollbar{display:none}
 .chips button{flex:none;border:1px solid var(--wa);color:var(--wa);background:var(--bubble-in);border-radius:999px;min-height:38px;padding:0 .85rem;font:600 13.5px var(--f-body);cursor:pointer}
 :root[data-theme=dark] .chips button{color:#5BD08F;border-color:#5BD08F}
+.ask{display:flex;gap:.45rem;padding:.5rem .6rem calc(.5rem + 2px);background:color-mix(in srgb,var(--wa-bg) 85%,#000 4%)}
+.ask input{flex:1;min-width:0;min-height:44px;border:0;border-radius:999px;padding:0 1rem;font:400 16px var(--f-body);background:var(--bubble-in);color:var(--bubble-fg)}
+.ask button{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer}
+.ask button svg{width:20px;height:20px}
+.ask button:disabled{opacity:.5}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7CFC9A;margin-right:6px;vertical-align:middle;box-shadow:0 0 0 0 #7CFC9A88}
+@media (prefers-reduced-motion:no-preference){.live-dot{animation:ping 2s infinite}@keyframes ping{0%{box-shadow:0 0 0 0 #7CFC9A88}70%{box-shadow:0 0 0 7px #7CFC9A00}100%{box-shadow:0 0 0 0 #7CFC9A00}}}
+.screen{height:600px}
 .demo-note{text-align:center;color:var(--hero-mute);font-size:13px;margin-top:.7rem}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
@@ -209,7 +217,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
    <div class="eyebrow" data-i="eyebrow">Hyderabad · AI helpers for small businesses</div>
    <h1 id="h1" data-i="h1" data-html="1">Your customers get a reply in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
    <p class="lead" data-i="lead">BotBhai answers salon customers on WhatsApp, books the slot, sends reminders and tells you when a human is needed. The first salons get a free 14-day pilot from 16 November.</p>
-   <div class="ctas"><a class="btn btn-gold" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Try the demo</a></div>
+   <div class="ctas"><a class="btn btn-gold" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
    <div class="trust">
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg><span data-i="trust1">Official WhatsApp API, opt-in only</span></span>
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg><span data-i="trust2">No app to install</span></span>
@@ -219,12 +227,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
   <div id="demo">
    <div class="phone" role="region" aria-label="BotBhai demo chat">
     <div class="screen">
-     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Lakshmi Beauty Salon</b><small data-i="online">BotBhai · online</small></div></div>
+     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Kalpa Bhai</b><small><span class="live-dot" id="livedot"></span><span data-i="online">AI assistant · live · Telugu / Hindi / English</span></small></div></div>
      <div class="chat" id="chat" aria-live="polite"></div>
      <div class="chips" id="chips"></div>
+     <form class="ask" id="ask" autocomplete="off"><input id="askin" maxlength="500" aria-label="Type your message" placeholder="Type in any language…" data-ph="ph"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
     </div>
    </div>
-   <p class="demo-note" data-i="demo_note">Demo conversation with a sample salon. Tap a question to try it.</p>
+   <p class="demo-note" data-i="demo_note">This is a real AI, the same kind BotBhai puts in your salon. Ask anything, or ask for a call back.</p>
   </div>
  </div>
  <div class="temple" aria-hidden="true"></div>
@@ -345,7 +354,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
   <div>© 2026 Kalpa Labs</div>
  </div>
 </footer>
-<div class="mbar"><a class="btn btn-gold" href="#founding" data-i="mb1">Free salon pilot</a><a class="btn btn-ghost" href="#workshop" data-i="mb2">₹299 workshop</a></div>
+<div class="mbar"><a class="btn btn-gold" href="#demo" data-i="mb1">Chat with our AI</a><a class="btn btn-ghost" href="#workshop" data-i="mb2">₹299 workshop</a></div>
 
 <script>
 (function(){
@@ -382,10 +391,10 @@ document.querySelectorAll('[data-human]').forEach(g=>human(g));
 const petals=document.getElementById('petals');for(let i=0;i<16;i++){const a=i/16*Math.PI*2;el('circle',{cx:100+Math.cos(a)*83,cy:100+Math.sin(a)*83,r:5},petals);el('circle',{cx:100+Math.cos(a+.2)*55,cy:100+Math.sin(a+.2)*55,r:3},petals);}
 
 /* ---------- i18n ---------- */
-const TE={nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'డెమో చూడండి',
+const TE={nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 eyebrow:'హైదరాబాద్ · చిన్న వ్యాపారాలకు AI సహాయకులు',h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
-trust1:'అధికారిక WhatsApp API, అనుమతితో మాత్రమే',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'BotBhai · ఆన్‌లైన్',demo_note:'ఒక నమూనా సెలూన్‌తో డెమో సంభాషణ. ప్రశ్నను నొక్కి ప్రయత్నించండి.',
+trust1:'అధికారిక WhatsApp API, అనుమతితో మాత్రమే',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · లైవ్ · తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
 st_pilot:'పైలట్ డేకి రోజులు (16 నవం)',st_launch:'పబ్లిక్ లాంచ్‌కి రోజులు (13 డిసెం)',st_agents:'ఒక వ్యవస్థాపకుడితో పనిచేసే AI ఏజెంట్లు',st_langs:'భాషలు: తెలుగు, హిందీ, ఇంగ్లీష్',
 p_eye:'మేము తయారు చేసేవి',p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
 h_eye:'BotBhai ఎలా పనిచేస్తుంది',h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
@@ -397,7 +406,7 @@ g_eye:'పలకరించండి',g_h:'మీకేం కావాలో �
 l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా సెలూన్‌కు BotBhai (ఉచిత పైలట్)',o_workshop:'వర్క్‌షాప్ సీటు · ₹299 · 29 నవం',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
 q_eye:'ప్రశ్నలు',q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మీ సెలూన్ ఖాతాలోనే, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
 fo_eye:'బహిరంగంగా నిర్మిస్తున్నాం',fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
-ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'ఉచిత సెలూన్ పైలట్',mb2:'₹299 వర్క్‌షాప్'};
+ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'AIతో చాట్ చేయండి',mb2:'₹299 వర్క్‌షాప్'};
 const EN={}; document.querySelectorAll('[data-i]').forEach(e=>{EN[e.dataset.i]=e.dataset.html?e.innerHTML:e.textContent;});
 let lang='en'; try{lang=localStorage.getItem('kl-lang')||'en';}catch(e){}
 function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';document.body.className=l;
@@ -455,26 +464,43 @@ function renderProducts(){const L=lang==='te'?1:0; const tabs=document.getElemen
  v.querySelectorAll('li span').forEach((s,i)=>s.textContent=p.pts[i][L]); v.querySelector('.price').textContent=p.price[L];
  const a=v.querySelector('a'); a.href=p.cta; a.textContent=L?'ఆసక్తి ఉంది':'I\'m interested'; a.addEventListener('click',()=>{const sel=document.getElementById('interest'); sel.value=p.id==='botbhai'?'salon':p.id==='kits'?'kits':'other';});}
 
-/* ---------- chat demo ---------- */
-const CONV={
- en:[{q:'Is there a haircut slot tomorrow evening?',a:['Namaste! I\'m the salon\'s automated assistant.','Tomorrow (Mon 19 Oct) we have 5:30 PM and 6:30 PM free for a haircut. Which one shall I hold?']},
-  {q:'How much for haircut + beard trim?',a:['Haircut ₹250, beard trim ₹100: ₹350 together. Shall I book both?']},
-  {q:'Book 6:30 PM please',a:['Done ✅ Haircut + beard trim, Mon 19 Oct, 6:30 PM.','I\'ll remind you tomorrow at 4:30 PM. Reply CANCEL any time.']},
-  {q:'I want to talk to a person',a:['Sure, connecting you to our staff now. Someone will reply here shortly 🙏']}],
- te:[{q:'రేపు సాయంత్రం హెయిర్‌కట్ స్లాట్ ఉందా?',a:['నమస్తే! నేను సెలూన్ ఆటోమేటెడ్ సహాయకుడిని.','రేపు (సోమ 19 అక్టో) హెయిర్‌కట్‌కి సా. 5:30, 6:30 ఖాళీ ఉన్నాయి. ఏది ఉంచమంటారు?']},
-  {q:'హెయిర్‌కట్ + బియర్డ్ ట్రిమ్ ఎంత?',a:['హెయిర్‌కట్ ₹250, బియర్డ్ ట్రిమ్ ₹100: రెండూ కలిపి ₹350. రెండూ బుక్ చేయమంటారా?']},
-  {q:'6:30 బుక్ చేయండి',a:['అయిపోయింది ✅ హెయిర్‌కట్ + బియర్డ్ ట్రిమ్, సోమ 19 అక్టో, సా. 6:30.','రేపు సా. 4:30కి గుర్తు చేస్తాను. రద్దు కోసం ఎప్పుడైనా CANCEL అని పంపండి.']},
-  {q:'మనిషితో మాట్లాడాలి',a:['తప్పకుండా, మా సిబ్బందికి కలుపుతున్నాను. త్వరలో ఇక్కడే జవాబిస్తారు 🙏']}]};
-const chat=document.getElementById('chat'), chips=document.getElementById('chips');
-let used=new Set(), busy=false, timers=[];
+/* ---------- live AI chat (n8n: Kalpa Site Chat) ---------- */
+const CHAT_URL='https://kalpalabs.app.n8n.cloud/webhook/7b78c6c8-78e2-4a03-8b95-76167aa4d63b/chat';
+const STARTERS={
+ en:['How does BotBhai help my salon?','Is the pilot really free?','Tell me about the ₹299 workshop','Please call me back'],
+ te:['BotBhai నా సెలూన్‌కి ఎలా సహాయం చేస్తుంది?','పైలట్ నిజంగా ఉచితమా?','₹299 వర్క్‌షాప్ గురించి చెప్పండి','నాకు కాల్ చేయండి']};
+const HELLO={en:'Namaste! I\'m Kalpa Bhai, Kalpa Labs\' AI assistant (yes, a bot 🙂). Ask me anything in Telugu, Hindi or English, or leave your number and Akhil will call you.',
+ te:'నమస్తే! నేను Kalpa Bhai, Kalpa Labs AI సహాయకుడిని (అవును, బాట్‌నే 🙂). తెలుగు, హిందీ లేదా ఇంగ్లీష్‌లో ఏదైనా అడగండి, లేదా మీ నంబర్ ఇవ్వండి, అఖిల్ కాల్ చేస్తారు.'};
+const OFFLINE={en:'I can\'t reach my brain right now 😅. Please use the form below and Akhil will WhatsApp you.',
+ te:'ప్రస్తుతం నేను కనెక్ట్ కాలేకపోతున్నాను 😅. కింది ఫారమ్ నింపండి, అఖిల్ WhatsAppలో జవాబిస్తారు.'};
+const chat=document.getElementById('chat'), chips=document.getElementById('chips'), askf=document.getElementById('ask'), askin=document.getElementById('askin');
+let busy=false, started=false, talked=false;
+let sid; try{sid=sessionStorage.getItem('kl-sid');}catch(e){}
+if(!sid){sid='web-'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{sessionStorage.setItem('kl-sid',sid);}catch(e){}}
 const now=()=>new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'});
-function bubble(t,side){const m=document.createElement('div');m.className='msg '+side;m.textContent=t;const tm=document.createElement('time');tm.textContent=now()+(side==='out'?' ✓✓':'');m.append(tm);chat.append(m);chat.scrollTop=chat.scrollHeight;}
-function ask(i){if(busy)return;busy=true;const c=CONV[lang][i];used.add(i);renderChips();bubble(c.q,'out');
- let delay=reduce?50:500;c.a.forEach((line,k)=>{timers.push(setTimeout(()=>{const ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';chat.append(ty);chat.scrollTop=chat.scrollHeight;
-  timers.push(setTimeout(()=>{ty.remove();bubble(line,'in');if(k===c.a.length-1){busy=false;renderChips();}},reduce?50:Math.min(1600,500+line.length*14)));},delay));delay+=reduce?100:Math.min(2200,900+line.length*16);});}
-function renderChips(){chips.replaceChildren(...CONV[lang].map((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=c.q;b.disabled=busy;if(used.has(i))b.style.opacity='.55';b.addEventListener('click',()=>ask(i));return b;}));}
-function resetChat(){timers.forEach(clearTimeout);timers=[];busy=false;used=new Set();chat.replaceChildren();renderChips();
- if(!reduce) timers.push(setTimeout(()=>ask(0),900)); else ask(0);}
+function bubble(t,side){const m=document.createElement('div');m.className='msg '+side;m.textContent=t;const tm=document.createElement('time');tm.textContent=now()+(side==='out'?' ✓✓':'');m.append(tm);chat.append(m);chat.scrollTop=chat.scrollHeight;return m;}
+function typing(){const ty=document.createElement('div');ty.className='typing';ty.setAttribute('aria-label','typing');ty.innerHTML='<i></i><i></i><i></i>';chat.append(ty);chat.scrollTop=chat.scrollHeight;return ty;}
+function clean(s){return String(s||'').replace(/\*\*(.+?)\*\*/g,'$1').replace(/^#+\s*/gm,'').replace(/\u2011/g,'-').replace(/\u202f/g,' ').trim();}
+async function send(text){
+ text=String(text||'').trim(); if(!text||busy) return; busy=true; setBusy();
+ talked=true; bubble(text,'out'); const ty=typing(); const t0=Date.now();
+ let reply='';
+ try{
+  const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),30000);
+  const r=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'sendMessage',sessionId:sid,chatInput:text}),signal:ctrl.signal});
+  clearTimeout(to); if(!r.ok) throw new Error(r.status);
+  const d=await r.json(); reply=clean(Array.isArray(d)?d[0]?.output:(d.output??d.text));
+  if(!reply) throw new Error('empty');
+  document.getElementById('livedot').style.background='#7CFC9A';
+ }catch(e){reply=OFFLINE[lang];document.getElementById('livedot').style.background='#F2B840';}
+ const wait=Math.max(0,(reduce?0:600)-(Date.now()-t0)); await new Promise(r=>setTimeout(r,wait));
+ ty.remove(); bubble(reply,'in'); busy=false; setBusy(); askin.focus({preventScroll:true});
+}
+function setBusy(){askf.querySelector('button').disabled=busy; chips.querySelectorAll('button').forEach(b=>b.disabled=busy);}
+function renderChips(){chips.replaceChildren(...STARTERS[lang].map(q=>{const b=document.createElement('button');b.type='button';b.textContent=q;b.disabled=busy;b.addEventListener('click',()=>send(q));return b;}));}
+askf.addEventListener('submit',e=>{e.preventDefault();const v=askin.value;askin.value='';send(v);});
+function resetChat(){renderChips(); askin.placeholder=lang==='te'?'ఏ భాషలోనైనా టైప్ చేయండి…':'Type in any language…';
+ if(!started||!talked){started=true;chat.replaceChildren();const h=typing();setTimeout(()=>{h.remove();bubble(HELLO[lang],'in');},reduce?0:700);}}
 
 /* ---------- team ---------- */
 const TEAM=[['Kalpa','Chief of staff','#2A3A8F'],['Chitti','WhatsApp helper','#25D366'],['Scout','Finds customers','#B23A2C'],['Kavi','Writer','#2E7D4F'],['Adi','Ads & copy','#C08304'],['Lens','Brand look','#7B3F8C'],['Pixel','Designer','#13777F'],['Forge','Engineer','#2F4FB0'],['Vigil','Fact-checker','#B8235A'],['Guard','Risk checks','#5B6178'],['Deal','Deals hunter','#D3940A'],['Echo','Librarian','#2A3A8F']];
@@ -485,8 +511,14 @@ row.replaceChildren(...TEAM.map(([n,r,c],i)=>{const d=document.createElement('di
 document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;}));
 const form=document.querySelector('form.signup'), msg=document.getElementById('formmsg');
 form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;
- const data=new URLSearchParams(new FormData(form)).toString();
- try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data}); if(!r.ok) throw 0;
+ const fd=new FormData(form); if(fd.get('company')) return; const data=new URLSearchParams(fd).toString();
+ const btn=form.querySelector('button[type=submit]'); btn.disabled=true;
+ const note='[Website form] Callback request. Name: '+fd.get('name')+'. WhatsApp: '+fd.get('phone')+'. Interested in: '+fd.get('interest')+'. Language: '+lang+'. The visitor ticked the consent box: YES, Kalpa Labs may call or WhatsApp them. Save this callback now.';
+ let ok=false;
+ try{const r=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'sendMessage',sessionId:'form-'+sid,chatInput:note})});ok=r.ok;}catch(e){}
+ try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data});ok=ok||r.ok;}catch(e){}
+ btn.disabled=false;
+ try{ if(!ok) throw 0;
   msg.style.color='var(--ok)';msg.textContent=lang==='te'?'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.':'Thank you! Akhil will reply on WhatsApp soon.';form.reset();}
  catch(err){msg.style.color='var(--madder)';msg.textContent=lang==='te'?'పంపడం కాలేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.':'That did not send. Please try again in a minute.';}});
 

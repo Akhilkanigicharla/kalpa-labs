@@ -1,5 +1,6 @@
 // Website chat widget + browser voice agent backend: POST /.netlify/functions/chat
-// body: { client: "<client uuid>", visitor: "<random id>", text: "hi", source?: "voice" }  → { replies: [...] }
+// body: { client: "<client uuid>", visitor: "<random id>", text: "hi", source?: "voice", turnstile?: "<token>" }
+//   → { replies: [...] }, or { replies, check: { sitekey } } when a booking needs the Turnstile check first (A50).
 // Same engine, same calendar (capacity lock) and same leads table as WhatsApp.
 const { BotBhai } = require("../../setups/index.js");
 const L = require("./_lib.js");
@@ -29,6 +30,13 @@ exports.handler = async (event) => {
   ]);
   const bot = BotBhai.createBot(client.niche, client.config);
   let out = bot.handle(sess ? sess.state : BotBhai.newState(), text, { contact, source: src, busy });
+  // A booking is only saved after a Cloudflare Turnstile check (A50). Nothing is written otherwise, so when the page
+  // resends the same message with a token, the engine replays the same booking from the same state.
+  if (out.events.some((e) => e.type === "booking")) {
+    const t = await L.turnstileOk(input.turnstile, ip);
+    if (!t.ok && t.setup === false) return L.json(200, { replies: [{ text: "Online booking is paused for a moment. Please message us on WhatsApp to book." }] });
+    if (!t.ok) return L.json(200, { replies: [{ text: "One quick check so we know you're not a robot: tap the box below. Your slot is not booked yet." }], check: { sitekey: t.sitekey } });
+  }
   // One open booking per website visitor: a second booking moves the first one instead of taking another slot.
   if (out.events.some((e) => e.type === "booking" && !e.replaces)) {
     const [mine] = await L.db(`bookings?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&status=eq.confirmed&date_iso=gte.${L.istTodayIso()}&select=date_iso,slot`);

@@ -22,6 +22,21 @@ const json = (status, body, cors = true) => ({ statusCode: status, headers: Obje
 async function rateHit(key, windowS, max) {
   return (await db("rpc/rate_hit", { method: "POST", body: { p_key: key, p_window_s: windowS, p_max: max } })) !== false;
 }
+// ---------- Cloudflare Turnstile (free bot check) before a website booking is saved (A50).
+// Fails closed: no secret, no token, a used/forged token, a token for another action or Cloudflare unreachable → not ok.
+async function turnstileOk(token, ip) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) { console.error("TURNSTILE_SECRET_KEY missing: website bookings are paused"); return { ok: false, setup: false }; }
+  const sitekey = process.env.TURNSTILE_SITE_KEY || "";
+  if (typeof token !== "string" || !token || token.length > 2048) return { ok: false, sitekey };
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip && ip !== "unknown") body.set("remoteip", ip);
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() });
+    const data = await res.json();
+    return { ok: !!(data && data.success === true && data.action === "booking"), sitekey };
+  } catch (e) { console.error("turnstile verify failed", e.message); return { ok: false, sitekey }; }
+}
 const istTodayIso = (ms = Date.now()) => new Date(ms + 330 * 60000).toISOString().slice(0, 10);
 
 // ---------- idempotency: Meta retries webhooks; each message id is handled once
@@ -132,5 +147,5 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = { db, json, enc, rateHit, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { db, json, enc, rateHit, turnstileOk, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

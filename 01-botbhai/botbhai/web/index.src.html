@@ -74,6 +74,7 @@ header .sub{color:var(--hero-mute)}
 .b.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:2px}
 .b time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
 .b a{color:var(--accent)}
+.ts{align-self:stretch;min-height:65px;max-width:100%}
 .opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:92%}
 .opts button{background:var(--bubble-in);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:999px;min-height:36px;padding:7px 12px;font:600 13.5px var(--f-body);cursor:pointer;box-shadow:0 1px .5px rgba(0,0,0,.13)}
 .compose{display:flex;gap:6px;padding:8px;background:var(--chat-bg)}
@@ -332,14 +333,33 @@ function bubble(dir, text, options) {
   }
   m.scrollTop = m.scrollHeight;
 }
-async function send(text, shown) {
+// ---- Cloudflare Turnstile (A50): the script loads only when the server asks for a check before saving a booking
+let tsLoad = null;
+function loadTurnstile() {
+  return tsLoad || (tsLoad = new Promise((ok, no) => {
+    const s = document.createElement("script"); s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; s.async = true;
+    s.onload = () => (window.turnstile ? ok(window.turnstile) : no(new Error("turnstile"))); s.onerror = () => { tsLoad = null; no(new Error("turnstile")); };
+    document.head.appendChild(s);
+  }));
+}
+async function humanCheck(sitekey, text, shown) {
+  const m = $("#msgs"); m.querySelectorAll(".ts").forEach((x) => x.remove());
+  const box = document.createElement("div"); box.className = "ts"; m.appendChild(box); m.scrollTop = m.scrollHeight;
+  const dark = (document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark";
+  try {
+    (await loadTurnstile()).render(box, { sitekey, action: "booking", theme: dark ? "dark" : "light", size: "flexible",
+      callback: (token) => { box.remove(); send(text, shown, token); } }); // resend the same message: the server replays the same booking
+    m.scrollTop = m.scrollHeight;
+  } catch (e) { box.remove(); bubble("in", "The robot check didn't load. Please message us on WhatsApp to book."); }
+}
+async function send(text, shown, turnstile) {
   if (!text.trim()) return;
-  bubble("out", shown || text);
-  let replies;
+  if (!turnstile) bubble("out", shown || text);
+  let replies, check;
   if (LIVE_CLIENT) {
     try {
-      const r = await fetch("/.netlify/functions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ client: LIVE_CLIENT, visitor, text, source: speak ? "voice" : "web" }) });
-      replies = (await r.json()).replies || [];
+      const r = await fetch("/.netlify/functions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ client: LIVE_CLIENT, visitor, text, source: speak ? "voice" : "web", turnstile }) });
+      const j = await r.json(); replies = j.replies || []; check = j.check && j.check.sitekey ? j.check : null;
     } catch (e) { replies = [{ text: "Connection problem. Please try again in a moment." }]; }
   } else {
     const out = B.createBot(niche).handle(state, text, { contact: "demo visitor", source: speak ? "voice" : "web" });
@@ -349,6 +369,7 @@ async function send(text, shown) {
   $("#status").textContent = "typing…";
   for (const r of replies) { await new Promise((ok) => setTimeout(ok, 450)); bubble("in", r.text, r.options); }
   $("#status").textContent = "online · replies instantly";
+  if (check) humanCheck(check.sitekey, text, shown);
   if (speak && replies.length) say(replies.map((r) => r.text).join(". "));
 }
 $("#compose").addEventListener("submit", (e) => { e.preventDefault(); const t = $("#text"); send(t.value); t.value = ""; });

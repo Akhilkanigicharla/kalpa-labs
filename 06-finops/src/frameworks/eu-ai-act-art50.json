@@ -1,0 +1,91 @@
+{
+ "id": "eu-ai-act-art50",
+ "name": "EU AI Act Article 50 transparency checklist (Kalpa wording)",
+ "version": "Reg. (EU) 2024/1689 as amended by Reg. (EU) 2026/1744",
+ "disclaimer": "Our own checklist, not the legal text. Not legal advice and not a certification.",
+ "dates": {
+  "applies_from": "2026-08-02",
+  "last_checked": "2026-10-18"
+ },
+ "sources": [
+  {
+   "what": "Article 50 text",
+   "url": "https://artificialintelligenceact.eu/article/50/",
+   "checked": "2026-10-18"
+  },
+  {
+   "what": "In force 2 Aug 2026; Omnibus marking grace period",
+   "url": "https://www.goodwinlaw.com/en/insights/publications/2026/08/alerts-technology-dpc-eu-ai-act-transparency-obligations-now-in-force",
+   "checked": "2026-10-18"
+  }
+ ],
+ "controls": [
+  {
+   "id": "ART50-01",
+   "para": "Art. 50(1)",
+   "role": "provider",
+   "name": "People are told they are talking to an AI system (chatbots, voice agents), unless it is obvious",
+   "evidence": [
+    "first-message disclosure text",
+    "screenshot"
+   ],
+   "applies_from": "2026-08-02"
+  },
+  {
+   "id": "ART50-02",
+   "para": "Art. 50(2)",
+   "role": "provider",
+   "name": "AI-generated audio, image, video or text is marked in a machine-readable way as AI-generated",
+   "evidence": [
+    "watermark or metadata method per output type"
+   ],
+   "applies_from": "2026-08-02",
+   "transition": {
+    "until": "2026-12-02",
+    "for": "generative systems already on the market before 2 Aug 2026",
+    "source": "Goodwin, AI Omnibus Reg. (EU) 2026/1744",
+    "verified": "single source, unverified"
+   }
+  },
+  {
+   "id": "ART50-03",
+   "para": "Art. 50(3)",
+   "role": "deployer",
+   "name": "People exposed to emotion recognition or biometric categorisation are told it is running",
+   "evidence": [
+    "notice text or 'not used'"
+   ],
+   "applies_from": "2026-08-02"
+  },
+  {
+   "id": "ART50-04",
+   "para": "Art. 50(4)",
+   "role": "deployer",
+   "name": "Deep fakes, and AI text published to inform the public, are disclosed as AI-generated or manipulated",
+   "evidence": [
+    "label on published content or 'not used'"
+   ],
+   "applies_from": "2026-08-02"
+  },
+  {
+   "id": "ART50-05",
+   "para": "Art. 50(5)",
+   "role": "provider+deployer",
+   "name": "The disclosure is clear and given at the latest at the first interaction or exposure, and is accessible",
+   "evidence": [
+    "where and when the disclosure shows"
+   ],
+   "applies_from": "2026-08-02"
+  },
+  {
+   "id": "ART50-06",
+   "para": "Art. 50(1)",
+   "role": "provider",
+   "name": "You know whether you have EU users at all (if none, Art. 50 likely does not reach you)",
+   "evidence": [
+    "user country split"
+   ],
+   "applies_from": "2026-08-02"
+  }
+ ]
+}

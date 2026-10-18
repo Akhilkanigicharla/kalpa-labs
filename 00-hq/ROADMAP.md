@@ -48,7 +48,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A28** b6 · F-03: Supabase migration `06-finops/src/db/` (`usage_event`, `usage_daily`, OTel gen_ai fields, RLS). Check: SQL applies on a local Postgres. (done 2026-10-18, 010e40c; lane A; `06-finops/src/db/test.sh` passes on Postgres 16, in CI)
 - [x] **A29** b6 · F-05: importers (OpenAI, Anthropic, LiteLLM, Langfuse, generic CSV/JSONL). Check: 5 fixtures import with no rows lost. (done 2026-10-13, 9f5fda1)
 - [x] **A30** b6 · F-06: X-ray generator (2-page HTML/PDF: ₹ by feature/model/customer, savings rules, DPDP score). Check: synthetic X-ray renders. (done 2026-10-18, 7f83a11; lane A; `python3 06-finops/src/xray/generate.py --synthetic --pdf` → 2 A4 pages, 14 tests)
-- [~] **A31** b6 · F-13: framework catalogue `dpdp-2023.json` (every duty cites section/rule), ISO 42001 IDs, Art. 50 checklist. Check: validator. (claimed: lane A, 2026-10-18)
+- [x] **A31** b6 · F-13: framework catalogue `dpdp-2023.json` (every duty cites section/rule), ISO 42001 IDs, Art. 50 checklist. Check: validator. (done 2026-10-18, HASH; lane A; `python3 06-finops/src/frameworks/validate.py` OK: 24 DPDP duties, 70 ISO IDs, 6 Art. 50 checks; 12 tests)
 - [x] **A32** b6 · F-15: PII scan Action (Presidio + Indian mobile/UPI/IFSC/Aadhaar/PAN recognizers, counts + hashes only). Check: synthetic fixtures. (done 2026-10-13, 9f5fda1)
 - [ ] **A33** b6 · F-04 copy + F-11 ingest API + F-12 dashboard + F-17 alerts. Check: per PLAN.md.
 

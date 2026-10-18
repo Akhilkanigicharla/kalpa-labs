@@ -11,6 +11,14 @@ Decided by Akhil on 18 Oct 2026 (C13). Goal: **real customers, real rupees, real
 
 Numerology, for the record: 13-12-2026 adds up to 8 and 16-11-2026 to 1; the 6-days near them (6 Dec, 15 Nov) miss Sravana. Readiness and Sravana won the tie. Astrology is Akhil's choice of timing, not a business forecast.
 
+## Moving the date (approved by Akhil, 18 Oct)
+
+Akhil approved the plan **with permission to postpone** if the company is not ready. Rule, so it is decided by facts, not mood:
+- **Check points:** Mon 9 Nov (for Pilot Day) and Sun 6 Dec (for launch). The readiness board (A57) and the latest audit decide.
+- **Pilot Day moves** if, on 9 Nov, the WhatsApp number (C02 + C14) or the BotBhai deploy (C03) is not done.
+- **Launch moves** if, on 6 Dec, any of the 5 offers is red, CI is red, or the audit has an open WRONG item on a public page.
+- **New date:** the next day when Sravana nakshatra falls (checked on two panchang sites at that time), at least 7 days after the blocker is fixed. Akhil is told the reason in one line and the new date.
+
 ## What "launched" means (all five must be true on 13 Dec)
 
 | # | Offer | Live means | Money | Owner |

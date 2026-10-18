@@ -94,7 +94,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 
 - [x] **C01** HQ · Q-HQ-01: read PLAN.md §1, §5a, §7 and reply "approved" or changes (15 min). Approving also switches the agents' token split to BotBhai-first (`node 00-hq/agents/run.js proposal` shows it) (done 2026-10-18: Akhil "C01 approved"; world_share_approved = true)
 - [ ] **C02** b1 · b1c: Meta developer app + WhatsApp test number; send Claude the Phone number ID + WABA ID (never the token) (30 min)
-- [ ] **C03** b1 · b1d: say "deploy"; set Netlify visitor access to public; paste GROQ/SARVAM keys into Netlify yourself (20 min)
+- [~] **C03** b1 · b1d: say "deploy"; set Netlify visitor access to public; paste GROQ/SARVAM keys into Netlify yourself (20 min) · 19 Oct: salon demo deployed (static, all BotBhai tests passed) at https://kalpa-botbhai.netlify.app, public, no keys needed. Left for Akhil: GROQ/SARVAM keys in Netlify only when voice goes live.
 - [ ] **C04** b1 · b1e: show the demo to one salon owner you know (20 min)
 - [ ] **C05** b1 · b1f: pick 15 salons from the cluster sheet (A08) (15 min)
 - [ ] **C06** HQ · Q-HQ-02: create an empty "Kalpa Ledger" Google Sheet (10 min)

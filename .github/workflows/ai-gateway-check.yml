@@ -3,6 +3,9 @@ name: AI Gateway check
 # Needs repo secret AI_GATEWAY_API_KEY (Akhil sets it himself; never in code or chat).
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['00-hq/ai-gateway/**', '.github/workflows/ai-gateway-check.yml']
 
 permissions:
   contents: read

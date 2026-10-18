@@ -122,6 +122,8 @@ jobs:
           pip install playwright==1.56.0
           python -m playwright install --with-deps chromium
           python3 02-jobcard/design/screens.py
+      - name: My-customers PWA at 390 px, offline, installable (A37)
+        run: node 02-jobcard/web/build.mjs && python3 02-jobcard/web/check.py
 
   tab-lifeboat:
     runs-on: ubuntu-latest

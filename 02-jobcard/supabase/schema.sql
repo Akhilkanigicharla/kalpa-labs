@@ -211,9 +211,16 @@ create table if not exists public.bot_sessions (   -- the job card waiting for t
   pending       jsonb,
   updated_at    timestamptz not null default now()
 );
+create table if not exists public.reminder_sends (  -- one "customers due" message per technician per day
+  technician_id uuid not null references public.technicians(id) on delete cascade,
+  day           date not null,
+  count         int  not null default 0,
+  primary key (technician_id, day)
+);
+alter table public.reminder_sends enable row level security;
 alter table public.wa_processed enable row level security;
 alter table public.bot_sessions enable row level security;
-revoke all on public.wa_processed, public.bot_sessions from authenticated, anon;
+revoke all on public.wa_processed, public.bot_sessions, public.reminder_sends from authenticated, anon;
 
 -- Same numbering as next_invoice_no(), for a server acting for one technician (the WhatsApp bot).
 create or replace function public.next_invoice_no_for(p_tech uuid, p_date date default (now() at time zone 'Asia/Kolkata')::date)

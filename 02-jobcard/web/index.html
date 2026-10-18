@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="te">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EEEDF3">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1230">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="JobCard: your customers, due services and bills.">
+<title>JobCard · my customers</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/vendor/tokens.css">
+<link rel="stylesheet" href="/app.css">
+<script type="module" src="/app.mjs"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><div><h1>JobCard</h1><p class="sub" id="who"></p></div></div>
+  <button class="ghost" id="signout" hidden></button>
+</header>
+<p class="banner" id="banner" hidden></p>
+<main id="main" aria-live="polite"></main>
+<nav class="tabs" id="tabs" hidden aria-label="JobCard">
+  <button data-tab="due" aria-current="page"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M22 6l-3-3"/></svg><span data-t="tabDue"></span></button>
+  <button data-tab="customers"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 12 0v1M16 4a4 4 0 0 1 0 8M22 21v-1a6 6 0 0 0-4-5.6"/></svg><span data-t="customers"></span></button>
+  <button data-tab="bills"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><span data-t="bills"></span></button>
+  <button data-tab="record"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span data-t="record"></span></button>
+</nav>
+<noscript>JobCard needs JavaScript.</noscript>
+</body>
+</html>

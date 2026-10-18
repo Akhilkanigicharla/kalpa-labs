@@ -68,8 +68,9 @@ jobs:
       - name: b6 Ledger Peaks
         working-directory: 06-finops
         run: |
-          pip install genai-prices==0.1.11 pytest==9.1.1
-          python -m pytest -q tests/
+          pip install genai-prices==0.1.11 pytest==9.1.1 playwright==1.56.0
+          python -m playwright install --with-deps chromium
+          python -m pytest -q -rs tests/
       - name: b5 Deal Poster Bot (A18, stdlib only)
         working-directory: 05-deals/site/src/bot
         run: python -m unittest -v test_post.py

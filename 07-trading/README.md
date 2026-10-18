@@ -14,6 +14,8 @@
 | 🎨 Design | [design/](design/) | UI design brief and mockups (filled by the build sprints) |
 | 💻 Code | [src/](src/) | `data.py` (cached daily bars + validator), `costs.py` (2026 Indian charges with sources), `strategies.py`, `backtest.py`, `metrics.py` (PSR, DSR, PBO), `gate.py`, `trials.py` |
 | 🧪 Tests | [tests/](tests/) | `cd 07-trading && python -m pytest -q` (synthetic data only) |
+| 🧾 Paper + risk | [src/paper.py](src/paper.py), [src/risk.py](src/risk.py) | `python -m src.paper --symbol NIFTYBEES --days 20`: next-open fills, delivery costs, §5a rules (pending sign-off), no broker calls |
+| 📈 Tear-sheet | [src/tearsheet.py](src/tearsheet.py) | `python -m src.tearsheet --symbol ^NSEI` (or `--synthetic`); runs in `.github/workflows/backtest.yml`, HTML artifact `tearsheet` |
 | 📒 Trials | [research/trials.csv](research/trials.csv) | Every trial must be logged here before the gate will run it |
 
 ## Research reports

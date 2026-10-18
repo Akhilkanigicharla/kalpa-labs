@@ -33,6 +33,8 @@ A one-person company in Hyderabad (Udyam UDYAM-TS-02-0382711), run by Akhil with
 2. [00-hq/ROADMAP.md](00-hq/ROADMAP.md): every remaining task, split into **Agent queue** (Claude builds it automatically) and **CEO queue** (Akhil's 1 hour).
 3. [00-hq/LINKS.md](00-hq/LINKS.md): every Claude artifact, document, scheduled task and cloud account, labelled.
 
+AI toolkit (vetted tools, Claude setup on Windows, hosting plan, local models): [docs/toolkit/TOOLKIT.md](docs/toolkit/TOOLKIT.md). Project MCP servers: [.mcp.json](.mcp.json).
+
 ## Rules
 
 - **Build mode:** free tiers only; paid items wait in the Launch phase.

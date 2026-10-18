@@ -21,3 +21,4 @@
 | EU AI Act Art. 50 applies from 2 Aug 2026 | VERIFIED | 2026-10-18 | Goodwin alert (Aug 2026); artificialintelligenceact.eu Art. 50 |
 | AI Omnibus (Reg. 2026/1744) gives generative systems on the market before 2 Aug 2026 until 2 Dec 2026 for Art. 50(2) marking | UNVERIFIED (one source) | 2026-10-18 | Goodwin alert only |
 | Probo ISO42001-2023.json is MIT, 70 control IDs + titles | VERIFIED | 2026-10-18 | live clone, commit f4afe40, LICENSE file |
+| WhatsApp Cloud API: every app gets a free Meta test number; no payment method needed for test sends; max 5 allowlisted recipient numbers; a WhatsApp-enabled phone is needed to receive test messages | VERIFIED (2 sources) | 2026-10-18 | wati.io/en/blog/test-whatsapp-message-sends-safely (free number, 5 recipients); developers.facebook.com/docs/whatsapp/cloud-api/get-started (prerequisite: WhatsApp-enabled device) |

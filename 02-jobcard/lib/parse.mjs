@@ -87,11 +87,15 @@ export function parseTranscript(raw, { now = new Date() } = {}) {
 
   // parts with the amount spoken right after them ("gas refill 2500", "capacitor ki 450")
   const words = text.split(" ").map((w) => w.replace(/[.,;:!?]+$/, ""));
+  // word index where each spoken part starts: a part's amount is never read from inside the next part
+  // ("capacitor, gas refill 2500" = capacitor with no price, not capacitor ₹2500)
+  const starts = PARTS.map((p) => text.match(p.re)).filter(Boolean).map((m) => text.slice(0, m.index).split(" ").length - 1);
   for (const p of PARTS) {
     const m = text.match(p.re); if (!m) continue;
     const before = text.slice(0, m.index + m[0].length).split(" ").length; // index of the word after the match
+    const stop = Math.min(words.length, before + 3, ...starts.filter((s) => s >= before));
     let amt = null;
-    for (let k = before; k < Math.min(words.length, before + 3) && !amt; k++) amt = readAmount(words, k);
+    for (let k = before; k < stop && !amt; k++) amt = readAmount(words, k);
     card.parts.push({ desc: p.name, qty: 1, rate: amt ? amt.value : null });
   }
   const total = text.match(/(?:total|mottam|మొత్తం|kul)\s*(?:amount)?\s*(?:is|:)?\s*/i);

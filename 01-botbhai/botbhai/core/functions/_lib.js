@@ -37,6 +37,11 @@ async function turnstileOk(token, ip) {
     return { ok: !!(data && data.success === true && data.action === "booking"), sitekey };
   } catch (e) { console.error("turnstile verify failed", e.message); return { ok: false, sitekey }; }
 }
+// Meta tokens live in Supabase Vault (A51); this RPC is the only way the server reads them. null = no token saved.
+async function clientToken(clientId, kind) {
+  const t = await db("rpc/client_token", { method: "POST", body: { p_client: clientId, p_kind: kind } });
+  return typeof t === "string" && t ? t : null;
+}
 const istTodayIso = (ms = Date.now()) => new Date(ms + 330 * 60000).toISOString().slice(0, 10);
 
 // ---------- idempotency: Meta retries webhooks; each message id is handled once
@@ -147,5 +152,5 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = { db, json, enc, rateHit, turnstileOk, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

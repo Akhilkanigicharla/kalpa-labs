@@ -8,7 +8,7 @@ process.env.SITE_URL = "https://botbhai.example"; const { store, graph } = requi
     { id: "gy1", name: "IronPulse", niche: "gym", phone_number_id: "PN2", owner_whatsapp: "919000000002", active: true, config: { business: "IronPulse Fitness", address: "Madhapur" } },
     { id: "sa1", name: "Glow Studio", niche: "salon", phone_number_id: "PN3", owner_whatsapp: "919000000003", active: true, config: { business: "Glow Studio", review_link: "https://g.page/r/test" } },
   ],
-  client_secrets: [{ client_id: "re1", meta_page_token: "pt", meta_ads_token: "at" }],
+  vault: [{ name: "client:re1:meta_page", secret: "pt" }, { name: "client:re1:meta_ads", secret: "at" }],
 });
 const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(b).digest("hex");
 
@@ -33,7 +33,7 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
     { ad_id: "A1", ad_name: "3BHK Tellapur reel", spend: "3000", actions: [{ action_type: "lead", value: "10" }] },
     { ad_id: "A2", ad_name: "Plots carousel", spend: "2500", actions: [] }] };
   await require("./adsbot.js").handler();
-  assert.ok(graph.calls.some((c) => c.path === "A2" && c.method === "POST" && c.body.status === "PAUSED"));
+  assert.ok(graph.calls.some((c) => c.path === "A2" && c.method === "POST" && c.body.status === "PAUSED" && c.auth === "Bearer at"), "ads token comes from the Vault");
   assert.ok(!graph.calls.some((c) => c.path === "A1" && c.method === "POST"));
   assert.strictEqual(store.ad_stats.length, 2);
   const rep = graph.sent.filter((m) => m.to === "919000000001").pop().text.body;

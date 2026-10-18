@@ -76,12 +76,56 @@ do $$ begin
 exception when duplicate_object then null; end $$;
 update messages set author = 'customer' where direction = 'in' and author = 'bot'; -- rows logged before this column existed
 
--- Tokens live apart from client data (service role only)
-create table if not exists client_secrets (
-  client_id        uuid primary key references clients(id) on delete cascade,
-  meta_page_token  text,   -- long-lived Page token (leads_retrieval)
-  meta_ads_token   text    -- System User token with ads_read / ads_management on the client's ad account
-);
+-- Meta tokens live in Supabase Vault (encrypted at rest), never in a plain table (REA audit #8, A51).
+-- Vault is built into every Supabase project (schema "vault"). One secret per client and kind, named client:<uuid>:<kind>:
+--   meta_page = long-lived Page token (leads_retrieval) · meta_ads = System User token (ads_read / ads_management).
+-- Save or rotate a token yourself in Supabase → SQL Editor (never paste it into chat or the repo):
+--   select set_client_token('<client uuid>', 'meta_page', '<token>');   -- pass null to delete it
+create or replace function set_client_token(p_client uuid, p_kind text, p_token text)
+returns void language plpgsql security definer set search_path = public as $$
+declare n text; sid uuid;
+begin
+  if p_kind is null or p_kind not in ('meta_page', 'meta_ads') then raise exception 'unknown token kind %', p_kind using errcode = 'invalid_parameter_value'; end if;
+  if not exists (select 1 from clients where id = p_client) then raise exception 'unknown client' using errcode = 'foreign_key_violation'; end if;
+  n := 'client:' || p_client || ':' || p_kind;
+  select id into sid from vault.secrets where name = n;
+  if coalesce(p_token, '') = '' then delete from vault.secrets where id = sid; return; end if;
+  if sid is null then perform vault.create_secret(p_token, n, 'BotBhai ' || p_kind || ' token');
+  else perform vault.update_secret(sid, p_token); end if;
+end $$;
+-- The only way the server reads a token: POST /rest/v1/rpc/client_token (service-role key, Netlify only).
+create or replace function client_token(p_client uuid, p_kind text)
+returns text language sql stable security definer set search_path = public as $$
+  select decrypted_secret from vault.decrypted_secrets where p_kind in ('meta_page', 'meta_ads') and name = 'client:' || p_client || ':' || p_kind $$;
+-- One-time move of tokens from the old plain-text client_secrets table (safe to re-run; drops the table when done).
+create or replace function migrate_client_secrets()
+returns void language plpgsql security definer set search_path = public as $$
+declare r record;
+begin
+  if to_regclass('public.client_secrets') is null then return; end if;
+  for r in execute 'select client_id, meta_page_token, meta_ads_token from public.client_secrets' loop
+    if coalesce(r.meta_page_token, '') <> '' then perform set_client_token(r.client_id, 'meta_page', r.meta_page_token); end if;
+    if coalesce(r.meta_ads_token, '') <> '' then perform set_client_token(r.client_id, 'meta_ads', r.meta_ads_token); end if;
+  end loop;
+  execute 'drop table public.client_secrets';
+end $$;
+-- Deleting a client deletes its secrets.
+create or replace function drop_client_tokens() returns trigger language plpgsql security definer set search_path = public as $$
+begin delete from vault.secrets where name like 'client:' || old.id || ':%'; return old; end $$;
+drop trigger if exists clients_drop_tokens on clients;
+create trigger clients_drop_tokens after delete on clients for each row execute function drop_client_tokens();
+revoke execute on function set_client_token(uuid, text, text) from public, anon, authenticated;
+revoke execute on function client_token(uuid, text) from public, anon, authenticated;
+revoke execute on function migrate_client_secrets() from public, anon, authenticated;
+revoke execute on function drop_client_tokens() from public, anon, authenticated;
+do $$ begin
+  if exists (select 1 from pg_roles where rolname = 'service_role') then
+    revoke execute on function set_client_token(uuid, text, text) from service_role;  -- writes only from the SQL editor
+    revoke execute on function migrate_client_secrets() from service_role;
+    grant execute on function client_token(uuid, text) to service_role;
+  end if;
+end $$;
+select migrate_client_secrets();
 
 -- Daily ad results (ads bot)
 create table if not exists ad_stats (
@@ -196,7 +240,6 @@ alter table clients  enable row level security;
 alter table sessions enable row level security;
 alter table leads    enable row level security;
 alter table messages enable row level security;
-alter table client_secrets enable row level security;
 alter table ad_stats enable row level security;
 alter table members enable row level security;
 alter table jobs enable row level security;

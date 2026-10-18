@@ -2,7 +2,7 @@
 module.exports = function installFake(seed) {
   Object.assign(process.env, { WA_VERIFY_TOKEN: "verify", WA_ACCESS_TOKEN: "x", WA_APP_SECRET: "appsecret", SUPABASE_URL: "https://fake.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k",
     TURNSTILE_SECRET_KEY: "ts-secret", TURNSTILE_SITE_KEY: "1x00000000000000000000AA" });
-  const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [], processed: [], invoices: [], invoice_counters: [] }, seed);
+  const store = Object.assign({ clients: [], vault: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [], processed: [], invoices: [], invoice_counters: [] }, seed);
   const graph = { sent: [], calls: [], responses: {}, turnstile: [] };
   const usedTokens = new Set();
   global.fetch = async (url, opts = {}) => {
@@ -10,7 +10,7 @@ module.exports = function installFake(seed) {
     if (url.startsWith("https://graph.facebook.com")) {
       const path = url.replace(/^https:\/\/graph\.facebook\.com\/v[\d.]+\//, "");
       const reqBody = opts.body ? JSON.parse(opts.body) : null;
-      graph.calls.push({ path, method: opts.method || "GET", body: reqBody });
+      graph.calls.push({ path, method: opts.method || "GET", body: reqBody, auth: (opts.headers || {}).Authorization });
       if (reqBody && reqBody.type === "text" && graph.failNextTextTo && reqBody.to === graph.failNextTextTo) { // simulate "outside 24 h window"
         graph.failNextTextTo = null; return { ok: false, status: 400, text: async () => "{}", json: async () => ({ error: { code: 131047, message: "Re-engagement message" } }) };
       }
@@ -41,6 +41,10 @@ module.exports = function installFake(seed) {
         due_on: p.p_due, period: p.p_period, bill_to: p.p_bill_to, lines: p.p_lines, total_paise: p.p_total, status: "due", paid_on: null, paid_ref: null,
         view_key: require("crypto").randomBytes(16).toString("hex"), sent_at: null, created_at: new Date().toISOString() };
       store.invoices.push(row); return ok(row);
+    }
+    if (u.pathname.endsWith("/rpc/client_token")) { // Supabase Vault read (A51): same name scheme as the SQL function
+      const p = JSON.parse(opts.body); const row = store.vault.find((v) => v.name === `client:${p.p_client}:${p.p_kind}`);
+      return ok(row ? row.secret : null);
     }
     if (u.pathname.endsWith("/rpc/rate_hit")) { // same logic as the SQL function
       const p = JSON.parse(opts.body); store.rate_hits = store.rate_hits || []; const now = Date.now();

@@ -7,7 +7,7 @@ const { store, graph } = require("./_fake.js")({
     { id: "s1", name: "Glow", niche: "salon", phone_number_id: "PN1", owner_whatsapp: "919000000001", meta_page_id: "100200300", active: true, config: { capacity: 1, business: "Glow Studio", review_link: "https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4" } },
     { id: "11111111-2222-3333-4444-555555555555", name: "Web Salon", niche: "salon", phone_number_id: "PN2", active: true, config: { capacity: 1 } },
   ],
-  client_secrets: [{ client_id: "s1", meta_page_token: "pt" }],
+  vault: [{ name: "client:s1:meta_page", secret: "pt" }],
 });
 const wa = require("./whatsapp.js"), chat = require("./chat.js"), reminders = require("./reminders.js"), metaleads = require("./metaleads.js");
 const L = require("./_lib.js");
@@ -178,6 +178,20 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     assert.strictEqual((await L.turnstileOk("x".repeat(2049), "1.2.3.4")).ok, false);
     const real = global.fetch; global.fetch = async () => { throw new Error("network down"); };
     try { assert.strictEqual((await L.turnstileOk(pass(), "1.2.3.4")).ok, false); } finally { global.fetch = real; }
+  });
+  await ok("A51: Meta tokens come from the Vault function only, and a client without a page token never gets the WhatsApp token", async () => {
+    const reads = []; const real = global.fetch;
+    global.fetch = (url, opts) => { if (!String(url).startsWith("https://graph")) reads.push(new URL(url).pathname); return real(url, opts); };
+    try {
+      graph.responses["900800711"] = { field_data: [{ name: "full_name", values: ["Divya"] }, { name: "phone_number", values: ["+91 98111 00011"] }] };
+      await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "900800711", page_id: "100200300" } }] }] });
+      assert.strictEqual(graph.calls.filter((c) => c.path.startsWith("900800711")).at(-1).auth, "Bearer pt");
+      assert.ok(reads.includes("/rest/v1/rpc/client_token") && !reads.some((r) => /client_secrets/.test(r)), reads.join(" "));
+      store.clients.push({ id: "s9", name: "No Token", niche: "salon", meta_page_id: "100200399", active: true, config: {} });
+      const before = graph.calls.length;
+      await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "900800712", page_id: "100200399" } }] }] });
+      assert.ok(!graph.calls.slice(before).some((c) => c.path.startsWith("900800712")), "no Graph call without the client's own token");
+    } finally { global.fetch = real; }
   });
   await ok("audit: dashboard token only works in the Authorization header, and the reply has no wildcard CORS", async () => {
     const leads = require("./leads.js");

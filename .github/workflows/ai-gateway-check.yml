@@ -3,6 +3,10 @@ name: AI Gateway check
 # Needs repo secret AI_GATEWAY_API_KEY (Akhil sets it himself; never in code or chat).
 on:
   workflow_dispatch:
+    inputs:
+      model:
+        description: Model id (Kimi K3 needs paid Vercel credits)
+        default: deepseek/deepseek-v4.1-flash
   push:
     branches: [main]
     paths: ['00-hq/ai-gateway/**', '.github/workflows/ai-gateway-check.yml']
@@ -26,4 +30,5 @@ jobs:
       - name: Run example
         env:
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+          AI_MODEL: ${{ inputs.model || 'deepseek/deepseek-v4.1-flash' }}
         run: npm start

@@ -55,7 +55,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 ### Sprint 3 · Second engine
 - [x] **A34** b2 · b2.q10: `02-jobcard/supabase/schema.sql` with RLS. Check: applies on local Postgres. (done 2026-10-13, e6e5ffc; `bash 02-jobcard/supabase/test.sh` adds RLS tests)
 - [x] **A34b** b2 · Deep Scan v2: `02-jobcard/lib/invoice.mjs` (GST maths for unregistered/composition/regular, words, UPI, bilingual HTML for expo-print, English PDF) + `lib/parse.mjs` (transcript → job card). Check: `cd 02-jobcard && npm test`. (done 2026-10-13, e6e5ffc)
-- [~] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green. (claimed: lane C, 2026-10-18)
+- [x] **A35** b2 · b2.q09: `02-jobcard/bot/functions/jobcard.js` (modelled on BotBhai webhook; voice → job card) tested with fakes. Check: tests green. (done 2026-10-18, bccb850; 20 notes, 0 wrong totals; parser fix: a part never takes the next part's price)
 - [~] **A36** b2 · b2.q19 + b2.q20: Expo app scaffold (Obytes template, te/hi strings), offline voice, SQLite outbox, invoice share. Check: `tsc` + Jest green. (claimed: lane C, 2026-10-18)
 - [~] **A37** b2 · b2.q11 + b2.q15: reminders/quota cron and the "my customers" PWA. Check: tests. (claimed: lane C, 2026-10-18)
 - [x] **A38** b4 · E2 + E3: WXT scaffold in `04-extensions/src/`, save/restore core with Playwright test. Check: CI green. (done 2026-10-13, ca75d3c; unit + Chromium e2e green locally, runs in the `Kalpa quality` workflow)

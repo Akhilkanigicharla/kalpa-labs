@@ -43,7 +43,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A23** b7 · Q7.1–Q7.3: licence note, `.gitignore` data, pinned requirements, `src/data.py` (cache + validation), `src/costs.py` (2026 Indian charges with sources). Check: pytest green on synthetic data. (done 2026-10-13, 1e5e4d5)
 - [x] **A24** b7 · Q7.5 + Q7.4 code: trials registry + gate (`src/gate.py`) with thresholds marked "pending CEO approval". Check: running without a log entry fails. (done 2026-10-13, 1e5e4d5)
 - [x] **A25** b7 · Q7.6: `.github/workflows/backtest.yml` (data from Actions cache, tear-sheet artifact). Check: workflow lints; green on push. (done 2026-10-18, e362350; Actions run 39101518553 green, `tearsheet` HTML artifact, Nifty data in cache only)
-- [ ] **A26** b7 · Q7.9 + Q7.11: `src/paper.py` simulated next-open fills + `src/risk.py`. No broker calls. Check: dry run over 20 past days; forced breach blocked.
+- [~] **A26** b7 · Q7.9 + Q7.11: `src/paper.py` simulated next-open fills + `src/risk.py`. No broker calls. Check: dry run over 20 past days; forced breach blocked. (claimed: lane A, 2026-10-18)
 - [x] **A27** b6 · F-01 + F-02: price engine in `06-finops/src/price/` (genai-prices, INR via cached RBI/FBIL rate, paise), unknown-model guard. Check: tests with a7 fixtures. (done 2026-10-13, 9f5fda1)
 - [ ] **A28** b6 · F-03: Supabase migration `06-finops/src/db/` (`usage_event`, `usage_daily`, OTel gen_ai fields, RLS). Check: SQL applies on a local Postgres.
 - [x] **A29** b6 · F-05: importers (OpenAI, Anthropic, LiteLLM, Langfuse, generic CSV/JSONL). Check: 5 fixtures import with no rows lost. (done 2026-10-13, 9f5fda1)

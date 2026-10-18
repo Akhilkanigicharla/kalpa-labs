@@ -13,6 +13,8 @@
 | 📝 Docs | [docs/](docs/) | Decisions, requirements, sales material |
 | 🎨 Design | [design/](design/) | UI design brief and mockups (filled by the build sprints) |
 | 💻 Code | src/ (added at quest E2) | The product itself |
+| 🌐 Site | [site/](site/) | Landing page, privacy policy (Limited Use), terms + refunds; published to GitHub Pages by `.github/workflows/extension-site.yml` |
+| 🏪 Store | [store/](store/) | Chrome Web Store images (from the real extension) and [listing text, permission and privacy-form answers](store/listing.md) |
 
 ## Research reports
 - [research/a6-extensions.md](research/a6-extensions.md)

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#1C2463">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1B2266">
+<meta name="color-scheme" content="light dark">
+<title>Privacy policy · Tab Lifeboat</title>
+<link rel="icon" href="icon/128.png">
+<link rel="stylesheet" href="vendor/tokens.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+{{NAV:privacy}}
+<main class="wrap">
+  <h1>Privacy policy</h1>
+  <p class="muted">Last updated {{UPDATED}}. Applies to the Tab Lifeboat Chrome extension and this website.</p>
+
+  <h2 id="short">In short</h2>
+  <p>Your tabs stay on your computer. We have no servers, no accounts, no analytics and no ads, and we never sell or share your data.</p>
+
+  <h2 id="what">What the extension handles, and why</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Data</th><th>Why</th><th>Where it is kept</th></tr></thead>
+    <tbody>
+      <tr><td>Titles and links (URLs) of your open tabs, tab group names and colours, window layout</td><td>Only to save and restore your sessions and snapshots, which is the extension's single purpose</td><td>In your browser on your computer (IndexedDB). Never sent to us.</td></tr>
+      <tr><td>Files you choose to import (OneTab text, Session Buddy file) or a Tab Lifeboat backup file</td><td>To add those sessions</td><td>Read on your computer; the sessions are stored as above</td></tr>
+      <tr><td>Settings and snapshot times</td><td>To run automatic snapshots</td><td>In your browser on your computer</td></tr>
+    </tbody>
+  </table></div>
+  <p>Permissions it asks Chrome for: <b>tabs</b> and <b>tabGroups</b> (read and reopen your tabs and groups), <b>alarms</b> (timed snapshots), <b>storage</b> and <b>unlimitedStorage</b> (keep large sessions safely). The free extension makes no network requests.</p>
+
+  <h2 id="pro">When Pro opens</h2>
+  <ul>
+    <li><b>Licence check:</b> your licence key and a device label are sent to Dodo Payments to confirm the key. Your purchase details (name, email, payment) are collected and processed by Dodo Payments as merchant of record under its own privacy policy; we receive the order record.</li>
+    <li><b>Google Drive backup (optional):</b> if you switch it on, a backup file is saved to <i>your</i> Google Drive using the <code>drive.file</code> permission, which only reaches files Tab Lifeboat created. We cannot see the rest of your Drive, and the file never passes through us.</li>
+  </ul>
+
+  <h2 id="limited-use">Limited Use</h2>
+  <p>The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
+  <p>Tab Lifeboat's use and transfer of information received from Google APIs to any other app will adhere to the Google API Services User Data Policy, including the Limited Use requirements.</p>
+  <p>We do not sell user data, do not use or transfer it for advertising, credit checks or any purpose unrelated to saving and restoring your tabs, and no person reads it.</p>
+
+  <h2 id="delete">Deleting your data</h2>
+  <p>Delete any session inside the extension. Uninstalling Tab Lifeboat deletes all of its data from your browser. Backup files you downloaded or saved to Google Drive are yours: delete them like any other file.</p>
+
+  <h2 id="contact">Contact and grievances</h2>
+  <p>Questions, or a grievance under India's Digital Personal Data Protection Act, 2023: write to <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>. We reply within 7 days.</p>
+
+  <h2 id="changes">Changes</h2>
+  <ul><li>{{UPDATED}}: first version.</li></ul>
+  <p>If this policy changes we update this page and the date above; anything that changes what leaves your computer is also shown inside the extension before it takes effect.</p>
+</main>
+{{FOOTER}}
+</body>
+</html>

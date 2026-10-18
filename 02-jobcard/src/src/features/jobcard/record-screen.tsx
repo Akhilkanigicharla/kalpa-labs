@@ -8,13 +8,19 @@ import Animated, { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { translate, useSelectedLanguage } from '@/lib/i18n';
 import { getItem } from '@/lib/storage';
-import { fonts, radius } from '@/lib/theme/kalamkari';
+import { bodyFonts, fonts, radius } from '@/lib/theme/kalamkari';
 import { useKalamkari } from '@/lib/theme/use-kalamkari';
 import { partsSum, useJob } from './use-job';
 
 const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
 const rs = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 const MACHINE: Record<string, string> = { split_ac: 'Split AC', window_ac: 'Window AC', cassette_ac: 'Cassette AC', ac: 'AC', fridge: 'Fridge', washing_machine: 'Washing machine' };
+
+function useStyles() {
+  const { language } = useSelectedLanguage();
+  const f = React.useMemo(() => bodyFonts(language), [language]);
+  return { s: React.useMemo(() => makeStyles(f), [f]), f };
+}
 
 /** Press feedback: scale 0.97 on press-in, 120 ms strong ease-out, on the UI thread (Reanimated CSS transition). */
 function PressScale({ children, onPress, style, testID, label, disabled }: { children: React.ReactNode; onPress: () => void; style: object; testID: string; label: string; disabled?: boolean }) {
@@ -41,16 +47,18 @@ function PressScale({ children, onPress, style, testID, label, disabled }: { chi
 }
 
 function Chip({ label, value, k }: { label: string; value?: string | null; k: ReturnType<typeof useKalamkari> }) {
+  const { s, f } = useStyles();
   const gap = !value;
   return (
     <View style={[s.chip, { backgroundColor: gap ? k.soft : k.panel, borderColor: gap ? k.gold : k.rule }]}>
-      <Text style={[s.small, { color: k.muted, fontFamily: fonts.body }]}>{label}</Text>
-      <Text style={[s.body, { color: gap ? k.warn : k.fg, fontFamily: fonts.bodyBold }]}>{value || translate('jobcard.unknown')}</Text>
+      <Text style={[s.small, { color: k.muted, fontFamily: f.body }]}>{label}</Text>
+      <Text style={[s.body, { color: gap ? k.warn : k.fg, fontFamily: f.bold }]}>{value || translate('jobcard.unknown')}</Text>
     </View>
   );
 }
 
 function CardView({ card, k }: { card: Card; k: ReturnType<typeof useKalamkari> }) {
+  const { s, f } = useStyles();
   const sum = partsSum(card);
   const unpriced = card.parts.filter(p => p.rate == null).map(p => p.desc);
   return (
@@ -63,12 +71,12 @@ function CardView({ card, k }: { card: Card; k: ReturnType<typeof useKalamkari> 
       </View>
       {card.parts.map(p => (
         <View key={p.desc} style={[s.row, { borderBottomColor: k.rule }]}>
-          <Text style={[s.body, { color: k.fg, fontFamily: fonts.body }]}>{p.desc}</Text>
+          <Text style={[s.body, { color: k.fg, fontFamily: f.body }]}>{p.desc}</Text>
           <Text style={[s.body, s.num, { color: p.rate == null ? k.warn : k.fg }]}>{p.rate == null ? '₹ ?' : rs(p.rate)}</Text>
         </View>
       ))}
       <View style={s.row}>
-        <Text style={[s.body, { color: k.fg, fontFamily: fonts.bodyBold }]}>{translate('jobcard.total')}</Text>
+        <Text style={[s.body, { color: k.fg, fontFamily: f.bold }]}>{translate('jobcard.total')}</Text>
         <Text testID="total" style={[s.total, s.num, { color: k.fg }]}>{rs(sum)}</Text>
       </View>
       {card.total != null && card.total !== sum && (
@@ -81,6 +89,7 @@ function CardView({ card, k }: { card: Card; k: ReturnType<typeof useKalamkari> 
 
 export function RecordScreen({ online = true }: { online?: boolean }) {
   const k = useKalamkari();
+  const { s, f } = useStyles();
   const insets = useSafeAreaInsets();
   const { language } = useSelectedLanguage();
   const tech = getItem<Technician>('technician');
@@ -90,7 +99,7 @@ export function RecordScreen({ online = true }: { online?: boolean }) {
   return (
     <ScrollView style={{ backgroundColor: k.bg }} contentContainerStyle={[s.page, { paddingTop: insets.top + 16, paddingBottom: insets.bottom + 24 }]} keyboardShouldPersistTaps="handled">
       <Text style={[s.h1, { color: k.accent }]}>JobCard</Text>
-      <Text style={[s.body, { color: k.muted, fontFamily: fonts.body }]}>{translate('jobcard.title')}</Text>
+      <Text style={[s.body, { color: k.muted, fontFamily: f.body }]}>{translate('jobcard.title')}</Text>
 
       <View style={s.center}>
         <PressScale
@@ -101,7 +110,7 @@ export function RecordScreen({ online = true }: { online?: boolean }) {
         >
           <Text style={[s.micIcon, { color: k.hero }]}>{job.listening ? '■' : '●'}</Text>
         </PressScale>
-        <Text style={[s.body, { color: job.listening ? k.madder : k.fg, fontFamily: fonts.bodyBold, marginTop: 12 }]}>
+        <Text style={[s.body, { color: job.listening ? k.madder : k.fg, fontFamily: f.bold, marginTop: 12 }]}>
           {job.listening ? translate('jobcard.listening') : translate('jobcard.hold')}
         </Text>
         {!online && <Text testID="offline" style={[s.small, { color: k.muted }]}>{translate('jobcard.offline')}</Text>}
@@ -115,7 +124,7 @@ export function RecordScreen({ online = true }: { online?: boolean }) {
         multiline
         placeholder={translate('jobcard.type_instead')}
         placeholderTextColor={k.muted}
-        style={[s.note, { color: k.fg, borderColor: k.rule, backgroundColor: k.panel, fontFamily: fonts.body }]}
+        style={[s.note, { color: k.fg, borderColor: k.rule, backgroundColor: k.panel, fontFamily: f.body }]}
       />
 
       {job.card && <CardView card={job.card} k={k} />}
@@ -140,7 +149,7 @@ export function RecordScreen({ online = true }: { online?: boolean }) {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (f: ReturnType<typeof bodyFonts>) => StyleSheet.create({
   page: { paddingHorizontal: 16, gap: 12 },
   h1: { fontFamily: fonts.display, fontSize: 30 },
   center: { alignItems: 'center', paddingVertical: 12 },
@@ -151,11 +160,11 @@ const s = StyleSheet.create({
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 6 },
   chip: { borderWidth: 1, borderRadius: radius.s, paddingHorizontal: 10, paddingVertical: 6, minWidth: 96 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', paddingVertical: 6, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'transparent' },
-  label: { fontSize: 12, letterSpacing: 0.5, textTransform: 'uppercase', fontFamily: fonts.bodyBold },
+  label: { fontSize: 12, letterSpacing: 0.5, textTransform: 'uppercase', fontFamily: f.bold },
   body: { fontSize: 16 },
-  small: { fontSize: 13, fontFamily: fonts.body },
-  num: { fontVariant: ['tabular-nums'], fontFamily: fonts.bodyBold },
+  small: { fontSize: 13, fontFamily: f.body },
+  num: { fontVariant: ['tabular-nums'], fontFamily: f.bold },
   total: { fontSize: 22 },
   btn: { minHeight: 52, borderRadius: radius.m, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16 },
-  btnText: { fontSize: 17, fontFamily: fonts.bodyBold },
+  btnText: { fontSize: 17, fontFamily: f.bold },
 });

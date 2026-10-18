@@ -64,5 +64,7 @@ export const fonts = {
   telugu: 'AnekTelugu_400Regular',
   teluguBold: 'AnekTelugu_700Bold',
 } as const;
+/** Body faces for the UI language: Anek Telugu carries Latin too, so Telugu screens use it throughout. */
+export const bodyFonts = (lang?: string) => (lang === 'te' ? { body: fonts.telugu, bold: fonts.teluguBold } : { body: fonts.body, bold: fonts.bodyBold });
 export const radius = { s: 8, m: 12, l: 18 } as const;
 export const WORLD = 'l2' as const;

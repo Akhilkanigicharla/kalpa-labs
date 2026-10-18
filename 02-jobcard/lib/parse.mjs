@@ -90,6 +90,7 @@ export function parseTranscript(raw, { now = new Date() } = {}) {
   // word index where each spoken part starts: a part's amount is never read from inside the next part
   // ("capacitor, gas refill 2500" = capacitor with no price, not capacitor ₹2500)
   const starts = PARTS.map((p) => text.match(p.re)).filter(Boolean).map((m) => text.slice(0, m.index).split(" ").length - 1);
+  words.forEach((w, i) => { if (/^(total|mottam|మొత్తం|kul)$/i.test(w)) starts.push(i); }); // nor from the spoken total
   for (const p of PARTS) {
     const m = text.match(p.re); if (!m) continue;
     const before = text.slice(0, m.index + m[0].length).split(" ").length; // index of the word after the match

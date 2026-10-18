@@ -70,6 +70,9 @@ jobs:
         run: |
           pip install genai-prices==0.1.11 pytest==9.1.1
           python -m pytest -q tests/
+      - name: b5 Deal Poster Bot (A18, stdlib only)
+        working-directory: 05-deals/site/src/bot
+        run: python -m unittest -v test_post.py
 
   kits:
     runs-on: ubuntu-latest

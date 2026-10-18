@@ -19,6 +19,7 @@ Checked 18 Oct 2026 23:40 IST against the repo, ROADMAP ticks and live n8n tests
 
 ## How the teams run (free tools only)
 - Every team works through **KL Tasks** in n8n (owner_agent = the agent). Kalpa reads it in the 8:45 IST brief.
+- **Kalpa Task Runner** (n8n t8XJCgW8Gdi2rmBX, every 3 h at :15 IST, published): takes the top `todo` task (P0 first; code tasks for Forge/Probe are left to the Claude build sprint), the owner agent researches with **Web Search (compact)** (qdg06puzxyABqV6z, Brave via n8n credits, max 4 searches) and writes a deliverable into KL Knowledge. **Vigil** (Groq qwen3.8-27b) checks it against Kalpa facts + known-false claims: PASS → task `review`, FAIL → `rejected` (draft kept, category "Rejected output"). Nothing is published or sent to customers automatically.
 - **World Keeper** (8:20 IST daily, no AI tokens) checks CI for every world, site uptime and new leads.
 - Customer-facing answers come only from facts in the Kalpa Bhai prompt; anything else goes to Akhil.
 - Models: Groq free (gpt-oss-20b/120b, qwen3.8-27b), NVIDIA nemotron nano, OpenRouter free as backup. No paid plans.

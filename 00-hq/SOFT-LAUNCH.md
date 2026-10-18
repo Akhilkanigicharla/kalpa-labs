@@ -27,7 +27,7 @@ Akhil approved the plan **with permission to postpone** if the company is not re
 | 2 | **Social Team add-on** (b1, C18 approved) | Month plan + posts approved by the salon on WhatsApp, published through the official API | ₹999–1,499/month as suggested; launch offer ₹999 for founding salons | Adi, Lens, Reel, Kavi |
 | 3 | **Telugu deals channel** (b5, C32: build this first, no swap) | 3–5 checked deals a day, Telugu copy, ASCI `#ad`, link tracking, weekly money tip | EarnKaro/Cuelinks commission first; Amazon Associates only at ~300 members (PLAN §4 rule) | Deal, Kavi + poster bot |
 | 4 | **Kits + Claude Skill pack** (b3, C30/A54) | GATE kit, Tax+SIP planner, GATE Study Coach skill pack on a sales page | ₹199–499 via business UPI QR, manual delivery until Razorpay | Kavi, Echo |
-| 5 | **Telugu "Claude Code with me" workshop** (C31 yes) | Sign-up page + outline; one live session on Google Meet; recording sold after | Price: Akhil picks (C38) | Kavi, Adi |
+| 5 | **Telugu "Claude Code with me" workshop** (C31 yes) | Sign-up page + outline; live session **Sun 29 Nov 2026, 11:00 IST** on Google Meet; recording sold after | ₹299, 7-day full refund (C38) | Kavi, Adi |
 
 Plus, for all five: **feedback in, fixes out** (below), uptime checks, and a clean audit.
 

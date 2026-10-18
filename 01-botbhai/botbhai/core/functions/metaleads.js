@@ -5,7 +5,7 @@
  * welcome template with "Book now / Call me" buttons, alert the owner, and queue a voice call if enabled.
  */
 const crypto = require("crypto");
-const { db, json, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc } = require("./_lib.js");
+const { db, json, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
 const { parseMetaLead } = require("../automations.js");
 
 function validSignature(event) {
@@ -32,8 +32,9 @@ exports.handler = async (event) => {
       if (!/^\d{1,20}$/.test(String(v.page_id || "")) || !/^\d{1,25}$/.test(String(v.leadgen_id || ""))) { console.warn("bad lead ids"); continue; }
       const [client] = await db(`clients?meta_page_id=eq.${enc(v.page_id)}&active=eq.true&select=*`);
       if (!client) { console.warn("no client for page", v.page_id); continue; }
-      const [secret] = await db(`client_secrets?client_id=eq.${client.id}&select=meta_page_token`);
-      const raw = await graph(`${v.leadgen_id}?fields=field_data,created_time,ad_id,form_id`, { token: secret && secret.meta_page_token });
+      const pageToken = await clientToken(client.id, "meta_page");
+      if (!pageToken) { console.warn("no page token in Vault for client", client.id); continue; } // never fall back to the WhatsApp token
+      const raw = await graph(`${v.leadgen_id}?fields=field_data,created_time,ad_id,form_id`, { token: pageToken });
       const lead = parseMetaLead(raw);
       const contact = lead.phone || `meta:${v.leadgen_id}`;
       if (!(await firstTime("lead:" + v.leadgen_id))) continue; // Meta retried this lead

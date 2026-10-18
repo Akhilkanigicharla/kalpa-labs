@@ -110,6 +110,9 @@ jobs:
       - name: Schema + RLS tests
         env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
         run: bash 02-jobcard/supabase/test.sh
+      - name: b6 Ledger Peaks schema + RLS (A28)
+        env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: postgres }
+        run: bash 06-finops/src/db/test.sh
       - name: App screens at 390 px, light + dark (A13)
         run: |
           pip install playwright==1.56.0

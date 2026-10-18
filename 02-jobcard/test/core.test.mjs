@@ -117,3 +117,11 @@ test("customer name after a capitalised keyword (found while building the A13 sc
   // a lowercase word after the keyword is still not a name
   assert.equal(parseTranscript("customer ki gas refill 2500").customer.name, undefined);
 });
+
+test("a part never takes the next part's price or the spoken total (found while building A35/A36)", () => {
+  const a = parseTranscript("capacitor, gas refill 2500");
+  assert.deepEqual(a.parts.map((p) => [p.desc, p.rate]), [["Gas refill", 2500], ["Capacitor", null]]);
+  const b = parseTranscript("Split AC gas refill 2500, capacitor, total 3000, customer Sita 9000033333");
+  assert.equal(b.parts.find((p) => p.desc === "Capacitor").rate, null); assert.equal(b.total, 3000);
+  assert.equal(parseTranscript("gas refill 2500 capacitor 450").parts[1].rate, 450);
+});

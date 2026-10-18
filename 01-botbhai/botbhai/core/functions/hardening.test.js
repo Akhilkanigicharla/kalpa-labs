@@ -13,7 +13,8 @@ const wa = require("./whatsapp.js"), chat = require("./chat.js"), reminders = re
 const L = require("./_lib.js");
 const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(b).digest("hex");
 const post = (h, payload) => { const body = JSON.stringify(payload); return h({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(body) }, body }); };
-let mid = 0;
+let mid = 0, tok = 0;
+const pass = () => "pass-" + (++tok); // fake Turnstile: tokens starting "pass-" verify once (like Cloudflare's single-use tokens)
 const msgFrom = (from, m, id) => ({ entry: [{ changes: [{ value: { metadata: { phone_number_id: "PN1" }, contacts: [{ profile: { name: "C" } }], messages: [Object.assign({ from, id: id || "wamid." + (++mid) }, m)] } }] }] });
 const say = (from, text, id) => post(wa.handler, msgFrom(from, { type: "text", text: { body: text } }, id));
 const tap = (from, title) => post(wa.handler, msgFrom(from, { type: "interactive", interactive: { list_reply: { id: "t:" + title, title } } }));
@@ -54,7 +55,7 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
   });
   await ok("#3 website-chat bookings reach the same calendar and respect capacity", async () => {
     const c = "11111111-2222-3333-4444-555555555555";
-    const web = (visitor, text) => chat.handler({ httpMethod: "POST", body: JSON.stringify({ client: c, visitor, text }) }).then((r) => JSON.parse(r.body));
+    const web = (visitor, text) => chat.handler({ httpMethod: "POST", body: JSON.stringify({ client: c, visitor, text, turnstile: pass() }) }).then((r) => JSON.parse(r.body));
     for (const t of ["book", "facial", "tomorrow", "4 pm"]) await web("visitor-aaa", t);
     await web("visitor-aaa", "Meena");
     assert.strictEqual(store.bookings.filter((b) => b.client_id === c && b.source === "web").length, 1);
@@ -122,7 +123,7 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
   });
   await ok("audit: one open booking per website visitor (a second booking moves the first)", async () => {
     const c = "11111111-2222-3333-4444-555555555555";
-    const web = (text) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.7" }, body: JSON.stringify({ client: c, visitor: "two-bookings", text }) }).then((r) => JSON.parse(r.body));
+    const web = (text) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.7" }, body: JSON.stringify({ client: c, visitor: "two-bookings", text, turnstile: pass() }) }).then((r) => JSON.parse(r.body));
     const pick = async (service) => { // book the first free slot tomorrow, whatever earlier tests left
       await web("book"); await web(service); const r = await web("tomorrow");
       await web(r.replies.at(-1).options[0]); await web("Rani");
@@ -131,6 +132,52 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     const open = store.bookings.filter((b) => b.client_id === c && b.contact === "web:two-bookings" && b.status === "confirmed");
     const all = store.bookings.filter((b) => b.client_id === c && b.contact === "web:two-bookings");
     assert.strictEqual(open.length, 1, `open bookings: ${open.length}`); assert.ok(all.length >= 2 && all.some((b) => b.status === "rescheduled"), JSON.stringify(all));
+  });
+  await ok("A50: website booking without a Turnstile token is not saved and the page is asked to show the check", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    const call = (visitor, text, turnstile) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.50" }, body: JSON.stringify({ client: c, visitor, text, turnstile }) });
+    const web = (visitor, text, turnstile) => call(visitor, text, turnstile).then((r) => JSON.parse(r.body));
+    const before = graph.turnstile.length;
+    await web("ts-visitor", "book"); await web("ts-visitor", "facial"); const r = await web("ts-visitor", "tomorrow");
+    assert.strictEqual(graph.turnstile.length, before, "chatting without booking never calls Cloudflare");
+    const slot = r.replies.at(-1).options[0];
+    await web("ts-visitor", slot);
+    const sessBefore = JSON.stringify(store.sessions.find((x) => x.contact === "web:ts-visitor").state);
+    const no = await web("ts-visitor", "Kavya"); // the message that saves the booking
+    assert.ok(no.check && no.check.sitekey === "1x00000000000000000000AA", JSON.stringify(no));
+    assert.match(no.replies[0].text, /not booked yet/i);
+    assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-visitor").length, 0);
+    assert.strictEqual(JSON.stringify(store.sessions.find((x) => x.contact === "web:ts-visitor").state), sessBefore, "state unchanged, so resending replays the booking");
+    const bad = await web("ts-visitor", "Kavya", "forged-token");
+    assert.ok(bad.check); assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-visitor").length, 0);
+    const t = pass(); const yes = await web("ts-visitor", "Kavya", t);
+    assert.ok(!yes.check, JSON.stringify(yes));
+    assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-visitor" && b.status === "confirmed").length, 1);
+    const v = graph.turnstile.at(-1);
+    assert.deepStrictEqual([v.secret, v.response, v.remoteip], ["ts-secret", t, "198.51.100.50"]);
+  });
+  await ok("A50: a used Turnstile token cannot book again, and a missing secret fails closed", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    const web = (visitor, text, turnstile) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.51" }, body: JSON.stringify({ client: c, visitor, text, turnstile }) }).then((r) => JSON.parse(r.body));
+    const d = new Date(Date.now() + 330 * 60000 + 4 * 864e5), day4 = `${d.getUTCDate()}/${d.getUTCMonth() + 1}`; // a day earlier tests left free
+    const flow = async (visitor, token) => { await web(visitor, "book"); await web(visitor, "hair spa"); const r = await web(visitor, day4); await web(visitor, r.replies.at(-1).options[0]); return web(visitor, "Latha", token); };
+    const t = pass(); await flow("ts-reuse-1", t);
+    const again = await flow("ts-reuse-2", t);
+    assert.ok(again.check); assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-reuse-2").length, 0);
+    const secret = process.env.TURNSTILE_SECRET_KEY; delete process.env.TURNSTILE_SECRET_KEY;
+    const errs = []; const log = console.error; console.error = (...a) => errs.push(a.join(" "));
+    try {
+      const off = await flow("ts-nosecret", pass());
+      assert.match(off.replies[0].text, /WhatsApp/); assert.ok(!off.check);
+      assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-nosecret").length, 0);
+      assert.ok(errs.some((e) => /TURNSTILE_SECRET_KEY/.test(e)));
+    } finally { console.error = log; process.env.TURNSTILE_SECRET_KEY = secret; }
+  });
+  await ok("A50: Cloudflare down or a token for another action also fails closed", async () => {
+    assert.strictEqual((await L.turnstileOk("pass-action-login", "1.2.3.4")).ok, false);
+    assert.strictEqual((await L.turnstileOk("x".repeat(2049), "1.2.3.4")).ok, false);
+    const real = global.fetch; global.fetch = async () => { throw new Error("network down"); };
+    try { assert.strictEqual((await L.turnstileOk(pass(), "1.2.3.4")).ok, false); } finally { global.fetch = real; }
   });
   await ok("audit: dashboard token only works in the Authorization header, and the reply has no wildcard CORS", async () => {
     const leads = require("./leads.js");

@@ -104,6 +104,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C25** b1 · At BotBhai go-live: Netlify → kalpa-botbhai → Site configuration → Access & security → Visitor access → protect **non-production deploys only**. Today every visitor (and WhatsApp's webhook) hits a Netlify login (2 min)
 - [ ] **C26** b6 · F-04: open the Ledger Peaks mockups (`06-finops/design/landing.html`, `xray.html`, `dashboard.html`; how to open: `06-finops/design/BRIEF.md`) and approve the name "Ledger Peaks", the headline "Which customer is your AI bill eating?" and the price ladder, or say what to change (15 min)
 - [ ] **C27** b5 · b5.W1.3: make the deals bot in Telegram's @BotFather, add it as admin of your channel (C09), then add GitHub secrets `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` yourself (never in chat). Until then the poster only does dry runs (15 min)
+- [ ] **C28** b1 · Website-chat robot check (A50), free: Cloudflare dashboard → Turnstile → Add widget, hostname = your BotBhai Netlify domain, mode "Managed". Paste the Site Key into Netlify env `TURNSTILE_SITE_KEY` and the Secret Key into `TURNSTILE_SECRET_KEY` yourself (never send them to Claude). Until then website bookings politely send people to WhatsApp (10 min)
 - [ ] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below)
 - [ ] 💰 **C14** b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

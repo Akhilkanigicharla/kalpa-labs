@@ -9,6 +9,8 @@
  *   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
  *   GROQ_API_KEY        free: voice-note transcription + Telugu/Hindi replies
  *   SITE_URL            public site URL (smile-card images)
+ *   TURNSTILE_SITE_KEY, TURNSTILE_SECRET_KEY   Cloudflare Turnstile (free) for website-chat bookings (A50).
+ *                       REQUIRED for website bookings: without the secret, chat bookings are refused (fail closed).
  *   VOICE_SERVER_URL, VOICE_SERVER_KEY   optional: voice-note replies
  *
  * Per message: dedupe (Meta retries) → understand (text, button, list, voice note) → engine (with calendar

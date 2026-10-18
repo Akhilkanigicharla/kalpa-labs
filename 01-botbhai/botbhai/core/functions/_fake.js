@@ -1,8 +1,10 @@
 // In-memory stand-in for Supabase REST + Meta Graph API, used only by tests.
 module.exports = function installFake(seed) {
-  Object.assign(process.env, { WA_VERIFY_TOKEN: "verify", WA_ACCESS_TOKEN: "x", WA_APP_SECRET: "appsecret", SUPABASE_URL: "https://fake.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k" });
+  Object.assign(process.env, { WA_VERIFY_TOKEN: "verify", WA_ACCESS_TOKEN: "x", WA_APP_SECRET: "appsecret", SUPABASE_URL: "https://fake.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k",
+    TURNSTILE_SECRET_KEY: "ts-secret", TURNSTILE_SITE_KEY: "1x00000000000000000000AA" });
   const store = Object.assign({ clients: [], client_secrets: [], sessions: [], leads: [], messages: [], ad_stats: [], members: [], jobs: [], bookings: [], processed: [], invoices: [], invoice_counters: [] }, seed);
-  const graph = { sent: [], calls: [], responses: {} };
+  const graph = { sent: [], calls: [], responses: {}, turnstile: [] };
+  const usedTokens = new Set();
   global.fetch = async (url, opts = {}) => {
     const ok = (data) => ({ ok: true, status: 200, text: async () => JSON.stringify(data), json: async () => data });
     if (url.startsWith("https://graph.facebook.com")) {
@@ -15,6 +17,12 @@ module.exports = function installFake(seed) {
       if (/\/messages$/.test(path)) graph.sent.push(JSON.parse(opts.body));
       const key = Object.keys(graph.responses).find((k) => path.startsWith(k));
       return ok(key ? graph.responses[key] : { success: true });
+    }
+    if (url === "https://challenges.cloudflare.com/turnstile/v0/siteverify") { // fake Cloudflare Turnstile: "pass-…" tokens verify once
+      const f = Object.fromEntries(new URLSearchParams(String(opts.body))); graph.turnstile.push(f);
+      const good = f.secret === "ts-secret" && /^pass-/.test(f.response || "") && !usedTokens.has(f.response);
+      if (good) usedTokens.add(f.response);
+      return ok(good ? { success: true, action: /^pass-action-(\w+)/.test(f.response) ? f.response.split("-")[2] : "booking", hostname: "botbhai.example" } : { success: false, "error-codes": ["invalid-input-response"] });
     }
     const u = new URL(url); const table = u.pathname.split("/").pop(); const method = opts.method || "GET";
     if (u.pathname.endsWith("/rpc/book_slot")) { // same logic as the SQL function

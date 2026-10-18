@@ -1,0 +1,59 @@
+{
+  "jobcard": {
+    "bill": "Make bill and share",
+    "billed": "Bill {{number}} ready",
+    "customer": "Customer",
+    "heard": "What I heard",
+    "hold": "Tap and speak",
+    "listening": "Listening… tap to stop",
+    "machine": "Machine",
+    "mic_denied": "Allow the microphone to record jobs",
+    "missing": "Not heard: {{fields}}",
+    "offline": "No signal? It still records.",
+    "pending": "{{count}} waiting to sync",
+    "phone": "Phone",
+    "price_needed": "Say the price for {{parts}}",
+    "save": "Save job",
+    "saved": "Saved on the phone",
+    "spoke_total": "You said {{spoken}}; the items add up to {{sum}}",
+    "synced": "All synced",
+    "tab": "Record",
+    "title": "New job",
+    "total": "Total",
+    "type_instead": "Or type the job",
+    "unknown": "?",
+    "work": "Work"
+  },
+  "onboarding": {
+    "message": "Speak the job. Send the bill."
+  },
+  "settings": {
+    "about": "About",
+    "app_name": "App Name",
+    "english": "English",
+    "generale": "General",
+    "github": "Github",
+    "hindi": "हिन्दी (Hindi)",
+    "language": "Language",
+    "links": "Links",
+    "logout": "Logout",
+    "more": "More",
+    "privacy": "Privacy Policy",
+    "rate": "Rate",
+    "share": "Share",
+    "support": "Support",
+    "support_us": "Support Us",
+    "telugu": "తెలుగు (Telugu)",
+    "terms": "Terms of Service",
+    "theme": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System",
+      "title": "Theme"
+    },
+    "title": "Settings",
+    "version": "Version",
+    "website": "Website"
+  },
+  "welcome": "Speak the job. Send the bill."
+}

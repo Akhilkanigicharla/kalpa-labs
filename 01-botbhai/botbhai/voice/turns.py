@@ -15,6 +15,25 @@ TURN_STOP_SECS = 1.2
 LANGS = {"te": "te-IN", "hi": "hi-IN", "en": "en-IN"}
 
 
+STT_MODEL = "saaras:v4"  # needed for keyterms (Pipecat 1.13 + docs.sarvam.ai keyterms page, checked 19 Oct 2026)
+MAX_KEYTERMS, MAX_KEYTERM_CHARS = 50, 64
+
+
+def stt_keyterms(cfg: dict) -> list[str]:
+    """Words callers will say that generic STT mishears: business name, client extras (staff, landmarks),
+    services, and the address areas. One phrase per item, no commas, max 50 x 64 chars, no duplicates.
+    Keyterms only bias recognition; they never force a word into the transcript."""
+    raw = [cfg.get("business", "")] + list(cfg.get("keyterms") or [])
+    raw += [c.get("name", "") for c in cfg.get("catalog") or []]
+    raw += [p for p in str(cfg.get("address", "")).split(",")[1:] if not any(ch.isdigit() for ch in p)]
+    out, seen = [], set()
+    for term in raw:
+        term = " ".join(str(term).replace(",", " ").split())[:MAX_KEYTERM_CHARS].strip()
+        if term and term.lower() not in seen:
+            seen.add(term.lower()); out.append(term)
+    return out[:MAX_KEYTERMS]
+
+
 def tts_language(cfg: dict) -> str:
     code = str(cfg.get("voice_language") or cfg.get("language") or "en").lower()[:2]
     return code if code in LANGS else "en"

@@ -1,0 +1,29 @@
+# AgentShield (MIT, from affaan-m/ECC) scans our Claude Code setup (CLAUDE.md, .claude/settings.json,
+# .mcp.json, hooks, skills) for leaked secrets, risky permissions and prompt-injection gaps.
+# Fails only on CRITICAL findings; the full report is a private 7-day download.
+name: AgentShield
+on:
+  workflow_dispatch:
+  push:
+    paths: ["CLAUDE.md", ".claude/**", ".mcp.json", ".github/workflows/agentshield.yml"]
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Scan
+        run: |
+          npm i -s --ignore-scripts --no-save ecc-agentshield@1.6.0
+          npx --no-install agentshield scan --path . --format markdown > agentshield.md || true
+          cat agentshield.md >> "$GITHUB_STEP_SUMMARY"
+          CRIT=$(grep -E '^\| Critical \|' agentshield.md | grep -oE '[0-9]+' | head -1)
+          echo "critical findings: ${CRIT:-unknown}"
+          [ "${CRIT:-1}" = "0" ]
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: agentshield-report, path: agentshield.md, retention-days: 7 }

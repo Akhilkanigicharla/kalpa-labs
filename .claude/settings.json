@@ -6,7 +6,11 @@
     "TRADINGAGENTS_NO_UPDATE_CHECK": "1",
     "HEADROOM_TELEMETRY": "off"
   },
-  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["playwright"],
+  "permissions": {
+    "deny": ["Read(./**/.env)", "Read(./**/.env.*)", "Read(./**/*.pem)", "Read(./**/*.key)",
+             "Bash(sudo:*)", "Bash(ssh:*)", "Bash(chmod 777:*)"]
+  },
   "hooks": {
     "SessionStart": [
       {

@@ -98,8 +98,10 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         llm = GeminiLiveLLMService(api_key=os.getenv("GOOGLE_API_KEY"), voice_id=os.getenv("GEMINI_VOICE", "Aoede"),
                                    system_instruction=P.system_prompt(cfg), tools=ToolsSchema(standard_tools=schemas))
     else:
-        # codemix: understands Tenglish/Hinglish the way people actually speak
-        stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), mode="codemix", settings=SarvamSTTService.Settings(model="saaras:v3"))
+        # codemix: understands Tenglish/Hinglish the way people actually speak. saaras:v4 + keyterms (Pipecat 1.13):
+        # the business name, services and areas are biased so "Glow Studio" / "hair spa" are heard right.
+        stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), mode="codemix", keyterms=T.stt_keyterms(cfg),
+                               settings=SarvamSTTService.Settings(model=T.STT_MODEL))
         tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice=vp["voice"], language=T.pipecat_language(cfg), pace=vp["pace"], temperature=vp["temperature"]))
         llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model="llama-3.3-70b-versatile"))
 

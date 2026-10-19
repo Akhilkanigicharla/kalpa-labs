@@ -1,0 +1,5 @@
+# Ledger Peaks: Indian AI companies (public company websites)
+Sarvam AI|https://www.sarvam.ai/
+Haptik|https://www.haptik.ai/
+Gupshup|https://www.gupshup.io/
+Yellow.ai|https://yellow.ai/

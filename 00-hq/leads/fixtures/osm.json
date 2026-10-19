@@ -1,0 +1,7 @@
+{"elements":[
+ {"type":"node","id":1,"tags":{"name":"Glow Salon","shop":"hairdresser","website":"glow-salon.test","phone":"+91 90000 11111","addr:suburb":"Ameerpet"}},
+ {"type":"node","id":2,"tags":{"name":"Booked Spa","amenity":"spa","website":"https://booked-salon.test"}},
+ {"type":"node","id":3,"tags":{"name":"No Site Parlour","shop":"beauty","phone":"+91 90000 33333"}},
+ {"type":"node","id":4,"tags":{"name":"Maps Copy","shop":"beauty","website":"https://maps.google.com/?cid=1"}},
+ {"type":"node","id":5,"tags":{"name":"Glow Salon","shop":"hairdresser"}}
+]}

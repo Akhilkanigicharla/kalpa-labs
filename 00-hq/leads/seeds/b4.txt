@@ -1,0 +1,4 @@
+# Tab Lifeboat partners: directories and blogs that list browser extensions / productivity tools
+AlternativeTo|https://alternativeto.net/
+SaaSHub|https://www.saashub.com/
+Zapier blog|https://zapier.com/blog/

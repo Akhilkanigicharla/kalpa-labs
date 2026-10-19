@@ -1,0 +1,5 @@
+# Trading Lab research sources only (SEBI: paper trading, nothing sold)
+Kite Connect (Zerodha)|https://kite.trade/
+Upstox API|https://upstox.com/developer/api-documentation/open-api/
+Dhan API|https://dhanhq.co/
+Angel One SmartAPI|https://smartapi.angelbroking.com/

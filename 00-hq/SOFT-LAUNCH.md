@@ -6,8 +6,8 @@ Decided by Akhil on 18 Oct 2026 (C13). Goal: **real customers, real rupees, real
 
 | Date | What happens | Why this date |
 |---|---|---|
-| **Mon 16 Nov 2026 · Pilot Day** (29 days away) | First real salon on BotBhai (free pilot); Telugu deals channel posting daily; UPI payments switched on | Sravana nakshatra all day IST (Akhil's janma nakshatra). Checked on drikpanchang.com and prokerala.com: 15 Nov 23:28 → 17 Nov 02:16 IST |
-| **Sun 13 Dec 2026 · Soft launch** (56 days away) | Public: BotBhai salon plans + Social Team add-on, Kits + Claude Skill pack, deals channel, workshop sign-ups | Sravana nakshatra from 06:12 IST (13 Dec 06:12 → 14 Dec 09:12, same two sources). 8 weeks fits Akhil's 1 hour a day for the CEO steps below |
+| **Mon 16 Nov 2026 · Pilot Day** | First real salon on BotBhai (free pilot); Telugu deals channel posting daily; UPI payments switched on | Sravana nakshatra all day IST (Akhil's janma nakshatra). Checked on drikpanchang.com and prokerala.com: 15 Nov 23:28 → 17 Nov 02:16 IST |
+| **Sun 13 Dec 2026 · Soft launch** | Public: BotBhai salon plans + Social Team add-on, Kits + Claude Skill pack, deals channel, workshop sign-ups | Sravana nakshatra from 06:12 IST (13 Dec 06:12 → 14 Dec 09:12, same two sources). 8 weeks fits Akhil's 1 hour a day for the CEO steps below |
 
 Numerology, for the record: 13-12-2026 adds up to 8 and 16-11-2026 to 1; the 6-days near them (6 Dec, 15 Nov) miss Sravana. Readiness and Sravana won the tie. Astrology is Akhil's choice of timing, not a business forecast.
 

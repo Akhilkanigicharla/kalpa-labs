@@ -126,7 +126,7 @@ Inside Claude Code, run `/plugin` and confirm that **claude-code-setup** and **h
 |---|---|
 | ECC | Installs 311 skills and hooks, edits `settings.json`, and has Windows defects. It overlaps Superpowers. |
 | Impeccable | Telemetry is on by default, it downloads a binary, and its hooks run outside tool approval. |
-| ponytail | Review its `hooks/` and `scripts/` folders first. |
+| ponytail | Reviewed 19 Oct: hooks are safe, but we only use its skill (vendored in `00-hq/vendor/ponytail/`, linked from CLAUDE.md). No need to install the plugin. |
 | codebase-memory MCP | Unsigned Windows binary. Only worth it for very large repos. |
 | graphify, headroom | Need Python on the PC (rule 2). Run them in cloud sessions instead. |
 | Zapier MCP | n8n already covers it, and the free plan is tiny. |

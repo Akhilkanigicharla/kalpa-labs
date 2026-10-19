@@ -2,10 +2,8 @@
 # Akhil, once: Settings → Pages → Source "GitHub Actions"; Settings → Secrets and variables → Actions → Variables →
 # CONTACT_EMAIL = the support address shown in the policy. The build refuses to publish without it.
 name: Tab Lifeboat site
+# Manual only (CLAUDE.md rule 9): nothing goes public until Akhil says "go" and presses Run workflow himself.
 on:
-  push:
-    branches: [main]
-    paths: ["04-extensions/site/**", "04-extensions/store/*.png", "00-hq/design/tokens.css", ".github/workflows/extension-site.yml"]
   workflow_dispatch:
 permissions: { contents: read, pages: write, id-token: write }
 concurrency: { group: extension-site, cancel-in-progress: true }

@@ -104,7 +104,7 @@ def collect(city, niche, near=None, radius=1000):
             "late": is_late(t.get("opening_hours", "")),
         }
         row["score"] = score(row)
-        row["why_botbhai"] = PITCH[niche] + ("" if row["website"] else " No website listed — offer a free one-page site with the bot.")
+        row["why_botbhai"] = PITCH[niche] + ("" if row["website"] else " No website listed: offer a free one-page site with the bot.")
         row["status"] = "new"; row["notes"] = ""
         rows.append(row)
     rows.sort(key=lambda r: -r["score"])

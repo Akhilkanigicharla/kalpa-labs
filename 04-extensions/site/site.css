@@ -11,7 +11,7 @@ a{color:var(--world);text-underline-offset:3px}
 a,button{touch-action:manipulation}
 .temple{height:8px;background:radial-gradient(circle at 4px 3px,var(--gold) 1.6px,transparent 2px) 0 0/8px 8px,var(--hero)}
 .wrap{max-width:880px;margin:0 auto;padding:0 20px}
-nav.top{display:flex;align-items:center;justify-content:space-between;gap:4px 12px;padding-block:14px;flex-wrap:wrap}
+nav.top{display:flex;align-items:center;justify-content:space-between;gap:4px 12px;padding-block:16px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font:400 22px var(--f-display);color:var(--fg);text-decoration:none}
 .brand img{width:32px;height:32px}
 nav.top .links{display:flex;gap:16px;font-size:15px;font-weight:600}
@@ -23,15 +23,15 @@ h2{font-size:28px;margin-top:40px}
 h3{font-size:18px;margin:20px 0 6px}
 p{margin:0 0 12px}
 .lede{font-size:20px;color:var(--muted);max-width:40ch}
-.hero{padding:36px 0 12px}
+.hero{padding:40px 0 12px}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
-.btn{display:inline-flex;align-items:center;min-height:48px;padding:10px 18px;border-radius:var(--r-m);background:var(--world);color:var(--accent-fg);font-weight:700;text-decoration:none;border:0;
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:10px 16px;border-radius:var(--r-m);background:var(--world);color:var(--accent-fg);font-weight:700;text-decoration:none;border:0;
   transition:transform 120ms cubic-bezier(.23,1,.32,1)}
 .btn:active{transform:scale(.97)}
 .btn.line{background:transparent;color:var(--world);border:1px solid var(--rule)}
 .btn[aria-disabled=true]{opacity:.6;cursor:default}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:18px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:16px;box-shadow:var(--shadow)}
 .card h3{margin-top:0}
 .price{font:700 26px var(--f-body);font-variant-numeric:tabular-nums}
 .tag{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;background:color-mix(in srgb,var(--world) 14%,transparent);color:var(--world)}

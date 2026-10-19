@@ -8,24 +8,25 @@
 <link rel="stylesheet" href="../../00-hq/design/tokens.css">
 <link rel="stylesheet" href="lp.css">
 <style>
-header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
 header.top nav{display:flex;gap:6px}
 header.top nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 10px;color:var(--hero-fg);text-decoration:none;font-weight:600}
 @media (max-width:760px){header.top nav .hide-s{display:none}}
-.hero-in{padding:28px 0 36px;display:grid;gap:24px}
+.hero-in{padding:28px 0 40px;display:grid;gap:24px}
 .hero h1 em{font-style:normal;color:var(--gold)}
 .lede{font-size:18px;color:var(--hero-mute);max-width:36em}
 .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.peek{background:var(--panel);color:var(--fg);border-radius:var(--r-l);padding:18px;border:1px solid var(--rule)}
+.peek{background:var(--panel);color:var(--fg);border-radius:var(--r-l);padding:16px;border:1px solid var(--rule)}
 .peek .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--rule)}
 .peek .row:first-of-type{border-top:0}
-section{padding:36px 0}
-.grid{display:grid;gap:14px}
-@media (min-width:760px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c4{grid-template-columns:repeat(4,1fr)}.hero-in{grid-template-columns:1.2fr 1fr;align-items:center}}
-.step b{font:400 28px/1 var(--f-display);color:var(--world);display:block;margin-bottom:6px}
+section{padding:40px 0}
+.grid{display:grid;gap:16px}
+@media (min-width:760px){.grid.c4{grid-template-columns:repeat(4,1fr)}.hero-in{grid-template-columns:1.2fr 1fr;align-items:center}}
+.steps{display:grid;max-width:760px}.step{display:grid;grid-template-columns:48px 1fr;column-gap:16px;padding:16px 0;border-top:1px solid var(--rule)}.step h3{margin:0}.step p{margin:4px 0 0}
+.step b{font:400 28px/1 var(--f-display);color:var(--world);grid-row:span 2}
 .price .big{font-size:32px}
 .price.best{outline:2px solid var(--gold)}
-.price ul{padding-left:18px;margin:8px 0 0}
+.price ul{padding-left:16px;margin:8px 0 0}
 details{border-top:1px solid var(--rule);padding:12px 0}
 details summary{cursor:pointer;font-weight:700;min-height:28px}
 footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
@@ -42,11 +43,11 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
     </header>
     <div class="hero-in rise">
       <div>
-        <p class="eyebrow">For Indian SaaS and AI teams</p>
         <h1>Which customer is your AI bill <em>eating?</em></h1>
+        <p class="eyebrow">For Indian SaaS and AI teams</p>
         <p class="lede">Send us last month's usage export. In 48 hours you get a 2-page X-ray: your OpenAI, Claude and Gemini spend in rupees, per customer and per feature, 3 ways to cut it, and your DPDP readiness score.</p>
         <div class="ctas"><a class="btn btn-primary" href="#xray">Get my free X-ray</a><a class="btn btn-ghost" href="xray.html">See a sample X-ray</a></div>
-        <p class="muted" style="margin-top:14px;font-size:14px">Metadata only: model, token counts, a hashed customer id. We never see prompts or replies.</p>
+        <p class="muted" style="margin-top:16px;font-size:14px">Metadata only: model, token counts, a hashed customer id. We never see prompts or replies.</p>
       </div>
       <div class="peek" aria-label="Numbers from the sample X-ray">
         <p class="eyebrow">Sample X-ray · <span data-lp="company" data-lp-fmt="raw"></span></p>
@@ -62,14 +63,14 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
 
 <main class="wrap">
   <section id="how">
-    <p class="eyebrow">How it works</p>
     <h2>Three steps, no SDK, no prompts</h2>
-    <div class="grid c3">
-      <div class="card cap step"><b>1</b><h3>Export</h3><p>Download your usage file: OpenAI or Anthropic usage export, LiteLLM spend log, Langfuse export, or any CSV with model and tokens.</p></div>
-      <div class="card cap step"><b>2</b><h3>We price it in ₹</h3><p>Every call priced with open price data and the day's RBI/FBIL dollar rate. Unknown models are flagged "unpriced", never counted as ₹0.</p></div>
-      <div class="card cap step"><b>3</b><h3>You get the X-ray</h3><p>Cost by customer, feature and model, the 3 biggest savings with their assumptions, a GST reverse-charge note and a DPDP score out of 20.</p></div>
+    <p class="eyebrow">How it works</p>
+    <div class="steps">
+      <div class="step"><b>1</b><h3>Export</h3><p>Download your usage file: OpenAI or Anthropic usage export, LiteLLM spend log, Langfuse export, or any CSV with model and tokens.</p></div>
+      <div class="step"><b>2</b><h3>We price it in ₹</h3><p>Every call priced with open price data and the day's RBI/FBIL dollar rate. Unknown models are flagged "unpriced", never counted as ₹0.</p></div>
+      <div class="step"><b>3</b><h3>You get the X-ray</h3><p>Cost by customer, feature and model, the 3 biggest savings with their assumptions, a GST reverse-charge note and a DPDP score out of 20.</p></div>
     </div>
-    <p class="sources" style="margin-top:14px"><span class="pill">OpenAI</span><span class="pill">Anthropic</span><span class="pill">Gemini</span><span class="pill">LiteLLM</span><span class="pill">Langfuse</span><span class="pill">CSV / JSONL</span></p>
+    <p class="sources" style="margin-top:16px"><span class="pill">OpenAI</span><span class="pill">Anthropic</span><span class="pill">Gemini</span><span class="pill">LiteLLM</span><span class="pill">Langfuse</span><span class="pill">CSV / JSONL</span></p>
   </section>
 
   <section>
@@ -80,8 +81,8 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
   </section>
 
   <section id="pricing">
-    <p class="eyebrow">Pricing · excludes GST</p>
     <h2>Start free. Pay when it saves you money.</h2>
+    <p class="eyebrow">Pricing · excludes GST</p>
     <div class="grid c4">
       <div class="card price"><p class="eyebrow">X-ray</p><p class="big">₹0</p><p class="muted">one-off</p><ul><li>2-page PDF in 48 h</li><li>3 savings ideas</li><li>DPDP score /20</li></ul></div>
       <div class="card price best"><p class="eyebrow">Audit + Starter Pack</p><p class="big">₹4,999</p><p class="muted">one-off</p><ul><li>X-ray + 45-min call</li><li>Model-routing plan</li><li>DPDP / Art. 50 gap list</li><li>AI section of your security questionnaire</li></ul></div>
@@ -92,8 +93,8 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
 
   <section id="xray">
     <div class="card cap">
-      <p class="eyebrow">Free X-ray</p>
       <h2>Send your export, get your X-ray in 48 hours</h2>
+      <p class="eyebrow">Free X-ray</p>
       <p>Mockup: in the live page this button opens an upload form. Strip prompts before you send; hash your customer ids (our script does it for you).</p>
       <button class="btn btn-primary" type="button" disabled aria-disabled="true">Upload usage export (coming soon)</button>
     </div>
@@ -108,7 +109,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
   </section>
 </main>
 <footer class="wrap">
-  <div class="temple" style="margin-bottom:14px"></div>
+  <div class="temple" style="margin-bottom:16px"></div>
   Ledger Peaks is a Kalpa Labs product, Hyderabad. Sample numbers on this page are synthetic, priced with the real engine at the FBIL rate of <span data-lp="fx.date" data-lp-fmt="date"></span> (₹<span data-lp="fx.inr_per_usd" data-lp-fmt="raw"></span>/$).
 </footer>
 <script id="lp-data" type="application/json">{"company":"Chaiwala AI (sample)","period":{"from":"2026-10-12","to":"2026-10-18","days":7},"fx":{"date":"2026-10-12","inr_per_usd":"95.7485","source":"RBI home page 'Current Rates' (FBIL reference rate, as at 1.00pm of October 12, 2026)"},"total_week":2348347,"total_month":10203567,"rows":189,"calls":54091,"by_model":{"claude-sonnet-4-5":1365532,"gpt-4o":676612,"gemini-2.5-flash":275615,"gpt-4o-mini":30588},"by_feature":{"support_reply":1365532,"classify":676612,"rag_search":275615,"summarise":30588},"by_day":{"2026-10-12":345375,"2026-10-13":362808,"2026-10-14":379841,"2026-10-15":345375,"2026-10-16":396960,"2026-10-17":276299,"2026-10-18":241689},"customers":[{"name":"Biryani Bazaar","id":"c_d63f6363743af20e","week":1419728,"month":6168718,"revenue_month":5999900,"margin_pct":-2.8,"calls":30736,"by_feature":{"support_reply":881081,"rag_search":132172,"summarise":15822,"classify":390653},"month_after_top_idea":4573178,"margin_after_top_idea_pct":23.8},{"name":"Kirana Cloud","id":"c_ae27e6c7b42ee08a","week":478608,"month":2079551,"revenue_month":3499900,"margin_pct":40.6,"calls":11900,"by_feature":{"support_reply":254535,"rag_search":75527,"summarise":7910,"classify":140636},"month_after_top_idea":1505156,"margin_after_top_idea_pct":57.0},{"name":"MedPlus Lite","id":"c_a40a3aaef4f37d5d","week":220908,"month":959845,"revenue_month":1999900,"margin_pct":52.0,"calls":5304,"by_feature":{"support_reply":117478,"rag_search":37762,"summarise":3164,"classify":62504},"month_after_top_idea":704564,"margin_after_top_idea_pct":64.8},{"name":"Auto Adda","id":"c_7a8566db3df6cd9e","week":134481,"month":584319,"revenue_month":999900,"margin_pct":41.6,"calls":3399,"by_feature":{"support_reply":68528,"rag_search":16965,"summarise":2109,"classify":46879},"month_after_top_idea":392857,"margin_after_top_idea_pct":60.7},{"name":"Saree Studio","id":"c_3bc067caff84b22c","week":63277,"month":274938,"revenue_month":499900,"margin_pct":45.0,"calls":1903,"by_feature":{"support_reply":29369,"rag_search":9413,"summarise":1055,"classify":23440},"month_after_top_idea":179201,"margin_after_top_idea_pct":64.2},{"name":"Tiffin Tracker","id":"c_7ba307ce17cffaeb","week":31345,"month":136194,"revenue_month":299900,"margin_pct":54.6,"calls":849,"by_feature":{"support_reply":14541,"rag_search":3776,"summarise":528,"classify":12500},"month_after_top_idea":85136,"margin_after_top_idea_pct":71.6}],"unpriced":{"models":["sarvam/sarvam-m"],"rows":21,"tokens":2196400,"calls":1292},"savings":[{"id":"downgrade","title":"Classify with gpt-4o-mini instead of gpt-4o","feature":"classify","now":676612,"after":40599,"assumption":"a 1-word label task; test 200 real tickets first and keep gpt-4o if accuracy drops more than 2 points","saved_week":636013,"by_customer_week":{"c_d63f6363743af20e":367213,"c_ae27e6c7b42ee08a":132197,"c_a40a3aaef4f37d5d":58753,"c_7a8566db3df6cd9e":44065,"c_3bc067caff84b22c":22034,"c_7ba307ce17cffaeb":11751},"saved_month":2763476},{"id":"cache","title":"Cache the repeated support prompt","feature":"support_reply","now":1365532,"after":894735,"assumption":"70% of each support_reply input is the same system prompt and FAQ block (today 10% is cached); Anthropic charges 10% for cache reads","saved_week":470797,"by_customer_week":{"c_d63f6363743af20e":303773,"c_ae27e6c7b42ee08a":87758,"c_a40a3aaef4f37d5d":40502,"c_7a8566db3df6cd9e":23625,"c_3bc067caff84b22c":10125,"c_7ba307ce17cffaeb":5014},"saved_month":2045612},{"id":"batch","title":"Run nightly summaries through the Batch API","feature":"summarise","now":30588,"after":15297,"assumption":"summaries can wait up to 24 h; OpenAI Batch API is 50% off","saved_week":15291,"by_customer_week":{"c_d63f6363743af20e":7911,"c_ae27e6c7b42ee08a":3954,"c_a40a3aaef4f37d5d":1581,"c_7a8566db3df6cd9e":1054,"c_3bc067caff84b22c":528,"c_7ba307ce17cffaeb":263},"saved_month":66439}],"savings_month":4875527,"gst_rcm_month":1836642,"dpdp":{"score":12,"of":20,"questions":[{"q":"Do you have a written list of every AI feature that touches personal data?","ok":true},{"q":"Is the purpose of each AI feature written in your privacy notice?","ok":true},{"q":"Does the notice name the AI providers you send data to?","ok":false},{"q":"Is there a consent or other lawful basis recorded for each purpose?","ok":true},{"q":"Can a user withdraw consent as easily as they gave it?","ok":false},{"q":"Do you strip phone numbers, Aadhaar and PAN before prompts leave India?","ok":false},{"q":"Do you know which provider regions (US, EU, India) receive your data?","ok":true},{"q":"Do provider contracts say they won't train on your data?","ok":true},{"q":"Are prompts and outputs deleted on a fixed schedule?","ok":false},{"q":"Is the retention period written down per feature?","ok":false},{"q":"Can you find and delete one user's data across AI logs on request?","ok":false},{"q":"Is there a named person who answers data requests (grievance officer)?","ok":true},{"q":"Do you log who accessed AI logs and when?","ok":true},{"q":"Is access to raw prompts limited to named staff?","ok":true},{"q":"Do you have a breach plan that covers your AI provider leaking data?","ok":false},{"q":"Could you tell the Data Protection Board and users within 72 hours?","ok":false},{"q":"Do you tell users when they are talking to an AI, not a person?","ok":true},{"q":"Are children's accounts blocked or handled with parental consent?","ok":true},{"q":"Have you checked whether you could be a Significant Data Fiduciary?","ok":true},{"q":"Is this checklist reviewed at least once a year?","ok":true}]},"weeks_per_month":"4.345"}</script>

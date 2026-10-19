@@ -55,14 +55,14 @@ function dueView(v) {
 
 function customersView(v) {
   const list = filterCustomers(v.customers, query);
-  return `<label class="field" style="margin-top:14px"><input id="q" type="search" enterkeyhint="search" placeholder="${esc(L("search"))}" value="${esc(query)}" aria-label="${esc(L("search"))}"></label>
+  return `<label class="field" style="margin-top:16px"><input id="q" type="search" enterkeyhint="search" placeholder="${esc(L("search"))}" value="${esc(query)}" aria-label="${esc(L("search"))}"></label>
     <ul class="list">${list.map((c) => `<li class="card"><div class="row"><div><p class="name">${esc(c.name)}</p><p class="meta">${esc(c.area || "")}${c.phone ? " · " + esc(c.phone) : ""}</p></div>
       <div style="text-align:right"><p class="num">${esc(rupees(c.spentPaise))}</p><p class="meta">${c.lastVisit ? esc(nice(c.lastVisit)) : ""}</p></div></div>
       ${c.phone ? `<label class="tick"><input type="checkbox" data-opt="${esc(c.id)}" ${c.opted_in_whatsapp ? "checked" : ""}>${esc(L("optIn"))}</label>` : ""}</li>`).join("")}</ul>`;
 }
 
 function billsView(v) {
-  return `<section class="card stat" style="margin-top:14px"><span>${esc(L("unpaid"))}</span><span class="num">${esc(rupees(v.unpaidPaise))}</span></section>
+  return `<section class="card stat" style="margin-top:16px"><span>${esc(L("unpaid"))}</span><span class="num">${esc(rupees(v.unpaidPaise))}</span></section>
     <h2>${esc(L("bills"))} · ${v.bills.length}</h2><ul class="list">${v.bills.map((b) => `<li class="card row"><div><p class="name">${esc(b.customer)}</p><p class="meta">${esc(b.number)} · ${esc(nice(b.issued_on))}</p></div>
       <div style="text-align:right"><p class="num">${esc(rupees(b.payable_paise))}</p><span class="tag ${b.paid ? "ok" : "late"}">${esc(b.paid ? L("paid") : L("notPaid"))}</span></div></li>`).join("")}</ul>`;
 }

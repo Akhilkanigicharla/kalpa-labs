@@ -9,10 +9,10 @@
 *{box-sizing:border-box}
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;overscroll-behavior:none;background:var(--bg)}
 body{margin:0;min-height:100dvh;background:var(--bg);color:var(--fg);font:400 16px/1.5 var(--f-body);
-  padding:0 0 calc(76px + env(safe-area-inset-bottom,0px))}
+  padding:0 0 calc(80px + env(safe-area-inset-bottom,0px))}
 html[lang=te] body{font-family:"Anek Telugu",var(--f-body)}
 h1,h2{font-family:var(--f-display);font-weight:400;line-height:1.15;margin:0}
-h2{font-family:inherit;font-weight:700;font-size:15px;color:var(--muted);letter-spacing:.02em;margin:18px 0 8px}
+h2{font-family:inherit;font-weight:700;font-size:15px;color:var(--muted);letter-spacing:.02em;margin:16px 0 8px}
 p{margin:0}
 button,a,[role=button],label.tick{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 input,select,textarea{font:inherit;font-size:16px}
@@ -23,7 +23,7 @@ input,select,textarea{font:inherit;font-size:16px}
 .sub{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 main{max-width:600px;margin:0 auto;padding:0 16px}
 .banner{max-width:568px;margin:4px max(16px,calc((100% - 568px)/2)) 0;padding:8px 12px;border-radius:var(--r-s);background:var(--soft);color:var(--muted);font-size:13px}
-.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:12px 14px;box-shadow:var(--shadow)}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:12px 16px;box-shadow:var(--shadow)}
 .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .name{font-weight:700;overflow-wrap:anywhere}
@@ -33,7 +33,7 @@ main{max-width:600px;margin:0 auto;padding:0 16px}
 .tag.late{background:color-mix(in srgb,var(--madder) 14%,transparent);color:var(--madder)}
 .tag.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
 .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 14px;border-radius:var(--r-m);border:0;
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 16px;border-radius:var(--r-m);border:0;
   font:inherit;font-weight:700;text-decoration:none;cursor:pointer;background:var(--accent);color:var(--accent-fg);
   transition:transform 120ms var(--ease-out),opacity 120ms}
 .btn.wa{background:var(--ok);color:var(--accent-fg);flex:1}
@@ -49,7 +49,7 @@ label.tick{display:flex;gap:8px;align-items:center;min-height:44px;font-size:13p
 label.tick input{width:22px;height:22px;accent-color:var(--world)}
 .stat{display:flex;justify-content:space-between;align-items:baseline}
 .stat .num{font-size:22px}
-.mic{display:grid;place-items:center;width:132px;height:132px;margin:18px auto 8px;border-radius:50%;border:6px solid var(--panel);background:var(--gold);color:var(--hero);
+.mic{display:grid;place-items:center;width:132px;height:132px;margin:16px auto 8px;border-radius:50%;border:6px solid var(--panel);background:var(--gold);color:var(--hero);
   font-size:40px;cursor:pointer;transition:transform 120ms var(--ease-out),border-color 150ms}
 .mic:active{transform:scale(.97)}
 .mic.on{border-color:var(--madder)}

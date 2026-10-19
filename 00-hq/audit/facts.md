@@ -26,3 +26,17 @@
 | GLM-5.3-Flash base weights are MIT | VERIFIED (2 sources) | 2026-10-19 | llmreference.com (MIT, zai-org/GLM-5.3-Flash); contextstudios.ai (base model MIT) |
 | GLM-5.3-Flash is free on OpenRouter (`z-ai/glm-5.3-flash:free`) | WRONG | 2026-10-19 | Live n8n test run 100: OpenRouter replied "This model is unavailable for free. The paid version is available". The model page still shows a :free listing (stale). |
 | Name clash: "Kalpa Labs" is already used by a YC F25 speech-AI company (kalpalabs.ai, San Francisco, founders Gautam Jha, Prashant Shishodia, Hindi/English TTS) | VERIFIED (2 sources) | 2026-10-19 | kalpalabs.ai; ycombinator.com/companies/kalpa-labs (also Tracxn, Crunchbase) -> brand/trademark risk, CEO decision |
+| Supabase Free: 2 active projects, 500 MB DB, 5 GB egress, pauses after 1 week idle; Pro from $25/mo (compute billed on top, $10 compute credit included) | VERIFIED | 2026-10-19 | supabase.com/pricing; cloudzero.com/blog/supabase-pricing |
+| Netlify Free: 300 credits/mo (prod deploy 15, 1 GB 20, failed deploys 0); every site on the team pauses at 0; Personal $9/mo | VERIFIED | 2026-10-19 | netlify.com/pricing; docs.netlify.com how-credits-work; netli.fyi |
+| Razorpay: 0% platform fee on first ₹5 L domestic GMV or 90 days, whichever first; only merchants activated on/after 1 Jul 2026 with no past transactions; excludes prepaid/corporate cards, Amex, Diners, EMI, international; then 2% + 18% GST; ₹199 + tax KYC fee "may be charged" | VERIFIED | 2026-10-19 | razorpay.com/terms/90-day-free-pg-offer; razorpay.com/blog pricing |
+| Groq free: gpt-oss-20b and gpt-oss-120b each 30 RPM, 1,000 RPD, 8K TPM, 200K TPD | VERIFIED | 2026-10-19 | console.groq.com/docs/rate-limits; klymentiev.com/blog/groq-pricing |
+| OpenRouter `:free` models: 20 RPM, 50 requests/day if under $10 credits ever bought; 1,000/day after ≥$10 | VERIFIED | 2026-10-19 | openrouter.ai/docs/api-reference/limits; klymentiev.com/blog/openrouter-free-tier |
+| Cloudflare Turnstile free plan: 20 widgets, 10 hostnames each, Managed/Non-interactive/Invisible modes | VERIFIED | 2026-10-19 | developers.cloudflare.com/turnstile/plans; prosopo.io |
+| Supabase hosted dashboard "Test phone numbers" for phone OTP; real SMS needs a paid provider | UNVERIFIED | 2026-10-19 | providers listed on supabase.com/docs/guides/auth/phone-login; test numbers only in community discussion 5358 |
+| Google Play Console one-time US$25 | VERIFIED | 2026-10-19 | support.google.com/googleplay/android-developer/answer/6112435; primetestlab.com |
+| Chrome Web Store one-time fee is US$5 | UNVERIFIED (amount) | 2026-10-19 | developer.chrome.com/docs/webstore/register says one-time, no amount; third-party only for $5 |
+| India trademark e-filing ₹4,500/class (individual, DPIIT startup, MSME with Udyam) | UNVERIFIED | 2026-10-19 | intepat.com; trademarkfilingcost.com; ipindia.gov.in not fetchable |
+| Udyam registration and updates (NIC codes) are free | VERIFIED | 2026-10-19 | udyamregistration.gov.in; patronaccounting.com |
+| GitHub Free: 2,000 Actions minutes/month on private repos; public repos free on standard runners | VERIFIED | 2026-10-19 | docs.github.com Actions billing; cicdcalculator.com |
+| Shravana nakshatra covers all of 16 Nov 2026 and 13 Dec 2026 from sunrise (IST) | VERIFIED | 2026-10-19 | drikpanchang.com; prokerala.com |
+| 00-hq/PLAN.md BotBhai prices (₹9,999 + ₹2,999; founding ₹4,999 + ₹1,999) | WRONG (stale) | 2026-10-19 | 01-botbhai/PLAN.md §2 + prices.json: founding ₹2,999 + ₹1,499; fix = A65 |

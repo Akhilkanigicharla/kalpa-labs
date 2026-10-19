@@ -20,6 +20,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 6. **Every UI uses the Kalpa design system** in `00-hq/design/` (tokens.css, DESIGN-SYSTEM.md, free toolkit list). No new palettes or fonts; tune per world with that world's `--lN` colour. Check light + dark at 390 px before ticking.
 7. Keep files where the map says. New world code goes in that world's folder; nothing at the repo root except README.md, CLAUDE.md and config.
 8. **Verify before advising:** never tell Akhil to sign up, pay, install or decide based on an unchecked claim. Follow `00-hq/audit/README.md`: provider's own page fetched today + a second source, or a live test; say "unverified" otherwise. Free = recurring and no card; one-time credits are "trial credit".
+9. **Nothing goes public until Akhil says "go"** (Akhil, 19 Oct 2026): no Netlify/Pages/store deploys, no publishing n8n workflows with public URLs (webhooks, chat, forms), no posts, no public artifacts, no messages to customers. Build and test privately (local, preview, test runs), show proof, then wait for the word "go" for that specific thing. Earlier "deploy" approvals do not carry over.
 
 ## Build sprint procedure
 Use the Superpowers skills (plugin `superpowers:*`, or read `00-hq/vendor/superpowers/skills/<name>/SKILL.md` if the plugin isn't loaded): `writing-plans` before building, `test-driven-development` while building, `systematic-debugging` on failures and `verification-before-completion` before any tick.

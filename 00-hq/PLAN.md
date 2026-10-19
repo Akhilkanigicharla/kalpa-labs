@@ -6,7 +6,7 @@
 
 ## 1. Verdict
 
-Kalpa Labs makes money by **selling one high-ticket service first and running the cheap products in the background**. BotBhai Salon (₹9,999 setup + ₹2,999/month) is already built and needs only selling, so it gets most of the CEO's hour from tomorrow. Agents build the Kits (₹199–499) and the calculator/deals site alongside it, at almost no CEO cost. FinOps (₹1,999–7,999/month) starts as a paid audit in month 2. JobCard is timed to launch for the March 2027 AC season. The Extension waits for a free slot. Trading stays on paper and adds ₹0 revenue in year 1.
+Kalpa Labs makes money by **selling one high-ticket service first and running the cheap products in the background**. BotBhai Salon (Standard ₹4,999 setup + ₹2,999/month; Founding ₹2,999 + ₹1,499/month) is already built and needs only selling, so it gets most of the CEO's hour from tomorrow. Agents build the Kits (₹199–499) and the calculator/deals site alongside it, at almost no CEO cost. FinOps (₹1,999–7,999/month) starts as a paid audit in month 2. JobCard is timed to launch for the March 2027 AC season. The Extension waits for a free slot. Trading stays on paper and adds ₹0 revenue in year 1.
 
 **Company revenue, all worlds combined (₹, gross receipts):**
 
@@ -24,7 +24,7 @@ Kalpa Labs makes money by **selling one high-ticket service first and running th
 
 | World | Who pays | Flagship offer and price ladder | Why they buy now | Competitor alternatives (price) |
 |---|---|---|---|---|
-| **b1 BotBhai** | Salon owners in Hyderabad, then gyms (Jan) and coaching institutes | Founding 3 clients: ₹4,999 setup + ₹1,999/month. Standard Salon: ₹9,999 + ₹2,999. Gym: ₹9,999 + ₹3,499. Coaching: ₹14,999 + ₹4,999. Ads add-on: ₹2,000/month | Wedding season (Nov–Feb) means bridal enquiries go unanswered. The README's worked example shows about ₹14k/month of no-shows recovered | WATI Growth ₹2,499/mo, Interakt Starter ₹999/mo, AiSensy Basic ₹1,500/mo. All are DIY software with Meta fees plus markup, and none is set up for the owner |
+| **b1 BotBhai** | Salon owners in Hyderabad, then gyms (Jan) and coaching institutes | Founding 3 clients: ₹2,999 setup + ₹1,499/month for months 1–3, then ₹1,999. Lite: ₹1,999 + ₹999. Standard Salon: ₹4,999 + ₹2,999. Pro: ₹9,999 + ₹4,999. Gym Standard: ₹6,999 + ₹3,499. Coaching Standard: ₹9,999 + ₹4,999 (ladder: `01-botbhai/PLAN.md` §2). Ads add-on: ₹2,000/month | Wedding season (Nov–Feb) means bridal enquiries go unanswered. The README's worked example shows about ₹14k/month of no-shows recovered | WATI Growth ₹2,499/mo, Interakt Starter ₹999/mo, AiSensy Basic ₹1,500/mo. All are DIY software with Meta fees plus markup, and none is set up for the owner |
 | **b3 Kits** | Telugu-state exam aspirants; salaried people doing tax/SIP | One kit ₹199–299, bundle ₹499 (Sheet + per-buyer stamped PDF) | Exam notification dates and tax season (Jan–Mar declarations) | Testbook/Adda247 passes (sold at deep festive discounts; P3 to verify current prices), free YouTube PDFs |
 | **b5 Deals & Tools** | Advertisers and affiliate programmes (not the reader) | Free calculators plus a Telugu deals channel; income from Amazon/affiliate commissions, later newsletter sponsorships | Traffic compounds, so the earliest start wins | Groww/ClearTax calculators (free); existing Telugu deal channels |
 | **b6 FinOps** | Indian AI startups and SaaS teams spending ₹50k+/month on LLM APIs | Entry: one-off "AI cost + DPDP readiness audit" at ₹4,999. Then ₹1,999 / ₹3,999 / ₹7,999 per month | DPDP core duties apply from **12 May 2027**; LLM bills are rising | Langfuse Core $29/mo, Helicone Pro $79/mo (cost only, no INR or DPDP pack); compliance consultants |
@@ -58,7 +58,7 @@ Kalpa Labs makes money by **selling one high-ticket service first and running th
 | GitHub Actions | Free minutes on private repos | Lead finder, paper trading, Lighthouse, Presidio jobs | Keep heavy jobs on public test repos or Colab |
 | Razorpay offer | 0% fees for ₹5 L GMV or 90 days from activation | Kits + BotBhai collections | **Activate only when Kit #1 is ready** to use all 90 days |
 
-**Company break-even:** at likely numbers, revenue exceeds all running costs from **month 2** (₹5,400 in vs ≈ ₹1,435 out).
+**Company break-even:** at likely numbers, revenue exceeds all running costs from **month 2** (₹4,400 in vs ≈ ₹1,435 out, at the founding price ₹2,999 setup paid 50% at signing).
 
 ---
 
@@ -144,28 +144,28 @@ Customers 1–10 come in this order: **3 salons → 5 kit buyers → 1 FinOps au
 
 | | M1 Nov | M2 Dec | M3 Jan | M4 Feb | M5 Mar | M6 Apr | M7 May | M8 Jun | M9 Jul | M10 Aug | M11 Sep | M12 Oct |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Revenue | 0 | 5,400 | 18,097 | 23,745 | 30,629 | 41,548 | 43,704 | 57,322 | 59,872 | 71,705 | 72,991 | 86,374 |
+| Revenue | 0 | 4,400 | 15,597 | 20,745 | 25,629 | 35,547 | 38,202 | 52,319 | 54,868 | 66,700 | 67,985 | 81,367 |
 | Spends | 0 | 1,435 | 200 | 8,700 | 1,100 | 3,150 | 8,500 | 4,000 | 4,000 | 4,500 | 4,500 | 5,000 |
-| Net | 0 | 3,965 | 17,897 | 15,045 | 29,529 | 38,398 | 35,204 | 53,322 | 55,872 | 67,205 | 68,491 | 81,374 |
+| Net | 0 | 2,965 | 15,397 | 12,045 | 24,529 | 32,397 | 29,702 | 48,319 | 50,868 | 62,200 | 63,485 | 76,367 |
 
 ### 5e. Twelve-month revenue by world (₹)
 
-**Assumptions.** b1 setup fees are paid 50% at signing and 50% at go-live, the first 3 clients are on founding prices, and churn is 2 (likely). b3 nets ≈ ₹290 per sale. b2 nets ₹127 per ₹149 user after Play's 15%. b6 combines ₹4,999 audits with monthly plans. b7 is paper only.
+**Assumptions.** b1 setup fees are paid 50% at signing and 50% at go-live, the first 3 clients are on founding prices (₹1,499/month for their first 3 months), later clients on Standard, and churn is 2 (likely; two founding clients leave in M7 and M11). b3 nets ≈ ₹290 per sale. b2 nets ₹127 per ₹149 user after Play's 15%. b6 combines ₹4,999 audits with monthly plans. b7 is paper only.
 
 **Likely**
 
 | World | M1 | M2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | M11 | M12 | Year |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| b1 BotBhai | 0 | 2,500 | 6,998 | 8,997 | 13,496 | 18,996 | 19,997 | 22,997 | 25,997 | 28,997 | 29,998 | 32,998 | 2,11,971 |
+| b1 BotBhai | 0 | 1,500 | 4,498 | 5,997 | 8,496 | 12,995 | 14,495 | 17,994 | 20,993 | 23,992 | 24,992 | 27,991 | 1,63,943 |
 | b3 Kits | 0 | 2,900 | 5,800 | 7,250 | 8,700 | 10,150 | 11,600 | 13,050 | 14,500 | 14,500 | 15,950 | 17,400 | 1,21,800 |
 | b5 Deals | 0 | 0 | 300 | 500 | 800 | 1,000 | 1,500 | 2,000 | 2,500 | 3,000 | 3,500 | 4,000 | 19,100 |
 | b6 FinOps | 0 | 0 | 4,999 | 6,998 | 6,998 | 8,997 | 5,997 | 12,995 | 9,995 | 16,993 | 13,993 | 20,991 | 1,08,956 |
 | b2 JobCard | 0 | 0 | 0 | 0 | 635 | 1,905 | 3,810 | 5,080 | 5,080 | 5,715 | 6,350 | 6,985 | 35,560 |
 | b4 Extension | 0 | 0 | 0 | 0 | 0 | 500 | 800 | 1,200 | 1,800 | 2,500 | 3,200 | 4,000 | 14,000 |
 | b7 Trading | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **Total** | **0** | **5,400** | **18,097** | **23,745** | **30,629** | **41,548** | **43,704** | **57,322** | **59,872** | **71,705** | **72,991** | **86,374** | **5,11,387** |
+| **Total** | **0** | **4,400** | **15,597** | **20,745** | **25,629** | **35,547** | **38,202** | **52,319** | **54,868** | **66,700** | **67,985** | **81,367** | **4,63,359** |
 
-**Low and high totals per month**
+**Low and high totals per month** (still on the price ladder before 19 Oct; only Likely was re-run in A65, so these read high)
 
 | | M1 | M2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | M11 | M12 | Year |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|

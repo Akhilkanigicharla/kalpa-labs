@@ -34,7 +34,6 @@ img,svg{max-width:100%}
 .wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.1;margin:0;text-wrap:balance}
 [lang=te] h1,[lang=te] h2,[lang=te] h3,.te h1,.te h2,.te h3{font-family:var(--f-body);font-weight:700}
-.eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:0 1.3rem;border-radius:999px;border:0;font:600 16px var(--f-body);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s}
 .btn:active{transform:scale(.97)}
 .btn-gold{background:var(--gold);color:#1a1300;box-shadow:0 8px 20px -8px color-mix(in srgb,var(--gold) 70%,transparent)}
@@ -42,14 +41,14 @@ h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.1;margin:0;t
 .btn-acc{background:var(--accent);color:var(--accent-fg)}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 /* header */
-header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--panel) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+header.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--rule)}
 header.top .wrap{display:flex;align-items:center;gap:1rem;min-height:64px}
 .brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--fg);font:400 22px var(--f-display)}
 .brand svg{width:34px;height:34px}
 nav.links{display:flex;gap:1.2rem;margin-left:auto}
 nav.links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:15px}
 nav.links a:hover{color:var(--fg)}
-.lang{display:flex;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--panel)}
+.lang{display:flex;border:1px solid var(--rule);border-radius:999px;padding:4px;background:var(--panel)}
 .lang button{border:0;background:transparent;color:var(--muted);font:600 14px var(--f-body);min-height:36px;padding:0 .8rem;border-radius:999px;cursor:pointer}
 .lang button[aria-pressed=true]{background:var(--hero);color:var(--hero-fg)}
 @media (max-width:860px){nav.links{display:none}.lang{margin-left:auto}header .btn-cta{display:none}}
@@ -57,7 +56,7 @@ nav.links a:hover{color:var(--fg)}
 .hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
 .temple{height:12px;background:radial-gradient(circle at 6px 3px,var(--gold) 2.2px,transparent 2.6px) 0 0/12px 12px repeat-x,
  linear-gradient(135deg,transparent 50%,var(--madder) 50%) 0 6px/12px 6px repeat-x,linear-gradient(225deg,transparent 50%,var(--madder) 50%) 0 6px/12px 6px repeat-x}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding-block:clamp(36px,7vw,84px)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding-block:clamp(40px,7vw,80px)}
 @media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
 .hero h1{font-size:clamp(2.2rem,6vw,4.1rem);margin:.7rem 0 1rem}
 .hero h1 em{font-style:normal;color:var(--gold)}
@@ -100,7 +99,7 @@ nav.links a:hover{color:var(--fg)}
 @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
 /* live strip */
 .strip{margin-top:-28px;position:relative;z-index:2}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:18px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px}
 @media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .stat b{display:block;font:400 clamp(1.7rem,4vw,2.4rem)/1 var(--f-display);font-variant-numeric:tabular-nums}
 .stat span{color:var(--muted);font-size:14px}
@@ -119,7 +118,7 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .ptabs button[aria-selected=true]{background:var(--c);color:#fff;border-color:var(--c)}
 .pview{display:grid;grid-template-columns:1.1fr .9fr;gap:0;overflow:hidden}
 @media (max-width:860px){.pview{grid-template-columns:1fr}}
-.pview .txt{padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:.9rem;border-top:6px solid var(--c)}
+.pview .txt{padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:.9rem;border-top:6px solid var(--c)}
 .pview h3{font-size:clamp(1.6rem,3.6vw,2.3rem)}
 .pview .for{color:var(--muted);margin:0}
 .pview ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
@@ -131,21 +130,21 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .pview .art svg{width:min(260px,80%);height:auto}
 .pview .price{font:400 1.7rem var(--f-display)}
 /* how */
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
-@media (max-width:860px){.steps{grid-template-columns:1fr}}
-.step{padding:22px;display:flex;flex-direction:column;gap:.6rem}
+.steps{display:grid;max-width:760px}
+.step{display:grid;grid-template-columns:48px 1fr;column-gap:16px;row-gap:4px;padding:20px 0;border-top:1px solid var(--rule)}
+.step .n{grid-row:span 2}
 .step .n{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--hero);color:var(--gold);font:400 20px var(--f-display)}
 .step h3{font-size:1.4rem}
 .step p{margin:0;color:var(--muted)}
 /* team */
-.team{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin}
-.mate{flex:0 0 150px;scroll-snap-align:start;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.team{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 16px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.mate{flex:0 0 150px;scroll-snap-align:start;padding:16px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
 .mate svg{width:76px;height:100px}
 .mate b{font-weight:700}.mate span{font-size:13px;color:var(--muted)}
 /* offer + workshop */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:860px){.two{grid-template-columns:1fr}}
-.offer{padding:clamp(22px,4vw,36px);display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden}
+.offer{padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden}
 .offer .big{font:400 clamp(2.2rem,5vw,3.2rem)/1 var(--f-display)}
 .offer .big small{font:600 15px var(--f-body);color:var(--muted)}
 .offer ul{margin:0;padding-left:1.2rem;color:var(--fg);display:flex;flex-direction:column;gap:.35rem}
@@ -166,21 +165,19 @@ details summary::after{content:"+";font:400 1.6rem/1 var(--f-display);color:var(
 details[open] summary::after{transform:rotate(45deg)}
 details p{margin:.6rem 0 0;color:var(--muted)}
 /* founder */
-.founder{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:center;padding:clamp(22px,4vw,36px)}
+.founder{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:center;padding:clamp(24px,4vw,40px)}
 @media (max-width:640px){.founder{grid-template-columns:1fr}}
 .founder svg{width:120px;height:120px}
-footer{border-top:1px solid var(--rule);padding-block:36px 64px;color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--rule);padding-block:40px 64px;color:var(--muted);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between}
 /* bottom bar (phone) */
 .mbar{display:none}
-@media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--rule)}
+@media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
  .mbar .btn{flex:1;min-height:46px;font-size:15px}
- footer{padding-bottom:110px}}
+ footer{padding-bottom:112px}}
 /* robot animations */
 .limb{transform-box:fill-box;transform-origin:50% 4%}
 @media (prefers-reduced-motion:no-preference){
- .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
- .reveal.in{opacity:1;transform:none}
  .working .arm-a{animation:typeA .4s ease-in-out infinite alternate}.working .arm-b{animation:typeB .4s ease-in-out infinite alternate}
  .waving .arm-b{animation:wave 1.8s ease-in-out infinite}
  .working .torso,.waving .torso{animation:breathe 3s ease-in-out infinite}
@@ -214,7 +211,6 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
  <svg class="mandala" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#D3940A" stroke-width="1.2"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="40"/></g><g fill="#D3940A" id="petals"></g></svg>
  <div class="wrap">
   <div>
-   <div class="eyebrow" data-i="eyebrow">Hyderabad · AI helpers for small businesses</div>
    <h1 id="h1" data-i="h1" data-html="1">Your customers get a reply in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
    <p class="lead" data-i="lead">BotBhai answers salon customers on WhatsApp, books the slot, sends reminders and tells you when a human is needed. The first salons get a free 14-day pilot from 16 November.</p>
    <div class="ctas"><a class="btn btn-gold" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
@@ -240,7 +236,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 </section>
 
 <div class="wrap strip">
- <div class="stats reveal">
+ <div class="stats">
   <div class="stat"><b class="gold" id="cd-pilot">—</b><span data-i="st_pilot">days to Pilot Day (16 Nov)</span></div>
   <div class="stat"><b id="cd-launch">—</b><span data-i="st_launch">days to public launch (13 Dec)</span></div>
   <div class="stat"><b class="madder">22</b><span data-i="st_agents">AI agents working with one human founder</span></div>
@@ -250,35 +246,34 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 
 <section class="s" id="products">
  <div class="wrap">
-  <div class="s-head reveal"><div class="eyebrow" data-i="p_eye">What we build</div><h2 data-i="p_h">Small, honest tools for real Indian work</h2><p data-i="p_p">Each product does one job well. Prices are in rupees, and nothing locks you in.</p></div>
+  <div class="s-head"><h2 data-i="p_h">Small, honest tools for real Indian work</h2><p data-i="p_p">Each product does one job well. Prices are in rupees, and nothing locks you in.</p></div>
   <div class="ptabs" role="tablist" id="ptabs"></div>
-  <div class="card pview reveal" id="pview" role="tabpanel"></div>
+  <div class="card pview" id="pview" role="tabpanel"></div>
  </div>
 </section>
 
 <section class="s" id="how" style="padding-top:0">
  <div class="wrap">
-  <div class="s-head reveal"><div class="eyebrow" data-i="h_eye">How BotBhai works</div><h2 data-i="h_h">From "slot undha?" to a confirmed booking</h2></div>
+  <div class="s-head"><h2 data-i="h_h">From "slot undha?" to a confirmed booking</h2></div>
   <div class="steps">
-   <div class="card step reveal"><div class="n">1</div><h3 data-i="s1h">Customer messages</h3><p data-i="s1p">On WhatsApp or your website, in Telugu, Hindi, English, or a mix. "Repu" is understood as tomorrow.</p></div>
-   <div class="card step reveal"><div class="n">2</div><h3 data-i="s2h">BotBhai answers</h3><p data-i="s2p">Prices, timings and free slots from your own salon details. It never makes up a price; anything unsure goes to your staff.</p></div>
-   <div class="card step reveal"><div class="n">3</div><h3 data-i="s3h">You stay in control</h3><p data-i="s3p">Booking confirmed, reminders 24 h and 2 h before, and a daily list for the owner. Take over any chat with one tap.</p></div>
+   <div class="step"><div class="n">1</div><h3 data-i="s1h">Customer messages</h3><p data-i="s1p">On WhatsApp or your website, in Telugu, Hindi, English, or a mix. "Repu" is understood as tomorrow.</p></div>
+   <div class="step"><div class="n">2</div><h3 data-i="s2h">BotBhai answers</h3><p data-i="s2p">Prices, timings and free slots from your own salon details. It never makes up a price; anything unsure goes to your staff.</p></div>
+   <div class="step"><div class="n">3</div><h3 data-i="s3h">You stay in control</h3><p data-i="s3p">Booking confirmed, reminders 24 h and 2 h before, and a daily list for the owner. Take over any chat with one tap.</p></div>
   </div>
  </div>
 </section>
 
 <section class="s" id="team" style="padding-top:0">
  <div class="wrap">
-  <div class="s-head reveal"><div class="eyebrow" data-i="t_eye">Meet the team</div><h2 data-i="t_h">One founder. 22 AI teammates.</h2><p data-i="t_p">Kalpa Labs runs on free, open AI models. Every line on this page is checked against what we have actually built; anything not ready is marked planned.</p></div>
+  <div class="s-head"><h2 data-i="t_h">One founder. 22 AI teammates.</h2><p data-i="t_p">Kalpa Labs runs on free, open AI models. Every line on this page is checked against what we have actually built; anything not ready is marked planned.</p></div>
   <div class="team" id="teamrow"></div>
  </div>
 </section>
 
 <section class="s" id="founding" style="padding-top:0">
  <div class="wrap two">
-  <div class="card offer reveal" style="--c:var(--l1)">
+  <div class="card offer" style="--c:var(--l1)">
    <div class="ribbon" data-i="ribbon">3 SPOTS</div>
-   <div class="eyebrow" data-i="f_eye">Founding salons</div>
    <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="f_h">Free 14-day pilot, then founding prices</h2>
    <div class="big">₹1,499<small data-i="f_per"> / month for months 1–3</small></div>
    <ul>
@@ -290,10 +285,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
    <a class="btn btn-gold" href="#signup" data-i="f_cta" data-pick="salon">Ask for a pilot</a>
    <p class="muted" style="margin:0;color:var(--muted);font-size:14px" data-i="f_small">No payment until the pilot ends and you say yes.</p>
   </div>
-  <div class="card offer dark-card reveal" id="workshop">
-   <div class="eyebrow" data-i="w_eye">Live workshop · Telugu</div>
+  <div class="card offer dark-card" id="workshop">
    <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="w_h">"Claude Code with me": build 3 small AI tools in 90 minutes</h2>
-   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when"> · Sun 29 Nov, 11:00 AM IST · Google Meet</small></div>
+   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when"> · Sun 29 Nov, 11:00 AM IST · Google Meet · Telugu</small></div>
    <p class="muted" data-i="w_p">For beginners. We learn together; this is not an expert course and nobody promises income. The full agenda and materials are being prepared and tested now. Join the free waitlist: payment opens only after the agenda is published, with a full refund within 7 days if it was not useful.</p>
    <a class="btn btn-gold" href="#signup" data-i="w_cta" data-pick="workshop">Join the free waitlist</a>
   </div>
@@ -302,12 +296,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 
 <section class="s" id="signup" style="padding-top:0">
  <div class="wrap two">
-  <div class="reveal">
-   <div class="eyebrow" data-i="g_eye">Say hello</div>
+  <div>
    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin:.6rem 0" data-i="g_h">Tell us what you need. Akhil replies personally.</h2>
    <p style="color:var(--muted)" data-i="g_p">We use your number only to reply about this request. No spam, no sharing, ever.</p>
   </div>
-  <form class="card signup reveal" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" style="padding:22px">
+  <form class="card signup" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" style="padding:24px">
    <input type="hidden" name="form-name" value="contact">
    <p class="hp"><label>Company <input name="company" tabindex="-1" autocomplete="off"></label></p>
    <label><span data-i="l_interest">I'm interested in</span>
@@ -328,20 +321,20 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 
 <section class="s" id="faq" style="padding-top:0">
  <div class="wrap" style="max-width:820px">
-  <div class="s-head reveal"><div class="eyebrow" data-i="q_eye">Questions</div><h2 data-i="q_h">Straight answers</h2></div>
-  <details class="reveal"><summary data-i="q1">Will my customers know it's a bot?</summary><p data-i="a1">Yes. BotBhai says it is an automated assistant at the start of a chat, and hands over to your staff whenever asked.</p></details>
-  <details class="reveal"><summary data-i="q2">What if it gives a wrong answer?</summary><p data-i="a2">It only uses the prices and timings you give us. If it is not sure, or the customer is upset, it hands the chat to you instead of guessing.</p></details>
-  <details class="reveal"><summary data-i="q3">Do I need a computer or a new phone number?</summary><p data-i="a3">No computer. You need one WhatsApp number for the salon; we help you set it up during the pilot.</p></details>
-  <details class="reveal"><summary data-i="q4">Is my customers' data safe?</summary><p data-i="a4">We follow India's DPDP Act: we act only on your instructions, keep it in a secure database we run for your salon, and delete it when you ask. Messages go only to customers who opted in.</p></details>
-  <details class="reveal"><summary data-i="q5">You are new. Why should I trust you?</summary><p data-i="a5">Fair question. We have no customers yet, so the first salons get a free pilot and pay nothing unless it helps. You can stop any time.</p></details>
+  <div class="s-head"><h2 data-i="q_h">Straight answers</h2></div>
+  <details><summary data-i="q1">Will my customers know it's a bot?</summary><p data-i="a1">Yes. BotBhai says it is an automated assistant at the start of a chat, and hands over to your staff whenever asked.</p></details>
+  <details><summary data-i="q2">What if it gives a wrong answer?</summary><p data-i="a2">It only uses the prices and timings you give us. If it is not sure, or the customer is upset, it hands the chat to you instead of guessing.</p></details>
+  <details><summary data-i="q3">Do I need a computer or a new phone number?</summary><p data-i="a3">No computer. You need one WhatsApp number for the salon; we help you set it up during the pilot.</p></details>
+  <details><summary data-i="q4">Is my customers' data safe?</summary><p data-i="a4">We follow India's DPDP Act: we act only on your instructions, keep it in a secure database we run for your salon, and delete it when you ask. Messages go only to customers who opted in.</p></details>
+  <details><summary data-i="q5">You are new. Why should I trust you?</summary><p data-i="a5">Fair question. We have no customers yet, so the first salons get a free pilot and pay nothing unless it helps. You can stop any time.</p></details>
  </div>
 </section>
 
 <section class="s" style="padding-top:0">
  <div class="wrap">
-  <div class="card founder reveal">
+  <div class="card founder">
    <svg viewBox="-34 -66 68 74" aria-hidden="true"><g data-human="1"></g></svg>
-   <div><div class="eyebrow" data-i="fo_eye">Built in public</div><h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);margin:.5rem 0" data-i="fo_h">"I build the tools I wish my neighbours' shops had."</h2><p style="margin:0;color:var(--muted)" data-i="fo_p">Akhil Kanigicharla, founder. Kalpa Labs is a one-person company in Hyderabad with an AI team. Follow the launch, and tell us what to build next.</p></div>
+   <div><h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);margin:.5rem 0" data-i="fo_h">"I build the tools I wish my neighbours' shops had."</h2><p style="margin:0;color:var(--muted)" data-i="fo_p">Akhil Kanigicharla, founder. Kalpa Labs is a one-person company in Hyderabad with an AI team. Follow the launch, and tell us what to build next.</p></div>
   </div>
  </div>
 </section>
@@ -392,20 +385,20 @@ const petals=document.getElementById('petals');for(let i=0;i<16;i++){const a=i/1
 
 /* ---------- i18n ---------- */
 const TE={nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
-eyebrow:'హైదరాబాద్ · చిన్న వ్యాపారాలకు AI సహాయకులు',h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
+h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
 trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · లైవ్ · తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
 st_pilot:'పైలట్ డేకి రోజులు (16 నవం)',st_launch:'పబ్లిక్ లాంచ్‌కి రోజులు (13 డిసెం)',st_agents:'ఒక వ్యవస్థాపకుడితో పనిచేసే AI ఏజెంట్లు',st_langs:'భాషలు: తెలుగు, హిందీ, ఇంగ్లీష్',
-p_eye:'మేము తయారు చేసేవి',p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
-h_eye:'BotBhai ఎలా పనిచేస్తుంది',h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
+p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
+h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
 s2h:'BotBhai జవాబు',s2p:'మీ సెలూన్ వివరాల నుంచే ధరలు, సమయాలు, ఖాళీ స్లాట్లు. ధరను ఎప్పుడూ ఊహించదు; సందేహం ఉంటే మీ సిబ్బందికి పంపుతుంది.',s3h:'నియంత్రణ మీదే',s3p:'బుకింగ్ కన్ఫర్మ్, 24 గం, 2 గం ముందు రిమైండర్లు, యజమానికి రోజువారీ జాబితా. ఏ చాట్‌నైనా ఒక్క ట్యాప్‌తో మీరు తీసుకోవచ్చు.',
-t_eye:'టీమ్‌ను కలవండి',t_h:'ఒక వ్యవస్థాపకుడు. 22 AI సహచరులు.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
-ribbon:'3 స్థానాలు',f_eye:'ఫౌండింగ్ సెలూన్లు',f_h:'14 రోజుల ఉచిత పైలట్, తర్వాత ఫౌండింగ్ ధరలు',f_per:' / నెల, మొదటి 3 నెలలు',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
-w_eye:'లైవ్ వర్క్‌షాప్ · తెలుగు',w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:' · ఆది 29 నవం, ఉ. 11:00 · Google Meet',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. పూర్తి అజెండా, మెటీరియల్ ఇప్పుడు తయారు చేసి పరీక్షిస్తున్నాం. ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి: అజెండా ప్రచురించిన తర్వాతే చెల్లింపు, ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి',
-g_eye:'పలకరించండి',g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
+t_h:'ఒక వ్యవస్థాపకుడు. 22 AI సహచరులు.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
+ribbon:'3 స్థానాలు',f_h:'14 రోజుల ఉచిత పైలట్, తర్వాత ఫౌండింగ్ ధరలు',f_per:' / నెల, మొదటి 3 నెలలు',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
+w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:' · ఆది 29 నవం, ఉ. 11:00 · Google Meet · తెలుగు',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. పూర్తి అజెండా, మెటీరియల్ ఇప్పుడు తయారు చేసి పరీక్షిస్తున్నాం. ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి: అజెండా ప్రచురించిన తర్వాతే చెల్లింపు, ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి',
+g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
 l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా సెలూన్‌కు BotBhai (ఉచిత పైలట్)',o_workshop:'వర్క్‌షాప్ వెయిట్‌లిస్ట్ (ఉచితం) · 29 నవం',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
-q_eye:'ప్రశ్నలు',q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
-fo_eye:'బహిరంగంగా నిర్మిస్తున్నాం',fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
+q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
+fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
 ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'AIతో చాట్ చేయండి',mb2:'ఉచిత సెలూన్ పైలట్'};
 const EN={}; document.querySelectorAll('[data-i]').forEach(e=>{EN[e.dataset.i]=e.dataset.html?e.innerHTML:e.textContent;});
 let lang='en'; try{lang=localStorage.getItem('kl-lang')||'en';}catch(e){}
@@ -522,9 +515,6 @@ form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValid
   msg.style.color='var(--ok)';msg.textContent=lang==='te'?'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.':'Thank you! Akhil will reply on WhatsApp soon.';form.reset();}
  catch(err){msg.style.color='var(--madder)';msg.textContent=lang==='te'?'పంపడం కాలేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.':'That did not send. Please try again in a minute.';}});
 
-/* ---------- reveal ---------- */
-if(!reduce&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{rootMargin:'0px 0px -8% 0px'});document.querySelectorAll('.reveal').forEach(n=>io.observe(n));}
-else document.querySelectorAll('.reveal').forEach(n=>n.classList.add('in'));
 
 setLang(lang);
 })();

@@ -7,7 +7,7 @@ body.page { width: auto; min-height: 100vh;
 .top { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
 .top h1 { font-size: 28px; line-height: 1.1; }
 .pill { font: 500 11px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--accent); }
-.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 18px; padding: 14px 16px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 18px; padding: 16px 16px; min-width: 0; }
 .card h2 { margin: 0 0 6px; }
 .card p { margin: 6px 0; }
 .proof { border-top: 4px solid var(--accent); }
@@ -23,12 +23,12 @@ body.page { width: auto; min-height: 100vh;
 .file input { font: 13px var(--f-body); color: var(--muted); max-width: 100%; }
 .file input::file-selector-button { min-height: 44px; padding: 0 16px; margin-right: 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--bg); color: var(--accent); font: 600 13px var(--f-body); cursor: pointer; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-input[type="search"] { min-height: 40px; border-radius: 999px; border: 1px solid var(--rule); background: var(--bg); color: var(--fg); padding: 0 14px; font: 14px var(--f-body); flex: 1 1 160px; max-width: 260px; }
+input[type="search"] { min-height: 40px; border-radius: 999px; border: 1px solid var(--rule); background: var(--bg); color: var(--fg); padding: 0 16px; font: 14px var(--f-body); flex: 1 1 160px; max-width: 260px; }
 input:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
 .sessions { max-height: none; margin-top: 8px; }
 .sessions li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px; align-items: center; }
 @media (max-width: 480px) { .sessions li { grid-template-columns: 1fr auto; } .sessions .meta { grid-column: 1 / -1; } .sessions li button:first-of-type { justify-self: end; } }
 .pro { background: color-mix(in srgb, var(--accent) 9%, var(--panel)); border-color: color-mix(in srgb, var(--accent) 35%, var(--rule)); }
-.prices { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.prices { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; }
 .prices b { font: 500 13px var(--f-mono); }
 @media (prefers-reduced-motion: no-preference) { .card { animation: rise .25s ease-out both; } @keyframes rise { from { opacity: 0; transform: translateY(6px); } } }

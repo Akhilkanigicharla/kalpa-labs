@@ -12,30 +12,30 @@
 @media (min-width:760px){.page .in{padding:32px 40px}}
 .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px;flex-wrap:wrap}
 @media (min-width:760px){.head{padding:20px 40px}}
-.sum{display:grid;gap:10px;grid-template-columns:1fr 1fr;margin:6px 0 18px}
+.sum{display:grid;gap:10px;grid-template-columns:1fr 1fr;margin:6px 0 16px}
 .sum>div{background:var(--soft);border-radius:var(--r-m);padding:12px}
 .sum>div:first-child{grid-column:1/-1}
 @media (min-width:760px){.sum{grid-template-columns:2fr 1fr 1fr}.sum>div:first-child{grid-column:auto}}
 .sum .big{font-size:28px}
 .sum>div:first-child .big{font-size:38px}
-.two{display:grid;gap:18px}
+.two{display:grid;gap:16px}
 @media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
-h2{margin-top:18px}
+h2{margin-top:16px}
 .idea{border-top:1px solid var(--rule);padding:12px 0}
 .idea .save{color:var(--ok);font:400 22px/1.1 var(--f-display)}
 .gap{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:6px 0;font-size:15px}
-.pageno{font:600 11px/1 var(--f-mono);color:var(--muted);text-align:right;padding:0 16px 14px;letter-spacing:.1em}
+.pageno{font:600 11px/1 var(--f-mono);color:var(--muted);text-align:right;padding:0 16px 16px;letter-spacing:.1em}
 .loss td{color:var(--bad)}
 .toolbar{display:flex;gap:10px;justify-content:center;padding:16px}
 @page{size:A4;margin:8mm}
 @media print{body{background:#fff;font-size:12.5px;line-height:1.4}.toolbar{display:none}
 .page{box-shadow:none;border:0;margin:0;max-width:none;border-radius:0;break-after:page;break-inside:avoid}
-.page:last-of-type{break-after:auto}.page .in{padding:10px 18px 6px}.head{padding:10px 18px}
+.page:last-of-type{break-after:auto}.page .in{padding:10px 16px 6px}.head{padding:10px 16px}
 h2{font-size:17px;margin:10px 0 4px}h3{font-size:15px}.sum{margin:4px 0 8px}.sum>div{padding:8px 10px}
 .sum .big{font-size:20px}.sum>div:first-child .big{font-size:26px}#headline{font-size:13.5px!important;margin:4px 0}
-td,th{padding:3px 6px!important}.rows li{padding:2px 0!important}.idea{padding:6px 0}.idea .save{font-size:16px}
-.gap{padding:2px 0;font-size:12px}#gaps{display:grid;grid-template-columns:1fr 1fr;column-gap:14px}
-.note{padding:8px 10px!important}.pageno{padding:0 18px 4px}.two{grid-template-columns:1fr 1fr;gap:14px}}
+td,th{padding:4px 6px!important}.rows li{padding:2px 0!important}.idea{padding:6px 0}.idea .save{font-size:16px}
+.gap{padding:2px 0;font-size:12px}#gaps{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+.note{padding:8px 10px!important}.pageno{padding:0 16px 4px}.two{grid-template-columns:1fr 1fr;gap:16px}}
 </style>
 </head>
 <body>
@@ -43,7 +43,7 @@ td,th{padding:3px 6px!important}.rows li{padding:2px 0!important}.idea{padding:6
 
 <article class="page" aria-label="X-ray page 1 of 2">
   <div class="hero"><div class="temple"></div>
-    <div class="head"><div><p class="eyebrow">LLM Bill X-ray · sample · synthetic data</p><h1 style="font-size:30px;margin:0" data-lp="company" data-lp-fmt="raw"></h1></div>
+    <div class="head"><div><h1 style="font-size:30px;margin:0" data-lp="company" data-lp-fmt="raw"></h1><p class="eyebrow">LLM Bill X-ray · sample · synthetic data</p></div>
       <div class="muted num" style="font-size:13px"><span data-lp="period.from" data-lp-fmt="date"></span> – <span data-lp="period.to" data-lp-fmt="date"></span> <span id="year"></span><br><span data-lp="rows" data-lp-fmt="int"></span> usage rows</div></div>
   </div>
   <div class="in">

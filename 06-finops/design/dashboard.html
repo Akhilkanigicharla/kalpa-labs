@@ -7,16 +7,16 @@
 <link rel="stylesheet" href="../../00-hq/design/tokens.css">
 <link rel="stylesheet" href="lp.css">
 <style>
-body{padding-bottom:84px}
+body{padding-bottom:80px}
 .bar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px}
 .bar-top .who{font-size:14px;text-align:right}
 .kpis{display:grid;gap:10px;grid-template-columns:1fr 1fr}
-.kpis .card{padding:14px;text-decoration:none;color:inherit;display:block}
+.kpis .card{padding:16px;text-decoration:none;color:inherit;display:block}
 .kpis .card:first-child{grid-column:1/-1}
 .kpis .big{font-size:30px}
 .kpis .card:first-child .big{font-size:40px}
-main{display:grid;gap:14px;padding-bottom:20px}
-.view{display:none;gap:14px}
+main{display:grid;gap:16px;padding-bottom:20px}
+.view{display:none;gap:16px}
 .view.on{display:grid}
 .cust li .name{font-weight:700}
 .cust li .sub{font-size:13px;color:var(--muted)}
@@ -28,7 +28,7 @@ main{display:grid;gap:14px;padding-bottom:20px}
 @media (min-width:760px){
   body{padding-bottom:0}
   .tabs{position:static;display:flex;gap:6px;background:transparent;border:0;padding:0 0 6px}
-  .tabs button{padding:0 18px;display:flex}
+  .tabs button{padding:0 16px;display:flex}
   .kpis{grid-template-columns:2fr 1fr 1fr}.kpis .card:first-child{grid-column:auto}
   .view.on.two{grid-template-columns:1fr 1fr}
 }
@@ -47,7 +47,7 @@ main{display:grid;gap:14px;padding-bottom:20px}
   </div>
 </div>
 
-<div class="wrap" style="padding-top:14px">
+<div class="wrap" style="padding-top:16px">
   <nav class="tabs" role="tablist" aria-label="Dashboard sections" id="tabs"></nav>
   <main>
     <section class="view on" id="v-overview" role="tabpanel" aria-label="Overview">
@@ -66,10 +66,10 @@ main{display:grid;gap:14px;padding-bottom:20px}
       <div class="card cap"><h3>Margin per customer</h3><p class="muted" style="font-size:14px">Monthly AI cost against the plan revenue you uploaded. Names come from your own revenue file, kept in this browser; we store only hashed ids.</p><ul class="rows cust" id="cust"></ul></div>
     </section>
 
-    <section class="view" id="v-savings" role="tabpanel" aria-label="Savings"><div id="ideas" style="display:grid;gap:14px"></div></section>
+    <section class="view" id="v-savings" role="tabpanel" aria-label="Savings"><div id="ideas" style="display:grid;gap:16px"></div></section>
 
     <section class="view" id="v-evidence" role="tabpanel" aria-label="Evidence">
-      <div class="card cap" style="display:flex;gap:14px;align-items:center"><div class="medal"><span id="score"></span></div><div><h3 style="margin:0">DPDP readiness</h3><p class="muted" style="margin:0;font-size:14px">out of <span data-lp="dpdp.of" data-lp-fmt="int"></span>. Full rules apply from May 2027. A checklist, not legal advice.</p></div></div>
+      <div class="card cap" style="display:flex;gap:16px;align-items:center"><div class="medal"><span id="score"></span></div><div><h3 style="margin:0">DPDP readiness</h3><p class="muted" style="margin:0;font-size:14px">out of <span data-lp="dpdp.of" data-lp-fmt="int"></span>. Full rules apply from May 2027. A checklist, not legal advice.</p></div></div>
       <div class="card"><h3>What's missing</h3><ul class="rows check" id="gaps"></ul></div>
       <div class="card"><h3>Monthly evidence pack</h3><p>DPDP duty map, ISO 42001 control IDs, EU AI Act Art. 50 checklist, model + region inventory and PII-exposure counts.</p><button class="btn btn-primary" type="button" disabled aria-disabled="true">Download October pack (mockup)</button></div>
     </section>

@@ -15,7 +15,7 @@ p{margin:0 0 .8em} a{color:var(--accent)}
 .eyebrow{font:600 12px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
-.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:18px;box-shadow:var(--shadow)}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:16px;box-shadow:var(--shadow)}
 .cap{position:relative;overflow:hidden;padding-top:24px}
 .cap::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:
   linear-gradient(135deg,var(--world) 25%,transparent 25%) 0 0/12px 8px,
@@ -52,6 +52,6 @@ td.r,th.r{text-align:right}
   background:conic-gradient(var(--gold) 0 25%,var(--madder) 0 50%,var(--gold) 0 75%,var(--madder) 0);
   color:#191C33;font:400 20px/1 var(--f-display)}
 .medal span{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--gold)}
-.note{border-left:4px solid var(--gold);padding:10px 14px;background:color-mix(in srgb,var(--gold) 10%,var(--panel));border-radius:0 var(--r-m) var(--r-m) 0}
+.note{border:1px solid color-mix(in srgb,var(--gold) 45%,var(--rule));padding:10px 16px;background:color-mix(in srgb,var(--gold) 10%,var(--panel));border-radius:var(--r-m)}
 .logo{display:inline-flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font:400 22px/1 var(--f-display)}
 @media (prefers-reduced-motion:no-preference){.rise{animation:rise .35s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(8px)}}}

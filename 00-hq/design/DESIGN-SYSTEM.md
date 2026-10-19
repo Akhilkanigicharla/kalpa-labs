@@ -60,3 +60,9 @@ All four are OFL on Google Fonts. Load them with one `<link>` (see the Kingdom h
 
 ## Reference implementation
 [kingdom-control-room.html](kingdom-control-room.html): the live Kingdom page (https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1).
+
+## 20 tells that make a site look "vibecoded" (we avoid all of them)
+Checked on every push by `node 00-hq/design/vibecheck.test.mjs` (Kalpa quality → design). Source: millee.md's list, 19 Oct 2026.
+Banned: purple-to-blue gradients, gradient headline text, emojis in headings, Inter, coloured left-border cards, glassmorphism (backdrop blur), low-contrast dark mode, three equal icon boxes, a badge/eyebrow above the headline (put labels under it), Lucide, untouched shadcn, sections fading in on scroll, cursor-following beams, buttons that fade on hover, spacing off the 4-point scale, em dashes in sentences, buzzwords ("seamless", "supercharge", …), serif italics for accent words, Space Grotesk + Instrument Serif, grain texture over gradients.
+Allowed on purpose: number tiles in a 3-column grid on app screens (`.kpis`, `.stats`), a lone "—" in an empty table cell, the Kalamkari borders (`.temple`, `.cap`) that are our own motif.
+Spacing scale (px): 0 1 2 4 6 8 10 12 16 20 24 28 32 40 48 56 64 72 80 96 112 128.

@@ -1,0 +1,3 @@
+# Name|URL, one per line
+NeuroAI|neuroai.test
+https://gone.test

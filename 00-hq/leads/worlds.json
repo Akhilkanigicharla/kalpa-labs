@@ -1,0 +1,69 @@
+{
+  "_about": "Who each Kalpa world looks for. Businesses and organisations only (B2B); never consumers' personal numbers. Sources: OpenStreetMap (ODbL) and the organisation's own public website (robots.txt respected). Seed URL lists are typed in by Akhil, never scraped from Google Maps, Justdial, Instagram, Facebook or LinkedIn.",
+  "_template_types": "NuExtract template: verbatim-string = copy exactly, string = may summarise, [a, b] = pick one, [[a, b]] = pick many.",
+  "hq": {
+    "name": "Kalpa Labs HQ",
+    "looking_for": "Local businesses and offices that could use an AI website chat or the Claude Code workshop",
+    "osm": ["office~\"^(company|it|consulting|marketing|advertising_agency)$\"", "office=\"coworking\"", "amenity=\"coworking_space\""],
+    "signals": {"chatbot": -15, "live chat": -10, "careers": 5, "team": 3, "startup": 5, "digital": 3},
+    "gap_if_missing": {"whatsapp_link": 5},
+    "template": {"what_they_do": "string", "team_size_hint": ["1-10", "11-50", "51-200", "200+", "unknown"], "has_chat_widget": ["yes", "no"], "city": "verbatim-string"}
+  },
+  "b1": {
+    "name": "BotBhai",
+    "looking_for": "Salons, gyms, coaching centres, clinics and real-estate offices that take bookings by phone or WhatsApp",
+    "osm": ["shop~\"^(hairdresser|beauty)$\"", "amenity=\"spa\"", "leisure=\"fitness_centre\"", "office=\"estate_agent\"", "amenity=\"dentist\"", "amenity=\"clinic\""],
+    "signals": {"appointment": 5, "book": 3, "whatsapp": 2, "call us": 3, "walk-in": 5, "branches": 3},
+    "gap_if_missing": {"online_booking": 10, "whatsapp_link": 5},
+    "template": {"what_they_do": "string", "services": ["string"], "takes_appointments": ["yes", "no", "unclear"], "booking_method": [["phone", "whatsapp", "website form", "booking app", "walk-in", "unknown"]], "branches_in_hyderabad": "integer"}
+  },
+  "b2": {
+    "name": "JobCard",
+    "looking_for": "AC, appliance and electrical repair businesses with field technicians",
+    "osm": ["craft~\"^(hvac|electrician|plumber|electronics_repair)$\"", "shop~\"^(appliance|electronics_repair)$\"", "office=\"electrician\""],
+    "signals": {"ac service": 8, "ac repair": 8, "technician": 5, "amc": 5, "installation": 3, "warranty": 2},
+    "gap_if_missing": {"online_booking": 5},
+    "template": {"what_they_do": "string", "repairs": [["ac", "fridge", "washing machine", "tv", "electrical", "plumbing", "other"]], "number_of_technicians_hint": "string", "offers_amc": ["yes", "no", "unclear"]}
+  },
+  "b3": {
+    "name": "Exam & Money Kits",
+    "looking_for": "Coaching institutes and colleges that could partner on GATE/UPSC kits (partnership leads, never students' data)",
+    "osm": ["amenity~\"^(college|training|prep_school)$\"", "office=\"educational_institution\""],
+    "signals": {"gate": 10, "upsc": 10, "coaching": 6, "test series": 6, "aspirants": 4, "engineering": 2},
+    "gap_if_missing": {},
+    "template": {"what_they_do": "string", "exams_covered": [["GATE", "UPSC", "TSPSC", "JEE", "NEET", "bank", "other"]], "sells_test_series": ["yes", "no", "unclear"], "partnership_contact": "verbatim-string"}
+  },
+  "b4": {
+    "name": "Tab Lifeboat",
+    "looking_for": "Productivity blogs, newsletters and tool directories that review Chrome extensions (partner leads)",
+    "osm": [],
+    "signals": {"chrome extension": 8, "productivity": 5, "review": 3, "submit": 6, "newsletter": 4, "tools": 2},
+    "gap_if_missing": {},
+    "template": {"what_they_do": "string", "accepts_tool_submissions": ["yes", "no", "unclear"], "submission_page": "verbatim-string", "audience": "string"}
+  },
+  "b5": {
+    "name": "Deals & Tools",
+    "looking_for": "Brands and stores with public affiliate programmes, and Telugu-audience partners",
+    "osm": [],
+    "signals": {"affiliate": 10, "partner program": 8, "commission": 6, "telugu": 5, "creators": 3},
+    "gap_if_missing": {},
+    "template": {"what_they_do": "string", "has_affiliate_program": ["yes", "no", "unclear"], "affiliate_page": "verbatim-string", "commission_text": "verbatim-string"}
+  },
+  "b6": {
+    "name": "Ledger Peaks (FinOps)",
+    "looking_for": "Indian AI startups that spend on LLM APIs and must follow DPDP",
+    "osm": ["office~\"^(it|company|research)$\""],
+    "signals": {"llm": 8, "genai": 8, "generative ai": 8, "ai-powered": 5, "openai": 5, "gpt": 4, "series a": 4, "seed": 3, "privacy policy": 1, "dpdp": 3},
+    "gap_if_missing": {},
+    "template": {"what_they_do": "string", "uses_llms": ["yes", "no", "unclear"], "stage_hint": ["pre-seed", "seed", "series A+", "unknown"], "mentions_dpdp": ["yes", "no"]}
+  },
+  "b7": {
+    "name": "Trading Lab",
+    "looking_for": "Research sources only: free market-data and broker API providers. Never customers: SEBI, paper trading only, nothing sold.",
+    "osm": [],
+    "research_only": true,
+    "signals": {"api": 6, "historical data": 8, "free": 4, "nse": 5, "bse": 5, "websocket": 3, "paper trading": 5},
+    "gap_if_missing": {},
+    "template": {"provider": "verbatim-string", "data_offered": [["equity", "f&o", "commodity", "crypto", "fundamentals", "news", "other"]], "free_tier": ["yes", "no", "unclear"], "terms_page": "verbatim-string"}
+  }
+}

@@ -1,0 +1,61 @@
+# Kalpa Leads: lead finder for all 8 worlds, run in GitHub's free cloud (nothing on Akhil's PC).
+# GitHub -> Actions -> "Kalpa Leads" -> Run workflow. Manual only: nothing runs on a schedule, nothing is sent to anyone.
+# Results are a PRIVATE download (Actions artifact, 7 days). Lead lists hold business contact data (DPDP), so they never go into git.
+# Tools: Crawl4AI (Apache-2.0) to read websites, NuExtract3 4B (Apache-2.0, HF numind) on CPU for the optional AI step: no key, no cost.
+# Optional: AI via OpenRouter free model if Akhil adds the OPENROUTER_API_KEY secret himself (Settings -> Secrets -> Actions).
+name: Kalpa Leads
+on:
+  workflow_dispatch:
+    inputs:
+      world: { description: "hq, b1, b2, b3, b4, b5, b6, b7 or all", default: "b1" }
+      city:  { description: "City (OpenStreetMap name)", default: "Hyderabad" }
+      max:   { description: "Max organisations per world", default: "40" }
+      llm:   { description: "AI step: none, nuextract (free, ~1 min per site) or openrouter (needs secret)", default: "none" }
+      max_ai: { description: "Max AI checks per world", default: "20" }
+  push:
+    paths: [".github/workflows/kalpa-leads.yml", "00-hq/leads/**"]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python 00-hq/leads/test_kalpa_leads.py
+  find:
+    if: github.event_name == 'workflow_dispatch'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - name: Install Crawl4AI + Chromium
+        run: |
+          pip install "crawl4ai==0.9.5"
+          python -m playwright install --with-deps chromium
+      - name: Install free local AI (NuExtract3)
+        if: github.event.inputs.llm == 'nuextract'
+        run: |
+          pip install "llama-cpp-python==0.3.36" jinja2
+          curl -sSL -o NuExtract3-Q4_K_M.gguf https://huggingface.co/numind/NuExtract3-GGUF/resolve/main/NuExtract3-Q4_K_M.gguf
+      - name: Find leads
+        # inputs arrive as environment variables, never pasted into the script (avoids shell injection)
+        env:
+          WORLD: ${{ github.event.inputs.world }}
+          CITY: ${{ github.event.inputs.city }}
+          MAX: ${{ github.event.inputs.max }}
+          LLM: ${{ github.event.inputs.llm }}
+          MAX_AI: ${{ github.event.inputs.max_ai }}
+          NUEXTRACT_GGUF: NuExtract3-Q4_K_M.gguf
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          # seeds/<world>.txt is added automatically; OpenStreetMap is used for worlds that have map tags
+          python 00-hq/leads/kalpa_leads.py --world "$WORLD" --city "$CITY" --max "$MAX" --llm "$LLM" --max-ai "$MAX_AI" --out leads
+          cat leads/SUMMARY.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with: { name: kalpa-leads, path: leads/, retention-days: 7 }

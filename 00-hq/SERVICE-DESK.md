@@ -22,7 +22,7 @@ Checked 18 Oct 2026 23:40 IST against the repo, ROADMAP ticks and live n8n tests
 - **Kalpa Task Runner** (n8n t8XJCgW8Gdi2rmBX, every 3 h at :15 IST, published): takes the top `todo` task (P0 first; code tasks for Forge/Probe are left to the Claude build sprint), the owner agent researches with **Web Search (compact)** (qdg06puzxyABqV6z, Brave via n8n credits, max 4 searches) and writes a deliverable into KL Knowledge. **Vigil** (Groq qwen3.8-27b) checks it against Kalpa facts + known-false claims: PASS → task `review`, FAIL → `rejected` (draft kept, category "Rejected output"). Nothing is published or sent to customers automatically.
 - **World Keeper** (8:20 IST daily, no AI tokens) checks CI for every world, site uptime and new leads.
 - Customer-facing answers come only from facts in the Kalpa Bhai prompt; anything else goes to Akhil.
-- Models: Groq free (gpt-oss-20b/120b, qwen3.8-27b), NVIDIA nemotron nano, OpenRouter free as backup. No paid plans.
+- Models: Task Runner worker = OpenRouter free nvidia/nemotron-3.5-super-vl (won 19 Oct bake-off, 5/5) with NVIDIA nemotron-3-nano-omni fallback; Vigil = Groq qwen3.8-27b; Kalpa Bhai = Groq gpt-oss-20b. No paid plans.
 
 ## Review
 Re-check this table every Sunday and before changing any price or claim on the website.

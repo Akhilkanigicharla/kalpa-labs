@@ -49,10 +49,22 @@ def banned(url):
     host = urllib.parse.urlparse(url).hostname or ""
     return bool(BANNED_HOSTS.search(host))
 
+def overpass_by_tag(city, tags, fetch=None):
+    """One small Overpass query per tag: a whole-city query for many tags times out (HTTP 504, 19 Oct run).
+    A tag that still fails is skipped; only if every tag fails do we give up."""
+    fetch = fetch or (lambda q: LF.overpass(q))
+    elements, errors = [], []
+    for t in tags:
+        try: elements += fetch(LF.build_query(city, [t])).get("elements", [])
+        except SystemExit as e: errors.append(f"{t}: {e}")
+    if errors and not elements: raise SystemExit("; ".join(errors))
+    for e in errors: print(f"  OpenStreetMap skipped {e}")
+    return {"elements": elements}
+
 def from_osm(world, city, osm_json=None, limit=200):
     tags = WORLDS[world].get("osm") or []
     if not tags: return []
-    res = json.load(open(osm_json, encoding="utf-8")) if osm_json else LF.overpass(LF.build_query(city, tags))
+    res = json.load(open(osm_json, encoding="utf-8")) if osm_json else overpass_by_tag(city, tags)
     rows, seen = [], set()
     for el in res.get("elements", []):
         t = el.get("tags", {}); name = (t.get("name") or "").strip()

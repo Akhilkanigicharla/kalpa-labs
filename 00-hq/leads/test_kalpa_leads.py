@@ -30,6 +30,16 @@ check(names.count("Glow Salon") == 1 and len(rows) == 4, "OSM rows de-duplicated
 check(rows[0]["website"].startswith("https://") and "ODbL" in rows[0]["source"], "URLs normalised; ODbL source recorded")
 check(K.from_osm("b4", "Hyderabad", os.path.join(FX, "osm.json")) == [], "worlds without OSM tags return nothing from OSM (need a seed list)")
 
+calls = []
+def fake(q):
+    calls.append(q)
+    if "spa" in q: raise SystemExit("Overpass failed: HTTP Error 504")
+    return {"elements": [{"type": "node", "id": len(calls), "tags": {"name": f"Shop {len(calls)}"}}]}
+got = K.overpass_by_tag("Hyderabad", K.WORLDS["b1"]["osm"], fake)
+check(len(calls) == len(K.WORLDS["b1"]["osm"]) and len(got["elements"]) == len(calls) - 1, "Overpass asked one tag at a time; a timed-out tag is skipped, the rest kept")
+try: K.overpass_by_tag("Hyderabad", ['amenity="spa"'], fake); check(False, "all-fail must raise")
+except SystemExit: check(True, "if every tag fails, the run says OpenStreetMap is unavailable")
+
 # 4. full offline run for BotBhai: contacts, gaps, banned skip, scoring order
 urls = sorted({r["website"] for r in rows if r["website"] and not K.banned(r["website"])})
 pages = K.from_html_dir(urls, FX)

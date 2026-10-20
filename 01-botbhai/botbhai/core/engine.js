@@ -284,25 +284,40 @@
         bridal: state.bridal ? (({ asking, tries, ...rest }) => rest)(state.bridal) : undefined,
       });
     }
+    // Smart fill (A69): a service named anywhere in the message ("repu haircut kavali")
+    function catalogHit(raw, state) {
+      const svc = cfg.steps.find((x) => x.choices === "catalog"); if (!svc) return null;
+      const words = norm(raw).split(" ").filter((w) => /\p{L}{3,}/u.test(w) && !INTENT.book.test(w) && !INTENT.prices.test(w) && !parseDate(w, nowOf(state)) && !cfg.menu.some((m) => norm(m.label).split(" ").includes(w)));
+      const al = aliasMatch(raw, cfg.catalog);
+      let hit = al ? al.hit || null : words.length ? pickChoice(words.join(" "), choiceList(svc)) : null;
+      if (!hit && !al && words.length > 1) { const each = [...new Set(words.map((w) => pickChoice(w, choiceList(svc))).filter(Boolean))]; if (each.length === 1) hit = each[0]; }
+      const item = hit && cfg.catalog.find((c) => c.name === hit);
+      return item && !item.enquiry ? { field: svc.field, name: hit } : null;
+    }
+    const TIME_RE = /(^|\s)(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm|a m|p m)(?=\s|$)/;
+    function timeIn(raw) { const m = norm(raw).match(TIME_RE); return m ? `${m[2]}${m[3] ? ":" + m[3] : ""} ${m[4].replace(" ", "")}` : null; }
+    function useTime(state) { // a time said earlier ("6pm") becomes the slot once the day is known, only if that slot is free
+      const si = slotStep(); if (si < 0 || !state.pendingTime || !state.data.date_iso || state.data.slot) return null;
+      const step = cfg.steps[si]; const hit = pickChoice(state.pendingTime, freeSlots(state, choiceList(step)));
+      const asked = state.pendingTime; delete state.pendingTime;
+      if (!hit) { state.missedTime = asked.toUpperCase(); return null; }
+      state.data.slot = hit;
+      if (Slots && cfg.schedule && cfg.schedule.staff) { const f = freeSlotInfo(state, step.choices === "auto" ? "auto" : choiceList(step)).find((x) => x.label === hit); if (f && f.staff.length) state.data.staff = f.staff[0]; }
+      return hit;
+    }
     function startFlow(state, meta, raw) {
       state.prev = { data: JSON.parse(JSON.stringify(state.data)), status: state.lead.status };
       state.step = 0; state.data = {}; bump(state, "warm", "book");
       if (meta && meta.known && meta.known.name) state.data.name = meta.known.name; // returning customer: don't ask the name again
       const heard = [];
       if (raw && !cfg.quiz) { // "repu haircut kavali" → service + date already understood, like a person would
-        const svc = cfg.steps.find((x) => x.choices === "catalog");
-        if (svc) {
-          const words = norm(raw).split(" ").filter((w) => /\p{L}{3,}/u.test(w) && !INTENT.book.test(w) && !INTENT.prices.test(w) && !parseDate(w, nowOf(state)) && !cfg.menu.some((m) => norm(m.label).split(" ").includes(w)));
-          const al = aliasMatch(raw, cfg.catalog);
-          let hit = al ? al.hit || null : words.length ? pickChoice(words.join(" "), choiceList(svc)) : null;
-          if (!hit && !al && words.length > 1) { const each = [...new Set(words.map((w) => pickChoice(w, choiceList(svc))).filter(Boolean))]; if (each.length === 1) hit = each[0]; }
-          const item = hit && cfg.catalog.find((c) => c.name === hit);
-          if (item && !item.enquiry) { state.data[svc.field] = hit; heard.push(hit); }
-        }
+        const c = catalogHit(raw, state); if (c) { state.data[c.field] = c.name; heard.push(c.name); }
         const d = parseDate(raw, nowOf(state));
         if (d && !closedReason(isoOf(d), d) && dateStep() >= 0) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); heard.push(state.data.date); }
+        state.pendingTime = timeIn(raw) || undefined; const slot = useTime(state); if (slot) heard.push(slot);
       }
       const intro = cfg.quiz ? "Let's go! 3 quick questions." : heard.length ? `Sure! ${heard.join(", ")} 👍` : `Great, let's book your ${cfg.bookWord}. Type *cancel* any time to stop.`;
+      if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${intro}\n${m} isn't free that day, so pick a time below.` }, ...nextOrFinish(state, [])]; }
       return [{ text: intro }, ...nextOrFinish(state, [])];
     }
     function abandonFlow(state) { // restore what was there before an unfinished booking/reschedule
@@ -471,6 +486,13 @@
       } else {
         const v = String(raw).trim(); if (v.length < 2) error = "Could you type that again?"; else value = v.slice(0, 80);
       }
+      if (error && step.type !== "date" && !state.rescheduling) {
+        const got = [];
+        const d = dateStep() > state.step && !state.data.date_iso ? parseDate(raw, nowOf(state)) : null;
+        if (d && !closedReason(isoOf(d), d)) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); got.push(state.data.date); }
+        if (step.field !== "slot" && timeIn(raw)) { state.pendingTime = timeIn(raw); got.push(state.pendingTime.toUpperCase()); }
+        if (got.length) return [{ text: `Got it: ${got.join(", ")} 👍` }, askStep(state)];
+      }
       if (error) return [{ text: error }, askStep(state)];
       state.data[step.field] = value;
       if (step.field === "slot" && Slots && cfg.schedule && cfg.schedule.staff) { // "any stylist": give it to the first one free
@@ -483,8 +505,12 @@
 
     function nextOrFinish(state, events) {
       const reask = state.rescheduling ? ["date", "slot"] : [];
+      useTime(state);
       while (state.step < cfg.steps.length && state.data[cfg.steps[state.step].field] && !reask.includes(cfg.steps[state.step].field) && cfg.steps[state.step].type !== "quiz") state.step++;
-      if (state.step < cfg.steps.length) return [askStep(state)];
+      if (state.step < cfg.steps.length) {
+        if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${m} isn't free that day.` }, askStep(state)]; }
+        return [askStep(state)];
+      }
       const v = Object.assign(vars(), state.data);
       if (cfg.quiz) {
         const s = state.data.correct || 0; v.score = s; state.data.quiz_score = `${s}/3`;
@@ -633,6 +659,7 @@
           const f = cfg.faqs.find((q) => q.id === key.slice(4));
           replies = [{ text: fill(f.a, vars()) + "\n\nReply *menu* for more options." }]; bump(state, "warm", "faq");
         }
+        if (!replies.length && !cfg.quiz && (catalogHit(raw, state) || (parseDate(raw, nowOf(state)) && dateStep() >= 0))) replies = startFlow(state, meta, raw);
         if (!replies.length) {
           events.push({ type: "unanswered", text: raw });
           replies = [menuReply("Sorry, I didn't quite get that. I can help with these:")];

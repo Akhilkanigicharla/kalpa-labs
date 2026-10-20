@@ -5,7 +5,8 @@ for setup in ["salon", "gym", "realestate", "examkits"]:
     out = pathlib.Path(tempfile.mkdtemp())
     cfg = S.load(setup, {"site_url": "https://glow.example", "areas": ["Jubilee Hills", "Madhapur"]})
     urls = S.build(setup, cfg, out)
-    assert len(urls) == 1 + len(cfg["catalog"]) * 2, (setup, len(urls))
+    # A49: no local data in the config -> no thin "service in area" pages, only the home page
+    assert len(urls) == 1 and not list((out / "site").glob("*-in-*.html")), (setup, len(urls))
     idx = (out / "site" / "index.html").read_text()
     blocks = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', idx, re.S)]
     assert blocks[0]["@type"] == S.SCHEMA_TYPE[setup] and blocks[1]["@type"] == "FAQPage", setup
@@ -46,4 +47,55 @@ with tempfile.TemporaryDirectory() as d:
     ico = (out / "site" / "favicon.svg").read_text(); idx = (out / "site" / "index.html").read_text()
     assert ico.startswith("<svg") and ">G</text>" in ico and 'fill="#1c2463"' in ico and 'rel="icon" href="/favicon.svg"' in idx
 print("  ✓ Kalamkari tokens; WCAG AA on the WhatsApp button, links and muted text in light + dark; favicon.svg linked")
+# A49 (REA audit #13): no doorway pages. Area pages exist only where the salon gave its own local content
+# (directions, landmarks, its own photos, reviews it supplies); at most 12 pages; body text differs per page.
+# Test-only sample text below: never shipped, and the bot never writes reviews itself.
+AREAS = ["Jubilee Hills", "Madhapur", "Kukatpally", "Ameerpet", "Banjara Hills", "Gachibowli", "Kondapur", "Miyapur",
+         "Begumpet", "Somajiguda", "Panjagutta", "Hitech City", "Manikonda", "Tolichowki", "Attapur"]
+STREETS = ["Road No. 36", "Ayyappa Society", "KPHB Phase 3", "Mythrivanam", "Road No. 12", "DLF gate", "Botanical Garden road",
+           "Allwyn X Roads", "Greenlands", "Raj Bhavan Road", "Nagarjuna Circle", "Cyber Towers", "Puppalaguda", "Seven Tombs", "Pillar 140"]
+TRAVEL = ["auto ride", "metro hop then a short walk", "bus on route 10H", "cab via the flyover", "scooter ride past the lake",
+          "walk along the service road", "shared auto", "drive through the old market lane", "metro to the nearest station",
+          "ride past the stadium", "cab along the ring road", "walk from the IT park", "bike ride over the bridge",
+          "auto past the dargah", "bus from the depot"]
+def _local(i, a):
+    d = {"directions": f"From {a}, take a {TRAVEL[i]} via {STREETS[i]}; turn {'left' if i % 2 else 'right'} after the "
+                       f"{['temple', 'petrol bunk', 'school', 'bakery', 'bank'][i % 5]} and look for our blue board, about {5 + i} minutes.",
+         "landmarks": [f"{STREETS[i]} signal", f"{a} {['bus stop', 'metro pillar', 'post office'][i % 3]}"]}
+    if i == 0:
+        d["photos"] = [{"src": "photos/front-desk.jpg", "alt": "Our front desk seen from the Road No. 36 entrance"}]
+        d["reviews"] = [{"name": "Test customer A", "stars": 5, "text": "Easy to find from the signal and the stylist listened.", "source": "Google"}]
+    return d
+cfg = S.load("salon", {"site_url": "https://glow.example", "areas": AREAS, "local": {a: _local(i, a) for i, a in enumerate(AREAS)}})
+with tempfile.TemporaryDirectory() as d:
+    out = pathlib.Path(d); urls = S.build("salon", cfg, out)
+    files = sorted((out / "site").glob("*.html"))
+    assert len(urls) == len(files) <= S.MAX_PAGES == 12, (len(urls), len(files))
+    assert (out / "site" / "salon-in-jubilee-hills.html").exists() and len(files) == 12
+    texts = {f.name: S.body_text(f.read_text()) for f in files}
+    assert len(set(texts.values())) == len(texts), "two pages share the same body text"
+    worst = max((S.similarity(texts[x], texts[y]), x, y) for i, x in enumerate(texts) for y in list(texts)[i + 1:])
+    assert worst[0] < S.DUP_LIMIT, ("near-duplicate pages", worst)
+    jh = (out / "site" / "salon-in-jubilee-hills.html").read_text(); mp = (out / "site" / "salon-in-madhapur.html").read_text()
+    assert "Ayyappa Society" in mp and 'src="photos/front-desk.jpg"' in jh and "Test customer A" in jh and "Google" in jh
+    assert "Reviews" not in mp and "<img" not in mp, "no reviews/photos supplied -> section omitted, never faked"
+    assert '"aggregateRating"' not in jh and '"review"' not in jh, "self-serving review markup is not allowed"
+    idx = (out / "site" / "index.html").read_text()
+    assert 'href="salon-in-madhapur.html"' in idx and "Attapur" in idx  # page-less areas still listed on the home page
+    sm = (out / "site" / "sitemap.xml").read_text(); assert sm.count("<loc>") == len(urls)
+    assert all(row.split(",")[-1].strip() in {f.name for f in files} for row in open(out / "keywords.csv", encoding="utf-8-sig").read().splitlines()[1:])
+    print(f"  ✓ A49: {len(files)} pages (≤ 12), unique body text, max similarity {worst[0]:.2f} < {S.DUP_LIMIT}; no reviews -> no section")
+# A copy-paste area (same directions with only the area name swapped) is refused as a doorway page
+twin = dict(cfg, areas=["Jubilee Hills", "Madhapur"], local={"Jubilee Hills": {"directions": "Take the main road, turn left at the signal and walk two minutes to our blue board near the big temple."},
+                                                             "Madhapur": {"directions": "Take the main road, turn left at the signal and walk two minutes to our blue board near the big temple."}})
+with tempfile.TemporaryDirectory() as d:
+    urls = S.build("salon", twin, pathlib.Path(d)); assert len(urls) == 2, urls
+# Unsafe photo sources and bad review data are rejected, not rendered
+for bad in ({"photos": [{"src": "javascript:alert(1)", "alt": "x"}]}, {"photos": [{"src": "a.jpg"}]},
+            {"reviews": [{"name": "A", "stars": 9, "text": "x"}]}, {"reviews": [{"name": "", "stars": 5, "text": "x"}]}):
+    try:
+        S.local_section("Madhapur", dict({"directions": "Walk from the metro."}, **bad)); raise AssertionError(("accepted", bad))
+    except ValueError:
+        pass
+print("  ✓ A49: copy-paste area pages skipped; unsafe photo src and bad reviews rejected")
 print("seo bot tests passed")

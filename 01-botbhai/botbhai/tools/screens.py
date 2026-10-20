@@ -33,7 +33,8 @@ def pages(tmp):
     """(name, file url, wants Kalamkari --hero token, optional JS to run first)"""
     subprocess.check_call([sys.executable, str(ROOT / "build.py")], stdout=subprocess.DEVNULL)
     sys.path.insert(0, str(ROOT / "seo")); import seo_bot as S
-    site = pathlib.Path(tmp) / "seo"; S.build("salon", S.load("salon", {"site_url": "https://glow.example", "areas": ["Ameerpet"]}), site)
+    site = pathlib.Path(tmp) / "seo"; S.build("salon", S.load("salon", {"site_url": "https://glow.example", "areas": ["Ameerpet"], "local": {"Ameerpet": {
+        "directions": "Screen-test sample: from Ameerpet metro, walk towards Mythrivanam and turn right at the bakery.", "landmarks": ["Ameerpet metro", "Mythrivanam"]}}}), site)
     demo = (ROOT / "web" / "dist" / "index.html").as_uri()
     out = [("demo-leads", demo, True, None)]
     for tab in ["convo", "cards", "widget", "finder", "how"]:

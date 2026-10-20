@@ -6,7 +6,9 @@ Perplexity) for "<service> near me" / "<service> in <area>" searches. No paid to
 For one client it generates (into --out):
   site/index.html                 fast one-page site: name/address/phone (NAP), services + prices, hours,
                                   FAQs, WhatsApp booking button, schema.org JSON-LD (LocalBusiness + FAQPage)
-  site/<service>-in-<area>.html   one honest page per service × nearby area ("Hair spa in Jubilee Hills")
+  site/<label>-in-<area>.html     a page per nearby area ONLY when client.json gives that area's own local content
+                                  ("local": {"Jubilee Hills": {"directions", "landmarks", "photos", "reviews"}}); at most
+                                  12 pages in all, and an area whose text copies another page is skipped (no doorway pages)
   site/sitemap.xml, robots.txt, llms.txt   for Google and AI crawlers
   gbp_posts.csv                   12 weeks of Google Business Profile posts (offers, tips, festivals)
   citations.csv                   free listings to create, with the exact NAP to paste everywhere
@@ -16,7 +18,7 @@ For one client it generates (into --out):
 Usage: python seo/seo_bot.py --setup salon --config client.json --out build/glow-studio
        (client.json overrides the setup's bot.config.json: business, address, phone, whatsapp, areas, site_url)
 """
-import argparse, csv, datetime as dt, html, json, pathlib, re, urllib.parse
+import argparse, csv, datetime as dt, html, json, pathlib, re, sys, urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCHEMA_TYPE = {"salon": "BeautySalon", "gym": "ExerciseGym", "realestate": "RealEstateAgent", "examkits": "EducationalOrganization"}
@@ -93,6 +95,8 @@ CSS = (":root{" + _vars(LIGHT) + ";--f-display:'Rozha One','Noto Serif',Georgia,
        "h1,h2{font-family:var(--f-display);font-weight:400;letter-spacing:.005em;text-wrap:balance}"
        "h1{font-size:clamp(30px,7vw,44px);line-height:1.1;margin:8px 0;color:var(--fg)}h2{font-size:24px;margin:36px 0 8px}h3{font-size:17px;margin:20px 0 4px}"
        ".muted{color:var(--muted)}table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--rule);border-radius:12px;overflow:hidden}"
+       "img{display:block;max-width:100%;height:auto;margin:8px 0;border-radius:12px}"
+       "blockquote{margin:12px 0;padding:4px 16px;background:var(--panel);border-left:4px solid var(--gold);border-radius:8px}"
        "td{padding:10px 12px;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}td:last-child{text-align:right;font-weight:600;white-space:nowrap}"
        ".wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:flex;align-items:center;justify-content:center;min-height:52px;"
        "text-align:center;background:var(--hero);color:var(--hero-fg);font-weight:700;padding:14px;border-radius:999px;text-decoration:none;"
@@ -115,6 +119,41 @@ def favicon(cfg):
 def services_table(cfg):
     return "<table>" + "".join(f"<tr><td>{html.escape(c['name'])}</td><td>{html.escape(c['price'])}</td></tr>" for c in cfg["catalog"]) + "</table>"
 
+# A49 (REA audit #13): ~30 "<service> in <area>" pages with the same text are doorway pages to Google. Now an area
+# gets a page only when the client's config gives real local content for it, and never more than MAX_PAGES in all.
+MAX_PAGES, DUP_LIMIT = 12, 0.5   # DUP_LIMIT: max word-shingle Jaccard similarity between any two pages' body text
+
+def body_text(doc):
+    """Visible words of a page's <main> (head, JSON-LD and the shared WhatsApp button left out)."""
+    m = re.search(r"<main>(.*)</main>", doc, re.S); t = re.sub(r"<[^>]+>", " ", m.group(1) if m else doc)
+    return " ".join(html.unescape(t).split())
+
+def similarity(a, b, n=3):
+    sh = lambda t: {tuple(w[i:i + n]) for w in [t.lower().split()] for i in range(max(1, len(w) - n + 1))}
+    x, y = sh(a), sh(b); return len(x & y) / len(x | y) if x | y else 1.0
+
+def local_section(area, d):
+    """HTML from the client's own data for one area. Sections without data are left out; nothing is invented."""
+    if not str(d.get("directions", "")).strip(): raise ValueError(f"local[{area!r}] needs 'directions' for its page")
+    e = html.escape
+    out = f"<h2>How to reach us from {e(area)}</h2><p>{e(d['directions'])}</p>"
+    if d.get("landmarks"): out += "<h3>Landmarks</h3><ul>" + "".join(f"<li>{e(str(x))}</li>" for x in d["landmarks"]) + "</ul>"
+    photos = d.get("photos") or []
+    for p in photos:
+        src, alt = str(p.get("src", "")), str(p.get("alt", "")).strip()
+        if not alt or not re.fullmatch(r"(https://[^\s\"'<>]+|[A-Za-z0-9_][A-Za-z0-9_./-]*)", src) or ".." in src:
+            raise ValueError(f"local[{area!r}] photo needs a relative path or https:// src and alt text: {p}")
+    if photos: out += "<h2>Photos</h2>" + "".join(f'<img src="{e(p["src"])}" alt="{e(p["alt"])}" loading="lazy">' for p in photos)
+    reviews = d.get("reviews") or []
+    for r in reviews:
+        if not str(r.get("name", "")).strip() or not str(r.get("text", "")).strip() or r.get("stars") not in (1, 2, 3, 4, 5):
+            raise ValueError(f"local[{area!r}] review needs name, text and stars 1-5: {r}")
+    if reviews:  # supplied by the client from real customers; shown as text only (no self-serving review schema)
+        out += "<h2>Reviews</h2>" + "".join(
+            f"<blockquote><p>{e(r['text'])}</p><p class='muted'>{'★' * r['stars']} {e(r['name'])}"
+            f"{' · ' + e(r['source']) if r.get('source') else ''}</p></blockquote>" for r in reviews)
+    return out
+
 def build(setup, cfg, out):
     # A real client site needs its real address: canonical tags, sitemap and robots.txt would otherwise send
     # Google to example.netlify.app (REA audit, 16 Oct 2026). Drafts/tests pass draft=True.
@@ -124,19 +163,30 @@ def build(setup, cfg, out):
     urls, kw = [], []
     nap = f"<p class='muted'>{html.escape(cfg['address'])} · {html.escape(cfg['phone'])}<br>{html.escape(cfg['hours'])}</p>"
     faqs = "".join(f"<h3>{html.escape(f['k'][0].capitalize())}?</h3><p>{html.escape(clean(f['a'], cfg))}</p>" for f in cfg["faqs"])
-    body = f"<h1>{html.escape(cfg['business'])}</h1>{nap}<p>{html.escape(clean(cfg['greeting'], cfg))}</p><h2>{html.escape(cfg['catalogTitle'])}</h2>{services_table(cfg)}<h2>Areas we serve</h2><p>{', '.join(html.escape(a) for a in cfg['areas'])}</p><h2>Questions</h2>{faqs}"
+    # Area pages: only for areas with the client's own local content, first MAX_PAGES-1, none that copy another page
+    local, pages, skipped = cfg.get("local") or {}, {}, []
+    for a in cfg["areas"]:
+        if a not in local: continue
+        if len(pages) >= MAX_PAGES - 1: skipped.append((a, f"over the {MAX_PAGES}-page limit")); continue
+        name = f"{slug(cfg.get('label') or setup)}-in-{slug(a)}.html"
+        b = (f"<p class='muted'><a href='/'>{html.escape(cfg['business'])}</a></p><h1>{html.escape(cfg['business'])} for {html.escape(a)}</h1>"
+             f"{local_section(a, local[a])}{nap}<p><a href='/'>See our {html.escape(cfg['catalogTitle'].lower())}</a></p>")
+        if any(similarity(body_text(b), body_text(o)) >= DUP_LIMIT for o, _ in pages.values()):
+            skipped.append((a, "local content too similar to another area")); continue
+        pages[a] = (b, name)
+    for a, why in skipped: print(f"  ! no page for {a}: {why} (listed on the home page instead)", file=sys.stderr)
+    area_list = ", ".join(f'<a href="{pages[a][1]}">{html.escape(a)}</a>' if a in pages else html.escape(a) for a in cfg["areas"])
+    body = f"<h1>{html.escape(cfg['business'])}</h1>{nap}<p>{html.escape(clean(cfg['greeting'], cfg))}</p><h2>{html.escape(cfg['catalogTitle'])}</h2>{services_table(cfg)}<h2>Areas we serve</h2><p>{area_list}</p><h2>Questions</h2>{faqs}"
     (site / "index.html").write_text(page(setup, cfg, f"{cfg['business']} — {cfg['catalogTitle']}, Hyderabad", f"{cfg['business']} in Hyderabad. Prices, timings and instant WhatsApp booking.", body, cfg["site_url"] + "/"))
     urls.append(cfg["site_url"] + "/")
+    for a, (b, name) in pages.items():
+        url = f"{cfg['site_url']}/{name}"
+        (site / name).write_text(page(setup, cfg, f"{cfg['business']} near {a} — directions and {cfg['catalogTitle'].lower()}",
+                                      f"How to reach {cfg['business']} from {a}. Prices, timings and WhatsApp booking.", b, url, None, a))
+        urls.append(url)
     for c in cfg["catalog"]:
         for a in cfg["areas"]:
-            name = f"{slug(c['name'])}-in-{slug(a)}.html"; url = f"{cfg['site_url']}/{name}"
-            title = f"{c['name']} in {a} — {cfg['business']}"
-            b = (f"<p class='muted'><a href='/'>{html.escape(cfg['business'])}</a></p><h1>{html.escape(c['name'])} near {html.escape(a)}</h1>"
-                 f"<p><strong>{html.escape(c['price'])}</strong> at {html.escape(cfg['business'])}, {html.escape(cfg['address'])}. "
-                 f"Serving customers from {html.escape(a)} and nearby. Book on WhatsApp in under a minute; we confirm instantly and remind you before your visit.</p>"
-                 f"{nap}<h2>All {html.escape(cfg['catalogTitle'].lower())}</h2>{services_table(cfg)}")
-            (site / name).write_text(page(setup, cfg, title, f"{c['name']} near {a}: {c['price']}. Instant WhatsApp booking at {cfg['business']}.", b, url, c["name"], a))
-            urls.append(url); kw.append((c["name"], a, f"{c['name'].lower()} in {a.lower()}", f"{c['name'].lower()} near me", name))
+            kw.append((c["name"], a, f"{c['name'].lower()} in {a.lower()}", f"{c['name'].lower()} near me", pages[a][1] if a in pages else "index.html"))
     today = dt.date.today().isoformat()
     (site / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls) + "</urlset>")
     (site / "favicon.svg").write_text(favicon(cfg))  # stops the /favicon 404 that Lighthouse logged as a console error

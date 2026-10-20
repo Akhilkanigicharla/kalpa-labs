@@ -23,3 +23,4 @@ __pycache__/
 # b2 JobCard + b4 Tab Lifeboat screen PNGs (regenerate: python3 02-jobcard/design/screens.py; cd 04-extensions/src && npm run test:screens)
 02-jobcard/design/screens/
 04-extensions/design/screens/
+.claude/worktrees/

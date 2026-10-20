@@ -1,0 +1,88 @@
+{
+  "_about": "A57 launch readiness board: the 5 offers and 6 production-grade rules of 00-hq/SOFT-LAUNCH.md. Run: python3 00-hq/launch/check.py (--json for A63). Check kinds are documented at the top of check.py. Env vars are checked by NAME only.",
+  "rows": [
+    {
+      "id": "O1", "kind": "offer", "label": "BotBhai for salons (b1)",
+      "checks": [
+        {"kind": "roadmap", "items": ["C02", "C03", "C23", "A59"]},
+        {"kind": "env", "names": ["WA_ACCESS_TOKEN", "WA_APP_SECRET", "WA_VERIFY_TOKEN", "GROQ_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]},
+        {"kind": "smoke", "path": "00-hq/launch/smoke-results.json", "targets": ["botbhai-site", "botbhai-chat", "botbhai-booking"], "max_age_hours": 12},
+        {"kind": "file", "path": "01-botbhai/docs/sales/agreement.pdf"},
+        {"kind": "file", "path": "01-botbhai/docs/sales/privacy-notice.pdf"}
+      ]
+    },
+    {
+      "id": "O2", "kind": "offer", "label": "Social Team add-on (b1)",
+      "checks": [
+        {"kind": "roadmap", "items": ["C18", "C02"]},
+        {"kind": "env", "names": ["WA_ACCESS_TOKEN", "IG_ACCESS_TOKEN"]},
+        {"kind": "file", "path": "01-botbhai/botbhai/social/publish.py"},
+        {"kind": "file", "path": "01-botbhai/botbhai/social/approve.py"}
+      ]
+    },
+    {
+      "id": "O3", "kind": "offer", "label": "Telugu deals channel (b5)",
+      "checks": [
+        {"kind": "roadmap", "items": ["C09", "C27", "C39", "A58"]},
+        {"kind": "env", "names": ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]},
+        {"kind": "file", "path": "05-deals/site/src/bot/post.py", "contains": ["#ad"]},
+        {"kind": "cmd", "run": ["python3", "-m", "unittest", "-q", "05-deals/site/src/bot/test_post.py"], "timeout": 120}
+      ]
+    },
+    {
+      "id": "O4", "kind": "offer", "label": "Kits + Claude Skill pack (b3)",
+      "checks": [
+        {"kind": "roadmap", "items": ["C08", "A54"]},
+        {"kind": "file", "path": "03-kits/products/Kalpa-GATE-2027-CS-Kit.xlsx"},
+        {"kind": "file", "path": "03-kits/products/Kalpa-Tax-SIP-Planner-2026-27.xlsx"},
+        {"kind": "smoke", "path": "00-hq/launch/smoke-results.json", "targets": ["kits-site", "upi-page"], "max_age_hours": 12}
+      ]
+    },
+    {
+      "id": "O5", "kind": "offer", "label": "Telugu \"Claude Code with me\" workshop (b3)",
+      "checks": [
+        {"kind": "roadmap", "items": ["C38", "A62"]},
+        {"kind": "smoke", "path": "00-hq/launch/smoke-results.json", "targets": ["workshop-page"], "max_age_hours": 12}
+      ]
+    },
+    {
+      "id": "R1", "kind": "rule", "label": "Kalpa quality CI green on main",
+      "checks": [
+        {"kind": "ci", "repo": "Akhilkanigicharla/kalpa-labs", "workflow": "quality.yml", "branch": "main"}
+      ]
+    },
+    {
+      "id": "R2", "kind": "rule", "label": "Deployed URLs pass the scheduled smoke test",
+      "checks": [
+        {"kind": "roadmap", "items": ["A61"]},
+        {"kind": "smoke", "path": "00-hq/launch/smoke-results.json", "targets": ["botbhai-site", "botbhai-chat", "botbhai-booking", "kits-site", "upi-page", "tab-lifeboat-site"], "max_age_hours": 12}
+      ]
+    },
+    {
+      "id": "R3", "kind": "rule", "label": "No unverified claim on a public page (audit clean)",
+      "checks": [
+        {"kind": "audit", "dir": "00-hq/audit", "max_age_days": 14}
+      ]
+    },
+    {
+      "id": "R4", "kind": "rule", "label": "Privacy notice names every processor; ASCI #ad on affiliate posts",
+      "checks": [
+        {"kind": "file", "path": "00-hq/docs/legal/privacy-kalpa-labs.md", "contains": ["Groq", "NVIDIA", "TypeSafe", "Meta", "Supabase", "Netlify"]},
+        {"kind": "file", "path": "05-deals/site/src/bot/post.py", "contains": ["#ad"]}
+      ]
+    },
+    {
+      "id": "R5", "kind": "rule", "label": "Money reconciled weekly in the Kalpa Ledger",
+      "checks": [
+        {"kind": "roadmap", "items": ["C06"]},
+        {"kind": "fresh", "path": "00-hq/launch/reconciled.json", "max_age_days": 8}
+      ]
+    },
+    {
+      "id": "R6", "kind": "rule", "label": "Rollback path for each deploy",
+      "checks": [
+        {"kind": "file", "path": "00-hq/launch/ROLLBACK.md", "contains": ["Netlify", "git revert"]}
+      ]
+    }
+  ]
+}

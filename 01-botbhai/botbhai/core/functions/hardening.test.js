@@ -170,8 +170,42 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
       const off = await flow("ts-nosecret", pass());
       assert.match(off.replies[0].text, /WhatsApp/); assert.ok(!off.check);
       assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-nosecret").length, 0);
-      assert.ok(errs.some((e) => /TURNSTILE_SECRET_KEY/.test(e)));
-    } finally { console.error = log; process.env.TURNSTILE_SECRET_KEY = secret; }
+      assert.ok(errs.some((e) => /turnstile: off \(no secret\)/.test(e) && /TURNSTILE_SECRET_KEY/.test(e)), errs.join("\n"));
+      // Demo/preview deploy only: BOTBHAI_DEMO=1 with no secret lets the test booking through, still logged loudly.
+      process.env.BOTBHAI_DEMO = "1"; errs.length = 0;
+      const demo = await flow("ts-demo", undefined);
+      assert.ok(!demo.check, JSON.stringify(demo));
+      assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-demo" && b.status === "confirmed").length, 1);
+      assert.ok(errs.some((e) => /turnstile: off \(no secret\)/.test(e)), errs.join("\n"));
+      // The demo switch never weakens a real setup: with the secret set, a missing token is still refused.
+      process.env.TURNSTILE_SECRET_KEY = secret;
+      const real = await flow("ts-demo-real", undefined);
+      assert.ok(real.check); assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-demo-real").length, 0);
+    } finally { console.error = log; process.env.TURNSTILE_SECRET_KEY = secret; delete process.env.BOTBHAI_DEMO; }
+  });
+  await ok("A50: the verifier is injectable; a fake verifier that says no blocks the booking, one that says yes saves it", async () => {
+    const c = "11111111-2222-3333-4444-555555555555";
+    const web = (visitor, text, turnstile) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.52" }, body: JSON.stringify({ client: c, visitor, text, turnstile }) }).then((r) => JSON.parse(r.body));
+    const d = new Date(Date.now() + 330 * 60000 + 5 * 864e5), day5 = `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
+    const flow = async (visitor, token) => { await web(visitor, "book"); await web(visitor, "facial"); const r = await web(visitor, day5); await web(visitor, r.replies.at(-1).options[0]); return web(visitor, "Ravi", token); };
+    const seen = []; const cloud = graph.turnstile.length;
+    chat.siteverify = async (f) => { seen.push(f); return { success: f.response === "fake-good", action: "booking" }; };
+    try {
+      const no = await flow("ts-inject-no", "fake-bad");
+      assert.ok(no.check); assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-inject-no").length, 0);
+      const yes = await flow("ts-inject-yes", "fake-good");
+      assert.ok(!yes.check, JSON.stringify(yes)); assert.strictEqual(store.bookings.filter((b) => b.contact === "web:ts-inject-yes").length, 1);
+      assert.deepStrictEqual(seen.map((f) => [f.secret, f.response, f.remoteip]), [["ts-secret", "fake-bad", "198.51.100.52"], ["ts-secret", "fake-good", "198.51.100.52"]]);
+      assert.strictEqual(graph.turnstile.length, cloud, "the injected verifier replaces the Cloudflare call");
+    } finally { delete chat.siteverify; }
+  });
+  await ok("A50: secret set but no site key → the page is never sent an empty widget; bookings go to WhatsApp", async () => {
+    const key = process.env.TURNSTILE_SITE_KEY; delete process.env.TURNSTILE_SITE_KEY;
+    const errs = []; const log = console.error; console.error = (...a) => errs.push(a.join(" "));
+    try {
+      const t = await L.turnstileOk(pass(), "1.2.3.4");
+      assert.deepStrictEqual([t.ok, t.setup], [false, false]); assert.ok(errs.some((e) => /TURNSTILE_SITE_KEY/.test(e)));
+    } finally { console.error = log; process.env.TURNSTILE_SITE_KEY = key; }
   });
   await ok("A50: Cloudflare down or a token for another action also fails closed", async () => {
     assert.strictEqual((await L.turnstileOk("pass-action-login", "1.2.3.4")).ok, false);

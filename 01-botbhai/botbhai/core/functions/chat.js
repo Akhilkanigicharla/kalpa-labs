@@ -33,7 +33,7 @@ exports.handler = async (event) => {
   // A booking is only saved after a Cloudflare Turnstile check (A50). Nothing is written otherwise, so when the page
   // resends the same message with a token, the engine replays the same booking from the same state.
   if (out.events.some((e) => e.type === "booking")) {
-    const t = await L.turnstileOk(input.turnstile, ip);
+    const t = await L.turnstileOk(input.turnstile, ip, exports.siteverify); // tests inject a fake verifier
     if (!t.ok && t.setup === false) return L.json(200, { replies: [{ text: "Online booking is paused for a moment. Please message us on WhatsApp to book." }] });
     if (!t.ok) return L.json(200, { replies: [{ text: "One quick check so we know you're not a robot: tap the box below. Your slot is not booked yet." }], check: { sitekey: t.sitekey } });
   }

@@ -1,0 +1,70 @@
+# b5 Telugu deals channel poster (roadmap A58). Free on GitHub Actions; Python standard library only.
+# Dry run (prints only) until ALL of these exist: secrets TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
+# (or TELEGRAM_CHANNEL_ID), which Akhil adds himself (C27), AND repo variable DEALS_LIVE=go (Akhil's "go").
+# Missing secrets never fail the run. A refused (non-compliant) deal does fail it, so the team sees it.
+name: b5 deals poster
+on:
+  schedule:
+    # GitHub cron is UTC. IST = UTC + 5:30. Slots must match SLOTS / TIP_SLOT in channel.py.
+    - cron: "30 3 * * *"   # 09:00 IST deal
+    - cron: "0 5 * * 0"    # 10:30 IST Sunday weekly money tip
+    - cron: "0 7 * * *"    # 12:30 IST deal
+    - cron: "0 12 * * *"   # 17:30 IST deal
+    - cron: "30 14 * * *"  # 20:00 IST deal
+    - cron: "0 16 * * *"   # 21:30 IST deal
+  workflow_dispatch:
+    inputs:
+      day: { description: "Print a full day's posts for YYYY-MM-DD (dry run only). Blank = normal scheduled pass.", default: "" }
+  push:
+    paths: ["05-deals/site/src/bot/**", ".github/workflows/deals-poster.yml"]
+concurrency:
+  group: deals-poster   # never two posters at once (no double posts, no state clashes)
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults: { run: { working-directory: 05-deals/site/src/bot } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m unittest -v test_post.py test_channel.py
+      - name: Dry run of the sample Sunday
+        run: python channel.py --day 2026-10-25
+  post:
+    if: github.event_name != 'push'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write   # only to commit state.json (duplicate guard) after a live post
+    defaults: { run: { working-directory: 05-deals/site/src/bot } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Full-day dry run
+        if: github.event.inputs.day != ''
+        env: { DAY: "${{ github.event.inputs.day }}" }
+        run: python channel.py --day "$DAY" --check-links
+      - name: Scheduled pass (dry run unless secrets + DEALS_LIVE=go)
+        if: github.event.inputs.day == ''
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          DEALS_LIVE: ${{ vars.DEALS_LIVE }}
+        run: python channel.py --live
+      - name: Save duplicate-guard state
+        if: always() && github.event.inputs.day == ''
+        run: |
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "kalpa-deals-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "b5 deals: posted-state update [skip ci]"
+            for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          fi

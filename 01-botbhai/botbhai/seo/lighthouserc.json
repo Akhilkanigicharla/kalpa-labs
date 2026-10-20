@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "staticDistDir": "./_lh_site/site",
-      "url": ["http://localhost/index.html", "http://localhost/haircut-men-in-jubilee-hills.html"],
+      "url": ["http://localhost/index.html", "http://localhost/salon-in-jubilee-hills.html"],
       "numberOfRuns": 1,
       "settings": { "preset": "desktop", "onlyCategories": ["performance", "accessibility", "best-practices", "seo"] }
     },

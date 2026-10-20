@@ -24,16 +24,24 @@ async function rateHit(key, windowS, max) {
 }
 // ---------- Cloudflare Turnstile (free bot check) before a website booking is saved (A50).
 // Fails closed: no secret, no token, a used/forged token, a token for another action or Cloudflare unreachable → not ok.
-async function turnstileOk(token, ip) {
+// No secret = "turnstile: off": bookings are paused, unless BOTBHAI_DEMO=1 (a private demo/preview deploy only).
+// `siteverify(fields)` is injectable so tests use a fake verifier; it returns Cloudflare's JSON reply.
+const cloudflareSiteverify = async (fields) => (await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+  method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(fields).toString() })).json();
+async function turnstileOk(token, ip, siteverify = cloudflareSiteverify) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) { console.error("TURNSTILE_SECRET_KEY missing: website bookings are paused"); return { ok: false, setup: false }; }
+  if (!secret) {
+    const demo = process.env.BOTBHAI_DEMO === "1";
+    console.error(`turnstile: off (no secret): TURNSTILE_SECRET_KEY not set, website bookings ${demo ? "allowed (BOTBHAI_DEMO=1)" : "are paused"}`);
+    return demo ? { ok: true, off: true } : { ok: false, setup: false };
+  }
   const sitekey = process.env.TURNSTILE_SITE_KEY || "";
+  if (!sitekey) { console.error("turnstile: TURNSTILE_SITE_KEY missing: website bookings are paused"); return { ok: false, setup: false }; }
   if (typeof token !== "string" || !token || token.length > 2048) return { ok: false, sitekey };
   try {
-    const body = new URLSearchParams({ secret, response: token });
-    if (ip && ip !== "unknown") body.set("remoteip", ip);
-    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() });
-    const data = await res.json();
+    const fields = { secret, response: token };
+    if (ip && ip !== "unknown") fields.remoteip = ip;
+    const data = await siteverify(fields);
     return { ok: !!(data && data.success === true && data.action === "booking"), sitekey };
   } catch (e) { console.error("turnstile verify failed", e.message); return { ok: false, sitekey }; }
 }

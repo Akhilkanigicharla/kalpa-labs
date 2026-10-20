@@ -11,6 +11,8 @@
  *   SITE_URL            public site URL (smile-card images)
  *   TURNSTILE_SITE_KEY, TURNSTILE_SECRET_KEY   Cloudflare Turnstile (free) for website-chat bookings (A50).
  *                       REQUIRED for website bookings: without the secret, chat bookings are refused (fail closed).
+ *   BOTBHAI_DEMO=1      private demo/preview deploys only: with no Turnstile secret, website bookings are allowed
+ *                       and logged "turnstile: off (no secret)". Never set it on a client's live site.
  *   VOICE_SERVER_URL, VOICE_SERVER_KEY   optional: voice-note replies
  *
  * Per message: dedupe (Meta retries) → understand (text, button, list, voice note) → engine (with calendar

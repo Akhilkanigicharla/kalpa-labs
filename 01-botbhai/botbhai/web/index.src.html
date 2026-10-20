@@ -59,36 +59,59 @@ header .sub{color:var(--hero-mute)}
 .grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
 /* phone */
-.phone{background:var(--chat-bg);border-radius:28px;border:8px solid var(--hero);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;height:640px;max-height:80vh;min-width:0}
-.wa-top{position:relative;background:var(--hero);color:var(--hero-fg);display:flex;align-items:center;gap:10px;padding:12px 12px 16px}
+.phone{background:var(--chat-bg);border-radius:28px;border:8px solid var(--hero);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;height:680px;max-height:84vh;min-width:0}
+.wa-top{position:relative;background:var(--hero);color:var(--hero-fg);display:flex;align-items:center;gap:12px;padding:12px 12px 20px}
 .wa-top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8px;background:var(--temple);background-size:14px 8px,7px 8px;transform:scaleY(-1);opacity:.85}
-.avatar{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,var(--hero) 0 58%,transparent 59%),conic-gradient(var(--gold) 0 25%,var(--madder) 0 50%,var(--gold) 0 75%,var(--madder) 0);display:grid;place-items:center;font-size:17px;flex:none}
-.wa-top b{display:block;font-size:15px;line-height:1.2}
-.wa-top small{color:var(--hero-mute);font-size:12px}
-.mode{margin-left:auto;display:flex;gap:4px}
-.mode button{min-height:36px;background:color-mix(in srgb,var(--hero-fg) 14%,transparent);color:var(--hero-fg);border:0;border-radius:999px;padding:4px 12px;font:600 12px var(--f-body);cursor:pointer}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--hero);box-shadow:0 0 0 2px var(--gold);display:grid;place-items:center;font:400 16px var(--f-display);color:var(--gold);flex:none}
+.who{min-width:0}
+.wa-top b{display:block;font-size:16px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wa-top small{display:flex;align-items:center;gap:6px;color:var(--hero-mute);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:#5BD08F;flex:none}
+.mode{margin-left:auto;display:flex;gap:4px;padding:4px;border-radius:999px;background:color-mix(in srgb,var(--hero-fg) 12%,transparent)}
+.mode button{width:40px;height:40px;display:grid;place-items:center;background:transparent;color:var(--hero-fg);border:0;border-radius:999px;cursor:pointer}
 .mode button[aria-pressed="true"]{background:var(--gold);color:#191C33}
-.msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
-.b{max-width:86%;padding:8px 8px 4px;border-radius:10px;color:var(--chat-ink);font-size:14px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px .5px rgba(0,0,0,.13)}
-.b.in{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:2px}
-.b.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:2px}
-.b time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
+.mode svg,.round svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.langs{display:flex;gap:4px;padding:8px 12px 0;background:var(--chat-bg)}
+.langs button{min-height:32px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:600 13px var(--f-body);cursor:pointer}
+.langs button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
+.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
+.b{max-width:86%;padding:8px 12px 4px;border-radius:var(--r-m);color:var(--chat-ink);font-size:15px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px 0 color-mix(in srgb,var(--fg) 10%,transparent)}
+.b.in{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:4px}
+.b.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:4px}
+.b time{display:block;text-align:right;font-size:11px;color:var(--muted);margin-top:2px}
 .b a{color:var(--accent)}
-.ts{align-self:stretch;min-height:65px;max-width:100%}
-.opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:92%}
-.opts button{background:var(--bubble-in);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:999px;min-height:36px;padding:8px 12px;font:600 13.5px var(--f-body);cursor:pointer;box-shadow:0 1px .5px rgba(0,0,0,.13)}
-.compose{display:flex;gap:6px;padding:8px;background:var(--chat-bg)}
-.compose input{flex:1;min-width:0;border:0;border-radius:20px;padding:10px 16px;font:15px var(--f-body);background:var(--bubble-in);color:var(--chat-ink)}
-.round{width:42px;height:42px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-fg);font-size:18px;cursor:pointer;flex:none}
-.voice{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;text-align:center;color:var(--chat-ink)}
+.b.welcome{max-width:100%;align-self:stretch;border:1px solid var(--line);border-radius:var(--r-l);padding:12px 16px 8px}
+.b.welcome .biz{display:block;font:400 20px/1.2 var(--f-display);margin-bottom:4px}
+.b.welcome .facts{display:grid;gap:2px;font-size:13px;color:var(--muted);margin:8px 0 0}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 16px;border-radius:var(--r-m);border-top-left-radius:4px;background:var(--bubble-in)}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:.25}}
+.ts{align-self:stretch;min-height:64px;max-width:100%}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:8px 12px 0;scrollbar-width:none;background:var(--chat-bg)}
+.quick:empty{display:none}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:none;background:var(--panel);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;min-height:40px;padding:8px 16px;font:600 14px var(--f-body);cursor:pointer;white-space:nowrap}
+.compose{display:flex;gap:8px;padding:8px 12px 12px;background:var(--chat-bg)}
+.compose input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font:16px var(--f-body);background:var(--panel);color:var(--chat-ink)}
+.round{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:0;background:var(--accent);color:var(--accent-fg);cursor:pointer;flex:none}
+.round.ghost{background:var(--panel);color:var(--accent);border:1px solid var(--line)}
+.round.live{background:var(--madder);color:#fff;border-color:var(--madder)}
+.voice{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;color:var(--chat-ink)}
 .phone.voicemode .voice{display:flex}
-.phone.voicemode .msgs{flex:0 0 38%;border-bottom:1px solid var(--line)}
-.orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--hero) 0 56%,transparent 57%),conic-gradient(from 0deg,var(--gold) 0 12.5%,var(--madder) 0 25%,var(--gold) 0 37.5%,var(--madder) 0 50%,var(--gold) 0 62.5%,var(--madder) 0 75%,var(--gold) 0 87.5%,var(--madder) 0);border:0;cursor:pointer;color:var(--hero-fg);font:600 14px var(--f-body);box-shadow:0 0 0 0 color-mix(in srgb,var(--gold) 55%,transparent)}
-.orb.live{animation:pulse 1.4s infinite}
-@keyframes pulse{to{box-shadow:0 0 0 22px transparent}}
-@media (prefers-reduced-motion:reduce){.orb.live{animation:none}.rise{animation:none}}
-.rise{animation:rise .35s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(6px)}}
-.voice p{margin:0;max-width:30ch;font-size:13.5px;opacity:.85}
+.phone.voicemode .msgs{flex:0 0 34%;border-bottom:1px solid var(--line)}
+.phone.voicemode .compose{display:none}
+.orb{width:144px;height:144px;border-radius:50%;display:grid;place-items:center;align-content:center;gap:8px;background:var(--hero);box-shadow:0 0 0 4px var(--gold),0 0 0 10px color-mix(in srgb,var(--gold) 20%,transparent);border:0;cursor:pointer;color:var(--hero-fg);font:600 14px var(--f-body)}
+.bars{display:flex;gap:4px;align-items:center;height:28px}
+.bars i{width:4px;height:8px;border-radius:2px;background:var(--gold)}
+.orb.listening .bars i{animation:bar .9s ease-in-out infinite}.orb.speaking .bars i{animation:bar .6s ease-in-out infinite}
+.bars i:nth-child(2){animation-delay:.1s}.bars i:nth-child(3){animation-delay:.2s}.bars i:nth-child(4){animation-delay:.3s}.bars i:nth-child(5){animation-delay:.4s}
+@keyframes bar{50%{height:28px}}
+.orb.listening{box-shadow:0 0 0 4px var(--madder),0 0 0 12px color-mix(in srgb,var(--madder) 25%,transparent)}
+@media (prefers-reduced-motion:reduce){.bars i,.typing i{animation:none!important}.rise{animation:none}}
+.rise{animation:rise .3s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(4px)}}
+.heard{min-height:24px;margin:0;font-size:15px;font-weight:600}
+.voice p{margin:0;max-width:32ch;font-size:13px;color:var(--muted)}
 /* console */
 .console{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column}
 .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);padding:10px;overflow-x:auto;scrollbar-width:thin}
@@ -151,21 +174,29 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
   <div class="grid">
     <section class="phone" id="phone" aria-label="Customer phone">
       <div class="wa-top">
-        <div class="avatar" id="avatar">🩺</div>
-        <div><b id="bizname">Sunrise Family Clinic</b><small id="status">online · replies instantly</small></div>
-        <div class="mode" role="group" aria-label="Mode">
-          <button id="m-chat" aria-pressed="true">Chat</button>
-          <button id="m-voice" aria-pressed="false">Voice</button>
+        <div class="avatar" id="avatar" aria-hidden="true">GS</div>
+        <div class="who"><b id="bizname">Sunrise Family Clinic</b><small><span class="dot" aria-hidden="true"></span><span id="status">AI assistant · replies in seconds</span></small></div>
+        <div class="mode" role="group" aria-label="Chat or voice">
+          <button id="m-chat" aria-pressed="true" aria-label="Chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></button>
+          <button id="m-voice" aria-pressed="false" aria-label="Voice"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
         </div>
+      </div>
+      <div class="langs" role="group" aria-label="Language you speak">
+        <button data-lang="en-IN" aria-pressed="true">English</button>
+        <button data-lang="te-IN" aria-pressed="false" lang="te">తెలుగు</button>
+        <button data-lang="hi-IN" aria-pressed="false" lang="hi">हिंदी</button>
       </div>
       <div class="msgs" id="msgs" aria-live="polite"></div>
       <div class="voice" id="voice">
-        <button class="orb" id="orb" aria-label="Talk to the voice agent">Tap to talk</button>
-        <p id="vstatus">The agent speaks every reply aloud. Tap the button and speak, or tap a reply chip.</p>
+        <button class="orb" id="orb" aria-label="Tap and speak"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="orbtxt">Tap and speak</span></button>
+        <p class="heard" id="heard" aria-live="polite"></p>
+        <p id="vstatus">Speak in English, Telugu or Hindi. Replies are read aloud.</p>
       </div>
+      <div class="quick" id="quick" aria-label="Quick replies"></div>
       <form class="compose" id="compose">
-        <input id="text" autocomplete="off" placeholder="Type a message (try: hi)" aria-label="Message">
-        <button class="round" aria-label="Send">➤</button>
+        <input id="text" autocomplete="off" placeholder="Message: e.g. haircut tomorrow 7pm" aria-label="Message">
+        <button type="button" class="round ghost" id="mic" aria-label="Speak instead of typing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button class="round" aria-label="Send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-2-7z"/></svg></button>
       </form>
     </section>
 
@@ -297,6 +328,7 @@ let niche = store.get("bf_niche", "salon"); if (!B.NICHES[niche]) niche = Object
 let state = B.newState();
 let visitor = "v" + Math.random().toString(36).slice(2, 10);
 let speak = false;
+let lang = store.get("bf_lang", "en-IN");
 
 // ---- niche switcher
 const nicheBox = $("#niches"), fN = $("#f-niche");
@@ -309,9 +341,12 @@ function setNiche(id) {
   niche = id; store.set("bf_niche", id); state = B.newState(); visitor = "v" + Math.random().toString(36).slice(2, 10);
   const n = B.NICHES[id];
   nicheBox.querySelectorAll(".niche").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
-  $("#avatar").textContent = n.emoji; $("#bizname").textContent = n.business;
-  $("#msgs").innerHTML = "";
-  bubble("in", `👋 You're chatting with the *${n.business}* bot. Type *hi* or tap a button.`, ["Hi"]);
+  $("#avatar").textContent = n.business.split(/\s+/).filter((w) => /^\p{L}/u.test(w)).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  $("#bizname").textContent = n.business;
+  $("#msgs").innerHTML = ""; $("#quick").innerHTML = "";
+  welcome(n);
+  if (LIVE_CLIENT) quickWords(["Book", "Prices", "Timings", "Talk to a person"]); // live site: nothing reaches the server until the customer speaks
+  else send("hi", null, null, true); // demo: the real greeting + menu from the engine, without a fake customer bubble
   renderEmbed(); renderCards();
 }
 const CARD_SETS = { salon: ["booking_confirmed", "day_before", "two_hours", "after_visit", "winback", "festival"], gym: ["booking_confirmed", "day_before", "two_hours", "after_visit", "renew_7", "winback"], realestate: ["booking_confirmed", "day_before", "after_visit", "winback", "festival"], examkits: ["booking_confirmed", "daily_question", "day_before", "after_visit", "renew_7"] };
@@ -322,16 +357,31 @@ function renderCards() {
 }
 
 // ---- chat rendering
+function welcome(n) { // a business card first, so the customer knows who they're talking to before typing anything
+  const d = document.createElement("div"); d.className = "b in welcome";
+  d.innerHTML = `<span class="biz">${esc(n.business)}</span>AI assistant: book, check prices and timings, any time. A person takes over whenever you ask.` +
+    `<span class="facts">${n.hours ? `<span>Open: ${esc(n.hours)}</span>` : ""}${n.address ? `<span>${esc(n.address)}</span>` : ""}</span>`;
+  $("#msgs").appendChild(d);
+}
+// "Reply with a number" lists are shown as tap buttons instead, so the bubble keeps only the words
+const tidy = (text, options) => (options && options.length ? String(text).replace(/\n?(How can I help\? )?Reply with a number:?/gi, "").replace(/^\s*\*?\d+\.\*?\s.*$/gm, "").replace(/\n{3,}/g, "\n\n").trim() : text);
+function quick(options) {
+  const q = $("#quick"); q.innerHTML = "";
+  (options || []).forEach((label, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.onclick = () => send(String(i + 1), label); q.appendChild(b); });
+}
+function quickWords(words) { // first tap sends the word itself (the engine understands "book", "prices", …)
+  const q = $("#quick"); q.innerHTML = "";
+  words.forEach((w) => { const b = document.createElement("button"); b.type = "button"; b.textContent = w; b.onclick = () => send(w); q.appendChild(b); });
+}
 function bubble(dir, text, options) {
-  const m = $("#msgs");
-  m.querySelectorAll(".opts").forEach((o) => o.remove());
-  const d = document.createElement("div"); d.className = "b " + dir; d.innerHTML = fmt(text) + `<time>${now()}${dir === "out" ? " ✓✓" : ""}</time>`; m.appendChild(d);
-  if (options && options.length) {
-    const o = document.createElement("div"); o.className = "opts";
-    options.forEach((label, i) => { const btn = document.createElement("button"); btn.textContent = label; btn.onclick = () => send(String(i + 1), label); o.appendChild(btn); });
-    m.appendChild(o);
-  }
+  const m = $("#msgs"); const body = tidy(text, options);
+  if (body) { const d = document.createElement("div"); d.className = "b " + dir; d.innerHTML = fmt(body) + `<time>${now()}${dir === "out" ? " ✓✓" : ""}</time>`; m.appendChild(d); }
+  if (dir === "out") quick([]); else if (options && options.length) quick(options);
   m.scrollTop = m.scrollHeight;
+}
+function typing(on) {
+  const m = $("#msgs"); m.querySelectorAll(".typing").forEach((t) => t.remove());
+  if (on) { const t = document.createElement("div"); t.className = "typing"; t.setAttribute("aria-label", "typing"); t.innerHTML = "<i></i><i></i><i></i>"; m.appendChild(t); m.scrollTop = m.scrollHeight; }
 }
 // ---- Cloudflare Turnstile (A50): the script loads only when the server asks for a check before saving a booking
 let tsLoad = null;
@@ -352,9 +402,9 @@ async function humanCheck(sitekey, text, shown) {
     m.scrollTop = m.scrollHeight;
   } catch (e) { box.remove(); bubble("in", "The robot check didn't load. Please message us on WhatsApp to book."); }
 }
-async function send(text, shown, turnstile) {
+async function send(text, shown, turnstile, silent) {
   if (!text.trim()) return;
-  if (!turnstile) bubble("out", shown || text);
+  if (!turnstile && !silent) bubble("out", shown || text);
   let replies, check;
   if (LIVE_CLIENT) {
     try {
@@ -364,11 +414,11 @@ async function send(text, shown, turnstile) {
   } else {
     const out = B.createBot(niche).handle(state, text, { contact: "demo visitor", source: speak ? "voice" : "web" });
     state = out.state; replies = out.replies;
-    logConvo(text, out); saveLead(out.lead);
+    if (!silent) { logConvo(text, out); saveLead(out.lead); }
   }
   $("#status").textContent = "typing…";
-  for (const r of replies) { await new Promise((ok) => setTimeout(ok, 450)); bubble("in", r.text, r.options); }
-  $("#status").textContent = "online · replies instantly";
+  for (const r of replies) { typing(true); await new Promise((ok) => setTimeout(ok, silent ? 150 : 550)); typing(false); bubble("in", r.text, r.options); }
+  $("#status").textContent = "AI assistant · replies in seconds";
   if (check) humanCheck(check.sitekey, text, shown);
   if (speak && replies.length) say(replies.map((r) => r.text).join(". "));
 }
@@ -437,28 +487,46 @@ resetBtn.onclick = () => {
   else { resetBtn.dataset.armed = "1"; resetBtn.textContent = "Tap again to reset"; setTimeout(() => { resetBtn.textContent = "Reset demo"; delete resetBtn.dataset.armed; }, 3000); }
 };
 
-// ---- voice agent
+// ---- voice agent (free: the browser's own speech engine, no key; Chrome on Android/desktop, Safari on iOS)
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const LANG_NAME = { "en-IN": "English", "te-IN": "Telugu", "hi-IN": "Hindi" };
+function setLang(l) {
+  lang = l; store.set("bf_lang", l);
+  document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+  $("#vstatus").textContent = SR ? `Listening in ${LANG_NAME[l]}. Replies are read aloud in English for now.` : "This browser can't listen. Type instead; replies are still read aloud.";
+}
+document.querySelectorAll(".langs button").forEach((b) => b.onclick = () => setLang(b.dataset.lang));
+function voiceFor(l) { // best installed voice for a language; null = the browser default
+  const vs = "speechSynthesis" in window ? speechSynthesis.getVoices() : [];
+  return vs.find((v) => v.lang === l) || vs.find((v) => v.lang && v.lang.startsWith(l.slice(0, 2))) || null;
+}
 function say(text) {
   if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text.replace(/\*/g, "").replace(/https?:\/\/\S+/g, "").replace(/[•✅❌🩺💇🏠🏋️📚👤📅📍🕘📞🗺️🔥💖🏡🔎🏆📝✂️🎯🙏✨👋💪🙂😊🔔🙋🧪🚨🏦🌏👩🧑‍🏫💍🏠🎉]/gu, ""));
-  u.lang = "en-IN"; u.rate = 1.02; speechSynthesis.speak(u);
+  const u = new SpeechSynthesisUtterance(text.replace(/\*/g, "").replace(/https?:\/\/\S+/g, "").replace(/\p{Extended_Pictographic}/gu, "").replace(/\s{2,}/g, " "));
+  u.lang = "en-IN"; const v = voiceFor("en-IN"); if (v) u.voice = v; u.rate = 1;
+  const orb = $("#orb"); u.onstart = () => orb.classList.add("speaking"); u.onend = u.onerror = () => orb.classList.remove("speaking");
+  speechSynthesis.speak(u);
 }
 function setMode(v) {
   speak = v; $("#phone").classList.toggle("voicemode", v); $("#m-voice").setAttribute("aria-pressed", String(v)); $("#m-chat").setAttribute("aria-pressed", String(!v));
-  if (v) say(`Hi, this is the ${B.NICHES[niche].business} voice assistant. How can I help?`); else if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if (v) say(`Hi, this is the ${B.NICHES[niche].business} assistant. How can I help?`); else if ("speechSynthesis" in window) speechSynthesis.cancel();
 }
 $("#m-voice").onclick = () => setMode(true); $("#m-chat").onclick = () => setMode(false);
-$("#orb").onclick = () => {
-  if (!SR) { $("#vstatus").textContent = "This browser can't listen. Replies are still spoken; type or tap a chip to answer."; return; }
-  const rec = new SR(); rec.lang = "en-IN"; rec.interimResults = false; rec.maxAlternatives = 1;
-  const orb = $("#orb"); orb.classList.add("live"); orb.textContent = "Listening…";
-  rec.onresult = (e) => { const t = e.results[0][0].transcript; $("#vstatus").textContent = `Heard: "${t}"`; send(t); };
-  rec.onerror = (e) => { $("#vstatus").textContent = e.error === "not-allowed" ? "Microphone isn't available on this page. Open the live demo site to talk; replies are still spoken here." : "Didn't catch that. Tap and try again."; };
-  rec.onend = () => { orb.classList.remove("live"); orb.textContent = "Tap to talk"; };
+function listen(btn, onText) { // one utterance in the chosen language
+  if (!SR) { $("#vstatus").textContent = "This browser can't listen. Type instead; replies are still read aloud."; toast("Voice input needs Chrome or Safari"); return; }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  const rec = new SR(); rec.lang = lang; rec.interimResults = true; rec.maxAlternatives = 1;
+  btn.classList.add("live", "listening"); if (btn.id === "orb") $("#orbtxt").textContent = "Listening…";
+  rec.onresult = (e) => { const r = e.results[e.results.length - 1]; $("#heard").textContent = r[0].transcript; if (r.isFinal) onText(r[0].transcript); };
+  rec.onerror = (e) => { $("#vstatus").textContent = e.error === "not-allowed" || e.error === "service-not-allowed" ? "Allow the microphone for this site, then tap again." : e.error === "language-not-supported" ? `${LANG_NAME[lang]} listening isn't available on this phone. Try English.` : "Didn't catch that. Tap and try again."; };
+  rec.onend = () => { btn.classList.remove("live", "listening"); if (btn.id === "orb") $("#orbtxt").textContent = "Tap and speak"; };
   try { rec.start(); } catch (e) { rec.onerror({ error: "not-allowed" }); rec.onend(); }
-};
+}
+$("#orb").onclick = () => listen($("#orb"), (t) => send(t));
+$("#mic").onclick = () => listen($("#mic"), (t) => { $("#heard").textContent = ""; send(t); });
+setLang(lang);
+if ("speechSynthesis" in window) speechSynthesis.getVoices(); // warm the voice list (it loads async)
 
 // ---- tabs
 document.querySelectorAll(".tab").forEach((t) => t.onclick = () => {

@@ -227,6 +227,22 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
       assert.ok(!graph.calls.slice(before).some((c) => c.path.startsWith("900800712")), "no Graph call without the client's own token");
     } finally { global.fetch = real; }
   });
+  await ok("A51: schema.sql keeps Meta tokens only in the Vault, read by a service_role-only function (static, no Postgres needed)", async () => {
+    const fs = require("fs"), path = require("path");
+    const sql = fs.readFileSync(path.join(__dirname, "../../supabase/schema.sql"), "utf8").replace(/--.*$/gm, "");
+    assert.ok(!/create\s+table[^;]*client_secrets/i.test(sql), "schema creates a plain client_secrets table");
+    assert.ok(!/^\s*(meta_page_token|meta_ads_token|page_token|ads_token)\s+text/im.test(sql), "plain-text token column");
+    const fn = sql.match(/create or replace function client_token\(p_client uuid, p_kind text\)[\s\S]*?\$\$([\s\S]*?)\$\$/i);
+    assert.ok(fn && /security definer/i.test(fn[0]) && /from vault\.decrypted_secrets/i.test(fn[1]), "client_token must read vault.decrypted_secrets as SECURITY DEFINER");
+    assert.match(sql, /revoke execute on function client_token\(uuid, text\) from public, anon, authenticated;/);
+    assert.match(sql, /grant execute on function client_token\(uuid, text\) to service_role;/);
+    assert.ok(!/grant[^;]*(set_client_token|migrate_client_secrets)[^;]*to/i.test(sql), "token writer granted to an API role");
+    assert.ok(!/grant[^;]*on[^;]*vault/i.test(sql), "direct Vault access granted");
+    for (const f of fs.readdirSync(__dirname).filter((f) => f.endsWith(".js") && !f.includes(".test.") && f !== "_fake.js")) {
+      const src = fs.readFileSync(path.join(__dirname, f), "utf8");
+      assert.ok(!/client_secrets|decrypted_secrets|meta_(page|ads)_token/.test(src), f + " reads tokens outside rpc/client_token");
+    }
+  });
   await ok("audit: dashboard token only works in the Authorization header, and the reply has no wildcard CORS", async () => {
     const leads = require("./leads.js");
     store.clients[0].dashboard_token = "c".repeat(36);

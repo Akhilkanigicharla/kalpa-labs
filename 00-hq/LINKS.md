@@ -11,6 +11,13 @@ Where each piece of work lives outside this repo. All private to Akhil unless he
 
 All artifacts are listed at https://claude.ai/code/artifacts
 
+## Telegram (b5 Deals · b3 Kits), made by Akhil 20 Oct 2026
+
+| Label | What | Link |
+|---|---|---|
+| 📣 Kalpa Deals channel | Private for now (invite link: don't post it publicly until "go") | https://t.me/+Qc0jK015KwE4NzA1 |
+| 🤖 Deals poster bot | @Kalplabsbot, admin of the channel; posts only after secrets + `DEALS_LIVE=go` | https://t.me/Kalplabsbot |
+
 ## Claude documents
 
 | Label | What | ID |

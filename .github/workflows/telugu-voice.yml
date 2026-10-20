@@ -1,0 +1,51 @@
+# A56: free Telugu recorded voice. Renders voice/samples.txt (3 Telugu + 1 English) with
+# ai4bharat Indic Parler-TTS (Apache-2.0) on the free GitHub CPU runner and uploads the WAVs.
+# Manual only (Actions tab > "Telugu voice samples" > Run workflow). Nothing is published.
+# Needs the HF_TOKEN repo secret (a Hugging Face READ token from an account that accepted
+# the model's terms; roadmap C37). The token is only read from secrets, never printed.
+name: Telugu voice samples
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: telugu-voice
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: 01-botbhai/botbhai/voice
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Unit tests (no model download)
+        run: python test_recorded_tts.py
+      - name: HF_TOKEN secret present
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Add the HF_TOKEN secret first (roadmap C37: accept ai4bharat/indic-parler-tts terms, make a READ token)."
+            exit 1
+          fi
+      - name: Install torch + torchaudio (CPU) and parler-tts (pinned commit)
+        run: |
+          pip install torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-parler.txt
+      - name: Model cache (about 3.8 GB, never committed)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-indic-parler-tts-v1
+      - name: Render samples on CPU
+        run: python recorded_tts.py --text samples.txt --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: telugu-voice-samples
+          path: 01-botbhai/botbhai/voice/out/*.wav
+          retention-days: 14
+          if-no-files-found: error

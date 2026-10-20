@@ -7,5 +7,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY setups /setups
 COPY voice /app
 ENV SETUPS_DIR=/setups
+# This slim image has no torch, so its voice notes use Sarvam. Free Parler voice runs as a batch job
+# (.github/workflows/telugu-voice.yml); add requirements-parler.txt here only after a test that it installs beside Pipecat.
+ENV RECORDED_TTS=sarvam
 EXPOSE 8080
 CMD ["uvicorn", "agent:app", "--host", "0.0.0.0", "--port", "8080"]

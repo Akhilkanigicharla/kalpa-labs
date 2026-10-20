@@ -1,0 +1,7 @@
+# Free recorded voice (A56): Indic Parler-TTS on CPU. Install torch + torchaudio first from the CPU index
+# (PyPI torchaudio is a CUDA build and fails to load on CPU runners):
+#   pip install torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+# parler-tts is Apache-2.0 (github.com/huggingface/parler-tts LICENSE, checked 2026-10-20); pinned to a commit.
+# It pins transformers==4.46.1 itself, so use Python 3.11/3.12.
+parler-tts @ git+https://github.com/huggingface/parler-tts.git@d108732cd57788ec86bc857d99a6cabd66663d68
+soundfile==0.12.1

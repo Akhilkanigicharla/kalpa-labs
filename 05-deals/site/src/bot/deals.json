@@ -1,0 +1,27 @@
+{
+ "_how": "Team fills this by hand from deal pages opened in their own browser (never scraped). One object per deal; kind is product or credit_card. Product: id, kind, title_te, store, link (affiliate https link), price + price_as_of (YYYY-MM-DD HH:MM IST, within 24 h of the slot), optional discount_pct (1-95), coupon, note_te, date (that day only), valid_until, priority (higher first). Credit card (EarnKaro/BankKaro link only): joining_fee, annual_fee, eligibility, terms_url (issuer's https terms page), lifetime_free (true only if both fees are 0). Never type a price, 'free' or 'no-cost EMI' in title_te/note_te. Real deals must NOT have sample: true; sample deals never post live.",
+ "deals": [
+  {"id": "sample-earbuds", "kind": "product", "sample": true, "date": "2026-10-25", "priority": 2,
+   "title_te": "బోట్ ఎయిర్‌డోప్స్ వైర్‌లెస్ ఇయర్‌బడ్స్", "store": "Amazon", "discount_pct": 55,
+   "note_te": "బ్యాటరీ 40 గంటల వరకు. కొనేముందు రివ్యూలు చూడండి.",
+   "link": "https://www.amazon.in/dp/EXAMPLE01", "price": "1299", "price_as_of": "2026-10-25 08:30"},
+  {"id": "sample-pressure-cooker", "kind": "product", "sample": true, "date": "2026-10-25",
+   "title_te": "ప్రెస్టీజ్ 5 లీటర్ ప్రెషర్ కుక్కర్", "store": "Flipkart", "discount_pct": 30,
+   "link": "https://www.flipkart.com/EXAMPLE02", "price": "1549", "price_as_of": "2026-10-25 08:45"},
+  {"id": "sample-cashback-card", "kind": "credit_card", "sample": true, "date": "2026-10-25",
+   "title_te": "షాపింగ్ క్యాష్‌బ్యాక్ క్రెడిట్ కార్డ్",
+   "note_te": "ఆన్‌లైన్ షాపింగ్‌పై క్యాష్‌బ్యాక్ (బ్యాంకు నిబంధనల ప్రకారం).",
+   "link": "https://earnkaro.com/EXAMPLE-card", "joining_fee": 500, "annual_fee": 500,
+   "eligibility": "వయసు 21–60, నెల ఆదాయం ₹25,000+ (బ్యాంకు నిర్ణయిస్తుంది)",
+   "terms_url": "https://www.example.com/card-terms", "lifetime_free": false},
+  {"id": "sample-school-bag", "kind": "product", "sample": true, "date": "2026-10-25",
+   "title_te": "వాటర్‌ప్రూఫ్ స్కూల్ బ్యాగ్", "store": "Amazon", "discount_pct": 45, "coupon": "EXAMPLE10",
+   "link": "https://www.amazon.in/dp/EXAMPLE03", "price": "699", "price_as_of": "2026-10-25 12:00"},
+  {"id": "sample-led-bulbs", "kind": "product", "sample": true, "date": "2026-10-25",
+   "title_te": "LED బల్బులు (4 ప్యాక్)", "store": "Amazon", "discount_pct": 35,
+   "link": "https://www.amazon.in/dp/EXAMPLE04", "price": "399", "price_as_of": "2026-10-25 17:00"},
+  {"id": "sample-steel-bottle", "kind": "product", "sample": true, "date": "2026-10-25",
+   "title_te": "స్టీల్ వాటర్ బాటిల్ 1 లీటర్", "store": "Flipkart", "discount_pct": 40,
+   "link": "https://www.flipkart.com/EXAMPLE05", "price": "349", "price_as_of": "2026-10-25 19:30"}
+ ]
+}

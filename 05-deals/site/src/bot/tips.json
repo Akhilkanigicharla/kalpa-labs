@@ -1,0 +1,11 @@
+{
+ "_how": "Weekly money tip, posted Sundays 10:30 IST, rotating by ISO week. Generic education only (SEBI/ASCI): no stock or fund names, no returns, no loan or insurance, no links.",
+ "tips": [
+  {"id": "emergency-fund", "te": "అత్యవసర నిధిగా 3–6 నెలల ఖర్చులను వేరే సేవింగ్స్ ఖాతాలో ఉంచండి.", "en": "Keep 3–6 months of expenses in a separate savings account as an emergency fund."},
+  {"id": "card-full-bill", "te": "క్రెడిట్ కార్డ్ బిల్లును ప్రతి నెలా గడువులోగా పూర్తిగా కట్టండి. మినిమమ్ డ్యూ మాత్రమే కడితే వడ్డీ పెరుగుతుంది.", "en": "Pay the full credit card bill by the due date each month; paying only the minimum due adds interest."},
+  {"id": "save-first", "te": "జీతం రాగానే ముందు పొదుపుకు కొంత పక్కన పెట్టండి, మిగిలినది ఖర్చు చేయండి.", "en": "When salary arrives, set savings aside first and spend what is left."},
+  {"id": "tax-proofs", "te": "అద్దె రసీదులు వంటి ట్యాక్స్ ప్రూఫ్‌లను ఇప్పుడే ఒక ఫోల్డర్‌లో దాచండి; జనవరిలో ఆఫీసు అడుగుతుంది.", "en": "Keep tax proofs such as rent receipts in one folder now; your office will ask in January."},
+  {"id": "sale-wait-a-day", "te": "సేల్‌లో కొనేముందు ఒక రోజు ఆగండి: ఇది నిజంగా అవసరమా, లేక నచ్చిందా?", "en": "Before buying in a sale, wait a day: do you need it, or do you just like it?"},
+  {"id": "otp-safety", "te": "OTP, PIN, CVV ఎవరికీ చెప్పకండి. బ్యాంకు ఫోన్‌లో ఎప్పుడూ అడగదు.", "en": "Never share an OTP, PIN or CVV. Your bank never asks for them on a call."}
+ ]
+}

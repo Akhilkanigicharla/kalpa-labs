@@ -5,7 +5,7 @@ Stack (open source + free tiers): Pipecat 1.12 · Sarvam STT/TTS (Indian languag
 Groq LLM · Silero VAD · telephony by Plivo or Exotel (paid per minute, billed to the client).
 
 Run:   pip install -r requirements.txt && uvicorn agent:app --host 0.0.0.0 --port 8080
-Env:   SARVAM_API_KEY, GROQ_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, WA_ACCESS_TOKEN,
+Env:   RECORDED_TTS (voice notes: parler | sarvam, see recorded_tts.py), SARVAM_API_KEY, GROQ_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, WA_ACCESS_TOKEN,
        PUBLIC_HOST (e.g. voice.example.com), PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN (for Plivo)
 Calls: Plivo number → Answer URL https://PUBLIC_HOST/plivo/answer?client=<client uuid>
        Exotel → Voicebot applet → wss://PUBLIC_HOST/ws?client=<client uuid>
@@ -35,6 +35,7 @@ from pipecat.services.sarvam.tts import SarvamTTSService
 from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams
 
 import prompt as P
+import recorded_tts as R
 import turns as T
 
 SB_URL, SB_KEY = os.getenv("SUPABASE_URL", ""), os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
@@ -202,9 +203,13 @@ async def voicenote(request: Request):
     vp = P.voice_profile(cfg)
     text = " ".join(line for line in b["text"].replace("*", "").splitlines() if line.strip() and not line.strip().startswith(("http", "🗺")))[:480]
     async with aiohttp.ClientSession() as http:
-        async with http.post("https://api.sarvam.ai/text-to-speech", headers={"api-subscription-key": os.getenv("SARVAM_API_KEY")},
-                             json={"text": text, "target_language_code": lang, "speaker": vp["voice"], "model": "bulbul:v3", "pace": vp["pace"], "temperature": vp["temperature"]}) as r:
-            wav = base64.b64decode((await r.json())["audios"][0])
+        if R.provider() == "sarvam":  # paid, optional (A56)
+            async with http.post("https://api.sarvam.ai/text-to-speech", headers={"api-subscription-key": os.getenv("SARVAM_API_KEY")},
+                                 json={"text": text, "target_language_code": lang, "speaker": vp["voice"], "model": "bulbul:v3", "pace": vp["pace"], "temperature": vp["temperature"]}) as r:
+                wav = base64.b64decode((await r.json())["audios"][0])
+        else:  # free Indic Parler-TTS on this machine's CPU; needs requirements-parler.txt + HF_TOKEN
+            gender = P.PERSONAS.get(cfg.get("id"), ("", "female"))[1]
+            wav = await asyncio.to_thread(R.parler_wav, text, cfg.get("parler_speaker") or R.speaker_for(lang, gender))
         ogg = await to_ogg_opus(wav)
         form = aiohttp.FormData(); form.add_field("messaging_product", "whatsapp"); form.add_field("type", "audio/ogg")
         form.add_field("file", ogg, filename="reply.ogg", content_type="audio/ogg")

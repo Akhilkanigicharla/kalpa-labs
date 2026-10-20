@@ -26,6 +26,7 @@ python3 social/test_social.py
 python3 ../../00-hq/marketing/test_marketing.py
 python3 tools/test_sales_kit.py
 python3 tools/test_visit_sheet.py
+python3 voice/test_recorded_tts.py
 if python3 -c "import pipecat" 2>/dev/null; then (cd voice && python3 test_prompt.py && python3 test_turns.py); else echo "(voice prompt test skipped: pip install -r voice/requirements.txt)"; fi
 if python3 -c "import playwright" 2>/dev/null; then python3 tools/screens.py && python3 tools/test_inbox_ui.py && python3 tools/test_billing_ui.py && python3 tools/test_dashboard_ui.py && python3 tools/test_turnstile_ui.py; else echo "(390 px screen check skipped: needs Python Playwright + Chromium)"; fi
 echo "ALL BOTBHAI TESTS PASSED"

@@ -1,0 +1,6 @@
+# A56 sample clips for Akhil to rate (C37). Format: id | lang | speaker | text
+# Business names are made up. Each line is one WAV in the "telugu-voice-samples" artifact.
+te-1-voicenote | te | Lalitha | నమస్కారం! మీ హెయిర్ స్పా అపాయింట్‌మెంట్ శనివారం సాయంత్రం నాలుగు గంటలకు బుక్ అయింది. ఏమైనా మార్పు కావాలంటే ఈ నంబర్‌కు మెసేజ్ చేయండి.
+te-2-course | te | Prakash | ఈ రోజు మనం వాట్సాప్ బాట్‌తో మీ సెలూన్ బుకింగ్స్ ఎలా పెంచుకోవాలో నేర్చుకుందాం. మొదట, కస్టమర్ అడిగే ప్రశ్నలు రాసుకోండి.
+te-3-reel | te | Lalitha | పండగ ఆఫర్! ఈ ఆదివారం వరకు హెయిర్ స్పా మీద ఇరవై శాతం తగ్గింపు. ఇప్పుడే బుక్ చేసుకోండి.
+en-1-voicenote | en | Mary | Hi, this is Meera from Glow Salon. Your hair spa is booked for Saturday at four in the evening. Reply here if you need to change it.

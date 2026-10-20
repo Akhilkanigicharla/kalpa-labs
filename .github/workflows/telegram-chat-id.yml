@@ -1,0 +1,35 @@
+# Finds the numeric chat ID of your Telegram channel (for the TELEGRAM_CHAT_ID secret, C27).
+# Before running: add the TELEGRAM_BOT_TOKEN secret, make the bot an admin of the channel, and post any message in the channel.
+# The run prints only chat IDs and titles (not secret). Nothing is posted anywhere.
+name: Telegram chat ID
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ask Telegram which chats the bot can see
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          tok = os.environ.get("TOKEN", "")
+          if not tok:
+              raise SystemExit("Add the TELEGRAM_BOT_TOKEN secret first (GitHub → Settings → Secrets and variables → Actions).")
+          with urllib.request.urlopen(f"https://api.telegram.org/bot{tok}/getUpdates?allowed_updates=%5B%22channel_post%22%2C%22my_chat_member%22%5D", timeout=30) as r:
+              ups = json.load(r).get("result", [])
+          chats = {}
+          for u in ups:
+              for k in ("channel_post", "my_chat_member", "message"):
+                  c = (u.get(k) or {}).get("chat")
+                  if c: chats[c["id"]] = f'{c.get("type")}: {c.get("title") or c.get("username") or ""}'
+          if not chats:
+              raise SystemExit("No chats yet: post any message in the channel (bot must be admin), then run again.")
+          for cid, name in chats.items():
+              print(f"TELEGRAM_CHAT_ID = {cid}   ({name})")
+              with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f: f.write(f"- `{cid}` · {name}\n")
+          PY

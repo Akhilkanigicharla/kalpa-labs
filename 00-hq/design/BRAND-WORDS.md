@@ -1,13 +1,13 @@
 # Kalpavruksha words (brand copy)
 
-The words that go with the Kalpavruksha look in [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). The free n8n agents drafted them in KL Tasks (#21 Kavi, #26 Chitti); Vigil fact-checked them, then Claude edited them. **Status:** English approved for use; Telugu and Hindi need Akhil's (a Telugu speaker's) OK before anything goes public.
+The words that go with the Kalpavruksha look in [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). The free n8n agents drafted them in KL Tasks (#21 Kavi, #26 Chitti); Vigil fact-checked them, then Claude edited them. **Status:** English, Telugu and Hindi taglines approved by Akhil (22 Oct 2026, 21:11 IST). Going public still waits for his "go" (CLAUDE.md rule 9).
 
 ## Tagline
 | Language | Line | Status |
 |---|---|---|
 | English | One tree. Seven tools. Honest help. | In use: HQ site footer |
-| Telugu | ఒక చెట్టు, అనేక శాఖలు, అందరికీ పండ్లు ("one tree, many branches, fruit for all") | In use: HQ site footer (te), Akhil to confirm |
-| Hindi | एक पेड़, कई शाखाएँ, सबको फल | For the Hindi pages; Akhil to confirm |
+| Telugu | ఒక చెట్టు, అనేక శాఖలు, అందరికీ పండ్లు ("one tree, many branches, fruit for all") | In use: HQ site footer (te), approved by Akhil 22 Oct |
+| Hindi | एक पेड़, कई शाखाएँ, सबको फल | For the Hindi pages, approved by Akhil 22 Oct |
 
 ## About (short, used on the HQ site founder card)
 Kalpa Labs is named after the Kalpavruksha, the wish-fulfilling tree: one tree, seven branches, each a small tool for everyday work. A one-person company in Hyderabad with an AI team.

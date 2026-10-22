@@ -21,9 +21,9 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule, FormulaRule
 
-HERO, GOLD, MADDER, INK, MUTED, OK, BAD = "1C2463", "D3940A", "B23A2C", "191C33", "5D6079", "23804F", "C0392B"
-INPUT = PatternFill("solid", fgColor="FFF6DD"); HEAD = PatternFill("solid", fgColor=HERO); BAND = PatternFill("solid", fgColor="E6E6F1")
-thin = Side(style="thin", color="DCDBE7"); BOX = Border(top=thin, bottom=thin, left=thin, right=thin)
+HERO, GOLD, MADDER, INK, MUTED, OK, BAD = "1D3A25", "C38E12", "8A4A28", "1E2A1F", "5A6152", "2C7A43", "B13A2D"
+INPUT = PatternFill("solid", fgColor="FFF6DD"); HEAD = PatternFill("solid", fgColor=HERO); BAND = PatternFill("solid", fgColor="E9E3D3")
+thin = Side(style="thin", color="DCD5C3"); BOX = Border(top=thin, bottom=thin, left=thin, right=thin)
 EXAM_DAYS = ["2027-02-06", "2027-02-07", "2027-02-13", "2027-02-14", "2027-02-20", "2027-02-21"]
 STATUSES = ["Not started", "Learning", "Done"]
 
@@ -58,7 +58,7 @@ SUBJECTS = [
 
 def style_head(ws, title, sub, width=6):
     ws["A1"] = title; ws["A1"].font = Font(name="Arial", size=16, bold=True, color="FFFFFF")
-    ws["A2"] = sub; ws["A2"].font = Font(name="Arial", size=10, color="B9BDE0")
+    ws["A2"] = sub; ws["A2"].font = Font(name="Arial", size=10, color="BFCDAE")
     for r in (1, 2):
         for c in range(1, width + 1): ws.cell(r, c).fill = HEAD
     ws.sheet_view.showGridLines = False

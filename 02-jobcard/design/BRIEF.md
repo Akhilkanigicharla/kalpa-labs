@@ -2,7 +2,7 @@
 
 **Who:** an AC / fridge technician in Hyderabad. He thinks in Telugu, speaks Tenglish, and uses a ₹8–15k Android phone, often on a terrace with weak signal and wet hands. He opens the app right after a job, has about 1 minute, and wants the customer to get a proper bill.
 
-**Flow (one screen each, bottom tabs, phone first, Kalamkari tokens from `00-hq/design/`, world colour `--l2`):**
+**Flow (one screen each, bottom tabs, phone first, Kalpavruksha tokens from `00-hq/design/`, world colour `--l2`):**
 
 | Tab | What it does | What it must never do |
 |---|---|---|

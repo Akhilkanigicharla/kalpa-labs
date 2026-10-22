@@ -18,7 +18,7 @@ Data: `05-deals/site/src/lib/kits.ts`. Tests: `kits.test.ts` (prices = `03-kits/
 - **Exam dates:**
   - GATE 2027 on 6, 7, 13, 14, 20 and 21 Feb 2027, organised by IIT Madras ([IIT Madras](https://www.iitm.ac.in/happenings/press-releases-and-coverages/iit-madras-announces-dates-syllabus-revision-new-paper)).
   - UPSC Prelims on 23 May 2027 ([Deccan Herald](https://deccanherald.com/education/upsc-cse-prelims-2027-on-may-23-mains-begins-aug-20-check-full-calendar-4015277)).
-- **Layout pattern:** the top Astro landing templates (AstroWind 5.9k★, ScrewFast 1.4k★, both landing-page themes) go hero → proof → pricing cards → FAQ. We use the same order on our own Kalamkari tokens. The "proof" is a real slice of the sheet's layout drawn in HTML: no stock screenshots, no invented reviews.
+- **Layout pattern:** the top Astro landing templates (AstroWind 5.9k★, ScrewFast 1.4k★, both landing-page themes) go hero → proof → pricing cards → FAQ. We use the same order on our own Kalpavruksha tokens. The "proof" is a real slice of the sheet's layout drawn in HTML: no stock screenshots, no invented reviews.
 
 ## Until payment is live
 Every paid button reads "Opens soon" and leads nowhere, so nobody can pay for something that doesn't exist. To go live, put the Razorpay Payment Page link into `buyUrl` for that tier (tests allow only `rzp.io` / `pages.razorpay.com`), and the Lite sheet link into the Lite tier.

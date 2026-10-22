@@ -1,5 +1,5 @@
 // Builds the "my customers" PWA in place (Netlify build command, also run by the tests).
-// Copies the shared core + Kalamkari tokens/fonts into web/vendor/ and writes web/config.js from env.
+// Copies the shared core + Kalpavruksha tokens/fonts into web/vendor/ and writes web/config.js from env.
 // SUPABASE_URL and SUPABASE_ANON_KEY are the PUBLIC project URL and anon (publishable) key; RLS guards the data.
 // With no SUPABASE_URL the page runs on made-up demo data (90000 xxxxx numbers) so it can be looked at.
 import fs from "node:fs";

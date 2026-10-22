@@ -6,7 +6,7 @@ Removed: the demo feed, the style demo, Arabic/RTL, husky/commitlint/maestro. Ad
 | Piece | File |
 |---|---|
 | Telugu-first strings (te / hi / en) | `src/translations/*.json` |
-| Kalamkari tokens (copied from `00-hq/design/tokens.css`, a test keeps them equal) and fonts | `src/lib/theme/` |
+| Kalpavruksha tokens (copied from `00-hq/design/tokens.css`, a test keeps them equal) and fonts | `src/lib/theme/` |
 | Live dictation, offline on-device, audio kept for later server STT | `src/lib/jobcard/voice.ts` (`expo-speech-recognition` 3.1.3) |
 | Local SQLite + ordered outbox with backoff | `src/lib/jobcard/db.ts`, `outbox.ts` |
 | Offline bill numbering (FY series) and saving | `src/lib/jobcard/jobs.ts` |

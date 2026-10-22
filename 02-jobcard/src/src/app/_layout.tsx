@@ -40,7 +40,7 @@ SplashScreen.setOptions({
 
 export default function RootLayout() {
   const hasHiddenSplash = React.useRef(false);
-  // Kalamkari fonts (OFL): Rozha One display, Anek Latin + Anek Telugu body
+  // Kalpavruksha fonts (OFL): Rozha One display, Anek Latin + Anek Telugu body
   const [fontsReady] = useFonts({ AnekLatin_400Regular, AnekLatin_700Bold, AnekTelugu_400Regular, AnekTelugu_700Bold, RozhaOne_400Regular });
 
   const onLayoutRootView = React.useCallback(() => {

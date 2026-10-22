@@ -92,7 +92,7 @@ export function invoiceHTML(inv, t, { qrSvg = "" } = {}) {
     ? `<tr><td colspan="4">IGST 18%</td><td class="n">${fmt(t.igst)}</td></tr>`
     : `<tr><td colspan="4">CGST 9%</td><td class="n">${fmt(t.cgst)}</td></tr><tr><td colspan="4">SGST 9%</td><td class="n">${fmt(t.sgst)}</td></tr>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(inv.number)}</title><style>
-:root{--fg:#191C33;--muted:#5D6079;--rule:#DCDBE7;--accent:#2A3A8F;--madder:#B23A2C;--gold:#D3940A;--l2:#2F4FB0}
+:root{--fg:#1E2A1F;--muted:#5A6152;--rule:#DCD5C3;--accent:#2F6A3A;--madder:#8A4A28;--gold:#C38E12;--l2:#2F6F78}
 body{font:13px/1.5 "Anek Latin","Anek Telugu",system-ui,sans-serif;color:var(--fg);margin:24px}
 h1{font:400 26px "Rozha One",Georgia,serif;margin:0;color:var(--accent)} .te{font-family:"Anek Telugu",system-ui,sans-serif}
 .band{height:6px;background:linear-gradient(90deg,var(--madder),var(--gold),var(--l2));margin:8px 0 16px}

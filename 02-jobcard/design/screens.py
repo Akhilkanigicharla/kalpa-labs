@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """390 px screen check for the JobCard app screens (A13; Kalpa design rules 1, 2 and 4).
 
-Record → Job card → Bill → Reminders, plus the bill on its own, in light AND dark: no sideways scroll, the Kalamkari
+Record → Job card → Bill → Reminders, plus the bill on its own, in light AND dark: no sideways scroll, the Kalpavruksha
 --hero token, Rozha One and Anek Telugu really loaded (self-hosted), Telugu never set in Rozha One, 44 px touch targets,
 no request leaves this machine, no JS errors, the real bill shown in the Bill tab.
     python3 02-jobcard/design/screens.py [--out DIR]     (needs Python Playwright + Chromium)
@@ -29,7 +29,7 @@ CHECK = r"""() => {
     empty: [...document.querySelectorAll('[data-jc]')].filter((n) => n.offsetParent !== null && (!n.textContent.trim() || /undefined|NaN|null/.test(n.textContent))).map((n) => n.dataset.jc),
     hero: getComputedStyle(document.documentElement).getPropertyValue('--hero').trim().toLowerCase() };
 }"""
-HERO = {"light": "#1c2463", "dark": "#1b2266"}
+HERO = {"light": "#1d3a25", "dark": "#17301f"}
 SHOTS = [("record", "app.html", None), ("card", "app.html", "card"), ("bill", "app.html", "bill"), ("remind", "app.html", "remind")]
 
 
@@ -69,7 +69,7 @@ def run(out: pathlib.Path) -> list[str]:
                 pg.screenshot(path=str(out / f"{name}-{scheme}.png"))
                 pg.set_viewport_size({"width": 390, "height": 844})
                 if r["scrollW"] > r["vw"] or r["bad"]: fails.append(f"{tag}: sideways scroll {r['scrollW']}>{r['vw']} {r['bad']}")
-                if r["hero"] != HERO[scheme]: fails.append(f"{tag}: --hero is {r['hero']!r}, not the Kalamkari token")
+                if r["hero"] != HERO[scheme]: fails.append(f"{tag}: --hero is {r['hero']!r}, not the Kalpavruksha token")
                 if not r["rozha"]: fails.append(f"{tag}: Rozha One did not load from 00-hq/design/fonts")
                 if not r["telugu"]: fails.append(f"{tag}: Anek Telugu did not load")
                 if r["teInRozha"]: fails.append(f"{tag}: Telugu set in Rozha One {r['teInRozha']}")
@@ -94,7 +94,7 @@ def main():
     fails = run(pathlib.Path(a.out))
     if fails:
         print("\n".join("  ✗ " + f for f in fails)); sys.exit(1)
-    print(f"  ✓ {len(SHOTS) * 2 + 1} screens at 390 px (light + dark): no sideways scroll, Kalamkari tokens, Telugu in Anek Telugu, "
+    print(f"  ✓ {len(SHOTS) * 2 + 1} screens at 390 px (light + dark): no sideways scroll, Kalpavruksha tokens, Telugu in Anek Telugu, "
           f"44 px targets, self-hosted fonts, no external requests, no JS errors → {a.out}")
 
 

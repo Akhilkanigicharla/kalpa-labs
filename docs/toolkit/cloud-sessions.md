@@ -31,7 +31,7 @@ Committed in `.claude/skills/` (pinned by hash in `/skills-lock.json`, licences 
 |---|---|---|
 | `grill-me` / `grilling` (Matt Pocock) | Stress-test a plan with rounds of questions before building | Kalpa, every world's PLAN.md |
 | `security-audit` (Cloudflare) | Security review of our own code before BotBhai or any site goes live | Vigil, Probe; b1, b5, b6 |
-| `emil-design-eng`, `animate`, `animate-expo`, `mobile-native`, `review-animations`, `break-ui`, `prototype`, `pick-ui-library` (Emil Kowalski) | UI polish, motion, phone feel, worst-case data tests, quick variants | Pixel, Lens, Forge; all UIs (Kalamkari rules still win) |
+| `emil-design-eng`, `animate`, `animate-expo`, `mobile-native`, `review-animations`, `break-ui`, `prototype`, `pick-ui-library` (Emil Kowalski) | UI polish, motion, phone feel, worst-case data tests, quick variants | Pixel, Lens, Forge; all UIs (Kalpavruksha rules still win) |
 
 Plugin: **HyperFrames** `hyperframes@hyperframes` pinned to `v0.8.169` (HTML → video; skills only). Render with `npx hyperframes@0.8.169`, not `@latest`.
 

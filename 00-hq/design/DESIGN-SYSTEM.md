@@ -1,19 +1,22 @@
-# 🎨 Kalpa Design System · "Kalamkari"
+# 🌳 Kalpa Design System · "Kalpavruksha"
 
-One look for every Kalpa Labs screen: the Kingdom, BotBhai dashboards, the calculator site, Ledger Peaks, JobCard, Tab Lifeboat. Product brands keep their own name and logo but use this system underneath, tuned per world with that world's colour.
+One look for every Kalpa Labs screen: the company site, the Kingdom, BotBhai, the calculator site, Ledger Peaks, JobCard, Tab Lifeboat. Product brands keep their own name but use this system underneath, tuned per world with that world's colour.
 
-**Why Kalamkari:** it's the hand-painted, block-printed cloth art of Andhra Pradesh (Machilipatnam and Srikalahasti). It's rooted in the founder's home region and recognisably Indian, and it doesn't look like the generic purple-gradient AI app. Natural-dye colours: indigo, madder red, turmeric gold.
+**Why Kalpavruksha (Akhil, 20 Oct 2026):** the wish-fulfilling tree. Kalpa Labs is named after it: one tree, many branches (our 8 worlds), each bearing fruit for the people who sit under it. Colours come from the tree itself: canopy and leaf greens, bark brown, golden fruit, on a warm parchment ground. It replaces the earlier Kalamkari indigo theme (19 Oct 2026).
+
+**Logo:** [brand/kalpavruksha.svg](brand/kalpavruksha.svg), an original tree (canopy, five golden fruits, bark trunk, roots). Use it as the company mark and favicon; product brands sit beside it, never inside it.
 
 ## Tokens
-The source of truth is [tokens.css](tokens.css). Light and dark themes are both defined, and every colour is a token.
+The source of truth is [tokens.css](tokens.css). Light and dark themes are both defined, and every colour is a token. All text pairs pass WCAG AA (checked by `00-hq/design/theme.test.mjs`).
 
 | Role | Light | Dark | Use |
 |---|---|---|---|
-| `--hero` | indigo #1C2463 | #1B2266 | Hero cards, the active tab, avatars |
-| `--accent` | #2A3A8F | #9AABFF | Primary buttons, links, focus |
-| `--gold` | turmeric #D3940A | #F2B840 | XP, rewards, focus ring, highlights |
-| `--madder` | #B23A2C | #F0745F | Temple-border teeth, time stamps, small warm accents |
-| `--l0…--l7` | one per world | | HQ slate, b1 madder, b2 indigo, b3 leaf, b4 plum, b5 turmeric, b6 pomegranate, b7 teal |
+| `--hero` | canopy #1D3A25 | #17301F | Hero bands, the active tab, avatars |
+| `--accent` | leaf #2F6A3A | #8FCB8C | Primary buttons, links, focus |
+| `--leaf` | young leaf #5E9E4C | #8FCB8C | Vine band leaves, rosettes, small living accents (decoration only) |
+| `--gold` | fruit #C38E12 | #E8B64A | Highlights, rewards, focus ring, gold buttons (dark text) |
+| `--bark` / `--madder` | #6B4226 / #8A4A28 | #C08A5E / #D98B5F | Trunk lines, time stamps, warm accents (`--madder` kept as the name in code) |
+| `--l0…--l7` | one per world | | HQ stone, b1 bark, b2 river, b3 leaf, b4 jamun, b5 mango, b6 hibiscus, b7 dusk |
 | `--ok --warn --bad` | | | State only, never decoration |
 
 ## Type
@@ -26,10 +29,10 @@ The source of truth is [tokens.css](tokens.css). Light and dark themes are both 
 All four are OFL on Google Fonts. Load them with one `<link>` (see the Kingdom head).
 
 ## Signature details
-- **Temple border:** a 10 px band of gold dots over madder teeth, top and bottom of hero surfaces only.
-- **Block-print ground:** an 18 px dot grid tinted by the accent, on the page background.
+- **Vine band (`--vine`):** a 10 px band of leaves with golden fruit, top and bottom of hero surfaces only.
+- **Seed ground:** an 18 px dot grid tinted by the accent, on the page background.
 - **Zig-zag cap:** a world-coloured strip on quest and feature cards.
-- **Medallion badges:** a conic gold/madder rosette.
+- **Fruit badges:** a conic gold/leaf rosette.
 - **Pills:** fully rounded buttons and tabs; cards use 12/18 px radii, applied by role, not everywhere.
 
 ## Rules
@@ -64,5 +67,5 @@ All four are OFL on Google Fonts. Load them with one `<link>` (see the Kingdom h
 ## 20 tells that make a site look "vibecoded" (we avoid all of them)
 Checked on every push by `node 00-hq/design/vibecheck.test.mjs` (Kalpa quality → design). Source: millee.md's list, 19 Oct 2026.
 Banned: purple-to-blue gradients, gradient headline text, emojis in headings, Inter, coloured left-border cards, glassmorphism (backdrop blur), low-contrast dark mode, three equal icon boxes, a badge/eyebrow above the headline (put labels under it), Lucide, untouched shadcn, sections fading in on scroll, cursor-following beams, buttons that fade on hover, spacing off the 4-point scale, em dashes in sentences, buzzwords ("seamless", "supercharge", …), serif italics for accent words, Space Grotesk + Instrument Serif, grain texture over gradients.
-Allowed on purpose: number tiles in a 3-column grid on app screens (`.kpis`, `.stats`), a lone "—" in an empty table cell, the Kalamkari borders (`.temple`, `.cap`) that are our own motif.
+Allowed on purpose: number tiles in a 3-column grid on app screens (`.kpis`, `.stats`), a lone "—" in an empty table cell, the Kalpavruksha borders (`.temple`, `.cap`) that are our own motif.
 Spacing scale (px): 0 1 2 4 6 8 10 12 16 20 24 28 32 40 48 56 64 72 80 96 112 128.

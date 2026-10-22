@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Screen check for every BotBhai UI (Kalpa design rule 1 + 2): each page at 390 px wide, in light AND dark,
-must have no sideways scroll, must use the Kalamkari tokens, and gets a full-page PNG for review.
+must have no sideways scroll, must use the Kalpavruksha tokens, and gets a full-page PNG for review.
 
   python3 tools/screens.py                 # builds demo + SEO site + cards, checks, PNGs → web/dist/screens/
   python3 tools/screens.py --out /tmp/x    # PNGs elsewhere
@@ -13,7 +13,7 @@ import argparse, json, pathlib, subprocess, sys, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 W = 390
-KALAMKARI = {"light": "#1c2463", "dark": "#1b2266"}  # --hero in each theme: proves tokens.css is in use
+KALAMKARI = {"light": "#1d3a25", "dark": "#17301f"}  # --hero in each theme: proves tokens.css is in use
 
 OVERFLOW_JS = """() => {
   const vw = document.documentElement.clientWidth, bad = [];
@@ -30,7 +30,7 @@ OVERFLOW_JS = """() => {
 }"""
 
 def pages(tmp):
-    """(name, file url, wants Kalamkari --hero token, optional JS to run first)"""
+    """(name, file url, wants Kalpavruksha --hero token, optional JS to run first)"""
     subprocess.check_call([sys.executable, str(ROOT / "build.py")], stdout=subprocess.DEVNULL)
     sys.path.insert(0, str(ROOT / "seo")); import seo_bot as S
     site = pathlib.Path(tmp) / "seo"; S.build("salon", S.load("salon", {"site_url": "https://glow.example", "areas": ["Ameerpet"], "local": {"Ameerpet": {
@@ -92,4 +92,4 @@ if __name__ == "__main__":
     fails, report = run(a.out)
     for f in fails: print("  ✗", f[0], f[1], json.dumps(f[2])[:400], f[3][:2])
     if fails: sys.exit(f"screen check failed: {len(fails)} of {len(report)}")
-    print(f"  ✓ {len(report)} screens at {W} px (light + dark): no sideways scroll, Kalamkari tokens, no JS errors → {a.out}")
+    print(f"  ✓ {len(report)} screens at {W} px (light + dark): no sideways scroll, Kalpavruksha tokens, no JS errors → {a.out}")

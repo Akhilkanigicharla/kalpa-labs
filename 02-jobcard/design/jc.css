@@ -1,4 +1,4 @@
-/* JobCard app screens (A13) on the Kalamkari tokens (00-hq/design/tokens.css). World colour --l2 (indigo-blue).
+/* JobCard app screens (A13) on the Kalpavruksha tokens (00-hq/design/tokens.css). World colour --l2 (indigo-blue).
    Fonts self-hosted from 00-hq/design/fonts (OFL). Telugu always in the body font (Rozha One has no Telugu glyphs). */
 @font-face{font-family:"Rozha One";src:url(../../00-hq/design/fonts/rozha-one-latin-400-normal.woff) format("woff");font-weight:400;font-display:swap}
 @font-face{font-family:"Anek Latin";src:url(../../00-hq/design/fonts/anek-latin-latin-600-normal.woff) format("woff");font-weight:400 600;font-display:swap}
@@ -34,7 +34,7 @@ main{display:grid;gap:12px}
   linear-gradient(135deg,var(--world) 25%,transparent 25%) -6px 0/12px 12px,linear-gradient(225deg,var(--world) 25%,transparent 25%) -6px 0/12px 12px,var(--world);opacity:.9}
 .hero{background:var(--hero);color:var(--hero-fg);border:0;position:relative;overflow:hidden;padding-top:24px}
 .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:radial-gradient(circle at 5px 3px,var(--gold) 1.7px,transparent 2.2px) 0 0/10px 6px repeat-x,
-  conic-gradient(from 135deg at 50% 100%,var(--madder) 0 90deg,transparent 0) 0 6px/10px 4px repeat-x}
+  conic-gradient(from 135deg at 50% 100%,var(--leaf,#5E9E4C) 0 90deg,transparent 0) 0 6px/10px 4px repeat-x}
 .hero .eyebrow{color:var(--hero-mute)}
 .hero h2{font-size:30px;margin:4px 0 2px}
 .hero .te{color:var(--hero-mute);font-size:15px}

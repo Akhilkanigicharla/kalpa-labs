@@ -1,4 +1,4 @@
-/* Options page: full tab, phone-safe down to 360 px. Shares the popup's Kalamkari tokens (plum --l4 as accent). */
+/* Options page: full tab, phone-safe down to 360 px. Shares the popup's Kalpavruksha tokens (plum --l4 as accent). */
 body.page { width: auto; min-height: 100vh;
   background-color: var(--bg);
   background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent) 1px, transparent 1.4px);

@@ -34,14 +34,14 @@ console.log('  ✓ all 20 tells are caught on a bad example');
 const GOOD = `<style>.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .card{border:1px solid var(--rule);padding:16px 24px;margin:0 0 12px}
 .btn:hover{background:var(--accent)}
-@media (prefers-color-scheme: dark){:root{--bg:#0E1230;--panel:#161B42;--fg:#ECEBF7;--muted:#A3A7CC}}</style>
+@media (prefers-color-scheme: dark){:root{--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B}}</style>
 <h1>Your customers get a reply in Telugu</h1><p class="eyebrow">Hyderabad</p>
 <table><tr><td>—</td></tr></table><p>Free 14-day pilot: no payment until you say yes.</p>`;
 const g = scan(GOOD);
 for (const [id] of CHECKS) assert.equal(verdict(id, g[id]), 'ok', `${id} false alarm: ${g[id]}`);
 console.log('  ✓ clean Kalpa markup passes (number tiles, empty-cell dash, label under the headline)');
 
-assert.ok(contrast('#A3A7CC', '#0E1230') >= 4.5 && contrast('#444444', '#111111') < 4.5);
+assert.ok(contrast('#A8B39B', '#0F1912') >= 4.5 && contrast('#444444', '#111111') < 4.5);
 console.log('  ✓ dark-mode contrast maths (Kalpa --muted on --bg passes 4.5:1)');
 
 const rep = run(); const bad = Object.entries(rep).flatMap(([s, r]) => Object.values(r).filter(v => v.verdict === 'FAIL').map(v => `${s}: ${v.label}`));

@@ -7,9 +7,9 @@
  "setup": "kits",
  "business": "Kalpa Kits",
  "theme": [
-  "#FBFBFD",
-  "#2F4FB0",
-  "#191C33"
+  "#FCFAF4",
+  "#2F6F78",
+  "#1E2A1F"
  ],
  "catalog": [
   {

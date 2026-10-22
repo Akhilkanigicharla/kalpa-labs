@@ -82,7 +82,7 @@ try {
       }
       await pg.screenshot({ path: path.join(out, `${name}-${scheme}.png`), fullPage: true });
     }
-    if (scheme === "dark") check(bgs.every((b) => b !== "rgb(238, 237, 243)"), "dark theme really switches the background");
+    if (scheme === "dark") check(bgs.every((b) => b !== "rgb(242, 238, 227)"), "dark theme really switches the background");
   }
   // popup button opens the options page
   await pg.emulateMedia({ colorScheme: "light" }); await pg.goto(`chrome-extension://${id}/popup.html`);

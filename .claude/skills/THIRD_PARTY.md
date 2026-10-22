@@ -10,7 +10,7 @@ Copied unmodified on 18 Oct 2026 with `npx skills add … --copy` (telemetry off
 
 Plugin (not copied, loaded by Claude Code): HyperFrames `hyperframes@hyperframes`, https://github.com/heygen-com/hyperframes, Apache-2.0, pinned to tag `v0.8.169` in `.claude/settings.json`. Skills only, no hooks or MCP servers. When a skill says `npx hyperframes@latest`, use `npx hyperframes@0.8.169` instead.
 
-Kalpa rules still win: design skills must use the Kalamkari system in `00-hq/design/` (CLAUDE.md rule 6); security-audit runs only on our own code.
+Kalpa rules still win: design skills must use the Kalpavruksha system in `00-hq/design/` (CLAUDE.md rule 6); security-audit runs only on our own code.
 
 ---
 

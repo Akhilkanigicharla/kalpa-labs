@@ -2,7 +2,7 @@
 
 **Who:** someone with 50–1,000 tabs who once lost them to an update, a crash or a "helpful" cleanup (the OneTab, Session Buddy and Tab Session Manager reviews in `research/deep-scan-v2.md`). They open the popup for one click. They open the options page only when they're worried, so that page's first job is to show their tabs are safe.
 
-**Built as the real extension, not mockups** (WXT, plain CSS on the Kalamkari tokens, world colour `--l4` plum):
+**Built as the real extension, not mockups** (WXT, plain CSS on the Kalpavruksha tokens, world colour `--l4` plum):
 
 | Screen | File | Job |
 |---|---|---|

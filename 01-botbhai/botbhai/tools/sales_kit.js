@@ -23,10 +23,10 @@ const inr = (n) => "₹" + Math.round(n).toLocaleString("en-IN");
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const qr = (text) => renderSVG(text, { ecc: "M", border: 4, pixelSize: 1, whiteColor: "#FFFFFF", blackColor: "#000000" }).replace(/^<svg /, '<svg role="img" aria-label="QR code to the BotBhai demo" ');
 
-// Kalpa tokens (Kalamkari, light: these are printed documents), copied from 00-hq/design/tokens.css; keep in sync.
-const BASE = `:root{--bg:#EEEDF3;--panel:#FBFBFD;--fg:#191C33;--muted:#5D6079;--rule:#DCDBE7;--soft:#E6E6F1;--accent:#2A3A8F;--accent-fg:#FFFFFF;--madder:#B23A2C;--gold:#D3940A;--ok:#23804F;--bad:#C0392B;--hero:#1C2463;--hero-fg:#F6F2E8;--hero-mute:#B9BDE0;--l1:#B23A2C;
+// Kalpa tokens (Kalpavruksha, light: these are printed documents), copied from 00-hq/design/tokens.css; keep in sync.
+const BASE = `:root{--bg:#F2EEE3;--panel:#FCFAF4;--fg:#1E2A1F;--muted:#5A6152;--rule:#DCD5C3;--soft:#E9E3D3;--accent:#2F6A3A;--accent-fg:#FFFFFF;--madder:#8A4A28;--gold:#C38E12;--ok:#2C7A43;--bad:#B13A2D;--hero:#1D3A25;--hero-fg:#F4EEDC;--hero-mute:#BFCDAE;--l1:#8A4A28;
 --f-display:"Rozha One","Noto Serif",Georgia,serif;--f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;--f-te:"Anek Telugu","Noto Sans Telugu",sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
---temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px}
+--temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--leaf,#5E9E4C) 90%,transparent) 0 0/7px 10px}
 *{box-sizing:border-box}html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;background:#fff;color:var(--fg);font:10.5pt/1.45 var(--f-body)}
 .te,.te .eyebrow,.eyebrow .te{font-family:var(--f-te)}.te .eyebrow,.eyebrow .te{letter-spacing:0;text-transform:none;font-weight:600;font-size:9pt}h1,h2,.display{font-family:var(--f-display);font-weight:400;margin:0}

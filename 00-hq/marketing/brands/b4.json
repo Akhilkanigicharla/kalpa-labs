@@ -7,9 +7,9 @@
  "setup": "extensions",
  "business": "Tab Lifeboat",
  "theme": [
-  "#FBFBFD",
-  "#2E7D4F",
-  "#191C33"
+  "#FCFAF4",
+  "#3B7A3A",
+  "#1E2A1F"
  ],
  "catalog": [
   {

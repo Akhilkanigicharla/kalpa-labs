@@ -1,4 +1,4 @@
-# Run: python3 tools/test_cards.py  (offline) — smile cards use the Kalamkari system (A01b)
+# Run: python3 tools/test_cards.py  (offline) — smile cards use the Kalpavruksha system (A01b)
 import pathlib, sys, tempfile
 sys.path.insert(0, str(pathlib.Path(__file__).parent)); import cards as C
 from PIL import Image
@@ -12,7 +12,7 @@ for old in ["anton", "baloo", "noto-sans-telugu"]:
 tokens = (C.ROOT.parent.parent / "00-hq/design/tokens.css").read_text().upper()
 for setup, (bg, accent, deep) in C.THEMES.items():
     for rgb in (bg, accent, deep):
-        assert "#%02X%02X%02X" % rgb in tokens, (setup, "colour not a Kalamkari token", rgb)
+        assert "#%02X%02X%02X" % rgb in tokens, (setup, "colour not a Kalpavruksha token", rgb)
 
 with tempfile.TemporaryDirectory() as d:
     n = 0
@@ -21,6 +21,6 @@ with tempfile.TemporaryDirectory() as d:
             im = Image.open(p).convert("RGB"); n += 1
             assert im.size == (1080, 1080) and p.stat().st_size < 300_000, (p.name, im.size, p.stat().st_size)
             # temple border: madder teeth at the very top and bottom edge
-            assert im.getpixel((3, 1)) == C.MADDER and im.getpixel((3, 1078)) == C.MADDER, p.name
-print(f"  ✓ {n} smile cards: 1080², < 300 KB, Kalamkari fonts + token colours + temple border")
+            assert im.getpixel((20, 1)) == C.HERO and im.getpixel((0, 14)) == C.LEAF and im.getpixel((20, 14)) == C.GOLD, p.name  # vine band
+print(f"  ✓ {n} smile cards: 1080², < 300 KB, Kalpavruksha fonts + token colours + Kalpavruksha vine band")
 print("cards tests passed")

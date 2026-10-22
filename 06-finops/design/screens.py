@@ -2,7 +2,7 @@
 """390 px screen check for the Ledger Peaks mockups (A12; Kalpa design rules 1 + 2).
 
 Landing, every dashboard tab and both X-ray pages, in light AND dark: no sideways scroll,
-Kalamkari --hero token, Rozha One really loaded (self-hosted), no request leaves this machine,
+Kalpavruksha --hero token, Rozha One really loaded (self-hosted), no request leaves this machine,
 no JS errors, every [data-lp] figure filled.
     python3 06-finops/design/screens.py [--out DIR]     (needs Python Playwright + Chromium)
 """
@@ -24,7 +24,7 @@ CHECK = """() => {
            rozha: document.fonts.check('20px "Rozha One"') && [...document.fonts].some((f) => f.family.includes('Rozha') && f.status === 'loaded'),
            hero: getComputedStyle(document.documentElement).getPropertyValue('--hero').trim().toLowerCase() };
 }"""
-HERO = {"light": "#1c2463", "dark": "#1b2266"}
+HERO = {"light": "#1d3a25", "dark": "#17301f"}
 SHOTS = [("landing", "landing.html", None), ("xray", "xray.html", None)] + [
     (f"dashboard-{t}", "dashboard.html", t) for t in ("overview", "customers", "savings", "evidence")]
 
@@ -57,7 +57,7 @@ def run(out: pathlib.Path) -> list[str]:
                 pg.screenshot(path=str(out / f"{name}-{scheme}.png"), full_page=True)
                 tag = f"{name} {scheme}"
                 if r["scrollW"] > r["vw"] or r["bad"]: fails.append(f"{tag}: sideways scroll {r['scrollW']}>{r['vw']} {r['bad']}")
-                if r["hero"] != HERO[scheme]: fails.append(f"{tag}: --hero is {r['hero']!r}, not the Kalamkari token")
+                if r["hero"] != HERO[scheme]: fails.append(f"{tag}: --hero is {r['hero']!r}, not the Kalpavruksha token")
                 if not r["rozha"]: fails.append(f"{tag}: Rozha One did not load from 00-hq/design/fonts")
                 if r["empty"]: fails.append(f"{tag}: empty figures {r['empty']}")
                 if r["small"]: fails.append(f"{tag}: touch targets under 44 px {r['small']}")
@@ -75,7 +75,7 @@ def main():
     fails = run(pathlib.Path(a.out))
     if fails:
         print("\n".join("  ✗ " + f for f in fails)); sys.exit(1)
-    print(f"  ✓ {len(SHOTS) * 2} screens at 390 px (light + dark): no sideways scroll, Kalamkari tokens, "
+    print(f"  ✓ {len(SHOTS) * 2} screens at 390 px (light + dark): no sideways scroll, Kalpavruksha tokens, "
           f"self-hosted fonts, no external requests, no JS errors → {a.out}")
 
 

@@ -51,7 +51,7 @@ try {
     await pg.screenshot({ path: path.join(raw, `options-${scheme}.png`) });
   }
 
-  // composed listing images: headline on the left, the real screen on the right (Kalamkari, world colour l4)
+  // composed listing images: headline on the left, the real screen on the right (Kalpavruksha, world colour l4)
   const comp = await ctx.newPage();
   const frame = (w, h, scheme, body) => `<!doctype html><html data-theme="${scheme}"><style>${css}${faces}
     *{box-sizing:border-box}html,body{margin:0;width:${w}px;height:${h}px;overflow:hidden}

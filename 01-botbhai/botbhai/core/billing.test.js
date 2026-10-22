@@ -76,7 +76,7 @@ let n = 0; const ok = (name, fn) => { fn(); n++; console.log("  ✓ " + name); }
     assert.match(h, /<svg/); assert.match(h, /kalpalabs@ybl/); assert.match(h, /href="upi:\/\/pay\?/);
     assert.match(h, /\+91 90000 00000/);
     assert.match(h, /Glow &lt;Studio&gt;/); assert.doesNotMatch(h, /Glow <Studio>/);
-    assert.match(h, /--hero:#1C2463/i);
+    assert.match(h, /--hero:#1D3A25/i);
   });
 
   ok("paid and void invoices: stamp, no pay button or QR", () => {

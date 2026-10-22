@@ -2,7 +2,7 @@
 
 **Who:** the CTO or founder of an Indian SaaS / AI startup (seed to Series A, 5–50 people). They read our cold note on a phone, open the sample X-ray, and decide in under a minute whether to send last month's usage export. Later, their finance person opens the dashboard once a week.
 
-**Screens (mockups on synthetic data, phone first, Kalamkari tokens from `00-hq/design/`, world colour `--l6` pomegranate):**
+**Screens (mockups on synthetic data, phone first, Kalpavruksha tokens from `00-hq/design/`, world colour `--l6` pomegranate):**
 
 | Screen | File | Job |
 |---|---|---|

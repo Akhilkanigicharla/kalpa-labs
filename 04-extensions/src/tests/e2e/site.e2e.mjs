@@ -36,7 +36,7 @@ try {
       const tag = `${page} ${width}px ${scheme}`;
       check(r.sw <= r.vw, `${tag}: no sideways scroll (${r.sw}/${r.vw})`);
       check(!r.small, `${tag}: tap targets ≥ 44 px`);
-      check(scheme === "light" ? r.bg === "rgb(238, 237, 243)" : r.bg !== "rgb(238, 237, 243)", `${tag}: ${scheme} background`);
+      check(scheme === "light" ? r.bg === "rgb(242, 238, 227)" : r.bg !== "rgb(242, 238, 227)", `${tag}: ${scheme} background`);
       for (const h of r.links) check(fs.existsSync(path.join(dist, h)), `${tag}: link ${h} exists`);
       if (width === 390 || page === "index") await pg.screenshot({ path: path.join(out, `${page}-${width}-${scheme}.png`), fullPage: true });
     }

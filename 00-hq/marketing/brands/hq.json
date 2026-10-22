@@ -7,9 +7,9 @@
  "setup": "hq",
  "business": "Kalpa Labs",
  "theme": [
-  "#FBFBFD",
-  "#5B6178",
-  "#191C33"
+  "#FCFAF4",
+  "#66655A",
+  "#1E2A1F"
  ],
  "catalog": [
   {

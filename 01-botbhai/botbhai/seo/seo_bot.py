@@ -76,12 +76,12 @@ def jsonld(setup, cfg, page_url, service=None, area=None):
     ] + [{"@type": "Question", "name": f"Do you offer {f['k'][0]}?", "acceptedAnswer": {"@type": "Answer", "text": clean(f["a"], cfg)}} for f in cfg["faqs"][:4]]}
     return [biz, faq]
 
-# Kalpa "Kalamkari" design system (00-hq/design/tokens.css), trimmed to what a client site needs. Light + dark.
-# The WhatsApp button is hero indigo with a turmeric ring: AA contrast in both themes (test_seo.py checks it).
-LIGHT = {"bg": "#eeedf3", "panel": "#fbfbfd", "fg": "#191c33", "muted": "#5d6079", "rule": "#dcdbe7", "accent": "#2a3a8f",
-         "hero": "#1c2463", "hero-fg": "#f6f2e8", "gold": "#d3940a", "madder": "#b23a2c"}
-DARK = {"bg": "#0e1230", "panel": "#161b42", "fg": "#ecebf7", "muted": "#a3a7cc", "rule": "#2a3060", "accent": "#9aabff",
-        "hero": "#1b2266", "hero-fg": "#f6f2e8", "gold": "#f2b840", "madder": "#f0745f"}
+# Kalpa "Kalpavruksha" design system (00-hq/design/tokens.css), trimmed to what a client site needs. Light + dark.
+# The WhatsApp button is hero canopy green with a fruit-gold ring: AA contrast in both themes (test_seo.py checks it).
+LIGHT = {"bg": "#f2eee3", "panel": "#fcfaf4", "fg": "#1e2a1f", "muted": "#5a6152", "rule": "#dcd5c3", "accent": "#2f6a3a",
+         "hero": "#1d3a25", "hero-fg": "#f4eedc", "gold": "#c38e12", "madder": "#8a4a28"}
+DARK = {"bg": "#0f1912", "panel": "#16231a", "fg": "#ece7d8", "muted": "#a8b39b", "rule": "#2a3a2d", "accent": "#8fcb8c",
+        "hero": "#17301f", "hero-fg": "#f4eedc", "gold": "#e8b64a", "madder": "#d98b5f"}
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;600;700&family=Anek+Telugu:wght@400;600&display=swap">')
 def _vars(d): return ";".join(f"--{k}:{v}" for k, v in d.items())
@@ -100,7 +100,7 @@ CSS = (":root{" + _vars(LIGHT) + ";--f-display:'Rozha One','Noto Serif',Georgia,
        "td{padding:10px 12px;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}td:last-child{text-align:right;font-weight:600;white-space:nowrap}"
        ".wa{position:fixed;left:16px;right:16px;bottom:16px;max-width:728px;margin:0 auto;display:flex;align-items:center;justify-content:center;min-height:52px;"
        "text-align:center;background:var(--hero);color:var(--hero-fg);font-weight:700;padding:14px;border-radius:999px;text-decoration:none;"
-       "box-shadow:0 0 0 3px var(--gold),0 12px 28px -12px #1c2463}a{color:var(--accent)}a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}")
+       "box-shadow:0 0 0 3px var(--gold),0 12px 28px -12px #1d3a25}a{color:var(--accent)}a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}")
 
 def page(setup, cfg, title, desc, body, url, service=None, area=None):
     ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld(setup, cfg, url, service, area))
@@ -111,10 +111,10 @@ def page(setup, cfg, title, desc, body, url, service=None, area=None):
 {FONTS}<style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
 
 def favicon(cfg):
-    """A small letter mark: turmeric on hero indigo (5.4:1 contrast), the Kalamkari pair."""
+    """A small letter mark: turmeric on hero canopy green (5.4:1 contrast), the Kalpavruksha pair."""
     letter = html.escape((cfg.get("business") or "B").strip()[:1].upper())
-    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1c2463"/>'
-            f'<text x="32" y="44" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#d3940a" text-anchor="middle">{letter}</text></svg>')
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1d3a25"/>'
+            f'<text x="32" y="44" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#e8b64a" text-anchor="middle">{letter}</text></svg>')
 
 def services_table(cfg):
     return "<table>" + "".join(f"<tr><td>{html.escape(c['name'])}</td><td>{html.escape(c['price'])}</td></tr>" for c in cfg["catalog"]) + "</table>"

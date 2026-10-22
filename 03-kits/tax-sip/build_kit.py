@@ -17,11 +17,11 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule
 
-HERO, GOLD, MADDER, INK, MUTED, SOFT, PANEL, OK, BAD = "1C2463", "D3940A", "B23A2C", "191C33", "5D6079", "E6E6F1", "FBFBFD", "23804F", "C0392B"
+HERO, GOLD, MADDER, INK, MUTED, SOFT, PANEL, OK, BAD = "1D3A25", "C38E12", "8A4A28", "1E2A1F", "5A6152", "E9E3D3", "FCFAF4", "2C7A43", "B13A2D"
 INPUT = PatternFill("solid", fgColor="FFF6DD")       # turmeric tint = "type here"
 HEAD = PatternFill("solid", fgColor=HERO)
 BAND = PatternFill("solid", fgColor=SOFT)
-thin = Side(style="thin", color="DCDBE7")
+thin = Side(style="thin", color="DCD5C3")
 BOX = Border(top=thin, bottom=thin, left=thin, right=thin)
 RS = "#,##0"             # rupee number format (₹ shown in labels; Indian lakh grouping isn't portable between Excel and Sheets)
 AGES = ["Below 60", "60 to 80", "80 and above"]
@@ -29,7 +29,7 @@ AGES = ["Below 60", "60 to 80", "80 and above"]
 
 def head(ws, title, sub):
     ws["A1"] = title; ws["A1"].font = Font(name="Arial", size=16, bold=True, color="FFFFFF"); ws["A1"].fill = HEAD
-    ws["A2"] = sub; ws["A2"].font = Font(name="Arial", size=10, color="B9BDE0"); ws["A2"].fill = HEAD
+    ws["A2"] = sub; ws["A2"].font = Font(name="Arial", size=10, color="BFCDAE"); ws["A2"].fill = HEAD
     for c in "BCDEF":
         ws[f"{c}1"].fill = HEAD; ws[f"{c}2"].fill = HEAD
     ws.sheet_view.showGridLines = False

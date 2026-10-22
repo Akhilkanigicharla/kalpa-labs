@@ -28,7 +28,7 @@
 ## Words and design
 20. ✅ Telugu and Hindi instructions are present in Pro; Telugu in the tax kit Start tab.
 21. ☐ A Telugu speaker reads the Telugu lines (with C23/C17).
-22. ✅ Kalamkari colours: indigo headers, turmeric input cells; inputs vs calculated cells are visually distinct.
+22. ✅ Kalpavruksha colours: indigo headers, turmeric input cells; inputs vs calculated cells are visually distinct.
 
 ## Selling rules
 23. ✅ The landing page shows the full price once, with no fake urgency or countdown sale (`05-deals/site/src/lib/kits.test.ts`).

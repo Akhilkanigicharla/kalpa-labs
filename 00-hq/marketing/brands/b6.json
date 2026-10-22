@@ -7,9 +7,9 @@
  "setup": "finops",
  "business": "Ledger Peaks",
  "theme": [
-  "#FBFBFD",
-  "#C08304",
-  "#191C33"
+  "#FCFAF4",
+  "#9C700E",
+  "#1E2A1F"
  ],
  "catalog": [
   {

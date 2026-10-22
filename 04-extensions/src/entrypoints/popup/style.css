@@ -1,17 +1,17 @@
-/* Kalamkari tokens (00-hq/design/tokens.css) tuned with b4 plum (--l4). Fonts are bundled from @fontsource (OFL). */
+/* Kalpavruksha tokens (00-hq/design/tokens.css) tuned with b4 plum (--l4). Fonts are bundled from @fontsource (OFL). */
 /* Latin woff2 only (Chrome reads woff2): the full @fontsource CSS shipped every script and .woff too (~516 KB). */
 @font-face { font-family: "Anek Latin"; font-weight: 400; font-display: swap; src: url("@fontsource/anek-latin/files/anek-latin-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Anek Latin"; font-weight: 600; font-display: swap; src: url("@fontsource/anek-latin/files/anek-latin-latin-600-normal.woff2") format("woff2"); }
 @font-face { font-family: "Rozha One"; font-weight: 400; font-display: swap; src: url("@fontsource/rozha-one/files/rozha-one-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-display: swap; src: url("@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
 :root {
-  --bg:#EEEDF3; --panel:#FBFBFD; --fg:#191C33; --muted:#5D6079; --rule:#DCDBE7; --accent:#7B3F8C; --accent-fg:#fff;
-  --madder:#B23A2C; --gold:#D3940A; --hero:#1C2463; --bad:#C0392B;
+  --bg:#F2EEE3; --panel:#FCFAF4; --fg:#1E2A1F; --muted:#5A6152; --rule:#DCD5C3; --accent:#7A3F5E; --accent-fg:#fff;
+  --madder:#8A4A28; --gold:#C38E12; --hero:#1D3A25; --bad:#B13A2D;
   --f-display:"Rozha One",Georgia,serif; --f-body:"Anek Latin",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark) { :root {
-  --bg:#0E1230; --panel:#161B42; --fg:#ECEBF7; --muted:#A3A7CC; --rule:#2A3060; --accent:#C792E0; --accent-fg:#0E1230;
-  --madder:#F0745F; --gold:#F2B840; --hero:#1B2266; --bad:#FF7A6B; color-scheme: dark; } }
+  --bg:#0F1912; --panel:#16231A; --fg:#ECE7D8; --muted:#A8B39B; --rule:#2A3A2D; --accent:#D59AB9; --accent-fg:#0F1912;
+  --madder:#D98B5F; --gold:#E8B64A; --hero:#17301F; --bad:#F07A6B; color-scheme: dark; } }
 * { box-sizing: border-box; }
 body { margin: 0; width: 360px; background: var(--bg); color: var(--fg); font: 14px/1.5 var(--f-body); }
 .temple { height: 8px; background: radial-gradient(circle at 4px 3px, var(--gold) 1.6px, transparent 2px) 0 0/8px 8px, var(--hero); }

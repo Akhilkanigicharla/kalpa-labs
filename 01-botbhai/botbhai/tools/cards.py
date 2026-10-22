@@ -3,7 +3,7 @@
 BotBhai "smile cards" — meme-style WhatsApp images that make reminders and follow-ups feel human.
 
 Original artwork only: our own captions, shapes and open emoji (Noto Color Emoji, OFL/Apache) and
-open fonts from the Kalpa "Kalamkari" design system (Rozha One, Anek Latin, Anek Telugu — SIL OFL, in 00-hq/design/fonts). No film stills, celebrity photos or
+open fonts from the Kalpa "Kalpavruksha" design system (Rozha One, Anek Latin, Anek Telugu — SIL OFL, in 00-hq/design/fonts). No film stills, celebrity photos or
 copyrighted meme templates, which would expose clients to copyright and personality-rights claims.
 
 Usage:
@@ -15,30 +15,29 @@ import argparse, os, pathlib, textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FONTS = ROOT.parent.parent / "00-hq" / "design" / "fonts"   # Kalamkari fonts, shared with every Kalpa UI
+FONTS = ROOT.parent.parent / "00-hq" / "design" / "fonts"   # Kalpavruksha fonts, shared with every Kalpa UI
 EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
 S = 1080
 
 def _hex(h): return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
-# Kalamkari tokens (00-hq/design/tokens.css): cream ground, hero indigo, turmeric gold, madder teeth.
-CREAM, HERO, GOLD, MADDER = _hex("#F6F2E8"), _hex("#1C2463"), _hex("#D3940A"), _hex("#B23A2C")
+# Kalpavruksha tokens (00-hq/design/tokens.css): cream ground, canopy green, fruit gold, leaf green, bark brown.
+CREAM, HERO, GOLD, MADDER, LEAF = _hex("#F4EEDC"), _hex("#1D3A25"), _hex("#C38E12"), _hex("#8A4A28"), _hex("#5E9E4C")
 # palette per setup: (background, accent, deep). Accents are world/leaf tokens: madder, leaf, indigo, turmeric.
 THEMES = {
-    "salon": (CREAM, _hex("#B23A2C"), HERO),
-    "gym": (CREAM, _hex("#2E7D4F"), HERO),
-    "realestate": (CREAM, _hex("#2F4FB0"), HERO),
-    "examkits": (CREAM, _hex("#C08304"), HERO),
+    "salon": (CREAM, _hex("#8A4A28"), HERO),
+    "gym": (CREAM, _hex("#3B7A3A"), HERO),
+    "realestate": (CREAM, _hex("#2F6F78"), HERO),
+    "examkits": (CREAM, _hex("#9C700E"), HERO),
 }
 
 def temple_border(d, y, flip=False, h=28):
-    """The Kalamkari temple border: a band of turmeric dots over madder teeth (same as the CSS one, scaled ×2.8)."""
-    step = 40
+    """The Kalpavruksha vine band: canopy-green strip with leaves and golden fruit (same as the CSS --vine, scaled ×2.8)."""
+    d.rectangle((0, y, S, y + h), fill=HERO)
+    step, cy = 40, y + h // 2
     for x in range(0, S + step, step):
-        tip, base = (y + h, y) if not flip else (y, y + h)
-        d.polygon([(x, base), (x + step // 2, tip), (x + step, base)], fill=MADDER)
-    cy = y + (8 if not flip else h - 8)
+        d.ellipse((x - 10, cy - 6, x + 10, cy + 6), fill=LEAF)  # leaf
     for x in range(step // 2, S, step):
-        d.ellipse((x - 7, cy - 7, x + 7, cy + 7), fill=GOLD)
+        d.ellipse((x - 6, cy - 6, x + 6, cy + 6), fill=GOLD)    # fruit
 
 # occasion → (emoji, top caption, bottom caption, small line, optional Telugu line)
 CARDS = {
@@ -105,10 +104,10 @@ def make_card(setup, key, business):
     # soft background shapes (confetti dots + a big accent circle behind the emoji)
     for i, (x, y, r) in enumerate([(120, 260, 18), (960, 300, 26), (180, 760, 22), (900, 720, 14), (540, 170, 10), (80, 520, 12), (1000, 520, 16)]):
         d.ellipse((x - r, y - r, x + r, y + r), fill=accent if i % 2 == 0 else deep)
-    # medallion behind the emoji: a gold/madder rosette ring around the world colour (Kalamkari medallion badge)
+    # medallion behind the emoji: a gold/leaf rosette ring around the world colour (Kalpavruksha medallion badge)
     cx, cy, R = S // 2, 520, 236
     for k in range(16):
-        d.pieslice((cx - R, cy - R, cx + R, cy + R), k * 22.5, (k + 1) * 22.5, fill=GOLD if k % 2 == 0 else MADDER)
+        d.pieslice((cx - R, cy - R, cx + R, cy + R), k * 22.5, (k + 1) * 22.5, fill=GOLD if k % 2 == 0 else LEAF)
     d.ellipse((cx - 210, cy - 210, cx + 210, cy + 210), fill=accent)
     d.ellipse((cx - 186, cy - 186, cx + 186, cy + 186), fill=tuple(min(255, c + 40) for c in accent))
     temple_border(d, 0); temple_border(d, S - 28, flip=True)

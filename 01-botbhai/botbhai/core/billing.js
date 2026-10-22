@@ -86,9 +86,9 @@ const nice = (iso) => { const [y, m, d] = String(iso || "").slice(0, 10).split("
 const phoneIN = (p) => { const d = String(p).replace(/\D/g, ""); return /^91\d{10}$/.test(d) ? `+91 ${d.slice(2, 7)} ${d.slice(7)}` : `+${d}`; };
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-// Kalpa tokens (Kalamkari), copied from 00-hq/design/tokens.css; keep in sync. Printing always uses the light theme.
-const TOKENS_LIGHT = "--bg:#EEEDF3;--panel:#FBFBFD;--fg:#191C33;--muted:#5D6079;--rule:#DCDBE7;--soft:#E6E6F1;--accent:#2A3A8F;--accent-fg:#FFFFFF;--madder:#B23A2C;--gold:#D3940A;--ok:#23804F;--warn:#B86E00;--bad:#C0392B;--hero:#1C2463;--hero-fg:#F6F2E8;--hero-mute:#B9BDE0;--l1:#B23A2C";
-const TOKENS_DARK = "--bg:#0E1230;--panel:#161B42;--fg:#ECEBF7;--muted:#A3A7CC;--rule:#2A3060;--soft:#1F2552;--accent:#9AABFF;--accent-fg:#0E1230;--madder:#F0745F;--gold:#F2B840;--ok:#5BD08F;--warn:#F2B840;--bad:#FF7A6B;--hero:#1B2266;--hero-fg:#F6F2E8;--hero-mute:#B9BDE0;--l1:#F0745F;color-scheme:dark";
+// Kalpa tokens (Kalpavruksha), copied from 00-hq/design/tokens.css; keep in sync. Printing always uses the light theme.
+const TOKENS_LIGHT = "--bg:#F2EEE3;--panel:#FCFAF4;--fg:#1E2A1F;--muted:#5A6152;--rule:#DCD5C3;--soft:#E9E3D3;--accent:#2F6A3A;--accent-fg:#FFFFFF;--madder:#8A4A28;--gold:#C38E12;--ok:#2C7A43;--warn:#A06400;--bad:#B13A2D;--hero:#1D3A25;--hero-fg:#F4EEDC;--hero-mute:#BFCDAE;--l1:#8A4A28";
+const TOKENS_DARK = "--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B;--rule:#2A3A2D;--soft:#1D2C21;--accent:#8FCB8C;--accent-fg:#0F1912;--madder:#D98B5F;--gold:#E8B64A;--ok:#6FD08F;--warn:#E8B64A;--bad:#F07A6B;--hero:#17301F;--hero-fg:#F4EEDC;--hero-mute:#BFCDAE;--l1:#D98B5F;color-scheme:dark";
 
 /** A complete, printable invoice page (A4). `inv` is an `invoices` row; `seller` comes from env (see functions/billing.js). */
 function invoiceHTML(inv, seller, { now = new Date(), sample = false } = {}) {
@@ -115,7 +115,7 @@ function invoiceHTML(inv, seller, { now = new Date(), sample = false } = {}) {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 :root{${TOKENS_LIGHT};--f-display:"Rozha One","Noto Serif",Georgia,serif;--f-body:"Anek Latin",ui-sans-serif,system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
---temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,linear-gradient(135deg,transparent 0 50%,var(--madder) 50%) 0 0/7px 10px}
+--temple:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--leaf,#5E9E4C) 90%,transparent) 0 0/7px 10px}
 @media screen and (prefers-color-scheme:dark){:root:not([data-theme="light"]){${TOKENS_DARK}}}
 *{box-sizing:border-box}[hidden]{display:none!important}button{font:inherit}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body);padding:16px;-webkit-font-smoothing:antialiased}

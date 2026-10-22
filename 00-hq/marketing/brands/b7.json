@@ -9,9 +9,9 @@
  "enabled": false,
  "disabled_reason": "Trading Lab is paper-only research and earns nothing; SEBI rules on unregistered finfluencers make public posts a risk",
  "theme": [
-  "#FBFBFD",
-  "#13777F",
-  "#191C33"
+  "#FCFAF4",
+  "#4A5590",
+  "#1E2A1F"
  ],
  "catalog": [
   {

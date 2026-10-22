@@ -9,7 +9,7 @@ const css = fs.readFileSync(path.join(__dirname, '../../../../../00-hq/design/to
 const block = (start: string) => css.split(start)[1].split('}')[0];
 const colours = (b: string) => Object.fromEntries([...b.matchAll(/--([a-z0-9-]+):(#[0-9A-F]{6})/gi)].map(m => [m[1], m[2]]));
 
-it('react Native tokens are exactly the Kalamkari tokens (light + dark)', () => {
+it('react Native tokens are exactly the Kalpavruksha tokens (light + dark)', () => {
   expect(light).toEqual(colours(block(':root{')));
   expect(dark).toEqual(colours(block(':root[data-theme="dark"]{')));
 });

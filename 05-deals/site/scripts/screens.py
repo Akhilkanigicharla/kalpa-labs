@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """390 px screen check for the calculator + kits site (Kalpa design rules 1 + 2): every built page in light AND dark must
-have no sideways scroll, use the Kalamkari tokens, keep Telugu out of fonts without Telugu letters, and raise no JS errors.
+have no sideways scroll, use the Kalpavruksha tokens, keep Telugu out of fonts without Telugu letters, and raise no JS errors.
 Run after `npm run build`:  python3 scripts/screens.py [--out DIR]   (needs Python Playwright + Chromium)"""
 import argparse, functools, http.server, pathlib, sys, threading
 
@@ -18,7 +18,7 @@ CHECK = """() => {
   return { scrollW: document.documentElement.scrollWidth, vw, bad: bad.slice(0, 6), te,
            hero: getComputedStyle(document.documentElement).getPropertyValue('--hero').trim().toLowerCase() };
 }"""
-HERO = {"light": "#1c2463", "dark": "#1b2266"}
+HERO = {"light": "#1d3a25", "dark": "#17301f"}
 
 
 def main():
@@ -41,7 +41,7 @@ def main():
                 r = pg.evaluate(CHECK); name = (rel.replace("/index.html", "").replace("index.html", "home") or "home").replace("/", "-")
                 pg.screenshot(path=str(out / f"{name}-{scheme}.png"), full_page=True); n += 1
                 if r["scrollW"] > r["vw"] or r["bad"]: fails.append(f"{rel} {scheme}: sideways scroll {r['scrollW']}>{r['vw']} {r['bad']}")
-                if r["hero"] != HERO[scheme]: fails.append(f"{rel} {scheme}: --hero is {r['hero']!r}, not the Kalamkari token")
+                if r["hero"] != HERO[scheme]: fails.append(f"{rel} {scheme}: --hero is {r['hero']!r}, not the Kalpavruksha token")
                 if r["te"]: fails.append(f"{rel} {scheme}: Telugu in a font without Telugu letters: {r['te']}")
                 if errs: fails.append(f"{rel} {scheme}: JS errors {errs}")
                 pg.close()
@@ -50,7 +50,7 @@ def main():
     srv.shutdown()
     if fails:
         print("\n".join("  ✗ " + f for f in fails)); sys.exit(1)
-    print(f"  ✓ {n} screens at 390 px (light + dark): no sideways scroll, Kalamkari tokens, Telugu fonts, no JS errors → {out}")
+    print(f"  ✓ {n} screens at 390 px (light + dark): no sideways scroll, Kalpavruksha tokens, Telugu fonts, no JS errors → {out}")
 
 
 if __name__ == "__main__":

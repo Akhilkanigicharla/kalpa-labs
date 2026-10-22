@@ -122,7 +122,7 @@ def render(picked, reserve, start, start_name, cluster="Cluster 1", date="", spo
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>@page{{size:A4;margin:10mm}}
-:root{{--fg:#191C33;--muted:#5D6079;--rule:#DCDBE7;--accent:#2A3A8F;--madder:#B23A2C;--gold:#D3940A;--hero:#1C2463;--hero-fg:#F6F2E8;--hero-mute:#B9BDE0;--l1:#B23A2C;
+:root{{--fg:#1E2A1F;--muted:#5A6152;--rule:#DCD5C3;--accent:#2F6A3A;--madder:#8A4A28;--gold:#C38E12;--hero:#1D3A25;--hero-fg:#F4EEDC;--hero-mute:#BFCDAE;--l1:#8A4A28;
 --f-display:"Rozha One",Georgia,serif;--f-body:"Anek Latin","Anek Telugu",system-ui,sans-serif;--f-te:"Anek Telugu",sans-serif;--f-mono:"JetBrains Mono",ui-monospace,monospace}}
 *{{box-sizing:border-box}}html{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}body{{margin:0;color:var(--fg);font:9.6pt/1.4 var(--f-body)}}
 header{{position:relative;background:var(--hero);color:var(--hero-fg);padding:12px 16px 12px;border-radius:10px}}

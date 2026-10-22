@@ -2,7 +2,7 @@
 
 **Who:** the owner of a 2–6 chair salon in Hyderabad. They use a phone only, between clients, often with wet hands, and mix Telugu and English. They open BotBhai about 3 times a day: in the morning ("who's coming today?"), between clients ("does anyone need me?") and at night ("how was the day?").
 
-**Screens (all built, phone first, on the Kalamkari tokens in `00-hq/design/`):**
+**Screens (all built, phone first, on the Kalpavruksha tokens in `00-hq/design/`):**
 
 | Screen | File | Job |
 |---|---|---|

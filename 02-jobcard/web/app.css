@@ -1,4 +1,4 @@
-/* "My customers" PWA on the Kalamkari tokens (vendor/tokens.css, from 00-hq/design). World colour --l2.
+/* "My customers" PWA on the Kalpavruksha tokens (vendor/tokens.css, from 00-hq/design). World colour --l2.
    Mobile baseline from the mobile-native skill: no tap flash, 16px inputs, press feedback on :active, hover only with a mouse. */
 @font-face{font-family:"Rozha One";src:url(/vendor/fonts/rozha-one-latin-400-normal.woff) format("woff");font-weight:400;font-display:swap}
 @font-face{font-family:"Anek Latin";src:url(/vendor/fonts/anek-latin-latin-600-normal.woff) format("woff");font-weight:400 600;font-display:swap}

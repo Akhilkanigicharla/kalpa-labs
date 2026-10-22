@@ -73,7 +73,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         imageWidth: 150,
       },
     ],
-    // Fonts load at runtime with useFonts (Kalamkari: Anek Latin, Anek Telugu, Rozha One)
+    // Fonts load at runtime with useFonts (Kalpavruksha: Anek Latin, Anek Telugu, Rozha One)
     'expo-font',
     'expo-sqlite',
     ['expo-speech-recognition', {

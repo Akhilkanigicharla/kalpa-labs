@@ -65,6 +65,7 @@ m = M.build("b6", START, 1, out)
 files = [out / "b6" / f for it in m["items"] for f in it["files"] if f.endswith(".jpg")]
 assert files and all(Image.open(f).size in ((1080, 1350), (1080, 1920)) for f in files)
 px = Image.open(files[0]).convert("RGB").getpixel((1060, 20))
-assert px == tuple(int(LIGHT["l5"][i:i + 2], 16) for i in (1, 3, 5)), px
+want = tuple(int(LIGHT["l5"][i:i + 2], 16) for i in (1, 3, 5))
+assert all(abs(a - b) <= 3 for a, b in zip(px, want)), (px, want)  # JPEG may shift a channel by 1-2
 print("  ✓ Ledger Peaks renders 1080x1350 / 1080x1920 in its --l5 gold")
 print("MARKETING TEAM TESTS PASSED")

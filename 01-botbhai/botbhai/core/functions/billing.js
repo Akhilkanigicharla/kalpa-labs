@@ -45,7 +45,7 @@ function html(status, body) {
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
   }, body };
 }
-const notFound = () => html(404, '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice not found</title><body style="font:16px system-ui;padding:24px;color:#191C33;background:#EEEDF3">This invoice link is not valid. Please ask Kalpa Labs for a new one.</body>');
+const notFound = () => html(404, '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice not found</title><body style="font:16px system-ui;padding:24px;color:#1E2A1F;background:#F2EEE3">This invoice link is not valid. Please ask Kalpa Labs for a new one.</body>');
 
 // Plain text inside 24 h of the owner's last message; otherwise the approved utility template. Template parameters are
 // cut at 200 characters (_lib.tplParam), so the template gets a short summary with the link last and never cut.

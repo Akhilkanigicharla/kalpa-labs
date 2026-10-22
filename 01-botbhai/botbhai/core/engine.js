@@ -42,7 +42,7 @@
   const GREET = /^(hi+|hello+|hey+|hai+|helo|hlo|namaste|namasthe|namastey|namaskar|namaskaram|namaskaaram|vanakkam|good (morning|afternoon|evening)|start|menu|main menu|options|హాయ్|హలో|నమస్కారం|నమస్కారాలు|నమస్తే|नमस्ते|नमस्कार|हाय|हेलो)(?=\s|$|[!.,?])/i;
   // Tenglish / Hinglish / Telugu / Hindi words people really type
   const INTENT = {
-    human: /\b(human|agent|person|call me|callback|call back|talk to|speak to|reception|advisor|owner|manager|staff)\b/,
+    human: /\b(human|agent|person|call me|callback|call back|talk to|speak to|reception|advisor|owner|manager|staff)\b|మాట్లాడాలి|మాట్లాడతాను|బాత్ కరనీ|बात करनी|बात करना|बात करें/,
     book: /\b(bo+k(ing)?|bok|buk|appointment|apointment|appoint|slot|schedule|reserve|trial|quiz|test me|kavali|kaavali|chahiye|chaiye|cheyyali|cheyandi|book cheyyi|book karo|book kar do|fix cheyyi)\b|బుక్|బుకింగ్|అపాయింట్మెంట్|అపాయింట్|స్లాట్|కావాలి|बुक|बुकिंग|अपॉइंटमेंट|चाहिए/,
     haggle: /\b(too much|costly|expensive|discount|last price|less price|reduce|kam karo|kam kijiye|thagginchandi|taggincha|tagginchandi|chestara|best price|final price)\b/,
     prices: /\b(price|prices|cost|fee|fees|charge|charges|rate|rates|how much|plans?|membership|packages?|projects?|kits?|entha|enta|ఎంత|kitna|kitne|kitni|kya rate|rate kya|price list)\b|ధర|कितना|कीमत/,
@@ -206,6 +206,133 @@
     return { value: n.replace(/(^|\s)(\p{L})/gu, (m, s, c) => s + c.toUpperCase()), forOther };
   }
 
+  // ---------------------------------------------------------------- reply language (A73)
+  // The customer gets replies in Telugu or Hindi when they write in that script, tap a language, or type
+  // "telugu" / "hindi" / "english". Latin Tenglish keeps English replies (the words are still understood).
+  // Owner alerts stay in English. Translations: Claude, 22 Oct 2026; a Telugu speaker reviews before go-live.
+  const LANG_PICK = {
+    te: /^(telugu|telugulo|telugu lo|telugu please|తెలుగు|తెలుగులో)$/,
+    hi: /^(hindi|hindi me|hindi mein|hindi please|हिंदी|हिन्दी|हिंदी में)$/,
+    en: /^(english|english please|english lo|english me|ఇంగ్లీష్|इंग्लिश)$/,
+  };
+  const SCRIPT = { te: /[ఀ-౿]/, hi: /[ऀ-ॿ]/ };
+  const DAY_L = { te: ["ఆది", "సోమ", "మంగళ", "బుధ", "గురు", "శుక్ర", "శని"], hi: ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"] };
+  const MON_L = {
+    te: ["జనవరి", "ఫిబ్రవరి", "మార్చి", "ఏప్రిల్", "మే", "జూన్", "జులై", "ఆగస్టు", "సెప్టెంబర్", "అక్టోబర్", "నవంబర్", "డిసెంబర్"],
+    hi: ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"],
+  };
+  const EVENT_L = {
+    te: { wedding: "పెళ్లి", haldi: "హల్దీ", mehendi: "మెహందీ", sangeet: "సంగీత్", engagement: "నిశ్చితార్థం", reception: "రిసెప్షన్" },
+    hi: { wedding: "शादी", haldi: "हल्दी", mehendi: "मेहंदी", sangeet: "संगीत", engagement: "सगाई", reception: "रिसेप्शन" },
+  };
+  const STR = {
+    en: {
+      menuAsk: "How can I help? Reply with a number:", catalogFoot: "Reply *1* to book your {bookWord}.",
+      closedToday: "Sorry, we're {note} 🙏 How about tomorrow? (or pick any other day)", pastSlots: "Today's slots are over 🌙 How about tomorrow? (or pick any other day)",
+      fullyBooked: "Sorry, {day} is fully booked 😕 Which other day works for you?", optTomorrow: "Tomorrow", optDayAfter: "Day after tomorrow",
+      quizIntro: "Let's go! 3 quick questions.", sureHeard: "Sure! {heard} 👍", letsBook: "Great, let's book your {bookWord}. Type *cancel* any time to stop.",
+      missedTime: "{m} isn't free that day, so pick a time below.", missedShort: "{m} isn't free that day.",
+      replyABCD: "Please reply A, B, C or D.", correct: "✅ Correct! ", notQuite: "❌ Not quite — answer: *{ans}*. ",
+      dateErr: "Sorry, I couldn't read that date (or it's already gone). Try *today*, *tomorrow*, a weekday, or *15/10*.",
+      closedDay: "Sorry, {why} ({date}) 🙏 Which other day works?", tooFar: "We take bookings up to {n} days ahead. Could you pick a closer date?",
+      justCheck: "Just to check: {a} or {b}?", didYouMean: "Did you mean {list}?", or: " or ", chooseOption: "Please choose one of the options (reply with the number).",
+      typeAgain: "Could you type that again?", gotIt: "Got it: {got} 👍", nameErr: "Please type the name (letters only).",
+      moved: "🔁 Done, I've moved it.\n\n", grabbed: "Oops, someone grabbed {gone} a second ago 😅 Here's what's still free:",
+      unsub: "You're unsubscribed and won't get any more messages from us. Reply *START* any time to come back.",
+      cancelled: "Cancelled. No worries at all 🙂 Whenever you're ready, reply *book* and I'll find you a new slot.",
+      keep: "Okay, your booking stays as it is: {date} at {slot}. See you then! 👋",
+      confirmed: "✅ Confirmed: {svc}{date} at {slot}. See you! (Reply *menu* for anything else.)",
+      reschedHead: "No problem! Your current booking is {date} at {slot}.",
+      askCancel: "Do you want to cancel your {what} on {date} at {slot}? Reply *YES* to cancel, or anything else to keep it.", optYesCancel: "Yes, cancel", optKeep: "Keep it",
+      offersDone: "Done 🎉 You'll get member-only offers, max 2 a month. Reply *STOP* any time to stop.",
+      stopped: "No problem, stopped. Nothing was changed.", nothingToCancel: "You don't have an upcoming booking with us, so there's nothing to cancel 🙂",
+      welcomeBack: "Welcome back, {name}! 😊", sameAgain: " Same *{svc}* as last time? Reply *1* and I'll find you a slot.", welcomeBiz: "Welcome back to *{business}* 😊",
+      menuMore: "Reply *menu* for more options.", haggle: "I understand 🙏 Our prices are fixed so every customer gets the same fair price.",
+      haggleOffer: "\n\nGood news though: {offer}", haggleBook: "\n\nShall I book you a slot? Reply *1*.",
+      human: "Sure 🙂 I've told the team — someone from *{business}* will message you here shortly (working hours: {hours}). You can also call {phone}. Type *bot* to come back to me.",
+      sorry: "Sorry, I didn't quite get that. I can help with these:", optIn: "\n\nWant member-only offers (max 2 a month)? Reply *OFFERS*.",
+      congrats: "💍 Congratulations! Our *{item}* packages are *{price}*, and every package includes a trial.",
+      askEvents: "Which events, and on which dates? (e.g. *wedding 22 Jan, haldi 20 Jan*)", askBudget: "What budget do you have in mind for the whole package? (e.g. *50k*, or *not decided*)",
+      askName: "Lovely! And your name, please?", gotDates: "Got it 👍\n📅 {events}", noDates: "No problem, our artist will confirm dates with you 👍",
+      cantCatch: "Sorry, I couldn't catch a date 🙏 {ask} Or just say *not fixed yet*.", toConfirm: "(date to confirm)",
+      fullDate: "So sorry 🙏 our {role} is fully committed on {date}. I've asked the owner to call you; they may be able to suggest another artist or arrangement.",
+      thanks: "Thank you, {name} 💛 Our {role} has your details and will WhatsApp you shortly ({hours}).\n\nWould you like to book your *bridal trial* now? It's included in the package.",
+      optTrial: "Book a bridal trial", optArtist: "Talk to the artist", trialStart: "Lovely! Let's book your *{trial}* 💄 Type *cancel* any time to stop.", team: "team", artist: "artist",
+      adv3: "Excellent — you're exam-ready on these topics. The full course has 5 mock tests to keep you sharp.",
+      adv2: "Good — one gap to fix. The 30-day plan targets exactly these weak areas.", adv1: "Let's build the basics. Start with the free daily question and chapter-wise practice.",
+    },
+    te: {
+      menuAsk: "మీకు ఎలా సహాయం చేయగలను? నంబర్‌తో రిప్లై ఇవ్వండి:", catalogFoot: "బుక్ చేయడానికి *1* అని పంపండి.",
+      closedToday: "క్షమించండి, ఈరోజు మేము మూసి ఉన్నాం 🙏 రేపు ఎలా ఉంటుంది? (లేదా వేరే ఏ రోజైనా ఎంచుకోండి)", pastSlots: "ఈరోజు స్లాట్లు అయిపోయాయి 🌙 రేపు ఎలా ఉంటుంది? (లేదా వేరే ఏ రోజైనా ఎంచుకోండి)",
+      fullyBooked: "క్షమించండి, {day} పూర్తిగా బుక్ అయిపోయింది 😕 మీకు వేరే ఏ రోజు వీలవుతుంది?", optTomorrow: "రేపు", optDayAfter: "ఎల్లుండి",
+      quizIntro: "మొదలుపెడదాం! 3 చిన్న ప్రశ్నలు.", sureHeard: "సరే! {heard} 👍", letsBook: "సరే, మీ {bookWord} బుక్ చేద్దాం. ఆపాలంటే ఎప్పుడైనా *cancel* అని టైప్ చేయండి.",
+      missedTime: "ఆ రోజు {m} ఖాళీ లేదు, కింద ఉన్న సమయాల్లో ఒకటి ఎంచుకోండి.", missedShort: "ఆ రోజు {m} ఖాళీ లేదు.",
+      replyABCD: "దయచేసి A, B, C లేదా D అని పంపండి.", correct: "✅ సరైన జవాబు! ", notQuite: "❌ కాదు — సరైన జవాబు: *{ans}*. ",
+      dateErr: "క్షమించండి, ఆ తేదీ అర్థం కాలేదు (లేదా అది అయిపోయింది). *ఈరోజు*, *రేపు*, ఒక వారం రోజు, లేదా *15/10* లా టైప్ చేయండి.",
+      closedDay: "క్షమించండి, {date} న మేము మూసి ఉన్నాం 🙏 వేరే ఏ రోజు వీలవుతుంది?", tooFar: "మేము {n} రోజుల ముందు వరకే బుకింగ్ తీసుకుంటాం. దగ్గరి తేదీ ఎంచుకుంటారా?",
+      justCheck: "ఒక్కసారి చెప్పండి: {a} కావాలా, {b} కావాలా?", didYouMean: "మీకు కావాల్సింది {list}?", or: " లేదా ", chooseOption: "దయచేసి ఆప్షన్లలో ఒకటి ఎంచుకోండి (నంబర్‌తో రిప్లై ఇవ్వండి).",
+      typeAgain: "మళ్లీ ఒకసారి టైప్ చేస్తారా?", gotIt: "అర్థమైంది: {got} 👍", nameErr: "దయచేసి పేరు టైప్ చేయండి (అక్షరాలు మాత్రమే).",
+      moved: "🔁 అయిపోయింది, మీ బుకింగ్ మార్చాను.\n\n", grabbed: "అయ్యో, {gone} ఇప్పుడే వేరేవాళ్లు తీసుకున్నారు 😅 ఇంకా ఖాళీగా ఉన్నవి ఇవి:",
+      unsub: "మీరు అన్‌సబ్‌స్క్రైబ్ అయ్యారు, ఇకపై మా నుంచి మెసేజ్‌లు రావు. మళ్లీ రావాలంటే ఎప్పుడైనా *START* అని పంపండి.",
+      cancelled: "క్యాన్సిల్ అయింది. పర్వాలేదు 🙂 మళ్లీ కావాలంటే *book* అని పంపండి, కొత్త స్లాట్ చూస్తాను.",
+      keep: "సరే, మీ బుకింగ్ అలాగే ఉంది: {date}, {slot}. కలుద్దాం! 👋",
+      confirmed: "✅ కన్ఫర్మ్ అయింది: {svc}{date}, {slot}. కలుద్దాం! (ఇంకేమైనా కావాలంటే *menu* అని పంపండి.)",
+      reschedHead: "సరే! మీ ప్రస్తుత బుకింగ్: {date}, {slot}.",
+      askCancel: "{date}, {slot} కి ఉన్న మీ {what} క్యాన్సిల్ చేయాలా? క్యాన్సిల్ చేయాలంటే *YES* అని, ఉంచాలంటే ఇంకేదైనా పంపండి.", optYesCancel: "అవును, క్యాన్సిల్", optKeep: "ఉంచండి",
+      offersDone: "అయిపోయింది 🎉 మెంబర్లకు మాత్రమే ఆఫర్లు, నెలకు గరిష్ఠంగా 2 వస్తాయి. ఆపాలంటే ఎప్పుడైనా *STOP* అని పంపండి.",
+      stopped: "సరే, ఆపేశాను. ఏమీ మారలేదు.", nothingToCancel: "మీకు రాబోయే బుకింగ్ ఏదీ లేదు, కాబట్టి క్యాన్సిల్ చేయడానికి ఏమీ లేదు 🙂",
+      welcomeBack: "మళ్లీ స్వాగతం, {name}! 😊", sameAgain: " గతసారిలాగే *{svc}* కావాలా? *1* అని పంపండి, స్లాట్ చూస్తాను.", welcomeBiz: "*{business}* కి మళ్లీ స్వాగతం 😊",
+      menuMore: "ఇంకా ఆప్షన్ల కోసం *menu* అని పంపండి.", haggle: "అర్థమైంది 🙏 అందరికీ ఒకే న్యాయమైన ధర ఉండాలని మా ధరలు ఫిక్స్‌డ్‌గా ఉంటాయి.",
+      haggleOffer: "\n\nఒక మంచి వార్త: {offer}", haggleBook: "\n\nస్లాట్ బుక్ చేయమంటారా? *1* అని పంపండి.",
+      human: "సరే 🙂 టీమ్‌కి చెప్పాను, *{business}* నుంచి ఎవరైనా త్వరలో ఇక్కడే మెసేజ్ చేస్తారు (పని వేళలు: {hours}). {phone} కి కాల్ కూడా చేయవచ్చు. నా దగ్గరికి తిరిగి రావాలంటే *bot* అని టైప్ చేయండి.",
+      sorry: "క్షమించండి, సరిగ్గా అర్థం కాలేదు. నేను వీటిలో సహాయం చేయగలను:", optIn: "\n\nమెంబర్లకు మాత్రమే ఆఫర్లు కావాలా (నెలకు గరిష్ఠంగా 2)? *OFFERS* అని పంపండి.",
+      congrats: "💍 అభినందనలు! మా *{item}* ప్యాకేజీలు *{price}*, ప్రతి ప్యాకేజీలో ఒక ట్రయల్ ఉంటుంది.",
+      askEvents: "ఏ ఫంక్షన్లు, ఏ తేదీల్లో? (ఉదా: *పెళ్లి 22 Jan, హల్దీ 20 Jan*)", askBudget: "మొత్తం ప్యాకేజీకి మీ బడ్జెట్ ఎంత? (ఉదా: *50k*, లేదా *ఇంకా అనుకోలేదు*)",
+      askName: "బాగుంది! మీ పేరు చెప్తారా?", gotDates: "అర్థమైంది 👍\n📅 {events}", noDates: "పర్వాలేదు, మా ఆర్టిస్ట్ తేదీలు మీతో కన్ఫర్మ్ చేస్తారు 👍",
+      cantCatch: "క్షమించండి, తేదీ అర్థం కాలేదు 🙏 {ask} లేదా *ఇంకా ఫిక్స్ కాలేదు* అని చెప్పండి.", toConfirm: "(తేదీ ఇంకా ఖరారు కాలేదు)",
+      fullDate: "క్షమించండి 🙏 {date} న మా {role} ఖాళీగా లేరు. ఓనర్‌ని మీకు కాల్ చేయమని చెప్పాను; వేరే ఆర్టిస్ట్ లేదా ఏర్పాటు సూచించగలరు.",
+      thanks: "ధన్యవాదాలు, {name} 💛 మా {role} దగ్గర మీ వివరాలు ఉన్నాయి, త్వరలో WhatsApp చేస్తారు ({hours}).\n\nఇప్పుడే మీ *బ్రైడల్ ట్రయల్* బుక్ చేయాలా? అది ప్యాకేజీలోనే ఉంది.",
+      optTrial: "బ్రైడల్ ట్రయల్ బుక్ చేయండి", optArtist: "ఆర్టిస్ట్‌తో మాట్లాడాలి", trialStart: "బాగుంది! మీ *{trial}* బుక్ చేద్దాం 💄 ఆపాలంటే ఎప్పుడైనా *cancel* అని టైప్ చేయండి.", team: "టీమ్", artist: "ఆర్టిస్ట్",
+      adv3: "అద్భుతం — ఈ టాపిక్‌లలో మీరు పరీక్షకు సిద్ధంగా ఉన్నారు. పూర్తి కోర్సులో 5 మాక్ టెస్టులు ఉన్నాయి.",
+      adv2: "బాగుంది — ఒక లోటు సరిచేయాలి. 30 రోజుల ప్లాన్ సరిగ్గా ఈ బలహీన అంశాలపైనే పనిచేస్తుంది.", adv1: "బేసిక్స్ నుంచి మొదలుపెడదాం. ఉచిత రోజువారీ ప్రశ్న, చాప్టర్ వారీ ప్రాక్టీస్‌తో మొదలుపెట్టండి.",
+    },
+    hi: {
+      menuAsk: "मैं कैसे मदद करूँ? नंबर से जवाब दें:", catalogFoot: "बुक करने के लिए *1* भेजें.",
+      closedToday: "माफ़ कीजिए, आज हम बंद हैं 🙏 कल कैसा रहेगा? (या कोई और दिन चुनें)", pastSlots: "आज के स्लॉट ख़त्म हो गए 🌙 कल कैसा रहेगा? (या कोई और दिन चुनें)",
+      fullyBooked: "माफ़ कीजिए, {day} पूरा बुक है 😕 आपके लिए और कौन सा दिन ठीक रहेगा?", optTomorrow: "कल", optDayAfter: "परसों",
+      quizIntro: "चलिए शुरू करते हैं! 3 छोटे सवाल.", sureHeard: "ज़रूर! {heard} 👍", letsBook: "ठीक है, आपका {bookWord} बुक करते हैं. रोकने के लिए कभी भी *cancel* लिखें.",
+      missedTime: "उस दिन {m} खाली नहीं है, नीचे से कोई समय चुनें.", missedShort: "उस दिन {m} खाली नहीं है.",
+      replyABCD: "कृपया A, B, C या D भेजें.", correct: "✅ सही जवाब! ", notQuite: "❌ नहीं — सही जवाब: *{ans}*. ",
+      dateErr: "माफ़ कीजिए, यह तारीख़ समझ नहीं आई (या निकल चुकी है). *आज*, *कल*, कोई दिन, या *15/10* लिखें.",
+      closedDay: "माफ़ कीजिए, {date} को हम बंद हैं 🙏 और कौन सा दिन ठीक रहेगा?", tooFar: "हम {n} दिन आगे तक ही बुकिंग लेते हैं. कोई नज़दीक की तारीख़ चुनेंगे?",
+      justCheck: "बस पक्का कर लूँ: {a} या {b}?", didYouMean: "क्या आपका मतलब {list} है?", or: " या ", chooseOption: "कृपया कोई एक विकल्प चुनें (नंबर से जवाब दें).",
+      typeAgain: "क्या आप फिर से लिख सकते हैं?", gotIt: "समझ गया: {got} 👍", nameErr: "कृपया नाम लिखें (सिर्फ़ अक्षर).",
+      moved: "🔁 हो गया, मैंने बुकिंग बदल दी है.\n\n", grabbed: "अरे, {gone} अभी-अभी किसी और ने ले लिया 😅 अभी ये खाली हैं:",
+      unsub: "आपका सब्सक्रिप्शन बंद हो गया, अब हमसे कोई मैसेज नहीं आएगा. वापस आने के लिए कभी भी *START* भेजें.",
+      cancelled: "कैंसिल हो गया. कोई बात नहीं 🙂 जब चाहें *book* भेजें, मैं नया स्लॉट ढूँढ दूँगा.",
+      keep: "ठीक है, आपकी बुकिंग वैसी ही है: {date}, {slot}. मिलते हैं! 👋",
+      confirmed: "✅ पक्का हो गया: {svc}{date}, {slot}. मिलते हैं! (कुछ और चाहिए तो *menu* भेजें.)",
+      reschedHead: "कोई बात नहीं! आपकी अभी की बुकिंग: {date}, {slot}.",
+      askCancel: "क्या आप {date}, {slot} वाला अपना {what} कैंसिल करना चाहते हैं? कैंसिल के लिए *YES* भेजें, रखने के लिए कुछ और.", optYesCancel: "हाँ, कैंसिल", optKeep: "रहने दें",
+      offersDone: "हो गया 🎉 आपको सिर्फ़ मेंबर वाले ऑफ़र मिलेंगे, महीने में ज़्यादा से ज़्यादा 2. रोकने के लिए कभी भी *STOP* भेजें.",
+      stopped: "ठीक है, रोक दिया. कुछ नहीं बदला.", nothingToCancel: "आपकी कोई आने वाली बुकिंग नहीं है, इसलिए कैंसिल करने को कुछ नहीं है 🙂",
+      welcomeBack: "फिर से स्वागत है, {name}! 😊", sameAgain: " पिछली बार की तरह *{svc}*? *1* भेजें, मैं स्लॉट ढूँढ दूँगा.", welcomeBiz: "*{business}* में फिर से स्वागत है 😊",
+      menuMore: "और विकल्पों के लिए *menu* भेजें.", haggle: "मैं समझता हूँ 🙏 हमारे दाम फ़िक्स हैं ताकि हर ग्राहक को एक जैसा सही दाम मिले.",
+      haggleOffer: "\n\nएक अच्छी ख़बर: {offer}", haggleBook: "\n\nक्या मैं आपका स्लॉट बुक कर दूँ? *1* भेजें.",
+      human: "ज़रूर 🙂 मैंने टीम को बता दिया है, *{business}* से कोई जल्द ही यहीं मैसेज करेगा (काम का समय: {hours}). आप {phone} पर कॉल भी कर सकते हैं. मेरे पास वापस आने के लिए *bot* लिखें.",
+      sorry: "माफ़ कीजिए, मैं ठीक से समझ नहीं पाया. मैं इनमें मदद कर सकता हूँ:", optIn: "\n\nसिर्फ़ मेंबर वाले ऑफ़र चाहिए (महीने में ज़्यादा से ज़्यादा 2)? *OFFERS* भेजें.",
+      congrats: "💍 बधाई हो! हमारे *{item}* पैकेज *{price}* के हैं, और हर पैकेज में एक ट्रायल शामिल है.",
+      askEvents: "कौन से फ़ंक्शन, और किन तारीख़ों पर? (जैसे *शादी 22 Jan, हल्दी 20 Jan*)", askBudget: "पूरे पैकेज के लिए आपका बजट कितना है? (जैसे *50k*, या *अभी तय नहीं*)",
+      askName: "बढ़िया! आपका नाम बताएँगे?", gotDates: "समझ गया 👍\n📅 {events}", noDates: "कोई बात नहीं, हमारी आर्टिस्ट आपसे तारीख़ें पक्की कर लेंगी 👍",
+      cantCatch: "माफ़ कीजिए, तारीख़ समझ नहीं आई 🙏 {ask} या बस *अभी तय नहीं* लिखें.", toConfirm: "(तारीख़ पक्की होनी है)",
+      fullDate: "माफ़ कीजिए 🙏 {date} को हमारी {role} खाली नहीं हैं. मैंने ओनर को आपको कॉल करने को कहा है; वे कोई और आर्टिस्ट या इंतज़ाम सुझा सकते हैं.",
+      thanks: "धन्यवाद, {name} 💛 हमारी {role} के पास आपकी जानकारी है, वे जल्द ही WhatsApp करेंगी ({hours}).\n\nक्या अभी अपना *ब्राइडल ट्रायल* बुक करें? यह पैकेज में शामिल है.",
+      optTrial: "ब्राइडल ट्रायल बुक करें", optArtist: "आर्टिस्ट से बात करनी है", trialStart: "बढ़िया! आपका *{trial}* बुक करते हैं 💄 रोकने के लिए कभी भी *cancel* लिखें.", team: "टीम", artist: "आर्टिस्ट",
+      adv3: "शानदार — इन टॉपिक्स पर आप परीक्षा के लिए तैयार हैं. पूरे कोर्स में 5 मॉक टेस्ट हैं.",
+      adv2: "अच्छा — एक कमी दूर करनी है. 30 दिन का प्लान इन्हीं कमज़ोर हिस्सों पर काम करता है.", adv1: "चलिए बेसिक्स से शुरू करते हैं. मुफ़्त रोज़ाना सवाल और चैप्टर के हिसाब से प्रैक्टिस से शुरू करें.",
+    },
+  };
+
   function newState() { return { step: -1, data: {}, lead: { score: "cold", status: "new", intents: [] }, turns: 0, optedOut: false }; }
 
   // ---------------------------------------------------------------- bot
@@ -217,12 +344,27 @@
     const dateStep = () => cfg.steps.findIndex((x) => x.type === "date");
     const slotStep = () => cfg.steps.findIndex((x) => x.field === "slot");
     const nowOf = (state) => (state.now ? new Date(state.now) : new Date());
+    // A73: the reply language for this turn (set in handle / slotTaken from state.lang)
+    let LG = "en";
+    const T = (k, v) => fill((STR[LG] && STR[LG][k]) || STR.en[k], v || {});
+    const I = () => (LG !== "en" && cfg.i18n && cfg.i18n[LG]) || {};
+    const cf = (k) => I()[k] || cfg[k];
+    const lab = (x) => (x && (I().labels || {})[x]) || x;
+    const askOf = (step) => (I().asks || {})[step.field] || step.ask;
+    const faqA = (f) => { const i = cfg.faqs.indexOf(f); return ((I().faqs || [])[i]) || f.a; };
+    const menuLabel = (m, i) => ((I().menu || [])[i]) || m.label;
+    const dateL = (iso, fallback) => { if (LG === "en" || !iso) return fallback; const d = new Date(iso + "T00:00:00Z"); return `${DAY_L[LG][d.getUTCDay()]}, ${d.getUTCDate()} ${MON_L[LG][d.getUTCMonth()]}`; };
+    const D = (state) => dateL(state.data.date_iso, state.data.date);
+    function pickLocal(raw, list) { // a reply in the customer's script ("హెయిర్ స్పా") maps back to the canonical choice
+      if (LG === "en" || !I().labels) return null;
+      const loc = list.map(lab); const h = pickChoice(raw, loc); return h ? list[loc.indexOf(h)] : null;
+    }
 
     function menuReply(prefix) {
-      return { text: (prefix ? prefix + "\n\n" : "") + "How can I help? Reply with a number:\n" + cfg.menu.map((m, i) => `*${i + 1}.* ${m.label}`).join("\n"), options: cfg.menu.map((m) => m.label) };
+      return { text: (prefix ? prefix + "\n\n" : "") + T("menuAsk") + "\n" + cfg.menu.map((m, i) => `*${i + 1}.* ${menuLabel(m, i)}`).join("\n"), options: cfg.menu.map(menuLabel) };
     }
     function catalogReply() {
-      return { text: `*${cfg.catalogTitle}* — ${cfg.business}\n` + cfg.catalog.map((c) => `• ${c.name} — *${c.price}*`).join("\n") + `\n\nReply *1* to book your ${cfg.bookWord}.` };
+      return { text: `*${cf("catalogTitle")}* — ${cfg.business}\n` + cfg.catalog.map((c) => `• ${lab(c.name)} — *${lab(c.price)}*`).join("\n") + "\n\n" + T("catalogFoot", { bookWord: cf("bookWord") }) };
     }
     function hoursReply() {
       return { text: `🕘 ${cfg.hours}\n📍 ${cfg.address}\n📞 ${cfg.phone}\n🗺️ https://maps.google.com/?q=${encodeURIComponent(cfg.address)}` };
@@ -257,18 +399,18 @@
       if (ch && step.field === "slot") {
         const all = ch; ch = freeSlots(state, ch);
         if (!ch.length) {
-          const day = state.data.date; const today = state.data.date_iso === isoOf(istToday(nowOf(state)));
+          const day = state.data.date; const isoOfDay = state.data.date_iso; const today = state.data.date_iso === isoOf(istToday(nowOf(state)));
           const info = Slots ? Slots.day(cfg, state.data.date_iso) : {};
           const allPast = today && (all === "auto" || (Slots && cfg.schedule && cfg.schedule.hours)
             ? !Slots.free({ cfg, date_iso: state.data.date_iso, now: nowOf(state), busy: [], service: state.data.service, labels: all === "auto" ? null : all }).length
             : all.every((sl) => slotMinutes(sl) !== null && slotMinutes(sl) < istMinutes(nowOf(state)) + (cfg.lead_minutes || 30)));
           state.step = dateStep(); delete state.data.date; delete state.data.date_iso;
-          const why = today && info.closingToday ? `Sorry, we're ${info.note || "closed today"} 🙏 How about tomorrow? (or pick any other day)` : allPast ? "Today's slots are over 🌙 How about tomorrow? (or pick any other day)" : `Sorry, ${day} is fully booked 😕 Which other day works for you?`;
-          return { text: why, options: ["Tomorrow", "Day after tomorrow"] };
+          const why = today && info.closingToday ? T("closedToday", { note: info.note || "closed today" }) : allPast ? T("pastSlots") : T("fullyBooked", { day: dateL(isoOfDay, day) });
+          return { text: why, options: [T("optTomorrow"), T("optDayAfter")] };
         }
       }
-      if (ch) return { text: step.ask + "\n" + ch.map((c, i) => `*${i + 1}.* ${c}`).join("\n"), options: ch };
-      return { text: step.ask };
+      if (ch) return { text: askOf(step) + "\n" + ch.map((c, i) => `*${i + 1}.* ${lab(c)}`).join("\n"), options: ch.map(lab) };
+      return { text: askOf(step) };
     }
     function bump(state, score, intent) {
       const rank = { cold: 0, warm: 1, hot: 2 };
@@ -289,7 +431,7 @@
       const svc = cfg.steps.find((x) => x.choices === "catalog"); if (!svc) return null;
       const words = norm(raw).split(" ").filter((w) => /\p{L}{3,}/u.test(w) && !INTENT.book.test(w) && !INTENT.prices.test(w) && !parseDate(w, nowOf(state)) && !cfg.menu.some((m) => norm(m.label).split(" ").includes(w)));
       const al = aliasMatch(raw, cfg.catalog);
-      let hit = al ? al.hit || null : words.length ? pickChoice(words.join(" "), choiceList(svc)) : null;
+      let hit = al ? al.hit || null : words.length ? pickChoice(words.join(" "), choiceList(svc)) || pickLocal(words.join(" "), choiceList(svc)) : null;
       if (!hit && !al && words.length > 1) { const each = [...new Set(words.map((w) => pickChoice(w, choiceList(svc))).filter(Boolean))]; if (each.length === 1) hit = each[0]; }
       const item = hit && cfg.catalog.find((c) => c.name === hit);
       return item && !item.enquiry ? { field: svc.field, name: hit } : null;
@@ -311,13 +453,13 @@
       if (meta && meta.known && meta.known.name) state.data.name = meta.known.name; // returning customer: don't ask the name again
       const heard = [];
       if (raw && !cfg.quiz) { // "repu haircut kavali" → service + date already understood, like a person would
-        const c = catalogHit(raw, state); if (c) { state.data[c.field] = c.name; heard.push(c.name); }
+        const c = catalogHit(raw, state); if (c) { state.data[c.field] = c.name; heard.push(lab(c.name)); }
         const d = parseDate(raw, nowOf(state));
-        if (d && !closedReason(isoOf(d), d) && dateStep() >= 0) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); heard.push(state.data.date); }
+        if (d && !closedReason(isoOf(d), d) && dateStep() >= 0) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); heard.push(D(state)); }
         state.pendingTime = timeIn(raw) || undefined; const slot = useTime(state); if (slot) heard.push(slot);
       }
-      const intro = cfg.quiz ? "Let's go! 3 quick questions." : heard.length ? `Sure! ${heard.join(", ")} 👍` : `Great, let's book your ${cfg.bookWord}. Type *cancel* any time to stop.`;
-      if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${intro}\n${m} isn't free that day, so pick a time below.` }, ...nextOrFinish(state, [])]; }
+      const intro = cfg.quiz ? T("quizIntro") : heard.length ? T("sureHeard", { heard: heard.join(", ") }) : T("letsBook", { bookWord: cf("bookWord") });
+      if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${intro}\n` + T("missedTime", { m }) }, ...nextOrFinish(state, [])]; }
       return [{ text: intro }, ...nextOrFinish(state, [])];
     }
     function abandonFlow(state) { // restore what was there before an unfinished booking/reschedule
@@ -335,13 +477,10 @@
     const enquiryItem = () => (cfg.catalog || []).find((c) => c.enquiry);
     const trialName = () => cfg.enquiry_trial || `${enquiryItem().name} trial`;
     const cap = (k) => k[0].toUpperCase() + k.slice(1);
-    const eventsLine = (evs) => evs.map((e) => `${cap(e.type)} ${e.date_iso ? fmtDate(new Date(e.date_iso + "T00:00:00Z")) : "(date to confirm)"}`).join(" · ");
+    const eventsLine = (evs) => evs.map((e) => `${cap(e.type)} ${e.date_iso ? fmtDate(new Date(e.date_iso + "T00:00:00Z")) : "(date to confirm)"}`).join(" · "); // owner alerts: English
+    const eventsLineL = (evs) => LG === "en" ? eventsLine(evs) : evs.map((e) => `${EVENT_L[LG][e.type] || e.type} ${e.date_iso ? dateL(e.date_iso) : T("toConfirm")}`).join(" · ");
     const BUDGET_BANDS = () => cfg.bridal_budget_bands || [[0, "under 20k"], [20000, "20k–40k"], [40000, "40k–75k"], [75000, "75k+"]];
-    const ASK = {
-      events: "Which events, and on which dates? (e.g. *wedding 22 Jan, haldi 20 Jan*)",
-      budget: "What budget do you have in mind for the whole package? (e.g. *50k*, or *not decided*)",
-      name: "Lovely! And your name, please?",
-    };
+    const ASK = { get events() { return T("askEvents"); }, get budget() { return T("askBudget"); }, get name() { return T("askName"); } };
     function absorbBridal(state, raw) { // people / place can come in any message
       const b = state.bridal; const low = String(raw || "").toLowerCase();
       for (const e of parseEvents(raw, nowOf(state))) { const have = b.events.find((x) => x.type === e.type); if (!have) b.events.push(e); else if (e.date_iso) have.date_iso = e.date_iso; }
@@ -361,7 +500,7 @@
       if (full) {
         b.asking = null; b.full_date = full.date_iso; state.lead.status = "callback";
         handoff(state, meta, events, `asked for bridal makeup on ${fmtDate(new Date(full.date_iso + "T00:00:00Z"))}, a date you marked full`);
-        return [...lead, { text: `So sorry 🙏 our ${cfg.enquiry_role || "artist"} is fully committed on ${fmtDate(new Date(full.date_iso + "T00:00:00Z"))}. I've asked the owner to call you; they may be able to suggest another artist or arrangement.` }];
+        return [...lead, { text: T("fullDate", { role: cf("enquiry_role") || T("artist"), date: dateL(full.date_iso, fmtDate(new Date(full.date_iso + "T00:00:00Z"))) }) }];
       }
       if (!b.events.length && !b.note) { b.asking = "events"; return [...lead, { text: ASK.events }]; }
       if (!b.budget_band) { b.asking = "budget"; return [...lead, { text: ASK.budget }]; }
@@ -374,17 +513,17 @@
       if (meta.known && meta.known.name) state.bridal.name = meta.known.name;
       bump(state, "hot", "bridal"); state.lead.status = "callback";
       absorbBridal(state, raw);
-      const intro = `💍 Congratulations! Our *${item.name}* packages are *${item.price}*, and every package includes a trial.` + (state.bridal.events.length ? `\n📅 ${eventsLine(state.bridal.events)}` : "");
+      const intro = T("congrats", { item: lab(item.name), price: lab(item.price) }) + (state.bridal.events.length ? `\n📅 ${eventsLineL(state.bridal.events)}` : "");
       return bridalNext(state, meta, events, { text: intro });
     }
     function bridalAnswer(state, raw, t, meta, events) {
       const b = state.bridal;
       if (b.asking === "events") {
         const before = b.events.length; absorbBridal(state, raw);
-        if (b.events.length > before) return bridalNext(state, meta, events, { text: `Got it 👍\n📅 ${eventsLine(b.events)}` });
+        if (b.events.length > before) return bridalNext(state, meta, events, { text: T("gotDates", { events: eventsLineL(b.events) }) });
         b.tries++;
-        if (b.tries >= 2 || /\b(not (fixed|decided|final)|don'?t know|dont know|tbd|later|no idea)\b/.test(t)) { b.note = String(raw).trim().slice(0, 120); return bridalNext(state, meta, events, { text: "No problem, our artist will confirm dates with you 👍" }); }
-        return [{ text: "Sorry, I couldn't catch a date 🙏 " + ASK.events + " Or just say *not fixed yet*." }];
+        if (b.tries >= 2 || /\b(not (fixed|decided|final)|don'?t know|dont know|tbd|later|no idea)\b|ఫిక్స్ కాలేదు|తెలియదు|అనుకోలేదు|तय नहीं|पता नहीं/.test(t)) { b.note = String(raw).trim().slice(0, 120); return bridalNext(state, meta, events, { text: T("noDates") }); }
+        return [{ text: T("cantCatch", { ask: ASK.events }) }];
       }
       if (b.asking === "budget") {
         absorbBridal(state, raw);
@@ -394,7 +533,7 @@
         return bridalNext(state, meta, events, null);
       }
       if (b.asking === "name") {
-        const nm = nameFrom(raw); if (nm.error) return [{ text: nm.error }];
+        const nm = nameFrom(raw); if (nm.error) return [{ text: T("nameErr") }];
         b.name = nm.value; return bridalNext(state, meta, events, null);
       }
       b.asking = null; return [menuReply()];
@@ -406,13 +545,13 @@
       const bits = [eventsLine(b.events) || "dates to confirm", budget, b.people ? `${b.people} people` : "", b.location ? `at ${b.location}` : "", b.note ? `note: "${b.note}"` : ""].filter(Boolean);
       events.push({ type: "bridal_enquiry", enquiry: Object.assign({ contact: meta.contact || null }, b) });
       events.push({ type: "notify_owner", text: `💍 Bridal enquiry (hot lead): ${b.name} (${meta.contact || "web chat"}) · ${bits.join(" · ")}. Please call within 15 minutes; muhurtham dates fill fast.` });
-      return [...lead, { text: `Thank you, ${b.name.split(" ")[0]} 💛 Our ${cfg.enquiry_role || "team"} has your details and will WhatsApp you shortly (${cfg.hours}).\n\nWould you like to book your *bridal trial* now? It's included in the package.`, options: ["Book a bridal trial", "Talk to the artist"] }];
+      return [...lead, { text: T("thanks", { name: b.name.split(" ")[0], role: cf("enquiry_role") || T("team"), hours: cfg.hours }), options: [T("optTrial"), T("optArtist")] }];
     }
     function startTrial(state) {
       state.prev = { data: JSON.parse(JSON.stringify(state.data)), status: state.lead.status };
       state.step = 0; state.data = { service: trialName() }; if (state.bridal.name) state.data.name = state.bridal.name;
       bump(state, "hot", "trial");
-      return [{ text: `Lovely! Let's book your *${trialName()}* 💄 Type *cancel* any time to stop.` }, ...nextOrFinish(state, [])];
+      return [{ text: T("trialStart", { trial: lab(trialName()) }) }, ...nextOrFinish(state, [])];
     }
 
     // A question in the middle of a booking ("address?", "price entha?") is answered, then the same step is asked again.
@@ -424,11 +563,11 @@
         if (/^\d{1,2}$/.test(t) || pickChoice(raw, list) || (step.choices === "catalog" && aliasMatch(raw, cfg.catalog))) return null;
       } else if (step.type !== "date" && !/\?/.test(raw)) return null; // a name like "Priya" is never a question
       const faq = cfg.faqs.find((q) => q.k.some((k) => k.includes(" ") && hasWord(t, k)));
-      if (faq) return { text: fill(faq.a, vars()) };
+      if (faq) return { text: fill(faqA(faq), vars()) };
       if (INTENT.prices.test(t)) return catalogReply();
       if (INTENT.hours.test(t)) return hoursReply();
       const one = cfg.faqs.find((q) => q.k.some((k) => k.length >= 4 && hasWord(t, k)));
-      return one ? { text: fill(one.a, vars()) } : null;
+      return one ? { text: fill(faqA(one), vars()) } : null;
     }
     function handleStep(state, raw, events, meta) {
       const step = cfg.steps[state.step];
@@ -439,42 +578,42 @@
         const letter = t.match(/^([abcd])\b/); if (letter) idx = letter[1].charCodeAt(0) - 97;
         else if (/^[1-4]$/.test(t)) idx = +t - 1;
         else idx = q.o.findIndex((o) => norm(o) === t || (t.length > 2 && norm(o).includes(t)));
-        if (idx < 0) error = "Please reply A, B, C or D.";
+        if (idx < 0) error = T("replyABCD");
         else {
           const ok = idx === q.a; state.data.correct = (state.data.correct || 0) + (ok ? 1 : 0);
           state.step++;
-          const fb = { text: (ok ? "✅ Correct! " : `❌ Not quite — answer: *${q.o[q.a]}*. `) + q.why };
+          const fb = { text: (ok ? T("correct") : T("notQuite", { ans: q.o[q.a] })) + q.why };
           return [fb, nextOrFinish(state, events)].flat();
         }
       } else if (step.type === "date") {
         const d = parseDate(raw, nowOf(state));
-        if (!d) error = "Sorry, I couldn't read that date (or it's already gone). Try *today*, *tomorrow*, a weekday, or *15/10*.";
+        if (!d) error = T("dateErr");
         else {
           const why = closedReason(isoOf(d), d);
-          if (why) error = `Sorry, ${why} (${fmtDate(d)}) 🙏 Which other day works?`;
-          else if ((cfg.max_days_ahead || 60) < Math.round((d - istToday(nowOf(state))) / 864e5)) error = `We take bookings up to ${cfg.max_days_ahead || 60} days ahead. Could you pick a closer date?`;
+          if (why) error = T("closedDay", { why, date: dateL(isoOf(d), fmtDate(d)) });
+          else if ((cfg.max_days_ahead || 60) < Math.round((d - istToday(nowOf(state))) / 864e5)) error = T("tooFar", { n: cfg.max_days_ahead || 60 });
           else { value = fmtDate(d); state.data.date_iso = isoOf(d); }
         }
       } else if (step.type === "name") {
         const nm = nameFrom(raw); if (nm.forOther) state.data.booked_for_someone = true;
-        if (nm.error) error = nm.error; else value = nm.value;
+        if (nm.error) error = T("nameErr"); else value = nm.value;
       } else if (step.choices) {
         const list = step.field === "slot" ? freeSlots(state, choiceList(step)) : choiceList(step);
         const num = norm(raw).match(/^(\d{1,2})$/);
         if (step.field === "slot" && num && +num[1] >= 3 && +num[1] <= list.length) { // 1–2 are row numbers; // "4": option 4, or 4 o'clock? ask, like a person would
           const byHour = list.filter((c) => +c.match(/^(\d{1,2})/)[1] === +num[1]);
           const byRow = list[+num[1] - 1];
-          if (byHour.length && !byHour.includes(byRow)) return [{ text: `Just to check: ${byHour[0]} or ${byRow}?`, options: [byHour[0], byRow] }];
+          if (byHour.length && !byHour.includes(byRow)) return [{ text: T("justCheck", { a: byHour[0], b: byRow }), options: [byHour[0], byRow] }];
         }
         const al = step.choices === "catalog" ? aliasMatch(raw, cfg.catalog.filter((c) => list.includes(c.name))) : null;
-        if (al && al.ambiguous) return [{ text: `Did you mean ${al.ambiguous.join(" or ")}?`, options: al.ambiguous }];
-        value = (al && al.hit) || pickChoice(raw, list);
+        if (al && al.ambiguous) return [{ text: T("didYouMean", { list: al.ambiguous.map(lab).join(T("or")) }), options: al.ambiguous.map(lab) }];
+        value = (al && al.hit) || pickChoice(raw, list) || pickLocal(raw, list);
         if (!value) {
           const sqr = squash(raw); const words = norm(raw).split(" ").filter((w) => w.length >= 3);
           let close = list.filter((c) => sqr.length >= 4 && (squash(c).startsWith(sqr) || squash(c).includes(sqr)));
           if (close.length < 2) close = list.filter((c) => words.some((w) => squash(c).includes(w)));
-          if (close.length >= 2 && close.length <= 3) return [{ text: `Did you mean ${close.join(" or ")}?`, options: close }];
-          error = "Please choose one of the options (reply with the number).";
+          if (close.length >= 2 && close.length <= 3) return [{ text: T("didYouMean", { list: close.map(lab).join(T("or")) }), options: close.map(lab) }];
+          error = T("chooseOption");
         }
         else if (step.choices === "catalog") {
           const item = cfg.catalog.find((c) => c.name === value);
@@ -484,14 +623,14 @@
           }
         }
       } else {
-        const v = String(raw).trim(); if (v.length < 2) error = "Could you type that again?"; else value = v.slice(0, 80);
+        const v = String(raw).trim(); if (v.length < 2) error = T("typeAgain"); else value = v.slice(0, 80);
       }
       if (error && step.type !== "date" && !state.rescheduling) {
         const got = [];
         const d = dateStep() > state.step && !state.data.date_iso ? parseDate(raw, nowOf(state)) : null;
-        if (d && !closedReason(isoOf(d), d)) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); got.push(state.data.date); }
+        if (d && !closedReason(isoOf(d), d)) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); got.push(D(state)); }
         if (step.field !== "slot" && timeIn(raw)) { state.pendingTime = timeIn(raw); got.push(state.pendingTime.toUpperCase()); }
-        if (got.length) return [{ text: `Got it: ${got.join(", ")} 👍` }, askStep(state)];
+        if (got.length) return [{ text: T("gotIt", { got: got.join(", ") }) }, askStep(state)];
       }
       if (error) return [{ text: error }, askStep(state)];
       state.data[step.field] = value;
@@ -508,18 +647,19 @@
       useTime(state);
       while (state.step < cfg.steps.length && state.data[cfg.steps[state.step].field] && !reask.includes(cfg.steps[state.step].field) && cfg.steps[state.step].type !== "quiz") state.step++;
       if (state.step < cfg.steps.length) {
-        if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${m} isn't free that day.` }, askStep(state)]; }
+        if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: T("missedShort", { m }) }, askStep(state)]; }
         return [askStep(state)];
       }
       const v = Object.assign(vars(), state.data);
       if (cfg.quiz) {
         const s = state.data.correct || 0; v.score = s; state.data.quiz_score = `${s}/3`;
-        v.advice = s === 3 ? "Excellent — you're exam-ready on these topics. The full course has 5 mock tests to keep you sharp." : s === 2 ? "Good — one gap to fix. The 30-day plan targets exactly these weak areas." : "Let's build the basics. Start with the free daily question and chapter-wise practice.";
+        v.advice = T(s === 3 ? "adv3" : s === 2 ? "adv2" : "adv1");
         delete state.data.correct;
       }
       delete state.prev;
       state.step = -1; state.lead.status = cfg.quiz ? "quiz_done" : "booked"; bump(state, "hot", cfg.quiz ? "quiz" : "booked");
-      const optIn = !cfg.quiz && !state.lead.marketing ? "\n\nWant member-only offers (max 2 a month)? Reply *OFFERS*." : "";
+      const optIn = !cfg.quiz && !state.lead.marketing ? T("optIn") : "";
+      if (LG !== "en") { for (const k of Object.keys(v)) if (typeof v[k] === "string" && k !== "name") v[k] = lab(v[k]); v.date = D(state); } // shown in the customer's language
       if (!cfg.quiz) {
         const booking = { service: state.data.service || state.data.goal || state.data.bhk || null, date_iso: state.data.date_iso, slot: state.data.slot, name: state.data.name };
         if (Slots && cfg.schedule) { booking.minutes = Slots.durationOf(Slots.schedule(cfg), state.data.service); if (state.data.staff) booking.staff = state.data.staff; }
@@ -528,19 +668,19 @@
       if (state.rescheduling) {
         const old = state.rescheduling; delete state.rescheduling;
         events.push({ type: "notify_owner", text: `🔁 Rescheduled: ${state.data.name} · ${state.data.service || ""} · ${old.date} ${old.slot} → ${state.data.date} ${state.data.slot}` });
-        return [{ text: "🔁 Done, I've moved it.\n\n" + fill(cfg.confirm, v) }];
+        return [{ text: T("moved") + fill(cf("confirm"), v) }];
       }
       events.push({ type: "notify_owner", text: `🔔 New ${cfg.bookWord}: ${state.data.name}` + (state.data.service ? ` · ${state.data.service}` : "") + (state.data.date ? ` · ${state.data.date} ${state.data.slot || ""}` : "") + (state.data.quiz_score ? ` · score ${state.data.quiz_score}` : "") });
-      return [{ text: fill(cfg.confirm, v) + optIn }];
+      return [{ text: fill(cf("confirm"), v) + optIn }];
     }
 
     // Called by the server when the database says the slot was taken a moment ago (race between two customers).
     function slotTaken(stateIn, busy) {
-      const state = JSON.parse(JSON.stringify(stateIn));
+      const state = JSON.parse(JSON.stringify(stateIn)); LG = state.lang || "en";
       state.lead.status = (state.prev && state.prev.status) || "new"; state.step = slotStep();
       const gone = state.data.slot; delete state.data.slot;
       state._busy = (busy || []).concat(Array.from({ length: Math.min(cfg.capacity || 1, 1000) }, () => ({ date_iso: state.data.date_iso, slot: gone, blocked: true })));
-      const replies = [{ text: `Oops, someone grabbed ${gone} a second ago 😅 Here's what's still free:` }, askStep(state)];
+      const replies = [{ text: T("grabbed", { gone }) }, askStep(state)];
       delete state._busy;
       return { replies, state };
     }
@@ -553,6 +693,13 @@
       state.turns++;
       const events = []; let replies = [];
       const raw = String(text || "").trim(); let t = norm(raw);
+      // A73: reply language. An explicit pick wins; Telugu or Hindi script switches; otherwise it stays as it was.
+      const picked = Object.keys(LANG_PICK).find((k) => LANG_PICK[k].test(t));
+      if (picked) state.lang = picked;
+      else if (SCRIPT.te.test(raw)) state.lang = "te";
+      else if (SCRIPT.hi.test(raw)) state.lang = "hi";
+      else if (!state.lang && meta.lang && STR[meta.lang]) state.lang = meta.lang;
+      LG = state.lang || "en";
       const ref = raw.match(/\bREF-[A-Z0-9]{4}\b/i);
       if (ref && !state.data.referred_by) {
         state.data.referred_by = ref[0].toUpperCase(); bump(state, "warm", "referral");
@@ -567,7 +714,7 @@
       } else if (/^(stop|unsubscribe|opt out|stop messages)$/.test(t)) {
         state.optedOut = true; state.step = -1; state.lead.status = "opted_out"; state.lead.marketing = false; if (state.bridal) state.bridal.asking = null;
         events.push({ type: "opt_out" });
-        replies = [{ text: "You're unsubscribed and won't get any more messages from us. Reply *START* any time to come back." }];
+        replies = [{ text: T("unsub") }];
       } else if (state.optedOut && !/^start$/.test(t)) {
         replies = [];
       } else if (paused && !/^(bot|menu|start)$/.test(t)) {
@@ -575,61 +722,63 @@
         replies = []; // a person is handling this chat
       } else if (state.pending === "cancel") {
         delete state.pending;
-        if (/^(1|yes|y|confirm|ok|okay|haa|haan|han|avunu|sare|cancel it|yes cancel)\b/.test(t)) {
+        if (/^(1|yes|y|confirm|ok|okay|haa|haan|han|avunu|sare|cancel it|yes cancel)\b|^(అవును|సరే|हाँ|हां|हा|ठीक है)/.test(t)) {
           state.lead.status = "cancelled";
           events.push({ type: "cancel_booking", booking: { date_iso: state.data.date_iso, slot: state.data.slot, service: state.data.service || null } });
           events.push({ type: "notify_owner", text: `❌ Cancelled: ${state.data.name || "customer"} · ${state.data.service || ""} · ${state.data.date} ${state.data.slot}` });
-          replies = [{ text: `Cancelled. No worries at all 🙂 Whenever you're ready, reply *book* and I'll find you a new slot.` }];
-        } else replies = [{ text: `Okay, your booking stays as it is: ${state.data.date} at ${state.data.slot}. See you then! 👋` }];
+          replies = [{ text: T("cancelled") }];
+        } else replies = [{ text: T("keep", { date: D(state), slot: state.data.slot }) }];
       } else if (state.bridal && state.bridal.asking && (/^(cancel|exit|quit|stop|vaddu|nahi chahiye)$/.test(t) || (INTENT.cancel.test(t) && t.split(" ").length <= 4))) {
-        state.bridal.asking = null; replies = [menuReply("No problem, stopped. Nothing was changed.")];
+        state.bridal.asking = null; replies = [menuReply(T("stopped"))];
       } else if (state.bridal && state.bridal.asking && !(GREET.test(t) && t.split(" ").length <= 2)) {
         replies = bridalAnswer(state, raw, t, meta, events);
-      } else if (state.step < 0 && state.bridal && !state.bridal.asking && /\btrial\b/.test(t) && enquiryItem()) {
+      } else if (state.step < 0 && state.bridal && !state.bridal.asking && /\btrial\b|ట్రయల్|ट्रायल/.test(t) && enquiryItem()) {
         replies = startTrial(state);
       } else if (state.step < 0 && enquiryItem() && BRIDAL.test(t) && !INTENT.cancel.test(t) && !/\b(reschedule|postpone|prepone)\b/.test(t)) {
         replies = bridalStart(state, raw, meta, events, enquiryItem());
       } else if (booked && CONFIRM.test(t) && !(state.data.date_iso < isoOf(istToday(nowOf(state))))) { // a past visit is not "confirmed"
         state.data.confirmed = true;
         events.push({ type: "confirmed", booking: { date_iso: state.data.date_iso, slot: state.data.slot } });
-        replies = [{ text: `✅ Confirmed: ${state.data.service ? state.data.service + ", " : ""}${state.data.date} at ${state.data.slot}. See you! (Reply *menu* for anything else.)` }];
+        replies = [{ text: T("confirmed", { svc: state.data.service ? lab(state.data.service) + ", " : "", date: D(state), slot: state.data.slot }) }];
       } else if (booked && (/^2$/.test(t) || /\b(reschedule|postpone|prepone|change (the )?(date|time|day|slot)|another (day|time)|move (my|the) (booking|appointment)|(date|time|day|slot) (marchandi|marchali|marchu|change|badlo|badal do))\b/.test(t))) {
         state.prev = { data: JSON.parse(JSON.stringify(state.data)), status: state.lead.status };
         state.rescheduling = { date: state.data.date, slot: state.data.slot, date_iso: state.data.date_iso };
         state.step = dateStep();
-        const head = { text: `No problem! Your current booking is ${state.data.date} at ${state.data.slot}.` };
+        const head = { text: T("reschedHead", { date: D(state), slot: state.data.slot }) };
         const d = parseDate(raw, nowOf(state));
         if (d && !closedReason(isoOf(d), d)) { state.data.date = fmtDate(d); state.data.date_iso = isoOf(d); state.step = slotStep(); }
         replies = [head, askStep(state)];
       } else if (booked && INTENT.cancel.test(t)) {
         state.pending = "cancel";
-        replies = [{ text: `Do you want to cancel your ${state.data.service || cfg.bookWord} on ${state.data.date} at ${state.data.slot}? Reply *YES* to cancel, or anything else to keep it.`, options: ["Yes, cancel", "Keep it"] }];
+        replies = [{ text: T("askCancel", { what: lab(state.data.service) || cf("bookWord"), date: D(state), slot: state.data.slot }), options: [T("optYesCancel"), T("optKeep")] }];
       } else if (/^(offers|offer yes|yes offers)$/.test(t)) {
         state.lead.marketing = true; events.push({ type: "marketing_opt_in" });
-        replies = [{ text: "Done 🎉 You'll get member-only offers, max 2 a month. Reply *STOP* any time to stop." }];
+        replies = [{ text: T("offersDone") }];
       } else if (state.step >= 0 && (/^(cancel|exit|quit|stop booking|vaddu|nahi chahiye)$/.test(t) || (INTENT.cancel.test(t) && t.split(" ").length <= 4 && !parseDate(raw, nowOf(state))))) {
-        abandonFlow(state); replies = [menuReply("No problem, stopped. Nothing was changed.")];
+        abandonFlow(state); replies = [menuReply(T("stopped"))];
       } else if (state.step < 0 && INTENT.cancel.test(t) && !/\b(policy|charges?|fee|rules?|membership|plan|subscription|order)\b/.test(t)) { // "booking cancel cheyyandi" with nothing booked
-        replies = [menuReply("You don't have an upcoming booking with us, so there's nothing to cancel 🙂")];
+        replies = [menuReply(T("nothingToCancel"))];
+      } else if (picked && state.step >= 0) { // "telugu" in the middle of a booking: same question, new language
+        replies = [askStep(state)];
       } else if (state.step >= 0 && !GREET.test(t) && sideQuestion(state, raw, t)) { // Rasa-style digression: answer, then re-ask
         replies = [sideQuestion(state, raw, t), askStep(state)];
       } else if (state.step >= 0 && !GREET.test(t)) {
         replies = handleStep(state, raw, events, meta);
       } else if (!t) {
         replies = [menuReply()];
-      } else if (GREET.test(t) || /^(start|bot)$/.test(t)) {
+      } else if (GREET.test(t) || /^(start|bot)$/.test(t) || picked) {
         if (state.step >= 0) abandonFlow(state);
         if (state.bridal) state.bridal.asking = null;
         state.optedOut = false; delete state.humanUntil;
         const known = meta.known || {};
         const first = known.name
-          ? `Welcome back, ${known.name.split(" ")[0]}! 😊` + (known.lastService ? ` Same *${known.lastService}* as last time? Reply *1* and I'll find you a slot.` : "")
-          : state.turns === 1 ? fill(cfg.greeting, vars()) : `Welcome back to *${cfg.business}* 😊`;
+          ? T("welcomeBack", { name: known.name.split(" ")[0] }) + (known.lastService ? T("sameAgain", { svc: lab(known.lastService) }) : "")
+          : state.turns === 1 || picked ? fill(cf("greeting"), vars()) : T("welcomeBiz", { business: cfg.business });
         replies = [menuReply(first)];
       } else {
         let key = null;
         if (/^\d$/.test(t) && +t >= 1 && +t <= cfg.menu.length) key = cfg.menu[+t - 1].key;
-        else { const m = cfg.menu.find((x) => norm(x.label) === t); if (m) key = m.key; }
+        else { const m = cfg.menu.find((x, i) => norm(x.label) === t || norm(menuLabel(x, i)) === t); if (m) key = m.key; }
         let faq = null;
         if (!key) faq = cfg.faqs.find((q) => q.k.some((k) => k.includes(" ") && hasWord(t, k))); // multi-word FAQ phrases win ("home visit")
         if (!key && !faq) {
@@ -641,28 +790,28 @@
           else if (INTENT.hours.test(t)) key = "hours";
         }
         if (!key && !faq) faq = cfg.faqs.find((q) => q.k.some((k) => hasWord(t, k)));
-        if (faq && !key) { replies = [{ text: fill(faq.a, vars()) + "\n\nReply *menu* for more options." }]; bump(state, "warm", "faq"); }
+        if (faq && !key) { replies = [{ text: fill(faqA(faq), vars()) + "\n\n" + T("menuMore") }]; bump(state, "warm", "faq"); }
         if (key === "book") replies = startFlow(state, meta, raw);
         else if (key === "prices") { replies = [catalogReply()]; bump(state, "warm", "prices"); }
         else if (key === "hours") { replies = [hoursReply()]; bump(state, "cold", "hours"); }
-        else if (key === "guard") replies = [{ text: cfg.guard }];
+        else if (key === "guard") replies = [{ text: cf("guard") }];
         else if (key === "haggle") { // fixed prices, real offers only — never invent a discount
           const offer = cfg.faqs.find((q) => q.id === "offers" || q.k.includes("offer") || q.k.includes("offers"));
-          replies = [{ text: `I understand 🙏 Our prices are fixed so every customer gets the same fair price.` + (offer ? `\n\nGood news though: ${fill(offer.a, vars())}` : "") + `\n\nShall I book you a slot? Reply *1*.` }];
+          replies = [{ text: T("haggle") + (offer ? T("haggleOffer", { offer: fill(faqA(offer), vars()) }) : "") + T("haggleBook") }];
           bump(state, "warm", "haggle");
         }
         else if (key === "human") {
           if (state.lead.status !== "booked") state.lead.status = "callback"; bump(state, "warm", "human");
           handoff(state, meta, events, "wants to talk to a person");
-          replies = [{ text: `Sure 🙂 I've told the team — someone from *${cfg.business}* will message you here shortly (working hours: ${cfg.hours}). You can also call ${cfg.phone}. Type *bot* to come back to me.` }];
+          replies = [{ text: T("human", { business: cfg.business, hours: cfg.hours, phone: cfg.phone }) }];
         } else if (key && key.startsWith("faq:")) {
           const f = cfg.faqs.find((q) => q.id === key.slice(4));
-          replies = [{ text: fill(f.a, vars()) + "\n\nReply *menu* for more options." }]; bump(state, "warm", "faq");
+          replies = [{ text: fill(faqA(f), vars()) + "\n\n" + T("menuMore") }]; bump(state, "warm", "faq");
         }
         if (!replies.length && !cfg.quiz && (catalogHit(raw, state) || (parseDate(raw, nowOf(state)) && dateStep() >= 0))) replies = startFlow(state, meta, raw);
         if (!replies.length) {
           events.push({ type: "unanswered", text: raw });
-          replies = [menuReply("Sorry, I didn't quite get that. I can help with these:")];
+          replies = [menuReply(T("sorry"))];
         }
       }
       delete state._busy;
@@ -672,5 +821,5 @@
     return { config: cfg, handle, slotTaken };
   }
 
-  return { NICHES, register, createBot, newState, parseDate, pickChoice, parseEvents, parseBudget, istToday, isoOf, Slots, version: "3.2.0" };
+  return { NICHES, register, createBot, newState, parseDate, pickChoice, parseEvents, parseBudget, istToday, isoOf, Slots, version: "3.3.0" };
 });

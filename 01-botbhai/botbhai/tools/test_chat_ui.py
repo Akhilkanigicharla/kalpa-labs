@@ -35,15 +35,17 @@ with sync_playwright() as p:
         assert pg.locator(".typing").count() == 0
         pg.screenshot(path=str(shots / f"chat-booking-{scheme}.png"))
         pg.click(".langs [data-lang=te-IN]")
+        pg.wait_for_selector(".b.in >> text=బుకింగ్ కోసం మీ పేరు", timeout=8000)  # A73: the bot re-asks in Telugu
         pg.click("#m-voice"); pg.wait_for_selector(".voice", state="visible")
         pg.click("#orb"); pg.wait_for_selector(".b.out >> text=beard trim tomorrow 7pm", timeout=5000)
         assert pg.evaluate("window.__heardLang") == "te-IN", "listens in the chosen language"
         pg.wait_for_function("window.__said.length > 1", timeout=8000)
         assert all("✨" not in t and "*" not in t for t in pg.evaluate("window.__said")), "no emoji or markdown read aloud"
+        assert any(any("\u0c00" <= ch <= "\u0c7f" for ch in t) for t in pg.evaluate("window.__said")), "replies read in Telugu"
         pg.screenshot(path=str(shots / f"chat-voice-{scheme}.png"))
         assert pg.evaluate("document.documentElement.scrollWidth") <= 390, "no sideways scroll"
         min_tap = pg.evaluate("Math.min(...[...document.querySelectorAll('#quick button, .round, .mode button')].filter(e => e.offsetParent).map(e => e.getBoundingClientRect().height))")
         assert min_tap >= 40, min_tap
         assert not errs, errs
     b.close()
-print("chat UI ok at 390 px, light + dark: card first, tap buttons, one-line booking, typing dots, voice in the chosen language")
+print("chat UI ok at 390 px, light + dark: card first, tap buttons, one-line booking, typing dots, voice in the chosen language, Telugu replies after tapping తెలుగు")

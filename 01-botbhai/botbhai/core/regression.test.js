@@ -61,7 +61,7 @@ ok("BA: Tenglish/Hinglish understood and pre-filled ('repu hair spa kavali', 'ki
   const r = talk("salon", ["repu hair spa kavali"], { now: "2026-10-12T04:30:00Z" });
   assert.match(r.log[0].bot, /Sure! Hair spa, Tue, 13 Oct/); assert.match(r.log[0].bot, /Choose a time/);
   assert.match(talk("salon", ["facial kitna hai"]).log[0].bot, /Price list/);
-  assert.match(talk("salon", ["హాయ్"]).log[0].bot, /How can I help/);
+  assert.match(talk("salon", ["హాయ్"]).log[0].bot, /మీకు ఎలా సహాయం చేయగలను/); // A73: Telugu in, Telugu out
 });
 ok("BA: 'home visit' answers the home-service FAQ instead of booking", () => {
   assert.match(talk("salon", ["do you do home visit?"]).log[0].bot, /Home service is available/);
@@ -100,7 +100,8 @@ const NOW = { now: "2026-10-12T04:30:00Z" }; const BOOKED = ["book", "hair spa",
 ok("A01 M1: reminder replies yes / sare / haan / ok / సరే / हाँ confirm the booking (and never count as offers consent)", () => {
   for (const w of ["yes", "Yes", "sare", "haan", "ok", "avunu", "సరే", "हाँ", "vastanu"]) {
     const r = talk("salon", [...BOOKED, w], NOW);
-    assert.match(r.log[5].bot, /Confirmed: Hair spa, Tue, 13 Oct at 4:00 PM/, w); assert.ok(r.log[5].events.some((e) => e.type === "confirmed"), w);
+    const want = w === "సరే" ? /కన్ఫర్మ్ అయింది: హెయిర్ స్పా, మంగళ, 13 అక్టోబర్, 4:00 PM/ : w === "हाँ" ? /पक्का हो गया: हेयर स्पा, मंगल, 13 अक्टूबर, 4:00 PM/ : /Confirmed: Hair spa, Tue, 13 Oct at 4:00 PM/; // A73: reply in the language they wrote
+    assert.match(r.log[5].bot, want, w); assert.ok(r.log[5].events.some((e) => e.type === "confirmed"), w);
     assert.strictEqual(r.lead.status, "booked"); assert.strictEqual(r.lead.marketing_opt_in, false, w);
   }
   const later = talk("salon", [...BOOKED, "menu", "sare"], NOW); // reminder arrives after other chat
@@ -129,21 +130,21 @@ ok("A01 M6: 'ladies cut' / 'gents cut' pick the right haircut; 'cutting' and 'ha
   assert.match(pre.log[0].bot, /Sure! Haircut & styling \(women\), Tue, 13 Oct/);
 });
 ok("A01 M12: Telugu-script and Hindi greetings get the welcome menu", () => {
-  for (const w of ["హాయ్", "హలో", "నమస్తే", "నమస్కారం", "नमस्ते", "namasthe"]) assert.match(talk("salon", [w]).log[0].bot, /How can I help/, w);
+  for (const w of ["హాయ్", "హలో", "నమస్తే", "నమస్కారం", "नमस्ते", "namasthe"]) assert.match(talk("salon", [w]).log[0].bot, /[\u0C00-\u0C7F]/.test(w) ? /మీకు ఎలా సహాయం చేయగలను/ : /[\u0900-\u097F]/.test(w) ? /मैं कैसे मदद करूँ/ : /How can I help/, w); // A73
 });
 ok("A01 M14: 'intiki vastara?' / 'can you come home' answer the home-service FAQ", () => {
   for (const w of ["intiki vastara?", "can you come home", "ghar pe aa sakte ho"]) assert.match(talk("salon", [w]).log[0].bot, /Home service is available/, w);
 });
 // A02b (13 Oct 2026): NLU gaps from Deep Scan v2
 ok("A02b: Telugu-script booking words (with or without the zero-width joiner) start a booking", () => {
-  for (const w of ["రేపు అపాయింట్‌మెంట్ కావాలి", "రేపు అపాయింట్మెంట్ కావాలి", "స్లాట్ బుక్ చేయండి"]) assert.match(talk("salon", [w], NOW).log[0].bot, /Which service/, w);
+  for (const w of ["రేపు అపాయింట్‌మెంట్ కావాలి", "రేపు అపాయింట్మెంట్ కావాలి", "స్లాట్ బుక్ చేయండి"]) assert.match(talk("salon", [w], NOW).log[0].bot, /మీకు ఏ సర్వీస్ కావాలి/, w); // A73: asked in Telugu
   const r = talk("salon", ["రేపు ఫేషియల్ బుక్ చేయండి"], NOW);
-  assert.match(r.log[0].bot, /Sure! Facial \(fruit \/ gold\), Tue, 13 Oct/); assert.match(r.log[0].bot, /Choose a time/);
+  assert.match(r.log[0].bot, /సరే! ఫేషియల్ \(ఫ్రూట్ \/ గోల్డ్\), మంగళ, 13 అక్టోబర్/); assert.match(r.log[0].bot, /సమయం ఎంచుకోండి/); // A73
 });
 ok("A02b: 'cancel' with nothing booked says so (never starts a booking); inside a flow it stops the flow", () => {
   for (const w of ["booking cancel cheyyandi", "cancel it please", "cancel", "నా బుకింగ్ రద్దు చేయండి"]) {
     const r = talk("salon", [w], NOW);
-    assert.match(r.log[0].bot, /nothing to cancel/, w); assert.strictEqual(r.state.step, -1, w); assert.ok(!r.log[0].events.some((e) => e.type === "cancel_booking"), w);
+    assert.match(r.log[0].bot, /[\u0C00-\u0C7F]/.test(w) ? /క్యాన్సిల్ చేయడానికి ఏమీ లేదు/ : /nothing to cancel/, w); assert.strictEqual(r.state.step, -1, w); assert.ok(!r.log[0].events.some((e) => e.type === "cancel_booking"), w);
   }
   const mid = talk("salon", ["book", "facial", "cancel it please"], NOW);
   assert.match(mid.log[2].bot, /stopped\. Nothing was changed/); assert.strictEqual(mid.state.step, -1);

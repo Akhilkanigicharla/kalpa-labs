@@ -408,11 +408,11 @@ async function send(text, shown, turnstile, silent) {
   let replies, check;
   if (LIVE_CLIENT) {
     try {
-      const r = await fetch("/.netlify/functions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ client: LIVE_CLIENT, visitor, text, source: speak ? "voice" : "web", turnstile }) });
+      const r = await fetch("/.netlify/functions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ client: LIVE_CLIENT, visitor, text, source: speak ? "voice" : "web", turnstile, lang: lang.slice(0, 2) }) });
       const j = await r.json(); replies = j.replies || []; check = j.check && j.check.sitekey ? j.check : null;
     } catch (e) { replies = [{ text: "Connection problem. Please try again in a moment." }]; }
   } else {
-    const out = B.createBot(niche).handle(state, text, { contact: "demo visitor", source: speak ? "voice" : "web" });
+    const out = B.createBot(niche).handle(state, text, { contact: "demo visitor", source: speak ? "voice" : "web", lang: lang.slice(0, 2) });
     state = out.state; replies = out.replies;
     if (!silent) { logConvo(text, out); saveLead(out.lead); }
   }
@@ -493,9 +493,10 @@ const LANG_NAME = { "en-IN": "English", "te-IN": "Telugu", "hi-IN": "Hindi" };
 function setLang(l) {
   lang = l; store.set("bf_lang", l);
   document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
-  $("#vstatus").textContent = SR ? `Listening in ${LANG_NAME[l]}. Replies are read aloud in English for now.` : "This browser can't listen. Type instead; replies are still read aloud.";
+  $("#vstatus").textContent = SR ? `Listening in ${LANG_NAME[l]}. Replies come in ${LANG_NAME[l]} and are read aloud.` : "This browser can't listen. Type instead; replies are still read aloud.";
 }
-document.querySelectorAll(".langs button").forEach((b) => b.onclick = () => setLang(b.dataset.lang));
+const LANG_WORD = { "en-IN": "english", "te-IN": "telugu", "hi-IN": "hindi" }; // A73: the bot switches its replies too
+document.querySelectorAll(".langs button").forEach((b) => b.onclick = () => { const was = lang; setLang(b.dataset.lang); if (b.dataset.lang !== was && document.querySelector("#msgs .b.in")) send(LANG_WORD[b.dataset.lang], undefined, undefined, true); });
 function voiceFor(l) { // best installed voice for a language; null = the browser default
   const vs = "speechSynthesis" in window ? speechSynthesis.getVoices() : [];
   return vs.find((v) => v.lang === l) || vs.find((v) => v.lang && v.lang.startsWith(l.slice(0, 2))) || null;
@@ -504,7 +505,8 @@ function say(text) {
   if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text.replace(/\*/g, "").replace(/https?:\/\/\S+/g, "").replace(/\p{Extended_Pictographic}/gu, "").replace(/\s{2,}/g, " "));
-  u.lang = "en-IN"; const v = voiceFor("en-IN"); if (v) u.voice = v; u.rate = 1;
+  const l = /[\u0C00-\u0C7F]/.test(text) ? "te-IN" : /[\u0900-\u097F]/.test(text) ? "hi-IN" : "en-IN"; // A73: read in the reply's language
+  u.lang = l; const v = voiceFor(l); if (v) u.voice = v; u.rate = 1;
   const orb = $("#orb"); u.onstart = () => orb.classList.add("speaking"); u.onend = u.onerror = () => orb.classList.remove("speaking");
   speechSynthesis.speak(u);
 }

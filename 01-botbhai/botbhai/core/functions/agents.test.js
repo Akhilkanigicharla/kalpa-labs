@@ -71,6 +71,7 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
   assert.strictEqual(dc.body, "lists sent 1");
   const list = graph.sent.filter((x) => x.to === "919000000003" && x.text && /Close the day/.test(x.text.body)).pop();
   assert.ok(list && /1\. .*Priya/.test(list.text.body) && /2\. .*Ravi/.test(list.text.body), JSON.stringify(list));
+  assert.ok(/💡 For you:\n📅 Tomorrow has no bookings yet\./.test(list.text.body), "A80: owner nudges ride under the list: " + list.text.body);
   const ownerSession = store.sessions.find((x) => x.client_id === "sa1" && x.contact === "919000000003");
   assert.deepStrictEqual(ownerSession.state.dayclose.ids, ["B1", "B2"]);
   const ob = JSON.stringify({ entry: [{ changes: [{ value: { metadata: { phone_number_id: "PN3" }, contacts: [{ profile: { name: "Owner" } }], messages: [{ from: "919000000003", id: "wamid.owner1", type: "text", text: { body: "all done except 2" } }] } }] }] });

@@ -6,7 +6,7 @@
  * Manual run for a past day: /.netlify/functions/dayclose?date=2026-10-12
  */
 const L = require("./_lib.js");
-const { dayCloseList } = require("../automations.js");
+const { dayCloseList, ownerNudges } = require("../automations.js");
 
 exports.handler = async (event) => {
   const q = (event && event.queryStringParameters) || {};
@@ -17,7 +17,12 @@ exports.handler = async (event) => {
     try {
       const rows = await L.db(`bookings?client_id=eq.${c.id}&date_iso=eq.${day}&status=eq.confirmed&select=id,name,service,slot&limit=500`);
       const list = dayCloseList(rows, day); if (!list) continue;
-      try { await L.sendText(c.phone_number_id, c.owner_whatsapp, list.text); }
+      let nudges = ""; // A80: a few lines for the owner; a failure here never blocks the list
+      try {
+        const from = new Date(Date.parse(day + "T00:00:00Z") - 90 * 864e5).toISOString().slice(0, 10);
+        nudges = ownerNudges(await L.db(`bookings?client_id=eq.${c.id}&date_iso=gte.${from}&select=contact,name,date_iso,status,confirmed_at&limit=5000`), day);
+      } catch (e) { console.error("nudges", c.id, e.message); }
+      try { await L.sendText(c.phone_number_id, c.owner_whatsapp, list.text + (nudges ? "\n\n" + nudges : "")); }
       catch (e) { // outside the 24 h window: the approved utility template, then the list arrives once they reply
         const tpl = L.templatesFor(c.niche).owner_report;
         if (tpl) await L.sendTemplate(c.phone_number_id, c.owner_whatsapp, tpl, { summary: `${rows.length} visits today. Reply to mark who came` });

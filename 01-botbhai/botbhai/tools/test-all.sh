@@ -9,6 +9,7 @@ node core/regression.test.js
 node core/smartfill.test.js
 node core/bridal.test.js
 node core/automations.test.js
+node core/nudges.test.js
 node core/humanize.test.js
 node core/billing.test.js
 NO_DELAY=1 node core/functions/webhook.test.js

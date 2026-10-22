@@ -122,6 +122,36 @@ function dayCloseList(bookings, dateIso) {
   const lines = rows.map((b, i) => `${i + 1}. ${b.slot} · ${b.name || "Customer"}${b.service ? " · " + b.service : ""}`);
   return { ids: rows.map((b) => b.id), text: `🌙 Close the day: ${dayLabel(dateIso)}\n${lines.join("\n")}\n\nWho came? Reply *all done*, or *all done except 2* (2 didn't come), or *no show 2 3*.\nOnly people marked done get the review request.` };
 }
+// A80: a few nudges for the owner under the close-the-day list. Rules only; the owner decides, the bot messages nobody.
+const ISO = /^\d{4}-\d{2}-\d{2}$/, LIVE = new Set(["confirmed", "rescheduled"]), KNOWN = new Set(["confirmed", "rescheduled", "completed", "no_show", "cancelled"]);
+const addDays = (iso, k) => { const d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + k); return d.toISOString().slice(0, 10); };
+const names = (rows) => { const ns = rows.map((r) => String(r.name || "").trim() || "Customer"); return ns.slice(0, 3).join(", ") + (ns.length > 3 ? ` +${ns.length - 3} more` : ""); };
+const plural = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+/** rows: the salon's bookings from the last ~90 days and ahead {contact, name, date_iso, status, confirmed_at}. Returns "" or a short block. */
+function ownerNudges(rows, todayIso) {
+  const all = (rows || []).filter((r) => r && ISO.test(r.date_iso || "") && KNOWN.has(r.status) && r.status !== "cancelled");
+  const tomorrow = addDays(todayIso, 1), weekAgo = addDays(todayIso, -6), out = [];
+  const tm = all.filter((r) => r.date_iso === tomorrow && LIVE.has(r.status));
+  const unconf = tm.filter((r) => !r.confirmed_at);
+  if (tm.length) out.push(`📅 Tomorrow: ${plural(tm.length, "visit", "visits")}` + (unconf.length ? `, ${unconf.length} not confirmed yet (${names(unconf)})` : ", all confirmed"));
+  else if (all.some((r) => r.date_iso >= addDays(todayIso, -13) && r.date_iso <= todayIso)) out.push("📅 Tomorrow has no bookings yet.");
+  const laterFor = (r) => all.some((x) => x.contact === r.contact && x.date_iso > r.date_iso && x.status !== "no_show");
+  const noShows = all.filter((r) => r.status === "no_show" && r.date_iso >= weekAgo && r.date_iso <= todayIso && !laterFor(r));
+  if (noShows.length) out.push(`📞 ${plural(noShows.length, "no-show this week has", "no-shows this week have")} not rebooked: ${names(noShows)}`);
+  const byContact = new Map();
+  for (const r of all) { if (!byContact.has(r.contact)) byContact.set(r.contact, []); byContact.get(r.contact).push(r); }
+  const lapsed = [];
+  for (const rs of byContact.values()) {
+    const done = rs.filter((r) => r.status === "completed").sort((a, b) => a.date_iso.localeCompare(b.date_iso));
+    const ahead = rs.some((r) => r.date_iso > todayIso && LIVE.has(r.status));
+    if (done.length >= 2 && !ahead && done[done.length - 1].date_iso <= addDays(todayIso, -45)) lapsed.push(done[done.length - 1]);
+  }
+  if (lapsed.length) out.push(`💛 ${plural(lapsed.length, "regular has", "regulars have")} not come in 45+ days: ${names(lapsed)} (a call from you works better than a bot message)`);
+  const done = (from, to) => all.filter((r) => r.status === "completed" && r.date_iso >= from && r.date_iso <= to).length;
+  const thisWk = done(weekAgo, todayIso), lastWk = done(addDays(todayIso, -13), addDays(todayIso, -7));
+  if (thisWk + lastWk) out.push(`📈 This week: ${plural(thisWk, "visit", "visits")} done (last week ${lastWk})`);
+  return out.length ? "💡 For you:\n" + out.slice(0, 4).join("\n") : "";
+}
 const NUMS = (s) => (String(s).match(/\d{1,3}/g) || []).map(Number);
 /** Owner's reply → { completed: [n], no_show: [n] } (1-based list numbers), or null if it isn't a close-the-day reply. */
 function parseDayClose(text, count) {
@@ -153,4 +183,4 @@ function referralCode(contact) {
   return "REF-" + h.toString(36).toUpperCase().slice(-4).padStart(4, "X");
 }
 
-module.exports = { referralCode, parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals, dayCloseList, parseDayClose };
+module.exports = { referralCode, parseMetaLead, normalizePhone, judgeAds, capPauses, weeklySummary, leadsFrom, adsReport, slotToMinutes, appointmentUtc, dueReminders, dueRenewals, dayCloseList, parseDayClose, ownerNudges };

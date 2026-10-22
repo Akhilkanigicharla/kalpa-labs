@@ -39,6 +39,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: node 00-hq/design/vibecheck.test.mjs
+      - run: node 00-hq/design/theme.test.mjs
+      - run: node 00-hq/agents/tooling.test.mjs
 
   botbhai:
     runs-on: ubuntu-latest

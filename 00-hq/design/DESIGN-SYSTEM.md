@@ -6,6 +6,8 @@ One look for every Kalpa Labs screen: the company site, the Kingdom, BotBhai, th
 
 **Logo:** [brand/kalpavruksha.svg](brand/kalpavruksha.svg), an original tree (canopy, five golden fruits, bark trunk, roots). Use it as the company mark and favicon; product brands sit beside it, never inside it.
 
+**Words:** [BRAND-WORDS.md](BRAND-WORDS.md): tagline "One tree. Seven tools. Honest help.", the About text and the Telugu/Hindi lines.
+
 ## Tokens
 The source of truth is [tokens.css](tokens.css). Light and dark themes are both defined, and every colour is a token. All text pairs pass WCAG AA (checked by `00-hq/design/theme.test.mjs`).
 

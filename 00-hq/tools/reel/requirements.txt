@@ -1,0 +1,4 @@
+faster-whisper==1.2.1
+pillow
+numpy
+# also needs: ffmpeg, tesseract (+ tel/hin data from tesseract-ocr/tessdata_fast, Apache-2.0)

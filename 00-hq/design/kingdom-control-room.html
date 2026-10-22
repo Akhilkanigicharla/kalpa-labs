@@ -1,10 +1,11 @@
-<title>Kalpa Labs Control Room</title>
+<meta charset="utf-8">
+<title>Kalpavruksha CEO Room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Anek+Latin:wght@400;500;600;700&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: Kalpavruksha control room. A painted-cloth "Kingdom of Kalpa": natural-dye palette (indigo, madder, turmeric),
-   block-print dot ground, temple-border bands on the hero cards. Phone first: Today answers "what do I do now?",
+/* Layout: Kalpavruksha CEO room. HQ is the trunk, the 7 worlds are branches: leaf green, bark brown, fruit gold on parchment,
+   seed-dot ground, vine bands on the hero cards. Phone first: Today answers "what do I do now?",
    the other views sit behind a bottom tab bar on phones and a top bar on desktop. */
 :root{
   --bg:#F2EEE3; --panel:#FCFAF4; --fg:#1E2A1F; --muted:#5A6152; --rule:#DCD5C3; --soft:#E9E3D3;
@@ -89,6 +90,7 @@ body{background-color:var(--bg);background-image:radial-gradient(color-mix(in sr
 .chapter h3{font-size:19px}
 .bounty{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:var(--r-m);padding:12px 14px;background:color-mix(in srgb,var(--gold) 14%,var(--panel));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 50%,transparent);font-size:15px}
 .overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,#0F1912 62%,transparent);padding:16px}
+.overlay[hidden]{display:none}
 .overlay .box{position:relative;max-width:360px;width:100%;border-radius:var(--r-l);padding:30px 24px 26px;text-align:center;color:var(--hero-fg);background:var(--hero);display:grid;gap:10px;overflow:hidden;box-shadow:0 30px 60px -20px #000}
 .overlay .box::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:radial-gradient(circle at 7px 5px,var(--gold) 2.4px,transparent 2.8px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--leaf,#5E9E4C) 90%,transparent) 0 0/7px 10px}
 .overlay .big{font:400 42px/1 var(--f-display);color:var(--gold)}
@@ -129,7 +131,7 @@ button{font:inherit;color:inherit}
 /* top bar */
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:12px}
-.mark{width:42px;height:42px;border-radius:50%;background:var(--hero);color:var(--gold);display:grid;place-items:center;font:600 22px/1 "Anek Telugu",var(--f-body);box-shadow:0 0 0 2px var(--gold),0 0 0 5px color-mix(in srgb,var(--gold) 25%,transparent)}
+.mark{width:42px;height:42px;border-radius:50%;background:color-mix(in srgb,var(--gold) 16%,var(--panel));color:var(--gold);display:grid;place-items:center;font:600 22px/1 "Anek Telugu",var(--f-body);box-shadow:0 0 0 2px var(--gold),0 0 0 5px color-mix(in srgb,var(--gold) 25%,transparent)}
 .live{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin-top:4px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .dot.on{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
@@ -251,27 +253,37 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var
   #view>*:nth-child(2){animation-delay:.05s}#view>*:nth-child(3){animation-delay:.1s}#view>*:nth-child(4){animation-delay:.15s}
   @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 }
+/* the Kalpavruksha grows on load: branches draw out, leaves and fruit pop in (off for reduced motion) */
+@media (prefers-reduced-motion:no-preference){
+  .kingdom .grow{stroke-dasharray:420;stroke-dashoffset:420;animation:kvgrow 1.1s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0s)}
+  .kingdom path.grow[fill]:not([fill="none"]){stroke-dasharray:none;stroke-dashoffset:0;transform-origin:180px 372px;transform:scaleY(0);animation:kvtrunk .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .kingdom .leafy{transform-box:fill-box;transform-origin:center;transform:scale(0);animation:kvpop .45s cubic-bezier(.3,1.6,.5,1) forwards;animation-delay:var(--d,0s)}
+}
+@keyframes kvgrow{to{stroke-dashoffset:0}}
+@keyframes kvtrunk{to{transform:scaleY(1)}}
+@keyframes kvpop{to{transform:scale(1)}}
+.kingdom .isle{cursor:pointer}.kingdom .isle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="mark" aria-hidden="true">క</div><div><h1>Kalpa Labs</h1><div class="live"><span class="dot" id="liveDot"></span><span id="liveText">Connecting…</span></div></div></div>
+    <div class="brand"><div class="mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="30" height="30"><path d="M29 55c1-6 1-12 0-18-3-3-7-4-11-4 4-1 8 0 11 2 0-3-1-6-3-8 3 1 5 4 6 7 1-3 3-6 6-7-2 2-3 5-3 8 3-2 7-3 11-2-4 0-8 1-11 4-1 6-1 12 0 18z" fill="var(--bark)"/><g fill="var(--accent)"><circle cx="32" cy="18" r="11"/><circle cx="19" cy="25" r="9"/><circle cx="45" cy="25" r="9"/></g><g fill="var(--leaf)"><circle cx="25" cy="15" r="7"/><circle cx="40" cy="15" r="7"/><circle cx="32" cy="27" r="7"/></g><g fill="var(--gold)"><circle cx="22" cy="21" r="2.6"/><circle cx="33" cy="12" r="2.6"/><circle cx="43" cy="22" r="2.6"/></g></svg></div><div><h1>Kalpa Labs</h1><div class="live"><span class="dot" id="liveDot"></span><span id="liveText">Connecting…</span></div></div></div>
     <nav class="tabs" aria-label="Sections" id="tabs"></nav>
   </header>
   <main id="view" class="stack"></main>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
-<div class="overlay" id="levelup" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="luTitle"><div class="emo" aria-hidden="true">👑</div><div class="eyebrow" style="color:#fff;opacity:.85">Level up!</div><div class="big" id="luTitle">Builder</div><p id="luText">You reached a new rank.</p><button class="btn" id="luClose" style="background:#fff;color:#1E1A33;border:0">Keep playing</button></div></div>
+<div class="overlay" id="levelup" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="luTitle"><div class="emo" aria-hidden="true">🌳</div><div class="eyebrow" style="color:#fff;opacity:.85">Level up!</div><div class="big" id="luTitle">Grower</div><p id="luText">You reached a new rank.</p><button class="btn" id="luClose" style="background:#fff;color:#1E1A33;border:0">Keep playing</button></div></div>
 
 <script>
 (function(){
 const PHASES=[
-  {id:0,name:"Foundation",what:"Company accounts, bank, brand, cloud workspace"},
-  {id:1,name:"Setup",what:"Each unit's tools, accounts and first build — no customers yet"},
-  {id:2,name:"Validate",what:"Talk to real customers, get the first yes or pivot"},
-  {id:3,name:"Launch",what:"Ship, take payment, deliver"},
-  {id:4,name:"Grow",what:"Repeat what works, cut what doesn't"}
+  {id:0,name:"Seed",what:"Company accounts, bank, brand, cloud workspace"},
+  {id:1,name:"Roots",what:"Each unit's tools, accounts and first build — no customers yet"},
+  {id:2,name:"Sapling",what:"Talk to real customers, get the first yes or pivot"},
+  {id:3,name:"Bloom",what:"Ship, take payment, deliver"},
+  {id:4,name:"Fruit",what:"Repeat what works, cut what doesn't"}
 ];
 const DEPTS={
   pm:{name:"Project Management",role:"Project Manager agent",share:10,mandate:"Plans the unit's weekly sprint, picks the next task for your hour, keeps this map current and escalates blockers to you."},
@@ -408,26 +420,26 @@ const stLabel=s=>s==="done"?"Done":s==="doing"?"In progress":"Not started";
 
 // ---------- Game layer ----------
 const WEIGHT={hq:15,b1:20,b2:15,b3:10,b4:8,b5:7,b6:20,b7:5};
-const WORLD_ICON={hq:"🏛️",b1:"🤖",b2:"🛠️",b3:"📚",b4:"🧩",b5:"🛍️",b6:"📊",b7:"📈"};
+const WORLD_ICON={hq:"🌳",b1:"🤖",b2:"🛠️",b3:"📚",b4:"🧩",b5:"🛍️",b6:"📊",b7:"📈"};
 const xpOf=t=>Math.round(t.m*(0.5+WEIGHT[t.u]/10))+(t.g?100:0);
 const LV=[0,150,400,800,1400,2200,3300,4800,6800,9500];
-const TITLES=["Intern","Hustler","Builder","Founder","Operator","Rainmaker","Visionary","CEO","Mogul","Tycoon"];
+const TITLES=["Seed Sower","Gardener","Grower","Tree Keeper","Orchard Builder","Grove Keeper","Canopy Maker","Fruit Bearer","Forest Maker","Kalpavruksha"];
 const statusAt={};
 const istDay=iso=>{try{return new Date(new Date(iso).getTime()+5.5*3600e3).toISOString().slice(0,10);}catch(e){return null;}};
 
 const LORE={
-  hq:{place:"The Citadel of Kalpa",npc:"Kalpa, the Wish-Tree",face:"🌳",story:"Every empire starts with strong walls. Here you forge your identity, your treasury and your home on the internet. Finish the Citadel and bridges open to every world.",reward:"Unlocks: a trusted company that banks, payment gateways and customers believe in."},
-  b1:{place:"BotBhai Bazaar",npc:"Rhea the Automaton",face:"🤖",story:"Salons, gyms, coaching centres and builders lose customers to slow replies. Hand each of them a BotBhai setup that answers in seconds, books, reminds and reports, and the city pays you every month.",reward:"Treasure: ₹10–25k per setup + ₹3–8k monthly from each client."},
-  b2:{place:"Workshop Valley",npc:"Mistri Bot",face:"🛠️",story:"Technicians lose customers they forget to call back. Give them a voice-powered job card that remembers everything, in Telugu.",reward:"Treasure: ₹149–299 a month from every technician."},
-  b3:{place:"The Library of Ranks",npc:"Guru Gyan",face:"📚",story:"Lakhs of exam warriors fight for a few thousand seats. Craft the maps and trackers that guide them to victory.",reward:"Treasure: ₹199–499 per kit, sold while you sleep."},
-  b4:{place:"Plugin Isles",npc:"Pixel the Tinkerer",face:"🧩",story:"Hidden in angry app reviews are wishes nobody granted. Find one, build the extension, and charge for the magic.",reward:"Treasure: $3–9 a month in dollars from users worldwide."},
-  b5:{place:"Bazaar Bay",npc:"Seth Sauda the Merchant",face:"🛍️",story:"Every festival sale is a gold rush. Build calculators and a deals channel, and earn a share of every purchase.",reward:"Treasure: affiliate commissions from Amazon, Flipkart and SaaS tools."},
-  b6:{place:"Ledger Peaks",npc:"Auditor Astra",face:"📊",story:"Companies' AI bills are running wild and regulators are watching. Tame the costs, prove the compliance, and become the keeper of the ledger. This is the kingdom's flagship mountain.",reward:"Treasure: ₹1,999–40,000 a month per company, the path to the 800-crore dream."},
-  b7:{place:"The Market Maze",npc:"Oracle Q",face:"🔮",story:"The maze punishes the impatient: 91 of 100 traders lose. Only those who test on paper for 90 days may enter with real coins.",reward:"Treasure: wisdom first; maybe profit later."}
+  hq:{place:"The Kalpa Trunk",npc:"Kalpa, the Wish-Tree",face:"🌳",story:"Every great tree starts with deep roots. Here you grow your identity, your treasury and your home on the internet. A strong trunk feeds every branch.",reward:"Unlocks: a trusted company that banks, payment gateways and customers believe in."},
+  b1:{place:"Bark Branch · BotBhai",npc:"Rhea the Automaton",face:"🤖",story:"Salons, gyms, coaching centres and builders lose customers to slow replies. Hand each of them a BotBhai setup that answers in seconds, books, reminds and reports, and the city pays you every month.",reward:"Fruit: ₹10–25k per setup + ₹3–8k monthly from each client."},
+  b2:{place:"River Branch · JobCard",npc:"Mistri Bot",face:"🛠️",story:"Technicians lose customers they forget to call back. Give them a voice-powered job card that remembers everything, in Telugu.",reward:"Fruit: ₹149–299 a month from every technician."},
+  b3:{place:"Leaf Branch · Kits",npc:"Guru Gyan",face:"📚",story:"Lakhs of exam warriors fight for a few thousand seats. Craft the maps and trackers that guide them to victory.",reward:"Fruit: ₹199–499 per kit, sold while you sleep."},
+  b4:{place:"Jamun Branch · Tab Lifeboat",npc:"Pixel the Tinkerer",face:"🧩",story:"Hidden in angry app reviews are wishes nobody granted. Find one, build the extension, and charge for the magic.",reward:"Fruit: $3–9 a month in dollars from users worldwide."},
+  b5:{place:"Mango Branch · Deals",npc:"Seth Sauda the Merchant",face:"🛍️",story:"Every festival sale is a gold rush. Build calculators and a deals channel, and earn a share of every purchase.",reward:"Fruit: affiliate commissions from Amazon, Flipkart and SaaS tools."},
+  b6:{place:"Hibiscus Branch · Ledger Peaks",npc:"Auditor Astra",face:"📊",story:"Companies' AI bills are running wild and regulators are watching. Tame the costs, prove the compliance, and become the keeper of the ledger. This is the tree's strongest branch.",reward:"Fruit: ₹1,999–40,000 a month per company, the path to the 800-crore dream."},
+  b7:{place:"Dusk Branch · Paper Trader",npc:"Oracle Q",face:"🔮",story:"The maze punishes the impatient: 91 of 100 traders lose. Only those who test on paper for 90 days may enter with real coins.",reward:"Fruit: wisdom first; maybe profit later."}
 };
-const CHAPTERS=["Lay the Foundation","Forge Your Tools","Prove the Dragon Is Real","Open the Gates","Grow the Kingdom"];
-const WLEVELS=[[0,"Wild land"],[1,"Camp"],[25,"Village"],[50,"Town"],[75,"City"],[100,"Capital"]];
-const wlevel=p=>{let n="Wild land";WLEVELS.forEach(([t,l])=>{if(p>=t&&(t>0||p===0))n=l;});return p===0?"Wild land":n;};
+const CHAPTERS=["Plant the Seed","Grow the Roots","Find the First Fruit","Open the Orchard","Grow the Grove"];
+const WLEVELS=[[0,"Seed"],[1,"Sprout"],[25,"Sapling"],[50,"Young tree"],[75,"Blossoming"],[100,"Fruiting"]];
+const wlevel=p=>{let n="Seed";WLEVELS.forEach(([t,l])=>{if(p>=t&&(t>0||p===0))n=l;});return p===0?"Seed":n;};
 const buildsOf=id=>builds.filter(b=>b.u===id);
 const forge=id=>{const all=buildsOf(id),d=all.filter(b=>b.done);return {done:d.length,total:all.length,left:all.length-d.length,pct:all.length?Math.round(d.length/all.length*100):0,latest:d.slice().sort((a,b)=>String(b.at||"").localeCompare(String(a.at||""))),next:all.filter(b=>!b.done)};};
 const recentBuilds=n=>builds.filter(b=>b.done&&b.at).sort((a,b)=>String(b.at).localeCompare(String(a.at))||String(b.id).localeCompare(String(a.id))).slice(0,n);
@@ -460,14 +472,14 @@ function game(){
     hqDone:TASKS.filter(t=>t.u==="hq").every(t=>stateOf(t.id)==="done"),gates:TASKS.filter(t=>t.g&&stateOf(t.id)==="done").length,worldsStarted,pct:doneT.length/TASKS.length};
 }
 const BADGES=[
-  {icon:"🚀",name:"First quest",how:"Complete any task",test:g=>g.done>=1},
-  {icon:"🔥",name:"3-day streak",how:"Make progress 3 days in a row",test:g=>g.streak>=3},
-  {icon:"🌟",name:"7-day streak",how:"Make progress 7 days in a row",test:g=>g.streak>=7},
-  {icon:"🏛️",name:"Foundation laid",how:"Finish every HQ task",test:g=>g.hqDone},
-  {icon:"🧭",name:"Explorer",how:"Start tasks in 4 different worlds",test:g=>g.worldsStarted>=4},
-  {icon:"⚔️",name:"Boss slayer",how:"Pass your first go/no-go gate",test:g=>g.gates>=1},
-  {icon:"🧱",name:"Builder",how:"Reach level 3",test:g=>g.level>=3},
-  {icon:"🏔️",name:"Halfway",how:"Finish half of all tasks",test:g=>g.pct>=.5}
+  {icon:"🌱",name:"First leaf",how:"Complete any task",test:g=>g.done>=1},
+  {icon:"💧",name:"Watered 3 days",how:"Make progress 3 days in a row",test:g=>g.streak>=3},
+  {icon:"🌿",name:"Watered 7 days",how:"Make progress 7 days in a row",test:g=>g.streak>=7},
+  {icon:"🪵",name:"Strong trunk",how:"Finish every HQ task",test:g=>g.hqDone},
+  {icon:"🌳",name:"Four branches",how:"Start tasks in 4 different worlds",test:g=>g.worldsStarted>=4},
+  {icon:"🌸",name:"First blossom",how:"Pass your first go/no-go gate",test:g=>g.gates>=1},
+  {icon:"🍃",name:"Grower",how:"Reach level 3",test:g=>g.level>=3},
+  {icon:"🥭",name:"Half grown",how:"Finish half of all tasks",test:g=>g.pct>=.5}
 ];
 function showLevelUp(g){const o=document.getElementById("levelup");document.getElementById("luTitle").textContent=g.title;document.getElementById("luText").textContent=`You reached level ${g.level}. ${g.nextTitle?`Next rank: ${g.nextTitle}.`:"You are the Tycoon of Kalpa Labs!"}`;o.hidden=false;confetti();document.getElementById("luClose").focus();}
 document.addEventListener("click",e=>{if(e.target&&e.target.id==="luClose")document.getElementById("levelup").hidden=true;});
@@ -483,12 +495,12 @@ function confetti(){
 // ---------- Tabs ----------
 const ICON={
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
-  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-7M12 14l-4-3M12 14l4-3"/><path d="M7 11a5 5 0 1 1 10 0c1.7 0 3 1.3 3 3s-1.3 3-3 3H7c-1.7 0-3-1.3-3-3s1.3-3 3-3z"/></svg>',
   units:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
   agents:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v10H9l-5 4z"/></svg>',
   plan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'
 };
-const TABS=[["home","Today"],["map","Kingdom"],["units","Quests"],["agents","Agents"],["plan","Plan"]];
+const TABS=[["home","Today"],["map","Tree"],["units","Quests"],["agents","Agents"],["plan","Plan"]];
 function renderTabs(){
   const n=document.getElementById("tabs");
   n.innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${tab===k?'aria-current="page"':''}>${ICON[k]}<span>${l}</span></button>`).join("");
@@ -606,25 +618,38 @@ function feedHtml(limit){
 // ---------- Map ----------
 function viewMap(){
   const g=game();
-  const cx=180,cy=210,R=138,others=UNITS.filter(u=>u.id!=="hq");
-  const pos={hq:{x:cx,y:cy}};others.forEach((u,i)=>{const a=-Math.PI/2+i*2*Math.PI/others.length;pos[u.id]={x:cx+R*Math.cos(a),y:cy+R*Math.sin(a)};});
-  let s=`<defs><radialGradient id="sea" cx="50%" cy="50%" r="60%"><stop offset="0%" style="stop-color:color-mix(in srgb,var(--l2) 22%,var(--panel))"/><stop offset="100%" style="stop-color:color-mix(in srgb,var(--l7) 18%,var(--panel))"/></radialGradient></defs>`;
-  s+=`<rect x="0" y="0" width="360" height="440" rx="24" fill="url(#sea)"/>`;
-  for(let i=0;i<9;i++){const y=30+i*45;s+=`<path d="M${10+(i%2)*20} ${y} q 10 -6 20 0 t 20 0" fill="none" stroke="var(--l7)" stroke-opacity=".25" stroke-width="2"/>`;}
-  others.forEach(u=>{const p=pos[u.id],started=TASKS.some(t=>t.u===u.id&&stateOf(t.id)!=="todo");s+=`<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="var(${u.color})" stroke-width="${started?5:3}" stroke-dasharray="${started?"0":"6 7"}" stroke-linecap="round" opacity="${started?.9:.45}"/>`;});
-  UNITS.forEach(u=>{const p=pos[u.id],pct=unitPct(u.id),r=u.id==="hq"?46:38,c=2*Math.PI*(r+6),off=c*(1-pct/100);
-    s+=`<g class="isle" tabindex="0" role="button" data-unit="${u.id}" data-go="units" aria-label="${esc(LORE[u.id].place)}, ${pct}% complete, ${wlevel(pct)}">
-      <circle cx="${p.x}" cy="${p.y+4}" r="${r}" fill="#000" opacity=".12"/>
-      <circle cx="${p.x}" cy="${p.y}" r="${r}" style="fill:color-mix(in srgb,var(${u.color}) 30%,var(--panel))" class="edge" stroke="var(${u.color})" stroke-width="3"/>
-      <circle cx="${p.x}" cy="${p.y}" r="${r+6}" fill="none" stroke="var(${u.color})" stroke-opacity=".2" stroke-width="5"/>
-      <circle cx="${p.x}" cy="${p.y}" r="${r+6}" fill="none" stroke="var(${u.color})" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${p.x} ${p.y})"/>
-      <text x="${p.x}" y="${p.y-2}" text-anchor="middle" font-size="${u.id==="hq"?30:24}">${u.id==="hq"?"🏰":WORLD_ICON[u.id]}</text>
-      <text x="${p.x}" y="${p.y+20}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)">${pct}%</text>
-    </g>
-    <text x="${p.x}" y="${p.y+r+20}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--fg)" style="font-family:var(--f-display)">${esc(LORE[u.id].place)}</text>`;});
-  return `<section class="panel stack"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>🗺️ The Kingdom of Kalpa</h2><span class="muted small">Level ${g.level} ${esc(g.title)}</span></div>
-  <p class="muted small">Your Citadel sits in the centre. Bridges light up when you start a world; the ring around each island fills as you finish its quests. Tap an island to enter it.</p>
-  <svg class="kingdom" viewBox="0 0 360 440" role="img" aria-label="Kingdom map of the 8 worlds">${s}</svg>
+  // The Kalpavruksha: HQ is the trunk, each world a branch. Leaves = quests done, gold fruit = 50%+ done, ring = progress.
+  const BR={b1:[300,58,214],b2:[292,302,204],b3:[262,40,128],b4:[252,320,120],b5:[234,98,66],b6:[228,262,62],b7:[220,180,38]};
+  const along=(x0,y0,cx1,cy1,x1,y1,t)=>({x:(1-t)*(1-t)*x0+2*(1-t)*t*cx1+t*t*x1,y:(1-t)*(1-t)*y0+2*(1-t)*t*cy1+t*t*y1});
+  let s=`<rect x="0" y="0" width="360" height="400" rx="24" fill="color-mix(in srgb,var(--leaf) 7%,var(--panel))"/>`;
+  s+=`<path d="M40 376 Q180 356 320 376" fill="none" stroke="var(--bark)" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+  s+=`<path class="grow" d="M150 380 Q166 368 174 352 M210 380 Q194 368 186 352" fill="none" stroke="var(--bark)" stroke-width="4" stroke-linecap="round"/>`;
+  s+=`<path class="grow" d="M171 372 C174 320 172 270 176 218 L184 218 C188 270 186 320 189 372 Z" fill="var(--bark)"/>`;
+  let i=0;
+  UNITS.filter(u=>u.id!=="hq").forEach(u=>{
+    const [by,ex,ey]=BR[u.id],x0=180,cx1=(x0+ex)/2,cy1=Math.min(by,ey)-8,pct=unitPct(u.id),started=TASKS.some(t=>t.u===u.id&&stateOf(t.id)!=="todo");
+    const r=27,c=2*Math.PI*(r+5),off=c*(1-pct/100),d=(i++)*.12;
+    s+=`<g class="isle" tabindex="0" role="button" data-unit="${u.id}" data-go="units" aria-label="${esc(LORE[u.id].place)}, ${pct}% grown, ${wlevel(pct)}" style="--d:${d}s">
+      <path class="${started?"grow":""}" d="M${x0} ${by} Q${cx1} ${cy1} ${ex} ${ey}" fill="none" stroke="var(--bark)" stroke-width="${started?7:4}" stroke-linecap="round" stroke-dasharray="${started?"":"5 7"}" opacity="${started?1:.55}"/>`;
+    const leaves=started?1+Math.floor(pct/15):0;
+    for(let k=0;k<leaves;k++){const q=along(x0,by,cx1,cy1,ex,ey,.25+.5*(k+1)/(leaves+1)),side=k%2?1:-1;
+      s+=`<ellipse class="leafy" cx="${q.x.toFixed(1)}" cy="${(q.y+side*7).toFixed(1)}" rx="6.5" ry="3.6" fill="var(--leaf)" transform="rotate(${side*30} ${q.x.toFixed(1)} ${(q.y+side*7).toFixed(1)})" style="--d:${(d+.35+k*.05).toFixed(2)}s"/>`;}
+    s+=`<circle cx="${ex}" cy="${ey}" r="${r}" fill="color-mix(in srgb,var(${u.color}) 22%,var(--panel))" stroke="var(${u.color})" stroke-opacity=".35"/>
+      <circle cx="${ex}" cy="${ey}" r="${r+5}" fill="none" stroke="var(${u.color})" stroke-width="4" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${ex} ${ey})"/>
+      <text x="${ex}" y="${ey-1}" text-anchor="middle" font-size="18">${WORLD_ICON[u.id]}</text>
+      <text x="${ex}" y="${ey+15}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--fg)">${pct}%</text>`;
+    if(pct>=50) s+=`<circle class="leafy" cx="${ex+r-4}" cy="${ey+r-6}" r="5.5" fill="var(--gold)" stroke="var(--bark)" stroke-width=".8" style="--d:${(d+.6).toFixed(2)}s"/>`;
+    if(pct>=75) s+=`<circle class="leafy" cx="${ex-r+5}" cy="${ey+r-5}" r="5" fill="var(--gold)" stroke="var(--bark)" stroke-width=".8" style="--d:${(d+.7).toFixed(2)}s"/>`;
+    s+=`</g>`;});
+  const hp=unitPct("hq"),hr=30,hc=2*Math.PI*(hr+5);
+  s+=`<g class="isle" tabindex="0" role="button" data-unit="hq" data-go="units" aria-label="${esc(LORE.hq.place)}, ${hp}% grown, ${wlevel(hp)}">
+    <circle cx="180" cy="300" r="${hr}" fill="color-mix(in srgb,var(--bark) 28%,var(--panel))" stroke="var(--bark)" stroke-opacity=".5"/>
+    <circle cx="180" cy="300" r="${hr+5}" fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" stroke-dasharray="${hc.toFixed(1)}" stroke-dashoffset="${(hc*(1-hp/100)).toFixed(1)}" transform="rotate(-90 180 300)"/>
+    <text x="180" y="300" text-anchor="middle" font-size="20">${WORLD_ICON.hq}</text>
+    <text x="180" y="316" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--fg)">${hp}%</text></g>`;
+  return `<section class="panel stack"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>The Kalpavruksha</h2><span class="muted small">Level ${g.level} ${esc(g.title)}</span></div>
+  <p class="muted small">HQ is the trunk; each world is a branch. A branch turns solid when you start it, grows a leaf for every few quests done, and bears gold fruit at 50% and 75%. Tap a branch to enter it.</p>
+  <svg class="kingdom" viewBox="0 0 360 400" role="img" aria-label="The Kalpavruksha: HQ trunk and the 7 world branches">${s}</svg>
   <div class="worlds">${UNITS.map(u=>`<button class="world" style="--wc:var(${u.color})" data-unit="${u.id}" data-go="units"><span class="wname">${WORLD_ICON[u.id]} ${esc(LORE[u.id].place)}</span><span class="muted" style="font-size:12px">${esc(wlevel(unitPct(u.id)))} · ${unitPct(u.id)}%</span>${forgeBar(u.id)}</button>`).join("")}</div></section>
   <details class="panel"><summary style="cursor:pointer;font-weight:600">🚇 Quest lines (detailed task map)</summary>
   <div class="legend" style="margin-top:8px"><span>○ Not started</span><span style="color:var(--warn)">● In progress</span><span style="color:var(--ok)">● Done</span><span style="color:var(--bad)">◇ Boss fight</span></div>

@@ -6,7 +6,7 @@ Where each piece of work lives outside this repo. All private to Akhil unless he
 
 | Label | What | Link |
 |---|---|---|
-| 🏰 HQ · Kingdom control room | The game dashboard: quests, XP, worlds leaderboard, agent org, daily reports. Tap **Complete** here | https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1 |
+| 🌳 HQ · Kalpavruksha CEO room | The CEO dashboard: the growing tree (HQ trunk, 7 world branches), quests, XP, agent org, daily reports. Tap **Complete** here | https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1 |
 | 🤖 b1 · BotBhai live demo | Try the salon, gym, coaching and real-estate bots in the browser; smile cards | https://claude.ai/artifact/JYxrRm9PHrw2SCBRFRPjUi |
 
 All artifacts are listed at https://claude.ai/code/artifacts
@@ -47,4 +47,4 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - Kalpa Labs, sole proprietorship, Udyam **UDYAM-TS-02-0382711** (from 11 Oct 2026), Hyderabad.
 - Trademark: "KALPA" is registered by others in class 42, so each product carries its own brand. "BOTBHAI": no record found in IP India (checked 12 Oct 2026).
 
-- **Kalpa CEO Room** (live dashboard: cloud workers, robot office, development, marketing, Kingdom game): https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC — roadmap data from `python3 00-hq/tools/roadmap_json.py`
+- **Kalpavruksha CEO Room** (agents dashboard, source `00-hq/design/ceo-room-dashboard.html`: cloud workers, robot office, development, marketing, Kingdom game): https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC — roadmap data from `python3 00-hq/tools/roadmap_json.py`

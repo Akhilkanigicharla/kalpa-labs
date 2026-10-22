@@ -1,0 +1,647 @@
+<style>
+#dash-root{--dash-gutter:clamp(12px,3vw,28px)}
+.kx{--kv-c0:light-dark(#3B7A3A,#6FD08F);--kv-c1:light-dark(#9C700E,#E8B64A);--kv-c2:light-dark(#8A4A28,#D98B5F);--kv-c3:light-dark(#2F6F78,#6FC2CB);--kv-c4:light-dark(#7A3F5E,#D59AB9);--kv-c5:light-dark(#A8324F,#FF7F9E);--kv-c6:light-dark(#4A5590,#9DA8E6);--kv-c7:light-dark(#66655A,#B4B3A4);--kv-leaf:light-dark(#2F6A3A,#8FCB8C);--kv-young:light-dark(#5E9E4C,#8FCB8C);--kv-bark:light-dark(#6B4226,#C08A5E);--kv-gold:light-dark(#C38E12,#E8B64A);--kv-canopy:light-dark(#1D3A25,#17301F);--r:18px;--sh:0 1px 2px color-mix(in srgb,var(--color-fg) 6%,transparent),0 10px 30px color-mix(in srgb,var(--color-fg) 7%,transparent);
+ --tint:color-mix(in srgb,var(--kx-a) 10%,var(--color-panel));
+ font-family:var(--font-anthropic-sans);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-lg);max-width:1240px;margin-inline:auto}
+.kx *{box-sizing:border-box}
+.kx-hero{border-radius:24px;padding:clamp(18px,3vw,28px);background:
+ radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--kx-a) 22%,transparent),transparent 55%),
+ radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--kx-b) 20%,transparent),transparent 55%),var(--color-panel);
+ border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:.6rem}
+.kx-hi{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.kx-live{display:inline-flex;align-items:center;gap:.35rem;padding:.15rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--color-ok) 14%,transparent);color:var(--color-ok);font-weight:600}
+.kx-live i{width:7px;height:7px;border-radius:50%;background:var(--color-ok)}
+.kx-h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:clamp(1.7rem,4.5vw,2.6rem);line-height:1.08;margin:0;text-wrap:balance}
+.kx-take{margin:0;max-width:62ch;color:var(--color-fg);opacity:.85;font-size:var(--cds-font-size-body)}
+.kx-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--color-panel) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
+.kx-nav::-webkit-scrollbar{display:none}
+.kx-tab{flex:1 0 auto;border:0;background:transparent;color:var(--color-fg-muted);font:inherit;font-size:var(--cds-font-size-body);padding:.5rem .8rem;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;white-space:nowrap}
+.kx-tab svg{width:18px;height:18px;flex:none}
+.kx-tab[aria-selected=true]{background:var(--kv-canopy);color:#F2EEE3}.kx-tab[aria-selected=true] svg{color:var(--kv-gold)}
+.kx-tab:focus-visible,.kx-btn:focus-visible,.kx-mate:focus-visible,.kx-w:focus-visible{outline:2px solid var(--kx-a);outline-offset:2px}
+@media (max-width:640px){.kx-tab .t{display:none}.kx-tab[aria-selected=true] .t{display:inline}}
+.kx-page{display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
+.kx-page[hidden]{display:none}
+.kx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:var(--cds-gap-md)}
+.kx-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
+.kx-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--r);padding:var(--cds-pad-lg);box-shadow:var(--sh);min-width:0;display:flex;flex-direction:column;gap:var(--cds-gap-sm);position:relative}
+.kx-card[hidden]{display:none}
+.kx-card h3{margin:0;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)}
+.kx-note{margin:0;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.kx-stat{display:flex;gap:.9rem;align-items:center}
+.kx-ico{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.kx-ico svg{width:22px;height:22px}
+.kx-big{font-family:var(--font-anthropic-serif);font-weight:400;font-size:clamp(1.9rem,4.5vw,2.5rem);line-height:1;font-variant-numeric:tabular-nums}
+.kx-sub{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
+.kx-bar{height:8px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden;flex:1;min-width:60px}
+.kx-bar>span{display:block;height:100%;border-radius:999px;background:var(--c,var(--kx-a));width:0;transition:width .9s var(--cds-ease-out)}
+.kx-pill{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.18rem .6rem;font-size:var(--cds-font-size-caption);background:color-mix(in srgb,var(--pc,var(--color-fg-muted)) 12%,transparent);color:var(--pc,var(--color-fg-muted));white-space:nowrap;font-weight:550}
+.kx-pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.p-ok{--pc:var(--color-ok)}.p-warn{--pc:var(--color-warn)}.p-bad{--pc:var(--color-bad)}
+.kx-todo ol{margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.kx-todo li{list-style:none;display:flex;gap:.7rem;align-items:flex-start;padding:.7rem .8rem;border-radius:14px;background:var(--tint);min-width:0}
+.kx-todo .id{font-weight:650;font-variant-numeric:tabular-nums;color:var(--kx-a);flex:none}
+.kx-todo .tx{min-width:0;overflow-wrap:anywhere;font-size:var(--cds-font-size-body)}
+.kx-office{border-radius:22px;border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--kx-b) 9%,var(--color-panel)),var(--color-panel))}
+.kx-office-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:var(--cds-pad-lg) var(--cds-pad-lg) 0}
+.kx-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.kx-scene{display:block;width:100%;min-width:900px;height:auto}
+.kx-scene .floor{fill:color-mix(in srgb,var(--color-fg) 4%,var(--color-panel));stroke:var(--color-border-line)}
+.kx-scene .tile{fill:color-mix(in srgb,var(--c) 9%,var(--color-panel));stroke:color-mix(in srgb,var(--c) 30%,var(--color-border-line))}
+.kx-scene .desk-top{fill:var(--color-panel);stroke:var(--color-border-line)}
+.kx-scene .desk-l{fill:color-mix(in srgb,var(--color-fg) 10%,var(--color-panel))}
+.kx-scene .desk-r{fill:color-mix(in srgb,var(--color-fg) 16%,var(--color-panel))}
+.kx-scene .mon{fill:color-mix(in srgb,var(--color-fg) 85%,var(--color-bg))}
+.kx-scene .sign{fill:var(--color-panel);stroke:var(--color-border-line)}
+.kx-scene .sign-t{fill:var(--color-fg);font:600 13px var(--font-anthropic-sans)}
+.kx-scene .sign-s{fill:var(--color-fg-muted);font:500 11px var(--font-anthropic-sans)}
+.kx-scene .card{fill:var(--color-panel);stroke:var(--color-border-line)}
+.kx-scene .card-t{fill:var(--color-fg);font:600 10.5px var(--font-anthropic-sans)}
+.kx-scene .glass{fill:color-mix(in srgb,var(--kx-a) 10%,transparent);stroke:color-mix(in srgb,var(--kx-a) 45%,transparent)}
+.kx-scene .plant{fill:var(--color-ok)}
+.kx-scene .pot{fill:color-mix(in srgb,var(--color-warn) 60%,var(--color-panel))}
+.kx-scene .bub{fill:var(--color-panel);stroke:var(--color-border-line)}
+.kx-scene .bub-t{fill:var(--color-fg);font:500 11px var(--font-anthropic-sans)}
+.kx-scene .bot{cursor:pointer}
+.kx-scene .bot:focus-visible{outline:2px solid var(--kx-a)}
+.kx-team{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,10.5rem),1fr));gap:var(--cds-gap-md)}
+.kx-mate{border:1px solid var(--color-border-line);background:var(--color-panel);border-radius:var(--r);padding:var(--cds-pad-md);display:flex;flex-direction:column;align-items:center;gap:.25rem;text-align:center;cursor:pointer;box-shadow:var(--sh);font:inherit;color:inherit;min-width:0}
+.kx-mate[aria-pressed=true]{outline:2px solid var(--kx-a)}
+.kx-mate svg{width:72px;height:96px}
+.kx-mate b{font-weight:600}
+.kx-mate .r{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.kx-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.kx-btn{border:1px solid var(--color-border-line);background:var(--color-panel);color:var(--color-fg);border-radius:999px;padding:.38rem .8rem;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer}
+.kx-btn[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
+.kx-search{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:.5rem .9rem;font:inherit;font-size:16px;min-width:0;flex:1 1 12rem}
+.kx-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr));gap:var(--cds-gap-sm)}
+.kx-fact{border-radius:14px;padding:var(--cds-pad-sm) var(--cds-pad-md);background:var(--tint);min-width:0}
+.kx-fact .k{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.kx-fact .v{font-variant-numeric:tabular-nums;overflow-wrap:anywhere;font-weight:550}
+.kx-count{font-family:var(--font-anthropic-serif);font-size:1.7rem;font-variant-numeric:tabular-nums}
+.kx-workers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:var(--cds-gap-md)}
+.kx-w{border:1px solid var(--color-border-line);background:var(--color-panel);border-radius:var(--r);padding:var(--cds-pad-md);display:flex;gap:.8rem;align-items:center;cursor:pointer;text-align:left;font:inherit;color:inherit;box-shadow:var(--sh);min-width:0}
+.kx-w[aria-pressed=true]{outline:2px solid var(--kx-a)}
+.kx-w svg{width:48px;height:64px;flex:none}
+.kx-w .nm{font-weight:600;overflow-wrap:anywhere}
+.kx-tablebox{max-height:30rem;overflow:auto;border-radius:14px;border:1px solid var(--color-border-line)}
+.kx-table{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-body)}
+.kx-table th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:550;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);padding:.55rem .7rem;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.kx-table td{padding:.6rem .7rem;border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.kx-table td:first-child{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media (max-width:640px){.kx-table .hide-n{display:none}}
+.kx-game{border-radius:24px;padding:clamp(18px,3vw,28px);background:radial-gradient(100% 120% at 100% 0%,color-mix(in srgb,var(--color-warn) 20%,transparent),transparent 60%),var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.kx-xp{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
+.kx-xp>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--color-warn),var(--color-ok));border-radius:999px;transition:width 1.2s var(--cds-ease-out)}
+.kx-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,8.5rem),1fr));gap:var(--cds-gap-sm)}
+.kx-isle{border-radius:16px;border:1px solid var(--color-border-line);padding:var(--cds-pad-md);display:flex;flex-direction:column;gap:.35rem;background:var(--color-bg);min-width:0}
+.kx-sep{display:flex;align-items:center;gap:.5rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.kx-sep::after{content:"";flex:1;height:1px;background:var(--color-border-line)}
+.kx-fail{display:flex;align-items:center;justify-content:center;gap:.4rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);min-height:3rem}
+.kx-fail::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)}
+[data-dash-source-state=empty]{color:transparent}
+[data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+
+.kx-meter{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
+.kx-meter>span{display:block;height:100%;border-radius:999px;transition:width .9s var(--cds-ease-out)}
+.kx-list{display:flex;flex-direction:column;gap:.5rem}
+.kx-li{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.65rem .8rem;border-radius:14px;background:var(--tint);min-width:0}
+.kx-li .nm{min-width:0;overflow-wrap:anywhere;font-weight:550}
+.kx-li .sm{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+@media (prefers-reduced-motion:no-preference){
+ .kx .walking .leg-a{animation:kx-stride .7s ease-in-out infinite alternate}
+ .kx .walking .leg-b{animation:kx-stride .7s ease-in-out infinite alternate-reverse}
+ .kx .walking .arm-a{animation:kx-swing .7s ease-in-out infinite alternate-reverse}
+ .kx .walking .arm-b{animation:kx-swing .7s ease-in-out infinite alternate}
+ .kx .walking .torso{animation:kx-step .35s ease-in-out infinite alternate}
+ .kx .working .arm-a{animation:kx-typeA .4s ease-in-out infinite alternate}
+ .kx .working .arm-b{animation:kx-typeB .4s ease-in-out infinite alternate}
+ .kx .working .torso{animation:kx-breathe 3s ease-in-out infinite}
+ .kx .waving .arm-b{animation:kx-wave2 1.6s ease-in-out infinite}
+ .kx .visor-glow{animation:kx-ant 2.2s ease-in-out infinite}
+ @keyframes kx-stride{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+ @keyframes kx-swing{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}
+ @keyframes kx-step{from{transform:translateY(0)}to{transform:translateY(-1.5px)}}
+ @keyframes kx-typeA{from{transform:rotate(-58deg)}to{transform:rotate(-48deg)}}
+ @keyframes kx-typeB{from{transform:rotate(50deg)}to{transform:rotate(60deg)}}
+ @keyframes kx-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+ @keyframes kx-wave2{0%,55%,100%{transform:rotate(150deg)}65%{transform:rotate(120deg)}75%{transform:rotate(165deg)}85%{transform:rotate(125deg)}}
+ .kx .arm{animation:kx-type .45s ease-in-out infinite alternate}
+ .kx .arm.b{animation-direction:alternate-reverse}
+ .kx .hover{animation:kx-hover 2.8s ease-in-out infinite}
+ .kx .eye{animation:kx-blink 4.5s infinite;transform-box:fill-box;transform-origin:center}
+ .kx .ant{animation:kx-ant 1.6s ease-in-out infinite}
+ .kx .wave{animation:kx-wave 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 90%}
+ .kx .limb{transform-box:fill-box;transform-origin:50% 4%}
+ .kx .bubble{animation:kx-pop 8s ease-in-out infinite;opacity:0}
+ .kx .screen{animation:kx-scr 2.4s steps(4) infinite}
+ @keyframes kx-type{from{transform:translateY(0)}to{transform:translateY(2px)}}
+ @keyframes kx-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+ @keyframes kx-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+ @keyframes kx-ant{0%,100%{opacity:1}50%{opacity:.3}}
+ @keyframes kx-wave{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-28deg)}80%{transform:rotate(8deg)}90%{transform:rotate(-22deg)}}
+ @keyframes kx-pop{0%,6%{opacity:0;transform:translateY(4px)}10%,38%{opacity:1;transform:translateY(0)}44%,100%{opacity:0}}
+ @keyframes kx-scr{0%{opacity:.55}50%{opacity:1}100%{opacity:.7}}
+}
+.kx-brand{display:flex;align-items:center;gap:.55rem}.kx-logo{width:34px;height:34px;flex:none}
+.kx-kicker{font-size:var(--cds-font-size-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--kv-bark);font-weight:600}
+.kx-hero{position:relative;overflow:hidden}
+.kx-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:radial-gradient(circle at 7px 5px,var(--kv-gold) 2.2px,transparent 2.6px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--kv-young) 90%,transparent) 0 0/7px 10px}
+</style>
+
+<div class="kx" id="ceo-room">
+ <section class="kx-hero" id="hero">
+  <div class="kx-hi"><span class="kx-live"><i></i>Live</span><span id="clock">—</span></div>
+  <div class="kx-hi" id="countdown" style="font-size:var(--cds-font-size-body)"><span class="kx-pill p-warn"><i></i><span id="cd-pilot">Pilot Day · Mon 16 Nov</span></span><span class="kx-pill p-ok"><i></i><span id="cd-launch">Soft launch · Sun 13 Dec</span></span></div>
+  <div class="kx-brand"><svg class="kx-logo" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 55c1-6 1-12 0-18-3-3-7-4-11-4 4-1 8 0 11 2 0-3-1-6-3-8 3 1 5 4 6 7 1-3 3-6 6-7-2 2-3 5-3 8 3-2 7-3 11-2-4 0-8 1-11 4-1 6-1 12 0 18z" fill="var(--kv-bark)"/><g fill="var(--kv-leaf)"><circle cx="32" cy="18" r="11"/><circle cx="19" cy="25" r="9"/><circle cx="45" cy="25" r="9"/></g><g fill="var(--kv-young)"><circle cx="25" cy="15" r="7"/><circle cx="40" cy="15" r="7"/><circle cx="32" cy="27" r="7"/></g><g fill="var(--kv-gold)"><circle cx="22" cy="21" r="2.6"/><circle cx="33" cy="12" r="2.6"/><circle cx="43" cy="22" r="2.6"/></g></svg><span class="kx-kicker">Kalpavruksha · agents room</span></div>
+  <h1 class="kx-h1" id="greet">Kalpavruksha CEO Room</h1>
+  <p class="kx-take" id="takeaway" data-source="kpis">—</p>
+ </section>
+
+ <nav class="kx-nav" role="tablist" aria-label="Sections">
+  <button class="kx-tab" role="tab" id="tab-home" data-page="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span class="t">Home</span></button>
+  <button class="kx-tab" role="tab" id="tab-workers" data-page="workers" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 11a4 4 0 0 1-1 7z"/></svg><span class="t">Cloud workers</span></button>
+  <button class="kx-tab" role="tab" id="tab-n8n" data-page="n8n" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.5 12h4l5-5M11.5 12l5 5"/></svg><span class="t">n8n & models</span></button>
+  <button class="kx-tab" role="tab" id="tab-team" data-page="team" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V5"/><circle cx="12" cy="4" r="1"/><circle cx="9.5" cy="13" r="1"/><circle cx="14.5" cy="13" r="1"/></svg><span class="t">AI team</span></button>
+  <button class="kx-tab" role="tab" id="tab-work" data-page="work" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="t">Work</span></button>
+  <button class="kx-tab" role="tab" id="tab-mkt" data-page="mkt" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span class="t">Marketing</span></button>
+  <button class="kx-tab" role="tab" id="tab-game" data-page="game" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><span class="t">Tree</span></button>
+ </nav>
+
+ <section class="kx-page" id="home" data-page="home">
+   <div class="kx-card" id="needs">
+    <h3>What needs you next</h3>
+    <p class="kx-note">Your first open tasks, in order. Full list: Work tab → Akhil (CEO).</p>
+    <div class="kx-todo"><ol id="needlist" data-source="needs_you"></ol></div>
+   </div>
+  <div class="kx-grid">
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">agent tasks done of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span></div></div></div>
+    <div class="kx-bar" style="--c:var(--color-ok)"><span id="bar-agent"></span></div></div>
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=ceo_open">—</div><div class="kx-sub">tasks waiting on you</div></div></div>
+    <p class="kx-note">Accounts, decisions, people. Only you can do these.</p></div>
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 11a4 4 0 0 1-1 7z"/></svg></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=workers_ok">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=workers_total">—</span> cloud workers ran cleanly last time</div></div></div>
+    <p class="kx-note">They work while your PC is off.</p></div>
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-b)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V5"/><circle cx="9.5" cy="13" r="1"/><circle cx="14.5" cy="13" r="1"/></svg></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agents">—</div><div class="kx-sub">AI agents on free models</div></div></div>
+    <p class="kx-note">Live from n8n.</p></div>
+  </div>
+
+  <div class="kx-office" id="office">
+   <div class="kx-office-head">
+    <div><h3 style="margin:0;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)">The Kalpa office</h3>
+    <p class="kx-note">You in the glass cabin, your AI team at their desks. Tap a robot to meet it. Swipe sideways on a phone.</p></div>
+    <span class="kx-pill p-ok"><i></i>Robots at work</span>
+   </div>
+   <div class="kx-scroll"><div id="scene" data-source="agent_board worlds"></div></div>
+  </div>
+
+  <div class="kx-grid2">
+   <div class="kx-card" id="daily">
+    <h3>Work finished per day</h3>
+    <p class="kx-note">Agent tasks ticked done, by the date in the roadmap.</p>
+    <div id="daychart" data-source="done_by_day" style="position:relative;min-height:180px"></div>
+   </div>
+  </div>
+
+  <div class="kx-card" id="worlds">
+   <h3>How each part of Kalpa is doing</h3>
+   <p class="kx-note">Share of tasks done (agent + yours) per world.</p>
+   <div class="kx-grid" id="worldlist" data-source="worlds" style="gap:.8rem 1.2rem"></div>
+  </div>
+ </section>
+
+ <section class="kx-page" id="workers" data-page="workers" hidden>
+  <div class="kx-card">
+   <h3>Your cloud workers</h3>
+   <p class="kx-note">Each is a Claude cloud session that wakes on schedule and works while your PC is off. Tap one to switch.</p>
+   <div class="kx-workers" id="workerlist" data-source="workers"></div>
+  </div>
+  <div class="kx-card" id="workerpanel" data-source="workers">
+   <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap"><h3 id="w-name">—</h3><span class="kx-pill" id="w-status"><i></i><span>—</span></span></div>
+   <p class="kx-note" id="w-job">—</p>
+   <div class="kx-facts">
+    <div class="kx-fact"><div class="k">Next run in</div><div class="kx-count" id="w-count">—</div></div>
+    <div class="kx-fact"><div class="k">Next run</div><div class="v" id="w-next">—</div></div>
+    <div class="kx-fact"><div class="k">Last run</div><div class="v" id="w-last">—</div></div>
+    <div class="kx-fact"><div class="k">Schedule (IST)</div><div class="v" id="w-sched">—</div></div>
+    <div class="kx-fact"><div class="k">Last session</div><div class="v" id="w-sess">—</div></div>
+   </div>
+   <p class="kx-note">A run skipped because the Claude limit was reached tries again at its next time; nothing is lost. Full session logs: Claude app → Code. This list is refreshed by the workers themselves after each run.</p>
+  </div>
+ </section>
+
+ <section class="kx-page" id="n8n" data-page="n8n" hidden>
+  <div class="kx-grid">
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V5"/></svg></div>
+    <div><div class="kx-big" data-source="n8n_kpis" data-field="value" data-where="metric=agents_live">—</div><div class="kx-sub">agents live of <span data-source="n8n_kpis" data-field="value" data-where="metric=agents_total">—</span></div></div></div>
+    <p class="kx-note">Live agents run their scheduled jobs and answer you on Telegram, on free models.</p></div>
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h9"/></svg></div>
+    <div><div class="kx-big" data-source="n8n_kpis" data-field="value" data-where="metric=wf_active">—</div><div class="kx-sub">workflows switched on of <span data-source="n8n_kpis" data-field="value" data-where="metric=wf_total">—</span></div></div></div>
+    <p class="kx-note">Workflows are fixed automations, like the usage collector.</p></div>
+   <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+    <div><div class="kx-big" data-source="n8n_kpis" data-field="value" data-where="metric=runs_ok">—</div><div class="kx-sub">successful runs of last <span data-source="n8n_kpis" data-field="value" data-where="metric=runs_total">—</span></div></div></div>
+    <p class="kx-note">Workflow runs only; agent chats are not counted here.</p></div>
+  </div>
+  <div class="kx-card" id="or-card">
+   <h3>OpenRouter free requests today</h3>
+   <p class="kx-note">OpenRouter gives 50 free-model requests a day. When they run out, your agents use NVIDIA and Groq instead (also free). Checked every 3 hours by n8n.</p>
+   <div style="display:flex;align-items:baseline;gap:.5rem"><span class="kx-big" data-source="or_usage" data-field="free_requests_used" data-row="0">—</span><span class="kx-sub">of <span data-source="or_usage" data-field="free_requests_limit" data-row="0">—</span> used · spent $<span data-source="or_usage" data-field="usage_usd" data-row="0">—</span></span></div>
+   <div class="kx-meter"><span id="or-meter"></span></div>
+   <p class="kx-note" id="or-when">—</p>
+  </div>
+  <div class="kx-grid2">
+   <div class="kx-card"><h3>Workflows</h3><div class="kx-list" id="wflist" data-source="n8n_workflows"></div></div>
+   <div class="kx-card"><h3>Agents</h3><p class="kx-note">Live = published in n8n. Draft = waiting for you to publish on PC.</p><div class="kx-list" id="aglist" data-source="agents" style="max-height:28rem;overflow:auto"></div></div>
+  </div>
+  <div class="kx-card"><h3>Recent workflow runs</h3><div class="kx-list" id="runlist" data-source="n8n_runs"></div></div>
+ </section>
+
+ <section class="kx-page" id="team" data-page="team" hidden>
+  <div class="kx-card">
+   <h3>Your AI team</h3>
+   <p class="kx-note">22 n8n agents. Colour shows the free model they run on. Tap one for details.</p>
+   <div class="kx-filter" id="hostfilter"></div>
+  </div>
+  <div class="kx-card" id="botdetail" data-source="agent_board" hidden>
+   <h3 id="bd-name">—</h3>
+   <p class="kx-note" id="bd-job">—</p>
+   <div class="kx-facts" id="bd-facts"></div>
+  </div>
+  <div class="kx-team" id="teamgrid" data-source="agent_board"></div>
+ </section>
+
+ <section class="kx-page" id="work" data-page="work" hidden>
+  <div class="kx-card" id="pipeline">
+   <h3>Where the agent work is</h3>
+   <div class="kx-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr))" data-source="stages">
+    <div class="kx-fact"><div class="k">To do</div><div class="kx-count" data-source="stages" data-field="n" data-where="stage=to do">—</div></div>
+    <div class="kx-fact"><div class="k">In progress</div><div class="kx-count" data-source="stages" data-field="n" data-where="stage=in progress">—</div></div>
+    <div class="kx-fact"><div class="k">Blocked</div><div class="kx-count" data-source="stages" data-field="n" data-where="stage=blocked">—</div></div>
+    <div class="kx-fact"><div class="k">Done</div><div class="kx-count" data-source="stages" data-field="n" data-where="stage=done">—</div></div>
+   </div>
+  </div>
+  <div class="kx-card">
+   <h3>Every roadmap task</h3>
+   <div class="kx-filter"><input class="kx-search" id="q" type="search" placeholder="Search, e.g. BotBhai, voice, A54" aria-label="Search tasks"></div>
+   <div class="kx-filter" id="qfilters"></div>
+   <div class="kx-tablebox"><table class="kx-table" id="roadtable" data-source="roadmap" data-row-key="id">
+    <thead><tr><th data-field="id">Task</th><th data-field="status">Stage</th><th data-field="world" class="hide-n">World</th><th data-field="title">What</th></tr></thead><tbody></tbody></table></div>
+  </div>
+ </section>
+
+ <section class="kx-page" id="mkt" data-page="mkt" hidden>
+  <div class="kx-card">
+   <h3>Marketing team</h3>
+   <p class="kx-note">The robots who write, design and post.</p>
+   <div class="kx-team" id="mktteam" data-source="agent_board"></div>
+  </div>
+  <div class="kx-card">
+   <h3>Marketing work</h3>
+   <p class="kx-note">Roadmap tasks about marketing, content, ads, SEO and selling.</p>
+   <div class="kx-tablebox"><table class="kx-table" id="mkttable" data-source="marketing" data-row-key="id">
+    <thead><tr><th data-field="id">Task</th><th data-field="status">Stage</th><th data-field="title">What</th></tr></thead><tbody></tbody></table></div>
+  </div>
+ </section>
+
+ <section class="kx-page" id="game" data-page="game" hidden>
+  <div class="kx-sep">The Kalpavruksha · the growing game, kept apart from company numbers</div>
+  <div class="kx-game">
+   <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;align-items:flex-end">
+    <div><div class="kx-sub">Level</div><div class="kx-big" data-source="game_stats" data-field="value" data-where="metric=level">—</div></div>
+    <div style="display:flex;gap:1.4rem">
+     <div><div class="kx-sub">Streak</div><div class="kx-count"><span data-source="game_stats" data-field="value" data-where="metric=streak">—</span> days</div></div>
+     <div><div class="kx-sub">XP</div><div class="kx-count" data-source="game_stats" data-field="value" data-where="metric=xp">—</div></div>
+    </div>
+   </div>
+   <div><div style="display:flex;justify-content:space-between"><span class="kx-sub">Quests cleared</span><span class="kx-sub"><span data-source="game_stats" data-field="value" data-where="metric=quests_done">—</span> / <span data-source="game_stats" data-field="value" data-where="metric=quests_total">—</span> · <span data-source="game_stats" data-field="value" data-where="metric=overall_pct">—</span>%</span></div>
+    <div class="kx-xp"><span id="xpbar"></span></div></div>
+   <p class="kx-take" style="margin:0">Wish-Tree says: <span data-source="game_stats" data-field="value" data-where="metric=ceo_note">—</span></p>
+   <p class="kx-note">From the morning brief of <span data-source="game_stats" data-field="value" data-where="metric=report_date">—</span>.</p>
+  </div>
+  <div class="kx-card"><h3>World map</h3><div class="kx-map" id="gmap" data-source="game_worlds"></div></div>
+ </section>
+</div>
+
+<script>
+(function(){
+ dash.calc('kpis',{inputs:['roadmap','workers','agents'],title:'Headline counts',
+  description:'Roadmap tasks by owner and stage, workers whose last run succeeded, and agents in n8n.',
+  fn:(roadmap,workers,agents)=>{
+   const a=roadmap.filter(r=>r.queue==='Agents'), c=roadmap.filter(r=>r.queue!=='Agents');
+   return [{metric:'agent_done',value:a.filter(r=>r.status==='done').length},{metric:'agent_total',value:a.length},
+    {metric:'ceo_open',value:c.filter(r=>r.status!=='done').length},{metric:'ceo_done',value:c.filter(r=>r.status==='done').length},
+    {metric:'workers_ok',value:workers.filter(w=>w.last_status==='SUCCEEDED').length},{metric:'workers_total',value:workers.length},
+    {metric:'agents',value:agents.length}];
+ }});
+ dash.calc('n8n_kpis',{inputs:['agents','n8n_workflows','n8n_runs'],title:'n8n counts',description:'Agents published, workflows active, and successful runs among the latest workflow runs.',
+  fn:(agents,n8n_workflows,n8n_runs)=>[{metric:'agents_live',value:agents.filter(a=>a.published).length},{metric:'agents_total',value:agents.length},{metric:'wf_active',value:n8n_workflows.filter(w=>w.active).length},{metric:'wf_total',value:n8n_workflows.length},{metric:'runs_ok',value:n8n_runs.filter(r=>r.status==='success').length},{metric:'runs_total',value:n8n_runs.length}]});
+ dash.calc('stages',{inputs:['roadmap'],title:'Agent tasks by stage',description:'Agent-queue tasks counted by stage.',
+  fn:(roadmap)=>['to do','in progress','blocked','done'].map(stage=>({stage,n:roadmap.filter(r=>r.queue==='Agents'&&r.status===stage).length}))});
+ dash.calc('worlds',{inputs:['roadmap'],title:'Progress by world',description:'Done and total tasks (agent + CEO) per world.',
+  fn:(roadmap)=>{const m=new Map(); roadmap.forEach(r=>{const o=m.get(r.world)||{world:r.world,done:0,total:0}; o.total++; if(r.status==='done')o.done++; m.set(r.world,o);});
+   return [...m.values()].map(o=>({...o,pct:o.total?Math.round(o.done/o.total*100):0})).sort((x,y)=>y.total-x.total);}});
+ dash.calc('done_by_day',{inputs:['roadmap'],title:'Agent tasks done per day',description:'Agent tasks grouped by their done date.',
+  fn:(roadmap)=>{const m={}; roadmap.filter(r=>r.queue==='Agents'&&r.done_on).forEach(r=>{m[r.done_on]=(m[r.done_on]||0)+1;}); return Object.keys(m).sort().map(day=>({day,n:m[day]}));}});
+ dash.calc('needs_you',{inputs:['roadmap'],title:'Your next tasks',description:'The first five CEO-queue tasks not done yet, in roadmap order.',
+  fn:(roadmap)=>roadmap.filter(r=>r.queue!=='Agents'&&r.status!=='done').slice(0,5)});
+ dash.calc('marketing',{inputs:['roadmap'],title:'Marketing tasks',description:'Roadmap tasks whose text mentions marketing, content, ads, SEO, social or selling.',
+  fn:(roadmap)=>roadmap.filter(r=>/market|brand|\bads?\b|caption|post|reel|seo|social|instagram|channel|content|sales|pitch|landing|lighthouse|youtube|telegram|workshop/i.test(r.title)||r.world==='growth')});
+ dash.calc('agent_board',{inputs:['roster','agents'],title:'Agents with their models',description:'The roster (role, model, host) matched to live n8n agents by first name.',
+  fn:(roster,agents)=>roster.map(r=>{const live=agents.find(a=>String(a.name||'').split(/\s/)[0]===r.agent)||{}; return {...r,in_n8n:!!live.id,published:!!live.published,updated:live.updatedAt||''};})});
+})();
+</script>
+
+<script>
+(function(){
+ const KV=['var(--kv-c0)','var(--kv-c1)','var(--kv-c2)','var(--kv-c3)','var(--kv-c4)','var(--kv-c5)','var(--kv-c6)','var(--kv-c7)']; // Kalpavruksha world colours (tokens.css --l3,l5,l1,l2,l4,l6,l7,l0)
+ const root=document.getElementById('ceo-room');
+ root.style.setProperty('--kx-a','var(--kv-leaf)'); root.style.setProperty('--kx-b','var(--kv-gold)');
+ const NS='http://www.w3.org/2000/svg';
+ const reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const fmtDT=d=>new Date(d).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:false});
+ const hostColor=h=>h==='NVIDIA'?KV[1]:h==='Groq'?KV[0]:KV[2];
+ const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.append(e); return e;};
+ const txt=(tag,cls,t)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(t!=null) e.textContent=t; return e;};
+ const fail=e=>{e.replaceChildren(txt('div','kx-fail','Failed to load'));};
+
+ // humanoid mini robot (white shell, black visor); feet at (0,0), ~78px tall
+ function bot(g,color,opts={}){
+  const d=(opts.delay||0)+'s', mode=opts.walk?'walking':opts.wave?'waving':'working';
+  el('ellipse',{cx:0,cy:1,rx:12,ry:3.6,fill:'var(--color-fg)',opacity:.14},g);
+  const r=el('g',{class:mode},g);
+  const SHELL='#eef1f5', JOINT='#2a2e35', EDGE='#c9ced6';
+  const leg=(x,cls)=>{const L=el('g',{class:'limb '+cls,style:'animation-delay:'+d},r);
+   el('rect',{x:x-3,y:-33,width:6,height:16,rx:3,fill:SHELL,stroke:EDGE,'stroke-width':.6},L);
+   el('circle',{cx:x,cy:-17,r:2.4,fill:JOINT},L);
+   el('rect',{x:x-2.7,y:-17,width:5.4,height:15,rx:2.6,fill:SHELL,stroke:EDGE,'stroke-width':.6},L);
+   el('rect',{x:x-3.6,y:-3,width:7.6,height:3.4,rx:1.6,fill:JOINT},L);};
+  leg(-3.6,'leg-a'); leg(3.6,'leg-b');
+  const T=el('g',{class:'torso',style:'animation-delay:'+d},r);
+  el('rect',{x:-7.5,y:-37,width:15,height:6,rx:2.5,fill:JOINT},T);
+  el('path',{d:'M-10.5 -58 Q0 -61 10.5 -58 L8 -36 Q0 -34 -8 -36 Z',fill:SHELL,stroke:EDGE,'stroke-width':.7},T);
+  el('circle',{cx:0,cy:-49,r:2.2,fill:color,class:'visor-glow'},T);
+  const arm=(x,cls)=>{const A=el('g',{class:'limb '+cls,style:'animation-delay:'+d},T);
+   el('rect',{x:x-2.4,y:-57,width:4.8,height:13,rx:2.4,fill:SHELL,stroke:EDGE,'stroke-width':.6},A);
+   el('circle',{cx:x,cy:-44,r:1.9,fill:JOINT},A);
+   el('rect',{x:x-2.2,y:-44,width:4.4,height:11,rx:2.2,fill:SHELL,stroke:EDGE,'stroke-width':.6},A);
+   el('circle',{cx:x,cy:-32.5,r:2.3,fill:JOINT},A);};
+  arm(-12.5,'arm-a'); arm(12.5,'arm-b');
+  el('rect',{x:-2.2,y:-62,width:4.4,height:5,rx:1.5,fill:JOINT},T);
+  el('ellipse',{cx:0,cy:-69,rx:7.2,ry:8.4,fill:SHELL,stroke:EDGE,'stroke-width':.7},T);
+  el('path',{d:'M-6 -71 Q0 -77 6 -71 L5.4 -64 Q0 -61.5 -5.4 -64 Z',fill:'#0d0f13'},T);
+  el('rect',{x:-4,y:-69.5,width:8,height:1.6,rx:.8,fill:color,class:'visor-glow',opacity:.9},T);
+  if(opts.carry){ el('rect',{x:-7,y:-46,width:14,height:9,rx:1.6,fill:'#ffffff',stroke:EDGE},T); el('rect',{x:-5,y:-44,width:10,height:1.4,fill:color},T); }
+ }
+ function human(g){
+  el('ellipse',{cx:0,cy:2,rx:16,ry:5,fill:'var(--color-fg)',opacity:.12},g);
+  el('rect',{x:-11,y:-30,width:22,height:30,rx:9,fill:'#2F6A3A'},g);
+  el('path',{d:'M-4 -30 L0 -25 L4 -30z',fill:'#ffffff'},g);
+  el('circle',{cx:0,cy:-40,r:10,fill:'#a9714b'},g);
+  el('path',{d:'M-10 -41 Q-10 -54 0 -54 Q10 -54 10 -41 Q7 -48 0 -47.5 Q-7 -48 -10 -41z',fill:'#1e1a17'},g);
+  el('circle',{cx:-3.5,cy:-40,r:1.3,fill:'#1e1a17'},g); el('circle',{cx:3.5,cy:-40,r:1.3,fill:'#1e1a17'},g);
+  el('path',{d:'M-3 -35.5 Q0 -33 3 -35.5',stroke:'#1e1a17','stroke-width':1.3,fill:'none','stroke-linecap':'round'},g);
+  const arm=el('g',{class:'wave'},g); el('rect',{x:9,y:-46,width:6,height:18,rx:3,fill:'#2F6A3A'},arm); el('circle',{cx:12,cy:-47,r:3.4,fill:'#a9714b'},arm);
+ }
+ function robotSVG(color,opts){const s=document.createElementNS(NS,'svg'); s.setAttribute('viewBox','-24 -82 48 86'); s.setAttribute('aria-hidden','true'); bot(el('g',{},s),color,opts); return s;}
+
+ /* isometric office */
+ const TW=340,TH=170,OX=660,OY=60;
+ const iso=(c,r)=>[OX+(c-r)*TW/2,OY+(c+r)*TH/2];
+ const diamond=(cx,cy,w,h)=>`M${cx},${cy-h/2} L${cx+w/2},${cy} L${cx},${cy+h/2} L${cx-w/2},${cy}Z`;
+ function desk(g,cx,cy,c){const w=90,h=45,d=16;
+  el('path',{d:`M${cx-w/2},${cy} L${cx},${cy+h/2} L${cx},${cy+h/2+d} L${cx-w/2},${cy+d}Z`,class:'desk-l'},g);
+  el('path',{d:`M${cx+w/2},${cy} L${cx},${cy+h/2} L${cx},${cy+h/2+d} L${cx+w/2},${cy+d}Z`,class:'desk-r'},g);
+  el('path',{d:diamond(cx,cy,w,h),class:'desk-top'},g);
+  el('path',{d:`M${cx-22},${cy-6} L${cx-2},${cy-16} L${cx-2},${cy-38} L${cx-22},${cy-28}Z`,class:'mon'},g);
+  el('path',{d:`M${cx-19},${cy-10} L${cx-5},${cy-17} L${cx-5},${cy-34} L${cx-19},${cy-27}Z`,fill:c,class:'screen'},g);
+  el('path',{d:`M${cx+4},${cy-14} L${cx+24},${cy-24} L${cx+24},${cy-46} L${cx+4},${cy-36}Z`,class:'mon'},g);
+  el('path',{d:`M${cx+7},${cy-18} L${cx+21},${cy-25} L${cx+21},${cy-42} L${cx+7},${cy-35}Z`,fill:c,class:'screen',style:'animation-delay:.6s'},g);}
+ function plant(g,x,y){el('path',{d:`M${x-6},${y} L${x+6},${y} L${x+4},${y+10} L${x-4},${y+10}Z`,class:'pot'},g);
+  el('ellipse',{cx:x,cy:y-7,rx:9,ry:11,class:'plant'},g); el('ellipse',{cx:x-7,cy:y-2,rx:5,ry:7,class:'plant',opacity:.8},g);}
+ function nameCard(g,x,y,name,ok){const w=Math.max(46,name.length*6.4+24);
+  el('rect',{x:x-w/2,y:y-11,width:w,height:19,rx:9.5,class:'card'},g);
+  el('circle',{cx:x-w/2+10,cy:y-1.5,r:3.3,fill:ok?'var(--color-ok)':'var(--color-warn)'},g);
+  const t=el('text',{x:x-w/2+17,y:y+2.5,class:'card-t'},g); t.textContent=name;}
+ const TEAMS=[{key:'b1',label:'BotBhai',c:0},{key:'HQ',label:'HQ office',c:1},{key:'QA',label:'Quality desk',c:2},{key:'b7',label:'Trading Lab',c:3},
+  {key:'Marketing',label:'Marketing',c:4},{key:'CEO',label:'',c:5},{key:'b3',label:'Kits',c:6},{key:'b6',label:'Ledger Peaks',c:7},
+  {key:'b2',label:'JobCard',c:1},{key:'b4',label:'Tab Lifeboat',c:2},{key:'b5',label:'Deals & Tools',c:3},{key:'Design',label:'Design studio',c:0}];
+ const LINES={Kalpa:'Planning your day',Chitti:'Namaste andi!',Scout:'Finding salons',Vani:'Voice ready',Forge:'Shipping code',Echo:'Filing notes',Kavi:'Writing a guide',Plug:'Testing tabs',Deal:'#ad checked',Adi:'New caption',Lens:'On brand',Pixel:'Polishing UI',Reel:'Reel script',Ledger:'Watching rupees',Dash:'Charts updated',Doc:'Reading bills',Nidhi:'Long-term view',Pulse:'Market news',Quant:'Paper trades only',Guard:'Risk check',Vigil:'Fact-checking',Probe:'Tests green'};
+ let pickedBot=null;
+ function drawScene(){
+  const host=document.getElementById('scene'), b=dash.data('agent_board'), w=dash.data('worlds');
+  if(b.status!=='ok'){ if(b.status==='error') fail(host); return; }
+  const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 -20 1320 760'); svg.setAttribute('class','kx-scene'); svg.setAttribute('role','img'); svg.setAttribute('aria-label','Isometric office: Akhil in the CEO cabin and the AI agents at team desks');
+  const L={floor:el('g',{},svg),tiles:el('g',{},svg),things:el('g',{},svg),labels:el('g',{},svg)};
+  const c0=iso(0,0),c1=iso(4,0),c2=iso(4,3),c3=iso(0,3);
+  el('path',{d:`M${c0[0]},${c0[1]} L${c1[0]},${c1[1]} L${c2[0]},${c2[1]} L${c3[0]},${c3[1]}Z`,class:'floor'},L.floor);
+  const pct=k=>{ if(w.status!=='ok') return null; const r=w.data.find(x=>x.world===k); return r?r.pct:null; };
+  const members=k=>b.data.filter(r=>(['Vigil','Probe'].includes(r.agent)?'QA':r.world)===k);
+  const items=[]; // {y, draw(g)}
+  TEAMS.forEach((t,i)=>{
+   const c=i%4, r=Math.floor(i/4); const [cx,cy]=iso(c+.5,r+.5); const col=KV[t.c%8];
+   el('path',{d:diamond(cx,cy,TW-16,TH-8),class:'tile',style:'--c:'+col},L.tiles);
+   if(t.key==='CEO'){
+    items.push({y:cy-60,draw:g=>{el('path',{d:`M${cx-150},${cy} L${cx},${cy-75} L${cx},${cy-150} L${cx-150},${cy-75}Z`,class:'glass'},g);
+      el('path',{d:`M${cx+150},${cy} L${cx},${cy-75} L${cx},${cy-150} L${cx+150},${cy-75}Z`,class:'glass'},g);}});
+    items.push({y:cy+2,draw:g=>desk(g,cx+30,cy+2,KV[0])});
+    items.push({y:cy+34,draw:g=>human(el('g',{transform:`translate(${cx-34},${cy+34})`},g))});
+    items.push({y:cy+10,draw:g=>plant(g,cx+112,cy+8)});
+    nameCard(L.labels,cx-34,cy-34,'Akhil · CEO',true);
+    const sw=118; el('rect',{x:cx-sw/2,y:cy+54,width:sw,height:24,rx:12,class:'sign'},L.labels);
+    const st=el('text',{x:cx,y:cy+70,'text-anchor':'middle',class:'sign-t'},L.labels); st.textContent='CEO cabin';
+    return;
+   }
+   items.push({y:cy-12,draw:g=>desk(g,cx,cy-12,col)});
+   const m=members(t.key); const spots=[[-80,14],[80,14],[-38,46],[38,46]];
+   m.slice(0,4).forEach((a,j)=>{
+    const [dx,dy]=spots[j], bx=cx+dx, by=cy+dy;
+    items.push({y:by,draw:g=>{
+     const bg=el('g',{class:'bot',transform:`translate(${bx},${by})`,tabindex:'0',role:'button','aria-label':a.agent+', '+a.role},g);
+     bot(bg,hostColor(a.host),{delay:((i*0.37+j*0.21)%1.5).toFixed(2),wave:a.agent==='Kalpa'});
+     const open=()=>{pickedBot=a.agent; show('team');};
+     bg.addEventListener('click',open); bg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); open();}});
+    }});
+    nameCard(L.labels,bx,by-90,a.agent,a.in_n8n);
+    const line=LINES[a.agent]||a.job; const bw=line.length*6.1+20;
+    const bu=el('g',{class:'bubble',style:`animation-delay:${((i*1.3+j*2.3)%8).toFixed(1)}s`},L.labels);
+    if(reduce) bu.style.opacity='0';
+    el('rect',{x:bx+10,y:by-126,width:bw,height:22,rx:11,class:'bub'},bu);
+    const tt=el('text',{x:bx+20,y:by-111,class:'bub-t'},bu); tt.textContent=line;
+   });
+   if(m.length>4){const tt=el('text',{x:cx+92,y:cy+50,class:'sign-s'},L.labels); tt.textContent='+'+(m.length-4)+' more';}
+   const p=pct(t.key); const label=t.label+(p!=null?' · '+p+'%':''); const sw=label.length*7+30;
+   el('rect',{x:cx-sw/2,y:cy+64,width:sw,height:24,rx:12,class:'sign'},L.labels);
+   el('circle',{cx:cx-sw/2+13,cy:cy+76,r:4.2,fill:col},L.labels);
+   const st=el('text',{x:cx-sw/2+23,y:cy+80.5,class:'sign-t'},L.labels); st.textContent=label;
+  });
+  items.sort((a,b2)=>a.y-b2.y).forEach(it=>it.draw(L.things));
+  if(!reduce){
+   const loops=[[iso(1,1),iso(3,1),iso(3,2),iso(1,2)],[iso(1,0.02),iso(1,2.98),iso(2,2.98),iso(2,0.02)],[iso(0.02,2),iso(3.98,2),iso(3.98,1),iso(0.02,1)],[iso(3,0.02),iso(3,2.98),iso(2,2.98),iso(2,0.02)]];
+   loops.forEach((pts,k)=>{
+    const cg=el('g',{},L.things); bot(cg,KV[(k+4)%8],{walk:true,carry:k%2===0,delay:k*.2});
+    const path='M'+pts.map(p=>p[0]+','+(p[1]+4)).join(' L')+' Z';
+    let len=0; for(let q=0;q<pts.length;q++){const A=pts[q],B=pts[(q+1)%pts.length]; len+=Math.hypot(B[0]-A[0],B[1]-A[1]);}
+    el('animateMotion',{dur:(len/26).toFixed(1)+'s',repeatCount:'indefinite',path,begin:(-k*7)+'s'},cg);
+   });
+  }
+  host.replaceChildren(svg);
+  const sc=host.parentElement; if(sc&&sc.scrollWidth>sc.clientWidth&&!sc.dataset.centered){ sc.scrollLeft=(sc.scrollWidth-sc.clientWidth)/2; sc.dataset.centered='1'; }
+ }
+
+ const tabs=[...document.querySelectorAll('.kx-tab')], pages=[...document.querySelectorAll('.kx-page')];
+ let current='home';
+ function show(p){current=p; tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.page===p))); pages.forEach(s=>s.hidden=s.dataset.page!==p); dash.setLink(p); draw();
+  if(p==='team'&&pickedBot){const d=document.getElementById('botdetail'); if(!d.hidden) d.scrollIntoView({block:'nearest'});}}
+ tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.page)));
+
+ const clock=document.getElementById('clock'), greet=document.getElementById('greet');
+ function tick(){const now=new Date(); clock.textContent='IST '+now.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:false});
+  const h=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',hourCycle:'h23'}).format(now));
+  greet.textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', Akhil';}
+ const LAUNCH={pilot:'2026-11-16T00:00:00+05:30',launch:'2026-12-13T06:12:00+05:30'}; // dates Akhil fixed on 18 Oct 2026
+ function cd(){const days=t=>Math.max(0,Math.ceil((new Date(t)-Date.now())/864e5));
+  document.getElementById('cd-pilot').textContent='Pilot Day in '+days(LAUNCH.pilot)+' days · Mon 16 Nov';
+  document.getElementById('cd-launch').textContent='Soft launch in '+days(LAUNCH.launch)+' days · Sun 13 Dec';}
+ tick(); cd(); setInterval(()=>{tick(); cd();},30000);
+
+ function drawHome(){
+  const k=dash.data('kpis'); const v=m=>k.status==='ok'?(k.data.find(r=>r.metric===m)||{}).value:null;
+  document.querySelectorAll('#home [data-source=kpis][data-where],#hero [data-source=kpis][data-where]').forEach(e=>{const x=v(e.getAttribute('data-where').split('=')[1]); e.textContent=x==null?'—':x;});
+  const t=document.getElementById('takeaway');
+  if(k.status==='ok'){const pct=v('agent_total')?Math.round(v('agent_done')/v('agent_total')*100):0;
+   t.textContent='Your AI team has finished '+pct+'% of its roadmap. '+v('ceo_open')+' tasks are waiting on you, and '+v('workers_ok')+' of '+v('workers_total')+' cloud workers ran cleanly last time.';
+   requestAnimationFrame(()=>{document.getElementById('bar-agent').style.width=pct+'%';});} else t.textContent='—';
+  drawScene();
+  const n=dash.data('needs_you'), ol=document.getElementById('needlist');
+  if(n.status==='ok') ol.replaceChildren(...n.data.map(r=>{const li=document.createElement('li'); li.dataset.key=r.id; li.append(txt('span','id',r.id),txt('span','tx',r.title)); return li;})); else if(n.status==='error') fail(ol);
+  const w=dash.data('worlds'), wl=document.getElementById('worldlist');
+  const NAME={HQ:'HQ',b1:'BotBhai',b2:'JobCard',b3:'Kits',b4:'Tab Lifeboat',b5:'Deals & Tools',b6:'Ledger Peaks',b7:'Trading Lab',design:'Design',growth:'Growth'};
+  if(w.status==='ok') wl.replaceChildren(...w.data.map((r,i)=>{const row=txt('div'); row.style.cssText='display:flex;flex-direction:column;gap:.35rem;min-width:0';
+    const top=txt('div'); top.style.cssText='display:flex;justify-content:space-between;gap:.5rem';
+    const nm=txt('b',null,NAME[r.world]||r.world); nm.style.fontWeight='550';
+    const pc=txt('span','kx-sub',r.pct+'%'); pc.setAttribute('data-source','worlds'); pc.setAttribute('data-field','pct'); pc.setAttribute('data-where','world='+encodeURIComponent(r.world));
+    top.append(nm,pc); const bar=txt('div','kx-bar'); bar.style.setProperty('--c',KV[i%8]); const sp=txt('span'); bar.append(sp); requestAnimationFrame(()=>{sp.style.width=r.pct+'%';});
+    row.append(top,bar,txt('span','kx-sub',r.done+' of '+r.total+' tasks')); return row;})); else if(w.status==='error') fail(wl);
+  drawDays();
+ }
+ function drawDays(){
+  const box=document.getElementById('daychart'), d=dash.data('done_by_day');
+  if(d.status!=='ok'){ if(d.status==='error') fail(box); return; }
+  const W=Math.max(260,box.clientWidth||300), H=190, m={t:18,r:8,b:26,l:28};
+  const data=d.data.map(r=>({day:new Date(r.day+'T00:00:00Z'),n:r.n,key:r.day}));
+  const x=d3.scaleBand(data.map(r=>r.key),[m.l,W-m.r]).padding(.35);
+  const y=d3.scaleLinear([0,d3.max(data,r=>r.n)||1],[H-m.b,m.t]).nice();
+  const svg=d3.create('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
+  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickFormat(k=>d3.utcFormat('%b %-d')(new Date(k+'T00:00:00Z'))).tickSize(0)).attr('font-size',null).attr('font-family',null)
+   .call(g=>{g.select('.domain').attr('stroke','var(--cds-chart-axis)'); g.selectAll('text').attr('fill','var(--color-fg-muted)').attr('dy','1.1em').style('font-size','var(--cds-font-size-caption)');});
+  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W-m.l-m.r))).attr('font-size',null).attr('font-family',null)
+   .call(g=>{g.select('.domain').remove(); g.selectAll('line').attr('stroke','var(--cds-chart-grid)'); g.selectAll('text').attr('fill','var(--color-fg-muted)').style('font-size','var(--cds-font-size-caption)');});
+  const bw=Math.min(32,x.bandwidth());
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x',r=>x(r.key)+(x.bandwidth()-bw)/2).attr('width',bw).attr('y',r=>y(r.n)).attr('height',r=>y(0)-y(r.n)).attr('rx',6).attr('fill',KV[0]);
+  svg.append('g').selectAll('text').data(data).join('text').attr('x',r=>x(r.key)+x.bandwidth()/2).attr('y',r=>y(r.n)-5).attr('text-anchor','middle').attr('fill','var(--color-fg)').style('font-size','var(--cds-font-size-caption)').text(r=>r.n);
+  box.replaceChildren(svg.node());
+ }
+
+ const JOB=[[/build/i,'Builds the next roadmap task, runs the tests and saves to GitHub. Fixes audit findings first.'],[/fact|audit/i,'Checks facts, prices and free-tier claims against live sources, and reruns tests of finished tasks.'],[/morning/i,'Writes your morning CEO brief and today\'s quests.'],[/evening/i,'Checks what got done today and sends one small next step.']];
+ const jobOf=n=>{for(const [re,t] of JOB) if(re.test(n)) return t; return 'Scheduled cloud work.';};
+ const cronWords=c=>{const m=String(c).replace(/^CRON_TZ=\S+\s+/,'').split(/\s+/); if(m.length<5) return c||'—'; const min=m[0].padStart(2,'0'); return 'Daily '+m[1].split(',').map(h=>h.padStart(2,'0')+':'+min).join(', ');};
+ const rel=ms=>{if(!isFinite(ms)) return '—'; if(ms<=0) return 'due now'; const a=Math.round(ms/1000),h=Math.floor(a/3600),mm=Math.floor(a%3600/60); return h?h+'h '+String(mm).padStart(2,'0')+'m':mm+'m';};
+ const stateOf=r=>r.last_status==='SUCCEEDED'?['p-ok','Ran OK']:r.last_status==='NOT_RUN_YET'?['','Not run yet']:/USAGE_LIMIT/.test(r.failure||'')?['p-warn','Skipped: Claude limit']:['p-bad','Last run failed'];
+ let pickedWorker=0;
+ function drawWorkers(){
+  const w=dash.data('workers'), list=document.getElementById('workerlist');
+  if(w.status!=='ok'){ if(w.status==='error') fail(list); return; }
+  const rows=w.data; if(pickedWorker>=rows.length) pickedWorker=0;
+  list.replaceChildren(...rows.map((r,i)=>{const b=document.createElement('button'); b.type='button'; b.className='kx-w'; b.setAttribute('aria-pressed',String(i===pickedWorker)); b.dataset.key=r.name;
+   const [cls,label]=stateOf(r);
+   b.append(robotSVG(cls==='p-ok'?'var(--color-ok)':cls==='p-warn'?'var(--color-warn)':cls==='p-bad'?'var(--color-bad)':KV[0],{delay:i*.3}));
+   const info=txt('div'); info.style.minWidth='0'; info.append(txt('div','nm',r.name)); const p=txt('span','kx-pill '+cls); p.append(document.createElement('i'),document.createTextNode(label)); info.append(p);
+   if(r.next_run_at) info.append(txt('div','kx-sub','Next in '+rel(new Date(r.next_run_at)-Date.now())));
+   b.append(info); b.addEventListener('click',()=>{pickedWorker=i; drawWorkers();}); return b;}));
+  const r=rows[pickedWorker]; const [cls,label]=stateOf(r);
+  const nm=document.getElementById('w-name'); nm.textContent=r.name; nm.setAttribute('data-source','workers'); nm.setAttribute('data-field','name'); nm.setAttribute('data-row',String(pickedWorker));
+  const st=document.getElementById('w-status'); st.className='kx-pill '+cls; st.querySelector('span').textContent=label;
+  document.getElementById('w-job').textContent=jobOf(r.name);
+  document.getElementById('w-count').textContent=r.next_run_at?rel(new Date(r.next_run_at)-Date.now()):'—';
+  document.getElementById('w-next').textContent=r.next_run_at?fmtDT(r.next_run_at)+' IST':'—';
+  document.getElementById('w-last').textContent=r.last_fired_at?fmtDT(r.last_fired_at)+' IST':'Not run yet';
+  document.getElementById('w-sched').textContent=cronWords(r.schedule);
+  document.getElementById('w-sess').textContent=r.last_session||'—';
+ }
+ setInterval(()=>{ if(current==='workers') drawWorkers(); },30000);
+
+ let hostSel='All';
+ function mate(r,idx){const b=document.createElement('button'); b.type='button'; b.className='kx-mate'; b.setAttribute('aria-pressed',String(pickedBot===r.agent));
+  b.append(robotSVG(hostColor(r.host),{delay:((idx*.27)%1.4).toFixed(2),wave:pickedBot===r.agent}),txt('b',null,r.agent),txt('span','r',r.role));
+  const p=txt('span','kx-pill'); p.style.setProperty('--pc',hostColor(r.host)); p.append(document.createElement('i'),document.createTextNode(r.host)); b.append(p);
+  b.addEventListener('click',()=>{pickedBot=r.agent; if(current==='mkt') show('team'); else drawTeam(); document.getElementById('botdetail').scrollIntoView({block:'nearest'});}); return b;}
+ function drawTeam(){
+  const d=dash.data('agent_board'), grid=document.getElementById('teamgrid'), mk=document.getElementById('mktteam');
+  if(d.status!=='ok'){ if(d.status==='error'){fail(grid);fail(mk);} return; }
+  const hosts=['All',...new Set(d.data.map(r=>r.host))];
+  document.getElementById('hostfilter').replaceChildren(...hosts.map(h=>{const b=txt('button','kx-btn',h==='All'?'Everyone':h); b.type='button'; b.setAttribute('aria-pressed',String(h===hostSel)); b.addEventListener('click',()=>{hostSel=h; drawTeam();}); return b;}));
+  grid.replaceChildren(...d.data.filter(r=>hostSel==='All'||r.host===hostSel).map(mate));
+  mk.replaceChildren(...d.data.filter(r=>/Marketing|b5|b3/.test(r.world)).map(mate));
+  const det=document.getElementById('botdetail'), r=d.data.find(x=>x.agent===pickedBot);
+  det.hidden=!r; if(!r) return; const idx=d.data.indexOf(r);
+  document.getElementById('bd-name').textContent=r.agent+' · '+r.role; document.getElementById('bd-job').textContent=r.job;
+  const facts=[['Free model','model',1],['Host','host',1],['Works on','world',1],['In n8n','in_n8n'],['Live on channels','published'],['Last changed','updated']];
+  document.getElementById('bd-facts').replaceChildren(...facts.map(([k,f,mark])=>{const box=txt('div','kx-fact'); box.append(txt('div','k',k)); const v=txt('div','v'); const val=r[f];
+   v.textContent=typeof val==='boolean'?(val?'Yes':'Not yet (draft)'):f==='updated'?(val?fmtDT(val)+' IST':'—'):val; if(mark){v.setAttribute('data-source','agent_board'); v.setAttribute('data-field',f); v.setAttribute('data-row',String(idx));} box.append(v); return box;}));
+ }
+
+ const qSel={queue:'All',status:'All'};
+ function rowEl(r,vals,hide){const tr=document.createElement('tr'); tr.dataset.key=r.id; vals.forEach((v,i)=>{const td=document.createElement('td');
+   if(i===1){const p=txt('span','kx-pill '+(v==='done'?'p-ok':v==='blocked'?'p-bad':v==='in progress'?'p-warn':'')); p.append(document.createElement('i'),document.createTextNode(v)); td.append(p);} else td.textContent=v;
+   if(i===hide) td.className='hide-n'; tr.append(td);}); return tr;}
+ function drawWork(){
+  const st=dash.data('stages');
+  document.querySelectorAll('#pipeline [data-where]').forEach(e=>{const s=e.getAttribute('data-where').split('=')[1]; e.textContent=st.status==='ok'?((st.data.find(r=>r.stage===s)||{}).n??'—'):'—';});
+  const d=dash.data('roadmap'), tb=document.querySelector('#roadtable tbody');
+  if(d.status!=='ok'){ if(d.status==='error') fail(tb.closest('.kx-tablebox')); return; }
+  const mk=(key,opts)=>opts.map(o=>{const b=txt('button','kx-btn',o==='All'?(key==='queue'?'Everyone':'Any stage'):o); b.type='button'; b.setAttribute('aria-pressed',String(qSel[key]===o)); b.addEventListener('click',()=>{qSel[key]=o; drawWork();}); return b;});
+  document.getElementById('qfilters').replaceChildren(...mk('queue',['All','Agents','Akhil (CEO)']),...mk('status',['All','to do','in progress','blocked','done']));
+  const q=(document.getElementById('q').value||'').toLowerCase();
+  tb.replaceChildren(...d.data.filter(r=>(qSel.queue==='All'||r.queue===qSel.queue)&&(qSel.status==='All'||r.status===qSel.status)&&(!q||(r.id+' '+r.title+' '+r.world).toLowerCase().includes(q))).map(r=>rowEl(r,[r.id,r.status,r.world,r.title],2)));
+ }
+ document.getElementById('q').addEventListener('input',drawWork);
+ function drawMkt(){ drawTeam(); const d=dash.data('marketing'), tb=document.querySelector('#mkttable tbody'); if(d.status!=='ok') return; tb.replaceChildren(...d.data.map(r=>rowEl(r,[r.id,r.status,r.title],-1))); }
+
+ function drawGame(){
+  const s=dash.data('game_stats');
+  document.querySelectorAll('#game [data-source=game_stats]').forEach(e=>{const m=e.getAttribute('data-where').split('=')[1]; const r=s.status==='ok'?s.data.find(x=>x.metric===m):null; e.textContent=r?r.value:'—';});
+  if(s.status==='ok'){const p=(s.data.find(x=>x.metric==='overall_pct')||{}).value; requestAnimationFrame(()=>{document.getElementById('xpbar').style.width=Math.max(2,Number(p)||0)+'%';});}
+  const g=dash.data('game_worlds'), map=document.getElementById('gmap');
+  if(g.status!=='ok'){ if(g.status==='error') fail(map); return; }
+  map.replaceChildren(...g.data.map((r,i)=>{const d=txt('div','kx-isle'); const ring=document.createElementNS(NS,'svg'); ring.setAttribute('viewBox','0 0 64 64'); ring.setAttribute('width','60'); ring.setAttribute('height','60');
+   const C=2*Math.PI*26, pct=Number(r.pct)||0;
+   el('circle',{cx:32,cy:32,r:26,fill:'none',stroke:'var(--cds-chart-grid)','stroke-width':8},ring);
+   el('circle',{cx:32,cy:32,r:26,fill:'none',stroke:KV[i%8],'stroke-width':8,'stroke-linecap':'round','stroke-dasharray':(C*pct/100)+' '+C,transform:'rotate(-90 32 32)'},ring);
+   const t=el('text',{x:32,y:37,'text-anchor':'middle',fill:'var(--color-fg)','font-size':14},ring); t.textContent=pct+'%';
+   const v=txt('span','kx-sub',pct+'% of quests'); v.setAttribute('data-source','game_worlds'); v.setAttribute('data-field','pct'); v.setAttribute('data-row',String(i));
+   d.append(ring,txt('b',null,r.world),v); return d;}));
+ }
+
+ function drawN8n(){
+  const k=dash.data('n8n_kpis'); document.querySelectorAll('#n8n [data-source=n8n_kpis]').forEach(e=>{const m=e.getAttribute('data-where').split('=')[1]; const r=k.status==='ok'?k.data.find(x=>x.metric===m):null; e.textContent=r?r.value:'—';});
+  const u=dash.data('or_usage'); const row=u.status==='ok'&&u.data.length?u.data[0]:null;
+  document.querySelectorAll('#or-card [data-source=or_usage]').forEach(e=>{const f=e.getAttribute('data-field'); e.textContent=row&&row[f]!=null?row[f]:'—';});
+  const pct=row&&row.free_requests_limit?Math.min(100,Math.round(row.free_requests_used/row.free_requests_limit*100)):0;
+  const m=document.getElementById('or-meter'); m.style.background=pct>=100?'var(--color-bad)':pct>=80?'var(--color-warn)':'var(--color-ok)'; requestAnimationFrame(()=>{m.style.width=pct+'%';});
+  document.getElementById('or-when').textContent=row?('Checked '+fmtDT(row.checked_at)+' IST · resets 05:30 IST daily'+(pct>=100?' · used up for today, agents are on NVIDIA/Groq':'')):(u.status==='error'?'Could not load':'—');
+  const wf=dash.data('n8n_workflows'), wl=document.getElementById('wflist');
+  if(wf.status==='ok') wl.replaceChildren(...wf.data.map(w=>{const li=txt('div','kx-li'); li.dataset.key=w.id; const left=txt('div'); left.style.minWidth='0'; left.append(txt('div','nm',w.name),txt('div','sm',w.description||'')); const p=txt('span','kx-pill '+(w.active?'p-ok':'')); p.append(document.createElement('i'),document.createTextNode(w.active?'On':'Off')); li.append(left,p); return li;})); else if(wf.status==='error') fail(wl);
+  const ag=dash.data('agents'), al=document.getElementById('aglist');
+  if(ag.status==='ok') al.replaceChildren(...ag.data.map(a=>{const li=txt('div','kx-li'); li.dataset.key=a.id; const left=txt('div'); left.style.minWidth='0'; left.append(txt('div','nm',a.name),txt('div','sm','Changed '+fmtDT(a.updatedAt)+' IST')); const p=txt('span','kx-pill '+(a.published?'p-ok':'p-warn')); p.append(document.createElement('i'),document.createTextNode(a.published?'Live':'Draft')); li.append(left,p); return li;})); else if(ag.status==='error') fail(al);
+  const rn=dash.data('n8n_runs'), rl=document.getElementById('runlist');
+  if(rn.status==='ok'){ const names={}; (wf.status==='ok'?wf.data:[]).forEach(w=>names[w.id]=w.name);
+   rl.replaceChildren(...(rn.data.length?rn.data.slice(0,15).map(r=>{const li=txt('div','kx-li'); li.dataset.key=r.id; const left=txt('div'); left.style.minWidth='0'; left.append(txt('div','nm',names[r.workflowId]||r.workflowId),txt('div','sm',(r.startedAt?fmtDT(r.startedAt)+' IST':'')+' · '+(r.mode||''))); const p=txt('span','kx-pill '+(r.status==='success'?'p-ok':r.status==='error'||r.status==='crashed'?'p-bad':'p-warn')); p.append(document.createElement('i'),document.createTextNode(r.status)); li.append(left,p); return li;}):[txt('p','kx-note','No workflow runs yet.')])); } else if(rn.status==='error') fail(rl);
+ }
+ function draw(){ if(current==='home') drawHome(); if(current==='workers') drawWorkers(); if(current==='n8n') drawN8n(); if(current==='team') drawTeam(); if(current==='work') drawWork(); if(current==='mkt') drawMkt(); if(current==='game') drawGame(); }
+ dash.onData(draw);
+ const named=location.hash.slice(1); if(['home','workers','n8n','team','work','mkt','game'].includes(named)) show(named);
+})();
+</script>

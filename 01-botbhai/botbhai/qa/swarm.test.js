@@ -16,7 +16,7 @@ const FIX = { closed_weekdays: [2], holidays: [{ date: "2026-11-08", name: "Diwa
 // ---------------------------------------------------------------- invariants
 function allowedRupees(cfg) {
   const txt = JSON.stringify(cfg.catalog) + JSON.stringify(cfg.steps) + JSON.stringify(cfg.quizBank || {}) + JSON.stringify(cfg.faqs) + JSON.stringify(cfg.confirm || "") + JSON.stringify(cfg.greeting || "");
-  return new Set((txt.match(/₹\s?[\d,]+(?:\.\d+)?L?/g) || []).map((x) => x.replace(/\s/g, "")));
+  return new Set((txt.match(/₹\s?[\d,]+(?:\.\d+)?L?/g) || []).map((x) => x.replace(/\s/g, "").replace(/,$/, ""))); // a trailing comma is punctuation
 }
 function checkTurn(cfg, out, ctx) {
   const where = `${ctx.setup}/${ctx.persona} turn ${ctx.turn} "${ctx.input}"`;
@@ -28,7 +28,7 @@ function checkTurn(cfg, out, ctx) {
       assert.ok(r.text.length <= 1024, `interactive body >1024 chars at ${where}`);
       assert.strictEqual(new Set(r.options).size, r.options.length, `duplicate options at ${where}`);
     } else assert.ok(r.text.length <= 4096, `text >4096 at ${where}`);
-    for (const amt of r.text.match(/₹\s?[\d,]+(?:\.\d+)?L?/g) || []) assert.ok(ctx.rupees.has(amt.replace(/\s/g, "")), `invented price ${amt} at ${where}`);
+    for (const amt of r.text.match(/₹\s?[\d,]+(?:\.\d+)?L?/g) || []) assert.ok(ctx.rupees.has(amt.replace(/\s/g, "").replace(/,$/, "")), `invented price ${amt} at ${where}`);
   }
   const s = out.state;
   assert.ok(s.step >= -1 && s.step < cfg.steps.length, `bad step ${s.step} at ${where}`);
@@ -128,7 +128,7 @@ T("T21", "capacity full: 11 AM hidden", () => {
   assert.ok(!run("salon", ["book", "facial", "saturday"], { busy }).log[2].options.includes("11:00 AM"));
 });
 T("T22", "home visit → FAQ", () => { assert.match(run("salon", ["home visit possible?"]).log[0].bot, /Home service/); });
-T("T23", "Telugu script greetings", () => { const r = run("salon", ["హాయ్", "నమస్కారం"]); assert.match(r.log[0].bot, /How can I help/); assert.match(r.log[1].bot, /How can I help/); });
+T("T23", "Telugu script greetings get the menu in Telugu (A73)", () => { const r = run("salon", ["హాయ్", "నమస్కారం"]); assert.match(r.log[0].bot, /మీకు ఎలా సహాయం చేయగలను/); assert.match(r.log[1].bot, /మీకు ఎలా సహాయం చేయగలను/); });
 T("T24", "STOP, silence, START", () => { const r = run("salon", ["STOP", "hi", "START"]); assert.strictEqual(r.log[1].bot, ""); assert.match(r.log[2].bot, /How can I help/); });
 T("T25", "referral + talk to owner pauses the bot", () => {
   const r = run("salon", ["Hi REF-7KQ2 my friend said you are good", "talk to owner", "hello?? anyone"]);

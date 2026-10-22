@@ -11,6 +11,7 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return L.json(405, { error: "method" });
   let input; try { input = JSON.parse(event.body || "{}"); } catch (e) { return L.json(400, { error: "bad json" }); }
   const { client: clientId, visitor, text, source } = input;
+  const lang = ["en", "te", "hi"].includes(input.lang) ? input.lang : undefined; // A73: the page's language button
   if (!/^[0-9a-f-]{36}$/.test(clientId || "") || !/^[\w-]{6,64}$/.test(visitor || "") || typeof text !== "string" || !text.trim() || text.length > 500) return L.json(400, { error: "bad input" });
 
   // Anyone on the internet can call this, so cap traffic per visitor and per IP before touching the calendar.
@@ -29,7 +30,7 @@ exports.handler = async (event) => {
     L.busySlots(client.id),
   ]);
   const bot = BotBhai.createBot(client.niche, client.config);
-  let out = bot.handle(sess ? sess.state : BotBhai.newState(), text, { contact, source: src, busy });
+  let out = bot.handle(sess ? sess.state : BotBhai.newState(), text, { contact, source: src, busy, lang });
   // A booking is only saved after a Cloudflare Turnstile check (A50). Nothing is written otherwise, so when the page
   // resends the same message with a token, the engine replays the same booking from the same state.
   if (out.events.some((e) => e.type === "booking")) {

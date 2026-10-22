@@ -7,9 +7,15 @@
     "HEADROOM_TELEMETRY": "off"
   },
   "enabledMcpjsonServers": ["playwright"],
+  "enableAllProjectMcpServers": false,
   "permissions": {
     "deny": ["Read(./**/.env)", "Read(./**/.env.*)", "Read(./**/*.pem)", "Read(./**/*.key)",
-             "Bash(sudo:*)", "Bash(ssh:*)", "Bash(chmod 777:*)"]
+             "Bash(sudo:*)", "Bash(ssh:*)", "Bash(chmod 777:*)",
+             "Read(~/.config/google-chrome/**)", "Read(~/.config/chromium/**)", "Read(~/.config/BraveSoftware/**)",
+             "Read(~/.config/microsoft-edge/**)", "Read(~/.mozilla/**)",
+             "Read(~/Library/Application Support/Google/Chrome/**)", "Read(~/Library/Application Support/Firefox/**)",
+             "Edit(~/.config/google-chrome/**)", "Edit(~/.config/chromium/**)", "Edit(~/.mozilla/**)",
+             "mcp__claude-in-chrome"]
   },
   "hooks": {
     "SessionStart": [

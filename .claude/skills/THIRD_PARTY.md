@@ -10,6 +10,8 @@ Copied unmodified on 18 Oct 2026 with `npx skills add … --copy` (telemetry off
 
 Plugin (not copied, loaded by Claude Code): HyperFrames `hyperframes@hyperframes`, https://github.com/heygen-com/hyperframes, Apache-2.0, pinned to tag `v0.8.169` in `.claude/settings.json`. Skills only, no hooks or MCP servers. When a skill says `npx hyperframes@latest`, use `npx hyperframes@0.8.169` instead.
 
+Our own skills (not third-party): `short-answers` (adapted, see its header) and `diagrams` (A77, written 22 Oct 2026). No Anthropic security skill was vendored on 22 Oct 2026: the only one, `claude-security`, is proprietary; see `00-hq/research/agent-tooling-2026-10-22.md`.
+
 Kalpa rules still win: design skills must use the Kalpavruksha system in `00-hq/design/` (CLAUDE.md rule 6); security-audit runs only on our own code.
 
 ---

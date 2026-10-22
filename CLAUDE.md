@@ -31,7 +31,7 @@ Use the Superpowers skills (plugin `superpowers:*`, or read `00-hq/vendor/superp
 1. Run `node 00-hq/agents/tasks.js next` (and `validate`), then read `00-hq/ROADMAP.md`. Take the first 1–2 Agent-queue items that are `[ ]` (skip `[!]` blocked ones; resume `[~]` ones first using the log).
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.
-4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`. Then mark the same item built in the Kingdom game: `ArtifactData` update on `builds/<A-id>` (`done: true`, `at`, `proof` = commit) for https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1. New roadmap items get a `builds` doc too (`u` = world id, `t` = plain-English title).
+4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`. Then mark the same item built in the Kingdom game: `ArtifactData` update on `builds/<A-id>` (`done: true`, `at`, `proof` = commit) for https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1. New roadmap items get a `builds` doc too (`u` = world id, `t` = plain-English title). Also refresh the Launch road: write `python3 00-hq/launch/check.py --json` to the same artifact's db doc `launch/readiness` (A63).
 5. Append to `00-hq/log/<today IST>.md`: time, item IDs, what was built, tests run and results, anything Akhil must do (it goes to the CEO queue too).
 6. Commit as `Akhilkanigicharla <84580207+Akhilkanigicharla@users.noreply.github.com>` with a clear message, fetch + rebase, then push to `main`.
 

@@ -186,6 +186,7 @@ nav.tabs svg{width:18px;height:18px}
 .lb{display:grid;gap:8px}
 .lbrow{display:grid;grid-template-columns:22px 1fr 44px;gap:10px;align-items:center;border:0;background:none;padding:7px 6px;border-radius:var(--r-s);cursor:pointer;text-align:left;width:100%}
 .lbrow:hover{background:var(--soft)}
+.launchbar{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}.launchbar i{display:block;height:100%;background:var(--accent);border-radius:inherit}
 .bar{height:7px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:4px}
 .bar i{display:block;height:100%;border-radius:4px}
 
@@ -392,6 +393,36 @@ T("b7e","b7",2,"ops","90 days of paper trading","Logs results daily through a sc
 T("b7f","b7",3,"qa","Go-live gate","Validator compares paper results with simply holding, after costs.","Decide go or no-go.",15,0,"Beats holding after fees and tax over 90 days.",true),
 T("b7g","b7",4,"ops","Live micro, inside your signed capital rules","Adds a kill switch and a daily loss limit.","Fund the account with the amount you signed.",15,0,"Kill switch tested before the first live order.")
 ];
+// ---- launch:start ---- (A63) Launch road: two boss gates from 00-hq/SOFT-LAUNCH.md, countdowns, and the
+// readiness board (00-hq/launch/check.py --json, written by the build sprint to db launch/readiness).
+// Tested by node 00-hq/design/kingdom-launch.test.js, which runs this block as-is.
+const GATES=[
+  {id:"pilot",gate:"LP",at:"2026-11-16T00:00:00+05:30",when:"Mon 16 Nov",name:"Boss of the Silver Gate",what:"Pilot Day: first salon on a free pilot, deals channel posting daily, UPI on.",
+   needs:["hq12","hq13","b5c","L01","L02","b1c","b1d","L03","b1e","b1f","L04"]},
+  {id:"launch",gate:"LL",at:"2026-12-13T06:12:00+05:30",when:"Sun 13 Dec",name:"Launch Boss",what:"Soft launch: salon plans + Social Team add-on, Kits + Skill pack, deals channel, workshop sign-ups.",
+   needs:["LP","b1g","b1i","L05","b5d","b5g","L06","L07"]}
+];
+const LAUNCH_QUESTS=[
+T("L01","b5",2,"mkt","Deals bot links earn money (C39)","Built the poster bot; it stays on dry run until your links work.","Sign up for EarnKaro yourself and tell Claude when it can make links.",20,1,"One test deal post carries your EarnKaro link and #ad."),
+T("L02","b1",2,"ops","Prepaid SIM for the business WhatsApp (C14)","Lists the documents for Meta Business verification.","Buy a prepaid SIM (about ₹250) and start Meta Business verification.",40,3,"The SIM receives the WhatsApp OTP; verification submitted."),
+T("L03","b1",2,"tech","Robot check on the website chat (C28)","Wired Cloudflare Turnstile into the chat; it waits for your site key.","Add a free Turnstile widget for the BotBhai domain and paste the site key into Netlify.",15,0,"The chat shows the robot check and still books in demo mode."),
+T("L04","b1",2,"fin","A lawyer or CA reads the salon agreement (C23)","Wrote the agreement and the DPDP privacy notice.","Ask a lawyer or CA to read both and note changes.",30,3,"Written OK or a change list, before the first salon signs."),
+T("LP","hq",2,"qa","Boss of the Silver Gate: Pilot Day, Mon 16 Nov","The readiness board checks the WhatsApp number, the deploy and the pilot kit every day.","On 9 Nov read the board. If the WhatsApp number or deploy is red, the date moves (SOFT-LAUNCH.md).",30,0,"First salon starts its free pilot; deals channel live; UPI on.",true),
+T("L05","b1",3,"mkt","Social Team add-on: salon approves a month of posts","Agents draft the month plan and posts; Vigil checks the ad rules.","Show the month to the pilot salon on WhatsApp and get a yes.",20,2,"Salon approves the month; posts go out through the official API."),
+T("L06","b3",3,"sales","Run the Telugu workshop, Sun 29 Nov 11:00 IST","Built the sign-up page, outline and reminders.","Teach the 90-minute session on Google Meet and record it.",120,0,"Session held; recording saved; refunds honoured within 7 days."),
+T("L07","hq",3,"mkt","Announce the soft launch","Drafts the channel post and WhatsApp status in Telugu + English.","Post both on 13 Dec after the board is green.",15,0,"Posts are up; sign-ups open."),
+T("LL","hq",3,"qa","Launch Boss: Soft launch, Sun 13 Dec","Runs the readiness board, the audit and the smoke tests before the day.","On 6 Dec read the board. Any red offer, red CI or open WRONG audit item moves the date.",30,0,"All 5 offers live and the readiness board fully green.",true)
+];
+const daysTo=(iso,now)=>Math.max(0,Math.ceil((Date.parse(iso)-now)/864e5));
+const countdownText=(g,now)=>{const d=daysTo(g.at,now);return Date.parse(g.at)<=now?`${g.name} · ${g.when} · day reached`:`${d} day${d===1?"":"s"} to ${g.when}`;};
+function gateProgress(g,stateOf){const done=g.needs.filter(id=>stateOf(id)==="done").length;return {done,total:g.needs.length,ready:done===g.needs.length};}
+function readinessRows(r){
+  if(!r||!Array.isArray(r.rows))return {known:false,green:0,total:0,at:null,rows:[]};
+  const rows=r.rows.map(x=>{const bad=(x.checks||[]).find(c=>!c.ok);return {id:String(x.id||""),label:String(x.label||""),ok:!!x.ok,why:bad?String(bad.reason||bad.kind||""):""};});
+  return {known:true,green:rows.filter(x=>x.ok).length,total:rows.length,at:r.generated_at||null,rows};
+}
+// ---- launch:end ----
+TASKS.push(...LAUNCH_QUESTS);
 // Agents' builds ("the Forge"): ROADMAP agent-queue items. Seeded here; the live list comes from
 // the page's "builds" collection so any session can add a build without republishing.
 const BUILDS_SEED=[{"id":"A01","u":"b1","t":"Check every must-have salon feature works","done":false,"at":null,"proof":null},{"id":"A01b","u":"b1","t":"Restyle BotBhai screens in the Kalpavruksha look","done":false,"at":null,"proof":null},{"id":"A02","u":"b1","t":"Booking-time engine: hours, holidays, breaks, long services (3,000-day test)","done":true,"at":"2026-10-13","proof":"f0b8d27"},{"id":"A02b","u":"b1","t":"Fix chatbot misses: Telugu script, 'cancel' with no booking","done":false,"at":null,"proof":null},{"id":"A03","u":"b1","t":"Bridal enquiries, owner's 9 PM no-show list, review ask","done":false,"at":null,"proof":null},{"id":"A04","u":"b1","t":"Shared inbox: owner can reply as the salon","done":false,"at":null,"proof":null},{"id":"A05","u":"b1","t":"Simple billing with UPI QR for BotBhai clients","done":false,"at":null,"proof":null},{"id":"A06","u":"b1","t":"Voice agent: callers can interrupt, waits max 1.2 s, speaks Telugu/Hindi","done":true,"at":"2026-10-13","proof":"b487bcf"},{"id":"A07","u":"b1","t":"Sales kit: Telugu+English card, proposal, agreement","done":false,"at":null,"proof":null},{"id":"A08","u":"b1","t":"Visit sheet: 6+ salons in SR Nagar/Ameerpet","done":false,"at":null,"proof":null},{"id":"A09","u":"hq","t":"Kalpavruksha design system for every product","done":true,"at":null,"proof":null},{"id":"A10","u":"b1","t":"Owner dashboard + inbox mockups","done":false,"at":null,"proof":null},{"id":"A11","u":"b5","t":"Calculator + kit landing page mockups","done":false,"at":null,"proof":null},{"id":"A12","u":"b6","t":"Ledger Peaks landing, dashboard and X-ray mockups","done":false,"at":null,"proof":null},{"id":"A13","u":"b2","t":"JobCard app + Tab Lifeboat screen mockups","done":false,"at":null,"proof":null},{"id":"A14","u":"hq","t":"This Kingdom control room, redesigned","done":true,"at":null,"proof":null},{"id":"A15","u":"b5","t":"Calculator site with income tax 2026-27 (new vs old)","done":true,"at":"2026-10-13","proof":"6208eb4"},{"id":"A16","u":"b5","t":"Salary, FD, PPF, HRA calculators in English + Telugu","done":true,"at":"2026-10-13","proof":"6208eb4"},{"id":"A17","u":"b5","t":"GST, gratuity and RD calculators","done":false,"at":null,"proof":null},{"id":"A18","u":"b5","t":"Telegram deals poster (dry run, ad disclosure)","done":false,"at":null,"proof":null},{"id":"A19","u":"b3","t":"GATE 2027 kit v1 in Google Sheets","done":false,"at":null,"proof":null},{"id":"A20","u":"b3","t":"Tax + SIP kit v1 with built-in tests","done":false,"at":null,"proof":null},{"id":"A21","u":"b3","t":"Kit delivery: payment check + stamped PDF","done":false,"at":null,"proof":null},{"id":"A22","u":"b3","t":"14 days of daily-question posts","done":false,"at":null,"proof":null},{"id":"A23","u":"b7","t":"Trading lab data + 2026 Indian charges with sources","done":true,"at":"2026-10-13","proof":"1e5e4d5"},{"id":"A24","u":"b7","t":"Overfitting gate + register of every test run","done":true,"at":"2026-10-13","proof":"1e5e4d5"},{"id":"A25","u":"b7","t":"Backtests run automatically on GitHub","done":false,"at":null,"proof":null},{"id":"A26","u":"b7","t":"Paper-trading simulator + risk limits (no real orders)","done":false,"at":null,"proof":null},{"id":"A27","u":"b6","t":"AI cost in ₹ paise; unknown models flagged, never ₹0","done":true,"at":"2026-10-13","proof":"9f5fda1"},{"id":"A28","u":"b6","t":"Ledger Peaks database tables","done":false,"at":null,"proof":null},{"id":"A29","u":"b6","t":"Importers for OpenAI, Anthropic, LiteLLM, Langfuse, CSV","done":true,"at":"2026-10-13","proof":"9f5fda1"},{"id":"A30","u":"b6","t":"AI cost X-ray report (2 pages)","done":false,"at":null,"proof":null},{"id":"A31","u":"b6","t":"DPDP Act duties catalogue with sections","done":false,"at":null,"proof":null},{"id":"A32","u":"b6","t":"Indian personal-data scanner (counts only, no raw values)","done":true,"at":"2026-10-13","proof":"9f5fda1"},{"id":"A33","u":"b6","t":"Ledger Peaks dashboard, API and alerts","done":false,"at":null,"proof":null},{"id":"A34","u":"b2","t":"JobCard database: each technician sees only their own data","done":true,"at":"2026-10-13","proof":"e6e5ffc"},{"id":"A34b","u":"b2","t":"GST bill maths, UPI pay code, voice note → job card","done":true,"at":"2026-10-13","proof":"e6e5ffc"},{"id":"A35","u":"b2","t":"JobCard WhatsApp bot: voice → job card","done":false,"at":null,"proof":null},{"id":"A36","u":"b2","t":"JobCard phone app (Expo), works offline","done":false,"at":null,"proof":null},{"id":"A37","u":"b2","t":"Customer reminders + 'my customers' page","done":false,"at":null,"proof":null},{"id":"A38","u":"b4","t":"Tab Lifeboat: save and restore tabs with groups","done":true,"at":"2026-10-13","proof":"ca75d3c"},{"id":"A39","u":"b4","t":"OneTab/Session Buddy import + auto-save every 5 min","done":true,"at":"2026-10-13","proof":"ca75d3c"},{"id":"A40","u":"b4","t":"Tab Lifeboat privacy page + store screenshots","done":false,"at":null,"proof":null},{"id":"A41","u":"hq","t":"Invoice template + legal drafts","done":false,"at":null,"proof":null},{"id":"A44","u":"b1","t":"Salon sites score 100/100; lead finder reads business details","done":true,"at":"2026-10-13","proof":"c109d4e"},{"id":"A43","u":"hq","t":"Quality check on every update (leaks + all tests)","done":true,"at":"2026-10-13","proof":"ca75d3c"},{"id":"A42","u":"hq","t":"Kingdom quests match the real roadmap","done":true,"at":"2026-10-13","proof":"kingdom"},{"id":"A00","u":"b1","t":"BotBhai v3: WhatsApp bot, voice agent, lead finder (672 leads), SEO bot; 623 checks pass","done":true,"at":"2026-10-12","proof":"085468e"}];
@@ -408,7 +439,7 @@ const OUTLOOK={
 
 // ---------- State ----------
 const status={}; let reports=[]; let company=null; let builds=BUILDS_SEED.map(b=>({...b}));
-let db=null, canWrite=true, live=false;
+let db=null, canWrite=true, live=false, readiness=null;
 let tab="home", unitSel="hq", openTask=null;
 const stateOf=id=>status[id]||"todo";
 const unit=id=>UNITS.find(u=>u.id===id);
@@ -533,6 +564,23 @@ function ring(pct){
   return `<svg class="ring" viewBox="0 0 92 92" role="img" aria-label="${pct}% done"><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--soft)" stroke-width="9"/><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 46 46)"/><text x="46" y="52" text-anchor="middle" font-size="20" fill="var(--fg)">${pct}%</text></svg>`;
 }
 function greeting(){const h=new Date().getHours();return h<12?"Good morning":h<17?"Good afternoon":"Good evening";}
+function launchHtml(){
+  const now=Date.now(), b=readinessRows(readiness);
+  const gate=g=>{const p=gateProgress(g,stateOf);return `<div class="stack" style="gap:6px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><b>⚔️ ${esc(g.name)}</b><span class="xpchip">${esc(countdownText(g,now))}</span></div>
+    <p class="muted small" style="margin:0">${esc(g.what)} ${p.done}/${p.total} quests done${p.ready?" · boss unlocked":""}.</p>
+    <div class="launchbar" role="progressbar" aria-label="${esc(g.name)} quests" aria-valuenow="${p.done}" aria-valuemax="${p.total}"><i style="width:${p.total?p.done/p.total*100:0}%"></i></div>
+    <div class="flist">${(()=>{const open=g.needs.concat([g.gate]).filter(id=>stateOf(id)!=="done");return open.slice(0,4).map(id=>{const t=TASKS.find(x=>x.id===id);if(!t)return "";const st=stateOf(id);return `<button class="lbrow" style="grid-template-columns:24px 1fr auto" data-open="${t.id}"><span class="tick ${st}" aria-hidden="true">${st==="done"?"✓":""}</span><span class="small">${esc(t.t)}</span><span class="chip ${st}">${stLabel(st)}</span></button>`;}).join("")+(open.length>4?`<p class="muted small" style="margin:0">+${open.length-4} more launch quests after these.</p>`:"");})()}</div>
+  </div>`;};
+  return `<section class="panel stack launchroad" aria-labelledby="launchTitle">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3 id="launchTitle">🚀 Launch road</h3><span class="muted small">Dates and rules: SOFT-LAUNCH.md</span></div>
+    ${GATES.map(gate).join("")}
+    <div class="stack" style="gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><b>Readiness board</b><span class="muted small">${b.known?`${b.green}/${b.total} green${b.at?" · checked "+esc(String(b.at).slice(0,16).replace("T"," ")):""}`:"Not reported yet. The build sprint posts it after each run."}</span></div>
+      ${b.known?`<ul class="blist">${b.rows.map(r=>`<li class="small${r.ok?" done":""}"><span aria-label="${r.ok?"green":"red"}">${r.ok?"✅":"❌"}</span><span><b>${esc(r.id)}</b> ${esc(r.label)}${r.ok?"":`<br><span class="muted">${esc(r.why)}</span>`}</span></li>`).join("")}</ul>`:""}
+    </div>
+  </section>`;
+}
 function viewHome(){
   const g=game();
   const next=ORDER.find(t=>stateOf(t.id)==="doing")||ORDER.find(t=>stateOf(t.id)!=="done");
@@ -551,6 +599,8 @@ function viewHome(){
   </section>
 
   <div class="bounty"><span>🎁 <b>Daily bounty:</b> ${g.bountyToday?"claimed today! Come back tomorrow for another +25 XP.":"complete any quest today for a bonus +25 XP."}</span><span class="xpchip">${g.bountyToday?"✓ +25":"+25"}</span></div>
+
+  ${launchHtml()}
 
   ${next?`<section class="quest" style="--qc:var(${u.color})" aria-labelledby="nextTitle">
     <div class="chips"><span class="xpchip">+${xpOf(next)} XP</span>${next.g?'<span class="xpchip boss">⚔️ Boss fight</span>':''}<span class="chip"><span class="sw" style="background:var(${u.color})"></span>${esc(u.name)}</span>${stateOf(next.id)==="doing"?'<span class="chip doing">In progress</span>':''}</div>
@@ -790,6 +840,7 @@ render();setLive();
     db.collection("status").onSnapshot(snap=>{live=true;snap.docs.forEach(d=>{const v=d.data();if(v&&v.s){status[d.id]=v.s;if(v.at)statusAt[d.id]=v.at;}});setLive();render();},()=>{live=false;setLive();});
     db.collection("builds").onSnapshot(snap=>{const m=new Map(builds.map(b=>[b.id,b]));snap.docs.filter(d=>d.exists).forEach(d=>{const v=d.data()||{};if(v.u&&v.t)m.set(d.id,{id:d.id,u:v.u,t:v.t,done:!!v.done,at:v.at||null,proof:v.proof||null});});builds=[...m.values()];render();},()=>{});
     db.collection("reports").onSnapshot(snap=>{reports=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,data:d.data()||{}})).sort((a,b)=>a.id<b.id?1:-1).slice(0,14);render();},()=>{});
+    db.collection("launch").onSnapshot(snap=>{const d=snap.docs.find(x=>x.id==="readiness");readiness=d&&d.exists?d.data():null;if(tab==="home")render();},()=>{});
     db.collection("company").onSnapshot(snap=>{const d=snap.docs.find(x=>x.id==="profile");company=d?d.data():null;if(tab==="plan")render();},()=>{});
   }catch(e){setLive();}
 })();

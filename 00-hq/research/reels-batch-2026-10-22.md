@@ -23,3 +23,4 @@ Checked 22 Oct 2026: each repo's LICENSE file and last commit from a shallow clo
 
 ## Security note
 One screenshot (github.com/settings/security) shows **two-factor authentication not enabled** on Akhil's GitHub account. If it is older than the "2FA done" message of 20 Oct, ignore it; otherwise enable it (CEO queue).
+| GitHub Projects reel (24 Oct) | makecindy/cindy ("Cindy" desktop AI agent) | Apache-2.0 | 2026-10-24 | **Skip**: a desktop app installed on your PC (rule 2) that drives your logged-in browser, computer and phone (rule 12); it runs Claude Code / Codex with your own keys or plans, or local models that need a strong PC. We already get the same in the cloud: Claude sessions for code + n8n free models for words, with nothing on your PC |

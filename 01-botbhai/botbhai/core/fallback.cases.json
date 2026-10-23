@@ -1,0 +1,131 @@
+[
+ {
+  "text": "helo haircut karvaku avasaram bahut urgent time ledu pls",
+  "intent": "book",
+  "service": "Haircut (men)"
+ },
+ {
+  "text": "can i cum 2mrw evening for threding pls",
+  "intent": "book"
+ },
+ {
+  "text": "face cleanup cheyali ee weekend free ho na?",
+  "intent": "book",
+  "service": "Facial (fruit / gold)"
+ },
+ {
+  "text": "hair colour karna hai kal subah possible na?",
+  "intent": "book"
+ },
+ {
+  "text": "mani pedi combo karwana hai aaj shaam",
+  "intent": "book"
+ },
+ {
+  "text": "beard set cheyinchukovali eppudu raavachu",
+  "intent": "book",
+  "service": "Beard trim"
+ },
+ {
+  "text": "bridal makeup trial kab ho sakta pls batayiye",
+  "intent": "book",
+  "service": "Bridal makeup"
+ },
+ {
+  "text": "my daughter needs a trim before school function, can u fit her in",
+  "intent": "book"
+ },
+ {
+  "text": "kal wala appointment shift kar do pls aa nahi paunga",
+  "intent": "reschedule"
+ },
+ {
+  "text": "tmrw morning busy evening ki marchandi na booking",
+  "intent": "reschedule"
+ },
+ {
+  "text": "can we push my thing to sunday instead",
+  "intent": "reschedule"
+ },
+ {
+  "text": "naa slot ni inko roju ki maarchagalara",
+  "intent": "reschedule"
+ },
+ {
+  "text": "not coming today sorry pls remove my name",
+  "intent": "cancel"
+ },
+ {
+  "text": "appointment vaddu andi plans change ayyayi",
+  "intent": "cancel"
+ },
+ {
+  "text": "mujhe nahi aana ab, booking hata do",
+  "intent": "cancel"
+ },
+ {
+  "text": "hair spa ki entha avtundi roughly",
+  "intent": "prices",
+  "service": "Hair spa"
+ },
+ {
+  "text": "gents cutting ka kya lete ho bhai",
+  "intent": "prices",
+  "service": "Haircut (men)"
+ },
+ {
+  "text": "whats the damage for a facial these days",
+  "intent": "prices",
+  "service": "Facial (fruit / gold)"
+ },
+ {
+  "text": "sunday kuda tereche untara meeru",
+  "intent": "hours"
+ },
+ {
+  "text": "salon jubilee hills lo exact ga ekkada untadi landmark cheppandi",
+  "intent": "hours"
+ },
+ {
+  "text": "raat ko kitne baje tak khula rehta hai",
+  "intent": "hours"
+ },
+ {
+  "text": "any festive deals going on for diwali",
+  "intent": "offers"
+ },
+ {
+  "text": "first time customer ki emaina discount unda",
+  "intent": "offers"
+ },
+ {
+  "text": "koi combo offer chal raha hai kya abhi",
+  "intent": "offers"
+ },
+ {
+  "text": "last time cut chala bad ga chesaru very disappointed",
+  "intent": "human"
+ },
+ {
+  "text": "ek baar owner se baat karwa do please",
+  "intent": "human"
+ },
+ {
+  "text": "staff was rude to my mother yesterday not ok",
+  "intent": "human"
+ },
+ {
+  "text": "parking facility unda bike ki",
+  "intent": "other"
+ },
+ {
+  "text": "do u guys use organic products for kids skin",
+  "intent": "faq",
+  "faq": 4
+ },
+ {
+  "text": "kya card se payment ho jayega ya sirf cash",
+  "intent": "faq",
+  "faq": 3
+ }
+]

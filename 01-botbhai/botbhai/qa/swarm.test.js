@@ -69,7 +69,7 @@ T("T01", "numbers only; Tuesday is the weekly off → offers another day", () =>
 });
 T("T02", "Tenglish: 'repu evening haircut kavali' understood, asks men/women", () => {
   const r = run("salon", ["hi", "thursday evening haircut kavali"]);
-  assert.match(r.log[1].bot, /Thu, 15 Oct/); assert.match(r.log[1].bot, /Which service/); assert.ok(!r.state.data.service, "must not guess men/women");
+  assert.match(r.log[1].bot, /Thu, 15 Oct/); assert.match(r.log[1].bot, /Meeku ye service kavali/); // Tenglish in, Tenglish out assert.ok(!r.state.data.service, "must not guess men/women");
 });
 T("T03", "Hinglish price question gets prices", () => { assert.match(run("salon", ["bhai facial kitna hai?"]).log[0].bot, /₹999/); });
 T("T04", "typos: 'boook', 'hair cut', 'tmrw', '4pm'", () => {
@@ -83,7 +83,7 @@ T("T05", "bare '4' as a time asks to clarify (never silently 7 PM)", () => {
 T("T06", "reminder Confirm / 1 / sare confirm without restarting", () => {
   for (const c of ["Confirm", "1", "vasthanu"]) {
     const r = run("salon", ["book", "facial", "thursday", "4 pm", "Anu", c]);
-    assert.match(r.log[5].bot, /Confirmed: Facial/); assert.ok(r.log[5].events.some((e) => e.type === "confirmed"));
+    assert.match(r.log[5].bot, c === "vasthanu" ? /Confirm aipoyindi: Facial/ : /Confirmed: Facial/); assert.ok(r.log[5].events.some((e) => e.type === "confirmed"));
   }
 });
 T("T08", "reschedule from reminder", () => {
@@ -92,9 +92,9 @@ T("T08", "reschedule from reminder", () => {
 });
 T("T09", "Tenglish reschedule 'time marchali, ellundi ki' takes the date", () => {
   const r = run("salon", ["book", "facial", "thursday", "4 pm", "Anu", "time marchali, ellundi ki"]);
-  assert.match(r.log[5].bot, /current booking[\s\S]*Choose a time/); assert.strictEqual(r.state.data.date_iso, "2026-10-14");
+  assert.match(r.log[5].bot, /current booking[\s\S]*Time choose cheyyandi/); assert.strictEqual(r.state.data.date_iso, "2026-10-14");
 });
-T("T10", "cancel with Telugu yes", () => { const r = run("salon", ["book", "facial", "thursday", "4 pm", "Anu", "cancel", "avunu"]); assert.match(r.log[6].bot, /Cancelled/); });
+T("T10", "cancel with Telugu yes", () => { const r = run("salon", ["book", "facial", "thursday", "4 pm", "Anu", "cancel", "avunu"]); assert.match(r.log[6].bot, /Cancel aipoyindi/); });
 T("T11", "late evening: today's slots are over", () => {
   assert.match(run("salon", ["book", "facial", "today"], { now: "2026-10-12T15:15:00Z" }).log[2].bot, /Today's slots are over/);
 });
@@ -112,7 +112,7 @@ T("T15", "bridal enquiry: package info, event dates + budget collected, hot owne
   const m = run("salon", ["book", "Bridal makeup"]); assert.match(m.log[1].bot, /which dates/i); assert.ok(!m.log[1].events.some((e) => e.type === "booking"));
 });
 T("T16", "haggling: fixed prices, real offer only", () => {
-  const r = run("salon", ["facial 999 too much, 600 ki chestara?"]); assert.match(r.log[0].bot, /prices are fixed/); assert.match(r.log[0].bot, /20% off facials/);
+  const r = run("salon", ["facial 999 too much, 600 ki chestara?"]); assert.match(r.log[0].bot, /prices fixed/); assert.match(r.log[0].bot, /facials meeda 20% off/);
 });
 T("T17", "angry customer: apology only + handoff", () => {
   const r = run("salon", ["worst service, waiting since 30 min, no one picking phone"]);

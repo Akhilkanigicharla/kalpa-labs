@@ -230,6 +230,60 @@ module.exports = {
         "Annual (best value)": "सालाना (सबसे फ़ायदेमंद)",
         "Personal training add-on": "पर्सनल ट्रेनिंग ऐड-ऑन"
       }
+    },
+    "tg": {
+      "greeting": "Hey 💪 *{business}* ki welcome! *Free trial session* teesukondi, membership plans chudandi leda trainer tho matladandi.",
+      "menu": [
+        "Free trial book cheyyandi",
+        "Membership plans",
+        "Personal training",
+        "Timings & location",
+        "Front desk tho matladandi"
+      ],
+      "asks": {
+        "goal": "Mee main goal enti?",
+        "date": "Mee free trial eppudu kavali? (ivala, repu, Monday, leda 20/10)",
+        "slot": "Time choose cheyyandi:",
+        "name": "Mee peru?"
+      },
+      "confirm": "🔥 *Free trial book aipoyindi*\n👤 {name}\n🎯 Goal: {goal}\n📅 {date} at {slot}\n📍 {address}\n\nSports shoes, water bottle teeskuni randi. Trainer meeku free body-composition check chestaru.",
+      "catalogTitle": "Membership plans",
+      "bookWord": "free trial",
+      "faqs": [
+        "🧑‍🏫 Certified personal trainers: nelaku ₹4,000 — 12 sessions, diet plan tho saha. Free trial tho start cheyyalante *1* ani pampandi.",
+        "Prati member ki basic diet chart istam. Detailed nutrition coaching personal training tho vastundi.",
+        "👩 Ladies-only batch 10 AM – 12 PM, female trainers tho; separate changing room kuda undi.",
+        "Half-yearly, annual plans ni 30 rojula varaku freeze cheyyochu (medical leda travel).",
+        "Expiry mundu renew chesthe 10% off. *human* ani pampandi, desk payment link pamputundi.",
+        "UPI, cards, cash, annual plans meeda no-cost EMI."
+      ]
+    },
+    "hg": {
+      "greeting": "Hey 💪 *{business}* mein swagat hai! *Free trial session* lijiye, membership plans dekhiye ya trainer se baat kijiye.",
+      "menu": [
+        "Free trial book karein",
+        "Membership plans",
+        "Personal training",
+        "Timing aur location",
+        "Front desk se baat karein"
+      ],
+      "asks": {
+        "goal": "Aapka main goal kya hai?",
+        "date": "Free trial kab chahiye? (aaj, kal, Monday, ya 20/10)",
+        "slot": "Time chuniye:",
+        "name": "Aapka naam?"
+      },
+      "confirm": "🔥 *Free trial book ho gaya*\n👤 {name}\n🎯 Goal: {goal}\n📅 {date} at {slot}\n📍 {address}\n\nSports shoes aur paani ki bottle saath laiye. Trainer aapka free body-composition check karenge.",
+      "catalogTitle": "Membership plans",
+      "bookWord": "free trial",
+      "faqs": [
+        "🧑‍🏫 Certified personal trainers: ₹4,000/mahina, 12 sessions, diet plan ke saath. Free trial se shuru karne ke liye *1* bhejiye.",
+        "Har member ko basic diet chart milta hai. Detailed nutrition coaching personal training ke saath aati hai.",
+        "👩 Ladies-only batch 10 AM – 12 PM, female trainers ke saath; alag changing room bhi hai.",
+        "Half-yearly aur annual plans 30 din tak freeze ho sakte hain (medical ya travel).",
+        "Expiry se pehle renew kijiye aur 10% off paiye. *human* bhejiye, desk payment link bhejega.",
+        "UPI, card, cash aur annual plans par no-cost EMI."
+      ]
     }
   }
 };

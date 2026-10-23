@@ -61,9 +61,42 @@ ok("'english' switches back; mid-booking a switch re-asks the same question in t
   assert.match(h.log[2].bot, /आपको कौन सी सर्विस चाहिए\?/);
 });
 
-ok("Tenglish in Latin letters keeps English replies (understood, not switched)", () => {
-  const r = talk("salon", ["repu hair spa kavali"]);
-  assert.match(r.log[0].bot, /Sure! Hair spa, Tue, 13 Oct/); assert.strictEqual(r.state.lang, undefined);
+ok("Tenglish in English letters gets Tenglish replies, from hello to confirmation", () => {
+  const r = talk("salon", ["repu hair spa kavali", "1", "Priya"]);
+  assert.strictEqual(r.state.lang, "tg");
+  assert.match(r.log[0].bot, /Sare! Hair spa, Tue, 13 Oct 👍/); assert.match(r.log[0].bot, /Time choose cheyyandi/);
+  assert.match(r.log[1].bot, /Booking kosam mee peru\?/);
+  assert.match(r.log[2].bot, /Booking confirm aipoyindi/); assert.match(r.log[2].bot, /Tue, 13 Oct at 11:00 AM/); assert.match(r.log[2].bot, /gurthu chestam/);
+  assert.ok(!TE.test(r.log.map((x) => x.bot).join(" ")), "English letters only, no Telugu script");
+  assert.strictEqual(r.log[2].events.find((e) => e.type === "booking").booking.service, "Hair spa");
+});
+
+ok("Hinglish in English letters gets Hinglish replies", () => {
+  const r = talk("salon", ["mujhe kal facial chahiye", "shaam", "Anu"]);
+  assert.strictEqual(r.state.lang, "hg");
+  assert.match(r.log[0].bot, /Zaroor! Facial \(fruit \/ gold\), Tue, 13 Oct 👍/); assert.match(r.log[0].bot, /Time chuniye/);
+  assert.match(r.log[2].bot, /Booking pakki/); assert.match(r.log[2].bot, /yaad dilayenge/);
+  assert.ok(!HI.test(r.log.map((x) => x.bot).join(" ")), "English letters only, no Devanagari");
+  assert.match(talk("salon", ["rate kitna hai"]).log[0].bot, /Rate list/);
+});
+
+ok("plain English stays English; a single Tenglish word in an English chat switches; 'english' locks English", () => {
+  assert.match(talk("salon", ["I want a haircut tomorrow"]).log[0].bot, /Which service|Did you mean|Sure!/);
+  assert.strictEqual(talk("salon", ["I want a haircut tomorrow"]).state.lang, undefined);
+  const s = talk("salon", ["hi", "price entha"]); assert.strictEqual(s.state.lang, "tg"); assert.match(s.log[1].bot, /Book cheyyadaniki \*1\*/);
+  const e = talk("salon", ["english", "repu haircut kavali"]); assert.strictEqual(e.state.lang, "en"); assert.match(e.log[1].bot, /Which service|Did you mean/);
+  const t = talk("salon", ["tenglish"]); assert.match(t.log[0].bot, /Meeku ela help cheyyali/);
+  const h = talk("salon", ["hinglish"]); assert.match(h.log[0].bot, /Main kaise help karun/);
+});
+
+ok("Tenglish / Hinglish texts exist for every setup", () => {
+  const { SETUPS } = require("../setups/index.js");
+  for (const [id, c] of Object.entries(SETUPS)) for (const lg of ["tg", "hg"]) {
+    const L = c.i18n[lg]; assert.ok(L && L.greeting && L.confirm, `${id} ${lg}`);
+    assert.strictEqual(L.menu.length, c.menu.length, `${id} ${lg} menu`); assert.strictEqual(L.faqs.length, c.faqs.length, `${id} ${lg} faqs`);
+    for (const s of c.steps) if (s.ask) assert.ok(L.asks[s.field], `${id} ${lg} ask ${s.field}`);
+    assert.ok(!TE.test(JSON.stringify(L)) && !HI.test(JSON.stringify(L)), `${id} ${lg} is in English letters`);
+  }
 });
 
 ok("the web chat's language button (meta.lang) sets the reply language until the customer writes in another script", () => {

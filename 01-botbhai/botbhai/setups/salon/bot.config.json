@@ -288,6 +288,60 @@
         "Bridal makeup": "ब्राइडल मेकअप",
         "Bridal makeup trial": "ब्राइडल मेकअप ट्रायल"
       }
+    },
+    "tg": {
+      "greeting": "Hi ✨ *{business}* ki welcome! Slot book cheyyandi, prices chudandi leda ee roju offers chudandi.",
+      "menu": [
+        "Service book cheyyandi",
+        "Price list",
+        "Ee roju offers",
+        "Timings & location",
+        "Salon tho matladandi"
+      ],
+      "asks": {
+        "service": "Meeku ye service kavali?",
+        "date": "Ye roju? (ivala, repu, Saturday, leda 18/10)",
+        "slot": "Time choose cheyyandi:",
+        "name": "Booking kosam mee peru?"
+      },
+      "confirm": "💖 *Booking confirm aipoyindi*\n👤 {name}\n✂️ {service}\n📅 {date} at {slot}\n📍 {address}\n\n2 gantala mundu gurthu chestam. Inkoka booking kosam *menu* ani pampandi.",
+      "catalogTitle": "Price list",
+      "bookWord": "appointment",
+      "enquiry_role": "bridal artist",
+      "faqs": [
+        "🎉 Ee vaaram: *Hair spa + haircut ₹1,299* (₹150 save), Mon–Thu *facials meeda 20% off*. Counter lo ee chat gurinchi cheppandi.",
+        "💍 Bridal packages ₹15,000 nunchi start, trial kuda untundi. *human* ani pampandi, maa bridal artist call chestaru.",
+        "🏠 ₹1,500 paina bookings ki 5 km lopala home service undi.",
+        "UPI, cards, cash anni teesukuntam.",
+        "Memu L'Oréal Professionnel, O3+ products vaadatam."
+      ]
+    },
+    "hg": {
+      "greeting": "Hi ✨ *{business}* mein aapka swagat hai! Slot book kijiye, rates dekhiye ya aaj ke offers dekhiye.",
+      "menu": [
+        "Service book karein",
+        "Rate list",
+        "Aaj ke offers",
+        "Timing aur location",
+        "Salon se baat karein"
+      ],
+      "asks": {
+        "service": "Aapko kaunsi service chahiye?",
+        "date": "Kaunsa din? (aaj, kal, Saturday, ya 18/10)",
+        "slot": "Time chuniye:",
+        "name": "Booking ke liye aapka naam?"
+      },
+      "confirm": "💖 *Booking pakki*\n👤 {name}\n✂️ {service}\n📅 {date} at {slot}\n📍 {address}\n\nHum 2 ghante pehle yaad dilayenge. Ek aur booking ke liye *menu* bhejiye.",
+      "catalogTitle": "Rate list",
+      "bookWord": "appointment",
+      "enquiry_role": "bridal artist",
+      "faqs": [
+        "🎉 Is hafte: *Hair spa + haircut ₹1,299* (₹150 ki bachat) aur Mon–Thu *facials par 20% off*. Counter par is chat ka zikr kijiye.",
+        "💍 Bridal packages ₹15,000 se shuru hote hain aur inmein trial shamil hai. *human* bhejiye, hamari bridal artist aapko call karengi.",
+        "🏠 ₹1,500 se zyada ki booking par 5 km ke andar home service milti hai.",
+        "UPI, card aur cash sab chalta hai.",
+        "Hum L'Oréal Professionnel aur O3+ products use karte hain."
+      ]
     }
   }
 }

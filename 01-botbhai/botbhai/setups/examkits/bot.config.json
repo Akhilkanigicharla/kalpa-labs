@@ -181,6 +181,50 @@
         "RRB NTPC — online batch": "RRB NTPC — ऑनलाइन बैच",
         "Bank PO — prelims + mains": "Bank PO — प्रीलिम्स + मेन्स"
       }
+    },
+    "tg": {
+      "greeting": "Hi 📚 *{business}* ki welcome. Mee exam kosam free 3-question quiz rayandi, prati morning oka practice question pondandi.",
+      "menu": [
+        "Ee roju free quiz",
+        "Courses, kits & fees",
+        "Daily question plan",
+        "Idi ela work chestundi",
+        "Free demo class / counsellor"
+      ],
+      "asks": {
+        "service": "Meeru ye exam ki prepare avutunnaru?",
+        "name": "Super! Mee peru enti? Mee score card, repati question pamputanu."
+      },
+      "confirm": "🏆 *Score card — {name}*\n📝 {service}: *{score}/3*\n\n{advice}\n\nCourses, fees kosam *2* ani, counsellor tho free demo class kosam *human* ani pampandi.",
+      "catalogTitle": "Courses, kits & fees",
+      "bookWord": "quiz",
+      "faqs": [
+        "📅 Prati morning 7:00 AM ki oka exam-level question vastundi, evening answer, 2-line explanation tho. Eppatiki free. Aapalante eppudaina STOP ani pampandi.",
+        "Prati kit lo syllabus map, 300+ solved questions, 5 mock tests, 30-day plan untayi, anni WhatsApp lo PDF ga.",
+        "7 rojullo nachakapothe full refund, questions adagam."
+      ]
+    },
+    "hg": {
+      "greeting": "Hi 📚 *{business}* mein swagat hai. Apne exam ke liye free 3-question quiz dijiye aur har subah ek practice question paiye.",
+      "menu": [
+        "Aaj ka free quiz",
+        "Courses, kits aur fees",
+        "Daily question plan",
+        "Yeh kaise kaam karta hai",
+        "Free demo class / counsellor"
+      ],
+      "asks": {
+        "service": "Aap kis exam ki taiyari kar rahe hain?",
+        "name": "Bahut badhiya! Aapka naam kya hai? Main aapka score card aur kal ka question bhejunga."
+      },
+      "confirm": "🏆 *Score card — {name}*\n📝 {service}: *{score}/3*\n\n{advice}\n\nCourses aur fees ke liye *2* bhejiye, ya counsellor ke saath free demo class ke liye *human* bhejiye.",
+      "catalogTitle": "Courses, kits aur fees",
+      "bookWord": "quiz",
+      "faqs": [
+        "📅 Har subah 7:00 AM par ek exam-level question aata hai, aur shaam ko answer ke saath 2-line explanation. Hamesha free. Rokne ke liye kabhi bhi STOP bhejiye.",
+        "Har kit mein syllabus map, 300+ solved questions, 5 mock tests aur 30-day plan hai, sab WhatsApp par PDF mein.",
+        "7 din mein pasand na aaye toh full refund, koi sawaal nahi."
+      ]
     }
   }
 }

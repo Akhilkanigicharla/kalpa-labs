@@ -31,7 +31,7 @@ with sync_playwright() as p:
         assert labels[:2] == ["Book a service", "Price list"], labels
         assert pg.locator(".b.out").count() == 0, "no fake customer message on open"
         pg.fill("#text", "haircut men repu 7pm"); pg.press("#text", "Enter")
-        pg.wait_for_selector(".typing"); pg.wait_for_selector(".b.in >> text=Your name", timeout=8000)
+        pg.wait_for_selector(".typing"); pg.wait_for_selector(".b.in >> text=Booking kosam mee peru", timeout=8000)  # "repu" makes it Tenglish
         assert pg.locator(".typing").count() == 0
         pg.screenshot(path=str(shots / f"chat-booking-{scheme}.png"))
         pg.click(".langs [data-lang=te-IN]")

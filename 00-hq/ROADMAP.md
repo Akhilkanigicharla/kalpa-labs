@@ -110,6 +110,17 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 
 ---
 
+### Depth sprint · every product in full detail before go-live (Akhil, 23 Oct 2026: "all products together")
+Build sprints rotate: one world per run in this order, then repeat. Each item has two stages: (1) **gap map**: list every feature in that world's `PLAN.md` and `README.md` as built / partial / missing, with file and test evidence, in `<world>/docs/DEPTH.md`; every partial or missing line becomes its own A-item under this heading; (2) the item is `[x]` only when every line in DEPTH.md is built with a passing test, 390 px light + dark screens, privacy/terms, honest prices and a support path.
+- [ ] **A87** b1 · Depth: BotBhai end to end: AI fallback (A74) wired into web chat + WhatsApp behind an off switch, all 4 setups (salon, gym, real estate, coaching), 200+ real-style test messages incl. Telugu/Hindi script and multi-turn, owner sees every AI answer in the inbox. Check: DEPTH.md all built; `test-all.sh` green.
+- [ ] **A88** b3 · Depth: Kits + Skill pack. Check: DEPTH.md all built; kits tests green.
+- [ ] **A89** b5 · Depth: Telugu Deals (calculators + channel). Check: DEPTH.md all built; deals tests green.
+- [ ] **A90** b4 · Depth: Tab Lifeboat extension. Check: DEPTH.md all built; extension tests green.
+- [ ] **A91** b6 · Depth: Ledger Peaks. Check: DEPTH.md all built; FinOps tests green.
+- [ ] **A92** b2 · Depth: JobCard. Check: DEPTH.md all built; JobCard tests green.
+- [ ] **A93** b7 · Depth: Trading Lab (paper only, never sold). Check: DEPTH.md all built; trading tests green.
+- [ ] **A94** HQ · Depth: HQ site, launch board rows R2–R6 green (`python3 00-hq/launch/check.py`). Check: DEPTH.md all built; check.py all green.
+
 ## CEO queue (Akhil, ≤ 1 hour a day)
 
 Free items first. 💰 = costs money, waits for the go-public decision.
@@ -156,7 +167,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C42** b5 · A58: the deals poster dry-runs until you say "go". After C27 (Telegram bot + secrets), replace the sample deals in `05-deals/site/src/bot/deals.json` with real ones and set GitHub → Settings → Variables → `DEALS_LIVE` = `go` yourself. Ask a Telugu speaker to read the templates in `channel.py` first (15 min)
 - [ ] **C45** HQ · Optional, on your PC (your choice; Claude never installs anything there): try **OpenWhispr** (MIT, free, offline) to speak instead of type: download the Windows `.exe` from github.com/OpenWhispr/openwhispr/releases, pick a local model (start with the small one on a low-spec PC), press the hotkey and talk in English or Telugu. Skip its cloud and sign-in options (15 min)
 - [ ] **C46** b1 · A73 go-live gate: ask a Telugu speaker (and a Hindi speaker) to read `01-botbhai/botbhai/docs/i18n-review.md` on the phone and write better wording in the Notes column for any line that sounds odd; send it to Claude. No salon goes live in Telugu/Hindi before this (30 min)
-- [ ] **C47** b1 · A74 go-live gate: the AI fallback for unclear messages is built and tested privately (26/30 right on a free Groq model, no invented prices). Say "go" when you want it on for real chats; then put your Groq key into Netlify yourself as `GROQ_API_KEY` (never send it to Claude). Groq's free tier allowed 1,000 output tokens a minute for this model in our test today (from Groq's own error message), enough for about 15 unclear messages a minute (5 min)
+- [ ] **C47** b1 · A74 go-live gate (only after A87 is done; Akhil 23 Oct: "everything in detail, then only we go live"): the AI fallback for unclear messages is built and tested privately (26/30 right on a free Groq model, no invented prices). Say "go" when you want it on for real chats; then put your Groq key into Netlify yourself as `GROQ_API_KEY` (never send it to Claude). Groq's free tier allowed 1,000 output tokens a minute for this model in our test today (from Groq's own error message), enough for about 15 unclear messages a minute (5 min)
 - [x] **C13** HQ · Q-HQ-06: decide the go-public date (unlocks the 💰 items below) (done 2026-10-18: soft launch Sun 13 Dec 2026, Pilot Day Mon 16 Nov; see 00-hq/SOFT-LAUNCH.md)
 - [ ] 💰 **C14** (unlocked by C13; plan week of 2 Nov) b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)

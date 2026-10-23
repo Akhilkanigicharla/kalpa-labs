@@ -42,7 +42,7 @@
   const GREET = /^(hi+|hello+|hey+|hai+|helo|hlo|namaste|namasthe|namastey|namaskar|namaskaram|namaskaaram|vanakkam|good (morning|afternoon|evening)|start|menu|main menu|options|హాయ్|హలో|నమస్కారం|నమస్కారాలు|నమస్తే|नमस्ते|नमस्कार|हाय|हेलो)(?=\s|$|[!.,?])/i;
   // Tenglish / Hinglish / Telugu / Hindi words people really type
   const INTENT = {
-    human: /\b(human|agent|person|call me|callback|call back|talk to|speak to|reception|advisor|owner|manager|staff)\b|మాట్లాడాలి|మాట్లాడతాను|బాత్ కరనీ|बात करनी|बात करना|बात करें/,
+    human: /\b(human|agent|person|call me|callback|call back|talk to|speak to|reception|advisor|owner|manager|staff|matladali|matladatanu|baat karni|baat karna)\b|మాట్లాడాలి|మాట్లాడతాను|బాత్ కరనీ|बात करनी|बात करना|बात करें/,
     book: /\b(bo+k(ing)?|bok|buk|appointment|apointment|appoint|slot|schedule|reserve|trial|quiz|test me|kavali|kaavali|chahiye|chaiye|cheyyali|cheyandi|book cheyyi|book karo|book kar do|fix cheyyi)\b|బుక్|బుకింగ్|అపాయింట్మెంట్|అపాయింట్|స్లాట్|కావాలి|बुक|बुकिंग|अपॉइंटमेंट|चाहिए/,
     haggle: /\b(too much|costly|expensive|discount|last price|less price|reduce|kam karo|kam kijiye|thagginchandi|taggincha|tagginchandi|chestara|best price|final price)\b/,
     prices: /\b(price|prices|cost|fee|fees|charge|charges|rate|rates|how much|plans?|membership|packages?|projects?|kits?|entha|enta|ఎంత|kitna|kitne|kitni|kya rate|rate kya|price list)\b|ధర|कितना|कीमत/,
@@ -208,12 +208,20 @@
 
   // ---------------------------------------------------------------- reply language (A73)
   // The customer gets replies in Telugu or Hindi when they write in that script, tap a language, or type
-  // "telugu" / "hindi" / "english". Latin Tenglish keeps English replies (the words are still understood).
+  // "telugu" / "hindi" / "english". Tenglish / Hinglish typed in English letters gets replies the same way
+  // ("tg" / "hg", Roman script; service names, dates and times stay in English letters).
   // Owner alerts stay in English. Translations: Claude, 22 Oct 2026; a Telugu speaker reviews before go-live.
   const LANG_PICK = {
     te: /^(telugu|telugulo|telugu lo|telugu please|తెలుగు|తెలుగులో)$/,
     hi: /^(hindi|hindi me|hindi mein|hindi please|हिंदी|हिन्दी|हिंदी में)$/,
     en: /^(english|english please|english lo|english me|ఇంగ్లీష్|इंग्लिश)$/,
+    tg: /^(tenglish|telugu in english)$/,
+    hg: /^(hinglish|hindi in english)$/,
+  };
+  // Words that mark Tenglish / Hinglish in English letters (counted; the bigger count wins, a tie changes nothing)
+  const ROMAN = {
+    tg: /(^|\s)(kavali|kaavali|kavala|repu|reypu|ellundi|ivala|ivvala|cheyyandi|cheyyali|cheyyi|cheyandi|chestara|cheppandi|entha|enta|ekkada|eppudu|undi|unda|ledu|avunu|sare|vastanu|vasthanu|vastam|sayantram|saayantram|poddunna|madhyanam|garu|naaku|naku|meeru|meeku|ivvandi|kaadu|emaina|bagundi|baagundi|enti|pelli|intiki|matladali|chesko|teeskuntara|marchandi|raddu|thagginchandi)(?=\s|$)/g,
+    hg: /(^|\s)(chahiye|chaiye|kitna|kitne|kitni|hai|hain|kya|karo|kijiye|karna|karni|karwana|mujhe|mera|meri|mere|aaj|kal|parso|shaam|sham|subah|haan|nahi|nahin|kab|kahan|kidhar|bhai|aap|aapka|aapke|batao|bataiye|shaadi|ghar|chahta|chahti|wala|wali|badlo|kam)(?=\s|$)/g,
   };
   const SCRIPT = { te: /[ఀ-౿]/, hi: /[ऀ-ॿ]/ };
   const DAY_L = { te: ["ఆది", "సోమ", "మంగళ", "బుధ", "గురు", "శుక్ర", "శని"], hi: ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"] };
@@ -224,6 +232,8 @@
   const EVENT_L = {
     te: { wedding: "పెళ్లి", haldi: "హల్దీ", mehendi: "మెహందీ", sangeet: "సంగీత్", engagement: "నిశ్చితార్థం", reception: "రిసెప్షన్" },
     hi: { wedding: "शादी", haldi: "हल्दी", mehendi: "मेहंदी", sangeet: "संगीत", engagement: "सगाई", reception: "रिसेप्शन" },
+    tg: { wedding: "Pelli", haldi: "Haldi", mehendi: "Mehendi", sangeet: "Sangeet", engagement: "Nischitartham", reception: "Reception" },
+    hg: { wedding: "Shaadi", haldi: "Haldi", mehendi: "Mehendi", sangeet: "Sangeet", engagement: "Sagai", reception: "Reception" },
   };
   const STR = {
     en: {
@@ -331,6 +341,76 @@
       adv3: "शानदार — इन टॉपिक्स पर आप परीक्षा के लिए तैयार हैं. पूरे कोर्स में 5 मॉक टेस्ट हैं.",
       adv2: "अच्छा — एक कमी दूर करनी है. 30 दिन का प्लान इन्हीं कमज़ोर हिस्सों पर काम करता है.", adv1: "चलिए बेसिक्स से शुरू करते हैं. मुफ़्त रोज़ाना सवाल और चैप्टर के हिसाब से प्रैक्टिस से शुरू करें.",
     },
+    tg: {
+      menuAsk: "Meeku ela help cheyyali? Number tho reply ivvandi:", catalogFoot: "Book cheyyadaniki *1* ani pampandi.",
+      closedToday: "Sorry andi, ee roju memu close 🙏 Repu ela untundi? (leda vere roju cheppandi)", pastSlots: "Ee roju slots aipoyayi 🌙 Repu ela untundi? (leda vere roju cheppandi)",
+      fullyBooked: "Sorry andi, {day} full ga book aipoyindi 😕 Vere ye roju meeku kudurutundi?", optTomorrow: "Repu", optDayAfter: "Ellundi",
+      quizIntro: "Start cheddam! 3 chinna questions.", sureHeard: "Sare! {heard} 👍", letsBook: "Sare, mee {bookWord} book cheddam. Aapalante eppudaina *cancel* ani type cheyyandi.",
+      missedTime: "Aa roju {m} free ledu, kinda unna times lo okati choose cheyyandi.", missedShort: "Aa roju {m} free ledu.",
+      replyABCD: "Please A, B, C leda D ani reply ivvandi.", correct: "✅ Correct! ", notQuite: "❌ Kaadu — answer: *{ans}*. ",
+      dateErr: "Sorry, aa date ardham kaaledu (leda adi aipoyindi). *ivala*, *repu*, oka weekday, leda *15/10* la type cheyyandi.",
+      closedDay: "Sorry andi, {date} roju memu close 🙏 Vere ye roju kudurutundi?", tooFar: "Memu {n} rojula mundu varake bookings teesukuntam. Daggara date choose chestara?",
+      justCheck: "Okkasari cheppandi: {a} aa, {b} aa?", didYouMean: "Meeku kavalsindi {list}?", or: " leda ", chooseOption: "Please options lo okati choose cheyyandi (number tho reply ivvandi).",
+      typeAgain: "Inkosari type chestara?", gotIt: "Ardhamaindi: {got} 👍", nameErr: "Please peru type cheyyandi (letters matrame).",
+      moved: "🔁 Aipoyindi, mee booking marchanu.\n\n", grabbed: "Ayyo, {gone} ippude evaro teesukunnaru 😅 Inka free ga unnavi ivi:",
+      unsub: "Meeru unsubscribe ayyaru, inka maa nunchi messages raavu. Malli ravalante eppudaina *START* ani pampandi.",
+      cancelled: "Cancel aipoyindi. Parledu 🙂 Malli kavalante *book* ani pampandi, kotha slot chustanu.",
+      keep: "Sare, mee booking alage undi: {date} at {slot}. Kaluddam! 👋",
+      confirmed: "✅ Confirm aipoyindi: {svc}{date} at {slot}. Kaluddam! (Inka emaina kavalante *menu* ani pampandi.)",
+      reschedHead: "Parledu! Mee current booking {date} at {slot}.",
+      askCancel: "{date} at {slot} ki unna mee {what} cancel cheyyala? Cancel ki *YES* ani, unchadaniki inka edaina pampandi.", optYesCancel: "Yes, cancel", optKeep: "Unchandi",
+      offersDone: "Aipoyindi 🎉 Members ki matrame offers, nelaku max 2 vastayi. Aapalante eppudaina *STOP* ani pampandi.",
+      stopped: "Sare, aapesanu. Emi marchaledu.", nothingToCancel: "Meeku ye upcoming booking ledu, so cancel cheyyadaniki emi ledu 🙂",
+      welcomeBack: "Welcome back, {name}! 😊", sameAgain: " Last time laage *{svc}* kavala? *1* ani pampandi, slot chustanu.", welcomeBiz: "*{business}* ki malli welcome 😊",
+      menuMore: "Inka options kosam *menu* ani pampandi.", haggle: "Ardhamaindi andi 🙏 Andariki oke fair price undali ani maa prices fixed.",
+      haggleOffer: "\n\nOka good news: {offer}", haggleBook: "\n\nSlot book cheyyamantara? *1* ani pampandi.",
+      human: "Sare 🙂 Team ki cheppanu, *{business}* nunchi evaraina twaraga ikkade message chestaru (working hours: {hours}). {phone} ki call kuda cheyyochu. Naa daggariki ravalante *bot* ani type cheyyandi.",
+      sorry: "Sorry andi, sariga ardham kaaledu. Nenu veetilo help cheyyagalanu:", optIn: "\n\nMembers ki matrame offers kavala (nelaku max 2)? *OFFERS* ani pampandi.",
+      congrats: "💍 Congratulations! Maa *{item}* packages *{price}*, prati package lo oka trial untundi.",
+      askEvents: "Ye functions, ye dates lo? (e.g. *pelli 22 Jan, haldi 20 Jan*)", askBudget: "Total package ki mee budget entha? (e.g. *50k*, leda *not decided*)",
+      askName: "Super! Mee peru cheptara?", gotDates: "Ardhamaindi 👍\n📅 {events}", noDates: "Parledu, maa artist dates meeto confirm chestaru 👍",
+      cantCatch: "Sorry, date ardham kaaledu 🙏 {ask} Leda *not fixed yet* ani cheppandi.", toConfirm: "(date inka fix kaaledu)",
+      fullDate: "Sorry andi 🙏 {date} roju maa {role} full busy. Owner ni meeku call cheyyamani cheppanu; vere artist leda arrangement suggest cheyyagalaru.",
+      thanks: "Thank you, {name} 💛 Maa {role} daggara mee details unnayi, twaraga WhatsApp chestaru ({hours}).\n\nIppude mee *bridal trial* book cheyyala? Adi package lone undi.",
+      optTrial: "Bridal trial book cheyyandi", optArtist: "Artist tho matladali", trialStart: "Super! Mee *{trial}* book cheddam 💄 Aapalante eppudaina *cancel* ani type cheyyandi.", team: "team", artist: "artist",
+      adv3: "Super — ee topics lo meeru exam ki ready. Full course lo 5 mock tests unnayi.",
+      adv2: "Bagundi — oka gap fix cheyyali. 30-day plan exactly ee weak areas meeda work chestundi.", adv1: "Basics nunchi start cheddam. Free daily question, chapter-wise practice tho start cheyyandi.",
+    },
+    hg: {
+      menuAsk: "Main kaise help karun? Number se reply kijiye:", catalogFoot: "Book karne ke liye *1* bhejiye.",
+      closedToday: "Sorry, aaj hum band hain 🙏 Kal kaisa rahega? (ya koi aur din chuniye)", pastSlots: "Aaj ke slots khatam ho gaye 🌙 Kal kaisa rahega? (ya koi aur din chuniye)",
+      fullyBooked: "Sorry, {day} pura book hai 😕 Aapke liye aur kaunsa din theek rahega?", optTomorrow: "Kal", optDayAfter: "Parso",
+      quizIntro: "Chaliye shuru karte hain! 3 chhote sawaal.", sureHeard: "Zaroor! {heard} 👍", letsBook: "Theek hai, aapka {bookWord} book karte hain. Rokne ke liye kabhi bhi *cancel* likhiye.",
+      missedTime: "Us din {m} free nahi hai, neeche se koi time chuniye.", missedShort: "Us din {m} free nahi hai.",
+      replyABCD: "Please A, B, C ya D bhejiye.", correct: "✅ Sahi jawab! ", notQuite: "❌ Nahi — sahi jawab: *{ans}*. ",
+      dateErr: "Sorry, yeh date samajh nahi aayi (ya nikal chuki hai). *aaj*, *kal*, koi din, ya *15/10* likhiye.",
+      closedDay: "Sorry, {date} ko hum band hain 🙏 Aur kaunsa din theek rahega?", tooFar: "Hum {n} din aage tak hi booking lete hain. Koi nazdeek ki date chunenge?",
+      justCheck: "Bas confirm kar loon: {a} ya {b}?", didYouMean: "Kya aapka matlab {list} hai?", or: " ya ", chooseOption: "Please koi ek option chuniye (number se reply kijiye).",
+      typeAgain: "Kya aap phir se likh sakte hain?", gotIt: "Samajh gaya: {got} 👍", nameErr: "Please naam likhiye (sirf letters).",
+      moved: "🔁 Ho gaya, maine booking badal di hai.\n\n", grabbed: "Arre, {gone} abhi-abhi kisi aur ne le liya 😅 Abhi yeh free hain:",
+      unsub: "Aapka subscription band ho gaya, ab humse koi message nahi aayega. Wapas aane ke liye kabhi bhi *START* bhejiye.",
+      cancelled: "Cancel ho gaya. Koi baat nahi 🙂 Jab chahein *book* bhejiye, main naya slot dhoondh dunga.",
+      keep: "Theek hai, aapki booking waisi hi hai: {date} at {slot}. Milte hain! 👋",
+      confirmed: "✅ Confirm ho gaya: {svc}{date} at {slot}. Milte hain! (Kuch aur chahiye toh *menu* bhejiye.)",
+      reschedHead: "Koi baat nahi! Aapki abhi ki booking {date} at {slot} hai.",
+      askCancel: "Kya aap {date} at {slot} wala apna {what} cancel karna chahte hain? Cancel ke liye *YES* bhejiye, rakhne ke liye kuch aur.", optYesCancel: "Yes, cancel", optKeep: "Rehne dijiye",
+      offersDone: "Ho gaya 🎉 Aapko sirf members wale offers milenge, mahine mein max 2. Rokne ke liye kabhi bhi *STOP* bhejiye.",
+      stopped: "Theek hai, rok diya. Kuch nahi badla.", nothingToCancel: "Aapki koi upcoming booking nahi hai, toh cancel karne ko kuch nahi hai 🙂",
+      welcomeBack: "Welcome back, {name}! 😊", sameAgain: " Pichhli baar ki tarah *{svc}*? *1* bhejiye, main slot dhoondh dunga.", welcomeBiz: "*{business}* mein phir se swagat hai 😊",
+      menuMore: "Aur options ke liye *menu* bhejiye.", haggle: "Main samajhta hoon 🙏 Hamare rates fixed hain taaki har customer ko ek jaisa sahi daam mile.",
+      haggleOffer: "\n\nEk achhi khabar: {offer}", haggleBook: "\n\nKya main aapka slot book kar doon? *1* bhejiye.",
+      human: "Zaroor 🙂 Maine team ko bata diya hai, *{business}* se koi jaldi hi yahin message karega (working hours: {hours}). Aap {phone} par call bhi kar sakte hain. Mere paas wapas aane ke liye *bot* likhiye.",
+      sorry: "Sorry, main theek se samajh nahi paya. Main inmein help kar sakta hoon:", optIn: "\n\nSirf members wale offers chahiye (mahine mein max 2)? *OFFERS* bhejiye.",
+      congrats: "💍 Badhai ho! Hamare *{item}* packages *{price}* ke hain, aur har package mein ek trial shamil hai.",
+      askEvents: "Kaunse functions, aur kin dates par? (jaise *shaadi 22 Jan, haldi 20 Jan*)", askBudget: "Poore package ke liye aapka budget kitna hai? (jaise *50k*, ya *not decided*)",
+      askName: "Badhiya! Aapka naam batayenge?", gotDates: "Samajh gaya 👍\n📅 {events}", noDates: "Koi baat nahi, hamari artist aapse dates pakki kar lengi 👍",
+      cantCatch: "Sorry, date samajh nahi aayi 🙏 {ask} Ya bas *not fixed yet* likhiye.", toConfirm: "(date abhi fix nahi)",
+      fullDate: "Sorry 🙏 {date} ko hamari {role} free nahi hain. Maine owner ko aapko call karne ko kaha hai; woh koi aur artist ya intezaam suggest kar sakte hain.",
+      thanks: "Thank you, {name} 💛 Hamari {role} ke paas aapki details hain, woh jaldi hi WhatsApp karengi ({hours}).\n\nKya abhi apna *bridal trial* book karein? Yeh package mein shamil hai.",
+      optTrial: "Bridal trial book karein", optArtist: "Artist se baat karni hai", trialStart: "Badhiya! Aapka *{trial}* book karte hain 💄 Rokne ke liye kabhi bhi *cancel* likhiye.", team: "team", artist: "artist",
+      adv3: "Shandaar — in topics par aap exam ke liye ready hain. Full course mein 5 mock tests hain.",
+      adv2: "Achha — ek kami theek karni hai. 30-day plan inhi weak areas par kaam karta hai.", adv1: "Chaliye basics se shuru karte hain. Free daily question aur chapter-wise practice se shuru kijiye.",
+    },
   };
 
   function newState() { return { step: -1, data: {}, lead: { score: "cold", status: "new", intents: [] }, turns: 0, optedOut: false }; }
@@ -353,7 +433,7 @@
     const askOf = (step) => (I().asks || {})[step.field] || step.ask;
     const faqA = (f) => { const i = cfg.faqs.indexOf(f); return ((I().faqs || [])[i]) || f.a; };
     const menuLabel = (m, i) => ((I().menu || [])[i]) || m.label;
-    const dateL = (iso, fallback) => { if (LG === "en" || !iso) return fallback; const d = new Date(iso + "T00:00:00Z"); return `${DAY_L[LG][d.getUTCDay()]}, ${d.getUTCDate()} ${MON_L[LG][d.getUTCMonth()]}`; };
+    const dateL = (iso, fallback) => { if (!DAY_L[LG] || !iso) return fallback; const d = new Date(iso + "T00:00:00Z"); return `${DAY_L[LG][d.getUTCDay()]}, ${d.getUTCDate()} ${MON_L[LG][d.getUTCMonth()]}`; };
     const D = (state) => dateL(state.data.date_iso, state.data.date);
     function pickLocal(raw, list) { // a reply in the customer's script ("హెయిర్ స్పా") maps back to the canonical choice
       if (LG === "en" || !I().labels) return null;
@@ -478,7 +558,7 @@
     const trialName = () => cfg.enquiry_trial || `${enquiryItem().name} trial`;
     const cap = (k) => k[0].toUpperCase() + k.slice(1);
     const eventsLine = (evs) => evs.map((e) => `${cap(e.type)} ${e.date_iso ? fmtDate(new Date(e.date_iso + "T00:00:00Z")) : "(date to confirm)"}`).join(" · "); // owner alerts: English
-    const eventsLineL = (evs) => LG === "en" ? eventsLine(evs) : evs.map((e) => `${EVENT_L[LG][e.type] || e.type} ${e.date_iso ? dateL(e.date_iso) : T("toConfirm")}`).join(" · ");
+    const eventsLineL = (evs) => LG === "en" ? eventsLine(evs) : evs.map((e) => `${EVENT_L[LG][e.type] || e.type} ${e.date_iso ? dateL(e.date_iso, fmtDate(new Date(e.date_iso + "T00:00:00Z"))) : T("toConfirm")}`).join(" · ");
     const BUDGET_BANDS = () => cfg.bridal_budget_bands || [[0, "under 20k"], [20000, "20k–40k"], [40000, "40k–75k"], [75000, "75k+"]];
     const ASK = { get events() { return T("askEvents"); }, get budget() { return T("askBudget"); }, get name() { return T("askName"); } };
     function absorbBridal(state, raw) { // people / place can come in any message
@@ -695,10 +775,14 @@
       const raw = String(text || "").trim(); let t = norm(raw);
       // A73: reply language. An explicit pick wins; Telugu or Hindi script switches; otherwise it stays as it was.
       const picked = Object.keys(LANG_PICK).find((k) => LANG_PICK[k].test(t));
-      if (picked) state.lang = picked;
+      if (picked) { state.lang = picked; state.langPicked = true; }
       else if (SCRIPT.te.test(raw)) state.lang = "te";
       else if (SCRIPT.hi.test(raw)) state.lang = "hi";
-      else if (!state.lang && meta.lang && STR[meta.lang]) state.lang = meta.lang;
+      else {
+        const tg = (t.match(ROMAN.tg) || []).length, hg = (t.match(ROMAN.hg) || []).length;
+        if ((tg || hg) && tg !== hg && !state.langPicked && (!state.lang || ["en", "tg", "hg"].includes(state.lang))) state.lang = tg > hg ? "tg" : "hg";
+        else if (!state.lang && meta.lang && STR[meta.lang]) state.lang = meta.lang;
+      }
       LG = state.lang || "en";
       const ref = raw.match(/\bREF-[A-Z0-9]{4}\b/i);
       if (ref && !state.data.referred_by) {

@@ -15,7 +15,7 @@ ok("one line with service + day + time starts the booking with all three filled"
   assert.strictEqual(r.state.data.service, "Haircut (men)");
   assert.strictEqual(r.state.data.date_iso, "2026-10-21");
   assert.match(r.state.data.slot, /^7:00 PM/);
-  assert.match(r.last, /name/i); // only the name is left
+  assert.match(r.last, /name|peru/i); // only the name is left ("repu" makes it Tenglish)
   assert.doesNotMatch(r.last, /didn't quite get/);
 });
 ok("a service word alone (no 'book') starts a booking instead of 'didn't get that'", () => {
@@ -27,7 +27,7 @@ ok("a service word alone (no 'book') starts a booking instead of 'didn't get tha
 ok("a day typed while the service is being asked is kept, and the service is asked again", () => {
   const r = talk("salon", ["book", "repu"]);
   assert.strictEqual(r.state.data.date_iso, "2026-10-21");
-  assert.match(r.last, /Which service/);
+  assert.match(r.last, /Which service|Meeku ye service kavali/);
   assert.doesNotMatch(r.last, /Please choose one of the options/);
 });
 ok("a time typed early is used once the day is known", () => {
@@ -39,11 +39,11 @@ ok("a time typed early is used once the day is known", () => {
 ok("a time that isn't free is never guessed: it says so and shows the free times", () => {
   const r = talk("salon", ["haircut men repu 6pm"]);
   assert.strictEqual(r.state.data.slot, undefined);
-  assert.match(r.last, /6 PM isn't free/);
-  assert.match(r.last, /Choose a time/);
+  assert.match(r.last, /Aa roju 6 PM free ledu/); // Tenglish in ("repu"), Tenglish out
+  assert.match(r.last, /Time choose cheyyandi/);
 });
 ok("questions and greetings are not mistaken for a booking", () => {
-  assert.match(talk("salon", ["haircut price entha?"]).last, /Price list/);
+  assert.match(talk("salon", ["haircut price entha?"]).last, /Price list[\s\S]*Book cheyyadaniki/);
   assert.match(talk("salon", ["hi"]).last, /How can I help/);
   assert.strictEqual(talk("salon", ["timings?"]).state.step, -1);
 });

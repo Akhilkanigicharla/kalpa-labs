@@ -248,6 +248,64 @@
         "Green Acres plots, Shadnagar": "Green Acres प्लॉट, Shadnagar",
         "Rentals in Gachibowli / Kondapur": "Gachibowli / Kondapur में किराए के घर"
       }
+    },
+    "tg": {
+      "greeting": "Hello 👋 *{business}* ki welcome. Meeku ela unna illu kavalo cheppandi, homes shortlist chesi free site visit book chestanu.",
+      "menu": [
+        "Illu vetakandi + site visit",
+        "Current projects",
+        "Home loan help",
+        "Office location",
+        "Advisor tho matladandi"
+      ],
+      "asks": {
+        "purpose": "Meeru konalanukuntunnara leda rent ki kavala?",
+        "bhk": "Ye size?",
+        "budget": "Mee budget?",
+        "area": "Ye area kavali? (e.g. Gachibowli, Kollur, Tellapur, Kompally)",
+        "date": "Free site visit ki eppudu raagalaru? (ivala, repu, Sunday, leda 19/10)",
+        "slot": "Meeku kudire time:",
+        "name": "Mee peru?"
+      },
+      "confirm": "🏡 *Site visit book aipoyindi*\n👤 {name}\n🔎 {purpose} · {bhk} · {budget}\n📍 Area: {area}\n📅 {date} at {slot}\n\nVisit mundu advisor meeku saripoye 3 options WhatsApp chestaru. {address} nunchi free pick-up undi.",
+      "catalogTitle": "Current projects",
+      "bookWord": "site visit",
+      "faqs": [
+        "🏦 Property value lo 80–90% varaku home loans kosam SBI, HDFC, ICICI tho work chestam. Rough EMI: ₹50L, 20 years, 8.5% ≈ nelaku ₹43,400. Free eligibility check kosam *human* ani pampandi.",
+        "✅ Maa projects anni TS-RERA registered. Visit mundu RERA number, approved layout pamputam.",
+        "Skyline Meadows ready to move. Skyline Crest possession Dec 2027 ki plan chesaru (RERA prakaram).",
+        "Maa own projects meeda brokerage ledu. Rentals ki okasari 15 rojula rent fee untundi.",
+        "🌏 NRI purchases ni start nunchi end varaku chusukuntam, video site visits, power-of-attorney guidance tho saha."
+      ]
+    },
+    "hg": {
+      "greeting": "Hello 👋 *{business}* mein swagat hai. Bataiye aapko kaisa ghar chahiye, main homes shortlist karke free site visit book kar dunga.",
+      "menu": [
+        "Ghar dhoondhein + site visit",
+        "Current projects",
+        "Home loan help",
+        "Office location",
+        "Advisor se baat karein"
+      ],
+      "asks": {
+        "purpose": "Aap khareedna chahte hain ya rent par lena?",
+        "bhk": "Kitna bada?",
+        "budget": "Aapka budget?",
+        "area": "Kaunsa area pasand hai? (jaise Gachibowli, Kollur, Tellapur, Kompally)",
+        "date": "Free site visit ke liye kab aa sakte hain? (aaj, kal, Sunday, ya 19/10)",
+        "slot": "Pasand ka time:",
+        "name": "Aapka naam?"
+      },
+      "confirm": "🏡 *Site visit book ho gayi*\n👤 {name}\n🔎 {purpose} · {bhk} · {budget}\n📍 Area: {area}\n📅 {date} at {slot}\n\nVisit se pehle advisor aapko 3 matching options WhatsApp karenge. {address} se free pick-up milta hai.",
+      "catalogTitle": "Current projects",
+      "bookWord": "site visit",
+      "faqs": [
+        "🏦 Property value ke 80–90% tak home loan ke liye hum SBI, HDFC aur ICICI ke saath kaam karte hain. Rough EMI: ₹50L, 20 saal, 8.5% ≈ ₹43,400/mahina. Free eligibility check ke liye *human* bhejiye.",
+        "✅ Hamare sabhi projects TS-RERA registered hain. Visit se pehle hum RERA number aur approved layout bhejte hain.",
+        "Skyline Meadows ready to move hai. Skyline Crest ka possession Dec 2027 mein planned hai (RERA ke hisaab se).",
+        "Hamare apne projects par koi brokerage nahi. Rentals par ek baar 15 din ke rent jitni fee lagti hai.",
+        "🌏 NRI purchase hum shuru se aakhir tak sambhalte hain, video site visits aur power-of-attorney guidance samet."
+      ]
     }
   }
 }

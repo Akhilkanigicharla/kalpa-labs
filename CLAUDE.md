@@ -32,7 +32,7 @@ Use the Superpowers skills (plugin `superpowers:*`, or read `00-hq/vendor/superp
 2. Read that world's `PLAN.md` quest row and `research/` notes. Build it properly, with tests.
 3. Run the tests. If they fail and you can't fix them in this session, mark the item `[~]` and write exactly where you stopped in the log.
 4. On success tick `[x]` and append ` (done YYYY-MM-DD, <short commit hash>)`. Then mark the same item built in the Kingdom game: `ArtifactData` update on `builds/<A-id>` (`done: true`, `at`, `proof` = commit) for https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1. New roadmap items get a `builds` doc too (`u` = world id, `t` = plain-English title). Also refresh the Launch road: write `python3 00-hq/launch/check.py --json` to the same artifact's db doc `launch/readiness` (A63).
-5. Append to `00-hq/log/<today IST>.md`: time, item IDs, what was built, tests run and results, anything Akhil must do (it goes to the CEO queue too).
+5. Append to `00-hq/log/<today IST>.md`: time, item IDs, what was built, tests run and results, anything Akhil must do (it goes to the CEO queue too). Last, run `python3 00-hq/tools/run_tokens.py "<run name>"` and put its one-line token count in the log (it also appends to `00-hq/log/tokens.csv`). Token rule: every big tool output is re-read on every later step, so never print whole files, long JSON or full test logs (use grep/head/tail), and end the run as soon as the item is done.
 6. Commit as `Akhilkanigicharla <84580207+Akhilkanigicharla@users.noreply.github.com>` with a clear message, fetch + rebase, then push to `main`.
 
 ## Writing style for Akhil

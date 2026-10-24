@@ -57,3 +57,6 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **Kalpa Labs company site** (00-hq/site, Netlify site 187b4397): https://kalpa-labs.netlify.app (renamed from inquisitive-llama-a4a459 on 24 Oct 2026, Akhil: "rename it"). Live = 18 Oct version; 22 Oct Kalpavruksha version waits for "go".
 
 - **BotBhai language review** Google Sheet (C46, business Gmail): https://docs.google.com/spreadsheets/d/1e93kPkw7YkwWROftY8J-w_Yf5sfewdgdkBWBhXkxQTw/edit
+
+- **Chrome Web Store developer console** (b4, business Gmail): https://chrome.google.com/webstore/devconsole/45a157ac-3127-4bd2-b237-f48721de0874 (made by Akhil 25 Oct 2026)
+- **Firefox Add-ons developer profile** (b4): https://addons.mozilla.org/en-US/firefox/user/20271622/ (made by Akhil 25 Oct 2026)

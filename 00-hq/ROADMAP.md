@@ -143,7 +143,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C05** b1 · b1f: pick 15 salons from the cluster sheet (A08) (15 min)
 - [x] **C06** HQ · Q-HQ-02: create an empty "Kalpa Ledger" Google Sheet (10 min) (done 2026-10-24 by Akhil, in the Kalpa business Google account; link in LINKS.md)
 - [!] **C07** HQ · Q-HQ-03: add NIC codes on Udyam (free, 20 min) · 24 Oct: login works but the update page asks for an officer/user ID; parked by Akhil
-- [ ] **C08** HQ · Q-HQ-04: free business UPI QR on the spare account (20 min)
+- [x] **C08** HQ · Q-HQ-04: free business UPI QR on the spare account (20 min) (done 2026-10-24 by Akhil: PhonePe Business QR on the spare Kalpa account)
 - [x] **C09** b3 · K-04: create the Telegram channel (10 min) (done 2026-10-20: private channel + @Kalplabsbot, links in LINKS.md)
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
 - [x] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min) (done 2026-10-24 by Akhil: project ledger-peaks, Mumbai, https://wnntkohwhhinxrraquxu.supabase.co; API answers 401 without a key = live)

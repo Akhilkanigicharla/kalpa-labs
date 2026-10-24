@@ -11,6 +11,7 @@ node core/bridal.test.js
 node core/automations.test.js
 node core/nudges.test.js
 node core/lang.test.js
+node core/models.test.js
 node core/humanize.test.js
 node core/fallback.test.js
 node core/billing.test.js

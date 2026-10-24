@@ -1,0 +1,6 @@
+{
+  "groq_chat": "openai/gpt-oss-120b",
+  "groq_speech_to_text": "whisper-large-v3-turbo",
+  "retired": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "qwen/qwen3.6-27b", "qwen/qwen3-32b", "meta-llama/llama-4-scout-17b-16e-instruct", "meta-llama/llama-4-maverick-17b-128e-instruct", "moonshotai/kimi-k2-instruct-0905", "meta-llama/llama-guard-4-12b", "groq/compound", "groq/compound-mini", "distil-whisper-large-v3-en"],
+  "checked": "2026-10-24 against console.groq.com/docs/deprecations.md (+ ecorpit.com news): every model in retired has a Groq shutdown date on or before 21 Sep 2026; gpt-oss-120b and whisper-large-v3-turbo are not deprecated"
+}

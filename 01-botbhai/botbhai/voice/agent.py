@@ -34,9 +34,15 @@ from pipecat.services.sarvam.stt import SarvamSTTService
 from pipecat.services.sarvam.tts import SarvamTTSService
 from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams
 
+import json
+from pathlib import Path
 import prompt as P
 import recorded_tts as R
 import turns as T
+
+# A85: model names live in one file (core/models.json, copied next to this file in the Docker image)
+_MODELS = next((p for p in (Path(__file__).with_name("models.json"), Path(__file__).resolve().parent.parent / "core" / "models.json") if p.exists()), None)
+GROQ_CHAT_MODEL = json.loads(_MODELS.read_text())["groq_chat"] if _MODELS else "openai/gpt-oss-120b"
 
 SB_URL, SB_KEY = os.getenv("SUPABASE_URL", ""), os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 app = FastAPI(title="BotBhai voice agent")
@@ -104,7 +110,7 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         stt = SarvamSTTService(api_key=os.getenv("SARVAM_API_KEY"), mode="codemix", keyterms=T.stt_keyterms(cfg),
                                settings=SarvamSTTService.Settings(model=T.STT_MODEL))
         tts = SarvamTTSService(api_key=os.getenv("SARVAM_API_KEY"), settings=SarvamTTSService.Settings(model="bulbul:v3", voice=vp["voice"], language=T.pipecat_language(cfg), pace=vp["pace"], temperature=vp["temperature"]))
-        llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model="llama-3.3-70b-versatile"))
+        llm = GroqLLMService(api_key=os.getenv("GROQ_API_KEY"), settings=GroqLLMService.Settings(model=GROQ_CHAT_MODEL))
 
     context = LLMContext(messages=[{"role": "system", "content": P.system_prompt(cfg)}], tools=ToolsSchema(standard_tools=schemas))
     agg = LLMContextAggregatorPair(context, user_params=T.user_params())  # VAD 0.2 s + smart-turn v3.2 (1.2 s cap)

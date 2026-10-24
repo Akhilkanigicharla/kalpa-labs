@@ -58,22 +58,37 @@
           <input id="q" type="search" placeholder="Search names" aria-label="Search saved sessions" /></div>
         <ul id="list" class="sessions" aria-live="polite"></ul>
       </section>
+      <section class="card" aria-labelledby="h-find">
+        <h2 id="h-find">Find a tab</h2>
+        <p>Search every tab in every saved session by words in its title or address.</p>
+        <input id="find" type="search" placeholder="e.g. invoice flipkart" aria-label="Search all saved tabs" />
+        <ul id="hits" class="sessions" aria-live="polite"></ul>
+      </section>
 
       <section class="card pro" aria-labelledby="h-pro">
         <h2 id="h-pro">Backups that look after themselves</h2>
         <span class="eyebrow">Pro · opens soon</span>
         <ul class="ticks">
-          <li>90 days of snapshot history</li>
-          <li>Daily backup to your own Google Drive (only files it creates)</li>
-          <li>One-click restore on a new computer</li>
+          <li>90 days of snapshot history: go back to any day</li>
+          <li>A backup file every day, saved by itself to Downloads/Tab Lifeboat</li>
+          <li>Close duplicate tabs and tabs you haven't opened for a week, with an undo</li>
+          <li>"Where did this tab go?": when a page was last open, and when it vanished</li>
         </ul>
+        <div id="pro-tools" hidden>
+          <label class="check"><input id="daily" type="checkbox" /> Save a backup file every day</label>
+          <p id="daily-msg" class="hint" role="status"></p>
+          <p id="clean-preview" class="hint" role="status"></p>
+          <div class="row"><button id="clean-dupes" type="button">Close duplicates</button><button id="clean-stale" type="button" class="ghost">Duplicates + unused for a week</button></div>
+          <input id="where" type="url" placeholder="Paste a page address" aria-label="Where did this tab go" />
+          <p id="where-msg" class="hint" role="status"></p>
+        </div>
         <p class="prices"><span>Founding lifetime <b>$19 / ₹899</b> (first 50)</span><span>Yearly <b>$12 / ₹499</b></span><span>Lifetime <b>$29 / ₹1,199</b></span></p>
         <p class="hint">A licence key, not a subscription: nothing renews by itself.</p>
       </section>
 
       <section class="card" aria-labelledby="h-priv">
         <h2 id="h-priv">Privacy</h2>
-        <p>Your tabs stay on this computer. No account, no analytics, no servers. Tab Lifeboat only uses the tabs, tab groups, alarms and storage permissions.</p>
+        <p>Your tabs stay on this computer. No account, no analytics, no servers. Tab Lifeboat only uses the tabs, tab groups, alarms and storage permissions. Pro's daily backup file also asks for Downloads permission, only when you turn it on.</p>
       </section>
     </main>
     <script type="module" src="./main.ts"></script>

@@ -39,7 +39,7 @@ ok("a time typed early is used once the day is known", () => {
 ok("a time that isn't free is never guessed: it says so and shows the free times", () => {
   const r = talk("salon", ["haircut men repu 6pm"]);
   assert.strictEqual(r.state.data.slot, undefined);
-  assert.match(r.last, /Aa roju 6 PM free ledu/); // Tenglish in ("repu"), Tenglish out
+  assert.match(r.last, /Maa daggara 6 PM slot ledu 🙏 Daggaralo free: 4:00 PM leda 7:00 PM/); // Tenglish in ("repu"), Tenglish out, nearest times named
   assert.match(r.last, /Time choose cheyyandi/);
 });
 ok("questions and greetings are not mistaken for a booking", () => {

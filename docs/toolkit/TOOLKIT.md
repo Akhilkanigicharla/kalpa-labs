@@ -98,8 +98,9 @@ The other ADOPT items (public-apis, emilkowalski/skills, PostHog MCP once PostHo
 | 56 | emilkowalski/skills | see #33 | 46,992 | MIT | 2026-10-11 | Design/animation skills (Markdown) | **ADOPT** | (a) | ₹0 | Pixel, Plug | `npx skills add emilkowalski/skills -g` |
 | 57 | Leonxlnx/taste-skill | see #33 | 98,405 | MIT | 2026-10-14 | Art-direction skill (runs Node + Chrome, fetches images) | **TRY LATER** | (a) | ₹0 | Lens. May fight Kalpavruksha rules | — |
 | 58 | openshorts-plugin | https://github.com/mutonby/openshorts-plugin | 0 | MIT | 2026-10-17 | Claude plugin for hosted OpenShorts MCP | **SKIP (for now)** | (a) hosted | Hosted service pricing unknown | Created today; wait | — |
+| 59 | Day Trader Skill (Jakeschincariol), added 24 Oct 2026 | https://github.com/Jakeschincariol/day-trader-skill | 936 | MIT | 2026-10-20 | 11 Claude skills: scanner, news, entry/exit, "time machine" replay, risk PASS/BLOCK, budget sizing, Alpaca order tickets, alerts, earnings, Congress trades | **TRY LATER (ideas only)** | (a) skills, Python 3.8+ stdlib | ₹0 (no keys for data; Alpaca keys only for the broker skill) | S3 trading lab: borrow the risk-gate and replay ideas into `07-trading/`. **US stocks only, Alpaca broker; never connect a broker (SEBI, paper only)** · Quant, Guard | Do not install the broker skill. Notes: `07-trading/research/day-trader-skill.md` |
 
-Rows 1–54 are the names you sent. Rows 55–58 are related entries found while resolving them. Playwright is also used in CI through `@playwright/test`, which is the same project as #40.
+Rows 1–54 are the names you sent. Rows 55–58 are related entries found while resolving them. Row 59 was added on 24 Oct 2026 at Akhil's request. Playwright is also used in CI through `@playwright/test`, which is the same project as #40.
 
 Count over rows 1–54: ADOPT 13 (Scrapling, Presenton, HyperFrames, PostHog, Rea, Find Skills, Cloudflare audit, Grill Me, Playwright MCP, PostHog MCP, public-apis, claude-code-setup, Expo), plus the split #33 (emilkowalski/skills ADOPT); TRY LATER 17; SKIP 19; unresolved 4.
 
@@ -157,7 +158,7 @@ These are the findings behind each verdict. Each claim is the project's own READ
 | Kavi (Writer), Pixel (UI/UX Designer) | S4 | Presenton, emilkowalski/skills, SlopMonster (later) |
 | Scout (Lead Research), Deal (Affiliate Marketer) | S1, S6 | Scrapling (allowed sources only), public-apis, OpenSEO (later) |
 | Forge (App Engineer), Plug (Extensions Developer) | S2, S5 | Expo, Playwright, claude-code-setup, codebase-memory MCP (later) |
-| Pulse (Market News), Nidhi (Investing Research), Quant (Strategy Research), Guard (Risk Manager) | S3, S7 | public-apis; Perplexity MCP only if paid. **No** MiroFish (SEBI: no tips, paper only) |
+| Pulse (Market News), Nidhi (Investing Research), Quant (Strategy Research), Guard (Risk Manager) | S3, S7 | public-apis; Day Trader Skill ideas (risk gate, replay) rebuilt in our own paper-only lab; Perplexity MCP only if paid. **No** MiroFish (SEBI: no tips, paper only) |
 | Kalpa (Chief of Staff) | HQ | Grill Me, Find Skills |
 | Echo (Knowledge Librarian) | HQ | graphify (cloud, later) |
 | Chitti (WhatsApp Assistant), Vani (Voice Agent), Doc (Paperwork & OCR), Ledger (Budget & Finance), Adi (Ads & Copy) | S1, HQ | Nothing new needed now. BotBhai inbox, billing and slots are already built in-house |

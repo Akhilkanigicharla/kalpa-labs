@@ -6,6 +6,7 @@ export default defineConfig({
     name: "Tab Lifeboat",
     description: "Save all tabs and tab groups in one click. Automatic snapshots, so a crash or update never wipes them.",
     permissions: ["tabs", "tabGroups", "alarms", "storage", "unlimitedStorage"],
+    optional_permissions: ["downloads"], // asked only when a Pro user turns on the daily backup file
     action: { default_title: "Tab Lifeboat" },
   },
 });

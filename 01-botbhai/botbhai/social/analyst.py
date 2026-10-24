@@ -57,3 +57,72 @@ def report(rows: list[dict], old: dict | None = None) -> str:
         f"🎬 {top_kind.title()}s reached the most people (avg {reach_by_kind[top_kind]:,}).",
         f"➡️ Next month we'll make a few more '{up}' posts.",
     ])
+
+
+# --- A97: best posting time per format, learned from the owner's own insights export (CSV) ---
+MIN_POSTS, MIN_PER_HOUR, MIN_GAIN = 8, 2, 1.10  # need 8+ posts of a format; best hour needs 2+ posts and 10% more views
+KIND_WORDS = (("reel", "reel"), ("video", "reel"), ("carousel", "carousel"), ("album", "carousel"),
+              ("story", "story"), ("photo", "post"), ("image", "post"), ("post", "post"))
+
+
+def _col(headers: list[str], *words: str) -> str | None:
+    for w in words:  # first word wins, so "publish time" beats a generic "date"
+        for h in headers:
+            if w in h.lower():
+                return h
+    return None
+
+
+def read_views_csv(path) -> list[dict]:
+    """Rows {channel, kind, hour, views} from a Meta Business Suite / Instagram insights CSV export.
+    Header names vary by export, so columns are found by words (publish/time/date, type, views/plays/reach)."""
+    import csv
+    import datetime as _dt
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        rd = csv.DictReader(f)
+        hs = rd.fieldnames or []
+        tc, kc = _col(hs, "publish", "time", "date"), _col(hs, "post type", "type", "format")
+        vc, cc = _col(hs, "views", "plays", "reach", "impressions"), _col(hs, "channel", "platform", "account")
+        if not (tc and kc and vc):
+            raise ValueError(f"CSV needs time, type and views columns; found {hs}")
+        rows = []
+        for r in rd:
+            raw, kind_txt = (r.get(tc) or "").strip(), (r.get(kc) or "").lower()
+            try:
+                views = float((r.get(vc) or "").replace(",", ""))
+                when = None
+                for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%dT%H:%M:%S", "%m/%d/%Y %H:%M", "%d/%m/%Y %H:%M", "%Y-%m-%dT%H:%M"):
+                    try:
+                        when = _dt.datetime.strptime(raw[:19] if "T" in raw else raw[:16], fmt)
+                        break
+                    except ValueError:
+                        continue
+            except ValueError:
+                continue
+            kind = next((k for w, k in KIND_WORDS if w in kind_txt), None)
+            if when and kind:
+                rows.append({"channel": (r.get(cc) or "").strip().lower() if cc else "", "kind": kind,
+                             "hour": when.hour, "views": views})
+        return rows
+
+
+def best_times(rows: list[dict], current: dict, channel: str | None = None) -> dict:
+    """{kind: "HH:MM"} for formats whose best hour clearly wins; formats with < 8 posts keep `current`.
+    `current` is {kind: "HH:MM"} (the planner's slots). Times are IST, as exported for an Indian account."""
+    out = dict(current)
+    for kind, now in current.items():
+        mine = [r for r in rows if r["kind"] == kind and (not channel or r["channel"] in ("", channel))]
+        if len(mine) < MIN_POSTS:
+            continue
+        by_hour: dict[int, list[float]] = {}
+        for r in mine:
+            by_hour.setdefault(r["hour"], []).append(r["views"])
+        avg = {h: sum(v) / len(v) for h, v in by_hour.items() if len(v) >= MIN_PER_HOUR}
+        if not avg:
+            continue
+        best = max(avg, key=avg.get)
+        now_h = int(now[:2])
+        base = avg.get(now_h) or (sum(sum(v) for v in by_hour.values()) / len(mine))
+        if best != now_h and avg[best] >= base * MIN_GAIN:
+            out[kind] = f"{best:02d}:00"
+    return out

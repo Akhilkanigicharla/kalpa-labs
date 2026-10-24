@@ -197,4 +197,23 @@ assert sum(len(t) + 1 for t in yt.tags_fit(["kondapur flats"] * 60)) <= 501
 dsc = yt.description(cfg_re, "Walk through a 3 BHK.", ch, affiliate=True)
 assert dsc.startswith("Affiliate") and "00:00" in dsc and cfg_re.get("business", "") in dsc and len(dsc) <= 5000
 print("  ✓ youtube: valid chapters from a transcript, title cut points, 500-char tags, description with CTA + disclosure")
+# --- A97: posting time learned from the owner's insights CSV ---
+vd = pathlib.Path(tempfile.mkdtemp())
+lines = ["Publish time,Post type,Views,Account"]
+for d in range(1, 6):  # 10 reels: 19:30 ones get ~400 views, 08:xx ones ~1500
+    lines.append(f"2026-09-{d:02d} 19:30,IG reel,{400 + d},instagram")
+    lines.append(f"2026-09-{d + 10:02d} 08:15,IG reel,\"1,{500 + d}\",instagram")
+for d in range(1, 4):
+    lines.append(f"2026-09-{d:02d} 11:00,IG image,900,instagram")
+(vd / "views.csv").write_text("\n".join(lines) + "\n")
+vrows = analyst.read_views_csv(vd / "views.csv")
+assert len(vrows) == 13 and vrows[1]["views"] == 1501 and vrows[1]["hour"] == 8
+now = {"reel": "19:30", "carousel": "19:00", "post": "11:00", "story": "10:00"}
+bt = analyst.best_times(vrows, now)
+assert bt["reel"] == "08:00" and bt["post"] == "11:00" and bt["carousel"] == "19:00"   # reel moved; others < 8 posts
+assert analyst.best_times(vrows[:7], now) == now                                       # under 8 posts: nothing changes
+assert analyst.best_times(vrows, now, "facebook") == now                                # other channel: no data
+reel_slots = [s for s in plan.month_plan(cfg_re, START, 1, times=bt) if s["kind"] == "reel"]
+assert reel_slots and all(s["time"] == "08:00" for s in reel_slots)
+print("  ✓ best time: insights CSV moves the Reel slot to its best hour; under 8 posts or other channel, nothing changes")
 print("SOCIAL TEAM TESTS PASSED")

@@ -69,8 +69,10 @@ def festival_near(day: dt.date, within: int = 6) -> str | None:
     return None
 
 
-def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None = None) -> list[dict]:
-    """Returns slots: {id, date, time, kind: reel|carousel|post|story, pillar, service, festival}."""
+def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None = None, times: dict | None = None) -> list[dict]:
+    """Returns slots: {id, date, time, kind: reel|carousel|post|story, pillar, service, festival}.
+    `times` ({kind: "HH:MM"}, from analyst.best_times) replaces the default posting time per format."""
+    times = times or {}
     weights = weights or cfg.get("pillars") or PILLARS
     monday = start - dt.timedelta(days=start.weekday())
     feed = _pillar_sequence(weeks * len(FORMATS_PER_WEEK), weights)
@@ -80,6 +82,7 @@ def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None =
         wk = monday + dt.timedelta(weeks=w)
         for i, kind in enumerate(FORMATS_PER_WEEK):
             wd, t = DEFAULT_SLOTS[kind]
+            t = times.get(kind, t)
             day = wk + dt.timedelta(days=wd)
             if day < start:  # first week already under way: post on the start day instead of skipping
                 day = start
@@ -90,7 +93,7 @@ def month_plan(cfg: dict, start: dt.date, weeks: int = 4, weights: dict | None =
             k += 1
         for s in range(STORIES_PER_WEEK):
             day = wk + dt.timedelta(days=1 + s * 3)
-            slots.append({"id": f"W{w + 1}-story{s + 1}", "date": max(day, start).isoformat(), "time": "10:00", "kind": "story",
+            slots.append({"id": f"W{w + 1}-story{s + 1}", "date": max(day, start).isoformat(), "time": times.get("story", "10:00"), "kind": "story",
                           "pillar": (cfg.get("story_pillars") or ["offer", "proof"])[s % 2], "service": catalog[(w * 2 + s) % len(catalog)]["name"],
                           "festival": festival_near(day)})
     return sorted(slots, key=lambda x: (x["date"], x["time"]))

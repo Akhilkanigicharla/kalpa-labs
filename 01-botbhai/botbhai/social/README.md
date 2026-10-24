@@ -16,6 +16,7 @@ python3 -m social.team --out out/social --reply "skip 3, rest ok"      # owner's
 python3 -m social.team --out out/social --publish --base-url https://<public-folder>/ --ig-user <IG user id>
 #   dry run by default; add --live only when the client's IG_ACCESS_TOKEN secret is set
 python3 -m social.team --insights results.json                          # weekly report + new pillar mix
+python3 -m social.team --setup realestate --views insights.csv            # posting time per format learned from real views (8+ posts)
 python3 -m social.walkthrough --setup realestate --photos listing/ --rooms "Living room,Kitchen,..." \
     --title "3 BHK, Kondapur" --out out/walk.mp4 [--voice voice.mp3]   # 6-12 listing photos -> 9:16 walkthrough Reel
 ```

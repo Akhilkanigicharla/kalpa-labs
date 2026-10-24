@@ -50,3 +50,6 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **Kalpavruksha CEO Room** (agents dashboard, source `00-hq/design/ceo-room-dashboard.html`: cloud workers, robot office, development, marketing, Kingdom game): https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC — roadmap data from `python3 00-hq/tools/roadmap_json.py`
 
 - Supabase **ledger-peaks** (b6, free, Mumbai): https://wnntkohwhhinxrraquxu.supabase.co (made 24 Oct 2026 by Akhil; keys only in secrets)
+
+- **Kalpa Ledger** Google Sheet (C06, business Google account): https://docs.google.com/spreadsheets/d/1a4Fb2HBcezo3uMSX_9rXRwsxBEQMc3dTkE_8jrjh3hM/edit
+- Accounts (Akhil, 24 Oct): Kalpa Labs business items live in the separate business Gmail; the dev tools (GitHub, n8n, Supabase, Meta, HF) are on his personal Gmail.

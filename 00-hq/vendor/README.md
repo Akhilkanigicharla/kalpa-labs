@@ -12,4 +12,6 @@
 
 | `anatomy/` (skill, kit, references, scripts; `examples/`, `tests/`, `.github/` left out for size, 25 MB) | [wheresryan22/anatomy](https://github.com/wheresryan22/anatomy) commit in `anatomy/COMMIT`, 22 Oct 2026 | MIT © 2026 Ryan (`anatomy/LICENSE`) | Interactive isometric explainer figures (SVG, no dependencies, Node built-ins only). For one BotBhai "how a booking works" figure (A81) and workshop teaching. Not auto-loaded: read `anatomy/SKILL.md` when needed. **Never run `scripts/publish.mjs`** (it pushes to the author's public gallery; rule 9). Reviewed 22 Oct: no network calls except that publish script and a local headless-Chrome check. |
 
+| `youtube-agent/` (skills, LICENSE, README) | [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill) commit in `youtube-agent/COMMIT`, 24 Oct 2026 | MIT (`youtube-agent/LICENSE`) | 11 YouTube skills (plan, script, shorts, SEO, chapters, retention, packaging). Reading material for our own channel and workshop videos; not auto-loaded; it never publishes. |
+
 Rules (CLAUDE.md rule 3): only MIT/Apache/BSD/ISC files here, copied unmodified with their licence. Update by copying a newer release over the folder.

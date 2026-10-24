@@ -183,4 +183,18 @@ if shutil.which("ffmpeg"):
     mp4 = wk.build(pics, caps, cfg_re, wo, seconds_each=0.5)
     assert mp4 and mp4.stat().st_size > 10_000 and len(list((wo.with_suffix("")).glob("[0-9]*.jpg"))) == 6
 print("  ✓ walkthrough: 6-12 photos only, captions in order, 9:16 cards, one camera move per photo, MP4")
+# --- YouTube helper (rules from the MIT youtube-agent-skill) ---
+from social import youtube as yt
+segs = [{"start": t, "end": t + 9, "text": f"part {t} of the home tour"} for t in range(0, 300, 9)]
+ch = yt.chapters_from(segs, 300)
+assert ch[0][0] == 0 and len(ch) >= 3 and yt.validate_chapters(ch, 300) == []
+assert yt.chapter_text(ch).startswith("00:00 Part 0") and yt.stamp(3725) == "1:02:05"
+bad = yt.validate_chapters([(5, "Intro"), (12, "Kitchen")], 20)
+assert any("00:00" in e for e in bad) and any("at least 3" in e for e in bad) and any("shorter" in e for e in bad)
+tc = yt.title_check("3 BHK walkthrough in Kondapur | price, parking, sunlight, schools")
+assert tc["ok"] and tc["desktop_cut"] and len(tc["mobile_cut"]) == 40 and not yt.title_check("x" * 101)["ok"]
+assert sum(len(t) + 1 for t in yt.tags_fit(["kondapur flats"] * 60)) <= 501
+dsc = yt.description(cfg_re, "Walk through a 3 BHK.", ch, affiliate=True)
+assert dsc.startswith("Affiliate") and "00:00" in dsc and cfg_re.get("business", "") in dsc and len(dsc) <= 5000
+print("  ✓ youtube: valid chapters from a transcript, title cut points, 500-char tags, description with CTA + disclosure")
 print("SOCIAL TEAM TESTS PASSED")

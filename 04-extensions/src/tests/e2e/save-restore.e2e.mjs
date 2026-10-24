@@ -53,5 +53,24 @@ try {
   const list = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
   check(list.sessions.some((s) => s.kind === "auto"), "auto snapshot stored");
   check(list.sessions.some((s) => s.name === "e2e"), "session listed in IndexedDB");
+  // A105: find any saved tab, rename, and the Pro tools
+  const found = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "search", text: "page /b" }));
+  check(found.ok && found.hits.some((h) => h.url.endsWith("/b")), `search finds a saved tab (${found.hits?.length} hits)`);
+  await popup.evaluate((sid) => chrome.runtime.sendMessage({ type: "rename", id: sid, name: "Renamed" }), saved.session.id);
+  const l2 = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
+  check(l2.sessions.some((s) => s.name === "Renamed"), "rename saved");
+  const locked = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
+  check(!locked.ok && locked.error === "pro", "cleanup is Pro-only for free users");
+  await sw.evaluate(() => chrome.storage.local.set({ plan: "pro" }));
+  const dup = await ctx.newPage(); await dup.goto(base + "/a#again");
+  const prev = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
+  check(prev.ok && prev.duplicates === 1, `cleanup preview sees ${prev.duplicates} duplicate`);
+  const cl = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup", name: "dupes" }));
+  const urls = await sw.evaluate(() => chrome.tabs.query({}).then((t) => t.map((x) => x.url)));
+  check(cl.ok && cl.closed === 1 && urls.filter((u) => u.startsWith(base + "/a")).length === 1, "duplicate closed, one /a kept");
+  const l3 = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
+  check(l3.sessions.some((s) => s.name === "Before cleanup"), "cleanup saved 'Before cleanup' first (undo)");
+  const tl = await popup.evaluate((u) => chrome.runtime.sendMessage({ type: "timeline", text: u }), base + "/b");
+  check(tl.ok && tl.timeline && tl.timeline.snapshots >= 1, "timeline finds when /b was open");
 } finally { await ctx.close(); server.close(); }
 console.log(failed ? "E2E FAILED" : "E2E PASSED"); process.exit(failed ? 1 : 0);

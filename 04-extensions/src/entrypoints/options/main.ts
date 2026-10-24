@@ -26,9 +26,11 @@ function draw() {
     meta.append(name, sub);
     const open = document.createElement("button"); open.type = "button"; open.textContent = "Restore"; open.setAttribute("aria-label", `Restore ${s.name}`);
     open.onclick = async () => { const r = await send<{ tabs: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}` : "Could not open"; };
+    const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Rename"; ren.setAttribute("aria-label", `Rename ${s.name}`);
+    ren.onclick = async () => { const v = prompt("New name for this session", s.name); if (v && v.trim() && v.trim() !== s.name) { await send({ type: "rename", id: s.id, name: v }); await refresh(); } };
     const del = document.createElement("button"); del.type = "button"; del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
     del.onclick = async () => { if (confirm(`Delete "${s.name}"? This can't be undone.`)) { await send({ type: "delete", id: s.id }); await refresh(); } };
-    li.append(meta, open, del); ul.append(li);
+    li.append(meta, open, ren, del); ul.append(li);
   }
 }
 
@@ -40,6 +42,12 @@ async function refresh() {
   $("st-last").textContent = ago(st.lastSnapshot);
   $("st-persist").textContent = st.persisted ? "Chrome has marked this storage as persistent: it won't be cleared when the disk is low." : "Tip: keep a backup file too. Chrome may clear site storage when the disk is nearly full.";
   $("plan").textContent = st.plan === "pro" ? "Pro" : "Free";
+  $("pro-tools").hidden = st.plan !== "pro";
+  if (st.plan === "pro") {
+    const c = await send<{ duplicates: number; stale: number; days: number }>({ type: "cleanup-preview" });
+    if (c.ok) $("clean-preview").textContent = `Open now: ${plural(c.duplicates, "duplicate tab")}, ${plural(c.stale, "tab")} not opened for ${c.days} days. Everything is saved as "Before cleanup" first.`;
+    const { dailyBackupOn } = await browser.storage.local.get("dailyBackupOn"); $<HTMLInputElement>("daily").checked = !!dailyBackupOn;
+  }
   $("every").textContent = String(st.every ?? 5);
   if (st.limits) { $("free-n").textContent = String(st.limits.freeAutoSnapshots); $("pro-d").textContent = String(st.limits.proAutoDays); }
   draw();
@@ -80,9 +88,47 @@ $("importText").addEventListener("input", async () => {
   $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
 });
 $("doImport").addEventListener("click", async () => {
-  const r = await send({ type: "import", text: $<HTMLTextAreaElement>("importText").value });
+  const r = await send<{ nudge: string | null }>({ type: "import", text: $<HTMLTextAreaElement>("importText").value });
   $<HTMLTextAreaElement>("importText").value = ""; $<HTMLButtonElement>("doImport").disabled = true;
-  $("preview").textContent = r.ok ? "Imported." : err(r.error); await refresh();
+  $("preview").textContent = r.ok ? `Imported.${r.nudge ? " " + r.nudge : ""}` : err(r.error); await refresh();
+});
+
+let findT: ReturnType<typeof setTimeout> | undefined;
+$("find").addEventListener("input", () => {
+  clearTimeout(findT);
+  findT = setTimeout(async () => {
+    const q = $<HTMLInputElement>("find").value; const ul = $("hits"); ul.replaceChildren();
+    if (!q.trim()) return;
+    const r = await send<{ hits: { url: string; title: string; sessionName: string; createdAt: number; alsoIn: number }[] }>({ type: "search", text: q });
+    const hits = r.hits ?? [];
+    if (!hits.length) { const li = document.createElement("li"); li.className = "empty"; li.textContent = "No saved tab matches."; ul.append(li); return; }
+    for (const h of hits.slice(0, 50)) {
+      const li = document.createElement("li"); const meta = document.createElement("div"); meta.className = "meta";
+      const a = document.createElement("a"); a.href = h.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = h.title || h.url;
+      const sub = document.createElement("span"); sub.textContent = `${h.sessionName} · ${when(h.createdAt)}${h.alsoIn ? ` · in ${plural(h.alsoIn, "older session")} too` : ""}`;
+      meta.append(a, sub); li.append(meta); ul.append(li);
+    }
+  }, 200);
+});
+
+const cleanup = async (mode: "dupes" | "stale") => {
+  if (!confirm("Close these tabs? All open tabs are saved first as \"Before cleanup\", so you can restore them.")) return;
+  const r = await send<{ closed: number }>({ type: "cleanup", name: mode });
+  $("clean-preview").textContent = r.ok ? `Closed ${plural(r.closed, "tab")}. Restore "Before cleanup" to undo.` : err(r.error); await refresh();
+};
+$("clean-dupes").addEventListener("click", () => cleanup("dupes"));
+$("clean-stale").addEventListener("click", () => cleanup("stale"));
+$("daily").addEventListener("change", async () => {
+  const on = $<HTMLInputElement>("daily").checked;
+  if (on && !(await browser.permissions.request({ permissions: ["downloads"] }))) { $<HTMLInputElement>("daily").checked = false; $("daily-msg").textContent = "Daily file needs permission to save to Downloads."; return; }
+  const r = await send<{ made: number | null }>({ type: "daily-backup", name: on ? "on" : "off" });
+  $("daily-msg").textContent = !r.ok ? err(r.error) : on ? (r.made ? "On. Today's file is in Downloads/Tab Lifeboat." : "On. The next file is saved within the hour.") : "Off.";
+});
+$("where").addEventListener("change", async () => {
+  const r = await send<{ timeline: { firstSeen: number; lastSeen: number; snapshots: number; goneSince: number | null } | null }>({ type: "timeline", text: $<HTMLInputElement>("where").value });
+  const tl = r.timeline;
+  $("where-msg").textContent = !r.ok ? err(r.error) : !tl ? "Not in any saved session or snapshot." :
+    `First seen ${when(tl.firstSeen)}, last seen ${when(tl.lastSeen)} (${plural(tl.snapshots, "snapshot")}). ${tl.goneSince ? `It was gone by ${when(tl.goneSince)}. Search for it above to restore it.` : "It is still in your newest snapshot."}`;
 });
 
 void refresh();

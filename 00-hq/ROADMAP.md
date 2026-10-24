@@ -130,6 +130,8 @@ Build sprints rotate: one world per run in this order, then repeat. Each item ha
 - [ ] **A93** b7 · Depth: Trading Lab (paper only, never sold). Check: DEPTH.md all built; trading tests green.
 - [ ] **A94** HQ · Depth: HQ site, launch board rows R2–R6 green (`python3 00-hq/launch/check.py`). Check: DEPTH.md all built; check.py all green.
 
+- [x] **A104** HQ · Revenue engine: one 24-job sales team per business (6 pods, existing 22 agents) on n8n + HQ daily rollup (`00-hq/revenue/README.md`; KL GTM Kit, KL Pipeline; workflows ACjGCagrhbvnlAyV + 4jivwOaUOH8QtROZ, Guard review on every draft). Check: seed 168 jobs, live write + Guard run saved a draft. (done 2026-10-24, 8c5d395)
+
 ## CEO queue (Akhil, ≤ 1 hour a day)
 
 Free items first. 💰 = costs money, waits for the go-public decision.
@@ -139,18 +141,18 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [~] **C03** b1 · b1d: say "deploy"; set Netlify visitor access to public; paste GROQ/SARVAM keys into Netlify yourself (20 min) · 19 Oct: salon demo deployed (static, all BotBhai tests passed) at https://kalpa-botbhai.netlify.app, public, no keys needed. Left for Akhil: GROQ/SARVAM keys in Netlify only when voice goes live.
 - [ ] **C04** b1 · b1e: show the demo to one salon owner you know (20 min)
 - [ ] **C05** b1 · b1f: pick 15 salons from the cluster sheet (A08) (15 min)
-- [ ] **C06** HQ · Q-HQ-02: create an empty "Kalpa Ledger" Google Sheet (10 min)
+- [x] **C06** HQ · Q-HQ-02: create an empty "Kalpa Ledger" Google Sheet (10 min) (done 2026-10-24 by Akhil, in the Kalpa business Google account; link in LINKS.md)
 - [ ] **C07** HQ · Q-HQ-03: add NIC codes on Udyam (free, 20 min)
 - [ ] **C08** HQ · Q-HQ-04: free business UPI QR on the spare account (20 min)
 - [x] **C09** b3 · K-04: create the Telegram channel (10 min) (done 2026-10-20: private channel + @Kalplabsbot, links in LINKS.md)
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
-- [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
+- [x] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min) (done 2026-10-24 by Akhil: project ledger-peaks, Mumbai, https://wnntkohwhhinxrraquxu.supabase.co; API answers 401 without a key = live)
 - [x] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine) (done 2026-10-18: Akhil "approve gates": all thresholds incl. Deflated Sharpe ≥ 0.95; capital ₹0, paper only)
 - [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 10 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (25 min)
 - [x] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min) (done 2026-10-18: approved; ₹999 founding launch offer, ₹999–1,499 list; built in A59)
 - [ ] **C19** HQ · When each product has a live page, paste its real link into `00-hq/marketing/brands/<world>.json` (replaces `[add link]`), and decide which worlds get an Instagram account (you create them; 10 min per world)
 - [ ] **C20** HQ · Before the GitHub repo is ever made public: say "purge leads" and Claude removes the old lead lists (business phone numbers) from git history. Nothing to do while the repo stays private (1 min)
-- [ ] **C21** b1 · Try the new shared inbox on your phone: open the BotBhai site's `/inbox.html?demo=1`, tap a chat, tap Take over, send a reply, tap Resume bot. Tell Claude anything confusing. When a salon goes live, paste the updated `supabase/schema.sql` into Supabase → SQL Editor once (safe to re-run) (10 min)
+- [x] **C21** b1 · Try the new shared inbox on your phone: open the BotBhai site's `/inbox.html?demo=1`, tap a chat, tap Take over, send a reply, tap Resume bot. Tell Claude anything confusing. When a salon goes live, paste the updated `supabase/schema.sql` into Supabase → SQL Editor once (safe to re-run) (10 min) (done 2026-10-24 by Akhil: take over, reply, resume all worked; led to 'tomorrow' wording fix f2495f2)
 - [ ] **C22** HQ · Switch on billing (after the business UPI QR, Q-HQ-04): open `billing.html` → "Make a billing key", put it and your business UPI ID into Netlify as `BILLING_ADMIN_KEY` and `BILLING_UPI_ID`, paste `schema.sql` into Supabase once. Steps: `01-botbhai/docs/billing/README.md`. Look at `sample-invoice.pdf` first and say if anything should change (15 min)
 - [ ] **C23** b1 · Before the first salon signs: have a lawyer (or the CA at Q-HQ-15) read `01-botbhai/docs/sales/agreement.pdf` and `privacy-notice.pdf`, and a Telugu speaker read the card's front side. Print 20 A5 cards double-sided (≈₹200 at a local print shop, only when visits start) (30 min)
 - [ ] **C24** b3 · Before Razorpay KYC (Q-HQ-09): read the 6 policy pages (`/legal/…` on the calculator site, text in `05-deals/site/src/lib/kits.ts`), confirm the 7-day refund rule, and give Claude the full business address from your Udyam certificate for the Contact page (it shows only "Hyderabad, Telangana" now). Then make one Razorpay Payment Page per kit and send Claude the links (15 min)
@@ -165,11 +167,11 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C33** b2 · JobCard switches (A35–A37), free: in the JobCard Supabase project run the latest `02-jobcard/supabase/schema.sql`; Authentication → Sign In / Providers → Phone: add your own number under "Test phone numbers" for now (real SMS needs a paid provider, decide later). In Netlify (JobCard site, base dir `02-jobcard`) add `SUPABASE_URL` and `SUPABASE_ANON_KEY` (public), and yourself `SUPABASE_SERVICE_ROLE_KEY`; never paste keys into chat (15 min)
 - [ ] **C34** b2 · When the JobCard WhatsApp number exists: Meta → WhatsApp Manager → Message templates → new **Utility** template `jobcard_due_list` in Telugu, Hindi and English, text in `02-jobcard/bot/functions/reminders.js` (top comment); add Netlify env `WA_PHONE_NUMBER_ID`, and yourself `WA_ACCESS_TOKEN`, `WA_APP_SECRET`, `WA_VERIFY_TOKEN` (15 min)
 - [ ] **C35** b4 · E9 approve (A40): read `04-extensions/site/privacy.html` and `terms.html` (14-day refunds, reply within 7 days) and the store images in `04-extensions/store/`. Then Settings → Pages → Source "GitHub Actions", and Settings → Secrets and variables → Actions → **Variables** → `CONTACT_EMAIL` = the support email to show publicly (10 min) (policies approved by Akhil 2026-10-18; still to do: Pages source + CONTACT_EMAIL variable)
-- [ ] **C36** HQ · Cleanup, free: delete the Vercel AI Gateway credential in n8n and the GitHub secret `AI_GATEWAY_API_KEY` (Vercel dropped; its free tier blocks the models we need) (2 min)
+- [x] **C36** HQ · Cleanup, free: delete the Vercel AI Gateway credential in n8n and the GitHub secret `AI_GATEWAY_API_KEY` (Vercel dropped; its free tier blocks the models we need) (2 min) (done 2026-10-24 by Akhil)
 - [x] **C37** b1 · For A56: on huggingface.co (account kalpalabs5145) open ai4bharat/indic-parler-tts and click "Agree" to its terms; create a **read** token and add it yourself as GitHub secret `HF_TOKEN` (never in chat). Later, listen to the sample WAVs and say "good" or "bad" (5 min) (done 2026-10-24 by Akhil; HF access to indic-parler-tts confirmed)
 - [x] **C38** b3 · Workshop (A62): pick the price and the date for the first Telugu "Claude Code with me" session (2 min) (done 2026-10-18: ₹299, Sun 29 Nov 2026 11:00 IST)
 - [ ] **C39** b5 · Sign up for EarnKaro yourself (free; Claude never handles your login) and tell Claude when your account can make links. Claude checks its current terms and payout rules live before you sign up (10 min)
-- [ ] **C40** HQ · On your PC: in n8n open Ledger, Echo, Reel and Plug and tap Publish (Claude's safety check blocks publishing agents that can post or touch money; 2 min)
+- [x] **C40** HQ · On your PC: in n8n open Ledger, Echo, Reel and Plug and tap Publish (Claude's safety check blocks publishing agents that can post or touch money; 2 min) (done 2026-10-24 by Akhil)
 - [ ] **C41** HQ · A66: GitHub → Actions → "Kalpa Leads" → Run workflow (world `b1`, llm `none`), download `kalpa-leads`, and tell Claude whether the top 10 look like real prospects. Check and edit the starter seed lists in `00-hq/leads/seeds/` (b4–b7). Contact nobody yet (10 min)
 - [ ] **C43** b6 · Find 2 Indian AI startups willing to try the free Ledger Peaks X-ray as design partners (A72 readiness gap; after A33) (20 min to message founders you know)
 - [ ] **C44** b2 · Line up 3 AC/appliance technicians to test JobCard for 2 weeks in Feb 2027 (A72 readiness gap) (15 min)

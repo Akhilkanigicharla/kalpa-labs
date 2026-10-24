@@ -90,4 +90,11 @@ with tempfile.TemporaryDirectory() as d:
     check(len(data) == 4 and list(data[0].keys()) == K.COLS, "CSV written with fixed columns")
     check("ODbL" in open(os.path.join(d, "SUMMARY.md")).read(), "summary carries the OpenStreetMap attribution")
     check(summ[0][:4] == ("b1", 4, 2, 3), f"summary counts right {summ[0]}")
+# 6. not leads: building names and big chains score 0 and are marked skip (Akhil, 24 Oct: "Home Sree Towers is not a clinic")
+for nm, site in [("Home Sree Towers", "https://www.drmsanjayortho.com/"), ("Cult", "https://www.cult.fit/cult/center/kukatpally")]:
+    r = {"name": nm, "website": site, "phone": "1", "fetched": "yes"}
+    check(K.score("b1", r, "book online appointment") == 0 and r["status"] == "skip" and r["why"].startswith("skip:"), f"{nm} dropped")
+r = {"name": "AAKAARAA SALON", "website": "https://aakaaraasalon.com/", "phone": "1", "fetched": "yes"}
+check(K.score("b1", r, "") > 0 and not K.not_a_lead(r), "a real salon is kept")
+
 print(f"\nAll {ok} Kalpa Leads checks passed")

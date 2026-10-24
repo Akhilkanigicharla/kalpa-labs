@@ -241,7 +241,7 @@
       closedToday: "Sorry, we're {note} 🙏 How about tomorrow? (or pick any other day)", pastSlots: "Today's slots are over 🌙 How about tomorrow? (or pick any other day)",
       fullyBooked: "Sorry, {day} is fully booked 😕 Which other day works for you?", optTomorrow: "Tomorrow", optDayAfter: "Day after tomorrow",
       quizIntro: "Let's go! 3 quick questions.", sureHeard: "Sure! {heard} 👍", letsBook: "Great, let's book your {bookWord}. Type *cancel* any time to stop.",
-      missedTime: "{m} isn't free that day, so pick a time below.", missedShort: "{m} isn't free that day.",
+      missedTime: "{m} isn't free that day, so pick a time below.", missedShort: "{m} isn't free that day.", slotBooked: "Sorry, {m} is already booked that day 🙏 Closest free: {near}.", slotNotOffered: "We don't have a {m} slot 🙏 Closest free: {near}.", slotLate: "Sorry, {m} is too late for us. Our last booking is {last}{hours}. Closest free: {near}.", slotEarly: "Sorry, {m} is too early for us. Our first booking is {first}{hours}. Closest free: {near}.",
       replyABCD: "Please reply A, B, C or D.", correct: "✅ Correct! ", notQuite: "❌ Not quite — answer: *{ans}*. ",
       dateErr: "Sorry, I couldn't read that date (or it's already gone). Try *today*, *tomorrow*, a weekday, or *15/10*.",
       closedDay: "Sorry, {why} ({date}) 🙏 Which other day works?", tooFar: "We take bookings up to {n} days ahead. Could you pick a closer date?",
@@ -276,7 +276,7 @@
       closedToday: "క్షమించండి, ఈరోజు మేము మూసి ఉన్నాం 🙏 రేపు ఎలా ఉంటుంది? (లేదా వేరే ఏ రోజైనా ఎంచుకోండి)", pastSlots: "ఈరోజు స్లాట్లు అయిపోయాయి 🌙 రేపు ఎలా ఉంటుంది? (లేదా వేరే ఏ రోజైనా ఎంచుకోండి)",
       fullyBooked: "క్షమించండి, {day} పూర్తిగా బుక్ అయిపోయింది 😕 మీకు వేరే ఏ రోజు వీలవుతుంది?", optTomorrow: "రేపు", optDayAfter: "ఎల్లుండి",
       quizIntro: "మొదలుపెడదాం! 3 చిన్న ప్రశ్నలు.", sureHeard: "సరే! {heard} 👍", letsBook: "సరే, మీ {bookWord} బుక్ చేద్దాం. ఆపాలంటే ఎప్పుడైనా *cancel* అని టైప్ చేయండి.",
-      missedTime: "ఆ రోజు {m} ఖాళీ లేదు, కింద ఉన్న సమయాల్లో ఒకటి ఎంచుకోండి.", missedShort: "ఆ రోజు {m} ఖాళీ లేదు.",
+      missedTime: "ఆ రోజు {m} ఖాళీ లేదు, కింద ఉన్న సమయాల్లో ఒకటి ఎంచుకోండి.", missedShort: "ఆ రోజు {m} ఖాళీ లేదు.", slotBooked: "క్షమించండి, ఆ రోజు {m} ఇప్పటికే బుక్ అయింది 🙏 దగ్గరలో ఖాళీ: {near}.", slotNotOffered: "మా దగ్గర {m} స్లాట్ లేదు 🙏 దగ్గరలో ఖాళీ: {near}.", slotLate: "క్షమించండి, {m} చాలా ఆలస్యం. మా చివరి బుకింగ్ {last}{hours}. దగ్గరలో ఖాళీ: {near}.", slotEarly: "క్షమించండి, {m} చాలా ముందు. మా మొదటి బుకింగ్ {first}{hours}. దగ్గరలో ఖాళీ: {near}.",
       replyABCD: "దయచేసి A, B, C లేదా D అని పంపండి.", correct: "✅ సరైన జవాబు! ", notQuite: "❌ కాదు — సరైన జవాబు: *{ans}*. ",
       dateErr: "క్షమించండి, ఆ తేదీ అర్థం కాలేదు (లేదా అది అయిపోయింది). *ఈరోజు*, *రేపు*, ఒక వారం రోజు, లేదా *15/10* లా టైప్ చేయండి.",
       closedDay: "క్షమించండి, {date} న మేము మూసి ఉన్నాం 🙏 వేరే ఏ రోజు వీలవుతుంది?", tooFar: "మేము {n} రోజుల ముందు వరకే బుకింగ్ తీసుకుంటాం. దగ్గరి తేదీ ఎంచుకుంటారా?",
@@ -311,7 +311,7 @@
       closedToday: "माफ़ कीजिए, आज हम बंद हैं 🙏 कल कैसा रहेगा? (या कोई और दिन चुनें)", pastSlots: "आज के स्लॉट ख़त्म हो गए 🌙 कल कैसा रहेगा? (या कोई और दिन चुनें)",
       fullyBooked: "माफ़ कीजिए, {day} पूरा बुक है 😕 आपके लिए और कौन सा दिन ठीक रहेगा?", optTomorrow: "कल", optDayAfter: "परसों",
       quizIntro: "चलिए शुरू करते हैं! 3 छोटे सवाल.", sureHeard: "ज़रूर! {heard} 👍", letsBook: "ठीक है, आपका {bookWord} बुक करते हैं. रोकने के लिए कभी भी *cancel* लिखें.",
-      missedTime: "उस दिन {m} खाली नहीं है, नीचे से कोई समय चुनें.", missedShort: "उस दिन {m} खाली नहीं है.",
+      missedTime: "उस दिन {m} खाली नहीं है, नीचे से कोई समय चुनें.", missedShort: "उस दिन {m} खाली नहीं है.", slotBooked: "माफ़ कीजिए, उस दिन {m} पहले से बुक है 🙏 सबसे पास खाली: {near}.", slotNotOffered: "हमारे यहाँ {m} का स्लॉट नहीं है 🙏 सबसे पास खाली: {near}.", slotLate: "माफ़ कीजिए, {m} बहुत देर है. हमारी आख़िरी बुकिंग {last} है{hours}. सबसे पास खाली: {near}.", slotEarly: "माफ़ कीजिए, {m} बहुत जल्दी है. हमारी पहली बुकिंग {first} है{hours}. सबसे पास खाली: {near}.",
       replyABCD: "कृपया A, B, C या D भेजें.", correct: "✅ सही जवाब! ", notQuite: "❌ नहीं — सही जवाब: *{ans}*. ",
       dateErr: "माफ़ कीजिए, यह तारीख़ समझ नहीं आई (या निकल चुकी है). *आज*, *कल*, कोई दिन, या *15/10* लिखें.",
       closedDay: "माफ़ कीजिए, {date} को हम बंद हैं 🙏 और कौन सा दिन ठीक रहेगा?", tooFar: "हम {n} दिन आगे तक ही बुकिंग लेते हैं. कोई नज़दीक की तारीख़ चुनेंगे?",
@@ -346,7 +346,7 @@
       closedToday: "Sorry andi, ee roju memu close 🙏 Repu ela untundi? (leda vere roju cheppandi)", pastSlots: "Ee roju slots aipoyayi 🌙 Repu ela untundi? (leda vere roju cheppandi)",
       fullyBooked: "Sorry andi, {day} full ga book aipoyindi 😕 Vere ye roju meeku kudurutundi?", optTomorrow: "Repu", optDayAfter: "Ellundi",
       quizIntro: "Start cheddam! 3 chinna questions.", sureHeard: "Sare! {heard} 👍", letsBook: "Sare, mee {bookWord} book cheddam. Aapalante eppudaina *cancel* ani type cheyyandi.",
-      missedTime: "Aa roju {m} free ledu, kinda unna times lo okati choose cheyyandi.", missedShort: "Aa roju {m} free ledu.",
+      missedTime: "Aa roju {m} free ledu, kinda unna times lo okati choose cheyyandi.", missedShort: "Aa roju {m} free ledu.", slotBooked: "Sorry andi, aa roju {m} already book ayyindi 🙏 Daggaralo free: {near}.", slotNotOffered: "Maa daggara {m} slot ledu 🙏 Daggaralo free: {near}.", slotLate: "Sorry andi, {m} chala late. Maa last booking {last}{hours}. Daggaralo free: {near}.", slotEarly: "Sorry andi, {m} chala early. Maa first booking {first}{hours}. Daggaralo free: {near}.",
       replyABCD: "Please A, B, C leda D ani reply ivvandi.", correct: "✅ Correct! ", notQuite: "❌ Kaadu — answer: *{ans}*. ",
       dateErr: "Sorry, aa date ardham kaaledu (leda adi aipoyindi). *ivala*, *repu*, oka weekday, leda *15/10* la type cheyyandi.",
       closedDay: "Sorry andi, {date} roju memu close 🙏 Vere ye roju kudurutundi?", tooFar: "Memu {n} rojula mundu varake bookings teesukuntam. Daggara date choose chestara?",
@@ -381,7 +381,7 @@
       closedToday: "Sorry, aaj hum band hain 🙏 Kal kaisa rahega? (ya koi aur din chuniye)", pastSlots: "Aaj ke slots khatam ho gaye 🌙 Kal kaisa rahega? (ya koi aur din chuniye)",
       fullyBooked: "Sorry, {day} pura book hai 😕 Aapke liye aur kaunsa din theek rahega?", optTomorrow: "Kal", optDayAfter: "Parso",
       quizIntro: "Chaliye shuru karte hain! 3 chhote sawaal.", sureHeard: "Zaroor! {heard} 👍", letsBook: "Theek hai, aapka {bookWord} book karte hain. Rokne ke liye kabhi bhi *cancel* likhiye.",
-      missedTime: "Us din {m} free nahi hai, neeche se koi time chuniye.", missedShort: "Us din {m} free nahi hai.",
+      missedTime: "Us din {m} free nahi hai, neeche se koi time chuniye.", missedShort: "Us din {m} free nahi hai.", slotBooked: "Sorry, us din {m} already book hai 🙏 Sabse paas free: {near}.", slotNotOffered: "Hamare yahan {m} ka slot nahi hai 🙏 Sabse paas free: {near}.", slotLate: "Sorry, {m} bahut late hai. Hamari last booking {last} hai{hours}. Sabse paas free: {near}.", slotEarly: "Sorry, {m} bahut early hai. Hamari pehli booking {first} hai{hours}. Sabse paas free: {near}.",
       replyABCD: "Please A, B, C ya D bhejiye.", correct: "✅ Sahi jawab! ", notQuite: "❌ Nahi — sahi jawab: *{ans}*. ",
       dateErr: "Sorry, yeh date samajh nahi aayi (ya nikal chuki hai). *aaj*, *kal*, koi din, ya *15/10* likhiye.",
       closedDay: "Sorry, {date} ko hum band hain 🙏 Aur kaunsa din theek rahega?", tooFar: "Hum {n} din aage tak hi booking lete hain. Koi nazdeek ki date chunenge?",
@@ -522,10 +522,28 @@
       const si = slotStep(); if (si < 0 || !state.pendingTime || !state.data.date_iso || state.data.slot) return null;
       const step = cfg.steps[si]; const hit = pickChoice(state.pendingTime, freeSlots(state, choiceList(step)));
       const asked = state.pendingTime; delete state.pendingTime;
-      if (!hit) { state.missedTime = asked.toUpperCase(); return null; }
+      if (!hit) { state.missedTime = asked.toUpperCase(); state.missedNote = slotAdvice(state, asked) || undefined; return null; }
       state.data.slot = hit;
       if (Slots && cfg.schedule && cfg.schedule.staff) { const f = freeSlotInfo(state, step.choices === "auto" ? "auto" : choiceList(step)).find((x) => x.label === hit); if (f && f.staff.length) state.data.staff = f.staff[0]; }
       return hit;
+    }
+    function slotAdvice(state, asked) { // "6 PM" not free → say why, name the 2 nearest free times and the last/first booking
+      const si = slotStep(); if (si < 0 || !asked) return null;
+      const step = cfg.steps[si]; const all = Array.isArray(choiceList(step)) ? choiceList(step) : [];
+      const free = freeSlots(state, choiceList(step));
+      const t = String(asked).match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i); // "6 pm", "6:30pm"
+      const am = t ? ((+t[1] % 12) + (/pm/i.test(t[3]) ? 12 : 0)) * 60 + +(t[2] || 0) : null;
+      if (am === null || !free.length) return null;
+      const fm = free.map((f) => [f, slotMinutes(f)]).filter((x) => x[1] !== null);
+      if (!fm.length) return null;
+      const near = fm.slice().sort((a, b) => Math.abs(a[1] - am) - Math.abs(b[1] - am)).slice(0, 2).sort((a, b) => a[1] - b[1]).map((x) => x[0]);
+      const span = (all.length ? all : free).map(slotMinutes).filter((x) => x !== null);
+      const v = { m: asked.toUpperCase(), near: near.join(T("or")), hours: cfg.hours ? ` (${cfg.hours})` : "",
+        last: (all.length ? all : free)[span.indexOf(Math.max(...span))], first: (all.length ? all : free)[span.indexOf(Math.min(...span))] };
+      if (all.some((a) => slotMinutes(a) === am)) return T("slotBooked", v);
+      if (am > Math.max(...span)) return T("slotLate", v);
+      if (am < Math.min(...span)) return T("slotEarly", v);
+      return T("slotNotOffered", v);
     }
     function startFlow(state, meta, raw) {
       state.prev = { data: JSON.parse(JSON.stringify(state.data)), status: state.lead.status };
@@ -539,7 +557,7 @@
         state.pendingTime = timeIn(raw) || undefined; const slot = useTime(state); if (slot) heard.push(slot);
       }
       const intro = cfg.quiz ? T("quizIntro") : heard.length ? T("sureHeard", { heard: heard.join(", ") }) : T("letsBook", { bookWord: cf("bookWord") });
-      if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: `${intro}\n` + T("missedTime", { m }) }, ...nextOrFinish(state, [])]; }
+      if (state.missedTime) { const m = state.missedTime, note = state.missedNote; delete state.missedTime; delete state.missedNote; return [{ text: `${intro}\n` + (note || T("missedTime", { m })) }, ...nextOrFinish(state, [])]; }
       return [{ text: intro }, ...nextOrFinish(state, [])];
     }
     function abandonFlow(state) { // restore what was there before an unfinished booking/reschedule
@@ -693,7 +711,7 @@
           let close = list.filter((c) => sqr.length >= 4 && (squash(c).startsWith(sqr) || squash(c).includes(sqr)));
           if (close.length < 2) close = list.filter((c) => words.some((w) => squash(c).includes(w)));
           if (close.length >= 2 && close.length <= 3) return [{ text: T("didYouMean", { list: close.map(lab).join(T("or")) }), options: close.map(lab) }];
-          error = T("chooseOption");
+          error = (step.field === "slot" && timeIn(raw) && slotAdvice(state, timeIn(raw))) || T("chooseOption"); // "6pm" typed at the time step
         }
         else if (step.choices === "catalog") {
           const item = cfg.catalog.find((c) => c.name === value);
@@ -727,7 +745,7 @@
       useTime(state);
       while (state.step < cfg.steps.length && state.data[cfg.steps[state.step].field] && !reask.includes(cfg.steps[state.step].field) && cfg.steps[state.step].type !== "quiz") state.step++;
       if (state.step < cfg.steps.length) {
-        if (state.missedTime) { const m = state.missedTime; delete state.missedTime; return [{ text: T("missedShort", { m }) }, askStep(state)]; }
+        if (state.missedTime) { const m = state.missedTime, note = state.missedNote; delete state.missedTime; delete state.missedNote; return [{ text: note || T("missedShort", { m }) }, askStep(state)]; }
         return [askStep(state)];
       }
       const v = Object.assign(vars(), state.data);

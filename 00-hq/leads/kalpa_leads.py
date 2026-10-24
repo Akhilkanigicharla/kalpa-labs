@@ -181,8 +181,28 @@ def parse_json(text):
     except json.JSONDecodeError: return {}
 
 # ---------- score ----------
+# Not a small-business buyer: a building/complex name on the map (the shop inside is unknown), or a big chain
+BUILDING = re.compile(r"\b(towers?|complex|plaza|apartments?|residency|enclave|heights|arcade|mall|chambers|bhavan|nilayam)\b", re.I)
+CHAINS = re.compile(r"(^|\.)(cult\.fit|apollo\w*\.com|naturals\.in|lakme\w*\.com|toniandguy\.\w+|anytimefitness\.\w+|"
+                    r"goldsgym\.\w+|vlccwellness\.com|kaya\.in|clovedental\.in|medplusmart\.com)$", re.I)
+
+
+def not_a_lead(row):
+    """Reason to drop a row from the call list, or ''."""
+    if BUILDING.search(row.get("name", "")):
+        return "building name, not a business (check who is inside before using)"
+    host = re.sub(r"^https?://(www\.)?", "", row.get("website", "")).split("/")[0]
+    if host and CHAINS.search(host):
+        return "big chain: decides at head office, not a small-shop buyer"
+    return ""
+
+
 def score(world, row, md):
     w = WORLDS[world]; s = 0; hits = []
+    drop = not_a_lead(row)
+    if drop:
+        row["signals_hit"] = ""; row["why"] = "skip: " + drop; row["status"] = "skip"
+        return 0
     if row.get("website"): s += 20
     if row.get("email") or row.get("phone") or row.get("whatsapp_link"): s += 25   # we can reach them
     low = (md or "").lower()

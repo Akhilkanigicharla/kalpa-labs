@@ -144,7 +144,7 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] **C08** HQ · Q-HQ-04: free business UPI QR on the spare account (20 min)
 - [x] **C09** b3 · K-04: create the Telegram channel (10 min) (done 2026-10-20: private channel + @Kalplabsbot, links in LINKS.md)
 - [ ] **C10** b5 · b5.W1.2: connect GitHub to Cloudflare Pages, free (15 min)
-- [ ] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min)
+- [x] **C11** b6 · F-03: create a free Supabase project for Ledger Peaks (10 min) (done 2026-10-24 by Akhil: project ledger-peaks, Mumbai, https://wnntkohwhhinxrraquxu.supabase.co; API answers 401 without a key = live)
 - [x] **C12** b7 · Q7.4 / Q7.8: approve gate thresholds (incl. proposed criterion 6, Deflated Sharpe ≥ 0.95; see `07-trading/research/deep-scan-v2.md` Step 2); sign capital rules (₹0 is fine) (done 2026-10-18: Akhil "approve gates": all thresholds incl. Deflated Sharpe ≥ 0.95; capital ₹0, paper only)
 - [ ] **C17** b5 · Ask a Telugu-speaking friend to read the 10 Telugu calculator pages (`05-deals/site`, build artifact in Actions) and mark awkward lines (25 min)
 - [x] **C18** b1 · Look at the sample Social Team posts (Kingdom/log link) and decide the add-on price (suggestion ₹999–1,499/month); say if you want it offered to the first salons (10 min) (done 2026-10-18: approved; ₹999 founding launch offer, ₹999–1,499 list; built in A59)

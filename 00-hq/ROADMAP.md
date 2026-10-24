@@ -130,7 +130,7 @@ Build sprints rotate: one world per run in this order, then repeat. Each item ha
 - [ ] **A93** b7 · Depth: Trading Lab (paper only, never sold). Check: DEPTH.md all built; trading tests green.
 - [ ] **A94** HQ · Depth: HQ site, launch board rows R2–R6 green (`python3 00-hq/launch/check.py`). Check: DEPTH.md all built; check.py all green.
 
-- [x] **A104** HQ · Revenue engine: one 24-job sales team per business (6 pods, existing 22 agents) on n8n + HQ daily rollup (`00-hq/revenue/README.md`; KL GTM Kit, KL Pipeline; workflows ACjGCagrhbvnlAyV + 4jivwOaUOH8QtROZ, Guard review on every draft). Check: seed 168 jobs, live write + Guard run saved a draft. (done 2026-10-24)
+- [x] **A104** HQ · Revenue engine: one 24-job sales team per business (6 pods, existing 22 agents) on n8n + HQ daily rollup (`00-hq/revenue/README.md`; KL GTM Kit, KL Pipeline; workflows ACjGCagrhbvnlAyV + 4jivwOaUOH8QtROZ, Guard review on every draft). Check: seed 168 jobs, live write + Guard run saved a draft. (done 2026-10-24, 8c5d395)
 
 ## CEO queue (Akhil, ≤ 1 hour a day)
 

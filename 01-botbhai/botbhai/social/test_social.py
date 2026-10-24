@@ -158,4 +158,29 @@ o2 = pathlib.Path(tempfile.mkdtemp())
 m3 = team.build("examkits", START, 1, o2)
 assert all((o2 / f).exists() for i in m3["items"] for f in i["files"])
 print("  ✓ team: plan.csv + manifest.json + approval.txt + media; owner 'ok' approves only ready, compliant items")
+# --- A96 walkthrough: listing photos -> 9:16 Reel with a camera move per photo ---
+from PIL import Image as _Im
+from social import walkthrough as wk
+cfg_re = json.loads((pathlib.Path(__file__).resolve().parents[1] / "setups" / "realestate" / "bot.config.json").read_text())
+ph = pathlib.Path(tempfile.mkdtemp())
+for k in range(5):
+    _Im.new("RGB", (1600, 1200), (40 * k, 120, 200 - 30 * k)).save(ph / f"{k:02d}.jpg")
+try:
+    wk.photos_in(ph); raise AssertionError("5 photos must be refused")
+except ValueError:
+    pass
+_Im.new("RGB", (900, 1600), (200, 180, 90)).save(ph / "05.png")
+(ph / "notes.txt").write_text("not a photo")
+pics = wk.photos_in(ph)
+assert len(pics) == 6 and pics[0].name == "00.jpg"
+caps = wk.captions_for(6, ["Living room", "Kitchen", " "], "3 BHK, Kondapur")
+assert caps[0] == "3 BHK, Kondapur · Living room" and caps[1] == "Kitchen" and caps[5] == ""
+assert wk.card(pics[0], caps[0], cfg_re, "1/6").size == (1080, 1920)
+g = wk.filtergraph(6, 1.0)
+assert g.count("zoompan") == 6 and "concat=n=6" in g and "on/30" in g  # pan uses frames-per-photo
+wo = pathlib.Path(tempfile.mkdtemp()) / "walk.mp4"
+if shutil.which("ffmpeg"):
+    mp4 = wk.build(pics, caps, cfg_re, wo, seconds_each=0.5)
+    assert mp4 and mp4.stat().st_size > 10_000 and len(list((wo.with_suffix("")).glob("[0-9]*.jpg"))) == 6
+print("  ✓ walkthrough: 6-12 photos only, captions in order, 9:16 cards, one camera move per photo, MP4")
 print("SOCIAL TEAM TESTS PASSED")

@@ -207,7 +207,12 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     var sameDay = d.toLocaleDateString("en-IN", tz) === now.toLocaleDateString("en-IN", tz);
     return sameDay ? d.toLocaleTimeString("en-IN", Object.assign({ hour: "numeric", minute: "2-digit" }, tz)) : d.toLocaleDateString("en-IN", Object.assign({ day: "numeric", month: "short" }, tz));
   }
-  function clock(iso) { return iso ? new Date(iso).toLocaleTimeString("en-IN", Object.assign({ hour: "numeric", minute: "2-digit" }, tz)) : ""; }
+  function clock(iso) {
+    if (!iso) return "";
+    var d = new Date(iso), day = function (x) { return x.toLocaleDateString("en-IN", tz); };
+    var t = d.toLocaleTimeString("en-IN", Object.assign({ hour: "numeric", minute: "2-digit" }, tz));
+    return day(d) === day(new Date()) ? t : (day(d) === day(new Date(Date.now() + 864e5)) ? "tomorrow " : day(d) + " ") + t;  // 12 h hold often ends tomorrow
+  }
   function label(c) { return c.name || (c.channel === "web" ? "Website visitor" : "+" + c.contact.replace(/^(\d{2})(\d{5})(\d+)$/, "$1 $2 $3")); }
   function initial(c) { return (c.name || (c.channel === "web" ? "W" : "#")).trim().charAt(0).toUpperCase(); }
   var STATUS = { human: "Needs you", bot: "Bot", resolved: "Done" };

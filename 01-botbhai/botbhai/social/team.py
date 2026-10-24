@@ -22,11 +22,12 @@ from . import analyst, approve, compliance, copywriter, design, plan, publish
 
 
 def build(setup: str, start: dt.date, weeks: int, out: pathlib.Path, *, overrides: dict | None = None,
-          photos: dict | None = None, weights: dict | None = None, render: bool = True, cfg: dict | None = None) -> dict:
+          photos: dict | None = None, weights: dict | None = None, render: bool = True, cfg: dict | None = None,
+          times: dict | None = None) -> dict:
     cfg = cfg or plan.load_setup(setup, overrides)
     out.mkdir(parents=True, exist_ok=True)
     items = []
-    for i, slot in enumerate(plan.month_plan(cfg, start, weeks, weights)):
+    for i, slot in enumerate(plan.month_plan(cfg, start, weeks, weights, times)):
         copy = copywriter.write(slot, cfg, i)
         chk = compliance.check(copy["caption"], setup=setup, cfg=cfg)
         files = [p.name for p in design.render(slot, copy, cfg, out, photos)] if render else []
@@ -59,6 +60,8 @@ def main(argv=None) -> int:
     ap.add_argument("--ig-user", default="IG_USER_ID")
     ap.add_argument("--page", default=None)
     ap.add_argument("--now", default=dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+    ap.add_argument("--views", help="insights CSV export -> posting time per format learned from real views (8+ posts)")
+    ap.add_argument("--channel", default=None, help="only rows of this channel in --views, e.g. instagram")
     ap.add_argument("--insights", help="JSON list of post results -> weekly report + new pillar weights")
     a = ap.parse_args(argv)
     out = pathlib.Path(a.out)
@@ -87,7 +90,13 @@ def main(argv=None) -> int:
         (out / "manifest.json").write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
         print({s: sum(1 for i in m["items"] if i["status"] == s) for s in {i["status"] for i in m["items"]}})
         return 0
-    m = build(a.setup, dt.date.fromisoformat(a.start), a.weeks, out)
+    times = None
+    if a.views:
+        now = {k: v[1] for k, v in plan.DEFAULT_SLOTS.items()} | {"story": "10:00"}
+        times = analyst.best_times(analyst.read_views_csv(a.views), now, a.channel)
+        moved = {k: f"{now[k]} -> {v}" for k, v in times.items() if v != now[k]}
+        print("Posting times learned from views:", moved or "no change (need 8+ posts per format and a clear winner)")
+    m = build(a.setup, dt.date.fromisoformat(a.start), a.weeks, out, times=times)
     held = sum(1 for i in m["items"] if not i["check"]["ok"] or i["needs"])
     print(f"{len(m['items'])} items for {m['business']} in {out} ({held} wait for the owner's photo/review/RERA no.)")
     return 0

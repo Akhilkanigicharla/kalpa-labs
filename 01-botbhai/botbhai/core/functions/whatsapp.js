@@ -45,7 +45,7 @@ async function transcribe(mediaId) { // voice note → text (Groq Whisper, free 
     const audio = await (await fetch(meta.url, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } })).arrayBuffer();
     const form = new FormData();
     form.append("file", new Blob([audio], { type: meta.mime_type || "audio/ogg" }), "voice.ogg");
-    form.append("model", "whisper-large-v3-turbo");
+    form.append("model", require("../models.json").groq_speech_to_text);
     const r = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", { method: "POST", headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` }, body: form, signal: AbortSignal.timeout(8000) });
     return r.ok ? (await r.json()).text : null;
   } catch (e) { return null; }

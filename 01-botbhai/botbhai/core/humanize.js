@@ -95,14 +95,15 @@ function translationIsSafe(src, out) {
 }
 const LANG_NAME = { te: "Telugu (Telugu script)", hi: "Hindi (Devanagari)", "te-latn": "Telugu written in English letters (Tenglish), casual", "hi-latn": "Hinglish (Hindi in English letters), casual" };
 
-async function mirrorLanguage(replies, lang, { apiKey, fetchImpl = fetch, model = "llama-3.3-70b-versatile" } = {}) {
+const MODELS = require("./models.json"); // A85: one place for model names; core/models.test.js fails on retired ones
+async function mirrorLanguage(replies, lang, { apiKey, fetchImpl = fetch, model = MODELS.groq_chat } = {}) {
   if (lang === "en" || !apiKey) return replies;
   const out = [];
   for (const r of replies) {
     try {
       const res = await fetchImpl("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model, temperature: 0.3, messages: [
+        body: JSON.stringify({ model, temperature: 0.3, reasoning_effort: "low", messages: [
           { role: "system", content: `Translate the WhatsApp message into ${LANG_NAME[lang]}. Sound like a friendly local receptionist, not a textbook. Keep every number, price (₹), time, date, URL, emoji and *bold* marker exactly as written. Keep business and service names in English. Output only the translated message.` },
           { role: "user", content: r.text }] }),
       });

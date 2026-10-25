@@ -1,0 +1,11 @@
+const assert = require("assert");
+const { build } = require("./make-config.js");
+const allowed = require("./allowed.json").providers.map((p) => p.platform);
+let c = build({ GROQ_API_KEY: "gsk_x", OPENROUTER_API_KEY: " ", AIRFORCE_API_KEY: "nope" });
+assert.deepStrictEqual(c.keys.map((k) => k.platform), ["groq"], "only allowed providers with a value");
+assert.ok(!("admin" in c), "no admin without both secrets");
+c = build({ ROUTER_ADMIN_EMAIL: "a@b.c", ROUTER_ADMIN_PASSWORD: "longenough" });
+assert.strictEqual(c.admin.email, "a@b.c");
+assert.throws(() => build({ ROUTER_ADMIN_EMAIL: "a@b.c", ROUTER_ADMIN_PASSWORD: "short" }));
+assert.ok(!allowed.some((p) => ["airforce", "pollinations", "electronhub", "llm7"].includes(p)), "unofficial proxies never allowed");
+console.log("llm-router config tests passed");

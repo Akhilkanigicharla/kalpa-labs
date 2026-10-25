@@ -1,0 +1,13 @@
+{
+  "checked": "2026-10-25: official free tiers only; each provider's terms link is in README.md. Unofficial reseller/proxy providers in FreeLLMAPI are deliberately left out.",
+  "providers": [
+    { "platform": "groq", "env": "GROQ_API_KEY" },
+    { "platform": "openrouter", "env": "OPENROUTER_API_KEY" },
+    { "platform": "google", "env": "GOOGLE_AI_API_KEY" },
+    { "platform": "cerebras", "env": "CEREBRAS_API_KEY" },
+    { "platform": "mistral", "env": "MISTRAL_API_KEY" },
+    { "platform": "nvidia", "env": "NVIDIA_API_KEY" },
+    { "platform": "cohere", "env": "COHERE_API_KEY" },
+    { "platform": "huggingface", "env": "HF_TOKEN" }
+  ]
+}

@@ -113,7 +113,7 @@ async function handleMessage(client, v, msg) {
   out.state.lang = lang;
   const cfg = client.config || {};
   const h = humanize(out.replies, { setup: client.niche, business: cfg.business || client.name, persona: cfg.persona, firstContact: !sess, userText: text, contact, turn: out.state.turns, nowMs: Date.now() });
-  const replies = await mirrorLanguage(h.replies, lang, { apiKey: process.env.GROQ_API_KEY });
+  const replies = await mirrorLanguage(h.replies, lang, { apiKey: process.env.GROQ_API_KEY, router: { url: process.env.LLM_ROUTER_URL, key: process.env.LLM_ROUTER_KEY } }); // A120 fallback
   if (h.handoff) { // complaint: a person takes over this chat for 2 hours
     out.state.humanUntil = new Date(Date.now() + ((cfg.handoff_hours || 2) * 3.6e6)).toISOString();
     out.events.push({ type: "handoff", text: `⚠️ Unhappy customer ${profileName || contact}: "${text.slice(0, 160)}" — bot paused for this chat; please reply personally.` });

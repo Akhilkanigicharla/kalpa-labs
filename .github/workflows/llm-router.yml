@@ -1,0 +1,47 @@
+name: LLM router
+on:
+  push:
+    paths: ["00-hq/llm-router/**", ".github/workflows/llm-router.yml"]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Push to the private Hugging Face Space (needs HF_WRITE_TOKEN + HF_SPACE)"
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults: { run: { working-directory: 00-hq/llm-router } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: node make-config.test.js
+      - run: docker build -t kalpa-router .
+      - name: Router starts and answers
+        run: |
+          docker run -d --name r -p 3001:3001 -e ENCRYPTION_KEY="$(openssl rand -hex 32)" \
+            -e ROUTER_ADMIN_EMAIL=ci@example.com -e ROUTER_ADMIN_PASSWORD=ci-password-123 kalpa-router
+          for i in $(seq 1 40); do code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/v1/models || true); [ "$code" != "000" ] && break; sleep 3; done
+          docker logs r 2>&1 | grep -i "router config" || true
+          echo "GET /v1/models -> $code"; test "$code" = "200" -o "$code" = "401"
+  deploy:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to the Hugging Face Space
+        env:
+          HF_WRITE_TOKEN: ${{ secrets.HF_WRITE_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          test -n "$HF_WRITE_TOKEN" && test -n "$HF_SPACE" || { echo "Set secret HF_WRITE_TOKEN and variable HF_SPACE first (C55)"; exit 1; }
+          git clone "https://user:${HF_WRITE_TOKEN}@huggingface.co/spaces/${HF_SPACE}" space
+          cp 00-hq/llm-router/{Dockerfile,make-config.js,allowed.json} space/ && cp 00-hq/llm-router/space-README.md space/README.md
+          cd space && git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com" && git config user.name Akhilkanigicharla
+          git add -A && (git commit -m "Kalpa router from ${GITHUB_SHA::7}" && git push) || echo "No changes"

@@ -41,5 +41,19 @@ let n = 0; const ok = (name, fn) => Promise.resolve(fn()).then(() => { n++; cons
     out = await H.mirrorLanguage([{ text: src }], "te", { apiKey: "k", fetchImpl: fake("హెయిర్ స్పా ₹999 మాత్రమే") });
     assert.strictEqual(out[0].text, src); // unsafe translation rejected → English kept
   });
+  await ok("Groq down → Kalpa router (A120) translates; both down → English kept", async () => {
+    const src = "Booked: *₹500* at 5:00 PM.";
+    const calls = [];
+    const f = (routerOk) => async (url, init) => { calls.push([url, JSON.parse(init.body).model]);
+      if (url.includes("groq")) return { ok: false, status: 429, json: async () => ({}) };
+      return routerOk ? { ok: true, json: async () => ({ choices: [{ message: { content: "బుక్ అయింది: *₹500* 5:00 PM కి." } }] }) } : { ok: false, status: 503, json: async () => ({}) }; };
+    let out = await H.mirrorLanguage([{ text: src }], "te", { apiKey: "k", fetchImpl: f(true), router: { url: "https://r.example/", key: "rk" } });
+    assert.match(out[0].text, /బుక్/); assert.deepStrictEqual(calls.map((c) => c[1]), [require("./models.json").groq_chat, "auto:reliable"]);
+    assert.strictEqual(calls[1][0], "https://r.example/v1/chat/completions");
+    out = await H.mirrorLanguage([{ text: src }], "te", { apiKey: "k", fetchImpl: f(false), router: { url: "https://r.example", key: "rk" } });
+    assert.strictEqual(out[0].text, src);
+    out = await H.mirrorLanguage([{ text: src }], "te", { fetchImpl: f(true), router: { url: "https://r.example", key: "" } });
+    assert.strictEqual(out[0].text, src); // no keys at all → untouched
+  });
   console.log(`\n${n} tests passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

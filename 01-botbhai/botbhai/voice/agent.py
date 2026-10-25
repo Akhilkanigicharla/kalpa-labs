@@ -1,7 +1,7 @@
 """
 BotBhai voice agent — answers (and, for consented leads, places) real phone calls.
 
-Stack (open source + free tiers): Pipecat 1.12 · Sarvam STT/TTS (Indian languages, Hinglish) ·
+Stack (open source + free tiers): Pipecat 1.13 · Sarvam STT/TTS (Indian languages, Hinglish) ·
 Groq LLM · Silero VAD · telephony by Plivo or Exotel (paid per minute, billed to the client).
 
 Run:   pip install -r requirements.txt && uvicorn agent:app --host 0.0.0.0 --port 8080

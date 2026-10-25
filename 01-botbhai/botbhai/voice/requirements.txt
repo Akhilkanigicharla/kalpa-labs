@@ -1,4 +1,4 @@
 pipecat-ai[sarvam,groq,google,silero,websocket]==1.13.0
 fastapi==0.115.6
 uvicorn[standard]==0.32.1
-aiohttp==3.11.11
+aiohttp>=3.14,<4

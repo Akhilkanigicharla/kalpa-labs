@@ -80,7 +80,7 @@ India rates from 1 Oct 2026 (all + 18% GST):
 | Service (free-form replies inside the 24 h window) | 1,000 free per number per month, then ~₹0.115 | |
 | Utility templates (reminders, alerts) | ~₹0.115 | Now charged even inside the window |
 | Marketing | ~₹0.863 | Unchanged |
-| Chats opened from Click-to-WhatsApp ads or a Page button | Free for 72 h | |
+| Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days (FEP window; Meta pricing page, checked 25 Oct 2026) | |
 | Incoming messages | Free | |
 
 - **A payment method is now mandatory.** Without one, even service replies stop delivering.
@@ -111,7 +111,7 @@ The proposal shows the estimate, and the monthly report shows actual spend (P1-M
 | Netlify Functions | 300 credits/mo, **hard stop: all sites pause** | ~3–5 credits | Each prod deploy costs 15 credits, so cap deploys at 8/mo. Buy Personal ($9 ≈ ₹800) at ~10 clients |
 | Supabase | 500 MB, no backups, pauses after 7 idle days | ~3–5 MB/mo | Size lasts to ~40 salons, but there are **no backups**. Nightly dump via Actions (P1-M2-07); Pro ($25 ≈ ₹2,200) at MRR ≥ ₹6,000 |
 | Groq | free | ₹0 | Rate limits at ~50 busy clients |
-| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min; STT ₹0.50/min; TTS ~₹1/min. About ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
+| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min; STT ₹0.49/min; TTS ₹3 per 1,000 characters (Sarvam Bulbul v3, sarvam.ai/api-pricing checked 25 Oct 2026). TTS assumption: the bot speaks about half of each call minute at ~800 characters per spoken minute, so ~400 chars ≈ ₹1.2/min. About ₹2.1/min (Plivo figures unverified this check), budget ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
 
 **Gross margin:**
 - Lite and Standard: ~95% on free tiers, ~85% once ₹3,000/mo of paid infrastructure is shared across 10 clients.
@@ -333,7 +333,7 @@ What this means for BotBhai:
 
 ## 9. Sources
 
-- Meta, WhatsApp pricing (per-message, 72 h free entry point, INR billing by 31 Dec 2026): https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing.md
+- Meta, WhatsApp pricing (per-message, free entry point window up to 7 days, INR billing by 31 Dec 2026): https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing.md
 - TelecomTalk, India rates from 1 Oct 2026 (service 1,000 free then ₹0.115; utility ₹0.115 in-window; marketing ₹0.8631; payment method mandatory): https://telecomtalk.info/whatsappbusiness-price-reveal-telegram-arattai-may-benefit/1012403/
 - AiSensy, October 2026 update: https://m.aisensy.com/blog/whatsapp-pricing-update-october-2026/
 - Go4whatsup, October 2026 change: https://www.go4whatsup.com/pricing/whatsapp-october-2026/

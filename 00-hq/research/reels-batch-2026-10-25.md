@@ -24,3 +24,9 @@ Deeper write-ups were delegated to the n8n agents: KL Tasks rows "Reel 25 Oct �
 | 12 | Awesome LLM Apps (100+ agent apps) | Shubhamsaboo/awesome-llm-apps | Apache-2.0 | 2026-10-21 | Reference code | **Learn → every world:** the n8n agents read it for patterns (A120 note); nothing copied without a licence check |
 
 **New roadmap items:** A118 (HyperFrames videos), A119 (b7 reading list), A120 (free-model fallback list), A121 (GST receipts). Two ideas were added to A106: the job hunter and the JSON niche data point.
+
+## Added 26 Oct (5 screenshots; HeyGem, freehire and HyperFrames already covered above)
+| # | Project | Repo | Licence | Last commit | What it really needs | Verdict → world |
+|---|---|---|---|---|---|---|
+| 13 | MoneyPrinterTurbo (topic → finished short video) | harry0703/MoneyPrinterTurbo | MIT | 2026-10-25 | Python + ffmpeg; an LLM (our A120 router works, since it accepts OpenAI-compatible endpoints), free Pexels/Pixabay stock-footage API keys, a TTS voice. Its README lists many paid sponsors; we use only the free path | **Adopt → A123:** Kalpa Shorts maker for b1 Social Team, b5 Telugu Deals and the Kalpa YouTube channel. Free path only: our router for the script, Pexels/Pixabay keys (licence to be checked live), Kokoro (Apache-2.0) / Indic Parler-TTS (A98) voice. Not Edge TTS (unofficial Microsoft endpoint) |
+| 14 | AI Engineering Hub (75+ AI app tutorials) | patchy631/ai-engineering-hub | MIT | 2026-10-12 | Reference code | **Learn → every world:** added to the n8n pattern task with Awesome LLM Apps (#12); nothing copied without a licence check |

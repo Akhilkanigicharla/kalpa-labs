@@ -58,8 +58,8 @@ Assumptions: a Pro user does about 40 jobs a month off-season and about 120 in p
 
 | Cost line | Off-season | Peak | Notes |
 |---|---|---|---|
-| Sarvam STT (₹30/hour, billed per second) | 30 min = ₹15 | 90 min = ₹45 | Quota of 150 min caps it at ₹75 |
-| LLM to extract fields as JSON (Sarvam-30B at ₹2.5 / ₹10 per 1M tokens) | under ₹1 | about ₹1 | About 1,500 input + 400 output tokens per note |
+| Sarvam STT (₹0.49/min pay-as-you-go, billed per second) | 30 min ≈ ₹15 | 90 min ≈ ₹44 | Quota of 150 min caps it at ≈ ₹74 |
+| LLM to extract fields as JSON (`sarvam-105b` at ₹15 in / ₹60 out per 1M tokens; a free Groq model is the fallback) | about ₹0.05 per note, under ₹1 a month | about ₹1 | About 1,500 input + 400 output tokens per note |
 | WhatsApp bot replies (3 per job) | 120 msgs: free within 1,000/number/month | 360 msgs × ₹0.136 = ₹49 | Since 1 Oct 2026 Meta charges replies beyond 1,000/month at the utility rate (₹0.115 + 18% GST) |
 | AMC reminder template to the technician | about 10 × ₹0.136 = ₹1.4 | ₹1.4 | Utility template |
 | Supabase / Netlify / EAS | ₹0 on free tiers | ₹0 | See limits below |
@@ -85,7 +85,7 @@ Assumptions: a Pro user does about 40 jobs a month off-season and about 120 in p
 | Supabase database | 500 MB | Not before about 2,000 users |
 | Supabase pause rule | Pauses after 7 idle days | Keep it alive with a daily GitHub Actions ping. **Move to Pro before the first 20 paying users depend on it** |
 | Meta free replies | 1,000 per number per month | Hits at about 8 active bot users |
-| Sarvam free credit | ₹100 | Covers about 3 hours (240 demo notes). After that it's pay-as-you-go, at under ₹50 per paying user |
+| Sarvam trial credit, one time | ₹100 | Covers about 3.4 hours of STT at ₹0.49/min (about 270 demo notes of 45 s). After that it's pay-as-you-go, at under ₹50 per paying user |
 | EAS Build | 15 Android builds | Enough for month 3 |
 
 **Spend triggers (say yes when these happen):**
@@ -146,7 +146,7 @@ Repo home: `02-jobcard/`. The A4 ADOPT picks are built in this order:
 | id | Quest | CEO action | Agent action | Done when |
 |---|---|---|---|---|
 | b2.q01 | Approve plan + gate | Read section 1/4, say go (10 min) | Log decision in `02-jobcard/docs/decisions.md` | File committed |
-| b2.q02 | Voice demo pipeline | Put BotBhai's Sarvam key into a Codespaces secret (5 min) | Write `02-jobcard/demo/voice_to_invoice.mjs`: audio → Sarvam STT (translate mode + original) → Sarvam-30B JSON (Zod schema from A4) → `02-jobcard/src/features/invoice/template.ts` HTML → PDF | 5 sample notes give correct totals; Telugu text renders |
+| b2.q02 | Voice demo pipeline | Put BotBhai's Sarvam key into a Codespaces secret (5 min) | Write `02-jobcard/demo/voice_to_invoice.mjs`: audio → Sarvam STT (translate mode + original) → `sarvam-105b` JSON (free Groq model as fallback) (Zod schema from A4) → `02-jobcard/src/features/invoice/template.ts` HTML → PDF | 5 sample notes give correct totals; Telugu text renders |
 | b2.q03 | Record real notes | Record 8 Tenglish notes with AC jargon ("R32 gas", "PCB", "1.5 ton") (15 min) | Run them through Sarvam and the Groq Whisper that BotBhai uses today; score field accuracy | `02-jobcard/docs/stt-eval.md` with accuracy for each engine |
 | b2.q04 | Demo video + flyer | Screen-record the demo (15 min) | Write the Telugu/English script, flyer, and Google Form waitlist with DPDP consent text | Video under 45 s; flyer PDF |
 | b2.q05 | Field visit 1 | 60 min at a spares counter, 6–8 talks | Turn voice memos into notes in `docs/interviews.md` | 6 or more interviews logged |
@@ -235,7 +235,7 @@ A({ id:"b2.policy", name:"JobCard Policy Checker", unit:"b2", team:"validation",
 
 ## 9. Sources
 
-- Sarvam pricing (STT ₹30/hour; ₹100 free credit; Sarvam-30B ₹2.5/₹10 per 1M tokens): https://docs.sarvam.ai/api-reference-docs/pricing.md
+- Sarvam pricing (checked 2026-10-26: STT ₹0.49/min pay-as-you-go; ₹100 trial credit, one time; `sarvam-105b` ₹15 in / ₹5 cached / ₹60 out per 1M tokens; no 30-billion model listed): https://docs.sarvam.ai/api-reference-docs/pricing + https://www.sarvam.ai/api-pricing
 - Google Play alternative billing in India (fee reduced by 4%; Play billing must still be offered): https://support.google.com/googleplay/android-developer/answer/13306652
 - Google Play Payments policy (billing required for digital subscriptions; no steering; physical services exempt): https://support.google.com/googleplay/android-developer/answer/9858738
 - Play enforcement in India (2024): https://www.dtnext.in/lifestyle/technology/google-begins-to-enforce-play-store-policies-in-india-to-remove-non-compliant-apps-771158

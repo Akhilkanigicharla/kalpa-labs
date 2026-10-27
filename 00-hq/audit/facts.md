@@ -4,7 +4,7 @@
 |---|---|---|---|
 | Vercel AI Gateway free tier runs only a few models (`nvidia/nemotron-3.5-lightning-free`, `poolside/laguna-s-2.1-free`, `convaiinnovations/laya-free`, …); DeepSeek V4.1 Flash and Kimi K3 return HTTP 403 "Free tier users do not have access to this model" | VERIFIED | 2026-10-18 | live GitHub Actions runs 4ed380f + c42e511 (403); vercel.com/ai-gateway/models?freeTier=true |
 | Earlier claim "Vercel $5 free credit covers Qwen/DeepSeek/Kimi/GLM" | WRONG | 2026-10-18 | see row above; Vercel dropped from Kalpa |
-| Hugging Face Inference Providers: free (non-PRO) accounts get **no** included monthly credit | VERIFIED (1 source, official) | 2026-10-18 | huggingface.co/docs/inference-providers/pricing |
+| Hugging Face Inference Providers: free (non-PRO) accounts get **no** included monthly credit (PRO $2/month); so HF is not a free LLM tier for the router | VERIFIED (official, re-fetched) | 2026-10-27 | huggingface.co/docs/inference-providers/pricing (18 + 27 Oct) |
 | Sarvam API: one-time ₹100 signup credit, never expires, no recurring free tier; calls fail when used up | VERIFIED | 2026-10-18 | docs.sarvam.ai/api-reference-docs/ratelimits; docs.sarvam.ai/api-reference-docs/pricing; awesome-free-ai-coding probe 2026-10-15 |
 | Sarvam Bulbul v3 TTS ₹30 per 10K characters (≈ ₹2.4 per minute of bot speech); STT ₹30/hour; diarization ₹36/hour (was ₹45 on 18 Oct) | VERIFIED (official docs) | 2026-10-23 | docs.sarvam.ai/api-reference-docs/pricing |
 | Swarm report claim "Bulbul V4 Flash ₹2.00/1k chars, Voice Agents ₹3.50/min" | UNVERIFIED | 2026-10-18 | not on docs pricing page today (V4 Flash price not listed); recheck sarvam.ai/api-pricing |
@@ -62,3 +62,12 @@
 | Cold email 2026 benchmarks: average reply ~3.43% (good 5–10%); 4–7 touches; ~42% of replies come from follow-ups; lists under 50 reply ~5.8% vs ~2.1% over 1,000 | VERIFIED (2 sources, same underlying datasets) | 2026-10-24 | woodpecker.co cold-email statistics; lemlist.com cold-email response rate |
 | LinkedIn bans third-party automation/scraping tools | UNVERIFIED (official page blocked to fetch) | 2026-10-24 | linkedin.com/help answer a1341387 (robots-blocked); secondary: breakcold.com, salesforge.ai |
 | Sarvam prices re-checked 26 Oct 2026: sarvam-105b ₹15/₹5/₹60 per 1M; STT ₹0.49/min; ₹100 credit for every verified user (one time); no 30B model | VERIFIED (2 official pages) | 2026-10-26 | docs.sarvam.ai/api-reference-docs/pricing; sarvam.ai/api-pricing |
+| Cohere trial key: free "evaluation key", 1,000 API calls/month, 20 RPM chat; serving in production needs a paid Production key | VERIFIED (official, 2 pages) | 2026-10-27 | docs.cohere.com/docs/rate-limits; docs.cohere.com/docs/going-live |
+| NVIDIA build.nvidia.com API: 1,000 initial credits (up to 5,000 on request), 40 RPM; "less suited to production" | UNVERIFIED (1 blog) — likely trial credit | 2026-10-27 | pasqualepillitteri.it/en/news/1621 |
+| GATE 2027 (IIT Madras): exam 6, 7, 13, 14, 20, 21 Feb 2027; last (special) registration window closed 16 Oct 2026 | VERIFIED | 2026-10-27 | gate2027.iitm.ac.in/important_dates; adda247.com/engineering-jobs/gate-2027 |
+| UPSC CSE prelims 2027 on 23 May 2027 | UNVERIFIED (official PDF failed to load; 2 secondary agree) | 2026-10-27 | striveedgeias.in/upsc-calendar; testbook.com/ias-preparation/upsc-calendar-2027 |
+| New tax regime FY 2026-27: Budget 2026 left slabs unchanged (0-4L nil, 5/10/15/20/25/30%), ₹12L 87A rebate, ₹75k std deduction | VERIFIED | 2026-10-27 | businesstoday.in (1 Feb 2026); caclubindia.com new-regime FY 2026-27 reference |
+| AMFI Aug 2026: 10.02 crore contributing SIP accounts, 66.4 lakh new SIPs, ₹32,297 cr SIP inflow | VERIFIED | 2026-10-27 | 5paisa.com blog; onmanorama.com 7 Oct 2026 |
+| Gumroad: 10% + $0.50 direct, 30% via Discover | VERIFIED | 2026-10-27 | gumroad.com/pricing; checkoutpage.com/blog/gumroad-fees |
+| Apps Script MailApp: 100 recipients/day (gmail.com), 1,500 (Workspace) | VERIFIED | 2026-10-27 | developers.google.com/apps-script/guides/services/quotas; MailApp reference |
+| CGST Rule 46(b)/49(b): consecutive serial ≤16 characters (letters, digits, - and /), unique per financial year | VERIFIED | 2026-10-27 | taxinformation.cbic.gov.in Rule 46; gstzen.in Rule 49 |

@@ -50,7 +50,7 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 - [x] **A30** b6 · F-06: X-ray generator (2-page HTML/PDF: ₹ by feature/model/customer, savings rules, DPDP score). Check: synthetic X-ray renders. (done 2026-10-18, 7f83a11; lane A; `python3 06-finops/src/xray/generate.py --synthetic --pdf` → 2 A4 pages, 14 tests)
 - [x] **A31** b6 · F-13: framework catalogue `dpdp-2023.json` (every duty cites section/rule), ISO 42001 IDs, Art. 50 checklist. Check: validator. (done 2026-10-18, 37ed272; lane A; `python3 06-finops/src/frameworks/validate.py` OK: 24 DPDP duties, 70 ISO IDs, 6 Art. 50 checks; 12 tests)
 - [x] **A32** b6 · F-15: PII scan Action (Presidio + Indian mobile/UPI/IFSC/Aadhaar/PAN recognizers, counts + hashes only). Check: synthetic fixtures. (done 2026-10-13, 9f5fda1)
-- [~] **A33** b6 · F-04 copy + F-11 ingest API + F-12 dashboard + F-17 alerts. Check: per PLAN.md. (claimed: lane B, 2026-10-20)
+- [~] **A33** b6 · F-04 copy + F-11 ingest API + F-12 dashboard + F-17 alerts. Check: per PLAN.md. (claimed: lane B, 2026-10-20) Progress: F-17 alerts built (`06-finops/src/alerts/`, 11 tests, 2026-10-27); F-04, F-11, F-12 to go.
 
 ### Sprint 3 · Second engine
 - [x] **A34** b2 · b2.q10: `02-jobcard/supabase/schema.sql` with RLS. Check: applies on local Postgres. (done 2026-10-13, e6e5ffc; `bash 02-jobcard/supabase/test.sh` adds RLS tests)

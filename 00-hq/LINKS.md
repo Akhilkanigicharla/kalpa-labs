@@ -62,5 +62,6 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **Firefox Add-ons developer profile** (b4): https://addons.mozilla.org/en-US/firefox/user/20271622/ (made by Akhil 25 Oct 2026)
 
 - **YouTube channel** (C53, business Gmail): https://www.youtube.com/@KalpaLabs (made by Akhil 28 Oct 2026)
+- **X** (C53): https://x.com/kalpalabs_in · **Reddit** (C53): https://www.reddit.com/user/KalpaLabs/ · **Product Hunt** (C53, personal name): https://www.producthunt.com/@aakhiil51458_maker (username to change). Made by Akhil 29 Oct 2026. No posts until Akhil says go.
 
 - **Kalpa LLM router** (A120, Render free, sleeps after 15 min idle): https://kalpa-llm-router.onrender.com (dashboard needs the admin login; /v1 needs the unified key). Live 29 Oct 2026; outside test: / 200, /v1/models 401 without key.

@@ -9,7 +9,7 @@ node core/regression.test.js
 node core/smartfill.test.js
 node core/slotadvice.test.js
 node core/receipt.test.js
-node tools/receipt_preview.test.js
+python3 tools/test_receipt_ui.py
 node core/bridal.test.js
 node core/automations.test.js
 node core/nudges.test.js

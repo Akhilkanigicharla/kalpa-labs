@@ -54,7 +54,7 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **Kalpa Ledger** Google Sheet (C06, business Google account): https://docs.google.com/spreadsheets/d/1a4Fb2HBcezo3uMSX_9rXRwsxBEQMc3dTkE_8jrjh3hM/edit
 - Accounts (Akhil, 24 Oct): Kalpa Labs business items live in the separate business Gmail; the dev tools (GitHub, n8n, Supabase, Meta, HF) are on his personal Gmail.
 
-- **Kalpa Labs company site** (00-hq/site, Netlify site 187b4397): http://kalpalabs.dpdns.org (free DigitalPlat domain, primary since 29 Oct; www redirects; HTTPS certificate pending) and https://kalpa-labs.netlify.app (renamed from inquisitive-llama-a4a459 on 24 Oct 2026, Akhil: "rename it"). Live = 18 Oct version; 22 Oct Kalpavruksha version waits for "go".
+- **Kalpa Labs company site** (00-hq/site, Netlify site 187b4397): https://kalpalabs.dpdns.org (free DigitalPlat domain, primary since 29 Oct; www redirects; HTTPS live 29 Oct) and https://kalpa-labs.netlify.app (renamed from inquisitive-llama-a4a459 on 24 Oct 2026, Akhil: "rename it"). Live = 18 Oct version; 22 Oct Kalpavruksha version waits for "go".
 
 - **BotBhai language review** Google Sheet (C46, business Gmail): https://docs.google.com/spreadsheets/d/1e93kPkw7YkwWROftY8J-w_Yf5sfewdgdkBWBhXkxQTw/edit
 

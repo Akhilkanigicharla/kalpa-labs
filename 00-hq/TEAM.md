@@ -19,3 +19,6 @@ New items added later: the lane whose world it is takes it (b6/b7 → A; b1/b2/b
 4. **Log with your lane:** start each log entry with `Lane A` or `Lane B`.
 5. **Finished your lane?** Take the other lane's last unclaimed item (from the bottom), claiming it first.
 6. Rebase conflict in a shared file: keep both sides' lines, never drop the other lane's ticks.
+
+## 28 Oct 2026: history rewritten (repo going public)
+The paid kit files (`03-kits/products/*.xlsx`) were removed from **all** history on every branch, then force-pushed (Akhil approved). **Every session: run `git fetch origin && git reset --hard origin/main` before your next commit** (copy out any unpushed work first). The kits are built locally by `03-kits/*/build_kit.py` and are git-ignored; never commit them again.

@@ -20,3 +20,11 @@ for (const p of A.providers) {
   assert.ok(readme.includes(p.terms), `README links ${p.platform}'s terms page`);
 }
 console.log("llm-router config tests passed");
+// CLI: rejects a short key; prints JSON (stdout) with a 64-hex key
+const { spawnSync } = require("child_process");
+let r = spawnSync(process.execPath, [__dirname + "/make-config.js"], { env: { ENCRYPTION_KEY: "a".repeat(32), GROQ_API_KEY: "gsk_x" } });
+assert.notStrictEqual(r.status, 0); assert.match(String(r.stderr), /64 hex characters \(got 32\)/);
+r = spawnSync(process.execPath, [__dirname + "/make-config.js"], { env: { ENCRYPTION_KEY: "ab".repeat(32), GROQ_API_KEY: "gsk_x" } });
+assert.strictEqual(r.status, 0); assert.deepStrictEqual(JSON.parse(String(r.stdout)).keys.map((k) => k.platform), ["groq"]);
+assert.ok(!String(r.stderr).includes("gsk_x"), "key never printed");
+console.log("llm-router CLI tests passed");

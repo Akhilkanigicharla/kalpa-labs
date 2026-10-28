@@ -1,6 +1,6 @@
 # Kalpa LLM router (A120)
 
-One OpenAI-compatible address (`/v1`) in front of many **official** free LLM tiers. It is used by the n8n agents and as a fallback for the bots. It runs [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) (MIT, pinned `v0.16.9`) in a **Hugging Face Space** (free CPU Space).
+One OpenAI-compatible address (`/v1`) in front of many **official** free LLM tiers. It is used by the n8n agents and as a fallback for the bots. It runs [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) (MIT, pinned `v0.16.9`) on **Render** (free web service; Hugging Face made Docker Spaces PRO-only in July 2026). Live at https://kalpa-llm-router.onrender.com.
 
 **Why only some providers?** FreeLLMAPI also supports many unofficial "free" resellers. Kalpa enables only providers whose own page shows a recurring free tier with no card (`allowed.json`). Trial credit, evaluation keys and tiers that train on our data are left out. Every key comes from Space secrets that Akhil sets; nothing is in git. FreeLLMAPI's own README calls itself single-user and "not production", so we keep these safeguards:
 

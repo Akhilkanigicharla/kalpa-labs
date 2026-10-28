@@ -23,10 +23,10 @@ jobs:
       - run: docker build -t kalpa-router .
       - name: Router starts and answers
         run: |
-          docker run -d --name r -p 3001:3001 -e ENCRYPTION_KEY="$(openssl rand -hex 32)" \
+          docker run -d --name kalpa-router-ci -p 3001:3001 -e ENCRYPTION_KEY="$(openssl rand -hex 32)" \
             -e ROUTER_ADMIN_EMAIL=ci@example.com -e ROUTER_ADMIN_PASSWORD=ci-password-123 kalpa-router
           for i in $(seq 1 40); do code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/v1/models || true); [ "$code" != "000" ] && break; sleep 3; done
-          docker logs r 2>&1 | grep -i "router config" || true
+          docker logs kalpa-router-ci 2>&1 | grep -i "router config" || true
           echo "GET /v1/models -> $code"; test "$code" = "200" -o "$code" = "401"
   deploy:
     if: github.event_name == 'workflow_dispatch' && inputs.deploy

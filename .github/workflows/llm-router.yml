@@ -25,7 +25,7 @@ jobs:
         run: |
           docker run -d --name kalpa-router-ci -p 3001:3001 -e ENCRYPTION_KEY="$(openssl rand -hex 32)" \
             -e ROUTER_ADMIN_EMAIL=ci@example.com -e ROUTER_ADMIN_PASSWORD=ci-password-123 kalpa-router
-          for i in $(seq 1 60); do code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/v1/models || true); [ "$code" != "000" ] && break; sleep 3; done
+          for _ in $(seq 1 60); do code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3001/v1/models || true); [ "$code" != "000" ] && break; sleep 3; done
           echo "GET /v1/models -> $code"
           docker ps -a --filter name=kalpa-router-ci --format '{{.Status}}'
           docker logs kalpa-router-ci 2>&1 | grep -v -i -E "key|password|token" | tail -40
@@ -42,8 +42,9 @@ jobs:
           HF_WRITE_TOKEN: ${{ secrets.HF_WRITE_TOKEN }}
           HF_SPACE: ${{ vars.HF_SPACE }}
         run: |
-          test -n "$HF_WRITE_TOKEN" && test -n "$HF_SPACE" || { echo "Set secret HF_WRITE_TOKEN and variable HF_SPACE first (C55)"; exit 1; }
+          if [ -z "$HF_WRITE_TOKEN" ] || [ -z "$HF_SPACE" ]; then echo "Set secret HF_WRITE_TOKEN and variable HF_SPACE first (C55)"; exit 1; fi
           git clone "https://user:${HF_WRITE_TOKEN}@huggingface.co/spaces/${HF_SPACE}" space
           cp 00-hq/llm-router/{Dockerfile,make-config.js,allowed.json} space/ && cp 00-hq/llm-router/space-README.md space/README.md
           cd space && git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com" && git config user.name Akhilkanigicharla
-          git add -A && (git commit -m "Kalpa router from ${GITHUB_SHA::7}" && git push) || echo "No changes"
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; else git commit -m "Kalpa router from ${GITHUB_SHA::7}" && git push; fi

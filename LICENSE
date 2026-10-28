@@ -1,0 +1,9 @@
+Copyright (c) 2026 Akhil Kanigicharla, Kalpa Labs (Udyam UDYAM-TS-02-0382711). All rights reserved.
+
+This repository is public so its code can be read and its automated checks can run.
+No licence is granted to copy, modify, distribute, sell or host any part of it,
+except where a folder carries its own licence file.
+
+Third-party code keeps its own licence: every folder under 00-hq/vendor/ and any
+file or folder with its own LICENSE / COPYING notice (MIT, Apache-2.0, BSD) is
+licensed under that notice, not under this one.

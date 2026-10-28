@@ -72,12 +72,14 @@ nav.links a:hover{color:var(--fg)}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--tl1:#24502C;--tl2:#2F6A3A;--tl3:#46803F;--tl4:#62A055;--tl5:#386F36}}
 :root[data-theme=dark]{--tl1:#24502C;--tl2:#2F6A3A;--tl3:#46803F;--tl4:#62A055;--tl5:#386F36}
 .treebox{position:relative;width:min(560px,100%);margin-inline:auto}
-#tree{display:block;width:100%;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
+#wind{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:15}
+#tree{display:block;cursor:grab;touch-action:manipulation;width:100%;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
 #tree .trunk{fill:var(--bark)}#tree .root{fill:none;stroke:var(--bark);stroke-linecap:round}
+#tree .walker{transition:opacity .6s}.grow #tree .walker,#tree.grow .walker{opacity:0}#tree.grown .walker{opacity:1}
 #tree .br{fill:none;stroke:var(--bark);stroke-linecap:round}
 #tree .ground{fill:color-mix(in srgb,var(--leaf) 26%,transparent)}
 #tree .grass{fill:none;stroke:var(--leaf);stroke-width:2.4;stroke-linecap:round}
-#tree .blob{opacity:.9}
+#tree .blob{opacity:.9;transform-box:fill-box;transform-origin:50% 50%}
 #tree .lf{transform-box:fill-box;transform-origin:0 50%}
 #tree .fruit{cursor:pointer;outline:none}
 #tree .fb{transform-box:fill-box;transform-origin:50% 50%;transition:transform .2s}
@@ -87,7 +89,11 @@ nav.links a:hover{color:var(--fg)}
 #tree .flabel{font:700 17px var(--f-body);fill:var(--fg);paint-order:stroke;stroke:var(--panel);stroke-width:5px;stroke-linejoin:round;text-anchor:middle;pointer-events:none}
 @media (max-width:700px){#tree .flabel{display:none}}
 @media (prefers-reduced-motion:no-preference){
+ .grow .trunk{transform-box:fill-box;transform-origin:50% 100%;animation:rise 1s cubic-bezier(.2,.8,.2,1) both}
+ .grow .root{stroke-dasharray:200;stroke-dashoffset:200;animation:draw .9s ease-out .1s forwards}
+ @keyframes rise{from{transform:scaleY(0)}}
  .grow .br{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1s ease-out .2s forwards}
+ .grow .blob{animation:leafin .7s cubic-bezier(.2,.8,.3,1.2) both}
  .grow .lf{animation:leafin .5s cubic-bezier(.2,.8,.3,1.4) both}
  .grow .fruit{animation:ripen .5s ease-out both}
  #tree .halo{animation:halo 2.6s ease-in-out infinite}
@@ -292,7 +298,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
     <div id="bubbles" aria-hidden="true"></div>
     <div class="tip" id="tip" role="dialog" aria-modal="false" aria-labelledby="tipname" hidden><button type="button" class="x" aria-label="Close">×</button><span class="pill" id="tipst"><i></i><span></span></span><h3 id="tipname"></h3><p id="tipfor"></p><a class="btn btn-acc" id="tipgo" href="#products" data-i="tip_go">See details</a></div>
    </div>
-   <p class="tree-note" data-i="tree_note">Tap a fruit to open that product. The robots act out jobs our AI agents really do every day.</p>
+   <p class="tree-note" data-i="tree_note">Tap a fruit to open that product. Tap the tree to shake it, or move your finger through the leaves. The robots act out jobs our AI agents really do every day.</p>
   </div>
  </div>
  <div class="temple" aria-hidden="true"></div>
@@ -472,7 +478,7 @@ document.querySelectorAll('[data-bot]').forEach(g=>bot(g,g.dataset.bot,'waving')
 document.querySelectorAll('[data-human]').forEach(g=>human(g));
 
 /* ---------- i18n ---------- */
-const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'ఏదైనా పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా వర్క్‌షాప్ గురించి అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
+const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. చెట్టును ట్యాప్ చేస్తే ఆకులు రాలుతాయి. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా వర్క్‌షాప్ గురించి అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
 trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · లైవ్ · తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
@@ -612,6 +618,7 @@ form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValid
 /* ---------- the living Kalpa tree: branches = products, robots = our AI agents at work ---------- */
 document.documentElement.classList.add('js');
 const tree=document.getElementById('tree'), tback=document.getElementById('tback'), tfront=document.getElementById('tfront'), tbox=document.getElementById('treebox');
+const WIND={v:16,gust:0,shake:0};
 let seed=27; const rnd=()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
 const BR=[ // [path, width, world id, name, world colour]
  ['M290 430C240 410 190 400 120 380',15,'botbhai','BotBhai','--l1'],
@@ -624,22 +631,22 @@ const BR=[ // [path, width, world id, name, world colour]
 const SHORT={kits:'Kits',deals:'Deals',ledger:'Ledger'};
 const LEAF='M0 0C6-7 16-7 24 0C16 7 6 7 0 0Z';
 function cluster(par,cx,cy,R,n){
- for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'var(--tl'+(1+(k%2))+')'},par);
+ for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'var(--tl'+(1+(k%2))+')',style:'animation-delay:'+(1.2+Math.hypot(cx-300,cy-560)/600*1.2).toFixed(2)+'s'},par);
  for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
   const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
-  const d=(.5+Math.hypot(x-300,y-560)/600*1.3+rnd()*.25).toFixed(2);
+  const d=(1.1+Math.hypot(x-300,y-560)/600*1.2+rnd()*.3).toFixed(2);
   el('path',{d:LEAF,class:'lf',fill:'var(--tl'+(1+Math.floor(rnd()*5))+')',style:'animation-delay:'+d+'s'},g);}}
 const sway=[]; // groups that move in the wind: [elements, baseX, baseY, amp, phase]
 const crown=el('g',{},tback); cluster(crown,300,190,100,85); cluster(crown,300,275,82,55); sway.push([[crown],300,320,.6,0]);
 const fruits=[], paths=[];
 BR.forEach(([d,w,id,name,col],i)=>{
  const back=el('g',{},tback), front=el('g',{},tfront);
- const p=el('path',{d,class:'br','stroke-width':w},front); const L=p.getTotalLength(); p.style.setProperty('--len',L.toFixed(0)); p.style.animationDelay=(.15+i*.08)+'s'; paths.push(p);
+ const p=el('path',{d,class:'br','stroke-width':w},front); const L=p.getTotalLength(); p.style.setProperty('--len',L.toFixed(0)); p.style.animationDelay=(.75+i*.09)+'s'; paths.push(p);
  const e=p.getPointAtLength(L), m=p.getPointAtLength(L*.55);
  cluster(back,e.x,e.y-6,i===6?58:i<2?60:54,i<2?52:46); cluster(back,m.x,m.y-14,34,20);
- for(let k=0;k<5;k++){const q=p.getPointAtLength(L*(.45+k*.12));const g=el('g',{transform:`translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${(k%2?-60:-120)+rnd()*30}) scale(.8)`},front);el('path',{d:LEAF,class:'lf',fill:'var(--tl'+(3+k%3)+')',style:'animation-delay:'+(1+i*.1+k*.06).toFixed(2)+'s'},g);}
+ for(let k=0;k<5;k++){const q=p.getPointAtLength(L*(.45+k*.12));const g=el('g',{transform:`translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${(k%2?-60:-120)+rnd()*30}) scale(.8)`},front);el('path',{d:LEAF,class:'lf',fill:'var(--tl'+(3+k%3)+')',style:'animation-delay:'+(1.5+i*.1+k*.06).toFixed(2)+'s'},g);}
  const fx=e.x, fy=e.y+(i===6?-6:20);
- const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(1.4+i*.1)+'s'},front);
+ const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(2.3+i*.12)+'s'},front);
  if(i!==6)el('path',{d:`M${e.x} ${e.y}L${fx} ${fy-12}`,stroke:'var(--bark)','stroke-width':2.5},f);
  el('circle',{class:'halo',cx:fx,cy:fy,r:24},f);
  const fb=el('g',{class:'fb'},f);
@@ -652,7 +659,7 @@ BR.forEach(([d,w,id,name,col],i)=>{
  fruits.push(f); sway.push([[back,front],+d.split(' ')[0].slice(1),+d.split(' ')[1].split('C')[0],1.1+(i%3)*.3,i*1.3]);
 });
 // grass tufts along the ground
-for(let k=0;k<26;k++){const x=70+k*18+rnd()*8,h=8+rnd()*10;el('path',{class:'grass',d:`M${x} 568q-3-${h} -6-${h+3}M${x} 568q1-${h+2} 4-${h+4}`},document.getElementById('grass'));}
+const grassEls=[];for(let k=0;k<30;k++){const x=(60+k*16+rnd()*8).toFixed(0),h=(8+rnd()*12).toFixed(0);const g=el('path',{class:'grass','data-x':x,d:`M${x} 568q-3-${h} -6-${+h+3}M${x} 568q1-${+h+2} 4-${+h+4}`},document.getElementById('grass'));grassEls.push(g);}
 
 /* product tip */
 const tip=document.getElementById('tip'); let tipFor=-1;
@@ -682,7 +689,7 @@ const WALK=[ // branch, name, colour, tasks [en, te]
 const bubbles=document.getElementById('bubbles');
 const walkers=WALK.map(([b,name,col,tasks],k)=>{
  const front=tfront.children[b], p=paths[b], L=p.getTotalLength();
- const g=el('g',{},front); const inner=el('g',{},g); bot(inner,col,'working');
+ const g=el('g',{class:'walker'},front); const inner=el('g',{},g); bot(inner,col,'working');
  const bub=document.createElement('div'); bub.className='bub'; bub.style.setProperty('--c',col); bubbles.append(bub);
  return {g,p,L,t:.42+k*.08,v:(k%2?-1:1)*.045,name,tasks,n:k,bub,on:false};});
 function placeBot(w,time){
@@ -702,7 +709,6 @@ function nextBubble(){
 
 /* falling leaves (and fireflies at night) */
 const fall=document.getElementById('falling');
-for(let k=0;k<9;k++){const i=document.createElement('i');i.style.cssText=`left:${(5+k*11+rnd()*6).toFixed(0)}%;--t:${(11+rnd()*9).toFixed(1)}s;--d:${(-rnd()*18).toFixed(1)}s;--dx:${((rnd()-.5)*160).toFixed(0)}px`;fall.append(i);}
 for(let k=0;k<10;k++){const i=document.createElement('i');i.className='ff';i.style.cssText=`left:${(50+rnd()*48).toFixed(0)}%;top:${(15+rnd()*70).toFixed(0)}%;--d:${(-rnd()*4).toFixed(1)}s`;fall.append(i);}
 
 /* one animation loop, paused when the tree is off screen or the tab is hidden */
@@ -711,19 +717,64 @@ new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).obse
 function frame(ms){
  const time=ms/1000, dt=Math.min(.05,time-(last||time)); last=time;
  if(visible&&!document.hidden){
-  if(!reduce){sway.forEach(([els,x,y,amp,ph])=>{const a=(Math.sin(time*.9+ph)*amp).toFixed(2);els.forEach(g=>g.setAttribute('transform',`rotate(${a} ${x} ${y})`));});
+  if(!reduce){sway.forEach(([els,x,y,amp,ph])=>{const a=(Math.sin(time*(.9+WIND.v/90)+ph)*amp*(1+WIND.v/45)+(WIND.v-16)*.03*amp+Math.sin(time*19+ph)*WIND.shake*3.2).toFixed(2);els.forEach(g=>g.setAttribute('transform',`rotate(${a} ${x} ${y})`));});
+   grassEls.forEach((g,k)=>g.setAttribute('transform',`rotate(${(Math.sin(time*2.2+k*.5)*4+WIND.v*.18).toFixed(1)} ${g.dataset.x} 568)`));
    walkers.forEach(w=>{w.t+=w.v*dt;if(w.t>.86||w.t<.34){w.v=-w.v;w.t=Math.max(.34,Math.min(.86,w.t));}});}
   walkers.forEach(w=>{placeBot(w,time);placeBubble(w);});}
  requestAnimationFrame(frame);}
 walkers.forEach(w=>placeBot(w,0));
 requestAnimationFrame(frame);
-setTimeout(()=>{nextBubble();setInterval(()=>{if(visible&&!document.hidden)nextBubble();},reduce?4500:2600);},reduce?300:2400);
+setTimeout(()=>tree.classList.add('grown'),reduce?0:2900);
+setTimeout(()=>{nextBubble();setInterval(()=>{if(visible&&!document.hidden)nextBubble();},reduce?4500:2600);},reduce?300:3300);
 
 /* the "how it works" vine grows as you read */
 const steps=document.querySelector('.steps'), vine=steps.querySelector('.vine i'), stepEls=[...steps.querySelectorAll('.step')];
 function grow(){const r=steps.getBoundingClientRect(), mid=innerHeight*.6; const p=Math.max(0,Math.min(1,(mid-r.top)/r.height));
  vine.style.setProperty('--p',p.toFixed(3)); stepEls.forEach(s=>s.classList.toggle('lit',s.getBoundingClientRect().top+20<mid));}
 if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.forEach(s=>s.classList.add('lit'));}
+
+/* ---------- wind: a gust of leaves when the site opens, leaves drifting down the whole page,
+   your finger or mouse pushes them, tap the tree to shake it, tap the sky for a gust ---------- */
+(function windLayer(){
+ if(reduce) return;
+ const cv=document.createElement('canvas'); cv.id='wind'; cv.setAttribute('aria-hidden','true'); document.body.append(cv);
+ const cx=cv.getContext('2d'); let W=0,H=0,dpr=1;
+ function size(){dpr=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);}
+ size(); addEventListener('resize',size);
+ let COLS=[]; function cols(){const cs=getComputedStyle(document.documentElement);COLS=['--tl1','--tl2','--tl3','--tl4','--tl5','--gold'].map(v=>cs.getPropertyValue(v).trim()||'#5E9E4C');}
+ cols(); matchMedia('(prefers-color-scheme: dark)').addEventListener('change',cols);
+ const small=W<700, KEEP=small?12:22; const L=[];
+ function leaf(x,y,vx,vy,keep){L.push({x,y,vx,vy,r:Math.random()*6.28,vr:(Math.random()-.5)*4,f:Math.random()*6.28,fs:2+Math.random()*4,s:(small?.8:1)*(7+Math.random()*7),c:COLS[(Math.random()*(Math.random()<.12?6:5))|0],keep,ph:Math.random()*6.28});}
+ // the opening gust: leaves sweep in from the left and the top
+ const N=small?60:110; for(let i=0;i<N;i++){const fromTop=Math.random()<.45;
+  leaf(fromTop?Math.random()*W*.7:-40-Math.random()*W*.5, fromTop?-30-Math.random()*H*.6:Math.random()*H*.8, 260+Math.random()*260, 20+Math.random()*80, false);}
+ for(let i=0;i<KEEP;i++) leaf(Math.random()*W,-20-Math.random()*H,20,40,true);
+ WIND.gust=280; let px=-1,py=-1,pvx=0,pvy=0,lastP=0,trail=0;
+ addEventListener('pointermove',e=>{const t=performance.now(),dt=Math.max(8,t-lastP);if(px>=0){const ix=(e.clientX-px)/dt*1000,iy=(e.clientY-py)/dt*1000;pvx=pvx*.6+ix*.4;pvy=pvy*.6+iy*.4;
+   trail+=Math.hypot(e.clientX-px,e.clientY-py); if(trail>140&&e.target.closest&&e.target.closest('.hero')&&L.length<140){trail=0;leaf(e.clientX,e.clientY,pvx*.3,pvy*.3,false);}}
+  px=e.clientX;py=e.clientY;lastP=t;},{passive:true});
+ // tap the tree (not a fruit): it shakes and showers leaves; tap the sky: a gust
+ tree.addEventListener('pointerdown',e=>{if(e.target.closest('.fruit'))return;WIND.shake=1;const r=tbox.getBoundingClientRect();
+  for(let i=0;i<(small?16:26);i++)leaf(r.left+r.width*(.2+Math.random()*.6),r.top+r.height*(.12+Math.random()*.45),(Math.random()-.5)*220,-60+Math.random()*120,false);});
+ document.querySelector('.hero').addEventListener('pointerdown',e=>{if(e.target.closest('a,button,#tree,input,.tip'))return;WIND.gust=Math.max(WIND.gust,200);
+  for(let i=0;i<10;i++){const a=Math.random()*6.28;leaf(e.clientX,e.clientY,Math.cos(a)*180+120,Math.sin(a)*140,false);}});
+ function draw(p){cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.scale(Math.max(.18,Math.abs(Math.cos(p.f))),1);const s=p.s;
+  cx.fillStyle=p.c;cx.beginPath();cx.moveTo(-s,0);cx.bezierCurveTo(-s*.4,-s*.62,s*.5,-s*.55,s,0);cx.bezierCurveTo(s*.5,s*.55,-s*.4,s*.62,-s,0);cx.fill();
+  if(Math.abs(Math.cos(p.f))>.35){cx.strokeStyle='rgba(0,0,0,.16)';cx.lineWidth=1;cx.beginPath();cx.moveTo(-s,0);cx.lineTo(s*.85,0);cx.stroke();}cx.restore();}
+ let last=performance.now();
+ function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
+  WIND.gust*=Math.pow(.42,dt); WIND.shake*=Math.pow(.25,dt); pvx*=Math.pow(.05,dt); pvy*=Math.pow(.05,dt);
+  WIND.v=16+12*Math.sin(t*.45)+6*Math.sin(t*1.3)+WIND.gust;
+  if(!document.hidden){cx.clearRect(0,0,W,H);
+   for(let i=L.length-1;i>=0;i--){const p=L[i];let wx=WIND.v,wy=0;
+    if(px>=0){const dx=p.x-px,dy=p.y-py,d=Math.hypot(dx,dy);if(d<150){const k=(1-d/150);wx+=pvx*k*.9+dx/(d+1)*90*k*Math.min(1,Math.hypot(pvx,pvy)/300);wy+=pvy*k*.9+dy/(d+1)*90*k*Math.min(1,Math.hypot(pvx,pvy)/300);}}
+    p.vx+=(wx-p.vx)*Math.min(1,dt*1.6); p.vy+=((34+p.s*2.2+wy)-p.vy)*Math.min(1,dt*1.2);
+    p.x+=(p.vx+Math.sin(t*1.7+p.ph)*26)*dt; p.y+=(p.vy+Math.cos(t*2.3+p.ph)*14)*dt; p.r+=(p.vr+p.vx*.004)*dt; p.f+=p.fs*dt;
+    if(p.y>H+30||p.x>W+60||p.x<-80&&p.vx<0){ if(p.keep){p.x=Math.random()*W*1.1-W*.15;p.y=-20-Math.random()*60;p.vx=WIND.v;} else {L.splice(i,1);continue;} }
+    draw(p);}}
+  requestAnimationFrame(tick);}
+ requestAnimationFrame(tick);
+})();
 
 setLang(lang);
 })();

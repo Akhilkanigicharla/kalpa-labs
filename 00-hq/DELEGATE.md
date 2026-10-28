@@ -6,6 +6,7 @@ So every Claude session sends word work to n8n (free models, n8n cloud) and keep
 ## Routing table
 | Work | Who does it | How |
 |---|---|---|
+| (Backup model for every n8n LLM step: credential "OpenAI account" → Kalpa router, model `auto:reliable`; Groq/OpenRouter stay primary.) | | |
 | Research, market/price checks, competitor lists | n8n **Kalpa Task Runner** (t8XJCgW8Gdi2rmBX), free Nemotron + Web Search (compact) | Add a row to **KL Tasks** |
 | Drafts: copy, posts, emails, listings, scripts, FAQs | Task Runner, owner agent Kavi / Echo | KL Tasks row |
 | Translations (Telugu, Hindi) | Task Runner, owner agent Chitti; a Telugu speaker reviews before go-live | KL Tasks row |

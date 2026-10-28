@@ -1,13 +1,15 @@
 {
-  "checked": "2026-10-25: official free tiers only; each provider's terms link is in README.md. Unofficial reseller/proxy providers in FreeLLMAPI are deliberately left out.",
+  "checked": "2026-10-28: production keys only from providers whose own page, fetched that day, shows a recurring free tier with no card. Each one's page is in `terms` below and in README.md. Unofficial reseller/proxy providers in FreeLLMAPI are never enabled.",
   "providers": [
-    { "platform": "groq", "env": "GROQ_API_KEY" },
-    { "platform": "openrouter", "env": "OPENROUTER_API_KEY" },
-    { "platform": "google", "env": "GOOGLE_AI_API_KEY" },
-    { "platform": "cerebras", "env": "CEREBRAS_API_KEY" },
-    { "platform": "mistral", "env": "MISTRAL_API_KEY" },
-    { "platform": "nvidia", "env": "NVIDIA_API_KEY" },
-    { "platform": "cohere", "env": "COHERE_API_KEY" },
-    { "platform": "huggingface", "env": "HF_TOKEN" }
+    { "platform": "groq", "env": "GROQ_API_KEY", "terms": "https://console.groq.com/docs/rate-limits", "checked": "2026-10-28", "note": "free key live-tested 2026-10-18; gpt-oss-120b 30 RPM, 1K RPD" },
+    { "platform": "openrouter", "env": "OPENROUTER_API_KEY", "terms": "https://openrouter.ai/docs/api-reference/limits", "checked": "2026-10-28", "note": ":free models only, 20 RPM, 50 requests/day under $10 credits bought" }
+  ],
+  "excluded": [
+    { "platform": "huggingface", "reason": "free accounts get no monthly inference credit", "source": "https://huggingface.co/docs/inference-providers/pricing", "checked": "2026-10-27" },
+    { "platform": "cohere", "reason": "trial keys are evaluation keys (1,000 calls/month); production needs a paid key", "source": "https://docs.cohere.com/docs/going-live", "checked": "2026-10-27" },
+    { "platform": "cerebras", "reason": "one-time $5 trial credit that needs a payment method and expires in 30 days", "source": "https://www.cerebras.ai/pricing", "checked": "2026-10-28" },
+    { "platform": "nvidia", "reason": "trial usage for prototyping, not production", "source": "https://forums.developer.nvidia.com/t/request-more-4-000-credits-option-on-build-nvidia-com/344567", "checked": "2026-10-28" },
+    { "platform": "google", "reason": "free tier content is used to improve Google's products, so customer chats (personal data, DPDP) can't go there", "source": "https://ai.google.dev/gemini-api/docs/pricing", "checked": "2026-10-28" },
+    { "platform": "mistral", "reason": "unverified: Mistral's own free-tier page not found today, and Akhil's account has no free Experiment plan", "source": "https://docs.mistral.ai/admin/billing-usage/usage-limits", "checked": "2026-10-28" }
   ]
 }

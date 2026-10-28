@@ -71,3 +71,9 @@
 | Gumroad: 10% + $0.50 direct, 30% via Discover | VERIFIED | 2026-10-27 | gumroad.com/pricing; checkoutpage.com/blog/gumroad-fees |
 | Apps Script MailApp: 100 recipients/day (gmail.com), 1,500 (Workspace) | VERIFIED | 2026-10-27 | developers.google.com/apps-script/guides/services/quotas; MailApp reference |
 | CGST Rule 46(b)/49(b): consecutive serial ≤16 characters (letters, digits, - and /), unique per financial year | VERIFIED | 2026-10-27 | taxinformation.cbic.gov.in Rule 46; gstzen.in Rule 49 |
+| Cerebras inference: no recurring free tier; one-time $5 promo credit after adding a payment method, expires 30 days | VERIFIED (provider page) | 2026-10-28 | cerebras.ai/pricing (fetched today); second source not checked |
+| NVIDIA build.nvidia.com: credits replaced by rate limits "for trial usage"; free endpoints are for prototyping | VERIFIED (2 NVIDIA pages) | 2026-10-28 | forums.developer.nvidia.com/t/344567; forums.developer.nvidia.com/t/nvidia-nim-faq/300317 |
+| Gemini API free tier: "Content used to improve our products" = Yes | VERIFIED (provider page) | 2026-10-28 | ai.google.dev/gemini-api/docs/pricing |
+| Groq rate-limits page still shows gpt-oss-120b 30 RPM, 1K RPD, 8K TPM, 200K TPD | VERIFIED | 2026-10-28 | console.groq.com/docs/rate-limits; facts row 2026-10-19 |
+| OpenRouter :free 20 RPM; 50/day under $10 bought, 1,000/day at ≥$10 | VERIFIED | 2026-10-28 | openrouter.ai/docs/api-reference/limits; facts row 2026-10-19 |
+| Mistral free Experiment plan (1 req/s, no card) | UNVERIFIED | 2026-10-28 | only a GitHub issue (mistral-vibe #275); Akhil's account shows none (row 2026-10-18) |

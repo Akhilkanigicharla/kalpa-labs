@@ -60,3 +60,5 @@ All artifacts are listed at https://claude.ai/code/artifacts
 
 - **Chrome Web Store developer console** (b4, business Gmail): https://chrome.google.com/webstore/devconsole/45a157ac-3127-4bd2-b237-f48721de0874 (made by Akhil 25 Oct 2026)
 - **Firefox Add-ons developer profile** (b4): https://addons.mozilla.org/en-US/firefox/user/20271622/ (made by Akhil 25 Oct 2026)
+
+- **YouTube channel** (C53, business Gmail): https://www.youtube.com/@KalpaLabs (made by Akhil 28 Oct 2026)

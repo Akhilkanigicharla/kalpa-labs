@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Kalpa Labs · AI helpers for Indian small businesses</title>
 <meta name="description" content="Kalpa Labs, Hyderabad: AI helpers that answer your customers on WhatsApp in Telugu, Hindi and English. Free pilot for the first salons from 16 Nov 2026.">
-<meta name="theme-color" content="#1D3A25">
+<meta name="theme-color" content="#FCFAF4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1912" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Kalpa Labs · AI helpers for Indian small businesses">
 <meta property="og:description" content="BotBhai answers salon customers on WhatsApp in Telugu, Hindi and English, books slots and reminds them. Founding salons wanted.">
 <link rel="preload" href="fonts/rozha-one-latin-400-normal.woff" as="font" type="font/woff" crossorigin>
@@ -53,22 +54,67 @@ nav.links a:hover{color:var(--fg)}
 .lang button[aria-pressed=true]{background:var(--hero);color:var(--hero-fg)}
 @media (max-width:860px){nav.links{display:none}.lang{margin-left:auto}header .btn-cta{display:none}}
 /* hero */
-.hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
+.hero{background:radial-gradient(70% 75% at 78% 42%,color-mix(in srgb,var(--leaf) 20%,transparent),transparent 70%),var(--panel);color:var(--fg);position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
 .temple{height:12px;background:radial-gradient(circle at 6px 3px,var(--gold) 2.2px,transparent 2.6px) 0 0/12px 12px repeat-x,
- radial-gradient(ellipse 4px 2.4px at 6px 3px,var(--leaf,#5E9E4C) 90%,transparent) 0 6px/12px 6px repeat-x}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding-block:clamp(40px,7vw,80px)}
+ radial-gradient(ellipse 4px 2.4px at 6px 3px,var(--leaf) 90%,transparent) 0 6px/12px 6px repeat-x}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:2rem;align-items:center;padding-block:clamp(28px,5vw,64px);position:relative;z-index:1}
 @media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
-.hero h1{font-size:clamp(2.2rem,6vw,4.1rem);margin:.7rem 0 1rem}
-.hero h1 em{font-style:normal;color:var(--gold)}
-.hero p.lead{font-size:clamp(1.05rem,2.2vw,1.25rem);color:var(--hero-mute);max-width:36ch;margin:0 0 1.6rem}
+.hero h1{font-size:clamp(2.2rem,6vw,4.1rem);margin:.2rem 0 1rem}
+.hero h1 em{font-style:normal;color:var(--accent);background:linear-gradient(var(--gold),var(--gold)) 0 96%/100% .08em no-repeat}
+.hero p.lead{font-size:clamp(1.05rem,2.2vw,1.25rem);color:var(--muted);max-width:38ch;margin:0 0 1.6rem}
 .hero .ctas{display:flex;gap:.8rem;flex-wrap:wrap}
-.hero .btn-ghost{color:var(--hero-fg)}
-.trust{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1.6rem;color:var(--hero-mute);font-size:14px}
+.hero .btn-ghost{color:var(--accent)}
+.trust{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1.6rem;color:var(--muted);font-size:14px}
 .trust span{display:flex;align-items:center;gap:.4rem}
-.trust svg{width:18px;height:18px;color:var(--gold)}
-.mandala{position:absolute;right:-180px;top:-160px;width:560px;height:560px;opacity:.09;pointer-events:none}
+.trust svg{width:18px;height:18px;color:var(--accent)}
+/* the living Kalpa tree */
+:root{--tl1:#2F6A3A;--tl2:#3B7A3A;--tl3:#5E9E4C;--tl4:#7DB462;--tl5:#4E8B3F}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--tl1:#24502C;--tl2:#2F6A3A;--tl3:#46803F;--tl4:#62A055;--tl5:#386F36}}
+:root[data-theme=dark]{--tl1:#24502C;--tl2:#2F6A3A;--tl3:#46803F;--tl4:#62A055;--tl5:#386F36}
+.treebox{position:relative;width:min(560px,100%);margin-inline:auto}
+#tree{display:block;width:100%;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
+#tree .trunk{fill:var(--bark)}#tree .root{fill:none;stroke:var(--bark);stroke-linecap:round}
+#tree .br{fill:none;stroke:var(--bark);stroke-linecap:round}
+#tree .ground{fill:color-mix(in srgb,var(--leaf) 26%,transparent)}
+#tree .grass{fill:none;stroke:var(--leaf);stroke-width:2.4;stroke-linecap:round}
+#tree .blob{opacity:.9}
+#tree .lf{transform-box:fill-box;transform-origin:0 50%}
+#tree .fruit{cursor:pointer;outline:none}
+#tree .fb{transform-box:fill-box;transform-origin:50% 50%;transition:transform .2s}
+#tree .fruit:hover .fb,#tree .fruit:focus-visible .fb,#tree .fruit.on .fb{transform:scale(1.18)}
+#tree .fruit:focus-visible .ring{stroke:var(--gold);stroke-width:5}
+#tree .halo{fill:var(--gold);opacity:.22;transform-box:fill-box;transform-origin:50% 50%}
+#tree .flabel{font:700 17px var(--f-body);fill:var(--fg);paint-order:stroke;stroke:var(--panel);stroke-width:5px;stroke-linejoin:round;text-anchor:middle;pointer-events:none}
+@media (max-width:700px){#tree .flabel{display:none}}
+@media (prefers-reduced-motion:no-preference){
+ .grow .br{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1s ease-out .2s forwards}
+ .grow .lf{animation:leafin .5s cubic-bezier(.2,.8,.3,1.4) both}
+ .grow .fruit{animation:ripen .5s ease-out both}
+ #tree .halo{animation:halo 2.6s ease-in-out infinite}
+ @keyframes draw{to{stroke-dashoffset:0}}
+ @keyframes leafin{from{transform:scale(0)}}
+ @keyframes ripen{from{opacity:0;transform:translateY(-6px)}}
+ @keyframes halo{0%,100%{transform:scale(.8);opacity:.12}50%{transform:scale(1.25);opacity:.3}}}
+.bub{position:absolute;left:0;top:0;max-width:210px;width:max-content;background:var(--panel);color:var(--fg);border:1px solid var(--rule);border-radius:12px;padding:.4rem .65rem;font-size:13.5px;line-height:1.3;box-shadow:var(--shadow);opacity:0;transition:opacity .35s;pointer-events:none;z-index:3}
+.bub.on{opacity:1}.bub b{color:var(--accent);margin-right:.3rem}
+.bub::after{content:"";position:absolute;left:50%;bottom:-6px;width:10px;height:10px;background:var(--panel);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);transform:translateX(-50%) rotate(45deg)}
+.tip{position:absolute;z-index:4;width:min(290px,92%);background:var(--panel);border:1px solid var(--rule);border-top:5px solid var(--c);border-radius:var(--r-m);box-shadow:var(--shadow);padding:12px 16px;display:grid;gap:.45rem}
+.tip[hidden]{display:none}.tip h3{font-size:1.35rem}.tip p{margin:0;color:var(--muted);font-size:14.5px}
+.tip .x{position:absolute;top:6px;right:6px;width:36px;height:36px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;border-radius:50%}
+.tip .btn{min-height:42px;font-size:15px;width:max-content}
+.tree-note{text-align:center;color:var(--muted);font-size:13.5px;margin:.4rem auto 0;max-width:46ch}
+.falling{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.falling i{position:absolute;top:-24px;width:15px;height:9px;border-radius:0 100% 0 100%;background:var(--tl4);opacity:0}
+.falling .ff{display:none;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 3px color-mix(in srgb,var(--gold) 60%,transparent)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .falling .ff{display:block}}
+:root[data-theme=dark] .falling .ff{display:block}
+@media (prefers-reduced-motion:no-preference){
+ .falling i{animation:fall var(--t,14s) linear var(--d,0s) infinite}
+ .falling .ff{animation:firefly 4s ease-in-out var(--d,0s) infinite}
+ @keyframes fall{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:.75}50%{transform:translate(var(--dx,40px),55vh) rotate(260deg)}92%{opacity:.6}100%{opacity:0;transform:translate(calc(var(--dx,40px)*-.4),110vh) rotate(520deg)}}
+ @keyframes firefly{0%,100%{opacity:0;transform:translate(0,0)}50%{opacity:1;transform:translate(14px,-18px)}}}
 /* phone demo */
-.phone{width:min(360px,100%);margin-inline:auto;border-radius:38px;padding:12px;background:#0b0d1a;box-shadow:0 30px 70px -30px #000a,inset 0 0 0 2px #2a2f55}
+.phone{width:min(360px,100%);margin-inline:auto;border-radius:38px;padding:12px;background:#1E2A1F;box-shadow:0 30px 70px -30px #1E2A1Faa,inset 0 0 0 2px #3B4A3C}
 .screen{border-radius:28px;overflow:hidden;background:var(--wa-bg);display:flex;flex-direction:column;height:560px}
 .wa-head{background:var(--wa);color:#fff;display:flex;align-items:center;gap:.6rem;padding:.75rem .9rem}
 .wa-head .av{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center}
@@ -94,11 +140,11 @@ nav.links a:hover{color:var(--fg)}
 .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7CFC9A;margin-right:6px;vertical-align:middle;box-shadow:0 0 0 0 #7CFC9A88}
 @media (prefers-reduced-motion:no-preference){.live-dot{animation:ping 2s infinite}@keyframes ping{0%{box-shadow:0 0 0 0 #7CFC9A88}70%{box-shadow:0 0 0 7px #7CFC9A00}100%{box-shadow:0 0 0 0 #7CFC9A00}}}
 .screen{height:600px}
-.demo-note{text-align:center;color:var(--hero-mute);font-size:13px;margin-top:.7rem}
+.demo-note{text-align:center;color:var(--muted);font-size:13px;margin-top:.7rem}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
 /* live strip */
-.strip{margin-top:-28px;position:relative;z-index:2}
+.strip{margin-top:24px;position:relative;z-index:2}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px}
 @media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .stat b{display:block;font:400 clamp(1.7rem,4vw,2.4rem)/1 var(--f-display);font-variant-numeric:tabular-nums}
@@ -133,7 +179,10 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .steps{display:grid;max-width:760px}
 .step{display:grid;grid-template-columns:48px 1fr;column-gap:16px;row-gap:4px;padding:20px 0;border-top:1px solid var(--rule)}
 .step .n{grid-row:span 2}
-.step .n{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--hero);color:var(--gold);font:400 20px var(--f-display)}
+.step .n{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--panel);color:var(--accent);border:3px solid var(--accent);font:400 20px var(--f-display);position:relative;z-index:1;transition:background .4s,color .4s}
+.step.lit .n{background:var(--accent);color:var(--accent-fg)}
+.steps{position:relative}.vine{position:absolute;left:19px;top:28px;bottom:28px;width:3px;background:var(--rule);border-radius:3px}
+.vine i{display:block;height:100%;background:var(--accent);border-radius:3px;transform-origin:top;transform:scaleY(var(--p,1))}
 .step h3{font-size:1.4rem}
 .step p{margin:0;color:var(--muted)}
 /* team */
@@ -189,6 +238,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
  @keyframes glow{0%,100%{opacity:1}50%{opacity:.35}}
  @keyframes spin{to{transform:rotate(360deg)}}
 }
+/* live demo section */
+.demo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+@media (max-width:900px){.demo .wrap{grid-template-columns:1fr}}
+.demo ul{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.7rem}
+.demo li{display:flex;gap:.6rem;align-items:flex-start}.demo li svg{flex:none;width:22px;height:22px;color:var(--accent);margin-top:2px}
+/* team: tap a robot */
+button.mate{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--rule);transition:transform .2s,border-color .2s}
+button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{border-color:var(--accent)}
+.mate .say{font-size:13px;color:var(--fg);background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:10px;padding:.35rem .5rem;margin-top:.3rem}
+.mate .say[hidden]{display:none}
 .te .en-only{display:none}.en .te-only{display:none}
 </style>
 </head>
@@ -197,38 +256,43 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
  <div class="wrap">
   <a class="brand" href="#top" aria-label="Kalpa Labs home"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 56c5-2.5 11-3.5 18-3.5s13 1 18 3.5" fill="none" stroke="var(--bark)" stroke-width="2.5" stroke-linecap="round"/><path d="M29 55c1-6 1-12 0-18-3-3-7-4-11-4 4-1 8 0 11 2 0-3-1-6-3-8 3 1 5 4 6 7 1-3 3-6 6-7-2 2-3 5-3 8 3-2 7-3 11-2-4 0-8 1-11 4-1 6-1 12 0 18z" fill="var(--bark)"/><g fill="var(--accent)"><circle cx="32" cy="18" r="11"/><circle cx="19" cy="25" r="9"/><circle cx="45" cy="25" r="9"/></g><g fill="var(--leaf)"><circle cx="25" cy="15" r="7"/><circle cx="40" cy="15" r="7"/><circle cx="32" cy="27" r="7"/></g><g fill="#E8B64A"><circle cx="22" cy="21" r="2.6"/><circle cx="33" cy="12" r="2.6"/><circle cx="43" cy="22" r="2.6"/><circle cx="29" cy="26" r="2.2"/><circle cx="38" cy="28" r="2.2"/></g></svg>Kalpa Labs</a>
   <nav class="links" aria-label="Main">
-   <a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#workshop" data-i="nav_workshop">Workshop</a><a href="#faq" data-i="nav_faq">FAQ</a>
+   <a href="#demo" data-i="nav_live">Live AI</a><a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#workshop" data-i="nav_workshop">Workshop</a><a href="#faq" data-i="nav_faq">FAQ</a>
   </nav>
   <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="te" aria-pressed="false">తెలుగు</button></div>
-  <a class="btn btn-gold btn-cta" href="#founding" data-i="cta_salon">Get a free salon pilot</a>
+  <a class="btn btn-acc btn-cta" href="#founding" data-i="cta_salon">Get a free salon pilot</a>
  </div>
 </header>
 
 <main id="top">
 <section class="hero" aria-labelledby="h1">
- <div class="temple" aria-hidden="true"></div>
- <svg class="mandala" viewBox="0 0 64 64" aria-hidden="true"><g fill="#E8B64A"><circle cx="32" cy="18" r="11"/><circle cx="19" cy="25" r="9"/><circle cx="45" cy="25" r="9"/><circle cx="25" cy="15" r="7"/><circle cx="40" cy="15" r="7"/><circle cx="32" cy="27" r="7"/><path d="M29 55c1-6 1-12 0-18-3-3-7-4-11-4 4-1 8 0 11 2 0-3-1-6-3-8 3 1 5 4 6 7 1-3 3-6 6-7-2 2-3 5-3 8 3-2 7-3 11-2-4 0-8 1-11 4-1 6-1 12 0 18z"/></g></svg>
+ <div class="falling" id="falling" aria-hidden="true"></div>
  <div class="wrap">
   <div>
    <h1 id="h1" data-i="h1" data-html="1">Your customers get a reply in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
    <p class="lead" data-i="lead">BotBhai answers salon customers on WhatsApp, books the slot, sends reminders and tells you when a human is needed. The first salons get a free 14-day pilot from 16 November.</p>
-   <div class="ctas"><a class="btn btn-gold" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
+   <div class="ctas"><a class="btn btn-acc" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
    <div class="trust">
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg><span data-i="trust1">Built on the official WhatsApp API</span></span>
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg><span data-i="trust2">No app to install</span></span>
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span data-i="trust3">Udyam-registered MSME</span></span>
    </div>
   </div>
-  <div id="demo">
-   <div class="phone" role="region" aria-label="BotBhai demo chat">
-    <div class="screen">
-     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Kalpa Bhai</b><small><span class="live-dot" id="livedot"></span><span data-i="online">AI assistant · live · Telugu / Hindi / English</span></small></div></div>
-     <div class="chat" id="chat" aria-live="polite"></div>
-     <div class="chips" id="chips"></div>
-     <form class="ask" id="ask" autocomplete="off"><input id="askin" maxlength="500" aria-label="Type your message" placeholder="Type in any language…" data-ph="ph"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
-    </div>
+  <div>
+   <div class="treebox" id="treebox">
+    <svg id="tree" class="grow" viewBox="0 0 600 600" role="group" aria-labelledby="treetitle">
+     <title id="treetitle">The Kalpa tree: one branch and one fruit for each Kalpa Labs product, with AI helper robots at work</title>
+     <ellipse class="ground" cx="300" cy="566" rx="260" ry="22"/>
+     <g id="tback"></g>
+     <path class="root" stroke-width="7" d="M282 552C262 560 240 566 214 570"/><path class="root" stroke-width="7" d="M318 552C340 560 364 566 392 572"/><path class="root" stroke-width="5" d="M296 556C292 566 286 572 276 578"/>
+     <path class="trunk" d="M268 560C280 500 284 440 281 382C279 340 284 300 290 262L310 262C316 300 321 340 319 382C316 440 320 500 332 560Z"/>
+     <path d="M292 520C294 480 293 430 291 390M306 500C308 460 309 420 307 380" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="3" stroke-linecap="round"/>
+     <g id="grass"></g>
+     <g id="tfront"></g>
+    </svg>
+    <div id="bubbles" aria-hidden="true"></div>
+    <div class="tip" id="tip" role="dialog" aria-modal="false" aria-labelledby="tipname" hidden><button type="button" class="x" aria-label="Close">×</button><span class="pill" id="tipst"><i></i><span></span></span><h3 id="tipname"></h3><p id="tipfor"></p><a class="btn btn-acc" id="tipgo" href="#products" data-i="tip_go">See details</a></div>
    </div>
-   <p class="demo-note" data-i="demo_note">This is a real AI, the same kind BotBhai puts in your salon. Ask anything, or ask for a call back.</p>
+   <p class="tree-note" data-i="tree_note">Tap a fruit to open that product. The robots act out jobs our AI agents really do every day.</p>
   </div>
  </div>
  <div class="temple" aria-hidden="true"></div>
@@ -243,6 +307,31 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
  </div>
 </div>
 
+<section class="s demo" id="demo" aria-labelledby="dh">
+ <div class="wrap">
+  <div>
+   <h2 id="dh" style="font-size:clamp(1.8rem,4.2vw,2.8rem)" data-i="d_h">Talk to our AI right now</h2>
+   <p style="color:var(--muted);font-size:1.08rem" data-i="d_p">Kalpa Bhai is a real AI, the same kind BotBhai puts in your salon. If it can't help, it asks for your number so Akhil can call you.</p>
+   <ul>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l1">Ask about prices, the free pilot or the workshop</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l2">Type in Telugu, Hindi, English or a mix</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l3">Say "call me" and leave your number</span></li>
+   </ul>
+  </div>
+  <div>
+   <div class="phone" role="region" aria-label="Kalpa Bhai live chat">
+    <div class="screen">
+     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Kalpa Bhai</b><small><span class="live-dot" id="livedot"></span><span data-i="online">AI assistant · live · Telugu / Hindi / English</span></small></div></div>
+     <div class="chat" id="chat" aria-live="polite"></div>
+     <div class="chips" id="chips"></div>
+     <form class="ask" id="ask" autocomplete="off"><input id="askin" maxlength="500" aria-label="Type your message" placeholder="Type in any language…" data-ph="ph"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
+    </div>
+   </div>
+   <p class="demo-note" data-i="demo_note">This is a real AI, the same kind BotBhai puts in your salon. Ask anything, or ask for a call back.</p>
+  </div>
+ </div>
+</section>
+
 <section class="s" id="products">
  <div class="wrap">
   <div class="s-head"><h2 data-i="p_h">Small, honest tools for real Indian work</h2><p data-i="p_p">Each product does one job well. Prices are in rupees, and nothing locks you in.</p></div>
@@ -254,7 +343,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 <section class="s" id="how" style="padding-top:0">
  <div class="wrap">
   <div class="s-head"><h2 data-i="h_h">From "slot undha?" to a confirmed booking</h2></div>
-  <div class="steps">
+  <div class="steps"><div class="vine" aria-hidden="true"><i></i></div>
    <div class="step"><div class="n">1</div><h3 data-i="s1h">Customer messages</h3><p data-i="s1p">On WhatsApp or your website, in Telugu, Hindi, English, or a mix. "Repu" is understood as tomorrow.</p></div>
    <div class="step"><div class="n">2</div><h3 data-i="s2h">BotBhai answers</h3><p data-i="s2p">Prices, timings and free slots from your own salon details. It never makes up a price; anything unsure goes to your staff.</p></div>
    <div class="step"><div class="n">3</div><h3 data-i="s3h">You stay in control</h3><p data-i="s3p">Booking confirmed, reminders 24 h and 2 h before, and a daily list for the owner. Take over any chat with one tap.</p></div>
@@ -372,7 +461,7 @@ function bot(g,color,mode){
 }
 function human(g){
  el('ellipse',{cx:0,cy:2,rx:18,ry:5,fill:'#000',opacity:.12},g);
- el('rect',{x:-13,y:-32,width:26,height:34,rx:10,fill:'#2563eb'},g);
+ el('rect',{x:-13,y:-32,width:26,height:34,rx:10,fill:'#2F6A3A'},g);
  el('path',{d:'M-4 -32 L0 -26 L4 -32z',fill:'#fff'},g);
  el('circle',{cx:0,cy:-43,r:11,fill:'#a9714b'},g);
  el('path',{d:'M-11 -44 Q-11 -58 0 -58 Q11 -58 11 -44 Q8 -51 0 -50.5 Q-8 -51 -11 -44z',fill:'#1e1a17'},g);
@@ -383,7 +472,7 @@ document.querySelectorAll('[data-bot]').forEach(g=>bot(g,g.dataset.bot,'waving')
 document.querySelectorAll('[data-human]').forEach(g=>human(g));
 
 /* ---------- i18n ---------- */
-const TE={nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
+const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'ఏదైనా పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా వర్క్‌షాప్ గురించి అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
 trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · లైవ్ · తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
@@ -405,7 +494,7 @@ function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';docu
  document.querySelectorAll('[data-i]').forEach(e=>{const k=e.dataset.i;const v=(l==='te'?TE[k]:null)??EN[k];if(v==null)return;if(e.dataset.html)e.innerHTML=v;else e.textContent=v;});
  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
  try{localStorage.setItem('kl-lang',l);}catch(e){}
- renderProducts(); resetChat();}
+ renderProducts(); resetChat(); if(typeof renderTeam==='function')renderTeam(); closeTip();}
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
 
 /* ---------- countdown ---------- */
@@ -495,9 +584,15 @@ function resetChat(){renderChips(); askin.placeholder=lang==='te'?'ఏ భాష
  if(!started||!talked){started=true;chat.replaceChildren();const h=typing();setTimeout(()=>{h.remove();bubble(HELLO[lang],'in');},reduce?0:700);}}
 
 /* ---------- team ---------- */
-const TEAM=[['Kalpa','Chief of staff','#2F6A3A'],['Chitti','WhatsApp helper','#25D366'],['Scout','Finds customers','#8A4A28'],['Kavi','Writer','#3B7A3A'],['Adi','Ads & copy','#9C700E'],['Lens','Brand look','#7A3F5E'],['Pixel','Designer','#4A5590'],['Forge','Engineer','#2F6F78'],['Vigil','Fact-checker','#A8324F'],['Guard','Risk checks','#66655A'],['Deal','Deals hunter','#C38E12'],['Echo','Librarian','#2F6A3A']];
+const TEAM=[['Kalpa','Chief of staff','#2F6A3A',['Plans the day and hands out the work','రోజు ప్లాన్ చేసి పని పంచుతుంది']],['Chitti','WhatsApp helper','#25D366',['Answers customers on WhatsApp','WhatsAppలో కస్టమర్లకు జవాబిస్తుంది']],['Scout','Finds customers','#8A4A28',['Builds lead lists from allowed public sources only','అనుమతి ఉన్న పబ్లిక్ సోర్సుల నుంచే లీడ్ జాబితాలు']],['Kavi','Writer','#3B7A3A',['Writes posts and messages for Akhil to approve','అఖిల్ ఆమోదం కోసం పోస్టులు, మెసేజ్‌లు రాస్తుంది']],['Adi','Ads & copy','#9C700E',['Drafts ads and headlines','యాడ్స్, హెడ్‌లైన్లు డ్రాఫ్ట్ చేస్తుంది']],['Lens','Brand look','#7A3F5E',['Keeps every page on brand','ప్రతి పేజీ బ్రాండ్‌కు తగ్గట్టు ఉండేలా చూస్తుంది']],['Pixel','Designer','#5E9E4C',['Makes images and layouts','ఇమేజ్‌లు, లేఅవుట్లు తయారు చేస్తుంది']],['Forge','Engineer','#2F6F78',['Writes code and runs the tests','కోడ్ రాసి టెస్ట్‌లు నడుపుతుంది']],['Vigil','Fact-checker','#A8324F',['Checks every fact twice','ప్రతి విషయాన్ని రెండుసార్లు సరిచూస్తుంది']],['Guard','Risk checks','#66655A',['Checks privacy and legal rules','ప్రైవసీ, చట్ట నియమాలు చెక్ చేస్తుంది']],['Deal','Deals hunter','#C38E12',['Verifies deals before they are shared','డీల్స్ పంచుకునే ముందు సరిచూస్తుంది']],['Echo','Librarian','#2F6A3A',['Keeps notes so nothing is forgotten','ఏదీ మర్చిపోకుండా నోట్స్ ఉంచుతుంది']]];
 const row=document.getElementById('teamrow');
-row.replaceChildren(...TEAM.map(([n,r,c],i)=>{const d=document.createElement('div');d.className='card mate';const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','-24 -82 48 86');s.setAttribute('aria-hidden','true');const g=el('g',{style:'animation-delay:'+(i*.13)+'s'},s);bot(g,c,i===0?'waving':'working');const b=document.createElement('b');b.textContent=n;const sp=document.createElement('span');sp.textContent=r;d.append(s,b,sp);return d;}));
+function renderTeam(){const L=lang==='te'?1:0;
+ row.replaceChildren(...TEAM.map(([n,r,c,say],i)=>{const d=document.createElement('button');d.type='button';d.className='card mate';d.setAttribute('aria-expanded','false');
+  const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','-24 -82 48 86');s.setAttribute('aria-hidden','true');const g=el('g',{style:'animation-delay:'+(i*.13)+'s'},s);bot(g,c,i===0?'waving':'working');
+  const b=document.createElement('b');b.textContent=n;const sp=document.createElement('span');sp.textContent=r;const sy=document.createElement('span');sy.className='say';sy.hidden=true;sy.textContent=say[L];
+  d.append(s,b,sp,sy);
+  d.addEventListener('click',()=>{const open=d.getAttribute('aria-expanded')!=='true';d.setAttribute('aria-expanded',String(open));sy.hidden=!open;const m=s.querySelector('g.working,g.waving');if(m&&i!==0)m.setAttribute('class',open?'waving':'working');});
+  return d;}));}
 
 /* ---------- form ---------- */
 document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;}));
@@ -514,6 +609,121 @@ form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValid
   msg.style.color='var(--ok)';msg.textContent=lang==='te'?'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.':'Thank you! Akhil will reply on WhatsApp soon.';form.reset();}
  catch(err){msg.style.color='var(--madder)';msg.textContent=lang==='te'?'పంపడం కాలేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.':'That did not send. Please try again in a minute.';}});
 
+/* ---------- the living Kalpa tree: branches = products, robots = our AI agents at work ---------- */
+document.documentElement.classList.add('js');
+const tree=document.getElementById('tree'), tback=document.getElementById('tback'), tfront=document.getElementById('tfront'), tbox=document.getElementById('treebox');
+let seed=27; const rnd=()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+const BR=[ // [path, width, world id, name, world colour]
+ ['M290 430C240 410 190 400 120 380',15,'botbhai','BotBhai','--l1'],
+ ['M310 420C360 400 420 395 485 370',15,'jobcard','JobCard','--l2'],
+ ['M288 360C240 330 190 300 140 250',12,'kits','Exam & Money Kits','--l3'],
+ ['M312 350C360 320 410 290 460 240',12,'lifeboat','Tab Lifeboat','--l4'],
+ ['M292 300C260 260 230 210 200 150',10,'deals','Telugu Deals','--l5'],
+ ['M308 295C340 250 370 200 400 145',10,'ledger','Ledger Peaks','--l6'],
+ ['M300 265C300 210 300 150 300 92',11,'trading','Trading Lab','--l0']];
+const SHORT={kits:'Kits',deals:'Deals',ledger:'Ledger'};
+const LEAF='M0 0C6-7 16-7 24 0C16 7 6 7 0 0Z';
+function cluster(par,cx,cy,R,n){
+ for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'var(--tl'+(1+(k%2))+')'},par);
+ for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
+  const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
+  const d=(.5+Math.hypot(x-300,y-560)/600*1.3+rnd()*.25).toFixed(2);
+  el('path',{d:LEAF,class:'lf',fill:'var(--tl'+(1+Math.floor(rnd()*5))+')',style:'animation-delay:'+d+'s'},g);}}
+const sway=[]; // groups that move in the wind: [elements, baseX, baseY, amp, phase]
+const crown=el('g',{},tback); cluster(crown,300,190,100,85); cluster(crown,300,275,82,55); sway.push([[crown],300,320,.6,0]);
+const fruits=[], paths=[];
+BR.forEach(([d,w,id,name,col],i)=>{
+ const back=el('g',{},tback), front=el('g',{},tfront);
+ const p=el('path',{d,class:'br','stroke-width':w},front); const L=p.getTotalLength(); p.style.setProperty('--len',L.toFixed(0)); p.style.animationDelay=(.15+i*.08)+'s'; paths.push(p);
+ const e=p.getPointAtLength(L), m=p.getPointAtLength(L*.55);
+ cluster(back,e.x,e.y-6,i===6?58:i<2?60:54,i<2?52:46); cluster(back,m.x,m.y-14,34,20);
+ for(let k=0;k<5;k++){const q=p.getPointAtLength(L*(.45+k*.12));const g=el('g',{transform:`translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${(k%2?-60:-120)+rnd()*30}) scale(.8)`},front);el('path',{d:LEAF,class:'lf',fill:'var(--tl'+(3+k%3)+')',style:'animation-delay:'+(1+i*.1+k*.06).toFixed(2)+'s'},g);}
+ const fx=e.x, fy=e.y+(i===6?-6:20);
+ const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(1.4+i*.1)+'s'},front);
+ if(i!==6)el('path',{d:`M${e.x} ${e.y}L${fx} ${fy-12}`,stroke:'var(--bark)','stroke-width':2.5},f);
+ el('circle',{class:'halo',cx:fx,cy:fy,r:24},f);
+ const fb=el('g',{class:'fb'},f);
+ el('circle',{class:'ring',cx:fx,cy:fy,r:15,fill:'var(--gold)',stroke:'var('+col+')','stroke-width':3.5},fb);
+ el('circle',{cx:fx-5,cy:fy-5,r:4,fill:'#fff',opacity:.55},fb);
+ el('path',{d:LEAF,fill:'var(--tl3)',transform:`translate(${fx} ${fy-14}) rotate(-35) scale(.55)`},fb);
+ const t=el('text',{class:'flabel',x:fx,y:fy+(i===6?-26:38)},f); t.textContent=SHORT[id]||name;
+ f.addEventListener('click',ev=>{ev.stopPropagation();openTip(i);});
+ f.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openTip(i);}});
+ fruits.push(f); sway.push([[back,front],+d.split(' ')[0].slice(1),+d.split(' ')[1].split('C')[0],1.1+(i%3)*.3,i*1.3]);
+});
+// grass tufts along the ground
+for(let k=0;k<26;k++){const x=70+k*18+rnd()*8,h=8+rnd()*10;el('path',{class:'grass',d:`M${x} 568q-3-${h} -6-${h+3}M${x} 568q1-${h+2} 4-${h+4}`},document.getElementById('grass'));}
+
+/* product tip */
+const tip=document.getElementById('tip'); let tipFor=-1;
+function closeTip(){if(!tip)return;tip.hidden=true;fruits.forEach(f=>f.classList.remove('on'));tipFor=-1;}
+function openTip(i){
+ if(tipFor===i){closeTip();return;} closeTip(); tipFor=i; const [, , id, name, col]=BR[i]; const L=lang==='te'?1:0; const p=P.find(x=>x.id===id);
+ tip.style.setProperty('--c','var('+col+')'); document.getElementById('tipname').textContent=name;
+ const st=document.getElementById('tipst'); st.style.setProperty('--pc','var('+(p?p.stc:'--l0')+')');
+ st.querySelector('span').textContent=p?p.st[L]:(L?'పరిశోధన మాత్రమే · పేపర్ ట్రేడింగ్':'Research only · paper trading');
+ document.getElementById('tipfor').textContent=p?p.for[L]:(L?'మా సొంత అభ్యాసం కోసం. టిప్స్ ఇవ్వం, నిజమైన డబ్బుతో ట్రేడ్ చేయం.':'For our own learning. We never give tips or trade real money.');
+ const go=document.getElementById('tipgo'); go.hidden=!p; go.onclick=()=>{cur=id;renderProducts();closeTip();};
+ fruits[i].classList.add('on'); tip.hidden=false;
+ const fr=fruits[i].querySelector('.ring').getBoundingClientRect(), br=tbox.getBoundingClientRect();
+ const w=tip.offsetWidth, h=tip.offsetHeight; let x=fr.left-br.left+fr.width/2-w/2, y=fr.bottom-br.top+10;
+ x=Math.max(0,Math.min(br.width-w,x)); if(y+h>br.height) y=Math.max(0,fr.top-br.top-h-10);
+ tip.style.left=x+'px'; tip.style.top=y+'px'; tip.querySelector('.x').focus({preventScroll:true});}
+tip.querySelector('.x').addEventListener('click',closeTip);
+document.addEventListener('click',e=>{if(!tip.hidden&&!tip.contains(e.target))closeTip();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!tip.hidden){const i=tipFor;closeTip();fruits[i]&&fruits[i].focus();}});
+
+/* robots walking the branches, each showing what it is doing */
+const WALK=[ // branch, name, colour, tasks [en, te]
+ [2,'Chitti','#25D366',[['Replying to a customer in Telugu','కస్టమర్‌కు తెలుగులో జవాబిస్తోంది'],['Booking a 6 PM slot','సాయంత్రం 6 గంటల స్లాట్ బుక్ చేస్తోంది']]],
+ [3,'Forge','#2F6F78',[['Running 120 tests before a release','రిలీజ్ ముందు 120 టెస్ట్‌లు నడుపుతోంది'],['Fixing a bug a user reported','యూజర్ చెప్పిన బగ్ సరిచేస్తోంది']]],
+ [4,'Kavi','#3B7A3A',[['Writing a Telugu post for Akhil to approve','అఖిల్ ఆమోదం కోసం తెలుగు పోస్ట్ రాస్తోంది'],['Translating a reply into Hindi','జవాబును హిందీలోకి అనువదిస్తోంది']]],
+ [5,'Vigil','#A8324F',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Confirming a rule on the official site','అధికారిక సైట్‌లో నియమాన్ని నిర్ధారిస్తోంది']]]];
+const bubbles=document.getElementById('bubbles');
+const walkers=WALK.map(([b,name,col,tasks],k)=>{
+ const front=tfront.children[b], p=paths[b], L=p.getTotalLength();
+ const g=el('g',{},front); const inner=el('g',{},g); bot(inner,col,'working');
+ const bub=document.createElement('div'); bub.className='bub'; bub.style.setProperty('--c',col); bubbles.append(bub);
+ return {g,p,L,t:.42+k*.08,v:(k%2?-1:1)*.045,name,tasks,n:k,bub,on:false};});
+function placeBot(w,time){
+ const pt=w.p.getPointAtLength(w.L*w.t), a=w.p.getPointAtLength(Math.min(w.L,w.L*w.t+1)), dir=a.x>=pt.x?1:-1, face=w.v*dir>0?1:-1;
+ const bob=reduce?0:Math.abs(Math.sin(time*6+w.n))*1.6;
+ w.g.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${(pt.y-5-bob).toFixed(1)}) scale(${.62*face} .62)`);}
+function placeBubble(w){
+ if(!w.on)return; const m=w.g.getScreenCTM(); if(!m)return; const head=new DOMPoint(0,-84).matrixTransform(m), br=tbox.getBoundingClientRect();
+ const bw=w.bub.offsetWidth; let x=head.x-br.left-bw/2; x=Math.max(2,Math.min(br.width-bw-2,x));
+ w.bub.style.transform=`translate(${x.toFixed(0)}px,${(head.y-br.top-w.bub.offsetHeight-8).toFixed(0)}px)`;}
+let bi=-1, beat=0;
+function nextBubble(){
+ const single=tbox.offsetWidth<520; bi=(bi+1)%walkers.length; const w=walkers[bi];
+ if(single)walkers.forEach(o=>{o.bub.classList.remove('on');o.on=false;});
+ const [en,te]=w.tasks[beat++%w.tasks.length===0?0:1]; w.bub.replaceChildren(Object.assign(document.createElement('b'),{textContent:w.name}),document.createTextNode(lang==='te'?te:en));
+ w.on=true; placeBubble(w); w.bub.classList.add('on'); clearTimeout(w.to); w.to=setTimeout(()=>{w.bub.classList.remove('on');setTimeout(()=>{if(!w.bub.classList.contains('on'))w.on=false;},400);},single?2900:4800);}
+
+/* falling leaves (and fireflies at night) */
+const fall=document.getElementById('falling');
+for(let k=0;k<9;k++){const i=document.createElement('i');i.style.cssText=`left:${(5+k*11+rnd()*6).toFixed(0)}%;--t:${(11+rnd()*9).toFixed(1)}s;--d:${(-rnd()*18).toFixed(1)}s;--dx:${((rnd()-.5)*160).toFixed(0)}px`;fall.append(i);}
+for(let k=0;k<10;k++){const i=document.createElement('i');i.className='ff';i.style.cssText=`left:${(50+rnd()*48).toFixed(0)}%;top:${(15+rnd()*70).toFixed(0)}%;--d:${(-rnd()*4).toFixed(1)}s`;fall.append(i);}
+
+/* one animation loop, paused when the tree is off screen or the tab is hidden */
+let visible=true, last=0;
+new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).observe(tbox);
+function frame(ms){
+ const time=ms/1000, dt=Math.min(.05,time-(last||time)); last=time;
+ if(visible&&!document.hidden){
+  if(!reduce){sway.forEach(([els,x,y,amp,ph])=>{const a=(Math.sin(time*.9+ph)*amp).toFixed(2);els.forEach(g=>g.setAttribute('transform',`rotate(${a} ${x} ${y})`));});
+   walkers.forEach(w=>{w.t+=w.v*dt;if(w.t>.86||w.t<.34){w.v=-w.v;w.t=Math.max(.34,Math.min(.86,w.t));}});}
+  walkers.forEach(w=>{placeBot(w,time);placeBubble(w);});}
+ requestAnimationFrame(frame);}
+walkers.forEach(w=>placeBot(w,0));
+requestAnimationFrame(frame);
+setTimeout(()=>{nextBubble();setInterval(()=>{if(visible&&!document.hidden)nextBubble();},reduce?4500:2600);},reduce?300:2400);
+
+/* the "how it works" vine grows as you read */
+const steps=document.querySelector('.steps'), vine=steps.querySelector('.vine i'), stepEls=[...steps.querySelectorAll('.step')];
+function grow(){const r=steps.getBoundingClientRect(), mid=innerHeight*.6; const p=Math.max(0,Math.min(1,(mid-r.top)/r.height));
+ vine.style.setProperty('--p',p.toFixed(3)); stepEls.forEach(s=>s.classList.toggle('lit',s.getBoundingClientRect().top+20<mid));}
+if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.forEach(s=>s.classList.add('lit'));}
 
 setLang(lang);
 })();

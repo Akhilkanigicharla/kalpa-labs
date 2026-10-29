@@ -1,4 +1,4 @@
-# Finds the numeric chat ID of your Telegram channel (for the TELEGRAM_CHAT_ID secret, C27).
+# Finds the numeric chat IDs the bot can see: your channel (TELEGRAM_CHAT_ID, C27) and your own chat after you send /start to the bot (CEO hourly updates).
 # Before running: add the TELEGRAM_BOT_TOKEN secret, make the bot an admin of the channel, and post any message in the channel.
 # The run prints only chat IDs and titles (not secret). Nothing is posted anywhere.
 name: Telegram chat ID
@@ -20,7 +20,7 @@ jobs:
           tok = os.environ.get("TOKEN", "")
           if not tok:
               raise SystemExit("Add the TELEGRAM_BOT_TOKEN secret first (GitHub → Settings → Secrets and variables → Actions).")
-          with urllib.request.urlopen(f"https://api.telegram.org/bot{tok}/getUpdates?allowed_updates=%5B%22channel_post%22%2C%22my_chat_member%22%5D", timeout=30) as r:
+          with urllib.request.urlopen(f"https://api.telegram.org/bot{tok}/getUpdates?allowed_updates=%5B%22channel_post%22%2C%22my_chat_member%22%2C%22message%22%5D", timeout=30) as r:
               ups = json.load(r).get("result", [])
           chats = {}
           for u in ups:

@@ -22,6 +22,7 @@ NO_DELAY=1 node core/functions/webhook.test.js
 NO_DELAY=1 node core/functions/agents.test.js
 NO_DELAY=1 node core/functions/hardening.test.js
 NO_DELAY=1 node core/functions/billing.test.js
+NO_DELAY=1 node core/functions/telegram.test.js
 node qa/swarm.test.js
 if psql -X -d postgres -tAc "select 1" >/dev/null 2>&1; then bash supabase/test.sh; else echo "(SQL schema test skipped: needs a local Postgres; see supabase/test.sh)"; fi
 node ../../00-hq/agents/run.test.js

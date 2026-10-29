@@ -25,7 +25,7 @@ function check() {
     if (ids.has(a.id)) errors.push(`duplicate id ${a.id}`); ids.add(a.id);
     for (const f of ["name", "unit", "team", "mission", "trigger", "validator", "kpi", "runs_as"]) if (!a[f]) errors.push(`${a.id}: missing ${f}`);
     if (!a.validator.checks || !a.validator.checks.length) errors.push(`${a.id}: validator has no checks`);
-    if (!["code", "claude", "human", "planned"].includes(a.runs_as)) errors.push(`${a.id}: bad runs_as ${a.runs_as}`);
+    if (!["code", "claude", "human", "planned", "n8n"].includes(a.runs_as)) errors.push(`${a.id}: bad runs_as ${a.runs_as}`);
     if (!WORLD_SHARE[a.unit]) errors.push(`${a.id}: unknown unit ${a.unit}`);
     if (a.runs_as === "code" && a.code && !a.code.startsWith("scheduled task") && !a.code.includes("artifact")) {
       const file = a.code.split(/[#\s+]/)[0];
@@ -50,7 +50,7 @@ function relevant(a, st) {
 function plan(dateStr, st = JSON.parse(fs.readFileSync(path.join(__dirname, "state.json"), "utf8"))) {
   const date = dateStr ? new Date(dateStr + "T00:00:00Z") : new Date(Date.now() + 330 * 60000);
   const share = activeShare(st), byWorld = {};
-  for (const a of AGENTS.filter((x) => due(x, date) && x.runs_as !== "planned" && relevant(x, st))) (byWorld[a.unit] = byWorld[a.unit] || []).push(a);
+  for (const a of AGENTS.filter((x) => due(x, date) && x.runs_as !== "planned" && x.runs_as !== "n8n" && relevant(x, st))) (byWorld[a.unit] = byWorld[a.unit] || []).push(a);
   const out = [];
   for (const [u, list] of Object.entries(byWorld)) {
     const budget = Math.round(DAILY_TOKENS * share[u] / 100); let used = 0; const run = [], deferred = [];

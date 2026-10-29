@@ -165,5 +165,16 @@ others.push(
   A({ id: "b7.gate", name: "Paper-Trading Gate", unit: "b7", team: "tech", mission: "Backtest with real costs, count trials, and pass a strategy only through the gate thresholds; paper only, no tips.", trigger: { event: "new strategy" }, runs_as: "code", code: "07-trading/src/gate.py", tokens: 0, kpi: "0 strategies pass without every gate criterion", validator: { name: "Trading Lab Test Agent", checks: ["07-trading tests (pytest)", "SEBI: paper only, no advice"] } }),
 );
 
-const AGENTS = [].concat(...Object.keys(SETUPS).map(setupTeam), platform, hq, game, others);
+
+// ---------------------------------------------------------------- Roast Room council: 7 advisor lenses + a chair for every world (Akhil 30 Oct)
+// Pattern from MIT nateherkai/roast-room; protocol in 00-hq/agents/council/ROAST-ROOM.md. Runs on n8n free models via KL Tasks, 0 Claude tokens.
+const COUNCIL_UNITS = { hq: "Kalpa HQ", b1: "BotBhai", b2: "JobCard", b3: "Kits", b4: "Tab Lifeboat", b5: "Telugu Deals", b6: "Ledger Peaks", b7: "Trading Lab" };
+const SEATS = [["customer", "Customer lens", "Who exactly pays and what pain; work backwards from the buyer."], ["focus", "Focus lens", "Is this the one thing that moves us to users and revenue, or a distraction?"], ["offer", "Offer lens", "Value equation and price vs value; would the buyer feel silly saying no?"], ["attention", "Attention lens", "Where the buyer already spends attention and what free value we give first."], ["time", "Time lens", "What agents do vs the 1-hour founder, in minutes."], ["system", "System lens", "One weekly scorecard number and one quarterly rock."], ["risk", "Risk lens", "Margin of safety: money, law (TRAI, DPDP, SEBI, ASCI, WhatsApp policy), reputation."]];
+const council = [];
+for (const [u, label] of Object.entries(COUNCIL_UNITS)) {
+  for (const [k, name, mission] of SEATS) council.push(A({ id: `${u}.council.${k}`, name: `${label} ${name}`, unit: u, team: "council", mission, trigger: { cron: "daily:06:00" }, runs_as: "n8n", code: "n8n: Kalpa Task Runner (Council task)", tokens: 0, kpi: "Scores every option with a named framework and one reason", validator: { checks: ["no invented facts or names", "ruin risk stated"] } }));
+  council.push(A({ id: `${u}.council.chair`, name: `${label} Council Chair`, unit: u, team: "council", mission: "Weights the seats, computes option scores, applies the ruin cap, writes the verdict and this week's 3 actions.", trigger: { cron: "daily:06:00" }, runs_as: "n8n", code: "n8n: Kalpa Task Runner (Council task)", tokens: 0, kpi: "A verdict Akhil can act on in 1 minute", validator: { name: `${label} Vigil (council check)`, checks: ["maths shown", "Vigil PASS before review"] } }));
+}
+
+const AGENTS = [].concat(...Object.keys(SETUPS).map(setupTeam), platform, hq, game, others, council);
 module.exports = { AGENTS, SETUPS, DAILY_TOKENS, WORLD_SHARE, PROPOSED_WORLD_SHARE };

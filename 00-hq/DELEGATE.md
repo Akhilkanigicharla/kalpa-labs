@@ -18,7 +18,7 @@ So every Claude session sends word work to n8n (free models, n8n cloud) and keep
 ## How a session queues a task (n8n MCP, about 200 tokens)
 `add_data_table_rows` on data table `09BI56dVYOs1I8FV` (project `rGMOjAIMJ48jQbPi`) with:
 `title` (one clear ask, with the facts the agent needs), `owner_agent`, `stream` (HQ/b1…b7), `status: "todo"`, `priority` (P0/P1/P2), `due_on`, `needs_ceo`, `created_by: "Claude"`.
-The runner picks the top `todo` every 3 hours (:15 IST). Vigil marks it `review` (passed) or `rejected` (kept with the reason). Next session: read `review` rows, use them, mark them `done`.
+The runner picks the top `todo` every 30 minutes (:15/:45; put back to 3 hours when the queue is empty). A125: the picked row becomes `running` with `lease_until` = now + 25 min, so parallel runs never take the same row, and a crashed run's row is retried after its lease ends. Vigil marks it `review` (passed) or `rejected` (kept with the reason). Next session: read `review` rows, use them, mark them `done`.
 
 ## Rules
 - Free models only (OpenRouter `:free`, Groq free, NVIDIA free). No paid plans, no card.

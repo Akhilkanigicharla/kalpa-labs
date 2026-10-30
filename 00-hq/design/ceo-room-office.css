@@ -1,0 +1,21 @@
+/* CEO Room · live robot office (A137). Loaded as files/office.css. Kalpavruksha tokens only. */
+.kx-ocount{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr));gap:var(--cds-gap-sm);width:100%;margin-top:.4rem}
+.kx-oc{border-radius:14px;padding:.55rem .75rem;background:color-mix(in srgb,var(--kx-a) 9%,var(--color-panel));display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.kx-oc .kx-count{line-height:1.1}
+.kx-oc .kx-sub{overflow-wrap:anywhere}
+.kx-jobs{margin:0 var(--cds-pad-lg) var(--cds-pad-lg);border-radius:var(--r);border:1px solid var(--color-border-line);background:var(--color-panel);padding:var(--cds-pad-md);display:flex;flex-direction:column;gap:.6rem;box-shadow:var(--sh)}
+.kx-jobs[hidden]{display:none}
+.kx-jobs-head{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.kx-jobs-head h3{margin:0;flex:1 1 10rem;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);overflow-wrap:anywhere}
+.kx-jobs-h{margin:.4rem 0 0;font-size:var(--cds-font-size-body);font-weight:600}
+.kx-joblist{margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.kx-joblist>li{list-style:none;padding:.65rem .8rem;border-radius:14px;background:var(--tint);min-width:0;display:flex;flex-direction:column;gap:.35rem}
+.kx-job-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.kx-joblist summary{cursor:pointer;overflow-wrap:anywhere;font-size:var(--cds-font-size-body)}
+.kx-joblist summary:focus-visible{outline:2px solid var(--kx-a);outline-offset:2px;border-radius:6px}
+.kx-job-sum{margin:.45rem 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);max-height:16rem;overflow:auto}
+.kx-scene .kx-council-glow{fill:color-mix(in srgb,var(--kv-gold) 22%,transparent);stroke:var(--kv-gold);stroke-width:1.5}
+@media (prefers-reduced-motion:no-preference){
+ .kx-scene .kx-council-glow{animation:kx-glow 2.6s ease-in-out infinite}
+ @keyframes kx-glow{0%,100%{opacity:.55}50%{opacity:1}}
+}

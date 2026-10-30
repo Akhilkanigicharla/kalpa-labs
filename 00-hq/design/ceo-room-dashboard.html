@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="office.css">
 <style>
 #dash-root{--dash-gutter:clamp(12px,3vw,28px)}
 .kx{--kv-c0:light-dark(#3B7A3A,#6FD08F);--kv-c1:light-dark(#9C700E,#E8B64A);--kv-c2:light-dark(#8A4A28,#D98B5F);--kv-c3:light-dark(#2F6F78,#6FC2CB);--kv-c4:light-dark(#7A3F5E,#D59AB9);--kv-c5:light-dark(#A8324F,#FF7F9E);--kv-c6:light-dark(#4A5590,#9DA8E6);--kv-c7:light-dark(#66655A,#B4B3A4);--kv-leaf:light-dark(#2F6A3A,#8FCB8C);--kv-young:light-dark(#5E9E4C,#8FCB8C);--kv-bark:light-dark(#6B4226,#C08A5E);--kv-gold:light-dark(#C38E12,#E8B64A);--kv-canopy:light-dark(#1D3A25,#17301F);--r:18px;--sh:0 1px 2px color-mix(in srgb,var(--color-fg) 6%,transparent),0 10px 30px color-mix(in srgb,var(--color-fg) 7%,transparent);
@@ -192,10 +193,19 @@
   <div class="kx-office" id="office">
    <div class="kx-office-head">
     <div><h3 style="margin:0;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)">The Kalpa office</h3>
-    <p class="kx-note">You in the glass cabin, your AI team at their desks. Tap a robot to meet it. Swipe sideways on a phone.</p></div>
-    <span class="kx-pill p-ok"><i></i>Robots at work</span>
+    <p class="kx-note">You in the glass cabin, your AI team at their desks. Tap a robot to see its last 5 jobs. Swipe sideways on a phone.</p></div>
+    <div class="kx-ocount" id="office-counters">
+     <div class="kx-oc"><span class="kx-count" data-source="office_kpis" data-field="value" data-where="metric=queue">—</span><span class="kx-sub">jobs in the queue</span></div>
+     <div class="kx-oc"><span class="kx-count" id="oc-passed" data-source="kl_done_by_day">—</span><span class="kx-sub">passed Vigil today</span></div>
+     <div class="kx-oc"><span class="kx-count" id="oc-redo" data-source="kl_done_by_day">—</span><span class="kx-sub">sent back to redo today</span></div>
+     <div class="kx-oc"><span class="kx-count" data-source="office_kpis" data-field="value" data-where="metric=models">—</span><span class="kx-sub" id="oc-models" data-source="team_models">free models in use</span></div>
+    </div>
    </div>
-   <div class="kx-scroll"><div id="scene" data-source="agent_board worlds"></div></div>
+   <div class="kx-scroll"><div id="scene" data-source="agent_board worlds kl_tasks"></div></div>
+   <div class="kx-jobs" id="office-jobs" data-source="kl_tasks" hidden>
+    <div class="kx-jobs-head"><h3 id="oj-name">—</h3><button class="kx-btn" id="oj-team" type="button">Meet on the team page</button><button class="kx-btn" id="oj-close" type="button">Close</button></div>
+    <ol class="kx-joblist" id="oj-list"></ol>
+   </div>
   </div>
 
   <div class="kx-grid2">
@@ -269,6 +279,8 @@
    <h3 id="bd-name">—</h3>
    <p class="kx-note" id="bd-job">—</p>
    <div class="kx-facts" id="bd-facts"></div>
+   <h4 class="kx-jobs-h">Last 5 jobs</h4>
+   <ol class="kx-joblist" id="bd-jobs" data-source="kl_tasks"></ol>
   </div>
   <div class="kx-team" id="teamgrid" data-source="agent_board"></div>
  </section>
@@ -459,14 +471,14 @@
    m.slice(0,4).forEach((a,j)=>{
     const [dx,dy]=spots[j], bx=cx+dx, by=cy+dy;
     items.push({y:by,draw:g=>{
-     const bg=el('g',{class:'bot',transform:`translate(${bx},${by})`,tabindex:'0',role:'button','aria-label':a.agent+', '+a.role},g);
+     const bg=el('g',{'data-agent':a.agent,class:'bot',transform:`translate(${bx},${by})`,tabindex:'0',role:'button','aria-label':a.agent+', '+a.role},g);
      bot(bg,hostColor(a.host),{delay:((i*0.37+j*0.21)%1.5).toFixed(2),wave:a.agent==='Kalpa'});
-     const open=()=>{pickedBot=a.agent; show('team');};
+     const open=()=>{if(window.kxOpenJobs) window.kxOpenJobs(a.agent); else {pickedBot=a.agent; show('team');}};
      bg.addEventListener('click',open); bg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); open();}});
     }});
     nameCard(L.labels,bx,by-90,a.agent,a.in_n8n);
     const line=LINES[a.agent]||a.job; const bw=line.length*6.1+20;
-    const bu=el('g',{class:'bubble',style:`animation-delay:${((i*1.3+j*2.3)%8).toFixed(1)}s`},L.labels);
+    const bu=el('g',{'data-agent':a.agent,class:'bubble',style:`animation-delay:${((i*1.3+j*2.3)%8).toFixed(1)}s`},L.labels);
     if(reduce) bu.style.opacity='0';
     el('rect',{x:bx+10,y:by-126,width:bw,height:22,rx:11,class:'bub'},bu);
     const tt=el('text',{x:bx+20,y:by-111,class:'bub-t'},bu); tt.textContent=line;
@@ -496,6 +508,7 @@
  function show(p){current=p; tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.page===p))); pages.forEach(s=>s.hidden=s.dataset.page!==p); dash.setLink(p); draw();
   if(p==='team'&&pickedBot){const d=document.getElementById('botdetail'); if(!d.hidden) d.scrollIntoView({block:'nearest'});}}
  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.page)));
+ window.kxShowTeam=n=>{pickedBot=n; show('team');}; window.kxBot=bot;
 
  const clock=document.getElementById('clock'), greet=document.getElementById('greet');
  function tick(){const now=new Date(); clock.textContent='IST '+now.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:false});
@@ -645,3 +658,4 @@
  const named=location.hash.slice(1); if(['home','workers','n8n','team','work','mkt','game'].includes(named)) show(named);
 })();
 </script>
+<script src="office.js"></script>

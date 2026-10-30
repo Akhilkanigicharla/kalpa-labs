@@ -13,6 +13,14 @@ Status key: `[ ]` todo · `[~]` started (see log) · `[x]` done · `[!]` blocked
 
 ## Agent queue
 
+### 💰 Money sprint · 30 Oct → 13 Nov 2026 (Akhil 30 Oct: "make it really earn money in the real world")
+Every session and every n8n agent works these three tracks first, in this order; other worlds only after. Research rows for b2, b6, b7 stay P2.
+1. **Telugu Deals (b5), the only track already earning** (EarnKaro ₹260): A89 depth → deals channel live with honest #ad posts via EarnKaro links (C42 under the standing go). Goal: first ₹1,000 of affiliate commission.
+2. **Tab Lifeboat (b4), sells worldwide without sales calls**: A90 depth, A111 store kit, C54 payment provider → A53 licence → Chrome Web Store with a Pro plan. Goal: listed with Pro on sale.
+3. **BotBhai (b1), the biggest monthly fee**: A87 depth on website chat + Telegram (A130), the offer document from the swarm, one real salon on a free pilot from 16 Nov. Goal: 1 signed pilot.
+Scorecard every Sunday (in the 9 PM update): rupees earned, Chrome installs, salons in pilot.
+
+
 ### Sprint 1 · BotBhai sell-ready (b1) and design system
 - [x] **A01** b1 · P1-W1-02/03: verify the MUST list (M1 confirm reply, M2 reminder flags, M3 IST, M5 "4pm", M6 "hair cut", M7 owner alert, M12 Telugu greeting, M13 opt-in gate, M14 home visit) against `botbhai/docs/requirements/salon.md`; fix any gap with a regression test. Check: `bash botbhai/tools/test-all.sh` green. (done 2026-10-13, 14079ae)
 - [x] **A01b** b1 · Restyle every BotBhai screen to the Kalamkari system (`00-hq/design/`): the demo (`web/index.src.html` → `build.py` → republish artifact https://claude.ai/artifact/JYxrRm9PHrw2SCBRFRPjUi with the Artifact tool), SEO-bot site templates (`seo/seo_bot.py`, fix the WhatsApp-button contrast from a3), and smile cards (`tools/cards.py`). Check: all tests green; 390 px Playwright screenshots in light + dark, no overflow. (done 2026-10-16, 334a781; `tools/screens.py` checks 20 screens)

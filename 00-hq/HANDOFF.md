@@ -55,3 +55,10 @@ Order and scope (each line = one step):
 
 ## Rules that always apply
 See `CLAUDE.md`: free tiers only; never handle passwords, OTPs, tokens or bank numbers; licence rule; legal rules (Meta WhatsApp policy, TRAI, DPDP, ASCI, SEBI); tests before ticks; every UI uses `00-hq/design/`. Commit as `Akhilkanigicharla <84580207+Akhilkanigicharla@users.noreply.github.com>`, then fetch + rebase + push to `main` (the Build sprint also pushes, so rebase often).
+
+## State on 30 Oct 2026, 14:30 IST (for a fresh session)
+- **Money sprint** (top of ROADMAP agent queue): 1 Telugu Deals (A89, EarnKaro already earned ₹260), 2 Tab Lifeboat on Chrome with Pro (A90, A111, C54, A53), 3 BotBhai first salon pilot on website chat + Telegram (A87, A130 done). Other worlds paused.
+- **n8n:** Task Runner t8XJCgW8Gdi2rmBX every 30 min (~70 KL Tasks queued 30 Oct; put back to `15 */3 * * *` when empty); daily councils at 06:00 IST for HQ, b5, b4, b1; CEO daily Telegram update JPcvGGcm2hq9VcQr at 9 PM IST to Akhil (chat 1905524851, @Kalplabsbot).
+- **Due 31 Oct 10:00 IST:** reminder trig_011knfv7h7XE1QGnAe6fPopx → read swarm results (output_summary only) → write `01-botbhai/docs/OFFER.md`, rebuild `00-hq/leads/seeds/` from research, send Akhil the council verdicts.
+- **Rules added 30 Oct:** standing go after a Depth item passes (CLAUDE.md rule 9); WhatsApp parked (C02), Telegram only.
+- **Akhil's open asks:** one salon owner name for the 16 Nov pilot; C54 payment provider sign-up after research.

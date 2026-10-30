@@ -48,7 +48,7 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - Kalpa Labs, sole proprietorship, Udyam **UDYAM-TS-02-0382711** (from 11 Oct 2026), Hyderabad.
 - Trademark: "KALPA" is registered by others in class 42, so each product carries its own brand. "BOTBHAI": no record found in IP India (checked 12 Oct 2026).
 
-- **Kalpavruksha CEO Room** (agents dashboard, source `00-hq/design/ceo-room-dashboard.html`: cloud workers, robot office, development, marketing, Kingdom game): https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC — roadmap data from `python3 00-hq/tools/roadmap_json.py`
+- **Kalpavruksha CEO Room** (agents dashboard, source `00-hq/design/ceo-room-dashboard.html` + `ceo-room-office.js/.css` (live robot office, A137; live n8n sources `kl_tasks`, `kl_queue`): cloud workers, robot office, development, marketing, Kingdom game): https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC — roadmap data from `python3 00-hq/tools/roadmap_json.py`
 
 - Supabase **ledger-peaks** (b6, free, Mumbai): https://wnntkohwhhinxrraquxu.supabase.co (made 24 Oct 2026 by Akhil; keys only in secrets)
 

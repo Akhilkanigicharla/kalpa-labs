@@ -1,0 +1,79 @@
+# A98: free Social Team voice-over (replaces ElevenLabs). Script text + language -> WAV for
+# `social/walkthrough.py --voice`. ai4bharat Indic Parler-TTS (Apache-2.0) on the free CPU runner.
+# Manual only (Actions tab > "Social voice-over" > Run workflow). Leave "text" empty to render the
+# Telugu + English demo scripts in social/voice-scripts/. Nothing is published; WAVs are a 14-day artifact.
+# Needs the HF_TOKEN repo secret (READ token, model terms accepted; roadmap C49). Never printed.
+name: Social voice-over
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        description: "Script (empty = demo te + en clips)"
+        required: false
+        default: ""
+      lang:
+        description: "Language of the script"
+        type: choice
+        options: [te, en, hi]
+        default: te
+      speaker:
+        description: "Voice (empty = recommended female voice)"
+        required: false
+        default: ""
+permissions:
+  contents: read
+concurrency:
+  group: social-voiceover
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: 01-botbhai/botbhai
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      SCRIPT: ${{ inputs.text }}
+      LANG_IN: ${{ inputs.lang }}
+      SPEAKER: ${{ inputs.speaker }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Unit tests (model mocked, no download)
+        run: |
+          pip install pillow==11.0.0
+          python social/test_voiceover.py
+      - name: HF_TOKEN secret present
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Add the HF_TOKEN secret first (roadmap C49)."
+            exit 1
+          fi
+      - name: Install torch (CPU) and parler-tts (pinned commit)
+        run: |
+          pip install torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r voice/requirements-parler.txt
+      - name: Model cache (about 3.8 GB, never committed)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-indic-parler-tts-v1
+      - name: Render voice-over on CPU
+        run: |
+          mkdir -p out
+          if [ -z "$SCRIPT" ]; then
+            python social/voiceover.py --lang te --script social/voice-scripts/demo-te.txt --out out/voice-te.wav
+            python social/voiceover.py --lang en --script social/voice-scripts/demo-en.txt --out out/voice-en.wav
+          else
+            set -- --lang "$LANG_IN" --text "$SCRIPT" --out "out/voice-$LANG_IN.wav"
+            if [ -n "$SPEAKER" ]; then set -- "$@" --speaker "$SPEAKER"; fi
+            python social/voiceover.py "$@"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: social-voiceover
+          path: 01-botbhai/botbhai/out/*.wav
+          retention-days: 14
+          if-no-files-found: error

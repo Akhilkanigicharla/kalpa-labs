@@ -16,6 +16,7 @@ All artifacts are listed at https://claude.ai/code/artifacts
 | Label | What | Link |
 |---|---|---|
 | 📣 Kalpa Deals channel | Private for now (invite link: don't post it publicly until "go") | https://t.me/+Qc0jK015KwE4NzA1 |
+| 📈 CEO hourly update | n8n workflow JPcvGGcm2hq9VcQr: every hour 8 AM–10 PM IST to Akhil's Telegram via @Kalplabsbot (revenue, website, agents, code) | https://kalpalabs.app.n8n.cloud/workflow/JPcvGGcm2hq9VcQr |
 | 🤖 Deals poster bot | @Kalplabsbot, admin of the channel; posts only after secrets + `DEALS_LIVE=go` | https://t.me/Kalplabsbot |
 
 ## Claude documents

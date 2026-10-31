@@ -1,0 +1,3 @@
+# A99 auto captions (CPU). faster-whisper is MIT (pypi.org/project/faster-whisper, checked 2026-10-31);
+# its Whisper models (Systran/faster-whisper-*) are MIT. Audio is decoded by ffmpeg, not PyAV.
+faster-whisper==1.2.1

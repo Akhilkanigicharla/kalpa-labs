@@ -19,10 +19,16 @@ python3 -m social.team --insights results.json                          # weekly
 python3 -m social.team --setup realestate --views insights.csv            # posting time per format learned from real views (8+ posts)
 python3 -m social.walkthrough --setup realestate --photos listing/ --rooms "Living room,Kitchen,..." \
     --title "3 BHK, Kondapur" --out out/walk.mp4 [--voice voice.mp3]   # 6-12 listing photos -> 9:16 walkthrough Reel
+python3 social/voiceover.py --lang te --script script.txt --out out/voice-te.wav  # free voice-over (A98)
+python3 social/captions.py --video out/walk.mp4 --lang te --script script.txt --out out/walk-cc.mp4
+#   2-line Kalpa captions burned in (A99, replaces CapCut). faster-whisper (MIT) times English/Hindi;
+#   Telugu needs --script (Whisper's Telugu spelling isn't good enough) and is timed by the speech itself.
+#   --srt out/walk.srt also writes an SRT. pip install -r social/requirements-captions.txt
 ```
 
 ## Tests
 `python3 social/test_social.py` (offline; part of `tools/test-all.sh`).
+`python3 social/test_captions.py` (offline) and `python3 social/test_captions_timing.py` (real Telugu, Hindi and English clips: captions within 0.5 s; needs faster-whisper, else it skips; runs in the "Social captions" Action).
 
 ## Rules it keeps
 - Never invents reviews or results: review/photo posts wait for the owner's real content.

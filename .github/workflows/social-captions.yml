@@ -1,0 +1,68 @@
+# A99: free auto captions on Reels (replaces CapCut). faster-whisper (MIT) on the free CPU runner.
+# Manual only (Actions tab > "Social captions" > Run workflow). Runs the timing check on real Telugu,
+# Hindi and English clips (captions within 0.5 s), then makes a demo captioned Reel per language.
+# Nothing is published; the demo MP4s + SRTs are a 14-day artifact. No secrets needed (public models).
+name: Social captions
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "01-botbhai/botbhai/social/captions.py"
+      - "01-botbhai/botbhai/social/test_captions*.py"
+      - "01-botbhai/botbhai/social/fixtures/captions/**"
+      - ".github/workflows/social-captions.yml"
+permissions:
+  contents: read
+concurrency:
+  group: social-captions
+  cancel-in-progress: true
+jobs:
+  captions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: 01-botbhai/botbhai
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: ffmpeg (with libass)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Install faster-whisper (pinned)
+        run: pip install -r social/requirements-captions.txt
+      - name: Model cache (Whisper small, never committed)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: faster-whisper-small-v1
+      - name: Unit tests (no model)
+        run: python social/test_captions.py
+      - name: Timing check on real speech (te, hi, en)
+        env:
+          REQUIRE_WHISPER: "1"
+        run: python social/test_captions_timing.py
+      - name: Demo captioned Reels
+        run: |
+          mkdir -p out
+          for l in te hi en; do
+            python - "$l" <<'PY'
+          import json, pathlib, sys
+          l = sys.argv[1]
+          clips = json.loads(pathlib.Path("social/fixtures/captions/fleurs.json").read_text(encoding="utf-8"))[l]["clips"]
+          pathlib.Path(f"out/script-{l}.txt").write_text("\n".join(c["text"] for c in clips), encoding="utf-8")
+          PY
+            ffmpeg -nostdin -v error -y -f lavfi -i "color=c=0x2F6F78:s=1080x1920:r=30" \
+              -i "social/fixtures/captions/$l.opus" -shortest -pix_fmt yuv420p -c:a aac "out/demo-$l.mp4"
+            python social/captions.py --video "out/demo-$l.mp4" --lang "$l" --script "out/script-$l.txt" \
+              --srt "out/demo-$l.srt" --out "out/demo-$l-cc.mp4"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: social-captions
+          path: |
+            01-botbhai/botbhai/out/*-cc.mp4
+            01-botbhai/botbhai/out/*.srt
+          retention-days: 14
+          if-no-files-found: error

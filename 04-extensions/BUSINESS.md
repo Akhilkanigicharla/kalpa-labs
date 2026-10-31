@@ -17,6 +17,7 @@ Akhil, 24 Oct 2026: "find the best problems on the entire internet, build extens
 4. **Store-safe.** Manifest V3, no remote code, the minimum permissions, and a privacy form that matches the code. Every release passes a policy check before upload.
 5. **Free tools only** for building, testing and promotion. Money is spent only by Akhil on the store fee and, later, a payment provider's normal per-sale fee.
 6. **Nothing public without Akhil's "go"** (CLAUDE.md rule 9), per extension and per release.
+7. **Store slots.** Chrome Web Store gives each publisher account a published-item limit with a default of **two extension slots** (Google, [CWS updates blog, 20 Aug 2026](https://developer.chrome.com/blog/cws-review-updates-2026); checked 2026-10-31). Extensions 1 and 2 fit; before extension 3 goes up, Akhil requests a limit increase in the [Developer Dashboard](https://chrome.google.com/webstore/devconsole/) (Google says most get an immediate answer; [publish docs](https://developer.chrome.com/docs/webstore/publish)). Firefox AMO and Edge Add-ons are separate stores with their own accounts.
 
 ## The engine: 41 jobs, run by the 22 n8n agents + Claude + GitHub Actions
 | Stage | Jobs (count) | Who runs it | Runs |
@@ -48,7 +49,7 @@ Kill rule: below 20 → drop. An extension already built is dropped if it has fe
 ## Money targets (what the leadership dashboard tracks)
 | | Month 1 | Month 3 | Month 6 |
 |---|---|---|---|
-| Extensions live | 1 (Tab Lifeboat) | 3 | 5 |
+| Extensions live | 1 (Tab Lifeboat) | 3 (needs a CWS slot increase, rule 7) | 5 |
 | Weekly active users | 100 | 1,500 | 6,000 |
 | Paying users | 3 | 40 | 200 |
 | Monthly revenue | ₹500 | ₹8,000 | ₹40,000 |

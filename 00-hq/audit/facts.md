@@ -77,6 +77,6 @@
 | Groq rate-limits page still shows gpt-oss-120b 30 RPM, 1K RPD, 8K TPM, 200K TPD | VERIFIED | 2026-10-28 | console.groq.com/docs/rate-limits; facts row 2026-10-19 |
 | OpenRouter :free 20 RPM; 50/day under $10 bought, 1,000/day at ≥$10 | VERIFIED | 2026-10-28 | openrouter.ai/docs/api-reference/limits; facts row 2026-10-19 |
 | Mistral free Experiment plan (1 req/s, no card) | UNVERIFIED | 2026-10-28 | only a GitHub issue (mistral-vibe #275); Akhil's account shows none (row 2026-10-18) |
-| Chrome Web Store: new publisher accounts start with 2 published-item slots; more by request in the Developer Dashboard | UNVERIFIED (Google page not fetched; two secondary sources agree) | 2026-10-31 | crxbase.com/blog/chrome-web-store-extension-limits (2026-08-21); extensionradar.com/blog/chrome-web-store-developer-fee-2026 |
+| Chrome Web Store: each publisher account has a default limit of 2 extension slots (from 20 Aug 2026); existing accounts keep at least their published count; increase by request in the Developer Dashboard | VERIFIED | 2026-10-31 | developer.chrome.com/blog/cws-review-updates-2026 (Google, 20 Aug 2026); crxbase.com/blog/chrome-web-store-extension-limits |
 | Dodo Payments: 4% + 40¢ card; +1.5% non-US card; UPI/RuPay 4% + 15¢ (no surcharges); +0.5% subscription; $1 per refund; payout $5 if < $1,000; USD SWIFT payout $25 | VERIFIED | 2026-10-31 | dodopayments.com/pricing (live Firecrawl); PLAN 2026-10-13 |
 | trycompai/crm licence MIT | VERIFIED | 2026-10-31 | github.com/trycompai/crm |

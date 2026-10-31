@@ -21,14 +21,14 @@
  --leaf:#5E9E4C; --bark:#6B4226; --l0:#66655A;--l1:#8A4A28;--l2:#2F6F78;--l3:#3B7A3A;--l4:#7A3F5E;--l5:#9C700E;--l6:#A8324F;--l7:#4A5590;
  --f-display:"Rozha One","Noto Serif",Georgia,serif;--f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
  --r-s:8px;--r-m:12px;--r-l:18px;--shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 14px 30px -18px color-mix(in srgb,var(--accent) 55%,transparent);
- --wa:#0b8a5a;--wa-bg:#e7ddd3;--bubble-in:#ffffff;--bubble-out:#d9fdd3;--bubble-fg:#111b21;color-scheme:light}
+ --wa:#08704a;--wa-bg:#e7ddd3;--bubble-in:#ffffff;--bubble-out:#d9fdd3;--bubble-fg:#111b21;--on-color:#FCFAF4;--gold-ink:#241A04;--phone:#1E2A1F;--phone-rim:#3B4A3C;--shade:#000;--typing:#8696a0;--live:#7CFC9A;--wa-ink:#08704a;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B;--rule:#2A3A2D;--soft:#1D2C21;--accent:#8FCB8C;--accent-fg:#0F1912;--madder:#D98B5F;--gold:#E8B64A;--ok:#6FD08F;--warn:#E8B64A;--hero:#17301F;
  --leaf:#8FCB8C; --bark:#C08A5E; --l0:#B4B3A4;--l1:#D98B5F;--l2:#6FC2CB;--l3:#6FD08F;--l4:#D59AB9;--l5:#E8B64A;--l6:#FF7F9E;--l7:#9DA8E6;--wa-bg:#0b141a;--bubble-in:#202c33;--bubble-out:#005c4b;--bubble-fg:#e9edef;color-scheme:dark}}
 :root[data-theme=dark]{--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B;--rule:#2A3A2D;--soft:#1D2C21;--accent:#8FCB8C;--accent-fg:#0F1912;--madder:#D98B5F;--gold:#E8B64A;--ok:#6FD08F;--warn:#E8B64A;--hero:#17301F;
  --leaf:#8FCB8C; --bark:#C08A5E; --l0:#B4B3A4;--l1:#D98B5F;--l2:#6FC2CB;--l3:#6FD08F;--l4:#D59AB9;--l5:#E8B64A;--l6:#FF7F9E;--l7:#9DA8E6;--wa-bg:#0b141a;--bubble-in:#202c33;--bubble-out:#005c4b;--bubble-fg:#e9edef;color-scheme:dark}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 var(--f-body);
+html{overflow-x:clip;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:clip;background:var(--bg);color:var(--fg);font:400 17px/1.55 var(--f-body);
  background-image:radial-gradient(color-mix(in srgb,var(--accent) 14%,transparent) 1px,transparent 1.4px);background-size:18px 18px}
 a{color:var(--accent)}
 img,svg{max-width:100%}
@@ -37,7 +37,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.1;margin:0;t
 [lang=te] h1,[lang=te] h2,[lang=te] h3,.te h1,.te h2,.te h3{font-family:var(--f-body);font-weight:700}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:0 1.3rem;border-radius:999px;border:0;font:600 16px var(--f-body);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s}
 .btn:active{transform:scale(.97)}
-.btn-gold{background:var(--gold);color:#1a1300;box-shadow:0 8px 20px -8px color-mix(in srgb,var(--gold) 70%,transparent)}
+.btn-gold{background:var(--gold);color:var(--gold-ink);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--gold) 70%,transparent)}
 .btn-ghost{background:transparent;color:inherit;border:1.5px solid currentColor}
 .btn-acc{background:var(--accent);color:var(--accent-fg)}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
@@ -105,7 +105,7 @@ nav.links a:hover{color:var(--fg)}
 .bub.on{opacity:1}.bub b{color:var(--accent);margin-right:.3rem}
 .bub::after{content:"";position:absolute;left:50%;bottom:-6px;width:10px;height:10px;background:var(--panel);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);transform:translateX(-50%) rotate(45deg)}
 .tip{position:absolute;z-index:4;width:min(290px,92%);background:var(--panel);border:1px solid var(--rule);border-top:5px solid var(--c);border-radius:var(--r-m);box-shadow:var(--shadow);padding:12px 16px;display:grid;gap:.45rem}
-.tip[hidden]{display:none}.tip h3{font-size:1.35rem}.tip p{margin:0;color:var(--muted);font-size:14.5px}
+.tip[hidden]{display:none}.tip .tipname{font:400 1.35rem/1.1 var(--f-display);color:var(--fg)}.tip p{margin:0;color:var(--muted);font-size:14.5px}
 .tip .x{position:absolute;top:6px;right:6px;width:36px;height:36px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;border-radius:50%}
 .tip .btn{min-height:42px;font-size:15px;width:max-content}
 .tree-note{text-align:center;color:var(--muted);font-size:13.5px;margin:.4rem auto 0;max-width:46ch}
@@ -120,31 +120,31 @@ nav.links a:hover{color:var(--fg)}
  @keyframes fall{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:.75}50%{transform:translate(var(--dx,40px),55vh) rotate(260deg)}92%{opacity:.6}100%{opacity:0;transform:translate(calc(var(--dx,40px)*-.4),110vh) rotate(520deg)}}
  @keyframes firefly{0%,100%{opacity:0;transform:translate(0,0)}50%{opacity:1;transform:translate(14px,-18px)}}}
 /* phone demo */
-.phone{width:min(360px,100%);margin-inline:auto;border-radius:38px;padding:12px;background:#1E2A1F;box-shadow:0 30px 70px -30px #1E2A1Faa,inset 0 0 0 2px #3B4A3C}
+.phone{width:min(360px,100%);margin-inline:auto;border-radius:38px;padding:12px;background:var(--phone);box-shadow:0 30px 70px -30px color-mix(in srgb,var(--phone) 67%,transparent),inset 0 0 0 2px var(--phone-rim)}
 .screen{border-radius:28px;overflow:hidden;background:var(--wa-bg);display:flex;flex-direction:column;height:560px}
-.wa-head{background:var(--wa);color:#fff;display:flex;align-items:center;gap:.6rem;padding:.75rem .9rem}
-.wa-head .av{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.wa-head{background:var(--wa);color:var(--on-color);display:flex;align-items:center;gap:.6rem;padding:.75rem .9rem}
+.wa-head .av{width:36px;height:36px;border-radius:50%;background:var(--on-color);display:grid;place-items:center}
 .wa-head .av svg{width:28px;height:28px}
 .wa-head b{display:block;font-size:15px}.wa-head small{opacity:.85;font-size:12px}
 .chat{flex:1;overflow-y:auto;padding:.9rem .7rem;display:flex;flex-direction:column;gap:.45rem;scroll-behavior:smooth}
-.msg{max-width:82%;padding:.5rem .7rem .35rem;border-radius:12px;font-size:14.5px;line-height:1.4;color:var(--bubble-fg);box-shadow:0 1px 1px #0002;animation:pop .28s ease-out both;overflow-wrap:anywhere}
+.msg{max-width:82%;padding:.5rem .7rem .35rem;border-radius:12px;font-size:14.5px;line-height:1.4;color:var(--bubble-fg);box-shadow:0 1px 1px color-mix(in srgb,var(--shade) 13%,transparent);animation:pop .28s ease-out both;overflow-wrap:anywhere}
 .msg.in{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:4px}
 .msg.out{background:var(--bubble-out);align-self:flex-end;border-top-right-radius:4px}
 .msg time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
 .typing{align-self:flex-start;background:var(--bubble-in);border-radius:12px;padding:.6rem .8rem;display:flex;gap:4px}
-.typing i{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:blink 1.2s infinite}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--typing);animation:blink 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
-.chips{display:flex;gap:.4rem;overflow-x:auto;padding:.55rem .6rem;background:color-mix(in srgb,var(--wa-bg) 85%,#000 4%);scrollbar-width:none}
+.chips{display:flex;gap:.4rem;overflow-x:auto;padding:.55rem .6rem;background:color-mix(in srgb,var(--wa-bg) 85%,var(--shade) 4%);scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;border:1px solid var(--wa);color:var(--wa);background:var(--bubble-in);border-radius:999px;min-height:38px;padding:0 .85rem;font:600 13.5px var(--f-body);cursor:pointer}
-:root[data-theme=dark] .chips button{color:#6FD08F;border-color:#6FD08F}
-.ask{display:flex;gap:.45rem;padding:.5rem .6rem calc(.5rem + 2px);background:color-mix(in srgb,var(--wa-bg) 85%,#000 4%)}
+.chips button{flex:none;border:1px solid var(--wa-ink);color:var(--wa-ink);background:var(--bubble-in);border-radius:999px;min-height:38px;padding:0 .85rem;font:600 13.5px var(--f-body);cursor:pointer}
+:root[data-theme=dark]{--wa-ink:var(--l3)}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--wa-ink:var(--l3)}}
+.ask{display:flex;gap:.45rem;padding:.5rem .6rem calc(.5rem + 2px);background:color-mix(in srgb,var(--wa-bg) 85%,var(--shade) 4%)}
 .ask input{flex:1;min-width:0;min-height:44px;border:0;border-radius:999px;padding:0 1rem;font:400 16px var(--f-body);background:var(--bubble-in);color:var(--bubble-fg)}
-.ask button{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer}
+.ask button{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--wa);color:var(--on-color);display:grid;place-items:center;cursor:pointer}
 .ask button svg{width:20px;height:20px}
-.ask button:disabled{opacity:.5}
-.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7CFC9A;margin-right:6px;vertical-align:middle;box-shadow:0 0 0 0 #7CFC9A88}
-@media (prefers-reduced-motion:no-preference){.live-dot{animation:ping 2s infinite}@keyframes ping{0%{box-shadow:0 0 0 0 #7CFC9A88}70%{box-shadow:0 0 0 7px #7CFC9A00}100%{box-shadow:0 0 0 0 #7CFC9A00}}}
+.ask button:disabled{background:var(--muted);color:var(--panel);cursor:not-allowed;opacity:.75}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--live);margin-right:8px;vertical-align:middle;box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 53%,transparent)}
+@media (prefers-reduced-motion:no-preference){.live-dot{animation:ping 2s infinite}@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 53%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}}
 .screen{height:600px}
 .demo-note{text-align:center;color:var(--muted);font-size:13px;margin-top:.7rem}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
@@ -161,13 +161,13 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .s-head{max-width:720px;margin-bottom:2rem}
 .s-head h2{font-size:clamp(1.8rem,4.2vw,2.8rem);margin:.6rem 0 .6rem}
 .s-head p{color:var(--muted);margin:0;font-size:1.08rem}
-.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0}
+.card{background:var(--panel);color:var(--fg);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0}
 /* products */
 .ptabs{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem;scrollbar-width:none;margin-bottom:1rem}
 .ptabs::-webkit-scrollbar{display:none}
 .ptabs button{flex:none;border:1px solid var(--rule);background:var(--panel);color:var(--fg);border-radius:999px;min-height:44px;padding:0 1rem;font:600 15px var(--f-body);cursor:pointer;display:flex;align-items:center;gap:.45rem}
 .ptabs button i{width:10px;height:10px;border-radius:50%;background:var(--c)}
-.ptabs button[aria-selected=true]{background:var(--c);color:#fff;border-color:var(--c)}
+.ptabs button[aria-selected=true]{background:var(--c);color:var(--on-color);border-color:var(--c)}
 .pview{display:grid;grid-template-columns:1.1fr .9fr;gap:0;overflow:hidden}
 @media (max-width:860px){.pview{grid-template-columns:1fr}}
 .pview .txt{padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:.9rem;border-top:6px solid var(--c)}
@@ -192,8 +192,8 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .step h3{font-size:1.4rem}
 .step p{margin:0;color:var(--muted)}
 /* team */
-.team{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 16px;scroll-snap-type:x mandatory;scrollbar-width:thin}
-.mate{flex:0 0 150px;scroll-snap-align:start;padding:16px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.team{display:flex;gap:16px;overflow-x:auto;padding:8px 4px 16px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.mate{flex:0 0 150px;scroll-snap-align:start;padding:16px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2rem}
 .mate svg{width:76px;height:100px}
 .mate b{font-weight:700}.mate span{font-size:13px;color:var(--muted)}
 /* offer + workshop */
@@ -203,7 +203,7 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .offer .big{font:400 clamp(2.2rem,5vw,3.2rem)/1 var(--f-display)}
 .offer .big small{font:600 15px var(--f-body);color:var(--muted)}
 .offer ul{margin:0;padding-left:1.2rem;color:var(--fg);display:flex;flex-direction:column;gap:.35rem}
-.ribbon{position:absolute;top:18px;right:-44px;transform:rotate(35deg);background:var(--gold);color:#1a1300;font:700 12px var(--f-body);padding:.35rem 3rem;letter-spacing:.06em}
+.ribbon{position:absolute;top:18px;right:-44px;transform:rotate(35deg);background:var(--gold);color:var(--gold-ink);font:700 13px var(--f-body);padding:.35rem 3rem}
 .dark-card{background:var(--hero);color:var(--hero-fg);border-color:transparent}
 .dark-card .muted{color:var(--hero-mute)}
 form.signup{display:grid;gap:.7rem}
@@ -227,7 +227,7 @@ footer{border-top:1px solid var(--rule);padding-block:40px 64px;color:var(--mute
 footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between}
 /* bottom bar (phone) */
 .mbar{display:none}
-@media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
+@media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:12px max(12px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
  .mbar .btn{flex:1;min-height:46px;font-size:15px}
  footer{padding-bottom:112px}}
 /* robot animations */
@@ -274,8 +274,8 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
  <div class="falling" id="falling" aria-hidden="true"></div>
  <div class="wrap">
   <div>
-   <h1 id="h1" data-i="h1" data-html="1">Your customers get a reply in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
-   <p class="lead" data-i="lead">BotBhai answers salon customers on WhatsApp, books the slot, sends reminders and tells you when a human is needed. The first salons get a free 14-day pilot from 16 November.</p>
+   <h1 id="h1" data-i="h1" data-html="1">Replies in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
+   <p class="lead" data-i="lead">BotBhai answers your salon's customers, books the slot and sends reminders. Free 14-day pilot from 16 November.</p>
    <div class="ctas"><a class="btn btn-acc" href="#founding" data-i="cta_salon">Get a free salon pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
    <div class="trust">
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg><span data-i="trust1">Built on the official WhatsApp API</span></span>
@@ -296,7 +296,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
      <g id="tfront"></g>
     </svg>
     <div id="bubbles" aria-hidden="true"></div>
-    <div class="tip" id="tip" role="dialog" aria-modal="false" aria-labelledby="tipname" hidden><button type="button" class="x" aria-label="Close">×</button><span class="pill" id="tipst"><i></i><span></span></span><h3 id="tipname"></h3><p id="tipfor"></p><a class="btn btn-acc" id="tipgo" href="#products" data-i="tip_go">See details</a></div>
+    <div class="tip" id="tip" role="dialog" aria-modal="false" aria-labelledby="tipname" hidden><button type="button" class="x" aria-label="Close">×</button><span class="pill" id="tipst"><i></i><span></span></span><p class="tipname" id="tipname"></p><p id="tipfor"></p><a class="btn btn-acc" id="tipgo" href="#products" data-i="tip_go">See details</a></div>
    </div>
    <p class="tree-note" data-i="tree_note">Tap a fruit to open that product. Tap the tree to shake it, or move your finger through the leaves. The robots act out jobs our AI agents really do every day.</p>
   </div>
@@ -306,7 +306,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 
 <div class="wrap strip">
  <div class="stats">
-  <div class="stat"><b class="gold" id="cd-pilot">—</b><span data-i="st_pilot">days to Pilot Day (16 Nov)</span></div>
+  <div class="stat"><b class="gold" id="cd-pilot">…</b><span data-i="st_pilot">days to Pilot Day (16 Nov)</span></div>
   <div class="stat"><b id="cd-launch">—</b><span data-i="st_launch">days to public launch (13 Dec)</span></div>
   <div class="stat"><b class="madder">22</b><span data-i="st_agents">AI agents working with one human founder</span></div>
   <div class="stat"><b>3</b><span data-i="st_langs">languages: Telugu, Hindi, English</span></div>
@@ -327,7 +327,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
   <div>
    <div class="phone" role="region" aria-label="Kalpa Bhai live chat">
     <div class="screen">
-     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Kalpa Bhai</b><small><span class="live-dot" id="livedot"></span><span data-i="online">AI assistant · live · Telugu / Hindi / English</span></small></div></div>
+     <div class="wa-head"><div class="av"><svg viewBox="-24 -82 48 86" aria-hidden="true"><g data-bot="#25D366"></g></svg></div><div><b>Kalpa Bhai</b><small><span class="live-dot" id="livedot"></span><span data-i="online">AI assistant, live in Telugu / Hindi / English</span></small></div></div>
      <div class="chat" id="chat" aria-live="polite"></div>
      <div class="chips" id="chips"></div>
      <form class="ask" id="ask" autocomplete="off"><input id="askin" maxlength="500" aria-label="Type your message" placeholder="Type in any language…" data-ph="ph"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
@@ -367,7 +367,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 <section class="s" id="founding" style="padding-top:0">
  <div class="wrap two">
   <div class="card offer" style="--c:var(--l1)">
-   <div class="ribbon" data-i="ribbon">3 SPOTS</div>
+   <div class="ribbon" data-i="ribbon">3 spots left</div>
    <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="f_h">Free 14-day pilot, then founding prices</h2>
    <div class="big">₹1,499<small data-i="f_per"> / month for months 1–3</small></div>
    <ul>
@@ -381,7 +381,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
   </div>
   <div class="card offer dark-card" id="workshop">
    <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="w_h">"Claude Code with me": build 3 small AI tools in 90 minutes</h2>
-   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when"> · Sun 29 Nov, 11:00 AM IST · Google Meet · Telugu</small></div>
+   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when">, Sun 29 Nov, 11:00 AM IST, on Google Meet, in Telugu</small></div>
    <p class="muted" data-i="w_p">For beginners. We learn together; this is not an expert course and nobody promises income. The full agenda and materials are being prepared and tested now. Join the free waitlist: payment opens only after the agenda is published, with a full refund within 7 days if it was not useful.</p>
    <a class="btn btn-gold" href="#signup" data-i="w_cta" data-pick="workshop">Join the free waitlist</a>
   </div>
@@ -481,14 +481,14 @@ document.querySelectorAll('[data-human]').forEach(g=>human(g));
 const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. చెట్టును ట్యాప్ చేస్తే ఆకులు రాలుతాయి. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా వర్క్‌షాప్ గురించి అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత సెలూన్ పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai సెలూన్ కస్టమర్లకు WhatsAppలో జవాబిస్తుంది, స్లాట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీ సిబ్బందికి అప్పగిస్తుంది. మొదటి సెలూన్లకు 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
-trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · లైవ్ · తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
+trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు, లైవ్: తెలుగు / హిందీ / ఇంగ్లీష్',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
 st_pilot:'పైలట్ డేకి రోజులు (16 నవం)',st_launch:'పబ్లిక్ లాంచ్‌కి రోజులు (13 డిసెం)',st_agents:'ఒక వ్యవస్థాపకుడితో పనిచేసే AI ఏజెంట్లు',st_langs:'భాషలు: తెలుగు, హిందీ, ఇంగ్లీష్',
 p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
 h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
 s2h:'BotBhai జవాబు',s2p:'మీ సెలూన్ వివరాల నుంచే ధరలు, సమయాలు, ఖాళీ స్లాట్లు. ధరను ఎప్పుడూ ఊహించదు; సందేహం ఉంటే మీ సిబ్బందికి పంపుతుంది.',s3h:'నియంత్రణ మీదే',s3p:'బుకింగ్ కన్ఫర్మ్, 24 గం, 2 గం ముందు రిమైండర్లు, యజమానికి రోజువారీ జాబితా. ఏ చాట్‌నైనా ఒక్క ట్యాప్‌తో మీరు తీసుకోవచ్చు.',
 t_h:'ఒక వ్యవస్థాపకుడు. 22 AI సహచరులు.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
 ribbon:'3 స్థానాలు',f_h:'14 రోజుల ఉచిత పైలట్, తర్వాత ఫౌండింగ్ ధరలు',f_per:' / నెల, మొదటి 3 నెలలు',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
-w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:' · ఆది 29 నవం, ఉ. 11:00 · Google Meet · తెలుగు',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. పూర్తి అజెండా, మెటీరియల్ ఇప్పుడు తయారు చేసి పరీక్షిస్తున్నాం. ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి: అజెండా ప్రచురించిన తర్వాతే చెల్లింపు, ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి',
+w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:', ఆది 29 నవం, ఉ. 11:00, Google Meetలో, తెలుగులో',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. పూర్తి అజెండా, మెటీరియల్ ఇప్పుడు తయారు చేసి పరీక్షిస్తున్నాం. ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి: అజెండా ప్రచురించిన తర్వాతే చెల్లింపు, ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి',
 g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
 l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా సెలూన్‌కు BotBhai (ఉచిత పైలట్)',o_workshop:'వర్క్‌షాప్ వెయిట్‌లిస్ట్ (ఉచితం) · 29 నవం',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
 q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',

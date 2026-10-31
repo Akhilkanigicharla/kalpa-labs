@@ -1,0 +1,27 @@
+# Hallmark sloplint (MIT, Nutlope/hallmark, vendored in .claude/skills/hallmark): flags "AI-made" design
+# patterns in our pages. Akhil approved running it in Actions on 31 Oct 2026 ("Ok sloplint").
+# Static check only: Node built-ins, no network (no --render), no secrets, read-only token.
+name: sloplint
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["00-hq/site/**", ".claude/skills/hallmark/**", ".github/workflows/sloplint.yml"]
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Run sloplint on the Kalpa website
+        run: |
+          mkdir -p out
+          node .claude/skills/hallmark/scripts/sloplint.mjs 00-hq/site/index.html --scope page > out/sloplint.txt 2>&1 || echo "exit=$?" >> out/sloplint.txt
+          node .claude/skills/hallmark/scripts/sloplint.mjs 00-hq/site/index.html --scope page --json > out/sloplint.json 2>/dev/null || true
+          { echo '## sloplint: 00-hq/site/index.html'; echo '```'; head -c 60000 out/sloplint.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with: { name: sloplint, path: out/, retention-days: 14 }

@@ -36,9 +36,12 @@ Not installed. Ask Akhil first if a world ever needs one.
 ## 4. Diagrams
 Allowed. Use `.claude/skills/diagrams/SKILL.md`: Mermaid in markdown, Kalpa colours (leaf `#2F6A3A`, bark `#6B4226`, gold `#C38E12`, parchment `#F2EEE3`). Example: `00-hq/design/architecture.md`.
 
+## 4b. Design quality (31 Oct 2026)
+New pages and screens: use the `hallmark` skill with our design system as the locked `DESIGN.md` (`00-hq/design/DESIGN-SYSTEM.md`, `tokens.css`). It never picks its own theme or palette. Then run `vibecheck` and check light + dark at 390 px (rule 6).
+
 ## 5. Security skills
 - Allowed for **defensive** work on **our own** code: diff review, threat modelling, secrets checks.
-- Use what we already have: the vendored `security-audit` skill (Cloudflare, MIT) and Claude Code's built-in `/security-review` command.
+- Use what we already have: the vendored `security-audit` skill (Cloudflare, MIT) and Claude Code's built-in `/security-review` command. Run `security-audit` on a product's code before its Depth item is ticked (go-live).
 - Never point them at systems we don't own. No offensive tooling, no scanning other people's sites.
 - Anthropic's own `claude-security` plugin is proprietary ("All rights reserved"): never copy it into this repo. The repo called "Anthropic-Cybersecurity-Skills" is a community project, not by Anthropic.
 

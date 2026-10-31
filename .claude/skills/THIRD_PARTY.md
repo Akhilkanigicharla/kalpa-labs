@@ -6,6 +6,7 @@ Copied unmodified on 18 Oct 2026 with `npx skills add … --copy` (telemetry off
 |---|---|---|
 | grill-me, grilling | https://github.com/mattpocock/skills | MIT, (c) 2026 Matt Pocock |
 | security-audit | https://github.com/cloudflare/security-audit-skill | MIT, (c) 2025-2026 Cloudflare, Inc. |
+| hallmark | https://github.com/Nutlope/hallmark (commit `4f6a46c`, copied 31 Oct 2026; theme pictures `*.jpg` and `photos.json` left out for size) | MIT, (c) 2026 Hallmark contributors |
 | animate, animate-expo, break-ui, emil-design-eng, mobile-native, pick-ui-library, prototype, review-animations | https://github.com/emilkowalski/skills | MIT, (c) 2026 Emil Kowalski |
 
 Plugin (not copied, loaded by Claude Code): HyperFrames `hyperframes@hyperframes`, https://github.com/heygen-com/hyperframes, Apache-2.0, pinned to tag `v0.8.169` in `.claude/settings.json`. Skills only, no hooks or MCP servers. When a skill says `npx hyperframes@latest`, use `npx hyperframes@0.8.169` instead.
@@ -98,3 +99,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+Hallmark (31 Oct 2026): our design system is locked, so Hallmark must treat `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` as the locked `DESIGN.md` and never pick one of its own themes or palettes. Do not run `install-hook.mjs` and do not set `TOGETHER_API_KEY` (paid image API). Its `sloplint.mjs` runs only after Akhil approves running it (external code), in Actions or a Codespace.

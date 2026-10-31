@@ -15,3 +15,4 @@
 | `youtube-agent/` (skills, LICENSE, README) | [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill) commit in `youtube-agent/COMMIT`, 24 Oct 2026 | MIT (`youtube-agent/LICENSE`) | 11 YouTube skills (plan, script, shorts, SEO, chapters, retention, packaging). Reading material for our own channel and workshop videos; not auto-loaded; it never publishes. |
 
 Rules (CLAUDE.md rule 3): only MIT/Apache/BSD/ISC files here, copied unmodified with their licence. Update by copying a newer release over the folder.
+| `ai-job-search/` (2 skills, LICENSE, README) | [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search) commit in `ai-job-search/UPSTREAM_COMMIT`, 31 Oct 2026 | MIT (`ai-job-search/LICENSE`) | Job-fit, CV, cover letter, interview prep, upskill. Method for the b3 Job-Ready Kit (A140). Scraper skills left out (rule 4). |

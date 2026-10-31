@@ -6,6 +6,9 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 |---|---|---|
 | obra/superpowers | every Claude build session (`00-hq/vendor/superpowers`) | ✅ in use |
 | Ponytail, i-have-adhd, ECC, launch-your-agent, security-audit, anatomy, youtube-agent-skill | vendored skills / rules (`00-hq/vendor`, `.claude/skills`) | ✅ in use |
+| cloudflare/security-audit-skill | already installed since 18 Oct (`.claude/skills/security-audit`, identical to upstream on 31 Oct); runs before every go-live on our own code (BotBhai A131) | ✅ in use |
+| Nutlope/hallmark | anti-AI-slop design skill, installed `.claude/skills/hallmark`; locked to the Kalpavruksha system; used on every new page (salon app A134, Telugu Deals pages) | 🔧 installed 31 Oct |
+| MadsLorentzen/ai-job-search | CV / cover letter / interview method for the b3 Job-Ready Kit (A140); scrapers left out (LinkedIn ban) | 🔧 vendored 31 Oct |
 | pipecat-ai/pipecat, livekit/agents | BotBhai voice agent design (`01-botbhai/botbhai/voice`) | ✅ learned, voice planned (A98) |
 | tashfeenahmed/freellmapi | Kalpa LLM router on Render, n8n fallback (A120) | ✅ in use |
 | heygen-com/hyperframes | explainer + listing videos (A118), skills installed | ✅ in use |

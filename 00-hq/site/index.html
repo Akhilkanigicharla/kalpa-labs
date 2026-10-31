@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -21,7 +21,7 @@
  --leaf:#5E9E4C; --bark:#6B4226; --l0:#66655A;--l1:#8A4A28;--l2:#2F6F78;--l3:#3B7A3A;--l4:#7A3F5E;--l5:#9C700E;--l6:#A8324F;--l7:#4A5590;
  --f-display:"Rozha One","Noto Serif",Georgia,serif;--f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
  --r-s:8px;--r-m:12px;--r-l:18px;--shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 14px 30px -18px color-mix(in srgb,var(--accent) 55%,transparent);
- --wa:#08704a;--wa-bg:#e7ddd3;--bubble-in:#ffffff;--bubble-out:#d9fdd3;--bubble-fg:#111b21;--on-color:#FCFAF4;--gold-ink:#241A04;--phone:#1E2A1F;--phone-rim:#3B4A3C;--shade:#000;--typing:#8696a0;--live:#7CFC9A;--wa-ink:#08704a;color-scheme:light}
+ --wa:#08704a;--wa-bg:#e7ddd3;--bubble-in:#ffffff;--bubble-out:#d9fdd3;--bubble-fg:#111b21;--sky:#FFFDF7;--bird:#2A3326;--on-color:#FCFAF4;--gold-ink:#241A04;--phone:#1E2A1F;--phone-rim:#3B4A3C;--shade:#000;--typing:#8696a0;--live:#7CFC9A;--wa-ink:#08704a;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B;--rule:#2A3A2D;--soft:#1D2C21;--accent:#8FCB8C;--accent-fg:#0F1912;--madder:#D98B5F;--gold:#E8B64A;--ok:#6FD08F;--warn:#E8B64A;--hero:#17301F;
  --leaf:#8FCB8C; --bark:#C08A5E; --l0:#B4B3A4;--l1:#D98B5F;--l2:#6FC2CB;--l3:#6FD08F;--l4:#D59AB9;--l5:#E8B64A;--l6:#FF7F9E;--l7:#9DA8E6;--wa-bg:#0b141a;--bubble-in:#202c33;--bubble-out:#005c4b;--bubble-fg:#e9edef;color-scheme:dark}}
 :root[data-theme=dark]{--bg:#0F1912;--panel:#16231A;--fg:#ECE7D8;--muted:#A8B39B;--rule:#2A3A2D;--soft:#1D2C21;--accent:#8FCB8C;--accent-fg:#0F1912;--madder:#D98B5F;--gold:#E8B64A;--ok:#6FD08F;--warn:#E8B64A;--hero:#17301F;
@@ -29,7 +29,7 @@
 *{box-sizing:border-box}
 html{overflow-x:clip;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;overflow-x:clip;background:var(--bg);color:var(--fg);font:400 17px/1.55 var(--f-body);
- background-image:radial-gradient(color-mix(in srgb,var(--accent) 14%,transparent) 1px,transparent 1.4px);background-size:18px 18px}
+ background-image:radial-gradient(70% 520px at 88% -60px,color-mix(in srgb,var(--gold) 16%,transparent),transparent 70%),linear-gradient(var(--sky),var(--bg) 900px);background-repeat:no-repeat}
 a{color:var(--accent)}
 img,svg{max-width:100%}
 .wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
@@ -52,6 +52,8 @@ nav.links a:hover{color:var(--fg)}
 .lang{display:flex;border:1px solid var(--rule);border-radius:999px;padding:4px;background:var(--panel)}
 .lang button{border:0;background:transparent;color:var(--muted);font:600 14px var(--f-body);min-height:36px;padding:0 .8rem;border-radius:999px;cursor:pointer}
 .lang button[aria-pressed=true]{background:var(--hero);color:var(--hero-fg)}
+.snd{flex:none;width:44px;height:44px;margin-left:8px;border:1px solid var(--rule);border-radius:50%;background:var(--panel);color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.snd svg{width:20px;height:20px}.snd .w{display:none}.snd[aria-pressed=true]{background:var(--hero);color:var(--hero-fg);border-color:var(--hero)}.snd[aria-pressed=true] .w{display:inline}.snd[aria-pressed=true] .x{display:none}
 @media (max-width:860px){nav.links{display:none}.lang{margin-left:auto}header .btn-cta{display:none}}
 /* hero */
 .hero{background:radial-gradient(70% 75% at 78% 42%,color-mix(in srgb,var(--leaf) 20%,transparent),transparent 70%),var(--panel);color:var(--fg);position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
@@ -265,6 +267,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <a href="#demo" data-i="nav_live">Live AI</a><a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#workshop" data-i="nav_workshop">Workshop</a><a href="#faq" data-i="nav_faq">FAQ</a>
   </nav>
   <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="te" aria-pressed="false">తెలుగు</button></div>
+  <button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Nature sounds" title="Breeze and birds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path class="w" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="x" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   <a class="btn btn-acc btn-cta" href="#founding" data-i="cta_salon">Get a free salon pilot</a>
  </div>
 </header>
@@ -499,6 +502,7 @@ let lang='en'; try{lang=localStorage.getItem('kl-lang')||'en';}catch(e){}
 function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';document.body.className=l;
  document.querySelectorAll('[data-i]').forEach(e=>{const k=e.dataset.i;const v=(l==='te'?TE[k]:null)??EN[k];if(v==null)return;if(e.dataset.html)e.innerHTML=v;else e.textContent=v;});
  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
+ {const sb=document.getElementById('snd');if(sb){sb.setAttribute('aria-label',l==='te'?'ప్రకృతి శబ్దాలు':'Nature sounds');sb.title=l==='te'?'గాలి, పక్షుల శబ్దాలు':'Breeze and birds';}}
  try{localStorage.setItem('kl-lang',l);}catch(e){}
  renderProducts(); resetChat(); if(typeof renderTeam==='function')renderTeam(); closeTip();}
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
@@ -733,6 +737,39 @@ function grow(){const r=steps.getBoundingClientRect(), mid=innerHeight*.6; const
  vine.style.setProperty('--p',p.toFixed(3)); stepEls.forEach(s=>s.classList.toggle('lit',s.getBoundingClientRect().top+20<mid));}
 if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.forEach(s=>s.classList.add('lit'));}
 
+
+/* ---------- nature sounds (off until tapped; browsers never autoplay): breeze that follows the wind + birdsong.
+   Made live with the Web Audio API, so there are no audio files and no licences. ---------- */
+const SND=(function(){
+ const btn=document.getElementById('snd'); if(!btn||!(window.AudioContext||window.webkitAudioContext)){if(btn)btn.hidden=true;return {on:false,chirp(){},tick(){}};}
+ let ctx=null,windG,bp,rust,on=false,next=0;
+ function build(){ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const len=ctx.sampleRate*3,buf=ctx.createBuffer(1,len,ctx.sampleRate),d=buf.getChannelData(0);let b=0;
+  for(let i=0;i<len;i++){b=(b+.02*(Math.random()*2-1))/1.02;d[i]=b*3.5;} // soft brown noise = air
+  const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+  bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=420;bp.Q.value=.6;
+  windG=ctx.createGain();windG.gain.value=0;src.connect(bp).connect(windG).connect(ctx.destination);
+  const hb=ctx.createBufferSource();hb.buffer=buf;hb.loop=true;hb.playbackRate.value=1.7; // leaves rustling on gusts
+  const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=2600;rust=ctx.createGain();rust.gain.value=0;
+  hb.connect(hp).connect(rust).connect(ctx.destination);src.start();hb.start();}
+ function chirp(pan){if(!on||!ctx)return;const t0=ctx.currentTime+.02,notes=2+(Math.random()*3|0),f0=2600+Math.random()*1500;
+  const p=ctx.createStereoPanner?ctx.createStereoPanner():null;if(p)p.pan.value=Math.max(-1,Math.min(1,pan||0));
+  for(let i=0;i<notes;i++){const t=t0+i*(.09+Math.random()*.07),o=ctx.createOscillator(),g=ctx.createGain(),f=f0*(1+(Math.random()-.5)*.15);
+   o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*1.4,t+.045);o.frequency.exponentialRampToValueAtTime(f*.9,t+.09);
+   g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.05,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.1);
+   o.connect(g);(p?g.connect(p):g).connect(ctx.destination);if(p&&i===0)p.connect(ctx.destination);o.start(t);o.stop(t+.12);}}
+ function set(v){on=v;btn.setAttribute('aria-pressed',String(v));
+  if(v){if(!ctx)build();ctx.resume();next=performance.now()+1500;chirp(0);}else if(ctx)ctx.suspend();}
+ btn.addEventListener('click',()=>set(!on));
+ document.addEventListener('visibilitychange',()=>{if(ctx&&on){document.hidden?ctx.suspend():ctx.resume();}});
+ return {get on(){return on},chirp,
+  tick(now){if(!on||!ctx)return;const v=Math.max(0,WIND.v);
+   windG.gain.setTargetAtTime(Math.min(.16,.035+v/700),ctx.currentTime,.4);bp.frequency.setTargetAtTime(320+v*4,ctx.currentTime,.5);
+   rust.gain.setTargetAtTime(Math.min(.05,Math.max(0,v-30)/1500),ctx.currentTime,.3);
+   if(now>next){chirp(Math.random()*1.6-.8);next=now+5000+Math.random()*9000;}}};
+})();
+(function soundClock(){function f(now){SND.tick(now);requestAnimationFrame(f);}requestAnimationFrame(f);})();
+
 /* ---------- wind: a gust of leaves when the site opens, leaves drifting down the whole page,
    your finger or mouse pushes them, tap the tree to shake it, tap the sky for a gust ---------- */
 (function windLayer(){
@@ -749,6 +786,17 @@ if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.
  const N=small?60:110; for(let i=0;i<N;i++){const fromTop=Math.random()<.45;
   leaf(fromTop?Math.random()*W*.7:-40-Math.random()*W*.5, fromTop?-30-Math.random()*H*.6:Math.random()*H*.8, 260+Math.random()*260, 20+Math.random()*80, false);}
  for(let i=0;i<KEEP;i++) leaf(Math.random()*W,-20-Math.random()*H,20,40,true);
+ // one or two small birds cross the sky now and then; tap one and it sings (when sounds are on) and speeds away
+ const B=[]; let nextBird=performance.now()+2500;
+ function spawnBirds(){const ltr=Math.random()<.6,n=Math.random()<.45?2:1,y=H*(.08+Math.random()*.3),sp=(small?55:75)+Math.random()*35;
+  for(let i=0;i<n;i++)B.push({x:ltr?-30-i*46:W+30+i*46,y:y+i*(14+Math.random()*10),vx:ltr?sp:-sp,s:(small?6:8)+Math.random()*3,ph:Math.random()*6.28,glide:0,bob:Math.random()*6.28});
+  SND.chirp(ltr?-.7:.7);}
+ function drawBird(b,t){const flap=b.glide>0?.25:Math.sin(t*11+b.ph),s=b.s,w=s*(.15+.55*(flap*.5+.5));
+  cx.save();cx.translate(b.x,b.y);if(b.vx<0)cx.scale(-1,1);cx.strokeStyle=BIRDC;cx.lineWidth=1.7;cx.lineCap='round';cx.lineJoin='round';
+  cx.beginPath();cx.moveTo(-s,-w);cx.quadraticCurveTo(-s*.45,-w*.2,0,0);cx.quadraticCurveTo(s*.45,-w*.2,s,-w);cx.stroke();
+  cx.fillStyle=BIRDC;cx.beginPath();cx.ellipse(0,.6,1.8,1.2,0,0,6.28);cx.fill();cx.restore();}
+ let BIRDC='#2a3326'; function birdCol(){BIRDC=getComputedStyle(document.documentElement).getPropertyValue('--bird').trim()||BIRDC;} birdCol();
+ document.querySelector('.hero').addEventListener('pointerdown',e=>{for(const b of B){if(Math.hypot(e.clientX-b.x,e.clientY-b.y)<34){b.vx*=2.2;b.glide=0;SND.chirp(b.x/W*2-1);}}});
  WIND.gust=280; let px=-1,py=-1,pvx=0,pvy=0,lastP=0,trail=0;
  addEventListener('pointermove',e=>{const t=performance.now(),dt=Math.max(8,t-lastP);if(px>=0){const ix=(e.clientX-px)/dt*1000,iy=(e.clientY-py)/dt*1000;pvx=pvx*.6+ix*.4;pvy=pvy*.6+iy*.4;
    trail+=Math.hypot(e.clientX-px,e.clientY-py); if(trail>140&&e.target.closest&&e.target.closest('.hero')&&L.length<140){trail=0;leaf(e.clientX,e.clientY,pvx*.3,pvy*.3,false);}}
@@ -771,7 +819,11 @@ if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.
     p.vx+=(wx-p.vx)*Math.min(1,dt*1.6); p.vy+=((34+p.s*2.2+wy)-p.vy)*Math.min(1,dt*1.2);
     p.x+=(p.vx+Math.sin(t*1.7+p.ph)*26)*dt; p.y+=(p.vy+Math.cos(t*2.3+p.ph)*14)*dt; p.r+=(p.vr+p.vx*.004)*dt; p.f+=p.fs*dt;
     if(p.y>H+30||p.x>W+60||p.x<-80&&p.vx<0){ if(p.keep){p.x=Math.random()*W*1.1-W*.15;p.y=-20-Math.random()*60;p.vx=WIND.v;} else {L.splice(i,1);continue;} }
-    draw(p);}}
+    draw(p);}
+   if(now>nextBird&&!B.length){spawnBirds();nextBird=now+9000+Math.random()*12000;}
+   for(let i=B.length-1;i>=0;i--){const b=B[i];b.bob+=dt*2;if(b.glide>0)b.glide-=dt;else if(Math.random()<dt*.35)b.glide=.6+Math.random()*1.2;
+    b.x+=(b.vx+WIND.v*.15)*dt;b.y+=Math.sin(b.bob)*8*dt-(b.glide>0?-4:2)*dt;
+    if(b.x<-80||b.x>W+80){B.splice(i,1);continue;}drawBird(b,t);}}
   requestAnimationFrame(tick);}
  requestAnimationFrame(tick);
 })();

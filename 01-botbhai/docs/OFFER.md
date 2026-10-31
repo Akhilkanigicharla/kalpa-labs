@@ -43,3 +43,8 @@ Built from the first 12 of 24 agent research jobs (KL Tasks, Vigil PASS). Figure
 ## 8. Blockers, honestly
 - **WhatsApp is what salon customers use.** Meta's "coexistence" lets a salon keep its WhatsApp Business app and connect the same number to BotBhai (app must be opened every 13 days, per Meta docs, agent-sourced). That needs our Meta app working (C02 parked). Telegram + website chat can run a pilot but are weaker.
 - No reference customer yet; first pilot is the proof.
+
+## Update 31 Oct 2026, 10:00 IST (swarm check)
+- **Staff roles (agent research, PASS):** receptionist = calendar, inbox, prices, create/move/cancel bookings; stylist = own schedule and client notes; owner = everything incl. prices, billing, exports. Feeds A131 (roles). Note: stock/inventory and commissions are not built and stay out of the offer.
+- **BotBhai council, 31 Oct (GO WITH CONDITIONS earlier; today):** don't push BotBhai sales this week, because no pilot can start before 16 Nov; put this week into Telugu Deals (track 1) for the first ₹1,000, and keep building BotBhai to pilot-ready by 5 Nov.
+- **Still waiting:** ~40 BotBhai research jobs (price ladder, onboarding form, support playbook, policies, Meta Tech Provider path, 90-day plan). Many earlier drafts were sent back by Vigil for small issues; the fact-check gets loosened for minor points in the next build session.

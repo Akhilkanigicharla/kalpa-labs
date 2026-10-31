@@ -8,6 +8,7 @@ Where each piece of work lives outside this repo. All private to Akhil unless he
 |---|---|---|
 | 🌳 HQ · Kalpavruksha CEO room | The CEO dashboard: the growing tree (HQ trunk, 7 world branches), quests, XP, agent org, daily reports. Tap **Complete** here | https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1 |
 | 🤖 b1 · BotBhai live demo | Try the salon, gym, coaching and real-estate bots in the browser; smile cards | https://claude.ai/artifact/JYxrRm9PHrw2SCBRFRPjUi |
+| 📱 HQ · Client screens | Every screen clients see (BotBhai customer + owner, JobCard, Tab Lifeboat), phone-sized, light + dark. Private; 31 Oct 2026 | https://claude.ai/code/artifact/4e862dbc-5829-416a-9c8f-2cdcf52fbe26 |
 
 All artifacts are listed at https://claude.ai/code/artifacts
 

@@ -40,7 +40,7 @@
 | Microsoft Edge Add-ons: no developer registration fee | VERIFIED | 2026-10-25 | learn.microsoft.com/…/extensions/publish/create-dev-account; turbostarter.dev |
 | Razorpay India "about 2.4% + 1% subscription fee" (JobCard PLAN:66) | UNVERIFIED | 2026-10-25 | razorpay.com/pricing redirects our fetcher to the US page; recheck from India before Akhil turns on Razorpay (b2.q14) |
 | myBillBook Silver ₹399/year (JobCard PLAN:48) | UNVERIFIED | 2026-10-25 | mybillbook.in/pricing showed no plan prices to our fetcher |
-| Chrome Web Store one-time fee is US$5 | UNVERIFIED (amount) | 2026-10-19 | developer.chrome.com/docs/webstore/register says one-time, no amount; third-party only for $5 |
+| Chrome Web Store one-time fee is US$5 | VERIFIED (one-time) / amount secondary | 2026-10-31 | developer.chrome.com/docs/webstore/register (one-time, no amount); extensionradar.com 2026 ($5) |
 | India trademark e-filing ₹4,500/class (individual, DPIIT startup, MSME with Udyam) | UNVERIFIED | 2026-10-19 | intepat.com; trademarkfilingcost.com; ipindia.gov.in not fetchable |
 | Udyam registration and updates (NIC codes) are free | VERIFIED | 2026-10-19 | udyamregistration.gov.in; patronaccounting.com |
 | GitHub Free: 2,000 Actions minutes/month on private repos; public repos free on standard runners | VERIFIED | 2026-10-19 | docs.github.com Actions billing; cicdcalculator.com |
@@ -77,3 +77,6 @@
 | Groq rate-limits page still shows gpt-oss-120b 30 RPM, 1K RPD, 8K TPM, 200K TPD | VERIFIED | 2026-10-28 | console.groq.com/docs/rate-limits; facts row 2026-10-19 |
 | OpenRouter :free 20 RPM; 50/day under $10 bought, 1,000/day at ≥$10 | VERIFIED | 2026-10-28 | openrouter.ai/docs/api-reference/limits; facts row 2026-10-19 |
 | Mistral free Experiment plan (1 req/s, no card) | UNVERIFIED | 2026-10-28 | only a GitHub issue (mistral-vibe #275); Akhil's account shows none (row 2026-10-18) |
+| Chrome Web Store: new publisher accounts start with 2 published-item slots; more by request in the Developer Dashboard | UNVERIFIED (Google page not fetched; two secondary sources agree) | 2026-10-31 | crxbase.com/blog/chrome-web-store-extension-limits (2026-08-21); extensionradar.com/blog/chrome-web-store-developer-fee-2026 |
+| Dodo Payments: 4% + 40¢ card; +1.5% non-US card; UPI/RuPay 4% + 15¢ (no surcharges); +0.5% subscription; $1 per refund; payout $5 if < $1,000; USD SWIFT payout $25 | VERIFIED | 2026-10-31 | dodopayments.com/pricing (live Firecrawl); PLAN 2026-10-13 |
+| trycompai/crm licence MIT | VERIFIED | 2026-10-31 | github.com/trycompai/crm |

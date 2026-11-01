@@ -83,3 +83,11 @@
 | faster-whisper 1.2.1 licence MIT; Systran/faster-whisper-small model MIT | VERIFIED | 2026-10-31 | wheel METADATA (pypi.org, "License: MIT"); huggingface.co/api/models/Systran/faster-whisper-small (license:mit) |
 | Google FLEURS speech dataset CC BY 4.0, not gated (A99 test fixtures) | VERIFIED | 2026-10-31 | huggingface.co/api/datasets/google/fleurs (license:cc-by-4.0, gated false); dataset card |
 | Whisper on Telugu (live test, FLEURS te_in): `small` gives gibberish; `large-v3-turbo` readable but misspelt, and its word times drift ~1 s and can merge a whole sentence into one word | VERIFIED (live test) | 2026-10-31 | runs in this session; why A99 times Telugu from the speech + script |
+| EarnKaro: ₹10 minimum withdrawal; paid in 5–6 working days (b5 PLAN said 6–10, WRONG) | VERIFIED / WRONG (days) | 2026-11-01 | earnkaro.com/blog/earn-money-using-earnkaro; bosswallah.ai FAQ; Vigil agrees |
+| Amazon Associates IN: INR 2,500 minimum payment; 3 qualifying sales within 180 days of applying | VERIFIED | 2026-11-01 | affiliate-program.amazon.in help GJCKWFEECYW25FGJ, GP8Z3AZ27ZFHTEUL; amazon.com help G7MJTPEP9NC3YKMG |
+| Cloudflare Pages Free 500 builds/month; Workers Free 100,000 requests/day | VERIFIED | 2026-11-01 | developers.cloudflare.com/pages/platform/limits; developers.cloudflare.com/workers/platform/pricing |
+| Kit free plan up to 10,000 subscribers; beehiiv free up to 2,500 | VERIFIED | 2026-11-01 | kit.com/pricing; beehiiv.com blog; emailtooltester.com |
+| AdSense (USD): identity verification $0, address/PIN $10, payment method $10, payment $100 | VERIFIED | 2026-11-01 | support.google.com/adsense/answer/1709871 and 1709858 |
+| Cuelinks Flipkart: payout up to 7.20% (page title says 12%), 30-minute cookie, organic social only, no social ads | VERIFIED | 2026-11-01 | cuelinks.com/campaigns/flipkart-affiliate-program; grabcash.in |
+| Meta private replies (IG + FB): one message within 7 days of the comment (IG Live: during broadcast only) | VERIFIED | 2026-11-01 | developers.facebook.com instagram-platform/private-replies; messenger-platform private-replies; blotato.com |
+| gstack, claude-seo, Hallmark, ai-job-search licences all MIT (ai-job-search now at ai-job-search-dev/ai-job-search) | VERIFIED | 2026-11-01 | vendored LICENSE files + GitHub repo pages fetched today |

@@ -4,18 +4,8 @@
  * For each new lead: fetch the form answers, save the lead (source "meta_ads"), send the WhatsApp
  * welcome template with "Book now / Call me" buttons, alert the owner, and queue a voice call if enabled.
  */
-const crypto = require("crypto");
-const { db, json, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
+const { db, json, metaSignatureOk, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
 const { parseMetaLead } = require("../automations.js");
-
-function validSignature(event) {
-  const secret = process.env.WA_APP_SECRET;
-  if (!secret) return process.env.ALLOW_UNSIGNED === "1"; // fail closed, same as whatsapp.js: only for a first local test
-  const sig = event.headers["x-hub-signature-256"] || "";
-  const raw = event.isBase64Encoded ? Buffer.from(event.body, "base64") : Buffer.from(event.body || "");
-  const expected = "sha256=" + crypto.createHmac("sha256", secret).update(raw).digest("hex");
-  return sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
-}
 
 exports.handler = async (event) => {
   if (event.httpMethod === "GET") {
@@ -23,7 +13,7 @@ exports.handler = async (event) => {
     return q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN ? { statusCode: 200, body: q["hub.challenge"] } : { statusCode: 403, body: "forbidden" };
   }
   if (event.httpMethod !== "POST") return json(405, { error: "method" });
-  if (!validSignature(event)) return json(401, { error: "bad signature" });
+  if (!metaSignatureOk(event)) return json(401, { error: "bad signature" });
   const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
   for (const entry of body.entry || []) for (const ch of entry.changes || []) {
     if (ch.field !== "leadgen") continue;

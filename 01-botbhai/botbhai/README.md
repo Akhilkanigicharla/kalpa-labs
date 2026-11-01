@@ -14,6 +14,7 @@ Every setup contains: WhatsApp chatbot · lead-generation bot (Meta lead forms +
 ## How it fits together
 ```
 Meta ad ──► lead form ──► metaleads.js ──► WhatsApp welcome (<60 s) ─┐
+Keyword comment on IG/FB post ─► comments.js ─► one private reply (dry run by default) ─► lead + inbox
 Meta ad ──► Click-to-WhatsApp ─────────────────────────────────────┤
 Customer texts / website widget / voice note ─► whatsapp.js / chat.js ─► engine + setup config ─► replies, booking
 Phone call ─► Plivo/Exotel ─► voice/agent.py (Sarvam + Groq) ─► same booking fields ─► WhatsApp confirmation

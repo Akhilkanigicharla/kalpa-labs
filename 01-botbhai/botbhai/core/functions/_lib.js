@@ -160,5 +160,15 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-module.exports = { db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+// Meta webhook signature (X-Hub-Signature-256 over the raw body). Fails closed without WA_APP_SECRET.
+function metaSignatureOk(event) {
+  const secret = process.env.WA_APP_SECRET;
+  if (!secret) return process.env.ALLOW_UNSIGNED === "1"; // only for a first local test
+  const sig = (event.headers || {})["x-hub-signature-256"] || "";
+  const raw = event.isBase64Encoded ? Buffer.from(event.body, "base64") : Buffer.from(event.body || "");
+  const expected = "sha256=" + require("crypto").createHmac("sha256", secret).update(raw).digest("hex");
+  return sig.length === expected.length && require("crypto").timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+}
+
+module.exports = { metaSignatureOk, db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

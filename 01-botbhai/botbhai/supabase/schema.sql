@@ -37,7 +37,7 @@ create table if not exists leads (
   score       text not null default 'cold' check (score in ('cold','warm','hot')),
   status      text not null default 'new',  -- new | booked | callback | quiz_done | opted_out | won | lost
   details     jsonb not null default '{}'::jsonb, -- service, date, slot, bhk, budget, goal, score…
-  source      text not null default 'whatsapp', -- whatsapp | web | voice | meta_ads
+  source      text not null default 'whatsapp', -- whatsapp | web | voice | meta_ads | instagram_comment | facebook_comment
   marketing_opt_in boolean not null default false,  -- replied OFFERS; required for promotional templates (DPDP + WhatsApp policy)
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now(),
@@ -59,6 +59,7 @@ create index if not exists messages_client_contact on messages (client_id, conta
 -- Shared inbox (A04 / P1-W2-02). Column ideas from ArnasDon/wacrm migrations (MIT, © its authors):
 -- an explicit bot/human/resolved status next to the engine's humanUntil timer, who owns the chat, and private notes.
 -- Safe to re-run on an existing database.
+alter table clients add column if not exists ig_user_id text unique; -- Instagram professional account id (A100 comment → DM webhooks)
 alter table sessions add column if not exists status text not null default 'bot';
 alter table sessions add column if not exists assigned_to text;       -- staff first name, e.g. 'Lakshmi'
 alter table sessions add column if not exists human_until timestamptz; -- mirror of state.humanUntil (bot paused until)

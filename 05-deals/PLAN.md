@@ -66,9 +66,9 @@ The "customer" here is an audience unit. Hosting stays at ₹0 until a domain is
 | Netlify (new accounts since 4 Sep 2025) | 300 credits/mo (about 15 GB, or ~20 production deploys); **site pauses** when used up | A traffic spike could take the site offline, so keep Netlify for BotBhai only |
 | GitHub Actions (public repo) | Free minutes | Bot cron every 30 minutes is fine |
 | Newsletter: Kit free / beehiiv Launch | 10,000 / 2,500 subscribers (beehiiv free has no ad network) | Start on **Kit free** for headroom |
-| EarnKaro | ₹10 minimum withdrawal, NEFT in 6–10 days | Never a limit |
+| EarnKaro | ₹10 minimum withdrawal, bank payout in 5–6 working days (earnkaro.com blog, checked 2 Nov 2026) | Never a limit |
 | Amazon Associates IN | ₹2,500 payout threshold; **3 qualifying sales in the first 180 days or the account closes**; Creators API needs **10 sales in the last 30 days** | This is why Amazon waits (see 4) |
-| AdSense | Pays in USD: $10 triggers PIN verification by post, $100 triggers payment | Month 6 or later |
+| AdSense | Pays in USD: $10 triggers PIN verification by post, $100 triggers payment; identity check now at $0 (support.google.com/adsense/answer/1709871, checked 2 Nov 2026) | Month 6 or later |
 
 ### 3b. Compliance guardrails (rules every agent follows)
 
@@ -81,7 +81,7 @@ The "customer" here is an audience unit. Hosting stays at ₹0 until a domain is
 | **IRDAI** | Selling insurance needs a registered intermediary. | No insurance affiliate links. |
 | **ASCI influencer guidelines** | Label every paid or affiliate post with #ad, #collab, #sponsored, #promo or #partnership, in the first two lines and in the post's language. A bio disclaimer is not enough. Since Addendum 2 (Apr 2025), finance influencers who give advice must show SEBI registration and qualifications; unregistered creators may only post generic, non-technical content. | Every Telegram and newsletter deal line starts with **"#ad · affiliate link / అనుబంధ లింక్"**. Our money content stays generic education. |
 | **Amazon Associates** | Price shown must be current; links not allowed in email (verify against the IN Operating Agreement at sign-up). | Prices carry "₹X as of 13 Oct, 6 pm; may change". Amazon links on Telegram and the site only, never in the newsletter. |
-| **DPDP Act and Rules 2025** (notified 14 Nov 2025; most duties from ~May 2027) | Plain-language notice, consent, easy withdrawal, breach reporting. | Collect email only, via double opt-in. Privacy notice in English and Telugu. One-click unsubscribe. No member data from Telegram. |
+| **DPDP Act and Rules 2025** (notified 13 Nov 2025 (Gazette; PIB release 14 Nov); most duties from ~May 2027) | Plain-language notice, consent, easy withdrawal, breach reporting. | Collect email only, via double opt-in. Privacy notice in English and Telugu. One-click unsubscribe. No member data from Telegram. |
 | **Tax and GST** | Affiliate and AdSense income is business income. GST registration above ₹20L turnover. AdSense counts as an export of services. Indian affiliates deduct TDS on commission. | Track everything in a b6 or FinOps sheet. Not a concern until revenue is meaningful; confirm with a CA. |
 | Data sources | Do not scrape Amazon, Flipkart or price trackers (Discount-Bandit and PriceBuddy are AVOID). | Deals come from human curation plus EarnKaro's Magic Tool, then the Creators API once eligible. |
 

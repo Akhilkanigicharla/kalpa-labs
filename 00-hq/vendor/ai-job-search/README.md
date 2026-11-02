@@ -1,6 +1,6 @@
 # ai-job-search skills (vendored, MIT)
 
-Source: https://github.com/MadsLorentzen/ai-job-search, commit in `UPSTREAM_COMMIT`, copied unmodified on 31 Oct 2026. Licence: `LICENSE` (MIT, (c) 2026 Mads Lorentzen).
+Source: https://github.com/ai-job-search-dev/ai-job-search (formerly MadsLorentzen/ai-job-search), commit in `UPSTREAM_COMMIT`, copied unmodified on 31 Oct 2026. Licence: `LICENSE` (MIT, (c) 2026 Mads Lorentzen).
 
 Copied: `job-application-assistant/` (job-fit scoring, CV and cover-letter templates, interview prep) and `upskill/` (skill-gap plan).
 Left out: `job-scraper` and the `.agents/skills/*-search` portal skills. They scrape LinkedIn and Danish job boards, and LinkedIn bans scraping (CLAUDE.md rule 4).

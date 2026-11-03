@@ -62,3 +62,6 @@ See `CLAUDE.md`: free tiers only; never handle passwords, OTPs, tokens or bank n
 - **Due 31 Oct 10:00 IST:** reminder trig_011knfv7h7XE1QGnAe6fPopx → read swarm results (output_summary only) → write `01-botbhai/docs/OFFER.md`, rebuild `00-hq/leads/seeds/` from research, send Akhil the council verdicts.
 - **Rules added 30 Oct:** standing go after a Depth item passes (CLAUDE.md rule 9); WhatsApp parked (C02), Telegram only.
 - **Akhil's open asks:** one salon owner name for the 16 Nov pilot; C54 payment provider sign-up after research.
+
+## 🚨 3 Nov 2026: n8n Cloud trial ENDED (31 Oct 21:45 IST)
+Every n8n workflow stopped: Task Runner, councils, CEO 9 PM update, World Keeper, **website chat (Kalpa Bhai)**. Test run error: "Your trial has ended". Akhil chose BOTH GitHub Actions (primary) and self-hosted n8n (fallback), and wants alerts like this in the daily brief. Next session: A143 → A145 → A144 → A146 (ROADMAP top block). Claude weekly limit was nearly used on 3 Nov.

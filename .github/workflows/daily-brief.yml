@@ -1,0 +1,24 @@
+# A143: Kalpa daily brief + alerts to Akhil's Telegram at 9 PM IST (replaces the n8n CEO update; n8n trial ended 31 Oct).
+# Secrets set by Akhil: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID. Optional variable N8N_SELF_URL (self-hosted n8n, A146).
+name: daily-brief
+on:
+  schedule:
+    - cron: "30 15 * * *"   # 15:30 UTC = 21:00 IST
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 50 }
+      - run: python3 00-hq/tools/test_daily_brief.py
+      - run: python3 00-hq/tools/daily_brief.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          N8N_SELF_URL: ${{ vars.N8N_SELF_URL }}
+          GITHUB_TOKEN: ${{ github.token }}

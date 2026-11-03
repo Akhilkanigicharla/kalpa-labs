@@ -398,7 +398,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <p style="color:var(--muted)" data-i="g_p">We use your number only to reply about this request. No spam, no sharing, ever.</p>
   </div>
   <form class="card signup" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" style="padding:24px">
-   <input type="hidden" name="form-name" value="contact">
+   <input type="hidden" name="form-name" value="contact"><input type="hidden" name="notes" value="">
    <p class="hp"><label>Company <input name="company" tabindex="-1" autocomplete="off"></label></p>
    <label><span data-i="l_interest">I'm interested in</span>
     <select name="interest" id="interest" style="min-height:48px;border-radius:12px;border:1px solid var(--rule);background:var(--panel);color:var(--fg);padding:0 .8rem;font:400 16px var(--f-body)">
@@ -555,8 +555,8 @@ function renderProducts(){const L=lang==='te'?1:0; const tabs=document.getElemen
  v.querySelectorAll('li span').forEach((s,i)=>s.textContent=p.pts[i][L]); v.querySelector('.price').textContent=p.price[L];
  const a=v.querySelector('a'); a.href=p.cta; a.textContent=L?'ఆసక్తి ఉంది':'I\'m interested'; a.addEventListener('click',()=>{const sel=document.getElementById('interest'); sel.value=p.id==='botbhai'?'salon':p.id==='kits'?'kits':'other';});}
 
-/* ---------- live AI chat (n8n: Kalpa Site Chat) ---------- */
-const CHAT_URL='https://kalpalabs.app.n8n.cloud/webhook/7b78c6c8-78e2-4a03-8b95-76167aa4d63b/chat';
+/* ---------- live AI chat (Netlify function netlify/functions/chat.mjs, A145; was n8n until the trial ended) ---------- */
+const CHAT_URL='/api/chat'; const HIST=[];
 const STARTERS={
  en:['How does BotBhai help my salon?','Is the pilot really free?','Tell me about the ₹299 workshop','Please call me back'],
  te:['BotBhai నా సెలూన్‌కి ఎలా సహాయం చేస్తుంది?','పైలట్ నిజంగా ఉచితమా?','₹299 వర్క్‌షాప్ గురించి చెప్పండి','నాకు కాల్ చేయండి']};
@@ -578,10 +578,11 @@ async function send(text){
  let reply='';
  try{
   const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),30000);
-  const r=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'sendMessage',sessionId:sid,chatInput:text}),signal:ctrl.signal});
+  const r=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId:sid,chatInput:text,history:HIST.slice(-8)}),signal:ctrl.signal});
   clearTimeout(to); if(!r.ok) throw new Error(r.status);
   const d=await r.json(); reply=clean(Array.isArray(d)?d[0]?.output:(d.output??d.text));
   if(!reply) throw new Error('empty');
+  HIST.push({role:'user',content:text},{role:'assistant',content:reply});
   document.getElementById('livedot').style.background='#7CFC9A';
  }catch(e){reply=OFFLINE[lang];document.getElementById('livedot').style.background='#E8B64A';}
  const wait=Math.max(0,(reduce?0:600)-(Date.now()-t0)); await new Promise(r=>setTimeout(r,wait));
@@ -610,9 +611,7 @@ const form=document.querySelector('form.signup'), msg=document.getElementById('f
 form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;
  const fd=new FormData(form); if(fd.get('company')) return; const data=new URLSearchParams(fd).toString();
  const btn=form.querySelector('button[type=submit]'); btn.disabled=true;
- const note='[Website form] Callback request. Name: '+fd.get('name')+'. WhatsApp: '+fd.get('phone')+'. Interested in: '+fd.get('interest')+'. Language: '+lang+'. The visitor ticked the consent box: YES, Kalpa Labs may call or WhatsApp them. Save this callback now.';
  let ok=false;
- try{const r=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'sendMessage',sessionId:'form-'+sid,chatInput:note})});ok=r.ok;}catch(e){}
  try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data});ok=ok||r.ok;}catch(e){}
  btn.disabled=false;
  try{ if(!ok) throw 0;

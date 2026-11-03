@@ -107,4 +107,25 @@ do $$ declare c int; begin
      and tablename in ('tenant', 'tenant_member', 'usage_event', 'usage_daily') and rowsecurity;
   assert c = 4, 'RLS is off on a table';
 end $$;
+-- ---- F-11 api_key: hash only, tenant-scoped, key_hash hidden from members
+insert into public.api_key (tenant_id, key_hash, label) values
+  ('10000000-0000-0000-0000-00000000000a', repeat('a', 64), 'prod'),
+  ('10000000-0000-0000-0000-00000000000b', repeat('b', 64), 'prod');
+do $$ begin
+  begin insert into public.api_key (tenant_id, key_hash) values ('10000000-0000-0000-0000-00000000000a', 'lp_rawkey');
+        raise exception 'raw key stored';
+  exception when check_violation then null; end;
+end $$;
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ declare c int; begin
+  select count(*) into c from public.api_key; assert c = 1, 'A sees ' || c || ' keys';
+  begin perform key_hash from public.api_key; raise exception 'member can read key hashes';
+  exception when insufficient_privilege then null; end;
+  begin insert into public.api_key (tenant_id, key_hash) values ('10000000-0000-0000-0000-00000000000a', repeat('c', 64));
+        raise exception 'member created a key directly';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+
 select 'ALL LEDGER PEAKS SCHEMA TESTS PASSED';

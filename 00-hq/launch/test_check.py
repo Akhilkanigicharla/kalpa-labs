@@ -202,12 +202,12 @@ class Edges(unittest.TestCase):
 
 
 class RealConfig(unittest.TestCase):
-    def test_readiness_json_has_5_offers_and_6_rules(self):
+    def test_readiness_json_has_6_offers_and_6_rules(self):
         with open(os.path.join(check.HERE, "readiness.json"), encoding="utf-8") as f:
             cfg = json.load(f)
         check.validate(cfg)
         kinds = [r["kind"] for r in cfg["rows"]]
-        self.assertEqual((kinds.count("offer"), kinds.count("rule")), (5, 6))
+        self.assertEqual((kinds.count("offer"), kinds.count("rule")), (6, 6))
 
     def test_cli_json_and_exit_code(self):
         env_backup = os.environ.pop("GITHUB_TOKEN", None)
@@ -217,7 +217,7 @@ class RealConfig(unittest.TestCase):
                 code = check.main(["--json"])
             data = json.loads(buf.getvalue())
             self.assertEqual(code, 0 if data["ok"] else 1)
-            self.assertEqual(data["total"], 11)
+            self.assertEqual(data["total"], 12)
             r1 = next(r for r in data["rows"] if r["id"] == "R1")
             self.assertEqual(r1["checks"][0]["reason"], "unknown: GITHUB_TOKEN not set")
         finally:

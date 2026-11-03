@@ -22,6 +22,13 @@ class Classify(unittest.TestCase):
         self.assertIsNone(D.classify("Website", 200, "<title>Kalpa Labs</title>", want="Kalpa"))
 
 
+class Recipient(unittest.TestCase):
+    def test_only_private_chats(self):
+        self.assertTrue(D.private_chat("1905524851"))
+        for bad in ("-1001234567890", "-42", "", "@kalpadeals", None):
+            self.assertFalse(D.private_chat(bad))
+
+
 class Build(unittest.TestCase):
     now = datetime(2026, 11, 3, 21, 0, tzinfo=D.IST)
 

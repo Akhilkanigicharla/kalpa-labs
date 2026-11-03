@@ -3,7 +3,8 @@
 
 Alerts come FIRST: n8n down / trial or quota ended, website or chat not answering, failing Actions runs.
 Then: commits and roadmap ticks in the last 24 h.
-Sends to Telegram when TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID are set (GitHub secrets, set by Akhil); otherwise prints (dry run).
+Sends to Akhil's PRIVATE Telegram chat (CEO_CHAT_ID). Never to a channel or group: ids starting with "-" are refused,
+because TELEGRAM_CHAT_ID is the public deals channel (3 Nov 2026 mistake). Without a token it prints (dry run).
 Standard library only. Run: python3 00-hq/tools/daily_brief.py [--dry-run]
 """
 import json, os, re, subprocess, sys, urllib.request, urllib.error
@@ -61,6 +62,11 @@ def failing_runs(repo, token, since):
     return [f"Actions failing: {n}" for n in names]
 
 
+def private_chat(chat_id):
+    """Private chats have positive numeric ids; channels and groups are negative (-100…)."""
+    return str(chat_id).isdigit()
+
+
 def git_lines(args):
     try:
         return subprocess.run(["git", *args], capture_output=True, text=True, timeout=30).stdout.strip().splitlines()
@@ -95,11 +101,14 @@ def main(argv):
     today = now.strftime("%Y-%m-%d")
     ticks = sorted(set(re.findall(r"\*\*(A\d+)\*\*[^\n]*\(done " + today, open("00-hq/ROADMAP.md", encoding="utf-8").read()))) if os.path.exists("00-hq/ROADMAP.md") else []
     text, alerts = build(now, checks, runs, commits, ticks)
-    tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("CEO_CHAT_ID", "")
+    if not private_chat(chat):
+        print("refusing to send: CEO_CHAT_ID is not a private chat", file=sys.stderr)
+        return 1
     if dry or not (tok and chat):
         print(text)
         if not dry:
-            print("\n(dry run: TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set)")
+            print("\n(dry run: TELEGRAM_BOT_TOKEN not set)")
         return 0
     status, body = http(f"https://api.telegram.org/bot{tok}/sendMessage", {"chat_id": chat, "text": text, "disable_web_page_preview": True})
     if status != 200:

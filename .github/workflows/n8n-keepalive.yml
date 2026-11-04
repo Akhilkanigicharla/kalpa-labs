@@ -1,0 +1,20 @@
+# A146: keep the free self-hosted n8n on Render awake 06:00-00:30 IST (Render free sleeps after 15 min idle).
+# Does nothing until Akhil sets the repo variable N8N_SELF_URL. Public repo: Actions minutes are free.
+name: n8n-keepalive
+on:
+  schedule:
+    - cron: "*/10 0-18 * * *"   # UTC 00:00-18:59 = IST 05:30-00:29
+  workflow_dispatch:
+permissions: {}
+jobs:
+  ping:
+    if: ${{ vars.N8N_SELF_URL != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping /healthz
+        env:
+          URL: ${{ vars.N8N_SELF_URL }}
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 90 "${URL%/}/healthz" || true)
+          echo "n8n /healthz -> HTTP $code"

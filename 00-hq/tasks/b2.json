@@ -11,7 +11,9 @@
    "02-jobcard/PLAN.md"
   ],
   "status": "todo",
-  "created": "2026-11-04T08:30:00Z"
+  "created": "2026-11-04T08:30:00Z",
+  "updated": "2026-11-04T08:07:53Z",
+  "last_error": "no model answered"
  },
  {
   "id": "K020",
@@ -24,7 +26,9 @@
   "read": [
    "02-jobcard/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-04T08:30:00Z"
+  "status": "review",
+  "created": "2026-11-04T08:30:00Z",
+  "updated": "2026-11-04T08:09:10Z",
+  "output": "00-hq/knowledge/K020.md"
  }
 ]

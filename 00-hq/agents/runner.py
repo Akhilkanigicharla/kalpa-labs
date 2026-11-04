@@ -15,13 +15,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 QUEUE = os.path.join(ROOT, "00-hq/tasks/queue.json")
 KNOW = os.path.join(ROOT, "00-hq/knowledge")
 MAX_TASKS = 3
-MAX_CONTEXT = 24000  # characters of repo files given to the worker
+MAX_CONTEXT = 7000  # Groq free tier rejects bigger requests (HTTP 413)  # characters of repo files given to the worker
 
 MODELS = [  # all free; first one with a key that answers wins
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b"),
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
-    ("HF_TOKEN", "https://router.huggingface.co/v1/chat/completions", "openai/gpt-oss-120b"),
 ]
 VIGIL_MODELS = [
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b"),
@@ -45,7 +44,7 @@ def call(models, messages, env, post):
             continue
         try:
             hdr = {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"}
-            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 6000}
+            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 4000}
             try:
                 body = post(url, hdr, pay)
             except urllib.error.HTTPError as e:
@@ -90,7 +89,7 @@ def playbook(name, root=ROOT):
     for dirpath, _, files in os.walk(base):
         for f in files:
             if f == name or f == name + ".md":
-                return open(os.path.join(dirpath, f), encoding="utf-8").read()[:6000]
+                return open(os.path.join(dirpath, f), encoding="utf-8").read()[:2500]
     return ""
 
 
@@ -122,7 +121,7 @@ def work(task, env, post=http_post, root=ROOT):
              "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
-                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:12000]}\n\nDRAFT:\n{draft[:16000]}"}], env, post)
+                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
     return {"draft": draft, "model": model, "verdict": verdict or "PASS (Vigil unavailable)", "vmodel": vmodel}
 
 

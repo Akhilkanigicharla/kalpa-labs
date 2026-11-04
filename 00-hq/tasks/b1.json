@@ -11,11 +11,11 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:07:27Z",
+  "updated": "2026-11-04T16:26:01Z",
   "tries": 2,
-  "vigil_notes": "FIX:\n*   Remove \"No credit-card, no commitment\" and \"Setup within a day\" from the WhatsApp message; these are not in the repo and are not marked UNVERIFIED.\n*   Remove \"24/7 సహాయం\" (24/7 help) from the leaflet; it contradicts the \"9 am – 6 pm IST\" support window and is not in the repo.\n*   Remove \"www.botbhai.com\" from the leaflet; the domain is not in the repo and is not marked UNVERIFIED.\n*   Remove \"reply to this message to schedule a 2-minute demo\" from the WhatsApp message; the repo states demos are done via walk-in visits, not via chat replies.\n*   Mark \"No-shows... cut them by about a quarter\" as UNVERIFIED in the leaflet; the repo explicitly marks this statistic as UNVERIFIED."
+  "output": "00-hq/knowledge/K001.md"
  },
  {
   "id": "K002",
@@ -64,11 +64,11 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:08:46Z",
+  "updated": "2026-11-04T16:27:22Z",
   "tries": 1,
-  "vigil_notes": "FIX:\n*   **Row 7 (Support):** \"24/7 chat support\" is an invented fact not in repo files; replace with \"Support via shared inbox and owner alerts\" (verified in OFFER.md).\n*   **Row 3 (Data):** \"All data is encrypted\" is an unverified technical claim; remove or mark as UNVERIFIED, keeping only the DPDP processor role (verified).\n*   **Row 10 (Costs):** \"No extra charges\" is inaccurate; OFFER.md lists per-message WhatsApp costs (utility/marketing) which are variable, not just a fixed monthly fee.\n*   **Row 12 (ROI):** \"Automation typically saves time and costs\" is a general claim; stick to verified facts like \"reminders reduce no-shows\" (OFFER.md) or mark as UNVERIFIED.\n*   **Row 8 (Website):** \"Code snippet\" is a technical detail not explicitly in OFFER.md (which only says \"website chat\"); simplify to \"Web chat widget is available\" to avoid unverified implementation details."
+  "output": "00-hq/knowledge/K004.md"
  },
  {
   "id": "K005",

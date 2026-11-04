@@ -13,8 +13,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T07:53:27Z",
-  "tries": 0
+  "updated": "2026-11-04T07:54:26Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Mark \"No credit-card, no commitment\" as UNVERIFIED (not in repo files).\n*   Mark \"within a day\" (setup time) as UNVERIFIED (repo says 20 min owner time, not live time).\n*   Mark \"9 am – 6 pm IST\" support hours as UNVERIFIED (not in repo files).\n*   Mark \"www.botbhai.com\" as UNVERIFIED (domain not in repo files).\n*   Mark \"2-minute demo video\" as UNVERIFIED (repo mentions 2-minute demo on phone, not video)."
  },
  {
   "id": "K002",
@@ -45,10 +46,11 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T07:53:31Z",
-  "last_error": "no model answered"
+  "updated": "2026-11-04T07:55:24Z",
+  "last_error": "no model answered",
+  "output": "00-hq/knowledge/K003.md"
  },
  {
   "id": "K004",
@@ -93,7 +95,9 @@
    "00-hq/SOFT-LAUNCH.md"
   ],
   "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:56:09Z",
+  "last_error": "no model answered"
  },
  {
   "id": "K007",
@@ -137,7 +141,9 @@
    "04-extensions/store/listing.md"
   ],
   "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:56:55Z",
+  "last_error": "no model answered"
  },
  {
   "id": "K010",

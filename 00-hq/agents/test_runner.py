@@ -58,6 +58,14 @@ class Runner(unittest.TestCase):
         self.assertEqual(R.apply(self.task, None, self.root), "skipped")
         self.assertEqual(self.task["status"], "todo")
 
+    def test_humanizer_rules_reach_the_worker(self):
+        rules = R.style_rules()
+        self.assertIn("not x but y", rules)
+        self.assertGreater(rules.count(";"), 20)
+        post = fake_post(["draft", "PASS"])
+        R.work(self.task, self.env, post, self.root)  # temp root has no skill: still works
+        self.assertNotIn("humanizer", post.calls[0][1]["messages"][0]["content"])
+
     def test_prefer_openrouter_reorders(self):
         self.assertEqual(R.ordered(R.MODELS, "openrouter")[0][0], "OPENROUTER_API_KEY")
         self.assertEqual(R.ordered(R.MODELS, ""), R.MODELS)

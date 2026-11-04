@@ -9,6 +9,7 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 | cloudflare/security-audit-skill | already installed since 18 Oct (`.claude/skills/security-audit`, identical to upstream on 31 Oct); runs before every go-live on our own code (BotBhai A131) | ✅ in use |
 | Nutlope/hallmark | anti-AI-slop design skill, installed `.claude/skills/hallmark`; locked to the Kalpavruksha system; used on every new page (salon app A134, Telugu Deals pages) | 🔧 installed 31 Oct |
 | MadsLorentzen/ai-job-search | CV / cover letter / interview method for the b3 Job-Ready Kit (A140); scrapers left out (LinkedIn ban) | 🔧 vendored 31 Oct |
+| blader/humanizer | installed `.claude/skills/humanizer`; its 26 'signs of AI writing' go into every agent draft (runner.py) and Claude's copy work | ✅ in use (4 Nov) |
 | pipecat-ai/pipecat, livekit/agents | BotBhai voice agent design (`01-botbhai/botbhai/voice`) | ✅ learned, voice planned (A98) |
 | tashfeenahmed/freellmapi | Kalpa LLM router on Render, n8n fallback (A120) | ✅ in use |
 | heygen-com/hyperframes | explainer + listing videos (A118), skills installed | ✅ in use |
@@ -36,3 +37,4 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 | rmyndharis/OpenWA, NdoleStudio/httpsms | unofficial WhatsApp / SMS from a personal SIM: ban risk, TRAI DLT | ❌ can't (rule 4) |
 | Panniantong/Agent-Reach | reads platforms through logged-in cookies | ❌ can't (rule 4, 12) |
 | stablyai/orca, makecindy/cindy, OpenWhispr | apps on Akhil's PC (OpenWhispr installed by Akhil himself) | ❌ for us (rule 2) |
+| gosom/google-maps-scraper | scrapes Google Maps; breaks Google's terms and our rule 4. Salon lead lists already come from OpenStreetMap (ODbL, free) in `leadfinder.yml` | ❌ can't (rule 4) |

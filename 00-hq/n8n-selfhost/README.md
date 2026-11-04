@@ -54,3 +54,7 @@ Why not Hugging Face Spaces: since 2026 a new Docker Space needs a paid HF plan 
 3. Web search: the cloud trial's built-in Brave credit is gone; pick a free search API after checking it live.
 
 Risks: 512 MB is tight for n8n; heavy AI agent runs may restart it. GitHub Actions (A144) stays the primary runner; this n8n is the editor and backup.
+
+## Gotchas found (4 Nov 2026)
+- Render's firewall blocks API requests whose JSON has a key containing the word `prompts` (HTTP 403 "Blocked" page). Never name an n8n node "...prompts".
+- Credentials are created from GitHub secrets by `n8n-sync.yml` (input create_credentials=yes). Two runs at once on 4 Nov made duplicates of "Kalpa Telegram" and "Kalpa Groq header"; the newest is used, the older copy can be deleted in n8n → Credentials.

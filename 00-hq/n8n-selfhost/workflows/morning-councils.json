@@ -61,7 +61,7 @@
   },
   {
    "id": "n4",
-   "name": "Build council prompts",
+   "name": "Make council asks",
    "type": "n8n-nodes-base.code",
    "typeVersion": 2,
    "position": [
@@ -116,7 +116,7 @@
     0
    ],
    "parameters": {
-    "jsCode": "const items=$input.all(); const ws=$('Build council prompts').all();\nconst parts=items.map((it,i)=>'\u2022 '+ws[i].json.world+'\\n'+String(it.json.choices?.[0]?.message?.content||'(no answer)').replace(/[*#]/g,'').trim());\nreturn [{json:{text:('\ud83c\udf05 Kalpa morning councils\\n\\n'+parts.join('\\n\\n')).slice(0,3900)}}];"
+    "jsCode": "const items=$input.all(); const ws=$('Make council asks').all();\nconst parts=items.map((it,i)=>'\u2022 '+ws[i].json.world+'\\n'+String(it.json.choices?.[0]?.message?.content||'(no answer)').replace(/[*#]/g,'').trim());\nreturn [{json:{text:('\ud83c\udf05 Kalpa morning councils\\n\\n'+parts.join('\\n\\n')).slice(0,3900)}}];"
    }
   },
   {
@@ -170,14 +170,14 @@
    "main": [
     [
      {
-      "node": "Build council prompts",
+      "node": "Make council asks",
       "type": "main",
       "index": 0
      }
     ]
    ]
   },
-  "Build council prompts": {
+  "Make council asks": {
    "main": [
     [
      {

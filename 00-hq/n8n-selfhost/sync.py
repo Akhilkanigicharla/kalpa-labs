@@ -33,7 +33,12 @@ def api(method, path, body=None):
 
 def existing_credentials():
     st, body = api("GET", "/credentials?limit=250")
-    return {c["name"]: c["id"] for c in body.get("data", [])} if st == 200 else None
+    if st != 200:
+        return None
+    out = {}
+    for c in sorted(body.get("data", []), key=lambda c: c.get("createdAt", "")):
+        out[c["name"]] = c["id"]  # newest wins if a name exists twice
+    return out
 
 
 def sync_credentials():

@@ -9,6 +9,7 @@ on:
     paths: ["00-hq/n8n-selfhost/workflows/**", "00-hq/n8n-selfhost/sync.py"]
 permissions:
   contents: read
+concurrency: { group: n8n-sync, cancel-in-progress: false }   # two runs at once made duplicate credentials (4 Nov)
 jobs:
   sync:
     if: ${{ vars.N8N_SELF_URL != '' }}

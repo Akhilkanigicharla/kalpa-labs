@@ -28,10 +28,11 @@
   "read": [
    "05-deals/PLAN.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:09:14Z",
-  "last_error": "no model answered"
+  "updated": "2026-11-04T16:24:32Z",
+  "last_error": "no model answered",
+  "output": "00-hq/knowledge/K007.md"
  },
  {
   "id": "K008",
@@ -44,7 +45,9 @@
   "read": [
    "05-deals/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:25:56Z",
+  "output": "00-hq/knowledge/K008.md"
  }
 ]

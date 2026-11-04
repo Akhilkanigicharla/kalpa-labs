@@ -12,7 +12,10 @@
    "01-botbhai/docs/BLUEPRINT.md"
   ],
   "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:53:27Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Remove specific date \"16 Nov\" (UNVERIFIED).\n*   Remove specific prices ₹2,999/₹1,499/₹1,999 (UNVERIFIED).\n*   Remove claim \"only solution\" (UNVERIFIED/Marketing).\n*   Remove \"20 minutes\" setup time (UNVERIFIED).\n*   Remove \"GST-ready\" claim (UNVERIFIED)."
  },
  {
   "id": "K002",
@@ -26,8 +29,10 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:53:31Z",
+  "output": "00-hq/knowledge/K002.md"
  },
  {
   "id": "K003",
@@ -42,7 +47,9 @@
    "01-botbhai/docs/BLUEPRINT.md"
   ],
   "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:53:31Z",
+  "last_error": "no model answered"
  },
  {
   "id": "K004",

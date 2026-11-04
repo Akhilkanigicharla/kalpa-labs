@@ -10,7 +10,9 @@
   "read": [
    "06-finops/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T08:07:55Z",
+  "output": "00-hq/knowledge/K014.md"
  }
 ]

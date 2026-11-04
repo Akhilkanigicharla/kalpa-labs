@@ -1,0 +1,266 @@
+[
+ {
+  "id": "K001",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai founding-salon pitch: WhatsApp/Telegram message (Telugu + English) a salon owner reads in 30 seconds, plus a 1-page A5 leaflet text",
+  "details": "Free 14-day pilot from 16 Nov, then the founding price in OFFER.md. Telegram is the live channel today; WhatsApp once Meta approves. No invented results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K002",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Vigil",
+  "playbook": "support-legal-compliance-checker",
+  "title": "BotBhai policy pack draft: Terms of Service, customer privacy notice (DPDP, salon = fiduciary, Kalpa = processor), acceptable use, support & SLA, refund, data retention 180 days, incident response 72 h",
+  "details": "Plain English, short sections, India law. Mark every legal point that needs a lawyer as 'LAWYER CHECK'. This feeds A135.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K003",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Chitti",
+  "playbook": "testing-reality-checker",
+  "title": "200 real-style salon customer test messages for BotBhai (Telugu script, Hindi, English, Tenglish, typos, repu/kal, price asks, angry customers, multi-turn), as JSON lines {msg, expected_intent}",
+  "details": "Intents: greeting, price, book, reschedule, cancel, timing, location, complaint, human, other. This feeds A87 tests.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K004",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai objection handling: the 12 things a Hyderabad salon owner will say (cost, 'my staff answers', trust, data, WhatsApp ban fear...) with honest 2-line answers in Telugu + English",
+  "details": "Honest answers only; never promise results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K005",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Pilot Day (16 Nov) runbook for one salon: setup checklist, 14-day check-in schedule, what to measure (bookings, replies, hand-overs), how to ask for the paid switch",
+  "details": "Use the real pieces in BLUEPRINT.md section 1.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K006",
+  "world": "b5",
+  "priority": "P0",
+  "owner": "Deals",
+  "playbook": "marketing-content-creator",
+  "title": "30 days of Telugu Deals channel post templates: daily deal post format with #ad, weekly money tip (no SEBI tips), festival hooks for Nov-Dec 2026",
+  "details": "Telugu first, English second line. Never invent prices; use {price} placeholders.",
+  "read": [
+   "05-deals/PLAN.md",
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K007",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "playbook": "marketing-growth-hacker",
+  "title": "How the Telugu Deals channel gets its first 500 subscribers in 30 days without paid ads or spam (TRAI/DPDP safe): 10 tactics ranked by effort, with exact post texts",
+  "details": "No buying followers, no group spam.",
+  "read": [
+   "05-deals/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K008",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "playbook": "research-synthesist",
+  "title": "Plain-Telugu explainer texts for the 10 calculators (one 60-word intro + 3 FAQs each)",
+  "details": "Read the calculator list in the plan; mark any formula you cannot see as UNVERIFIED.",
+  "read": [
+   "05-deals/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K009",
+  "world": "b4",
+  "priority": "P0",
+  "owner": "Lifeboat",
+  "playbook": "marketing-content-creator",
+  "title": "Tab Lifeboat Chrome Web Store listing: short description (132 chars), full description, 5 screenshot captions, FAQ, in English (also Hindi version)",
+  "details": "Use the real features in the plan and DEPTH.md only.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "04-extensions/DEPTH.md",
+   "04-extensions/store/listing.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K010",
+  "world": "b4",
+  "priority": "P0",
+  "owner": "Lifeboat",
+  "playbook": "business-strategist",
+  "title": "Tab Lifeboat Pro plan: what is free vs Pro, price options in USD and INR with reasons, and launch-week offer",
+  "details": "Free tools only; payment provider not chosen yet (C54); mark prices as PROPOSED.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "04-extensions/DEPTH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K011",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Lifeboat",
+  "playbook": "marketing-growth-hacker",
+  "title": "Tab Lifeboat launch posts: Product Hunt text, 3 Reddit posts for the right subreddits (follow their self-promo rules), 1 X thread, 1 LinkedIn post",
+  "details": "Honest, no fake reviews, no vote begging.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "00-hq/marketing/launch/places-to-post.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K012",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "marketing-content-creator",
+  "title": "Kits sales page copy (GATE 2027 kit, Tax + SIP planner) in Telugu + English: headline, what's inside, who it's for, FAQ, 7-day refund line",
+  "details": "Not on sale yet: say 'waitlist'. Prices from the plan only.",
+  "read": [
+   "03-kits/PLAN.md",
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K013",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "specialized-chief-of-staff",
+  "title": "'Claude Code with me' Telugu workshop (29 Nov): 90-minute agenda, 3 small builds, materials list, sign-up page text, refund rule",
+  "details": "Beginners; no income promises.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K014",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "Ledger Peaks free AI-cost X-ray: one-page offer + LinkedIn message for founders + 5 qualifying questions",
+  "details": "Early access only; X-ray takes a usage export; never ask for customer personal data.",
+  "read": [
+   "06-finops/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K015",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "product-trend-researcher",
+  "title": "Job-Ready Kit (A140) content: 10-point job-fit checklist, fresher CV template, cover-letter template, 20 interview questions with tips, 4-week skill-gap plan (Telugu + English)",
+  "details": "Method: 00-hq/vendor/ai-job-search. No scraping.",
+  "read": [
+   "00-hq/vendor/ai-job-search/job-application-assistant/SKILL.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K016",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
+  "details": "Use the readiness board and roadmap.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md",
+   "00-hq/launch/readiness.json"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K017",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "design-brand-guardian",
+  "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
+  "details": "Kalpavruksha theme.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K018",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "product-feedback-synthesizer",
+  "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
+  "details": "Short, kind, DPDP consent line.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

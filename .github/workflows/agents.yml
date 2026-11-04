@@ -1,0 +1,33 @@
+# A144: Kalpa agents work the queue (00-hq/tasks/queue.json) on free models, every hour + on demand.
+# Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY, HF_TOKEN. Results: 00-hq/knowledge/<id>.md (status "review").
+name: agents
+on:
+  schedule:
+    - cron: "20 * * * *"
+  workflow_dispatch:
+    inputs:
+      max: { description: "tasks this run", default: "3" }
+permissions:
+  contents: write
+concurrency: { group: agents, cancel-in-progress: false }
+jobs:
+  work:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 00-hq/agents/test_runner.py
+      - name: Agents work the queue
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python3 00-hq/agents/runner.py --max "${{ github.event.inputs.max || '3' }}"
+      - name: Save results
+        run: |
+          git config user.name "kalpa-agents"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/tasks/queue.json 00-hq/knowledge || true
+          git diff --cached --quiet && exit 0
+          git commit -m "agents: queue run $(date -u +%FT%TZ)"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done; exit 1

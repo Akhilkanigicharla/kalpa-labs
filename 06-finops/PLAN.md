@@ -16,7 +16,7 @@ Realistic revenue, because B2B sales cycles are long and the CEO has 20 minutes 
 
 **Biggest risk: trust.** A one-person company with no logo wall is asking startups for their usage data. The plan answers this with a metadata-only design, open-source code they can read, a public sample pack, and 3 named design partners before we charge anyone.
 
-The **deadline tailwind** is real. DPDP's full duties (notice, consent, security safeguards, breach notification) start in **May 2027**. EU AI Act Art. 50 transparency has applied since **2 Aug 2026**.
+The **deadline tailwind** is real. DPDP's full duties (notice, consent, security safeguards, breach notification) start in **May 2027**. EU AI Act Art. 50 transparency has applied since **2 Aug 2026**; the Art. 50(2) marking grace for systems already on the market ends **2 Dec 2026** (Reg. (EU) 2026/1744 recital 38, EUR-Lex).
 
 ## 2. Customer & offer
 
@@ -30,7 +30,7 @@ The buyer is the CTO or founder. The founder or finance lead signs off.
 Signals to look for: a changelog announcing AI features, job posts for "AI/LLM engineer", a "Powered by GPT/Claude" mention, a trust page, or sales to Europe. Lists are covered in §4.
 
 **Why they buy now.**
-1. **The money problem.** AI is a COGS line that grows with usage. One heavy customer can wipe out the margin on their plan. LLM providers bill in USD, and USD/INR moved from about ₹88 to about ₹96 this year.
+1. **The money problem.** AI is a COGS line that grows with usage. One heavy customer can wipe out the margin on their plan. LLM providers bill in USD, and USD/INR moved from about ₹88 to ~₹95 (3 Nov 2026) this year.
 2. **GST leakage.** Foreign API bills paid without a GSTIN lose 18% that can't be claimed back. With a GSTIN, they owe reverse-charge tax that is easy to miss. We flag both.
 3. **The deadline.** DPDP's substantive duties start in **May 2027**, with penalties up to ₹250 crore for weak security safeguards and ₹200 crore for breach-notification failures. Art. 50 is enforceable now for anyone with EU users.
 
@@ -69,7 +69,7 @@ The design choice that keeps costs near zero: **metadata only** (tokens, model, 
 | Claude (report narrative) | Within the company token budget | ~20k tokens per customer per month |
 | Akhil's time | — | ~20 min per customer per month to review the pack before it goes out |
 
-- **Cost to serve on free tiers:** about ₹0 in cash plus 20 minutes of review. Razorpay takes about 2% + GST per payment (≈₹100 on ₹4,999).
+- **Cost to serve on free tiers:** about ₹0 in cash plus 20 minutes of review. Razorpay takes 2.15% + GST per payment on razorpay.com/pricing (audit 3 Nov 2026), ≈₹127 on ₹4,999; recheck from India at F-16.
 - **After the limits:** Supabase Pro $25 (₹2,400) + Workers Paid $5 (₹480) + a domain (~₹900/yr) ≈ **₹3,000 a month fixed**.
 - **Gross margin:** about 98% on free tiers and about 85–90% after the upgrade at 10 customers.
 - **Break-even after the upgrade:** 2 Starter customers or 1 Growth customer.
@@ -210,6 +210,6 @@ A({ id:"b6.success", name:"Customer Success", unit:"b6", team:"success", mission
 - GST on foreign AI tools (OIDAR, RCM 18%): [StartupTalky](https://startuptalky.com/getting-wrong-gst-chatgpt-claude-foreign-ai-tools/)
 - Inc42 GenAI tracker (175 startups): [Inc42](https://inc42.com/startups/indian-genai-startup-tracker/amp/)
 - Cloudflare Workers / Supabase free limits: [eastondev (Jul 2026 figures)](https://eastondev.com/blog/en/posts/dev/20261009-solo-founder-backend-stack-cloudflare-workers-supabase-node/), [Cloudflare limits](https://developers.cloudflare.com/workers/about/limits)
-- Razorpay fee (~2% + GST, verify on the official page): [Dodo Payments review](https://dodopayments.com/blogs/razorpay-review)
+- Razorpay fee (2.15% + GST, razorpay.com/pricing India page, audit 2026-11-03; third-party reviews still say 2%): [Razorpay pricing](https://razorpay.com/pricing/), [Dodo Payments review](https://dodopayments.com/blogs/razorpay-review)
 - USD/INR ~₹95.8 (12 Oct 2026): [dollarrupee.in](https://dollarrupee.in/)
 - Open-source picks, licences and test runs: `06-finops/research/a7-finops.md`

@@ -8,7 +8,7 @@ PASS → 00-hq/knowledge/<id>.md + status "review"; FIX → status "todo" with V
 The Action commits the changes. No web search: agents must mark any fact they cannot see in the repo as UNVERIFIED.
 Standard library only. Run: python3 00-hq/agents/runner.py [--max N] [--dry-run]
 """
-import json, os, re, sys, urllib.request, urllib.error
+import json, os, re, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -44,8 +44,15 @@ def call(models, messages, env, post):
         if not env.get(key):
             continue
         try:
-            body = post(url, {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"},
-                        {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 6000})
+            hdr = {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"}
+            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 6000}
+            try:
+                body = post(url, hdr, pay)
+            except urllib.error.HTTPError as e:
+                if e.code != 429:
+                    raise
+                time.sleep(float(env.get("KL_RETRY_WAIT", 30)))  # free per-minute limit: wait once, retry
+                body = post(url, hdr, pay)
             text = (body.get("choices") or [{}])[0].get("message", {}).get("content") or ""
             text = re.sub(r"<think>[\s\S]*?</think>", "", text).strip()
             if text:
@@ -112,10 +119,10 @@ def work(task, env, post=http_post, root=ROOT):
     if not draft:
         return None
     check = (f"You are Vigil, Kalpa Labs' fact and rules checker. {RULES}\nCheck the DRAFT for: invented facts not marked "
-             "UNVERIFIED, broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
+             "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
-                                          {"role": "user", "content": f"TASK: {task['title']}\n\nDRAFT:\n{draft[:20000]}"}], env, post)
+                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:12000]}\n\nDRAFT:\n{draft[:16000]}"}], env, post)
     return {"draft": draft, "model": model, "verdict": verdict or "PASS (Vigil unavailable)", "vmodel": vmodel}
 
 
@@ -151,6 +158,7 @@ def main(argv):
             print("would run", t["id"], t["title"][:60])
             continue
         print(t["id"], "→", apply(t, work(t, os.environ)))
+        time.sleep(45)  # stay under the free models' per-minute token limits
     json.dump(queue, open(QUEUE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     open(QUEUE, "a").write("\n")
     return 0

@@ -41,6 +41,7 @@ class Runner(unittest.TestCase):
         self.assertIn("Close deals kindly.", prompt[0]["content"])
         self.assertIn("BotBhai pilot is free.", prompt[1]["content"])
         self.assertIn("(not found)", prompt[1]["content"])  # path escape refused
+        self.assertIn("BotBhai pilot is free.", post.calls[1][1]["messages"][1]["content"])  # Vigil sees the repo facts
 
     def test_fix_goes_back_then_rejected_after_3(self):
         for i in range(3):

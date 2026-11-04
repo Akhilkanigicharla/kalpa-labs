@@ -14,8 +14,7 @@
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T07:53:27Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n*   Remove specific date \"16 Nov\" (UNVERIFIED).\n*   Remove specific prices ₹2,999/₹1,499/₹1,999 (UNVERIFIED).\n*   Remove claim \"only solution\" (UNVERIFIED/Marketing).\n*   Remove \"20 minutes\" setup time (UNVERIFIED).\n*   Remove \"GST-ready\" claim (UNVERIFIED)."
+  "tries": 0
  },
  {
   "id": "K002",

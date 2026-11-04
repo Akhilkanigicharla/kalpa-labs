@@ -1,0 +1,214 @@
+{
+ "name": "Kalpa Morning Councils (all worlds)",
+ "active": true,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "n1",
+   "name": "Every day 07:30",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "30 7 * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "n2",
+   "name": "Worlds",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    220,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const W={b1:'BotBhai (salon AI chat)',b2:'JobCard (AC technician app)',b3:'Kits + workshop',b4:'Tab Lifeboat (Chrome extension)',b5:'Telugu Deals',b6:'Ledger Peaks (AI cost X-ray)',b7:'Trading Lab (paper only)',hq:'HQ'};\nreturn Object.entries(W).map(([id,name])=>({json:{id,name,url:'https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/'+id+'.json'}}));"
+   }
+  },
+  {
+   "id": "n3",
+   "name": "Read world queue (public repo)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    440,
+    0
+   ],
+   "parameters": {
+    "url": "={{ $json.url }}",
+    "options": {
+     "response": {
+      "response": {
+       "responseFormat": "json"
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "n4",
+   "name": "Build council prompts",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const out=[];\nfor (const it of $input.all()) {\n  const w=$('Worlds').all()[out.length]?.json || {};\n  let q=[]; try { q = Array.isArray(it.json) ? it.json : JSON.parse(it.json.data || '[]'); } catch(e) {}\n  const by=s=>q.filter(t=>t.status===s).map(t=>t.id+' '+String(t.title).slice(0,70));\n  const brief=`World: ${w.name}\\nTodo: ${by('todo').join('; ')||'none'}\\nIn review: ${by('review').join('; ')||'none'}\\nRejected: ${by('rejected').join('; ')||'none'}`;\n  out.push({json:{world:w.name, body:{model:'openai/gpt-oss-20b',temperature:0.3,max_tokens:400,messages:[\n    {role:'system',content:'You are the morning council of one Kalpa Labs world. Soft launch is Sun 13 Dec 2026, Pilot Day Mon 16 Nov. Using ONLY the queue below, give the 2 most important next actions in plain short English, each under 20 words, and say who does it: agents, Claude (code) or Akhil. No invented facts.'},\n    {role:'user',content:brief}]}}});\n}\nreturn out;"
+   }
+  },
+  {
+   "id": "n5",
+   "name": "Council (Groq free)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    880,
+    0
+   ],
+   "parameters": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpHeaderAuth",
+    "sendBody": true,
+    "specifyBody": "json",
+    "jsonBody": "={{ JSON.stringify($json.body) }}",
+    "options": {
+     "batching": {
+      "batch": {
+       "batchSize": 1,
+       "batchInterval": 8000
+      }
+     }
+    }
+   },
+   "credentials": {
+    "httpHeaderAuth": {
+     "id": "",
+     "name": "Kalpa Groq header"
+    }
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "n6",
+   "name": "Join",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1100,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const items=$input.all(); const ws=$('Build council prompts').all();\nconst parts=items.map((it,i)=>'\u2022 '+ws[i].json.world+'\\n'+String(it.json.choices?.[0]?.message?.content||'(no answer)').replace(/[*#]/g,'').trim());\nreturn [{json:{text:('\ud83c\udf05 Kalpa morning councils\\n\\n'+parts.join('\\n\\n')).slice(0,3900)}}];"
+   }
+  },
+  {
+   "id": "n7",
+   "name": "Send to Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1320,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "appendAttribution": false
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 07:30": {
+   "main": [
+    [
+     {
+      "node": "Worlds",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Worlds": {
+   "main": [
+    [
+     {
+      "node": "Read world queue (public repo)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read world queue (public repo)": {
+   "main": [
+    [
+     {
+      "node": "Build council prompts",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build council prompts": {
+   "main": [
+    [
+     {
+      "node": "Council (Groq free)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Council (Groq free)": {
+   "main": [
+    [
+     {
+      "node": "Join",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Join": {
+   "main": [
+    [
+     {
+      "node": "Send to Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,50 @@
+[
+ {
+  "id": "K009",
+  "world": "b4",
+  "priority": "P0",
+  "owner": "Lifeboat",
+  "playbook": "marketing-content-creator",
+  "title": "Tab Lifeboat Chrome Web Store listing: short description (132 chars), full description, 5 screenshot captions, FAQ, in English (also Hindi version)",
+  "details": "Use the real features in the plan and DEPTH.md only.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "04-extensions/DEPTH.md",
+   "04-extensions/store/listing.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:56:55Z",
+  "last_error": "no model answered"
+ },
+ {
+  "id": "K010",
+  "world": "b4",
+  "priority": "P0",
+  "owner": "Lifeboat",
+  "playbook": "business-strategist",
+  "title": "Tab Lifeboat Pro plan: what is free vs Pro, price options in USD and INR with reasons, and launch-week offer",
+  "details": "Free tools only; payment provider not chosen yet (C54); mark prices as PROPOSED.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "04-extensions/DEPTH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K011",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Lifeboat",
+  "playbook": "marketing-growth-hacker",
+  "title": "Tab Lifeboat launch posts: Product Hunt text, 3 Reddit posts for the right subreddits (follow their self-promo rules), 1 X thread, 1 LinkedIn post",
+  "details": "Honest, no fake reviews, no vote begging.",
+  "read": [
+   "04-extensions/PLAN.md",
+   "00-hq/marketing/launch/places-to-post.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

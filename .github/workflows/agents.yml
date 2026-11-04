@@ -1,33 +1,52 @@
-# A144: Kalpa agents work the queue (00-hq/tasks/queue.json) on free models, every hour + on demand.
-# Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY, HF_TOKEN. Results: 00-hq/knowledge/<id>.md (status "review").
+# A144: all Kalpa worlds work in PARALLEL (one job per world) on free models, every hour + on demand.
+# Queues: 00-hq/tasks/<world>.json. Results: 00-hq/knowledge/<id>.md (status "review").
+# Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY. Odd worlds start on OpenRouter so all 8 jobs don't hit Groq at once.
 name: agents
 on:
   schedule:
     - cron: "20 * * * *"
   workflow_dispatch:
     inputs:
-      max: { description: "tasks this run", default: "3" }
+      max: { description: "tasks per world this run", default: "2" }
 permissions:
   contents: write
 concurrency: { group: agents, cancel-in-progress: false }
 jobs:
-  work:
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - run: python3 00-hq/agents/test_runner.py
-      - name: Agents work the queue
+      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py
+  world:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - { world: b1, prefer: "" }
+          - { world: b2, prefer: openrouter }
+          - { world: b3, prefer: "" }
+          - { world: b4, prefer: openrouter }
+          - { world: b5, prefer: "" }
+          - { world: b6, prefer: openrouter }
+          - { world: b7, prefer: "" }
+          - { world: hq, prefer: openrouter }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Agents of ${{ matrix.world }} work their queue
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python3 00-hq/agents/runner.py --max "${{ github.event.inputs.max || '3' }}"
-      - name: Save results
+          KL_PREFER: ${{ matrix.prefer }}
+        run: python3 00-hq/agents/runner.py --world ${{ matrix.world }} --max "${{ github.event.inputs.max || '2' }}"
+      - name: Save results (each world only touches its own queue file)
         run: |
           git config user.name "kalpa-agents"
           git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
-          git add 00-hq/tasks/queue.json 00-hq/knowledge || true
+          git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge || true
           git diff --cached --quiet && exit 0
-          git commit -m "agents: queue run $(date -u +%FT%TZ)"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done; exit 1
+          git commit -q -m "agents(${{ matrix.world }}): queue run $(date -u +%FT%TZ)"
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

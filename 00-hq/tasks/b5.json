@@ -1,0 +1,47 @@
+[
+ {
+  "id": "K006",
+  "world": "b5",
+  "priority": "P0",
+  "owner": "Deals",
+  "playbook": "marketing-content-creator",
+  "title": "30 days of Telugu Deals channel post templates: daily deal post format with #ad, weekly money tip (no SEBI tips), festival hooks for Nov-Dec 2026",
+  "details": "Telugu first, English second line. Never invent prices; use {price} placeholders.",
+  "read": [
+   "05-deals/PLAN.md",
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:56:09Z",
+  "last_error": "no model answered"
+ },
+ {
+  "id": "K007",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "playbook": "marketing-growth-hacker",
+  "title": "How the Telugu Deals channel gets its first 500 subscribers in 30 days without paid ads or spam (TRAI/DPDP safe): 10 tactics ranked by effort, with exact post texts",
+  "details": "No buying followers, no group spam.",
+  "read": [
+   "05-deals/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K008",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "playbook": "research-synthesist",
+  "title": "Plain-Telugu explainer texts for the 10 calculators (one 60-word intro + 3 FAQs each)",
+  "details": "Read the calculator list in the plan; mark any formula you cannot see as UNVERIFIED.",
+  "read": [
+   "05-deals/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

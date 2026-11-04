@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """A144: Kalpa agent task runner on GitHub Actions (replaces the n8n Cloud Task Runner; trial ended 31 Oct 2026).
 
-Queue: 00-hq/tasks/queue.json (list of tasks). Each run takes up to MAX_TASKS `todo` tasks (P0 first, then oldest),
+Queues: 00-hq/tasks/<world>.json; the Action runs one job per world in parallel. Each run takes up to MAX_TASKS `todo` tasks (P0 first, then oldest),
 the owner agent drafts the deliverable with free models (Groq → OpenRouter → Hugging Face router), reading the repo
 files named in the task and its agency-agents playbook. Vigil (a second free model) checks it against Kalpa rules.
 PASS → 00-hq/knowledge/<id>.md + status "review"; FIX → status "todo" with Vigil's notes (max 2 retries, then "rejected").
 The Action commits the changes. No web search: agents must mark any fact they cannot see in the repo as UNVERIFIED.
-Standard library only. Run: python3 00-hq/agents/runner.py [--max N] [--dry-run]
+Standard library only. Run: python3 00-hq/agents/runner.py --world b1 [--max N] [--dry-run]
 """
 import json, os, re, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-QUEUE = os.path.join(ROOT, "00-hq/tasks/queue.json")
+TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b7.json, hq.json
+WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "hq"]
 KNOW = os.path.join(ROOT, "00-hq/knowledge")
 MAX_TASKS = 3
 MAX_CONTEXT = 7000  # Groq free tier rejects bigger requests (HTTP 413)  # characters of repo files given to the worker
@@ -145,21 +146,41 @@ def apply(task, result, root=ROOT):
     return task["status"]
 
 
+def ordered(models, prefer):
+    """Parallel world jobs share keys: half of them start on OpenRouter so Groq's per-minute limit is not hit by all at once."""
+    if prefer != "openrouter":
+        return models
+    return [m for m in models if m[0] == "OPENROUTER_API_KEY"] + [m for m in models if m[0] != "OPENROUTER_API_KEY"]
+
+
 def main(argv):
     n = int(argv[argv.index("--max") + 1]) if "--max" in argv else MAX_TASKS
-    queue = json.load(open(QUEUE, encoding="utf-8"))
+    world = argv[argv.index("--world") + 1] if "--world" in argv else "hq"
+    if world not in WORLDS:
+        print("unknown world", world)
+        return 2
+    global MODELS, VIGIL_MODELS
+    prefer = os.environ.get("KL_PREFER", "")
+    MODELS, VIGIL_MODELS = ordered(MODELS, prefer), ordered(VIGIL_MODELS, prefer)
+    path = os.path.join(TASKS, world + ".json")
+    if not os.path.exists(path):
+        print(world, "queue empty")
+        return 0
+    queue = json.load(open(path, encoding="utf-8"))
     picked = pick(queue, n)
     if not picked:
-        print("queue empty")
+        print(world, "queue empty")
         return 0
-    for t in picked:
+    for i, t in enumerate(picked):
         if "--dry-run" in argv:
             print("would run", t["id"], t["title"][:60])
             continue
+        if i:
+            time.sleep(45)  # stay under the free models' per-minute token limits
         print(t["id"], "→", apply(t, work(t, os.environ)))
-        time.sleep(45)  # stay under the free models' per-minute token limits
-    json.dump(queue, open(QUEUE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    open(QUEUE, "a").write("\n")
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(queue, fh, ensure_ascii=False, indent=1)
+        fh.write("\n")
     return 0
 
 

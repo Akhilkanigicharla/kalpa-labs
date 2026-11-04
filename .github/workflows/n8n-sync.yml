@@ -1,0 +1,27 @@
+# A146: push our n8n workflows (00-hq/n8n-selfhost/workflows) and credentials (from GitHub secrets) to the self-hosted n8n.
+name: n8n-sync
+on:
+  workflow_dispatch:
+    inputs:
+      create_credentials: { description: "create n8n credentials from GitHub secrets (yes/no)", default: "no" }
+  push:
+    branches: [main]
+    paths: ["00-hq/n8n-selfhost/workflows/**", "00-hq/n8n-selfhost/sync.py"]
+permissions:
+  contents: read
+jobs:
+  sync:
+    if: ${{ vars.N8N_SELF_URL != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -s -o /dev/null --max-time 90 "${{ vars.N8N_SELF_URL }}/healthz" || true   # wake it up
+      - run: python3 00-hq/n8n-selfhost/sync.py
+        env:
+          N8N_SELF_URL: ${{ vars.N8N_SELF_URL }}
+          N8N_SELF_API_KEY: ${{ secrets.N8N_SELF_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          KL_CREATE_CREDS: ${{ github.event.inputs.create_credentials || 'no' }}

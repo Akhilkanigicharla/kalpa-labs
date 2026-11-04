@@ -1,0 +1,45 @@
+[
+ {
+  "id": "K016",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
+  "details": "Use the readiness board and roadmap.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md",
+   "00-hq/launch/readiness.json"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K017",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "design-brand-guardian",
+  "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
+  "details": "Kalpavruksha theme.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K018",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "product-feedback-synthesizer",
+  "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
+  "details": "Short, kind, DPDP consent line.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

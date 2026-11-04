@@ -1,0 +1,16 @@
+[
+ {
+  "id": "K021",
+  "world": "b7",
+  "priority": "P2",
+  "owner": "Oracle",
+  "playbook": "research-synthesist",
+  "title": "Trading Lab paper-trading journal template and weekly review checklist (paper only, no tips, SEBI-safe)",
+  "details": "Never recommend trades. Education and process only.",
+  "read": [
+   "07-trading/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:30:00Z"
+ }
+]

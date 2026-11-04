@@ -1,0 +1,30 @@
+[
+ {
+  "id": "K019",
+  "world": "b2",
+  "priority": "P1",
+  "owner": "Forge",
+  "playbook": "product-trend-researcher",
+  "title": "JobCard: the 15 job types an AC/fridge/washing-machine technician in Hyderabad handles, with typical parts and labour lines for the job card (Telugu + English names)",
+  "details": "Mark every price as UNVERIFIED example. Feeds the JobCard voice-to-card parser.",
+  "read": [
+   "02-jobcard/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:30:00Z"
+ },
+ {
+  "id": "K020",
+  "world": "b2",
+  "priority": "P2",
+  "owner": "Forge",
+  "playbook": "marketing-content-creator",
+  "title": "JobCard tester invite kit: WhatsApp voice-note script (Telugu), 1-page how-to for February testers, 5 feedback questions",
+  "details": "Free 2-week test in Feb 2027.",
+  "read": [
+   "02-jobcard/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:30:00Z"
+ }
+]

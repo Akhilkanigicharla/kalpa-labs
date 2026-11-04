@@ -1,0 +1,45 @@
+[
+ {
+  "id": "K012",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "marketing-content-creator",
+  "title": "Kits sales page copy (GATE 2027 kit, Tax + SIP planner) in Telugu + English: headline, what's inside, who it's for, FAQ, 7-day refund line",
+  "details": "Not on sale yet: say 'waitlist'. Prices from the plan only.",
+  "read": [
+   "03-kits/PLAN.md",
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K013",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "specialized-chief-of-staff",
+  "title": "'Claude Code with me' Telugu workshop (29 Nov): 90-minute agenda, 3 small builds, materials list, sign-up page text, refund rule",
+  "details": "Beginners; no income promises.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K015",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "product-trend-researcher",
+  "title": "Job-Ready Kit (A140) content: 10-point job-fit checklist, fresher CV template, cover-letter template, 20 interview questions with tips, 4-week skill-gap plan (Telugu + English)",
+  "details": "Method: 00-hq/vendor/ai-job-search. No scraping.",
+  "read": [
+   "00-hq/vendor/ai-job-search/job-application-assistant/SKILL.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

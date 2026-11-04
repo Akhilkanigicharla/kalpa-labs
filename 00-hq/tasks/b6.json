@@ -1,0 +1,16 @@
+[
+ {
+  "id": "K014",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "Ledger Peaks free AI-cost X-ray: one-page offer + LinkedIn message for founders + 5 qualifying questions",
+  "details": "Early access only; X-ray takes a usage export; never ask for customer personal data.",
+  "read": [
+   "06-finops/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

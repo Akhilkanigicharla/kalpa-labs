@@ -58,9 +58,20 @@ class Runner(unittest.TestCase):
         self.assertEqual(R.apply(self.task, None, self.root), "skipped")
         self.assertEqual(self.task["status"], "todo")
 
-    def test_real_queue_is_valid(self):
-        q = json.load(open(R.QUEUE))
+    def test_prefer_openrouter_reorders(self):
+        self.assertEqual(R.ordered(R.MODELS, "openrouter")[0][0], "OPENROUTER_API_KEY")
+        self.assertEqual(R.ordered(R.MODELS, ""), R.MODELS)
+
+    def test_real_queues_are_valid(self):
+        q, ids = [], []
+        for w in R.WORLDS:
+            p = os.path.join(R.TASKS, w + ".json")
+            if os.path.exists(p):
+                part = json.load(open(p))
+                self.assertTrue(all(t["world"] == w for t in part), w)
+                q += part
         ids = [t["id"] for t in q]
+        self.assertGreater(len(ids), 0)
         self.assertEqual(len(ids), len(set(ids)))
         for t in q:
             self.assertIn(t["status"], ("todo", "review", "rejected", "done"))

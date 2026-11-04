@@ -1,0 +1,85 @@
+[
+ {
+  "id": "K001",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai founding-salon pitch: WhatsApp/Telegram message (Telugu + English) a salon owner reads in 30 seconds, plus a 1-page A5 leaflet text",
+  "details": "Free 14-day pilot from 16 Nov, then the founding price in OFFER.md. Telegram is the live channel today; WhatsApp once Meta approves. No invented results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:54:26Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Mark \"No credit-card, no commitment\" as UNVERIFIED (not in repo files).\n*   Mark \"within a day\" (setup time) as UNVERIFIED (repo says 20 min owner time, not live time).\n*   Mark \"9 am – 6 pm IST\" support hours as UNVERIFIED (not in repo files).\n*   Mark \"www.botbhai.com\" as UNVERIFIED (domain not in repo files).\n*   Mark \"2-minute demo video\" as UNVERIFIED (repo mentions 2-minute demo on phone, not video)."
+ },
+ {
+  "id": "K002",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Vigil",
+  "playbook": "support-legal-compliance-checker",
+  "title": "BotBhai policy pack draft: Terms of Service, customer privacy notice (DPDP, salon = fiduciary, Kalpa = processor), acceptable use, support & SLA, refund, data retention 180 days, incident response 72 h",
+  "details": "Plain English, short sections, India law. Mark every legal point that needs a lawyer as 'LAWYER CHECK'. This feeds A135.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:53:31Z",
+  "output": "00-hq/knowledge/K002.md"
+ },
+ {
+  "id": "K003",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Chitti",
+  "playbook": "testing-reality-checker",
+  "title": "200 real-style salon customer test messages for BotBhai (Telugu script, Hindi, English, Tenglish, typos, repu/kal, price asks, angry customers, multi-turn), as JSON lines {msg, expected_intent}",
+  "details": "Intents: greeting, price, book, reschedule, cancel, timing, location, complaint, human, other. This feeds A87 tests.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:55:24Z",
+  "last_error": "no model answered",
+  "output": "00-hq/knowledge/K003.md"
+ },
+ {
+  "id": "K004",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai objection handling: the 12 things a Hyderabad salon owner will say (cost, 'my staff answers', trust, data, WhatsApp ban fear...) with honest 2-line answers in Telugu + English",
+  "details": "Honest answers only; never promise results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ },
+ {
+  "id": "K005",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Pilot Day (16 Nov) runbook for one salon: setup checklist, 14-day check-in schedule, what to measure (bookings, replies, hand-overs), how to ask for the paid switch",
+  "details": "Use the real pieces in BLUEPRINT.md section 1.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-04T08:00:00Z"
+ }
+]

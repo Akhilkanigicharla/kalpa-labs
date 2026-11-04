@@ -27,11 +27,11 @@
   "read": [
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:08:14Z",
+  "updated": "2026-11-04T16:25:29Z",
   "tries": 1,
-  "vigil_notes": "FIX:\n*   Remove \"30% growth\" claim in Section 5 template; specific performance metrics are unverified and violate the \"no invented results\" rule.\n*   Remove \"20% increase\" claim in Section 3 Do #2; specific financial projections are unverified.\n*   Remove \"3 daily posts\" claim in Section 2 (Social Team row); the repo specifies \"posts approved by the salon\" but does not verify a fixed daily count.\n*   Clarify Section 4 \"Free\" rule: The repo allows \"free pilot\" (14 days) and \"free tools\"; banning \"free\" entirely contradicts verified product offers. Restrict ban to \"free money\" or \"free income\".\n*   Ensure Section 5 template includes explicit opt-out mechanism (e.g., \"Reply STOP to leave\") to fully satisfy TRAI/DPDP compliance, as \"Reply YES\" alone is insufficient for consent management."
+  "output": "00-hq/knowledge/K017.md"
  },
  {
   "id": "K018",
@@ -44,7 +44,9 @@
   "read": [
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "todo",
-  "created": "2026-11-04T08:00:00Z"
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:26:48Z",
+  "output": "00-hq/knowledge/K018.md"
  }
 ]

@@ -31,9 +31,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T12:33:07Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n- Founding Lifetime price: repo shows $1 (first 50 buyers); draft’s $19/₹899 is not visible — mark UNVERIFIED or correct to $1.\n- “Community forum / Priority email support” and “3-device key” are not in repo — mark UNVERIFIED or remove.\n- Launch-week offer (20% off, bonus year, referral boost, code LAUNCH20) is not in repo — mark UNVERIFIED.\n- Claims “Dodo surcharge +0.5%”, “margin above 90%”, “quarter of competitor cost”, “conversion < 1%” are not in repo — mark UNVERIFIED or delete.\n- “1 240 tabs” and “see C54” are not in repo — mark UNVERIFIED or remove."
+  "updated": "2026-11-05T20:44:17Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n- \"3-device licence / up to three PCs\" is not in the repo; remove it or mark UNVERIFIED.\n- Founding Lifetime shows ₹1, but the repo only lists $1; the INR price is unverified—remove ₹1 or mark UNVERIFIED.\n- \"Crash-safety – last 3 snapshots\" is a Free feature in the repo; Pro gets every 5 min / 90-day history. Do not list \"last 3\" under Pro.\n- §2 lists 6 Pro items; keep all lists to 5 at most.\n- Launch-week offer (20% off, code LAUNCH20, referral boost, bonus year) is not in the repo; keep the UNVERIFIED tag and do not present specifics as confirmed fact."
  },
  {
   "id": "K011",

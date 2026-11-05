@@ -29,8 +29,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:08:46Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:29:43Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Refund rule states \"48 hours\" processing time, which is an invented fact not found in repo files (C38 only specifies \"7-day full refund\"); mark as UNVERIFIED or remove specific timeframe.\n*   Refund eligibility \"before or after\" the session is an invented rule not in repo files; C38 implies standard post-purchase refund, clarify or mark UNVERIFIED.\n*   Materials list includes \"Internet connection\" as a required item, which is a generic assumption not specified in repo files; mark UNVERIFIED or remove to keep list strictly to provided tools/accounts.\n*   Sign-up page footer claims \"privacy notice compliant with Kalpa policy\" without specifying the policy details or link; ensure this is a verified link or mark the compliance claim UNVERIFIED until the specific policy document is linked."
  },
  {
   "id": "K015",
@@ -45,7 +46,8 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T16:25:04Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:31:38Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   The Telugu section of the 4-Week Skill-Gap Plan is incomplete (cuts off at Week 1, missing Weeks 2-4 and full Telugu text).\n*   The draft claims the 10-point checklist is \"the same rubric\" from `04-job-evaluation.md`, but the repo file content is not provided to verify this specific mapping; mark as UNVERIFIED or remove the claim.\n*   The draft claims the CV template is \"directly derived from\" `05-cv-templates.md` and the Cover Letter from `06-cover-letter-templates.md`, but these files are not in the provided repo context; mark these derivations as UNVERIFIED.\n*   The draft claims the interview questions are \"extracted from\" `07-interview-prep.md`, but this file is not in the provided repo context; mark as UNVERIFIED.\n*   The draft mentions \"09-web-research.md\" for company culture cues, but this file is not in the provided repo context; mark as UNVERIFIED."
  }
 ]

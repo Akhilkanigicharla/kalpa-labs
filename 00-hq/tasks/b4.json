@@ -12,10 +12,10 @@
    "04-extensions/DEPTH.md",
    "04-extensions/store/listing.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:07:58Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:31:02Z",
+  "output": "00-hq/knowledge/K009.md"
  },
  {
   "id": "K010",
@@ -31,8 +31,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:09:16Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:33:07Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Founding Lifetime price: repo shows $1 (first 50 buyers); draft’s $19/₹899 is not visible — mark UNVERIFIED or correct to $1.\n- “Community forum / Priority email support” and “3-device key” are not in repo — mark UNVERIFIED or remove.\n- Launch-week offer (20% off, bonus year, referral boost, code LAUNCH20) is not in repo — mark UNVERIFIED.\n- Claims “Dodo surcharge +0.5%”, “margin above 90%”, “quarter of competitor cost”, “conversion < 1%” are not in repo — mark UNVERIFIED or delete.\n- “1 240 tabs” and “see C54” are not in repo — mark UNVERIFIED or remove."
  },
  {
   "id": "K011",

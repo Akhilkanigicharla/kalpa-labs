@@ -13,8 +13,8 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T12:30:44Z",
-  "last_error": "no model answered"
+  "updated": "2026-11-05T20:43:46Z",
+  "last_error": "vigil unavailable"
  },
  {
   "id": "K007",
@@ -46,7 +46,8 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T12:32:35Z",
-  "last_error": "vigil unavailable"
+  "updated": "2026-11-05T20:45:11Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Draft is incomplete: Calculators 9 and 10 are missing or cut off.\n*   Calculator 9 FAQ 1 is cut off mid-sentence (\"నియోజక‑నియోజక క\").\n*   Calculator 10 (10th calculator) is entirely missing from the draft.\n*   Ensure all 10 calculators have exactly 3 FAQs as per the task requirement."
  }
 ]

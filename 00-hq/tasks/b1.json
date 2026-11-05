@@ -11,11 +11,12 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "review",
+  "status": "done",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T16:26:01Z",
   "tries": 2,
-  "output": "00-hq/knowledge/K001.md"
+  "output": "00-hq/knowledge/K001-v2.md",
+  "akhil": "5 Nov: approved with changes (all 5 languages; hold until A87)"
  },
  {
   "id": "K002",

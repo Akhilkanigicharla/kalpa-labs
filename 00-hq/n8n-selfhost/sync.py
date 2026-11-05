@@ -32,12 +32,19 @@ def api(method, path, body=None):
 
 
 def existing_credentials():
+    """Our credentials by name. If one of OUR names (Kalpa …) exists twice, the older copies are deleted (4 Nov duplicates)."""
     st, body = api("GET", "/credentials?limit=250")
     if st != 200:
         return None
+    ours = {c[0] for c in CREDS}
     out = {}
-    for c in sorted(body.get("data", []), key=lambda c: c.get("createdAt", "")):
-        out[c["name"]] = c["id"]  # newest wins if a name exists twice
+    for c in sorted(body.get("data", []), key=lambda c: c.get("createdAt", ""), reverse=True):  # newest first
+        name = c["name"]
+        if name not in out:
+            out[name] = c["id"]
+        elif name in ours:
+            st2, _ = api("DELETE", f"/credentials/{c['id']}")
+            print(f"duplicate {name} (older copy) deleted: HTTP {st2}")
     return out
 
 

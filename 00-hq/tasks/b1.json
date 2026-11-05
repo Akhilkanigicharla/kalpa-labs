@@ -49,8 +49,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T07:55:24Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:30:17Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Draft is truncated at line 100; task requires 200 messages.\n- Missing \"repu/kal\" (reputation) and \"multi-turn\" context examples in the provided data.\n- High repetition of identical complaint and location templates; lacks the requested \"real-style\" typo and variation diversity.\n- Ensure all 200 entries are valid JSON lines without truncation."
  },
  {
   "id": "K004",

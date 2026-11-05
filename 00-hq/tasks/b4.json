@@ -12,11 +12,10 @@
    "04-extensions/DEPTH.md",
    "04-extensions/store/listing.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T08:07:58Z",
-  "last_error": "no model answered",
-  "output": "00-hq/knowledge/K009.md"
+  "last_error": "vigil unavailable on first run; re-check"
  },
  {
   "id": "K010",
@@ -30,10 +29,10 @@
    "04-extensions/PLAN.md",
    "04-extensions/DEPTH.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T08:09:16Z",
-  "output": "00-hq/knowledge/K010.md"
+  "last_error": "vigil unavailable on first run; re-check"
  },
  {
   "id": "K011",

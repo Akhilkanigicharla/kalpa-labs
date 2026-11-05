@@ -58,6 +58,19 @@ class Runner(unittest.TestCase):
         self.assertEqual(R.apply(self.task, None, self.root), "skipped")
         self.assertEqual(self.task["status"], "todo")
 
+    def test_vigil_unavailable_never_passes(self):
+        n = len(R.VIGIL_MODELS)
+        post = fake_post(["draft"] + [RuntimeError("down")] * n)
+        res = R.work(self.task, self.env, post, self.root)
+        self.assertIsNone(res["verdict"])
+        self.assertEqual(R.apply(self.task, res, self.root), "todo")
+        self.assertEqual(self.task.get("tries", 0), 0)
+        self.assertEqual(self.task["last_error"], "vigil unavailable")
+        self.assertFalse(os.path.exists(os.path.join(self.root, "00-hq/knowledge/T1.md")))
+        R.apply(self.task, {"draft": "d", "model": "m", "verdict": "PASS", "vmodel": "v"}, self.root)
+        self.assertEqual(self.task["status"], "review")
+        self.assertNotIn("last_error", self.task)
+
     def test_humanizer_rules_reach_the_worker(self):
         rules = R.style_rules()
         self.assertIn("not x but y", rules)

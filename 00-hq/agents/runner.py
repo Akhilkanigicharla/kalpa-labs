@@ -132,7 +132,7 @@ def work(task, env, post=http_post, root=ROOT):
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
                                           {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
-    return {"draft": draft, "model": model, "verdict": verdict or "PASS (Vigil unavailable)", "vmodel": vmodel}
+    return {"draft": draft, "model": model, "verdict": verdict, "vmodel": vmodel}
 
 
 def apply(task, result, root=ROOT):
@@ -140,6 +140,10 @@ def apply(task, result, root=ROOT):
     if result is None:
         task["last_error"] = "no model answered"
         return "skipped"
+    if not result["verdict"]:  # unchecked drafts never reach review; retry next run, no try used
+        task["last_error"] = "vigil unavailable"
+        return task["status"]
+    task.pop("last_error", None)
     if vigil_ok(result["verdict"]):
         os.makedirs(os.path.join(root, "00-hq/knowledge"), exist_ok=True)
         path = f"00-hq/knowledge/{task['id']}.md"

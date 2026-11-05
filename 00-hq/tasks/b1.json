@@ -46,11 +46,10 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T07:55:24Z",
-  "last_error": "no model answered",
-  "output": "00-hq/knowledge/K003.md"
+  "last_error": "vigil unavailable on first run; re-check"
  },
  {
   "id": "K004",

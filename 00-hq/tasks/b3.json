@@ -27,10 +27,10 @@
   "read": [
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T08:08:46Z",
-  "output": "00-hq/knowledge/K013.md"
+  "last_error": "vigil unavailable on first run; re-check"
  },
  {
   "id": "K015",
@@ -43,9 +43,9 @@
   "read": [
    "00-hq/vendor/ai-job-search/job-application-assistant/SKILL.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T16:25:04Z",
-  "output": "00-hq/knowledge/K015.md"
+  "last_error": "vigil unavailable on first run; re-check"
  }
 ]

@@ -11,11 +11,10 @@
    "05-deals/PLAN.md",
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T08:07:29Z",
-  "last_error": "no model answered",
-  "output": "00-hq/knowledge/K006.md"
+  "last_error": "vigil unavailable on first run; re-check"
  },
  {
   "id": "K007",
@@ -45,9 +44,9 @@
   "read": [
    "05-deals/PLAN.md"
   ],
-  "status": "review",
+  "status": "todo",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T16:25:56Z",
-  "output": "00-hq/knowledge/K008.md"
+  "last_error": "vigil unavailable on first run; re-check"
  }
 ]

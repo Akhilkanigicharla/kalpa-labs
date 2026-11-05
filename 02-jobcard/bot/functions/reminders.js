@@ -16,7 +16,7 @@ const GRAPH = "https://graph.facebook.com/v21.0";
 const DAY = 86400000;
 const istToday = (now) => new Date(now + 330 * 60000).toISOString().slice(0, 10);
 const shift = (iso, n) => new Date(Date.parse(iso + "T00:00:00Z") + n * DAY).toISOString().slice(0, 10);
-const LANG = { te: "te", hi: "hi", en: "en" };
+const LANG = { te: "te", hi: "hi", en: "en", "te-latn": "te", "hi-latn": "hi" }; // Meta templates have no Tenglish/Hinglish: use the script version
 const REMINDER_PLANS = new Set(["pro", "team"]); // PLAN.md §2: AMC reminders are a Pro feature
 
 async function sendTemplate(to, lang, count, names) {

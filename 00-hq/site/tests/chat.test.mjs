@@ -49,4 +49,7 @@ assert.strictEqual((await handler(new Request("http://x/api/chat"), {})).status,
 assert.strictEqual((await handler(new Request("http://x/api/chat", { method: "POST", body: "{}" }), { ip: "1" })).status, 400);
 let last; for (let k = 0; k < 13; k++) last = await handler(new Request("http://x/api/chat", { method: "POST", body: "{}" }), { ip: "9.9.9.9" });
 assert.strictEqual(last.status, 429);
-console.log("site chat tests passed (7 groups)");
+// 8. the assistant is told to speak all 5 languages (Akhil, 5 Nov 2026)
+const { SYSTEM } = await import("../netlify/functions/chat.mjs");
+for (const w of ["English", "Telugu script", "Hindi script", "Tenglish", "Hinglish"]) assert.ok(SYSTEM.includes(w), w);
+console.log("site chat tests passed (8 groups)");

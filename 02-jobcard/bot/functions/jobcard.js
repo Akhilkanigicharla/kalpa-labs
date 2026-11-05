@@ -78,6 +78,27 @@ const S = {
         noPdf: "బిల్ {no} ({amt}) సేవ్ అయింది. తెలుగు బిల్ కోసం JobCard యాప్ ఓపెన్ చేయండి.",
         quota: "ఈ నెల {min} వాయిస్ నిమిషాలు అయిపోయాయి. పని టైప్ చేయండి, లేదా Pro (150 నిమిషాలు) తీసుకోండి — PRO అని పంపండి.",
         cards: "ఫ్రీ ప్లాన్‌లో నెలకు {n} బిల్లులు మాత్రమే, ఈ నెలవి అయిపోయాయి. అపరిమిత బిల్లుల కోసం Pro — PRO అని పంపండి." },
+  // Tenglish and Hinglish (Akhil, 5 Nov 2026: every Kalpa bot speaks 5 languages), casual like a fellow technician.
+  "te-latn": { unknown: "Ee number JobCard lo inka register avvaledu. Mundu JobCard app lo sign up cheyyandi, tarvata job ni voice note ga pampandi.",
+        deaf: "Sorry, aa note sariga vinapadaledu. Job ni type cheyyandi, e.g. \"Split AC gas refill 2500, customer Sita 9000033333\".",
+        long: "Aa note 2 nimishala kanna ekkuva undi. Chinna note pampandi (pani, amounts matrame).",
+        check: "Ee job card okasari chudandi:", ok: "✅ Correct", edit: "✏️ Edit",
+        editAsk: "Marpu ni voice note leda text ga pampandi, e.g. \"capacitor 450\" leda \"customer Sita 9000033333\".",
+        needRates: "Veetiki amount inka kavali:", needParts: "Pani leda amounts emi vinapadaledu. Emi chesaro, entha ani cheppandi.",
+        saved: "Save ayindi. Bill {no}, {amt} kinda undi, customer ki forward cheyyandi.", none: "Ippudu ye job card wait cheyatledu. Job ayyaka voice note pampandi.",
+        noPdf: "Bill {no}, {amt} save ayindi. Telugu bill share cheyyadaniki JobCard app open cheyyandi.",
+        quota: "Ee nela {min} voice nimishalu ayipoyayi. Job ni type cheyyandi, leda Pro (150 min) teesukondi, PRO ani reply cheyyandi.",
+        cards: "Free plan lo nelaki {n} bills, ee nelavi ayipoyayi. Unlimited bills kosam Pro teesukondi, PRO ani reply cheyyandi." },
+  "hi-latn": { unknown: "Yeh number abhi JobCard mein registered nahi hai. Pehle JobCard app mein sign up kariye, phir job voice note mein bhejiye.",
+        deaf: "Sorry, woh note sun nahi paya. Job type kar dijiye, jaise \"Split AC gas refill 2500, customer Sita 9000033333\".",
+        long: "Yeh note 2 minute se lamba hai. Chhota note bhejiye (bas kaam aur amount).",
+        check: "Yeh job card ek baar check kar lijiye:", ok: "✅ Sahi hai", edit: "✏️ Badlo",
+        editAsk: "Badlav voice note ya text mein bhejiye, jaise \"capacitor 450\" ya \"customer Sita 9000033333\".",
+        needRates: "Inka amount abhi chahiye:", needParts: "Koi kaam ya amount sunai nahi diya. Kya kaam kiya aur kitne ka, bataiye.",
+        saved: "Save ho gaya. Bill {no}, {amt} neeche hai, customer ko forward kar dijiye.", none: "Abhi koi job card wait nahi kar raha. Kaam ke baad voice note bhejiye.",
+        noPdf: "Bill {no}, {amt} save ho gaya. Telugu bill share karne ke liye JobCard app kholiye.",
+        quota: "Is mahine ke {min} voice minute khatam. Job type kar dijiye, ya Pro (150 min) le lijiye, PRO reply kariye.",
+        cards: "Free plan mein mahine ke {n} bill hote hain, is mahine ke ho gaye. Unlimited bill ke liye Pro le lijiye, PRO reply kariye." },
   hi: { unknown: "यह नंबर JobCard में नहीं है। पहले JobCard ऐप में जुड़ें, फिर काम का वॉइस नोट भेजें।",
         deaf: "माफ़ कीजिए, वॉइस नोट सुनाई नहीं दिया। काम टाइप करें, जैसे \"Split AC gas refill 2500, customer Sita 9000033333\"।",
         long: "नोट 2 मिनट से लंबा है। सिर्फ़ काम और दाम बताकर छोटा नोट भेजें।",
@@ -126,7 +147,7 @@ async function transcribe(mediaId, lang) { // returns { text, seconds } or null
     const audio = Buffer.from(await (await fetch(meta.url, { headers: { Authorization: `Bearer ${env("WA_ACCESS_TOKEN")}` } })).arrayBuffer());
     const r = await fetch(`${env("SUPABASE_URL")}/functions/v1/transcribe-extract`, { method: "POST", signal: AbortSignal.timeout(20000),
       headers: { Authorization: `Bearer ${env("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ audio_base64: audio.toString("base64"), mime: meta.mime_type || "audio/ogg", lang: `${lang}-IN` }) });
+      body: JSON.stringify({ audio_base64: audio.toString("base64"), mime: meta.mime_type || "audio/ogg", lang: `${String(lang).split("-")[0]}-IN` }) });
     if (!r.ok) return null;
     const out = await r.json(); return out && typeof out.text === "string" ? { text: out.text, seconds: Math.ceil(Number(out.seconds) || 0) } : null;
   } catch { return null; }

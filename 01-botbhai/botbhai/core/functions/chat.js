@@ -4,7 +4,7 @@
 // Same engine, same calendar (capacity lock) and same leads table as WhatsApp.
 const { BotBhai } = require("../../setups/index.js");
 const L = require("./_lib.js");
-const { humanize } = require("../humanize.js");
+const { humanize, detectLanguage, mirrorLanguage } = require("../humanize.js");
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type" } };
@@ -29,8 +29,15 @@ exports.handler = async (event) => {
     L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in`),
     L.busySlots(client.id),
   ]);
+  // 5 languages (Akhil, 5 Nov 2026): English, Telugu, Hindi, Tenglish, Hinglish. Script Telugu/Hindi use the engine's own
+  // wording; Tenglish/Hinglish (Latin letters) are mirrored by the free model, like on Telegram and WhatsApp.
+  const state0 = sess ? sess.state : BotBhai.newState();
+  const detected = detectLanguage(text);
+  const mirror = ["te-latn", "hi-latn"].includes(detected) ? detected : (detected === "en" && !lang && ["te-latn", "hi-latn"].includes(state0.lang) ? state0.lang : null);
+  const engLang = lang || (["te", "hi"].includes(detected) ? detected : undefined);
   const bot = BotBhai.createBot(client.niche, client.config);
-  let out = bot.handle(sess ? sess.state : BotBhai.newState(), text, { contact, source: src, busy, lang });
+  let out = bot.handle(state0, text, { contact, source: src, busy, lang: engLang });
+  out.state.lang = mirror || engLang || detected;
   // A booking is only saved after a Cloudflare Turnstile check (A50). Nothing is written otherwise, so when the page
   // resends the same message with a token, the engine replays the same booking from the same state.
   if (out.events.some((e) => e.type === "booking")) {
@@ -57,5 +64,6 @@ exports.handler = async (event) => {
     L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
     L.saveLead(client, contact, out.lead, prev),
   ]);
-  return L.json(200, { replies: h.replies });
+  const replies = mirror ? await mirrorLanguage(h.replies, mirror, { apiKey: process.env.GROQ_API_KEY, router: { url: process.env.LLM_ROUTER_URL, key: process.env.LLM_ROUTER_KEY } }) : h.replies;
+  return L.json(200, { replies });
 };

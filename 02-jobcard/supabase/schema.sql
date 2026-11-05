@@ -18,7 +18,7 @@ create table if not exists public.technicians (
   udyam         text,
   upi_vpa       text,
   state         text not null default 'Telangana',
-  language      text not null default 'te' check (language in ('te','hi','en')),
+  language      text not null default 'te' check (language in ('te','hi','en','te-latn','hi-latn')),
   plan          text not null default 'free' check (plan in ('free','pro')),
   created_at    timestamptz not null default now(),
   check (gst_kind = 'unregistered' or gstin is not null)
@@ -253,3 +253,7 @@ do $$ begin
     grant execute on function public.next_invoice_no_for(uuid, date), public.add_usage(uuid, int) to service_role;
   end if;
 end $$;
+
+-- 5 Nov 2026: Tenglish/Hinglish for existing projects
+alter table public.technicians drop constraint if exists technicians_language_check;
+alter table public.technicians add constraint technicians_language_check check (language in ('te','hi','en','te-latn','hi-latn'));

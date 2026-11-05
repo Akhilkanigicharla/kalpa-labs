@@ -58,3 +58,19 @@ Risks: 512 MB is tight for n8n; heavy AI agent runs may restart it. GitHub Actio
 ## Gotchas found (4 Nov 2026)
 - Render's firewall blocks API requests whose JSON has a key containing the word `prompts` (HTTP 403 "Blocked" page). Never name an n8n node "...prompts".
 - Credentials are created from GitHub secrets by `n8n-sync.yml` (input create_credentials=yes). Two runs at once on 4 Nov made duplicates of "Kalpa Telegram" and "Kalpa Groq header"; the newest is used, the older copy can be deleted in n8n → Credentials.
+
+## What happened to each old n8n Cloud workflow (5 Nov 2026)
+The cloud instance is locked since the trial ended (its API and our connector both fail), and n8n never exports saved key values, so nothing could be copied directly. Every active workflow already has a working replacement:
+
+| Old n8n Cloud workflow | Now |
+|---|---|
+| Kalpa Task Runner (agents do KL Tasks) | GitHub `agents.yml` + `00-hq/agents/runner.py`, 8 worlds in parallel, hourly |
+| Kalpa CEO Daily Update (Telegram) | GitHub `daily-brief.yml`, 9 PM IST, alerts first |
+| Kalpa Site Chat (Kalpa Bhai) + Save Site Lead | Netlify function `00-hq/site/netlify/functions/chat.mjs` + Netlify Forms |
+| World Keeper (daily company health) | `daily-brief.yml` checks (site, chat, n8n, failing Actions) |
+| Read Kalpa Repo File (agent tool) | runner reads repo files directly |
+| Councils (daily) | self-hosted n8n "Kalpa Morning Councils (all worlds)" 07:30 IST |
+| Revenue Workforce, HQ Revenue Rollup, Smart Router | were switched off; not rebuilt |
+
+Keys in the self-hosted n8n come from GitHub secrets via `n8n-sync.yml`: Kalpa Groq, Kalpa OpenRouter, Kalpa Telegram, and header versions for HTTP nodes. Older duplicates are deleted automatically.
+If Akhil can still open app.n8n.cloud, he can download any workflow (⋯ → Download) and send the JSON; it goes into `workflows/` and syncs.

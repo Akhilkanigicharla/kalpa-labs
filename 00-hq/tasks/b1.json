@@ -49,9 +49,9 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T12:30:17Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n- Draft is truncated at line 100; task requires 200 messages.\n- Missing \"repu/kal\" (reputation) and \"multi-turn\" context examples in the provided data.\n- High repetition of identical complaint and location templates; lacks the requested \"real-style\" typo and variation diversity.\n- Ensure all 200 entries are valid JSON lines without truncation."
+  "updated": "2026-11-05T20:42:42Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n*   Draft is truncated (ends mid-sentence at \"Please move my\"); complete the JSON lines to reach 200 entries.\n*   First message \"Hi, can I book...\" is labeled `greeting` but is clearly a `book` intent; correct the label.\n*   Several Hindi/Telugu lines use \"Mere salon ka address\" (My salon's address) from a *salon* persona, but the task specifies *customer* test data; change to \"Aapke salon ka address\" (your salon's address).\n*   Ensure all 200 lines are valid JSON (the provided draft is a single block, not JSON Lines format)."
  },
  {
   "id": "K004",

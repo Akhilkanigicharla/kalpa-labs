@@ -13,8 +13,8 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:07:29Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:30:44Z",
+  "last_error": "no model answered"
  },
  {
   "id": "K007",
@@ -46,7 +46,7 @@
   ],
   "status": "todo",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T16:25:56Z",
-  "last_error": "vigil unavailable on first run; re-check"
+  "updated": "2026-11-05T12:32:35Z",
+  "last_error": "vigil unavailable"
  }
 ]

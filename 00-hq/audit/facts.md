@@ -97,3 +97,13 @@
 | Licences: genai-prices MIT, presidio-analyzer MIT, Comp AI (trycompai/comp) AGPL-3.0 | VERIFIED | 2026-11-03 | installed package metadata (pip); github.com/trycompai/comp README + org page |
 | GST registration threshold for services ₹20 L (Telangana keeps ₹20 L; goods ₹40 L) | VERIFIED | 2026-11-03 | razorpay.com/learn/gst-registration-limits; indiafilings.com GST exemption limit |
 | USD/INR ~₹94.7–94.9 (2–3 Nov 2026) | VERIFIED | 2026-11-03 | hdfcsky.com rupee reports 2 + 3 Nov 2026 |
+| AlgoTest pricing: one-time credit packs (Starter ₹399/400 credits, never expire); backtest 1 credit, paper 50/strategy/28 days, live 100; 25 free backtests a week. Not a monthly plan | VERIFIED (2 official pages) | 2026-11-05 | docs.algotest.in/getting-started/buy-plan; docs.algotest.in/product-blogs/detailed-pricing-algotest |
+| STT from 1 Apr 2026: futures sale 0.05% (was 0.02%), option premium sale 0.15% (was 0.10%) | VERIFIED | 2026-11-05 | cleartax.in/s/securities-transaction-tax-stt; icicidirect.com STT Budget 2026 article |
+| SEBI FY25 study: over 91% of individual equity F&O traders lost money | VERIFIED | 2026-11-05 | business-standard.com (7 Jul 2025); moneylife.in |
+| SEBI circular 8 May 2026 (in force 1 Jul 2026): uniform 30-day lag for sharing/using price data for education | VERIFIED | 2026-11-05 | corplawupdates.in; livelawbiz.com |
+| Index derivatives minimum contract value ₹15–20 lakh (from 20 Nov 2024) | VERIFIED | 2026-11-05 | navia.co.in; moneylife.in |
+| SEBI RA deposit ₹1 L up to 150 clients (₹2 L/5 L/10 L tiers); part-time RAs must register; NISM XV | VERIFIED | 2026-11-05 | taxguru.in RA regulations 2025 + deposit procedure |
+| Income-tax Act 2025 (tax year 2026-27 on): 234B/C → s.447/448, 112A → s.198, tax audit 44AB → s.63 (₹1 cr / ₹10 cr if cash ≤5%) | VERIFIED | 2026-11-05 | finlecture.in mapping; taxguru.in s.63 FAQ |
+| Render free web service: 512 MB, 750 instance h/month per workspace (all suspended when used up), spins down after 15 min no inbound traffic, ~1 min wake, ephemeral disk; free Postgres 1 GB expires after 30 days | VERIFIED | 2026-11-05 | render.com/docs/free; render.com/pricing |
+| Hugging Face: new Gradio/Docker Spaces need a paid plan (PRO/Team); static free; free users may host 2 Gradio Spaces on ZeroGPU | VERIFIED (official docs) | 2026-11-05 | huggingface.co/docs/hub/en/spaces-overview; discuss.huggingface.co/t/177580 |
+| n8n Sustainable Use License: use only for own internal business, non-commercial or personal; no hosting for clients to build workflows, no white-label/paid redistribution | VERIFIED | 2026-11-05 | n8n-io/n8n LICENSE.md (raw GitHub); ssdnodes.com explainer |

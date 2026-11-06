@@ -30,5 +30,35 @@
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:31:50Z",
   "output": "00-hq/knowledge/K030.md"
+ },
+ {
+  "id": "K034",
+  "world": "b6",
+  "priority": "P0",
+  "owner": "Ledger",
+  "playbook": "research-synthesist",
+  "title": "Pilot test plan for lead A1 (startup parsing ~20,000 job descriptions/day with Claude Opus at about Rs 2.20 each): a cheap-model -> schema check -> stronger model -> Opus fallback cascade test on 500 sample JDs",
+  "details": "Write: 1) what we ask the startup for (500 JDs with their Opus outputs as the answer key, field list; never API keys, never LinkedIn scraping help), 2) test steps using only free models first, 3) how to score field-by-field accuracy against Opus, 4) the cost-per-1,000-JDs table we fill in, 5) a 1-page report template. Mark any price you are not sure of as UNVERIFIED.",
+  "read": [
+   "06-finops/docs/pilot-leads.md",
+   "06-finops/docs/offer-pack.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T18:40:00Z"
+ },
+ {
+  "id": "K035",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "playbook": "research-synthesist",
+  "title": "3 short, honest public reply templates for Indian founders asking about high AI/LLM API bills on Reddit, Hacker News and LinkedIn",
+  "details": "Each under 90 words, gives one useful tip first, then offers the free 3-slot cost pilot. No 'certified', no fake results, no pressure, no DM asks. Follow the opt-in rules in the offer pack.",
+  "read": [
+   "06-finops/docs/offer-pack.md",
+   "06-finops/docs/pilot-leads.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T18:40:00Z"
  }
 ]

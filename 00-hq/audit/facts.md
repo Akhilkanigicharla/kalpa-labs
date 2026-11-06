@@ -128,3 +128,4 @@
 | 2026-11-07 | google/elephant-goldfish-model exists, Apache-2.0, Google-authored Claude Code plugin (skills egm-draft/review/resolve/brainstorm/bootstrap/review-loop/drift-report) | git clone of github.com/google/elephant-goldfish-model (commit 6a8001e, 5 Nov 2026) + video description | verified (live clone) |
 | 2026-11-07 | OmniRoute README claims ~1.62B free tokens per MONTH (video said per day); npm ~915 MB, MIT | OmniRoute README (clone 120403bb) + npm view omniroute | verified |
 | 2026-11-07 | AutoHarness MIT, v0.5.3, Haiku reflection every 50 tool calls, no network calls in src | clone ca4247b + aiindigo/ai-heartland reviews | verified (code read, not run) |
+| 2026-11-07 | GitHub Models fully retired 30 Jul 2026 | docs.github.com/en/github-models (search snippet) + OmniRoute guide still lists it (stale) | verified on GitHub's own docs page; second source pending |

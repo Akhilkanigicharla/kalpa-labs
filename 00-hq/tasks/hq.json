@@ -121,5 +121,21 @@
   "updated": "2026-11-06T19:01:20Z",
   "tries": 1,
   "output": "00-hq/knowledge/K036.md"
+ },
+ {
+  "id": "K044",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 00-hq/research/a170-harness-memory-router.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given. Focus: safety of a self-learning skill layer next to hard rules, cost, privacy of agent memory, terms-of-service risk of the router. Output up to 8 findings (severity, exact line, one-line fix), unstated assumptions, questions only Akhil can answer. Say UNVERIFIED where unsure.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "00-hq/research/a170-harness-memory-router.md"
+  ],
+  "context_chars": 20000,
+  "status": "todo",
+  "created": "2026-11-06T19:40:00Z"
  }
 ]

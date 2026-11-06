@@ -126,3 +126,5 @@
 | sarvamai/sarvam-30b and sarvam-105b: Apache-2.0, include Telugu | VERIFIED (HF Hub live) | 2026-11-06 | hf.co model pages via HF MCP |
 | 2026-11-07 | Reddit via Zapier needs a Client ID/Secret from a Reddit developer app; Reddit requires manual approval for new API apps since Nov 2025 | docs.n8n.io Reddit credentials page + molehill.pages.dev + activepieces.com blog (1 Nov 2026) | verified (3 sources). One source says new requests closed 31 Oct 2026: unverified |
 | 2026-11-07 | google/elephant-goldfish-model exists, Apache-2.0, Google-authored Claude Code plugin (skills egm-draft/review/resolve/brainstorm/bootstrap/review-loop/drift-report) | git clone of github.com/google/elephant-goldfish-model (commit 6a8001e, 5 Nov 2026) + video description | verified (live clone) |
+| 2026-11-07 | OmniRoute README claims ~1.62B free tokens per MONTH (video said per day); npm ~915 MB, MIT | OmniRoute README (clone 120403bb) + npm view omniroute | verified |
+| 2026-11-07 | AutoHarness MIT, v0.5.3, Haiku reflection every 50 tool calls, no network calls in src | clone ca4247b + aiindigo/ai-heartland reviews | verified (code read, not run) |

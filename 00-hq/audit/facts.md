@@ -117,3 +117,13 @@
 | NEET UG 2026: 22,79,743 registered | VERIFIED (2 sources) | 2026-11-06 | careers360 (NTA); hellomentor.in |
 | TSPSC Group 2 (28/2022) 5,51,943 applications; APPSC Group 2 (2024) 4,83,525 | VERIFIED (2 sources each) | 2026-11-06 | telanganatoday + thehansindia; sakshi education + deccanchronicle |
 | India ISO 42001 consulting indicative ₹1.5–5 lakh | UNVERIFIED (1 source) | 2026-11-06 | tcsa.in |
+| AIGP exam $799 non-member / $649 member (re-checked) | VERIFIED (2 sources) | 2026-11-06 | aipolicydesk (IAPP store screenshot 29 Oct 2026); open-exam-prep |
+| TGPSC Group 2 2026 notification not released (as of late Sept/Nov 2026) | VERIFIED (2 sources) | 2026-11-06 | testbook.com; sreedharscce.com (SEO pages claiming release disagree on dates: ignored) |
+| SEBI retail algo: <10 orders/sec no strategy registration; static IP whitelist; daily 2FA; from 1 Apr 2026 | VERIFIED (2+ sources) | 2026-11-06 | FYERS support; Angel One; aliceblueonline; tradejini |
+| Zerodha Kite Connect Personal free (no data), Connect ₹500/month with data | VERIFIED (2 sources) | 2026-11-06 | support.zerodha.com; onetradejournal |
+| Crypto 30% + 1% TDS, no loss set-off, unchanged in Budget 2026 | VERIFIED (2+ sources) | 2026-11-06 | tokentax; coingape; koinx |
+| Forex for Indians only as exchange currency derivatives (7 pairs); offshore margin forex not allowed under LRS | VERIFIED (2+ sources) | 2026-11-06 | RBI press release; Mint; righttoinformation.wiki |
+| Oracle Always Free: public IP per VM (official), 1 reserved IP free | PARTLY VERIFIED (official + 2 secondary) | 2026-11-06 | docs.oracle.com; devfoliox; orendra |
+| RevenueCat SOSA 2026: hard paywall RPI $2.32 vs $0.27 (D14); Photo & Video 21.4% of new apps reach $1k MRR; AI apps churn ~30% faster | VERIFIED (2+ sources) | 2026-11-06 | SaaStr; 9to5mac; TechCrunch; ppc.land |
+| Astrotalk FY25 revenue from operations ₹1,176 cr, ~20% international | VERIFIED (2 sources) | 2026-11-06 | outlookbusiness; startuppedia (RoC) |
+| Shoonya Kids $5.99–7.99/month, $57.99/year | VERIFIED (store listing + review site) | 2026-11-06 | apps.apple.com; educationalappstore |

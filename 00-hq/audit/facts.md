@@ -107,3 +107,13 @@
 | Render free web service: 512 MB, 750 instance h/month per workspace (all suspended when used up), spins down after 15 min no inbound traffic, ~1 min wake, ephemeral disk; free Postgres 1 GB expires after 30 days | VERIFIED | 2026-11-05 | render.com/docs/free; render.com/pricing |
 | Hugging Face: new Gradio/Docker Spaces need a paid plan (PRO/Team); static free; free users may host 2 Gradio Spaces on ZeroGPU | VERIFIED (official docs) | 2026-11-05 | huggingface.co/docs/hub/en/spaces-overview; discuss.huggingface.co/t/177580 |
 | n8n Sustainable Use License: use only for own internal business, non-commercial or personal; no hosting for clients to build workflows, no white-label/paid redistribution | VERIFIED | 2026-11-05 | n8n-io/n8n LICENSE.md (raw GitHub); ssdnodes.com explainer |
+| IAPP AIGP exam $799 non-member / $649 member; retake $625/$475; non-member maintenance $250 per 2-yr term | VERIFIED (official, 2 sources) | 2026-11-06 | store.iapp.org/aigp-exam; trainingcamp.com; open-exam-prep.com |
+| PECB ISO/IEC 42001 Lead Implementer: exam fee included in course; with no experience you get only "Provisional Implementer"; "Lead Implementer" needs 5 yrs (2 in AI) + 300 h AIMS work | VERIFIED (2 sources) | 2026-11-06 | pecb.com course page; globalknowledge.com course page |
+| FinOps Certified Practitioner $325 exam-only (3 attempts/12 months, unproctored), $500 with course; FinOps Certified: AI Value $500 | VERIFIED (2 sources) | 2026-11-06 | devopscube.com; finopsweekly.com; opslyft.com (AI Value) |
+| Testbook Pass ₹749 / 365 days (list ₹1,199), 1,000+ exams | VERIFIED (official page live) | 2026-11-06 | testbook.com/pass; coupon sites show lower sale prices |
+| SSC CGL 2025: 28.1 lakh registered, ~13.7 lakh appeared, 14,582 vacancies | VERIFIED (2 sources) | 2026-11-06 | careers360 (SSC notice); testbook.com news; adda247 |
+| RRB NTPC 2025: 1,21,67,679 applicants; RRB Group D (CEN 08/2024): 1,08,22,423 | VERIFIED (2 sources) | 2026-11-06 | careerpower.in; adda247; freepressjournal; oliveboard |
+| UPSC CSE 2026: 8,19,372 applied, ~5.49 lakh appeared, 1,016 vacancies | VERIFIED (2 sources) | 2026-11-06 | pw.live; freepressjournal; easternmirrornagaland |
+| NEET UG 2026: 22,79,743 registered | VERIFIED (2 sources) | 2026-11-06 | careers360 (NTA); hellomentor.in |
+| TSPSC Group 2 (28/2022) 5,51,943 applications; APPSC Group 2 (2024) 4,83,525 | VERIFIED (2 sources each) | 2026-11-06 | telanganatoday + thehansindia; sakshi education + deccanchronicle |
+| India ISO 42001 consulting indicative ₹1.5–5 lakh | UNVERIFIED (1 source) | 2026-11-06 | tcsa.in |

@@ -1,0 +1,12 @@
+# Lists the Gemini model names our free key can use (names only, never the key). Run by hand when Google renames models.
+name: gemini-models
+on: { workflow_dispatch: {} }
+permissions: {}
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - env: { GEMINI_API_KEY: "${{ secrets.GEMINI_API_KEY }}" }
+        run: |
+          curl -s -H "x-goog-api-key: $GEMINI_API_KEY" "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200" \
+          | python3 -c "import sys,json; [print('MODEL', m['name'].split('/')[-1]) for m in json.load(sys.stdin).get('models',[]) if 'generateContent' in m.get('supportedGenerationMethods',[])]"

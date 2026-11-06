@@ -65,7 +65,9 @@
    "04-extensions/DEPTH.md",
    "04-extensions/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:32:21Z",
+  "output": "00-hq/knowledge/K028.md"
  }
 ]

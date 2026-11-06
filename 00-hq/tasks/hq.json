@@ -81,8 +81,10 @@
    ".claude/skills/first-customer-finder/references/research-framework.md",
    "01-botbhai/docs/OFFER.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:31:12Z",
+  "output": "00-hq/knowledge/K023.md"
  },
  {
   "id": "K024",

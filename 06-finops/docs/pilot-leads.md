@@ -16,7 +16,7 @@ Built 6 Nov 2026 with the first-customer-finder method. These are **potential cu
 | A4 | MD & CEO posts that AI inference costs are eating gross margin. | [LinkedIn post, Paras Vishwakarma](https://www.linkedin.com/posts/paras-vishwakarma_ai-uniteconomics-saas-activity-7472008213845172224-4AKI) | 3.0 | Thought-leadership post or real pain? Indian company? |
 | A5 | A tech lead says their company burns API money on AI tools daily. | [r/developersIndia thread](https://www.reddit.com/r/developersIndia/comments/1sl7p30/how_is_your_company_dealing_with_ai_costs_are/) | 2.8 | Employee, not a buyer. Only useful if a founder replies in the thread. |
 
-**Reply for A1 (public comment in the thread, posted by Akhil):**
+**Reply for A1 (public comment in the thread). Posted by Akhil 7 Nov 2026, 00:01 IST. Status: waiting for reply.**
 > Late to this, but if it's still a problem: we're running 3 free cost pilots for Indian startups. For a case like yours we'd take ~500 of your JDs (already labelled by Opus), run the cheap-model → schema check → Opus-fallback cascade suggested above, and send you field-by-field accuracy and cost per 1,000 JDs. Free, no sales call; you share only sample JDs, no API keys. Reply here if useful.
 
 ## Tier B: good fit, no public complaint found (guesses)

@@ -135,7 +135,9 @@
    "00-hq/research/a170-harness-memory-router.md"
   ],
   "context_chars": 20000,
-  "status": "todo",
-  "created": "2026-11-06T19:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T19:40:00Z",
+  "updated": "2026-11-06T19:22:40Z",
+  "output": "00-hq/knowledge/K044.md"
  }
 ]

@@ -12,6 +12,7 @@ Read this before touching anything. The CEO is Akhil (beginner, 1 hour a day, Hy
 - `00-hq/vendor/`: unmodified MIT open source we rely on (Superpowers skills). `.claude/skills/short-answers/`: how to write to Akhil.
 
 ## Hard rules
+0. **Akhil's ideas come first:** `00-hq/VISION.md` is the source of truth for the 7 streams (Akhil, 6 Nov 2026). Never pick, swap or narrow a product for him without his yes.
 1. **Build mode:** free tiers only. Never sign up, pay, or create accounts for Akhil. Never ask for or handle passwords, OTPs, API tokens, bank or card numbers. Secrets live in GitHub/Netlify/Supabase secrets that Akhil sets himself.
 2. **Nothing installed on Akhil's PC.** Code runs here, in Codespaces/Actions or free cloud tiers.
 3. **Licences:** MIT/Apache/BSD/ISC can be copied with attribution; MPL/LGPL only as unmodified libraries; GPL/AGPL never copied into a sold product (see `00-hq/research/BRIEF.md`).

@@ -27,11 +27,12 @@
   "read": [
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "review",
+  "status": "rejected",
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-05T20:43:12Z",
   "tries": 1,
-  "output": "00-hq/knowledge/K013.md"
+  "output": "00-hq/knowledge/K013.md",
+  "akhil_note": "6 Nov: no workshop"
  },
  {
   "id": "K015",
@@ -61,9 +62,10 @@
   "read": [
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "review",
+  "status": "rejected",
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:31:29Z",
-  "output": "00-hq/knowledge/K027.md"
+  "output": "00-hq/knowledge/K027.md",
+  "akhil_note": "6 Nov: no workshop"
  }
 ]

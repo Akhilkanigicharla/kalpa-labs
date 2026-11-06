@@ -196,7 +196,7 @@ Build sprints rotate: one world per run in this order, then repeat. Each item ha
 - [ ] **C61** b6 · Approve the consulting plan (A150): 3 packages + launch prices (AI Cost Audit ₹14,999/$750, Guardrails Setup ₹39,999/$1,800, ISO 42001 Readiness ₹74,999/$2,500), 3 free pilots first, cert order FOCP → AIGP → ISO 42001 paid from income. Read 06-finops/research/a150-consulting-plan.md §7 (10 min).
 - [ ] **C62** b3 · Pick the first exam kit (A151): A TGPSC Group 2/3 Telugu (recommended), B SSC CGL, C RRB NTPC/Group D, D GATE (built); OK price test ₹99/₹199. Read 03-kits/research/a151-exam-market.md §5 (5 min).
 - [ ] **C63** b2 · Pick the mobile app (A152): A AI Vedic astrology + naming + muhurat (Indians worldwide), B AI photo studio (passport/visa + product photos), C AI mother-tongue tutor for NRI kids; or your own idea. Read 02-jobcard/research/a152-app-ideas.md §4 (5 min).
-- [ ] **C64** b7 · Pick the trading track (A153): A Indian ETF trend bot (recommended first), B crypto trend bot on an FIU-registered exchange, C both; say the live amount you can fully lose; OK Oracle free server (card for identity) or paid VPS later. Read 07-trading/research/a153-real-money-plan.md §3 and §5 (5 min).
+- [ ] **C64** b7 · Pick the trading track (A153): A Indian ETF trend bot (recommended first), B crypto trend bot on an FIU-registered exchange, C both; live amount: Akhil can arrange ₹5,000 or ₹10,000 (6 Nov 18:50 IST; start with ₹5,000, add the rest only after proof); OK Oracle free server (card for identity) or paid VPS later. Read 07-trading/research/a153-real-money-plan.md §3 and §5 (5 min).
 
 Free items first. 💰 = costs money, waits for the go-public decision.
 

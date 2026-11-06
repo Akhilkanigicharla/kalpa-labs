@@ -47,11 +47,11 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T20:42:42Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n*   Draft is truncated (ends mid-sentence at \"Please move my\"); complete the JSON lines to reach 200 entries.\n*   First message \"Hi, can I book...\" is labeled `greeting` but is clearly a `book` intent; correct the label.\n*   Several Hindi/Telugu lines use \"Mere salon ka address\" (My salon's address) from a *salon* persona, but the task specifies *customer* test data; change to \"Aapke salon ka address\" (your salon's address).\n*   Ensure all 200 lines are valid JSON (the provided draft is a single block, not JSON Lines format)."
+  "updated": "2026-11-06T01:37:36Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Draft is truncated (ends mid-sentence at \"Can I book a facial for 11am\"); complete the JSON lines.\n- Ensure exactly 200 lines are present; current draft appears to have fewer than 200 entries.\n- Verify all `expected_intent` values match the defined set (book, greeting, timing, location, price, other, human, complaint, cancel, reschedule).\n- Check for duplicate messages; remove any exact duplicates to ensure 200 unique test cases.\n- Ensure Telugu messages use correct script and natural phrasing; fix any transliteration errors."
  },
  {
   "id": "K004",

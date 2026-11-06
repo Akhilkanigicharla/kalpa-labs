@@ -34,7 +34,7 @@ Realistic ₹ result, net of costs (trading P&L on capital Akhil chooses to risk
 | Alternative | Price | What it means for b7 |
 |---|---|---|
 | Nifty 50 index fund, direct plan (for example Navi) | ~0.10% a year expense ratio | **This is the benchmark.** If the lab can't beat it after costs and tax over 12 months, the capital goes here. |
-| AlgoTest | from ₹499/month | Paid no-code backtest, paper and deploy. |
+| AlgoTest | one-time credit packs from ₹499 (500 credits, no expiry); paper 50 and live 100 credits per strategy per 28 days; 25 free backtests a week (docs.algotest.in, checked 6 Nov 2026) | Paid no-code backtest, paper and deploy. |
 | Tradetron | about ₹1,000–4,000/month | Paid strategy marketplace and deploy. |
 | Streak (Zerodha) | about ₹500–1,500/month | Paid no-code scanner and backtest. |
 
@@ -66,12 +66,12 @@ Kalpa Labs is a Udyam-registered proprietorship, so trading P&L is filed under *
 Points that bite:
 
 - **ITR-3** is required once there is any business or trading income. ITR-1, -2 or -4 will be rejected as defective. The return must be filed **on time**, or the right to carry losses forward is lost.
-- **Tax audit (old s.44AB):**
+- **Tax audit (s.63 of the Income-tax Act 2025, old s.44AB; new Act applies from tax year 2026-27):**
   - Audit is needed above ₹1 crore of turnover, or ₹10 crore if cash is no more than 5% of transactions. Trading is all digital, so ₹10 crore is the relevant limit.
   - Audit is also needed if Akhil opts out of presumptive tax and declares profit below 6% of turnover while total income is above the exemption limit.
   - F&O turnover counts the *absolute* profit and loss of each trade (ICAI method), not the contract value.
-  - Presumptive taxation (s.44AD) at 6% has a 5-year lock-in, and losses can't be carried forward under it.
-- **Advance tax** applies if the year's liability exceeds ₹10,000. Otherwise interest under s.234B/C is charged.
+  - Presumptive taxation (old s.44AD; new-Act number to check with the CA) at 6% has a 5-year lock-in, and losses can't be carried forward under it.
+- **Advance tax** applies if the year's liability exceeds ₹10,000. Otherwise interest under s.424/425 of the Income-tax Act 2025 is charged (incometaxindia.gov.in FAQ on s.423-426).
 - **CA fee for ITR-3:** expect about ₹2,000–5,000 a year. On ₹25k capital, that fee alone needs an 8–20% return just to break even.
 
 ### 2c. What b7 could ever sell legally

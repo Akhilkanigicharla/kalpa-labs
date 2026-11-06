@@ -90,3 +90,9 @@ If Akhil can still open app.n8n.cloud, he can download any workflow (⋯ → Dow
 | Oracle Cloud Always Free VM | Best power, **Akhil's call** | Needs a card for sign-up verification (breaks our "no card" rule unless Akhil chooses it). Specs not rechecked today |
 | **Activepieces** (MIT core, n8n alternative) | Later, if we sell automation inside products | MIT licence is cleaner than n8n's Sustainable Use licence for embedding; but it needs Postgres + Redis, so it would not fit Render free either |
 | Node-RED (Apache-2.0) | Only for tiny flows | Very light, but far fewer AI/agent nodes |
+
+## Keep-awake now running (6 Nov 2026, 21:30 IST)
+- n8n workflow **"Kalpa Keep Awake"** (`workflows/keep-awake.json`, synced and activated by `n8n-sync.yml`, runs 42248286845 + 42248289945) pings its own public URL every 5 min from 06:00 to 00:30 IST. Requests go through Render's front door, so they count as traffic and n8n should not fall asleep while it is awake. Successful runs are not saved (no DB growth).
+- It cannot wake n8n after the night sleep: the GitHub keepalive (odd minutes) does the morning wake-up, even if it lands late.
+- Not used: Supabase pg_cron (the connected Supabase login shows no projects), Netlify scheduled functions (using up the free credits would pause every live Kalpa site), a looping GitHub Actions job (GitHub's terms don't allow Actions as an always-on service).
+- Proof to check on 7 Nov: `n8n-keepalive` runs should show HTTP 200 in about a second, and no `000`.

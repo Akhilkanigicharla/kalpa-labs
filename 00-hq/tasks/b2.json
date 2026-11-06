@@ -10,11 +10,12 @@
   "read": [
    "02-jobcard/PLAN.md"
   ],
-  "status": "review",
+  "status": "rejected",
   "created": "2026-11-04T08:30:00Z",
   "updated": "2026-11-04T16:24:33Z",
   "last_error": "no model answered",
-  "output": "00-hq/knowledge/K019.md"
+  "output": "00-hq/knowledge/K019.md",
+  "akhil_note": "6 Nov: JobCard parked, not in Akhil's plan"
  },
  {
   "id": "K020",
@@ -27,10 +28,11 @@
   "read": [
    "02-jobcard/PLAN.md"
   ],
-  "status": "review",
+  "status": "rejected",
   "created": "2026-11-04T08:30:00Z",
   "updated": "2026-11-04T08:09:10Z",
-  "output": "00-hq/knowledge/K020.md"
+  "output": "00-hq/knowledge/K020.md",
+  "akhil_note": "6 Nov: JobCard parked, not in Akhil's plan"
  },
  {
   "id": "K026",
@@ -43,10 +45,11 @@
   "read": [
    "02-jobcard/PLAN.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:31:12Z",
   "tries": 1,
-  "vigil_notes": "FIX:\n- Draft is incomplete; it cuts off at Test Case 15 and only contains 15 of the required 40 phrases.\n- Test Case 01 misclassifies \"gas fill\" as \"labour\"; refrigerant gas is a consumable part, so the type should be \"part\".\n- Test Case 08 mixes unrelated services (fan motor and gas topup) in a single voice note, which is unrealistic for a single job card context.\n- Test Case 04 misclassifies \"gas charging\" as \"labour\"; gas is a material/consumable, so the type should be \"part\".\n- Test Case 13 misclassifies \"gas refilling\" as \"labour\"; gas is a material/consumable, so the type should be \"part\"."
+  "vigil_notes": "FIX:\n- Draft is incomplete; it cuts off at Test Case 15 and only contains 15 of the required 40 phrases.\n- Test Case 01 misclassifies \"gas fill\" as \"labour\"; refrigerant gas is a consumable part, so the type should be \"part\".\n- Test Case 08 mixes unrelated services (fan motor and gas topup) in a single voice note, which is unrealistic for a single job card context.\n- Test Case 04 misclassifies \"gas charging\" as \"labour\"; gas is a material/consumable, so the type should be \"part\".\n- Test Case 13 misclassifies \"gas refilling\" as \"labour\"; gas is a material/consumable, so the type should be \"part\".",
+  "akhil_note": "6 Nov: JobCard parked, not in Akhil's plan"
  }
 ]

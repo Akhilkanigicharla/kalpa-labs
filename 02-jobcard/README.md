@@ -1,3 +1,5 @@
+> **PARKED (Akhil, 6 Nov 2026):** JobCard was picked by Claude's planning on 12 Oct as the "mobile app" stream; it was never Akhil's idea and he dropped it. Code stays here for reference; no more work or tasks. World b2 waits for Akhil's own mobile-app idea.
+
 # 🛠️ JobCard · world b2 (Workshop Valley)
 
 **What it is:** Voice note → job card + invoice PDF + 6-month service reminder for AC/appliance technicians.

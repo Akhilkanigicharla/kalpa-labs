@@ -69,12 +69,12 @@
     0
    ],
    "parameters": {
-    "jsCode": "const out=[];\nfor (const it of $input.all()) {\n  const w=$('Worlds').all()[out.length]?.json || {};\n  let q=[]; try { q = Array.isArray(it.json) ? it.json : JSON.parse(it.json.data || '[]'); } catch(e) {}\n  const by=s=>q.filter(t=>t.status===s).map(t=>t.id+' '+String(t.title).slice(0,70));\n  const brief=`World: ${w.name}\\nTodo: ${by('todo').join('; ')||'none'}\\nIn review: ${by('review').join('; ')||'none'}\\nRejected: ${by('rejected').join('; ')||'none'}`;\n  out.push({json:{world:w.name, body:{model:'openai/gpt-oss-20b',temperature:0.3,max_tokens:400,messages:[\n    {role:'system',content:'You are the morning council of one Kalpa Labs world. Soft launch is Sun 13 Dec 2026, Pilot Day Mon 16 Nov. Using ONLY the queue below, give the 2 most important next actions in plain short English, each under 20 words, and say who does it: agents, Claude (code) or Akhil. No invented facts.'},\n    {role:'user',content:brief}]}}});\n}\nreturn out;"
+    "jsCode": "const out=[];\nfor (const it of $input.all()) {\n  const w=$('Worlds').all()[out.length]?.json || {};\n  let q=[]; try { q = Array.isArray(it.json) ? it.json : JSON.parse(it.json.data || '[]'); } catch(e) {}\n  const by=s=>q.filter(t=>t.status===s).map(t=>t.id+' '+String(t.title).slice(0,70));\n  const brief=`World: ${w.name}\\nTodo: ${by('todo').join('; ')||'none'}\\nIn review: ${by('review').join('; ')||'none'}\\nRejected: ${by('rejected').join('; ')||'none'}`;\n  out.push({json:{world:w.name, body:{model:'gemini-2.5-flash-lite',temperature:0.3,max_tokens:400,messages:[\n    {role:'system',content:'You are the morning council of one Kalpa Labs world. Soft launch is Sun 13 Dec 2026, Pilot Day Mon 16 Nov. Using ONLY the queue below, give the 2 most important next actions in plain short English, each under 20 words, and say who does it: agents, Claude (code) or Akhil. No invented facts.'},\n    {role:'user',content:brief}]}}});\n}\nreturn out;"
    }
   },
   {
    "id": "n5",
-   "name": "Council (Groq free)",
+   "name": "Council (Google Gemini free)",
    "type": "n8n-nodes-base.httpRequest",
    "typeVersion": 4.2,
    "position": [
@@ -83,7 +83,7 @@
    ],
    "parameters": {
     "method": "POST",
-    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
     "authentication": "genericCredentialType",
     "genericAuthType": "httpHeaderAuth",
     "sendBody": true,
@@ -101,7 +101,7 @@
    "credentials": {
     "httpHeaderAuth": {
      "id": "",
-     "name": "Kalpa Groq header"
+     "name": "Kalpa Gemini header"
     }
    },
    "onError": "continueRegularOutput"
@@ -181,18 +181,7 @@
    "main": [
     [
      {
-      "node": "Council (Groq free)",
-      "type": "main",
-      "index": 0
-     }
-    ]
-   ]
-  },
-  "Council (Groq free)": {
-   "main": [
-    [
-     {
-      "node": "Join",
+      "node": "Council (Google Gemini free)",
       "type": "main",
       "index": 0
      }
@@ -204,6 +193,17 @@
     [
      {
       "node": "Send to Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Council (Google Gemini free)": {
+   "main": [
+    [
+     {
+      "node": "Join",
       "type": "main",
       "index": 0
      }

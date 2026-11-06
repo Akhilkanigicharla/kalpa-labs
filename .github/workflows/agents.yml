@@ -1,6 +1,6 @@
 # A144: all Kalpa worlds work in PARALLEL (one job per world) on free models, every hour + on demand.
 # Queues: 00-hq/tasks/<world>.json. Results: 00-hq/knowledge/<id>.md (status "review").
-# Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY. Odd worlds start on OpenRouter so all 8 jobs don't hit Groq at once.
+# Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY, GEMINI_API_KEY. Each world starts on a different free provider.
 name: agents
 on:
   schedule:
@@ -26,20 +26,22 @@ jobs:
       max-parallel: 8
       matrix:
         include:
-          - { world: b1, prefer: "" }
-          - { world: b2, prefer: openrouter }
-          - { world: b3, prefer: "" }
-          - { world: b4, prefer: openrouter }
-          - { world: b5, prefer: "" }
-          - { world: b6, prefer: openrouter }
-          - { world: b7, prefer: "" }
-          - { world: hq, prefer: openrouter }
+          # 50-50 (Akhil, 6 Nov 2026): 4 worlds start on Google Gemini (free tier), 4 on our Groq/OpenRouter setup.
+          - { world: b1, prefer: groq }
+          - { world: b2, prefer: gemini }
+          - { world: b3, prefer: openrouter }
+          - { world: b4, prefer: gemini }
+          - { world: b5, prefer: groq }
+          - { world: b6, prefer: gemini }
+          - { world: b7, prefer: openrouter }
+          - { world: hq, prefer: gemini }
     steps:
       - uses: actions/checkout@v4
       - name: Agents of ${{ matrix.world }} work their queue
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           KL_PREFER: ${{ matrix.prefer }}
         run: python3 00-hq/agents/runner.py --world ${{ matrix.world }} --max "${{ github.event.inputs.max || '2' }}"
       - name: Save results (each world only touches its own queue file)

@@ -22,10 +22,15 @@ MODELS = [  # all free; first one with a key that answers wins
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b"),
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
+    # Google Gemini API free tier (no card; about 10-15 requests/min, 1,500/day; free-tier text may be used by Google to
+    # train, so agents never get customer personal data). Half the worlds start here (Akhil, 6 Nov 2026: 50-50 with Google).
+    ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-2.5-flash"),
+    ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-2.5-flash-lite"),
 ]
 VIGIL_MODELS = [
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
+    ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-2.5-flash-lite"),
 ]
 
 RULES = """KALPA RULES (never break): free tools only; never invent prices, customers, results or dates; any fact you cannot see in the
@@ -159,11 +164,19 @@ def apply(task, result, root=ROOT):
     return task["status"]
 
 
+PREFER_KEYS = {"openrouter": "OPENROUTER_API_KEY", "gemini": "GEMINI_API_KEY", "groq": "GROQ_API_KEY"}
+
+
 def ordered(models, prefer):
-    """Parallel world jobs share keys: half of them start on OpenRouter so Groq's per-minute limit is not hit by all at once."""
-    if prefer != "openrouter":
+    """Parallel world jobs share keys, so each world starts on a different free provider (Groq, OpenRouter, Google Gemini);
+    the rest stay as fallbacks. Vigil uses the opposite order so a draft is checked by a different provider when possible."""
+    key = PREFER_KEYS.get(prefer)
+    if not key:
         return models
-    return [m for m in models if m[0] == "OPENROUTER_API_KEY"] + [m for m in models if m[0] != "OPENROUTER_API_KEY"]
+    return [m for m in models if m[0] == key] + [m for m in models if m[0] != key]
+
+
+VIGIL_FOR = {"gemini": "groq", "groq": "gemini", "openrouter": "gemini", "": "gemini"}
 
 
 def main(argv):
@@ -174,7 +187,7 @@ def main(argv):
         return 2
     global MODELS, VIGIL_MODELS
     prefer = os.environ.get("KL_PREFER", "")
-    MODELS, VIGIL_MODELS = ordered(MODELS, prefer), ordered(VIGIL_MODELS, prefer)
+    MODELS, VIGIL_MODELS = ordered(MODELS, prefer), ordered(VIGIL_MODELS, VIGIL_FOR.get(prefer, ""))
     path = os.path.join(TASKS, world + ".json")
     if not os.path.exists(path):
         print(world, "queue empty")

@@ -79,6 +79,12 @@ class Runner(unittest.TestCase):
         R.work(self.task, self.env, post, self.root)  # temp root has no skill: still works
         self.assertNotIn("humanizer", post.calls[0][1]["messages"][0]["content"])
 
+    def test_gemini_first_and_vigil_checks_with_another_provider(self):
+        self.assertEqual(R.ordered(R.MODELS, "gemini")[0][0], "GEMINI_API_KEY")
+        self.assertEqual(R.ordered(R.VIGIL_MODELS, R.VIGIL_FOR["gemini"])[0][0], "GROQ_API_KEY")
+        self.assertEqual(R.ordered(R.VIGIL_MODELS, R.VIGIL_FOR[""])[0][0], "GEMINI_API_KEY")
+        self.assertTrue(all("googleapis.com" in m[1] for m in R.MODELS if m[0] == "GEMINI_API_KEY"))
+
     def test_prefer_openrouter_reorders(self):
         self.assertEqual(R.ordered(R.MODELS, "openrouter")[0][0], "OPENROUTER_API_KEY")
         self.assertEqual(R.ordered(R.MODELS, ""), R.MODELS)

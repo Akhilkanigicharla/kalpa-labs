@@ -3,7 +3,7 @@
 
 1. Creates n8n credentials from GitHub secrets (Groq, OpenRouter, Telegram) once, so Akhil does not re-type keys.
 2. Imports/updates every workflow in 00-hq/n8n-selfhost/workflows/*.json (matched by name) and activates it.
-Env: N8N_SELF_URL, N8N_SELF_API_KEY, GROQ_API_KEY, OPENROUTER_API_KEY, TELEGRAM_BOT_TOKEN. Standard library only.
+Env: N8N_SELF_URL, N8N_SELF_API_KEY, GROQ_API_KEY, OPENROUTER_API_KEY, GEMINI_API_KEY, TELEGRAM_BOT_TOKEN. Standard library only.
 """
 import glob, json, os, sys, urllib.request, urllib.error
 
@@ -17,6 +17,7 @@ CREDS = [  # (n8n credential name, type, data builder, env var)
     ("Kalpa Telegram", "telegramApi", lambda v: {"accessToken": v}, "TELEGRAM_BOT_TOKEN"),
     ("Kalpa Groq header", "httpHeaderAuth", lambda v: {"name": "Authorization", "value": "Bearer " + v}, "GROQ_API_KEY"),
     ("Kalpa OpenRouter header", "httpHeaderAuth", lambda v: {"name": "Authorization", "value": "Bearer " + v}, "OPENROUTER_API_KEY"),
+    ("Kalpa Gemini header", "httpHeaderAuth", lambda v: {"name": "Authorization", "value": "Bearer " + v}, "GEMINI_API_KEY"),
 ]
 
 
@@ -73,6 +74,11 @@ def sync_workflows(cred_ids):
     bad = 0
     for path in sorted(glob.glob(os.path.join(HERE, "workflows", "*.json"))):
         wf = json.load(open(path, encoding="utf-8"))
+        need = {ref.get("name") for n in wf["nodes"] for ref in (n.get("credentials") or {}).values()}
+        missing = sorted(x for x in need if x not in cred_ids)
+        if missing:  # never replace a working workflow with one whose keys are not in n8n yet
+            print(f"workflow {wf['name']}: waiting for credential(s) {', '.join(missing)} (add the GitHub secret, then re-run)")
+            continue
         for node in wf["nodes"]:  # point credential references at this instance's ids
             for ctype, ref in (node.get("credentials") or {}).items():
                 if ref.get("name") in cred_ids:

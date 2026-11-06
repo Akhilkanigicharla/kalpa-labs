@@ -246,3 +246,4 @@ Free items first. 💰 = costs money, waits for the go-public decision.
 - [ ] 💰 **C14** (unlocked by C13; plan week of 2 Nov) b1 · demo prepaid SIM (≈₹250) and Meta Business verification
 - [ ] 💰 **C15** b3/b6 · Razorpay KYC (₹199)
 - [ ] 💰 **C16** b4 · Chrome Web Store ($5); b2 · Play Console ($25); domain
+- [ ] **C60** HQ · Google Gemini free key (5 min, free, no card): aistudio.google.com/apikey → Create API key (with your Google account) → GitHub kalpa-labs → Settings → Secrets and variables → Actions → New repository secret `GEMINI_API_KEY`. Then Actions → n8n-sync → Run workflow (create_credentials = yes). Turns on the 50-50 Google share of agent work and moves the Morning Councils to Gemini. Never paste the key in chat.

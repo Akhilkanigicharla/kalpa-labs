@@ -29,11 +29,11 @@
    "04-extensions/PLAN.md",
    "04-extensions/DEPTH.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T20:44:17Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- \"3-device licence / up to three PCs\" is not in the repo; remove it or mark UNVERIFIED.\n- Founding Lifetime shows ₹1, but the repo only lists $1; the INR price is unverified—remove ₹1 or mark UNVERIFIED.\n- \"Crash-safety – last 3 snapshots\" is a Free feature in the repo; Pro gets every 5 min / 90-day history. Do not list \"last 3\" under Pro.\n- §2 lists 6 Pro items; keep all lists to 5 at most.\n- Launch-week offer (20% off, code LAUNCH20, referral boost, bonus year) is not in the repo; keep the UNVERIFIED tag and do not present specifics as confirmed fact."
+  "updated": "2026-11-06T01:38:23Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Founding Lifetime $19 / ₹899 is invented; repo only lists $29 lifetime / ₹1,199 (and a cut-off $1 row). Mark UNVERIFIED or remove.\n- \"Priority support / early access\" and \"Believer\" competitor tier are not in repo; remove or mark UNVERIFIED.\n- Duplicate-tab cleanup and \"where did this tab go\" timeline are Pro-only in repo; do not list under Free.\n- \"Payment provider still pending\" contradicts repo (Dodo Payments is named); correct or mark UNVERIFIED.\n- Launch-week offer is marked UNVERIFIED (good); keep all promo details clearly flagged as placeholders."
  },
  {
   "id": "K011",

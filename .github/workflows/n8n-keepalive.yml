@@ -3,18 +3,25 @@
 name: n8n-keepalive
 on:
   schedule:
-    - cron: "*/10 0-18 * * *"   # UTC 00:00-18:59 = IST 05:30-00:29
+    # Odd minutes: GitHub delays/drops crons at :00 and */5 marks (only 8 runs landed 4-6 Nov).
+    # The reliable keep-awake is an external pinger (cron-job.org) hitting /healthz every 5 min; this is the backup.
+    - cron: "7,23,41,53 0-18 * * *"   # UTC 00:00-18:59 = IST 05:30-00:29
   workflow_dispatch:
 permissions: {}
 jobs:
   ping:
     if: ${{ vars.N8N_SELF_URL != '' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 7
     steps:
       - name: Ping /healthz
         env:
           URL: ${{ vars.N8N_SELF_URL }}
         run: |
-          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 90 "${URL%/}/healthz" || true)
-          echo "n8n /healthz -> HTTP $code"
+          # A cold start on Render free (0.1 CPU) can take over 90 s, so try twice.
+          for i in 1 2; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 150 "${URL%/}/healthz" || true)
+            echo "n8n /healthz try $i -> HTTP $code"
+            [ "$code" = "200" ] && break
+            sleep 20
+          done

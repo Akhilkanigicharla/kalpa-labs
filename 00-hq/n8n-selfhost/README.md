@@ -74,3 +74,19 @@ The cloud instance is locked since the trial ended (its API and our connector bo
 
 Keys in the self-hosted n8n come from GitHub secrets via `n8n-sync.yml`: Kalpa Groq, Kalpa OpenRouter, Kalpa Telegram, and header versions for HTTP nodes. Older duplicates are deleted automatically.
 If Akhil can still open app.n8n.cloud, he can download any workflow (⋯ → Download) and send the JSON; it goes into `workflows/` and syncs.
+
+## Why it keeps going down (checked 6 Nov 2026)
+- **The keep-awake job barely ran:** set for every 10 min, but only **8 runs landed in 3 days** (4–6 Nov, `gh run list`). GitHub runs scheduled jobs "best effort" and delays or drops them at busy times (GitHub docs, quoted in community threads; crontap and runhooks guides). So Render put n8n to sleep after 15 min idle most of the day.
+- **Waking often failed:** 4 of those 8 pings got **no answer within 90 s (HTTP 000)**. n8n on 0.1 CPU / 512 MB boots slowly and sometimes not at all. A live check at 18:55 IST got HTTP 200 in 1.3 s, so it works while it is awake.
+- Fix in repo (6 Nov): keepalive moved to odd minutes (7, 23, 41, 53), two tries of 150 s each. This is only a backup.
+
+## Options (free, checked 6 Nov 2026)
+| Option | Verdict | Why |
+|---|---|---|
+| **External pinger** on `/healthz` every 5 min: cron-job.org (free, down to every 1 min) or UptimeRobot free (50 monitors, 5 min; its help page says commercial use is allowed) | **Do now, 5 min for Akhil** | Reliable timer, so Render never sleeps inside the window. Keep the 06:00–00:30 window: 24/7 = 744 h and would eat the 750 h pool the LLM router also uses |
+| **GitHub Actions as the engine** (A144), n8n as editor/backup only | **Keep**, main path | Jobs run at their time on Actions; nothing depends on Render being awake. Optional to test: export a workflow and run it headless with the n8n CLI (`n8n execute --file`) inside Actions |
+| Hugging Face Docker Space | **No** for new Spaces | HF docs now: "Gradio and Docker Spaces run on compute and require a paid plan to create" (PRO); forum threads Jul 2026 agree |
+| Koyeb free | No | Same 0.1 vCPU / 512 MB, sleeps after 1 h, and since Feb 2026 a card hold is required (Koyeb FAQ; snapdeploy comparison) |
+| Oracle Cloud Always Free VM | Best power, **Akhil's call** | Needs a card for sign-up verification (breaks our "no card" rule unless Akhil chooses it). Specs not rechecked today |
+| **Activepieces** (MIT core, n8n alternative) | Later, if we sell automation inside products | MIT licence is cleaner than n8n's Sustainable Use licence for embedding; but it needs Postgres + Redis, so it would not fit Render free either |
+| Node-RED (Apache-2.0) | Only for tiny flows | Very light, but far fewer AI/agent nodes |

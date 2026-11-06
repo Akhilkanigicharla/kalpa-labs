@@ -49,5 +49,19 @@
   "updated": "2026-11-06T01:38:16Z",
   "tries": 3,
   "vigil_notes": "FIX:\n- Unfinished draft: Telugu cover letter cuts off at `[Isa`; Hindi, Tenglish, and Hinglish cover letters are missing entirely.\n- Missing required content: 20 interview questions with tips are not included.\n- Missing required content: 4-week skill-gap plan in Telugu and English is not included."
+ },
+ {
+  "id": "K027",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "playbook": "marketing-content-creator",
+  "title": "Workshop 'Claude Code with me' (29 Nov): Telugu + English WhatsApp/Telegram invite, 3 reminder messages, and a 1-page beginner setup checklist (free tools only, nothing to install on the learner's PC beyond a browser)",
+  "details": "Waitlist only; no income promises.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

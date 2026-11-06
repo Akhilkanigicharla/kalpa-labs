@@ -87,5 +87,19 @@
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T22:40:33Z",
   "output": "00-hq/knowledge/K005.md"
+ },
+ {
+  "id": "K025",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Chitti",
+  "playbook": "testing-reality-checker",
+  "title": "BotBhai 5-language test script: 25 multi-turn salon conversations (5 each in English, Telugu script, Hindi script, Tenglish, Hinglish) with expected bot behaviour, incl. booking, reschedule, angry customer, price, timing",
+  "details": "Feeds A87 tests. Realistic Hyderabad salon style; no real phone numbers.",
+  "read": [
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

@@ -50,5 +50,19 @@
   "updated": "2026-11-06T09:30:35Z",
   "tries": 2,
   "output": "00-hq/knowledge/K008.md"
+ },
+ {
+  "id": "K029",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "playbook": "marketing-content-creator",
+  "title": "Telugu Deals: 20 'money tip of the day' posts (Telugu + English line, no SEBI stock tips, no invented numbers: use placeholders) for Dec 2026",
+  "details": "#ad only on affiliate posts; tips are general money habits.",
+  "read": [
+   "05-deals/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

@@ -62,10 +62,41 @@
    ".claude/skills/first-customer-finder/references/research-framework.md",
    "01-botbhai/docs/OFFER.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-06T12:00:00Z",
   "updated": "2026-11-06T12:24:49Z",
   "tries": 2,
-  "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data."
+  "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data.",
+  "akhil_note": "replaced by K023 (agents cannot search the web; Vigil caught invented names)"
+ },
+ {
+  "id": "K023",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Scout",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "First-customer search plan (replaces K022's invented names): for Ledger Peaks, BotBhai and JobCard give the exact public places and search queries Akhil should use to find real prospects (e.g. Product Hunt India makers, YC/Inc42 lists, OpenStreetMap salon areas, technician Facebook groups by name of platform), with what proof to look for. NO company or person names unless they appear in the repo files.",
+  "details": "Agents have no web search; never invent names. Follow first-customer-finder method.",
+  "read": [
+   ".claude/skills/first-customer-finder/references/research-framework.md",
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
+ },
+ {
+  "id": "K024",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "13 Dec soft-launch day run-sheet: hour-by-hour plan (IST) for Akhil (1 hour) + agents, what goes live in which order, checks before each, rollback if broken",
+  "details": "Use readiness board and soft-launch plan.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md",
+   "00-hq/launch/readiness.json"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

@@ -31,5 +31,19 @@
   "created": "2026-11-04T08:30:00Z",
   "updated": "2026-11-04T08:09:10Z",
   "output": "00-hq/knowledge/K020.md"
+ },
+ {
+  "id": "K026",
+  "world": "b2",
+  "priority": "P1",
+  "owner": "Forge",
+  "playbook": "product-trend-researcher",
+  "title": "JobCard Tenglish/Hinglish voice phrases: 40 ways technicians say parts, labour and amounts in Tenglish and Hinglish (e.g. 'gas fill chesa 2500'), with the parsed line item for each",
+  "details": "Feeds the voice-to-card parser tests.",
+  "read": [
+   "02-jobcard/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

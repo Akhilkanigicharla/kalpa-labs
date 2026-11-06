@@ -52,5 +52,20 @@
   "updated": "2026-11-04T22:41:06Z",
   "last_error": "no model answered",
   "output": "00-hq/knowledge/K011.md"
+ },
+ {
+  "id": "K028",
+  "world": "b4",
+  "priority": "P0",
+  "owner": "Lifeboat",
+  "playbook": "marketing-content-creator",
+  "title": "Tab Lifeboat: 5 store screenshot scenes (what to show, caption on each, in English), privacy-policy summary in plain words, and 10 FAQ answers",
+  "details": "Real features only (DEPTH.md).",
+  "read": [
+   "04-extensions/DEPTH.md",
+   "04-extensions/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

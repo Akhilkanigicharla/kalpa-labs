@@ -15,5 +15,19 @@
   "updated": "2026-11-04T16:24:58Z",
   "last_error": "no model answered",
   "output": "00-hq/knowledge/K021.md"
+ },
+ {
+  "id": "K031",
+  "world": "b7",
+  "priority": "P2",
+  "owner": "Oracle",
+  "playbook": "research-synthesist",
+  "title": "Trading Lab education series: 10 short Telugu + English lessons on risk, position size and journaling (paper trading only, no tips, SEBI disclaimer on each)",
+  "details": "Education only.",
+  "read": [
+   "07-trading/PLAN.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T13:20:00Z"
  }
 ]

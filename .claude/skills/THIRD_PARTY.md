@@ -8,6 +8,8 @@ Copied unmodified on 18 Oct 2026 with `npx skills add … --copy` (telemetry off
 | security-audit | https://github.com/cloudflare/security-audit-skill | MIT, (c) 2025-2026 Cloudflare, Inc. |
 | hallmark | https://github.com/Nutlope/hallmark (commit `4f6a46c`, copied 31 Oct 2026; theme pictures `*.jpg` and `photos.json` left out for size) | MIT, (c) 2026 Hallmark contributors |
 | humanizer | https://github.com/blader/humanizer (commit `0ef9fe5`, SKILL.md + LICENSE copied unmodified 4 Nov 2026) | MIT, (c) 2025 Siqi Chen |
+| first-customer-finder | https://github.com/Kappaemme-git/codex-first-customer-finder-skill (commit `d3f6964`, folder copied unmodified 6 Nov 2026) | MIT, (c) 2026 Francesco Mistero |
+| video-watch (skill name `watch`) | https://github.com/bradautomates/claude-video (commit `03ceb42`, skills/watch copied unmodified 6 Nov 2026) | MIT, (c) 2026 Bradley Bonanno |
 | animate, animate-expo, break-ui, emil-design-eng, mobile-native, pick-ui-library, prototype, review-animations | https://github.com/emilkowalski/skills | MIT, (c) 2026 Emil Kowalski |
 
 Plugin (not copied, loaded by Claude Code): HyperFrames `hyperframes@hyperframes`, https://github.com/heygen-com/hyperframes, Apache-2.0, pinned to tag `v0.8.169` in `.claude/settings.json`. Skills only, no hooks or MCP servers. When a skill says `npx hyperframes@latest`, use `npx hyperframes@0.8.169` instead.
@@ -101,3 +103,6 @@ SOFTWARE.
 ```
 
 Hallmark (31 Oct 2026): our design system is locked, so Hallmark must treat `00-hq/design/DESIGN-SYSTEM.md` + `tokens.css` as the locked `DESIGN.md` and never pick one of its own themes or palettes. Do not run `install-hook.mjs` and do not set `TOGETHER_API_KEY` (paid image API). Its `sloplint.mjs` runs only after Akhil approves running it (external code), in Actions or a Codespace.
+
+first-customer-finder (6 Nov 2026): public demand signals only; no private groups, data brokers or scraped contact lists (its own rule, same as our rule 4). It never sends outreach; Akhil sends every message himself.
+video-watch (6 Nov 2026): use it only on video FILES Akhil attaches (screen recordings, his own clips). Do not download from Instagram (rule 4) or YouTube (YouTube's terms forbid downloading). Transcription uses our free Groq key; never set a paid OpenAI or Gemini key for it.

@@ -10,6 +10,11 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 | Nutlope/hallmark | anti-AI-slop design skill, installed `.claude/skills/hallmark`; locked to the Kalpavruksha system; used on every new page (salon app A134, Telugu Deals pages) | 🔧 installed 31 Oct |
 | MadsLorentzen/ai-job-search | CV / cover letter / interview method for the b3 Job-Ready Kit (A140); scrapers left out (LinkedIn ban) | 🔧 vendored 31 Oct |
 | blader/humanizer | installed `.claude/skills/humanizer`; its 26 'signs of AI writing' go into every agent draft (runner.py) and Claude's copy work | ✅ in use (4 Nov) |
+| Kappaemme-git/codex-first-customer-finder-skill | installed `.claude/skills/first-customer-finder`; method for finding first customers / design partners from public signals (C43 AI startups, BotBhai salons, JobCard technicians); agents use it via the K022 task | ✅ in use (6 Nov) |
+| bradautomates/claude-video | installed `.claude/skills/video-watch`; only for video files Akhil attaches (no Instagram/YouTube downloads) | 🔧 installed (6 Nov) |
+| google-research/timesfm | Google's time-series forecasting model (Apache-2.0, licence to re-check when used). Planned for Ledger Peaks AI-spend forecasts and Trading Lab paper study (A149); runs on GitHub Actions CPU | 📚 planned |
+| strelov1/freehire | MIT; IT job postings from companies' own public career pages. Reference for the Job-Ready Kit: point graduates to freehire.me instead of copying 169 MB; no scraping by us | 📚 reference |
+| Google Labs: Stitch, Opal, Pomelli, Antigravity, Mixboard | products, not repos. 'Free' and India availability UNVERIFIED; we already have our design system, n8n and Claude Code. Akhil may try Pomelli for social posts after checking it is free | 📚 to check |
 | pipecat-ai/pipecat, livekit/agents | BotBhai voice agent design (`01-botbhai/botbhai/voice`) | ✅ learned, voice planned (A98) |
 | tashfeenahmed/freellmapi | Kalpa LLM router on Render, n8n fallback (A120) | ✅ in use |
 | heygen-com/hyperframes | explainer + listing videos (A118), skills installed | ✅ in use |

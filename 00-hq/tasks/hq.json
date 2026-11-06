@@ -48,5 +48,21 @@
   "created": "2026-11-04T08:00:00Z",
   "updated": "2026-11-04T16:26:48Z",
   "output": "00-hq/knowledge/K018.md"
+ },
+ {
+  "id": "K022",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Scout",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "First customers shortlist using the first-customer-finder method: 10 Indian AI startups (Ledger Peaks X-ray), 15 Hyderabad salons types/areas to approach (BotBhai), 5 places AC technicians gather online (JobCard)",
+  "details": "Follow .claude/skills/first-customer-finder/SKILL.md and references/research-framework.md: public demand signals only, evidence for each pick, no personal phone numbers, no private groups, no scraping of Google Maps/Justdial/Instagram/LinkedIn. For salons give areas and salon TYPES, not personal data. Mark anything you cannot see in the files as UNVERIFIED. Draft 1 short outreach message per group for Akhil to send himself.",
+  "read": [
+   ".claude/skills/first-customer-finder/SKILL.md",
+   ".claude/skills/first-customer-finder/references/research-framework.md",
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T12:00:00Z"
  }
 ]

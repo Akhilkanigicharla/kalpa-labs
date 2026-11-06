@@ -1,0 +1,61 @@
+{
+ "name": "TGPSC Group 4",
+ "name_te": "టీజీపీఎస్సీ గ్రూప్ 4",
+ "family": "State PSC · Telangana",
+ "body": "Telangana Public Service Commission",
+ "official_url": "https://www.tgpsc.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "2 papers × 150 questions × 150 marks, 150 minutes each (300 marks); −0.25 per wrong answer as in the last notification. Check the new notification.",
+ "papers": [
+  {
+   "name": "Paper I: General Knowledge",
+   "sections": [
+    {
+     "name": "General knowledge",
+     "questions": 150,
+     "marks": 150,
+     "topics": [
+      "Current affairs",
+      "International relations and events",
+      "General science in everyday life",
+      "Environmental issues and disaster management",
+      "Geography and economy of India and Telangana",
+      "Indian Constitution: salient features",
+      "Indian political system and government",
+      "Modern Indian history with focus on the national movement",
+      "History of Telangana and the Telangana movement",
+      "Society, culture, heritage, arts and literature of Telangana",
+      "Policies of Telangana State"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper II: Secretarial Abilities",
+   "sections": [
+    {
+     "name": "Secretarial abilities",
+     "questions": 150,
+     "marks": 150,
+     "topics": [
+      "Mental ability (verbal and non-verbal)",
+      "Logical reasoning",
+      "Comprehension",
+      "Re-arrangement of sentences to improve a passage",
+      "Numerical and arithmetical abilities"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.tgpsc.gov.in",
+  "https://prepp.in/tspsc-group-iv-exam/syllabus-and-exam-pattern",
+  "https://competition.careers360.com/exams/tspsc-group-4"
+ ],
+ "id": "tgpsc-group-4",
+ "checked": "2026-11-06"
+}

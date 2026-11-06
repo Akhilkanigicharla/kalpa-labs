@@ -1,0 +1,110 @@
+{
+ "name": "SBI PO",
+ "name_te": "ఎస్బీఐ పీఓ",
+ "family": "Banks",
+ "body": "State Bank of India",
+ "official_url": "https://sbi.co.in/web/careers",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Prelims: 100 questions, 100 marks, 1 hour, 3 timed sections, −0.25 per wrong answer (qualifying). Mains: objective test (170 questions, 200 marks) + descriptive test. Then psychometric test, group exercise and interview.",
+ "papers": [
+  {
+   "name": "Prelims",
+   "sections": [
+    {
+     "name": "English language",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Reading comprehension",
+      "Cloze test and fillers",
+      "Error spotting and para jumbles"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude / numerical ability",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Simplification and approximation",
+      "Number series and quadratic equations",
+      "Data interpretation",
+      "Arithmetic: percentage, profit-loss, SI-CI, time-work, speed-distance"
+     ]
+    },
+    {
+     "name": "Reasoning ability",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Puzzles and seating arrangement",
+      "Syllogism and inequality",
+      "Blood relations, direction, coding-decoding, order and ranking"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains",
+   "sections": [
+    {
+     "name": "Reasoning & computer aptitude",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Advanced puzzles and arrangements",
+      "Logical and critical reasoning",
+      "Computer aptitude basics"
+     ]
+    },
+    {
+     "name": "Data analysis & interpretation",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Tables, charts and caselet DI",
+      "Data sufficiency and probability"
+     ]
+    },
+    {
+     "name": "General, economy & banking awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Current affairs",
+      "Banking and financial awareness",
+      "Indian economy and RBI"
+     ]
+    },
+    {
+     "name": "English language",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Reading comprehension",
+      "Vocabulary and grammar"
+     ]
+    },
+    {
+     "name": "Descriptive test",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Letter writing",
+      "Essay writing"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://sbi.co.in/web/careers",
+  "https://www.oliveboard.in/sbi-po-exam-pattern/",
+  "https://competition.careers360.com/articles/sbi-po-2014-paper-pattern"
+ ],
+ "id": "sbi-po",
+ "checked": "2026-11-06"
+}

@@ -1,0 +1,115 @@
+{
+ "name": "TG TET (Paper 1 & 2)",
+ "name_te": "టీజీ టెట్",
+ "family": "Teachers · Telangana",
+ "body": "School Education Department, Government of Telangana",
+ "official_url": "https://schooledu.telangana.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Each paper: 150 questions, 150 marks, 2½ hours, no negative marking. Paper 1 = classes I–V; Paper 2 = classes VI–VIII (Maths & Science OR Social Studies, 60 marks).",
+ "papers": [
+  {
+   "name": "Paper 1 (classes I–V)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (primary school child)",
+      "Inclusive education and children with special needs",
+      "Learning and pedagogy; learning theories"
+     ]
+    },
+    {
+     "name": "Language I (Telugu / Urdu / Hindi etc.)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II (English)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension, grammar and vocabulary",
+      "Pedagogy of English teaching"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: numbers, arithmetic, geometry, measurement, data",
+      "Pedagogy of mathematics"
+     ]
+    },
+    {
+     "name": "Environmental studies",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: family, health, plants, animals, water, environment",
+      "Pedagogy of EVS"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper 2 (classes VI–VIII)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (elementary school child)",
+      "Inclusive education and children with special needs",
+      "Learning and pedagogy; learning theories"
+     ]
+    },
+    {
+     "name": "Language I (Telugu / Urdu / Hindi etc.)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II (English)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension, grammar and vocabulary",
+      "Pedagogy of English teaching"
+     ]
+    },
+    {
+     "name": "Mathematics & Science OR Social Studies (choose one)",
+     "questions": 60,
+     "marks": 60,
+     "topics": [
+      "Mathematics content and pedagogy",
+      "Science content and pedagogy",
+      "Social studies content and pedagogy"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://schooledu.telangana.gov.in",
+  "https://www.pw.live/teaching/exams/tg-tet-syllabus",
+  "https://www.careerpower.in/ts-tet-syllabus.html"
+ ],
+ "id": "tg-tet",
+ "checked": "2026-11-06"
+}

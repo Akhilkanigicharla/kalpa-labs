@@ -1,0 +1,116 @@
+{
+ "name": "AP TET (Paper 1A & 2A)",
+ "name_te": "ఏపీ టెట్",
+ "family": "Teachers · Andhra Pradesh",
+ "body": "Department of School Education, Government of Andhra Pradesh",
+ "official_url": "https://cse.ap.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Computer-based. Each paper: 150 questions, 150 marks, 2½ hours, no negative marking. 1A/1B = classes I–V (regular/special schools); 2A/2B = classes VI–VIII. This kit covers 1A and 2A.",
+ "papers": [
+  {
+   "name": "Paper 1A (classes I–V)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (primary school child)",
+      "Inclusive education and children with special needs",
+      "Learning and pedagogy; learning theories"
+     ]
+    },
+    {
+     "name": "Language I (Telugu / Urdu / Hindi etc.)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II (English)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension, grammar and vocabulary",
+      "Pedagogy of English teaching"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: numbers, arithmetic, geometry, measurement, data",
+      "Pedagogy of mathematics"
+     ]
+    },
+    {
+     "name": "Environmental studies",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: family, health, plants, animals, water, environment",
+      "Pedagogy of EVS"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper 2A (classes VI–VIII)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (elementary school child)",
+      "Inclusive education and children with special needs",
+      "Learning and pedagogy; learning theories"
+     ]
+    },
+    {
+     "name": "Language I (Telugu / Urdu / Hindi etc.)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II (English)",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension, grammar and vocabulary",
+      "Pedagogy of English teaching"
+     ]
+    },
+    {
+     "name": "Subject: Mathematics & Science OR Social Studies OR Languages",
+     "questions": 60,
+     "marks": 60,
+     "topics": [
+      "Mathematics content and pedagogy",
+      "Science content and pedagogy",
+      "Social studies content and pedagogy",
+      "Language content and pedagogy"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://cse.ap.gov.in",
+  "https://www.pw.live/teaching/exams/ap-tet-exam-pattern",
+  "https://www.collegedekho.com/exam/aptet/exam-pattern"
+ ],
+ "id": "ap-tet",
+ "checked": "2026-11-06"
+}

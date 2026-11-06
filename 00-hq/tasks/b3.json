@@ -44,10 +44,10 @@
   "read": [
    "00-hq/vendor/ai-job-search/job-application-assistant/SKILL.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T20:44:06Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- The Telugu version is incomplete (cuts off at Week 3); complete Weeks 3 and 4.\n- The draft is missing Hindi, Tenglish, and Hinglish versions required for all Kalpa chatbots.\n- The 10-point checklist is marked entirely UNVERIFIED; remove this tag as the points are generic advice, not unverifiable facts.\n- The CV and Cover Letter templates are marked UNVERIFIED; remove these tags as they are standard templates, not facts.\n- The 20 interview questions are marked UNVERIFIED; remove this tag as they are standard questions, not facts."
+  "updated": "2026-11-06T01:38:16Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Unfinished draft: Telugu cover letter cuts off at `[Isa`; Hindi, Tenglish, and Hinglish cover letters are missing entirely.\n- Missing required content: 20 interview questions with tips are not included.\n- Missing required content: 4-week skill-gap plan in Telugu and English is not included."
  }
 ]

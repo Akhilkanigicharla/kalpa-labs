@@ -90,6 +90,8 @@ If Akhil can still open app.n8n.cloud, he can download any workflow (⋯ → Dow
 | Oracle Cloud Always Free VM | Best power, **Akhil's call** | Needs a card for sign-up verification (breaks our "no card" rule unless Akhil chooses it). Specs not rechecked today |
 | **Activepieces** (MIT core, n8n alternative) | Later, if we sell automation inside products | MIT licence is cleaner than n8n's Sustainable Use licence for embedding; but it needs Postgres + Redis, so it would not fit Render free either |
 | Node-RED (Apache-2.0) | Only for tiny flows | Very light, but far fewer AI/agent nodes |
+| **Google Opal** (Google Labs) | Use for small AI mini-apps, not as our n8n | Free experimental no-code builder for Gemini mini-apps; no self-hosting and no code export (ppc.land; technource.com). Not a replacement for scheduled backend jobs |
+| **Google Workspace Studio** (ex-Workspace Flows) | No, for now | Included only with paid Google Workspace business plans; free Gmail accounts don't get it. Only Workspace events can start a flow; limits of about 25 flows per person (aurora tools page; superdupr.com, citing Google's help page) |
 
 ## Keep-awake now running (6 Nov 2026, 21:30 IST)
 - n8n workflow **"Kalpa Keep Awake"** (`workflows/keep-awake.json`, synced and activated by `n8n-sync.yml`, runs 42248286845 + 42248289945) pings its own public URL every 5 min from 06:00 to 00:30 IST. Requests go through Render's front door, so they count as traffic and n8n should not fall asleep while it is awake. Successful runs are not saved (no DB growth).

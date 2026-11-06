@@ -1,0 +1,66 @@
+{
+ "name": "RRB Group D",
+ "name_te": "ఆర్ఆర్బీ గ్రూప్ డి",
+ "family": "Central Government",
+ "body": "Railway Recruitment Boards",
+ "official_url": "https://indianrailways.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "CBT: 100 questions, 100 marks, 90 minutes, −1/3 per wrong answer (Reasoning 30, Maths 25, General Science 25, General Awareness 20). Then a physical efficiency test.",
+ "papers": [
+  {
+   "name": "CBT",
+   "sections": [
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Analogy, series, coding-decoding",
+      "Puzzles, syllogism, Venn diagrams",
+      "Statement-conclusion and decision making"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 25,
+     "marks": 25,
+     "topics": [
+      "Number system, LCM-HCF, fractions",
+      "Percentage, ratio, average, profit-loss, interest",
+      "Time-work, speed-distance, mensuration, geometry"
+     ]
+    },
+    {
+     "name": "General science",
+     "questions": 25,
+     "marks": 25,
+     "topics": [
+      "Physics (10th standard)",
+      "Chemistry (10th standard)",
+      "Life sciences (10th standard)"
+     ]
+    },
+    {
+     "name": "General awareness & current affairs",
+     "questions": 20,
+     "marks": 20,
+     "topics": [
+      "Current affairs",
+      "Static GK: history, polity, geography, economy, sports, culture"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://indianrailways.gov.in",
+  "https://www.adda247.com/jobs/rrb-group-d-exam-pattern/",
+  "https://competitivecracker.com/blog/rrb-group-d-syllabus-2026-and-exam-pattern"
+ ],
+ "id": "rrb-group-d",
+ "checked": "2026-11-06"
+}

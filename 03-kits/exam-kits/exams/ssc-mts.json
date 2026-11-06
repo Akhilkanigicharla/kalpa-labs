@@ -1,0 +1,71 @@
+{
+ "name": "SSC MTS & Havaldar",
+ "name_te": "ఎస్ఎస్సీ ఎంటీఎస్",
+ "family": "Central Government",
+ "body": "Staff Selection Commission",
+ "official_url": "https://ssc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "One CBT in 2 sessions on the same day. Session 1: Numerical & Maths 20 + Reasoning 20, no negative marking, qualifying. Session 2: General Awareness 25 + English 25, −1 per wrong answer. Havaldar also has PET/PST.",
+ "papers": [
+  {
+   "name": "Session 1",
+   "sections": [
+    {
+     "name": "Numerical & mathematical ability",
+     "questions": 20,
+     "marks": null,
+     "topics": [
+      "Integers, decimals, fractions, percentage",
+      "Ratio, average, interest, profit-loss",
+      "Time-work, speed-distance, mensuration"
+     ]
+    },
+    {
+     "name": "Reasoning ability & problem solving",
+     "questions": 20,
+     "marks": null,
+     "topics": [
+      "Analogy, series, coding-decoding",
+      "Directions, blood relations, Venn diagrams",
+      "Non-verbal reasoning"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Session 2",
+   "sections": [
+    {
+     "name": "General awareness",
+     "questions": 25,
+     "marks": null,
+     "topics": [
+      "History, geography, polity, economy",
+      "General science",
+      "Current affairs"
+     ]
+    },
+    {
+     "name": "English language & comprehension",
+     "questions": 25,
+     "marks": null,
+     "topics": [
+      "Vocabulary, grammar, sentence structure",
+      "Comprehension"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ssc.gov.in",
+  "https://store.pw.live/blogs/ssc-exams/ssc-mts-syllabus",
+  "https://www.oliveboard.in/blog/ssc-mts-syllabus-2023/"
+ ],
+ "id": "ssc-mts",
+ "checked": "2026-11-06"
+}

@@ -1,0 +1,109 @@
+{
+ "name": "APPSC Group 1",
+ "name_te": "ఏపీపీఎస్సీ గ్రూప్ 1",
+ "family": "State PSC · Andhra Pradesh",
+ "body": "Andhra Pradesh Public Service Commission",
+ "official_url": "https://psc.ap.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Prelims: 2 objective papers × 120 questions × 120 marks, 2 hours each (screening). Mains: Telugu + English (qualifying) and 5 descriptive papers × 150 marks, 3 hours each. Interview 75 marks (check the new notification).",
+ "papers": [
+  {
+   "name": "Prelims",
+   "sections": [
+    {
+     "name": "Paper I: General Studies",
+     "questions": 120,
+     "marks": 120,
+     "topics": [
+      "History and culture",
+      "Constitution, polity, social justice and international relations",
+      "Indian and Andhra Pradesh economy and planning",
+      "Geography"
+     ]
+    },
+    {
+     "name": "Paper II: General Aptitude",
+     "questions": 120,
+     "marks": 120,
+     "topics": [
+      "General mental ability, administrative and psychological abilities",
+      "Science and technology",
+      "Current events of regional, national and international importance"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains (descriptive)",
+   "sections": [
+    {
+     "name": "Telugu and English (qualifying)",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Telugu language paper",
+      "English language paper"
+     ]
+    },
+    {
+     "name": "Paper I: General Essay",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Essays on current affairs and issues of regional, national and international importance"
+     ]
+    },
+    {
+     "name": "Paper II: History, Culture and Geography of India and AP",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "History and culture of India",
+      "History and culture of Andhra Pradesh",
+      "Geography of India and AP"
+     ]
+    },
+    {
+     "name": "Paper III: Polity, Constitution, Governance, Law and Ethics",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Indian Constitution and polity",
+      "Governance and public policy",
+      "Law and ethics"
+     ]
+    },
+    {
+     "name": "Paper IV: Economy and Development of India and AP",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Indian economy",
+      "AP economy",
+      "Development issues and planning"
+     ]
+    },
+    {
+     "name": "Paper V: Science, Technology and Environmental Issues",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Science and technology developments",
+      "Environment and climate",
+      "Disaster management"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://psc.ap.gov.in",
+  "https://www.adda247.com/upsc-exam/appsc-syllabus",
+  "https://www.careerpower.in/appsc-group-1-syllabus.html"
+ ],
+ "id": "appsc-group-1",
+ "checked": "2026-11-06"
+}

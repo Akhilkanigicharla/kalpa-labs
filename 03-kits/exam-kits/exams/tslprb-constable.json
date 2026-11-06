@@ -1,0 +1,53 @@
+{
+ "name": "Telangana Police Constable (TSLPRB)",
+ "name_te": "తెలంగాణ పోలీస్ కానిస్టేబుల్",
+ "family": "State Police · Telangana",
+ "body": "Telangana State Level Police Recruitment Board",
+ "official_url": "https://www.tgprb.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Preliminary written test: 200 questions, 200 marks, 3 hours, no negative marking (English + Arithmetic + Reasoning 100; General Studies 100). Then PMT/PET and a final written exam (last cycle's pattern; confirm on tgprb.in).",
+ "papers": [
+  {
+   "name": "Preliminary written test",
+   "sections": [
+    {
+     "name": "English, arithmetic ability & reasoning",
+     "questions": 100,
+     "marks": 100,
+     "topics": [
+      "English grammar and comprehension",
+      "Number system, percentage, ratio, average",
+      "Interest, profit-loss, time-work, speed-distance",
+      "Reasoning: analogy, series, coding, directions",
+      "Mental ability and data interpretation"
+     ]
+    },
+    {
+     "name": "General studies",
+     "questions": 100,
+     "marks": 100,
+     "topics": [
+      "General science",
+      "Current events (Telangana, national, international)",
+      "History of India and Indian national movement",
+      "Geography of India",
+      "Indian polity and economy",
+      "Telangana movement and state formation",
+      "Indian culture and heritage",
+      "Telangana government policies and schemes"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.tgprb.in",
+  "https://www.adda247.com/exams/telangana/ts-police-constable-syllabus/",
+  "https://truejobs.co.in/telangana-police-constable-syllabus-and-exam-pattern-2026-download-pdf"
+ ],
+ "id": "tslprb-constable",
+ "checked": "2026-11-06"
+}

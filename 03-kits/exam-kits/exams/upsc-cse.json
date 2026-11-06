@@ -1,0 +1,123 @@
+{
+ "name": "UPSC Civil Services (IAS/IPS)",
+ "name_te": "యూపీఎస్సీ సివిల్ సర్వీసెస్",
+ "family": "Central Government",
+ "body": "Union Public Service Commission",
+ "official_url": "https://upsc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Prelims: GS Paper I (100 Q, 200 marks) + CSAT (80 Q, 200 marks, qualifying at 33%), −1/3 per wrong answer. Mains: 9 descriptive papers (2 qualifying language papers + Essay, GS I–IV, Optional I–II = 1750 marks). Interview 275. Final = 2025.",
+ "papers": [
+  {
+   "name": "Prelims",
+   "sections": [
+    {
+     "name": "GS Paper I",
+     "questions": 100,
+     "marks": 200,
+     "topics": [
+      "Current events",
+      "History of India and Indian national movement",
+      "Indian and world geography",
+      "Indian polity and governance",
+      "Economic and social development",
+      "Environment, biodiversity and climate change",
+      "General science"
+     ]
+    },
+    {
+     "name": "CSAT (qualifying)",
+     "questions": 80,
+     "marks": 200,
+     "topics": [
+      "Comprehension",
+      "Logical reasoning and analytical ability",
+      "Decision making and problem solving",
+      "Basic numeracy and data interpretation"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains",
+   "sections": [
+    {
+     "name": "Qualifying language papers",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Indian language paper",
+      "English paper"
+     ]
+    },
+    {
+     "name": "Essay",
+     "questions": null,
+     "marks": 250,
+     "topics": [
+      "Two essays on varied themes"
+     ]
+    },
+    {
+     "name": "GS I",
+     "questions": null,
+     "marks": 250,
+     "topics": [
+      "Indian heritage and culture",
+      "History of the world",
+      "Indian society",
+      "Geography of the world and society"
+     ]
+    },
+    {
+     "name": "GS II",
+     "questions": null,
+     "marks": 250,
+     "topics": [
+      "Governance and Constitution",
+      "Polity and social justice",
+      "International relations"
+     ]
+    },
+    {
+     "name": "GS III",
+     "questions": null,
+     "marks": 250,
+     "topics": [
+      "Technology and economic development",
+      "Biodiversity and environment",
+      "Security and disaster management"
+     ]
+    },
+    {
+     "name": "GS IV",
+     "questions": null,
+     "marks": 250,
+     "topics": [
+      "Ethics, integrity and aptitude",
+      "Case studies"
+     ]
+    },
+    {
+     "name": "Optional subject (Paper I + II)",
+     "questions": null,
+     "marks": 500,
+     "topics": [
+      "Optional paper I",
+      "Optional paper II"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://upsc.gov.in",
+  "https://www.pw.live/upsc-exam/cse-exam-pattern",
+  "https://www.pmfias.com/upsc-exam-pattern/"
+ ],
+ "id": "upsc-cse",
+ "checked": "2026-11-06"
+}

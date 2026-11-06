@@ -25,8 +25,8 @@ thin = Side(style="thin", color="DCD5C3"); BOX = Border(top=thin, bottom=thin, l
 STATUSES = ["Not started", "Learning", "Done"]
 LOG_ROWS, MOCK_ROWS = 200, 60
 DATE_EVENTS = ["Notification out", "Apply from", "Last date to apply", "Admit card", "Exam (prelims / tier 1 / paper)", "Answer key", "Result", "Next stage exam"]
-# Telugu labels for AP/TG kits (to be read once by a native speaker before sale; see README).
-TE = {"date": "మీ పరీక్ష తేదీ", "left": "మిగిలిన రోజులు", "done": "సిలబస్ పూర్తి", "due": "ఈరోజు రివిజన్", "week": "గత 7 రోజుల్లో చదివిన రోజులు"}
+# Telugu labels for AP/TG kits (reviewed by Claude for Akhil, C64, 6 Nov 2026).
+TE = {"date": "మీ పరీక్ష తేదీ", "left": "మిగిలిన రోజులు", "done": "సిలబస్ పూర్తయింది %", "due": "ఈరోజు చేయాల్సిన రివిజన్లు", "week": "గత 7 రోజుల్లో చదివిన రోజులు"}
 
 
 def load_exams(only=None):

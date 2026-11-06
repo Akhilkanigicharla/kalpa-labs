@@ -116,8 +116,10 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:40:00Z",
+  "updated": "2026-11-06T17:32:49Z",
+  "output": "00-hq/knowledge/K032.md"
  },
  {
   "id": "K033",
@@ -131,7 +133,9 @@
    "01-botbhai/docs/OFFER.md",
    "01-botbhai/docs/BLUEPRINT.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:40:00Z",
+  "updated": "2026-11-06T17:33:40Z",
+  "output": "00-hq/knowledge/K033.md"
  }
 ]

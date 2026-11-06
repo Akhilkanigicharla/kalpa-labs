@@ -43,8 +43,10 @@
    "06-finops/docs/pilot-leads.md",
    "06-finops/docs/offer-pack.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T18:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T18:40:00Z",
+  "updated": "2026-11-06T18:38:38Z",
+  "output": "00-hq/knowledge/K034.md"
  },
  {
   "id": "K035",
@@ -58,7 +60,9 @@
    "06-finops/docs/offer-pack.md",
    "06-finops/docs/pilot-leads.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T18:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T18:40:00Z",
+  "updated": "2026-11-06T18:39:36Z",
+  "output": "00-hq/knowledge/K035.md"
  }
 ]

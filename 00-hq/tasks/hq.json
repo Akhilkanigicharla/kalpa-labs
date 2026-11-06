@@ -98,7 +98,9 @@
    "00-hq/SOFT-LAUNCH.md",
    "00-hq/launch/readiness.json"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T17:33:02Z",
+  "output": "00-hq/knowledge/K024.md"
  }
 ]

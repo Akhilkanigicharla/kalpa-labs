@@ -45,8 +45,17 @@ Why not Hugging Face Spaces: since 2026 a new Docker Space needs a paid HF plan 
 | `N8N_DIAGNOSTICS_ENABLED` | `false` |
 | `N8N_PERSONALIZATION_ENABLED` | `false` |
 | `EXECUTIONS_DATA_SAVE_ON_SUCCESS` | `none` |
-| `EXECUTIONS_DATA_PRUNE` / `EXECUTIONS_DATA_MAX_AGE` | `true` / `168` (keeps 500 MB free tier small) |
-| `NODE_OPTIONS` | `--max-old-space-size=400` (stays under 512 MB) |
+| `EXECUTIONS_DATA_PRUNE` / `EXECUTIONS_DATA_MAX_AGE` | `true` / `72` (was 168; changed 6 Nov) |
+| `NODE_OPTIONS` | `--max-old-space-size=300` (was 400; see memory fix below) |
+| `N8N_RUNNERS_MAX_OLD_SPACE_SIZE` / `N8N_RUNNERS_MAX_CONCURRENCY` / `N8N_RUNNERS_AUTO_SHUTDOWN_TIMEOUT` | `96` / `2` / `15` |
+| `N8N_VERSION_NOTIFICATIONS_ENABLED` / `N8N_TEMPLATES_ENABLED` | `false` / `false` |
+
+## Memory fix (6 Nov 2026, read from the Render connector)
+- Render events: `server_failed` with `oomKilled` (512Mi limit) on 5 Nov 06:54 UTC.
+- Render metrics: memory sat at 430–440 MB of 512 MB all day; 6 Nov 05:00 UTC hit 512.6 MB, then no data until 12:00 UTC (down most of the IST working day).
+- Cause: n8n 2.x main heap (400 MB cap) plus the built-in task runner process plus Node overhead filled the 512 MB box.
+- Fix applied through the Render API: main heap 300 MB, runner heap 96 MB, runner stops after 15 s idle, fewer extras. Deploy dep-dbn09kh5efls738oijrg live 16:50 UTC; /healthz 200.
+- Sleeping after 15 min idle is separate and handled by the keep-awake ping (A165/A167).
 
 ## After that (Claude, via the n8n API)
 1. Re-create the 4 workflows (Task Runner, CEO update replaced by `daily-brief.yml`, World Keeper, Read Repo File) on free models (OpenRouter, Groq, NVIDIA, Hugging Face).

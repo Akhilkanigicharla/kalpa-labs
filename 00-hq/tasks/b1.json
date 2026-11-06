@@ -99,7 +99,9 @@
   "read": [
    "01-botbhai/docs/OFFER.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:31:02Z",
+  "output": "00-hq/knowledge/K025.md"
  }
 ]

@@ -36,6 +36,12 @@ class MemoryTest(unittest.TestCase):
         self.assertNotIn("ravi@example.com", text)
         self.assertNotIn("98765", text)
 
+    def test_api_keys_are_scrubbed(self):
+        M.store("hq", "K1", "Key sk-or-v1-abcdef1234567890abcdef and gsk_ABCDEFGHIJKLMNOPQRSTUV and AIzaSyA1234567890abcdefghijklmnopqrstu and ghp_abcdefghijklmnopqrstuvwxyz0123456789 leaked", self.root)
+        text = open(os.path.join(self.root, M.DIR, "hq.jsonl"), encoding="utf-8").read()
+        for bad in ("sk-or-v1-abc", "gsk_ABC", "AIzaSyA", "ghp_abc"):
+            self.assertNotIn(bad, text)
+
     def test_lesson_from_verdict(self):
         self.assertEqual(M.lesson_from_verdict("PASS"), "")
         self.assertIn("UNVERIFIED", M.lesson_from_verdict("FIX:\n- mark the Plivo rate UNVERIFIED\n- shorter"))

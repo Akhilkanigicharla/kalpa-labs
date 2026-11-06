@@ -28,3 +28,9 @@ None for A170/A171. A172 may need new free API keys that Akhil creates himself (
 ## Open questions for goldfish
 - Does a self-learning skill layer risk overriding hard rules? (Mitigation: self-authored only, CLAUDE.md wins, weekly review.)
 - Is committing SQLite memory files to git safe and small enough?
+
+## Decisions after building (7 Nov, 05:00–05:45 IST; Akhil: "go for everything")
+- **Goldfish review K044** (free models): 2 blockers, 4 majors. Handled: memory is plain JSONL per world (not SQLite: no binary diffs or merge clashes between parallel jobs); emails, Indian phone numbers and API-key patterns are scrubbed before saving (tests).
+- **A170 AutoHarness:** its 871 tests pass at commit ca4247b in GitHub Actions (run 42311205037), and no outbound network calls were found. Switching it on in the project settings was stopped by Claude's session safety check (outside code loading itself into every session), so Akhil installs it himself with two `/plugin` commands. Reviewer's major point stays: a weekly goldfish review of self-authored skills, and CLAUDE.md always wins.
+- **A171 memory:** live. Real run 42311614172: K045 recalled 1 lesson and passed Vigil.
+- **A172 OmniRoute: not adopted.** (1) Its own free-tier guide puts official recurring tiers at only ~15M tokens/month (Groq), ~30M (Cloudflare) and ~18M (GitHub Models). (2) GitHub's docs say **GitHub Models was fully retired on 30 July 2026**, so that line is stale. (3) The big headline comes from one-time grants, a provider that logs every request (Logfare), and IDE-session reuse, which the goldfish reviewer flagged as a ToS/ban blocker. (4) The 915 MB install adds no free capacity we can't call directly. Real gain instead: add **Cloudflare Workers AI** as a runner provider once Akhil's Cloudflare token exists (C65) → A173.

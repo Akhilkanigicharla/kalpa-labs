@@ -13,7 +13,8 @@ from datetime import datetime, timezone
 
 DIR = "00-hq/agents/memory"
 STOP = set("the a an and or of to in on for with is are be it this that as at by from not no your you we our".split())
-PII = [(re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"), "[email]"),
+PII = [(re.compile(r"\b(?:sk-[\w-]{16,}|gsk_\w{16,}|AIza[\w-]{20,}|gh[pousr]_\w{20,}|hf_\w{20,}|xox[abp]-[\w-]{10,})"), "[key]"),
+       (re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"), "[email]"),
        (re.compile(r"(?:\+?91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}\b"), "[phone]")]
 
 

@@ -124,3 +124,4 @@
 | TSLPRB 2026: 7,437 SI/constable/other posts notified | VERIFIED (3 sources) | 2026-11-06 | pw.live; careers360; careerpower |
 | UP Police Constable 2026: 28,86,797 applicants; LIC AAO 2025: 5,16,076; IBPS PO 2025: 12.35 lakh | UNVERIFIED (1 source each) | 2026-11-06 | careers360; bankersadda; bankersadda |
 | sarvamai/sarvam-30b and sarvam-105b: Apache-2.0, include Telugu | VERIFIED (HF Hub live) | 2026-11-06 | hf.co model pages via HF MCP |
+| 2026-11-07 | Reddit via Zapier needs a Client ID/Secret from a Reddit developer app; Reddit requires manual approval for new API apps since Nov 2025 | docs.n8n.io Reddit credentials page + molehill.pages.dev + activepieces.com blog (1 Nov 2026) | verified (3 sources). One source says new requests closed 31 Oct 2026: unverified |

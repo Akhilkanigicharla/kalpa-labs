@@ -1,3 +1,33 @@
+# START HERE: state on 6 Nov 2026 (evening IST), written for a fresh session
+
+**Read in this order:** `CLAUDE.md` (rules; rule 0 = Akhil's ideas first, find the way) → `00-hq/VISION.md` (Akhil's 7 streams, the source of truth) → this file → `00-hq/ROADMAP.md` (top blocks) → `00-hq/log/2026-11-06.md`.
+
+## Akhil's direction (6 Nov, in his words, firm)
+- "These are my ideas, don't change them for your convenience." "Never say no to me; think every possible way; use the best AI models, Hugging Face, OpenRouter and the best GitHub repos." Do not send him lists of limits; build safety and law into the work quietly.
+- 7 streams (details in VISION.md): b1 BotBhai = AI agents for **salons, gyms and real estate agents** (bookings, new customers, social media); b2 = a **worldwide paid mobile app** Claude finds, builds, deploys, promotes (JobCard PARKED, never his idea); b3 = **Exam Kits** for all govt/bank/private exams (tracker, reminders, progress, exam alerts, best material + YouTube videos; India first, then world; workshop dropped); b4 = Tab Lifeboat browser extension; b5 = Telugu Deals (affiliate yes, calculators to rework); b6 = **AI FinOps + AI Guardrails consulting** (Akhil as consultant, AIGP / ISO 42001; old "Ledger Peaks" is one small tool); b7 = **real-money algo trading for Akhil** (research → backtest → paper → small live with stop-loss + daily loss cap; Akhil sets broker keys).
+- Soft launch Sun 13 Dec 2026. BotBhai pilot from Mon 16 Nov (first 3 businesses: gym, salon or real estate).
+
+## Next job (agent queue top block "Akhil's 7 streams, restated")
+A150 consulting plan · A151 exam kits research · A152 mobile app ideas (3 for Akhil to pick) · A153 trading research + build · A154 deals calculators · A155 BotBhai growth + social agents. Then A87 BotBhai depth. Research with live sources, two per fact; bring Akhil clear choices; he picks.
+
+## What runs now (all free)
+- **Agents:** GitHub Actions `agents.yml`, hourly, 8 worlds in parallel, queues `00-hq/tasks/<world>.json`, runner `00-hq/agents/runner.py` (Groq, OpenRouter, **Google Gemini 3.5 Flash / Flash-Lite**: 50-50 split, Vigil cross-checks with another provider, humanizer rules). Drafts land in `00-hq/knowledge/K*.md` (20 in review, 3 todo). Agents have NO web search: they must mark unknown facts UNVERIFIED.
+- **Self-hosted n8n:** https://kalpa-n8n.onrender.com (Render free + Supabase Postgres, image n8nio/n8n:2.46.4). `n8n-sync.yml` pushes workflows from `00-hq/n8n-selfhost/workflows/` and makes credentials from GitHub secrets (Groq, OpenRouter, Telegram, Gemini). Workflow "Kalpa Morning Councils (all worlds)" 07:30 IST → Telegram, on Gemini. Keep-awake `n8n-keepalive.yml`. Render firewall blocks the word "prompts" in node names. Old n8n Cloud trial ENDED 31 Oct (locked; its MCP connector 404s).
+- **Daily brief:** `daily-brief.yml` 9 PM IST to Akhil's private Telegram (CEO_CHAT_ID 1905524851; NEVER TELEGRAM_CHAT_ID = public deals channel), alerts first.
+- **Website:** kalpalabs.dpdns.org (Netlify site kalpa-labs, id 187b4397-f16b-4642-ab64-87d15bd43b47). Akhil deploys by zip drag-drop (Claude's prod deploy is blocked). Chat = Netlify function `00-hq/site/netlify/functions/chat.mjs` at /api/chat (Groq → OpenRouter, 5 languages with per-turn Tenglish/Hinglish hint, callbacks → Netlify Forms "contact"). Latest built zip: v8 (gyms/salons/real estate; JobCard branch → "Mobile App, idea stage"); Akhil uploaded v6 at least: check the live deploy before assuming v7/v8 are live. Website text for Kits, Consulting, Trading must be rewritten after A150–A153.
+- **CEO Room** dashboard https://claude.ai/artifact/CKKijmDLbL6hAkn5BFibpC: data files rebuilt by `00-hq/tools/ceo_room_data.py` (old n8n live sources dead). **Kingdom** https://claude.ai/artifact/MdD3R2kEYP4qHDXXvbsJF1 is private again; builds + launch/readiness synced 3 Nov.
+
+## Akhil's open tasks (CEO queue)
+Upload website v8 zip; review drafts K009/K010 (Tab Lifeboat), K006/K007 (Deals), K023 (where to find first customers), K032/K033 when done (gym + real estate pitches); C43 Reddit post; C23 lawyer/CA for BotBhai papers; C22/C24/C54 payments later. K001-v2 salon pitch approved, HOLD until A87.
+
+## Things learned the hard way
+- Ask before choosing any product for Akhil (JobCard mistake). Never shrink his idea (Ledger Peaks mistake).
+- Google retired gemini-2.5-flash for new users; run `gemini-models.yml` to see working names.
+- Free Render n8n has 512 MB: NODE_OPTIONS 280 MB, runners 96 MB, concurrency 1.
+- Don't write chained `sleep` loops in this environment; use until-loops or background runs.
+
+---
+
 # Handoff · state of Kalpa Labs (updated 16 Oct 2026)
 
 ## Latest (13–16 Oct 2026): start here in a new chat

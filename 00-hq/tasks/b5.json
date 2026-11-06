@@ -11,11 +11,11 @@
    "05-deals/PLAN.md",
    "00-hq/SOFT-LAUNCH.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-06T01:37:06Z",
+  "updated": "2026-11-06T09:29:42Z",
   "tries": 1,
-  "vigil_notes": "FIX:\n*   Mark Diwali (17 Nov) and Bhai Dooj (26 Nov) dates as UNVERIFIED; specific 2026 festival dates are not in repo files.\n*   Mark Christmas (25 Dec) and New Year (31 Dec) dates as UNVERIFIED; specific 2026 calendar dates are not in repo files.\n*   Remove specific weekday labels (e.g., \"Tue\", \"Sat\") for all dates; only the 2026-10-13 plan date is verified, so other weekdays are UNVERIFIED.\n*   Correct \"Bhai Dooj\" spelling in English template (remove zero-width joiner/typo \"Do​oj\").\n*   Ensure \"Diwali\" is treated as a festival hook only if verified; since it's not in the repo, mark the specific date claim as UNVERIFIED."
+  "output": "00-hq/knowledge/K006.md"
  },
  {
   "id": "K007",
@@ -45,10 +45,10 @@
   "read": [
    "05-deals/PLAN.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-06T01:38:31Z",
+  "updated": "2026-11-06T09:30:35Z",
   "tries": 2,
-  "vigil_notes": "FIX:\n*   Draft is incomplete: Calculators 9 and 10 are missing or cut off (Task requires 10).\n*   Language violation: Excessive English words (e.g., \"Input\", \"Formula\", \"UNVERIFIED\", \"Interest\", \"Salary\") violate the \"Plain Telugu\" requirement; use Telugu equivalents (e.g., \"ఇన్‌పుట్\" → \"వివరాలు\", \"ఫార్ములా\" → \"సూత్రం\").\n*   Rule violation: Marking standard financial formulas (EMI, Compound Interest) as \"UNVERIFIED\" is incorrect; these are mathematical constants, not repo facts. Remove these tags.\n*   Factual error: Calculator 1 FAQ 2 cites \"Income Tax Act 2023-24\" for FY 2026-27; this is an invented/incorrect legal reference.\n*   Style/Clarity: \"సూచన పేజీ లేదు\" (No instruction page) is confusing jargon; replace with clear Telugu explanations of assumptions."
+  "output": "00-hq/knowledge/K008.md"
  }
 ]

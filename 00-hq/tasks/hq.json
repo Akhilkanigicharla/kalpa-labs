@@ -63,6 +63,9 @@
    "01-botbhai/docs/OFFER.md"
   ],
   "status": "todo",
-  "created": "2026-11-06T12:00:00Z"
+  "created": "2026-11-06T12:00:00Z",
+  "updated": "2026-11-06T11:55:53Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Report “live browsing unavailable” instead of inventing specific startups, salons, dates, URLs, and evidence; mark every non-repo fact UNVERIFIED.\n- Add the missing AC-technician section (5 online gathering places) and complete Hyderabad Salons Set C (table cuts off after 1 of 5 entries).\n- Remove prohibited-platform citations (Instagram, LinkedIn, Google My Business) and invented contact details such as info@glowgrace.com.\n- Mark Verdict/ICP claims (TechCrunch dates, The Hindu feature, Series-A announcements) as UNVERIFIED; they currently read as verified facts.\n- Fix inconsistent prospect numbering and close the truncated Salon Set C table."
  }
 ]

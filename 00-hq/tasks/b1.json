@@ -151,10 +151,10 @@
    "01-botbhai/PLAN.md"
   ],
   "context_chars": 38000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-06T19:05:00Z",
-  "updated": "2026-11-06T18:55:53Z",
+  "updated": "2026-11-06T19:00:42Z",
   "tries": 1,
-  "vigil_notes": "FIX:\n* Remove invented pricing, dates, and customer metrics not in repo files or mark as UNVERIFIED.\n* Ensure all facts are sourced from repo files or marked UNVERIFIED.\n* Use plain short English with Kalpa rules applied.\n* Keep fixes to a maximum of 5 short bullet points."
+  "output": "00-hq/knowledge/K037.md"
  }
 ]

@@ -96,7 +96,9 @@
   "read": [
    "03-kits/exam-kits/README.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T23:40:00Z"
+  "status": "review",
+  "created": "2026-11-06T23:40:00Z",
+  "updated": "2026-11-06T23:24:32Z",
+  "output": "00-hq/knowledge/K045.md"
  }
 ]

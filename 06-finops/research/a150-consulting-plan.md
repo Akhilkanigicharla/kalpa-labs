@@ -1,6 +1,6 @@
 # A150 · b6 AI FinOps + AI Guardrails consulting plan
 
-Research run: 6 Nov 2026 (cloud session, lane A). Status: **draft for Akhil's approval.**
+Research run: 6 Nov 2026 (cloud session, lane A). Status: **approved by Akhil, 6 Nov 2026 ("pricing is ok, go ahead").**
 Rule: two sources per fact (CLAUDE.md rule 8). Single-source items are marked *(1 source)*. Prices change; recheck on the provider's page on the day you pay.
 Money conversions use ≈ ₹95 per US$ (mid-market quotes seen today ranged ₹90–97). Treat ₹ figures as rough.
 
@@ -29,7 +29,7 @@ Money conversions use ≈ ₹95 per US$ (mid-market quotes seen today ranged ₹
 What the market charges today:
 - **LLM / AI cost audit:** fixed-fee audits at $2,500 (1 week) on entuit; $3,000–6,000 (3–5 days) on activewizards, which says it isn't worth it below $2k/month AI spend. Follow-on optimisation sprints run $12k–25k (activewizards) or $15k–40k (a Wellfound founder post).
 - **ISO 42001 gap assessment for a small firm:** $1,500–2,500 for a 2–3 day job (certbetter.com); $3,000–10,000+ is the general range (Vanta; ud.hk). Full first-year certification for a small company runs $15k–75k+ (complyjet; certpro).
-- **India:** ISO 42001 consulting is quoted at an indicative ₹1.5–5 lakh, 8–12 weeks to readiness *(1 source: tcsa.in)*. The same firm prices ISO 27001 consulting at ₹1–3 lakh, plus ₹0.7–1.2 lakh to the certification body (tcsa.in cost guide; wattlecorp agrees on the cost layers). That is a cross-check for the general price level only.
+- **India:** ISO 42001 consulting is quoted at an indicative ₹1.5–5 lakh with 8–12 weeks to readiness (tcsa.in), and ₹2–5 lakh (neumetric.com). The same firm prices ISO 27001 consulting at ₹1–3 lakh, plus ₹0.7–1.2 lakh to the certification body (tcsa.in cost guide; wattlecorp agrees on the cost layers). That is a cross-check for the general price level only.
 
 Kalpa's proposed prices: below market while unproven, and raised after 3 case studies.
 

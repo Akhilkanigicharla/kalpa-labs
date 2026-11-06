@@ -116,4 +116,11 @@
 | UPSC CSE 2026: 8,19,372 applied, ~5.49 lakh appeared, 1,016 vacancies | VERIFIED (2 sources) | 2026-11-06 | pw.live; freepressjournal; easternmirrornagaland |
 | NEET UG 2026: 22,79,743 registered | VERIFIED (2 sources) | 2026-11-06 | careers360 (NTA); hellomentor.in |
 | TSPSC Group 2 (28/2022) 5,51,943 applications; APPSC Group 2 (2024) 4,83,525 | VERIFIED (2 sources each) | 2026-11-06 | telanganatoday + thehansindia; sakshi education + deccanchronicle |
-| India ISO 42001 consulting indicative ₹1.5–5 lakh | UNVERIFIED (1 source) | 2026-11-06 | tcsa.in |
+| India ISO 42001 consulting indicative ₹1.5–5 lakh (tcsa) / ₹2–5 lakh (neumetric) | VERIFIED (2 sources) | 2026-11-06 | tcsa.in; neumetric.com |
+| GATE 2026: 10,11,719 paper-wise registrations, 7,97,434 appeared | VERIFIED (2 sources) | 2026-11-06 | pw.live; findmycollege (IIT Guwahati statistical report) |
+| JEE Main 2026: 16,04,854 unique registered, 15,38,468 unique appeared | VERIFIED (2 sources) | 2026-11-06 | pw.live; cracku.in (NTA data) |
+| CAT 2026: 2.84 lakh registrations (2.95 lakh in 2025) | VERIFIED (3 sources) | 2026-11-06 | careers360; collegedekho; collegedunia |
+| CTET Feb 2026: 25,30,436 registered | VERIFIED (3 sources) | 2026-11-06 | careers360; indiatvnews; careerpower |
+| TSLPRB 2026: 7,437 SI/constable/other posts notified | VERIFIED (3 sources) | 2026-11-06 | pw.live; careers360; careerpower |
+| UP Police Constable 2026: 28,86,797 applicants; LIC AAO 2025: 5,16,076; IBPS PO 2025: 12.35 lakh | UNVERIFIED (1 source each) | 2026-11-06 | careers360; bankersadda; bankersadda |
+| sarvamai/sarvam-30b and sarvam-105b: Apache-2.0, include Telugu | VERIFIED (HF Hub live) | 2026-11-06 | hf.co model pages via HF MCP |

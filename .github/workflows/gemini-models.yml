@@ -10,3 +10,11 @@ jobs:
         run: |
           curl -s -H "x-goog-api-key: $GEMINI_API_KEY" "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200" \
           | python3 -c "import sys,json; [print('MODEL', m['name'].split('/')[-1]) for m in json.load(sys.stdin).get('models',[]) if 'generateContent' in m.get('supportedGenerationMethods',[])]"
+      - name: Which models answer on the free key (OpenAI-compatible endpoint)
+        env: { GEMINI_API_KEY: "${{ secrets.GEMINI_API_KEY }}" }
+        run: |
+          for m in gemini-3.8-flash gemini-3.5-flash gemini-3.5-flash-lite gemini-flash-latest gemini-flash-lite-latest gemini-2.5-flash gemma-4-31b-it; do
+            c=$(curl -s -o /tmp/r.json -w '%{http_code}' -H "Authorization: Bearer $GEMINI_API_KEY" -H 'Content-Type: application/json' \
+              https://generativelanguage.googleapis.com/v1beta/openai/chat/completions -d "{\"model\":\"$m\",\"messages\":[{\"role\":\"user\",\"content\":\"Say OK\"}],\"max_tokens\":20}")
+            echo "TRY $m HTTP $c $(head -c 160 /tmp/r.json | tr '\n' ' ')"; sleep 5
+          done

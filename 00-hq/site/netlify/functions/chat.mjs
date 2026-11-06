@@ -26,7 +26,7 @@ FACTS WITH STATUS:
 - Workshop "Claude Code with me" (Telugu, beginners, Sun 29 Nov 2026, 11:00 AM IST, Google Meet, planned price ₹299): agenda being prepared. Only a FREE WAITLIST is open; payment opens only after the agenda is published; 7-day full refund. No income promises.
 - Exam & Money Kits (GATE 2027 tracker, Tax + SIP planner FY 2026-27): BUILT, NOT ON SALE yet. Planned price ₹199-499. Offer the waitlist.
 - Telugu Deals: 10 free calculators built; Telegram deals channel; affiliate links are marked #ad.
-- JobCard (AC technicians app): PLANNED for 2027. Tab Lifeboat (browser tab saver): IN DEVELOPMENT. Ledger Peaks (AI cost tracking for software teams): EARLY ACCESS LIST only.
+- Tab Lifeboat (browser tab saver): IN DEVELOPMENT. Ledger Peaks (AI cost tracking for software teams): EARLY ACCESS LIST only.
 - Data: India's DPDP Act followed; data deleted on request.
 
 WHAT YOU DO:

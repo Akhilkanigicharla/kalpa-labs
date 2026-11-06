@@ -111,6 +111,14 @@ class Runner(unittest.TestCase):
         self.assertGreater(len(R.read_context(["big.md"], self.root, 25000)), 24000)
         self.assertEqual(R.context_limit({"context_chars": 999999}), R.MAX_CONTEXT_CAP)
         self.assertEqual(R.context_limit({}), R.MAX_CONTEXT)
+    def test_lessons_are_stored_and_recalled(self):
+        R.apply(self.task, {"draft": "d", "model": "m", "verdict": "FIX:\n- mark the pilot price UNVERIFIED", "vmodel": "v"}, self.root)
+        self.task.pop("vigil_notes", None)
+        post = fake_post(["draft", "PASS"])
+        R.work(self.task, self.env, post, self.root)
+        prompt = post.calls[0][1]["messages"][1]["content"]
+        self.assertIn("LESSONS FROM PAST TASKS", prompt)
+        self.assertIn("pilot price UNVERIFIED", prompt)
 
 
 if __name__ == "__main__":

@@ -10,6 +10,8 @@ Standard library only. Run: python3 00-hq/agents/runner.py --world b1 [--max N] 
 """
 import json, os, re, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import memory  # noqa: E402  A171 lesson memory
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b7.json, hq.json
@@ -132,6 +134,10 @@ def work(task, env, post=http_post, root=ROOT):
     user = f"TASK {task['id']} ({task.get('world', 'hq')}): {task['title']}\n\n{task.get('details', '')}"
     if task.get("vigil_notes"):
         user += f"\n\nYour last draft was sent back by Vigil. Fix exactly this:\n{task['vigil_notes']}"
+    lessons = memory.recall(task.get("world", "hq"), f"{task['title']} {task.get('details', '')}", root=root)
+    print(f"{task['id']}: {len(lessons)} lessons recalled")
+    if lessons:
+        user += "\n\nLESSONS FROM PAST TASKS (Vigil's earlier fixes; follow them):\n" + "\n".join(f"- {l}" for l in lessons)
     ctx = read_context(task.get("read"), root, context_limit(task))
     if ctx:
         user += f"\n\nREPO FILES (the truth about what is built):\n{ctx}"
@@ -166,6 +172,7 @@ def apply(task, result, root=ROOT):
         return "review"
     task["tries"] = task.get("tries", 0) + 1
     task["vigil_notes"] = result["verdict"][:1500]
+    memory.store(task.get("world", "hq"), task["id"], memory.lesson_from_verdict(result["verdict"]), root)
     task["status"] = "rejected" if task["tries"] >= 3 else "todo"
     return task["status"]
 

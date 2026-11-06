@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py
+      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py && python3 00-hq/agents/test_memory.py
   world:
     needs: test
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "kalpa-agents"
           git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
-          git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge || true
+          git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge 00-hq/agents/memory || true
           git diff --cached --quiet && exit 0
           git commit -q -m "agents(${{ matrix.world }}): queue run $(date -u +%FT%TZ)"
           for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

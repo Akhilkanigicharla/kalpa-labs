@@ -85,5 +85,18 @@
   "created": "2026-11-06T19:05:00Z",
   "updated": "2026-11-06T18:56:06Z",
   "output": "00-hq/knowledge/K039.md"
+ },
+ {
+  "id": "K045",
+  "world": "b3",
+  "priority": "P0",
+  "owner": "Kavi",
+  "title": "Write the Telugu + English product blurb (under 80 words each) for the TGPSC Group 2 exam-prep Google Sheets kit at Rs 99",
+  "details": "Plain, honest, no 'guaranteed selection'. Mention what is inside: syllabus tracker, daily log, mock tracker, revision dates. Mark anything unsure UNVERIFIED.",
+  "read": [
+   "03-kits/exam-kits/README.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-06T23:40:00Z"
  }
 ]

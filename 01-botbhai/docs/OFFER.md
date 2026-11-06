@@ -1,5 +1,7 @@
 # BotBhai offer, v0 (30 Oct 2026)
 
+> **Who BotBhai is for (Akhil, 6 Nov 2026): gyms, salons and real estate agents are the three main customers, equal priority.** Salons are not the only goal. The engine already has a setup for each (`setups/gym`, `setups/salon`, `setups/realestate`). Pilot = the first 3 founding businesses of any of these three kinds.
+
 Built from the first 12 of 24 agent research jobs (KL Tasks, Vigil PASS). Figures marked UNVERIFIED need a second source before they go in front of a customer (CLAUDE.md rule 8). v1 lands when the rest of the swarm finishes.
 
 ## 1. What a salon gets (only built features)

@@ -1,0 +1,124 @@
+{
+ "name": "SSC CGL",
+ "name_te": "ఎస్ఎస్సీ సీజీఎల్",
+ "family": "Central Government",
+ "body": "Staff Selection Commission",
+ "official_url": "https://ssc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Tier 1 (qualifying): 4 sections × 25 questions × 50 marks = 200 marks, −0.50 per wrong answer, sectional timing. Tier 2 Paper 1 decides merit (all posts); Paper 2 only for statistics posts.",
+ "papers": [
+  {
+   "name": "Tier 1",
+   "sections": [
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Analogy, classification, series",
+      "Coding-decoding, blood relations, directions",
+      "Venn diagrams, syllogism",
+      "Non-verbal: mirror, paper folding, embedded figures"
+     ]
+    },
+    {
+     "name": "General awareness",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "History, culture, polity",
+      "Geography and economy",
+      "General science",
+      "Current affairs, schemes, sports, awards"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Number system, simplification",
+      "Percentage, ratio, average, profit-loss, interest",
+      "Time-work, speed-distance",
+      "Algebra, geometry, mensuration, trigonometry",
+      "Data interpretation"
+     ]
+    },
+    {
+     "name": "English comprehension",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Reading comprehension and cloze",
+      "Error spotting, fill-ups",
+      "Vocabulary: synonyms, antonyms, idioms, one-word",
+      "Voice, narration, sentence improvement"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tier 2 Paper 1",
+   "sections": [
+    {
+     "name": "Mathematical abilities",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Arithmetic",
+      "Algebra and geometry",
+      "Mensuration and trigonometry",
+      "Statistics and probability basics"
+     ]
+    },
+    {
+     "name": "Reasoning & general intelligence",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Verbal and non-verbal reasoning",
+      "Puzzles and critical thinking"
+     ]
+    },
+    {
+     "name": "English language & comprehension",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Grammar and vocabulary",
+      "Comprehension"
+     ]
+    },
+    {
+     "name": "General awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Static GK",
+      "Current affairs"
+     ]
+    },
+    {
+     "name": "Computer knowledge & DEST (qualifying)",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Computer basics, MS Office, internet",
+      "Data entry speed test"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ssc.gov.in",
+  "https://www.mahendras.org/blogs/ssc-cgl-syllabus-and-exam-pattern-tier-1-and-tier-2",
+  "https://onlineresult.in/article/ssc-cgl-exam-pattern"
+ ],
+ "id": "ssc-cgl",
+ "checked": "2026-11-06"
+}

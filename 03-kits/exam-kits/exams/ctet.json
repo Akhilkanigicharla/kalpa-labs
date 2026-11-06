@@ -1,0 +1,117 @@
+{
+ "name": "CTET (Paper 1 & 2)",
+ "name_te": "సీటెట్",
+ "family": "Teachers · Central",
+ "body": "CBSE (Central Teacher Eligibility Test)",
+ "official_url": "https://ctet.nic.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Each paper: 150 questions, 150 marks, 2½ hours, no negative marking. Paper 1 = classes I–V; Paper 2 = classes VI–VIII.",
+ "papers": [
+  {
+   "name": "Paper 1 (classes I–V)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (primary school child)",
+      "Inclusive education and children with special needs",
+      "Learning and pedagogy"
+     ]
+    },
+    {
+     "name": "Language I",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension (unseen passages)",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: numbers, shapes, measurement, data, patterns",
+      "Pedagogical issues in mathematics"
+     ]
+    },
+    {
+     "name": "Environmental studies",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Content: family, food, shelter, water, travel, things we make",
+      "Pedagogical issues in EVS"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper 2 (classes VI–VIII)",
+   "sections": [
+    {
+     "name": "Child development & pedagogy",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Child development (elementary school child)",
+      "Inclusive education",
+      "Learning and pedagogy"
+     ]
+    },
+    {
+     "name": "Language I",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Language II",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Comprehension and grammar",
+      "Pedagogy of language development"
+     ]
+    },
+    {
+     "name": "Mathematics & Science OR Social Studies (choose one)",
+     "questions": 60,
+     "marks": 60,
+     "topics": [
+      "Maths content and pedagogy",
+      "Science content and pedagogy",
+      "Social studies: history, geography, social and political life",
+      "Social studies pedagogy"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ctet.nic.in",
+  "https://www.careerpower.in/blog/?p=269874",
+  "https://www.cbseguidanceweb.com/ctet-exam-pattern-and-syllabus-pdf-download/"
+ ],
+ "id": "ctet",
+ "checked": "2026-11-06"
+}

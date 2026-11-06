@@ -1,0 +1,111 @@
+{
+ "name": "IBPS PO",
+ "name_te": "ఐబీపీఎస్ పీఓ",
+ "family": "Banks",
+ "body": "Institute of Banking Personnel Selection",
+ "official_url": "https://www.ibps.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Prelims: 100 questions, 100 marks, 60 minutes, 3 sections, 20 min each, −0.25 per wrong answer (qualifying). Mains: 4 objective sections + descriptive English. Final merit = Mains 80% + Interview 20%.",
+ "papers": [
+  {
+   "name": "Prelims",
+   "sections": [
+    {
+     "name": "English language",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension",
+      "Cloze test and fillers",
+      "Error spotting and para jumbles"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Simplification and approximation",
+      "Number series and quadratic equations",
+      "Data interpretation",
+      "Arithmetic: percentage, profit-loss, SI-CI, time-work, speed-distance"
+     ]
+    },
+    {
+     "name": "Reasoning ability",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Puzzles and seating arrangement",
+      "Syllogism and inequality",
+      "Blood relations, direction, coding-decoding"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains",
+   "sections": [
+    {
+     "name": "Reasoning",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Advanced puzzles",
+      "Input-output, data sufficiency",
+      "Logical reasoning and critical reasoning"
+     ]
+    },
+    {
+     "name": "Data analysis & interpretation",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Tables, bar, line, pie and caselet DI",
+      "Data sufficiency and probability"
+     ]
+    },
+    {
+     "name": "General, economy & banking awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Current affairs (last 6 months)",
+      "Banking and financial awareness",
+      "Indian economy and RBI policies"
+     ]
+    },
+    {
+     "name": "English language",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Reading comprehension",
+      "Vocabulary and grammar",
+      "Para jumbles and sentence correction"
+     ]
+    },
+    {
+     "name": "Descriptive test",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Letter writing",
+      "Essay writing"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.ibps.in",
+  "https://www.sreedharscce.com/blogs/ibps-po-syllabus-and-exam-pattern/",
+  "https://www.pw.live/banking/exams/ibps-po-syllabus"
+ ],
+ "id": "ibps-po",
+ "checked": "2026-11-06"
+}

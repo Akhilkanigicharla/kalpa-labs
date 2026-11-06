@@ -22,6 +22,9 @@ MODELS = [  # all free; first one with a key that answers wins
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b"),
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
+    # Extra free OpenRouter backups (listed free in openrouter.ai/api/v1/models on 7 Nov 2026); "openrouter/free" routes to any free model.
+    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "google/gemma-4-31b-it:free"),
+    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "openrouter/free"),
     # Google Gemini API free tier (no card; about 10-15 requests/min, 1,500/day; free-tier text may be used by Google to
     # train, so agents never get customer personal data). Half the worlds start here (Akhil, 6 Nov 2026: 50-50 with Google).
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash"),

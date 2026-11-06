@@ -62,7 +62,9 @@
   "read": [
    "05-deals/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:31:01Z",
+  "output": "00-hq/knowledge/K029.md"
  }
 ]

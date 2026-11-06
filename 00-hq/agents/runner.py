@@ -16,6 +16,7 @@ TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json â
 WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "hq"]
 KNOW = os.path.join(ROOT, "00-hq/knowledge")
 MAX_TASKS = 3
+MAX_CONTEXT_CAP = 40000  # a task may ask for more ("context_chars"), e.g. EGM goldfish reviews of a whole PLAN.md; Groq 413s then fall back to Gemini
 MAX_CONTEXT = 7000  # Groq free tier rejects bigger requests (HTTP 413)  # characters of repo files given to the worker
 
 MODELS = [  # all free; first one with a key that answers wins
@@ -83,17 +84,21 @@ def http_post(url, headers, payload):
         return json.load(r)
 
 
-def read_context(paths, root=ROOT):
+def context_limit(task):
+    return min(int(task.get("context_chars", MAX_CONTEXT)), MAX_CONTEXT_CAP)
+
+
+def read_context(paths, root=ROOT, limit=MAX_CONTEXT):
     out, used = [], 0
     for p in paths or []:
         full = os.path.normpath(os.path.join(root, p))
         if not full.startswith(root + os.sep) or not os.path.isfile(full):
             out.append(f"--- {p}: (not found)")
             continue
-        text = open(full, encoding="utf-8", errors="replace").read()[: max(0, MAX_CONTEXT - used)]
+        text = open(full, encoding="utf-8", errors="replace").read()[: max(0, limit - used)]
         used += len(text)
         out.append(f"--- {p} ---\n{text}")
-        if used >= MAX_CONTEXT:
+        if used >= limit:
             break
     return "\n".join(out)
 
@@ -127,7 +132,7 @@ def work(task, env, post=http_post, root=ROOT):
     user = f"TASK {task['id']} ({task.get('world', 'hq')}): {task['title']}\n\n{task.get('details', '')}"
     if task.get("vigil_notes"):
         user += f"\n\nYour last draft was sent back by Vigil. Fix exactly this:\n{task['vigil_notes']}"
-    ctx = read_context(task.get("read"), root)
+    ctx = read_context(task.get("read"), root, context_limit(task))
     if ctx:
         user += f"\n\nREPO FILES (the truth about what is built):\n{ctx}"
     draft, model = call(MODELS, [{"role": "system", "content": sys_msg}, {"role": "user", "content": user}], env, post)

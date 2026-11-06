@@ -102,5 +102,21 @@
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T17:33:02Z",
   "output": "00-hq/knowledge/K024.md"
+ },
+ {
+  "id": "K036",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 00-hq/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "00-hq/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-06T19:05:00Z"
  }
 ]

@@ -104,6 +104,14 @@ class Runner(unittest.TestCase):
             self.assertIn(t["status"], ("todo", "review", "rejected", "done"))
             self.assertIn(t["priority"], ("P0", "P1", "P2"))
 
+    def test_context_limit_per_task(self):
+        big = os.path.join(self.root, "big.md")
+        open(big, "w").write("x" * 30000)
+        self.assertLess(len(R.read_context(["big.md"], self.root)), R.MAX_CONTEXT + 50)
+        self.assertGreater(len(R.read_context(["big.md"], self.root, 25000)), 24000)
+        self.assertEqual(R.context_limit({"context_chars": 999999}), R.MAX_CONTEXT_CAP)
+        self.assertEqual(R.context_limit({}), R.MAX_CONTEXT)
+
 
 if __name__ == "__main__":
     unittest.main()

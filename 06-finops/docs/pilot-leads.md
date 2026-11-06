@@ -10,14 +10,14 @@ Built 6 Nov 2026 with the first-customer-finder method. These are **potential cu
 
 | ID | Signal (paraphrased from the snippet) | Source | Score | What to check first |
 |---|---|---|---|---|
-| A1 | An Indian startup says Claude Opus costs them about ₹44K/day (~$16K/month) and asks how to cut it. Strongest lead. | [r/indianstartups post](https://www.reddit.com/r/indianstartups/comments/1ulr9yj/opus_costing_us_44kday_16kmo_how_can_we_reduce/) | 4.6 | Is it still open? Did they name the company? Are the commenters selling? |
-| A2 | Poster asks AI startups how they track AI/API spend (₹50k/month across OpenAI, Anthropic, Gemini is "a black box"). | [r/StartUpIndia post](https://www.reddit.com/r/StartUpIndia/comments/1wpr1ce/ai_startups_how_are_you_keeping_track_of_aiapi/) | 3.8 | Poster may be researching a tool to sell; commenters who describe their own spend are the real leads. |
+| A1 | u/anirudh8398 (~Jul 2026, 211 upvotes, 234 comments): parses ~20,000 job descriptions/day with Claude Opus, ₹2.20/job ≈ ₹44K/day; Sonnet and DeepSeek lose quality on messy JDs; asks about routing and fine-tuning a small model. **Checked by Akhil on phone 6 Nov.** | [r/indianstartups post](https://www.reddit.com/r/indianstartups/comments/1ulr9yj/opus_costing_us_44kday_16kmo_how_can_we_reduce/) | 4.2 | 4 months old and already has strong free advice (cascade routing, dedupe, distillation from u/dark-mage-x), so a generic reply adds nothing; offer a measured test instead. **Caution:** their JDs are "pulled from LinkedIn" (likely scraping, against LinkedIn's terms). Akhil decides if Kalpa works with them; we never touch the scraping part. |
+| A2 | u/GetALife_00 (~Oct 2026, "Roast My Idea"): plans an "AI spend doctor" tool for small startups. **Not a buyer: a would-be competitor.** Checked by Akhil 6 Nov. | [r/StartUpIndia post](https://www.reddit.com/r/StartUpIndia/comments/1wpr1ce/ai_startups_how_are_you_keeping_track_of_aiapi/) | 1.5 | Useful as market proof: founders feel this pain. Leads would be commenters who describe their own bill. |
 | A3 | SaaS founder (UnisonWave) posts that LLM costs are outpacing revenue. | [LinkedIn post, Rajender Polu](https://www.linkedin.com/posts/rajender-polu_ai-saas-fintech-activity-7428643136190689281-Iuq1) | 3.5 | Is it about their own company or general advice? |
 | A4 | MD & CEO posts that AI inference costs are eating gross margin. | [LinkedIn post, Paras Vishwakarma](https://www.linkedin.com/posts/paras-vishwakarma_ai-uniteconomics-saas-activity-7472008213845172224-4AKI) | 3.0 | Thought-leadership post or real pain? Indian company? |
 | A5 | A tech lead says their company burns API money on AI tools daily. | [r/developersIndia thread](https://www.reddit.com/r/developersIndia/comments/1sl7p30/how_is_your_company_dealing_with_ai_costs_are/) | 2.8 | Employee, not a buyer. Only useful if a founder replies in the thread. |
 
-**Reply draft for A1/A2 (public reply, only if the thread allows it):**
-> We're running 3 free AI cost audits for Indian startups this month: we look at which calls could use a cheaper model, caching or shorter outputs, and send a written report. No payment, no sales call. If useful, DM me and I'll share what we need (usage export only, no keys).
+**Reply for A1 (public comment in the thread, posted by Akhil):**
+> Late to this, but if it's still a problem: we're running 3 free cost pilots for Indian startups. For a case like yours we'd take ~500 of your JDs (already labelled by Opus), run the cheap-model → schema check → Opus-fallback cascade suggested above, and send you field-by-field accuracy and cost per 1,000 JDs. Free, no sales call; you share only sample JDs, no API keys. Reply here if useful.
 
 ## Tier B: good fit, no public complaint found (guesses)
 

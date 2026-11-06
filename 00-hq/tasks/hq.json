@@ -64,8 +64,8 @@
   ],
   "status": "todo",
   "created": "2026-11-06T12:00:00Z",
-  "updated": "2026-11-06T11:55:53Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n- Report “live browsing unavailable” instead of inventing specific startups, salons, dates, URLs, and evidence; mark every non-repo fact UNVERIFIED.\n- Add the missing AC-technician section (5 online gathering places) and complete Hyderabad Salons Set C (table cuts off after 1 of 5 entries).\n- Remove prohibited-platform citations (Instagram, LinkedIn, Google My Business) and invented contact details such as info@glowgrace.com.\n- Mark Verdict/ICP claims (TechCrunch dates, The Hindu feature, Series-A announcements) as UNVERIFIED; they currently read as verified facts.\n- Fix inconsistent prospect numbering and close the truncated Salon Set C table."
+  "updated": "2026-11-06T12:24:49Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data."
  }
 ]

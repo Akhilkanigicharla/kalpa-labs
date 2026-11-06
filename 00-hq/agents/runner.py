@@ -142,7 +142,7 @@ def work(task, env, post=http_post, root=ROOT):
              "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
-                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
+                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:max(5000, context_limit(task))]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
     return {"draft": draft, "model": model, "verdict": verdict, "vmodel": vmodel}
 
 

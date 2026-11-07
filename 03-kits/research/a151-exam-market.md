@@ -75,7 +75,7 @@ Licensing note: link to videos and official PDFs only; never re-host coaching ma
 
 ## 7. Tools used and the best free model
 - Research: WebSearch + **Firecrawl** (search and scrape; connected). Perplexity and NotebookLM have no connector in this workspace, so Firecrawl did the cross-checks. Hugging Face Hub was searched live (account kalpalabs5145).
-- **Best open model for Telugu kit text** (day plans, reminders, topic notes): `sarvamai/sarvam-30b`. It is Apache-2.0 and covers Telugu, Hindi, English and 20 other Indian languages; 588k downloads (HF Hub, fetched 6 Nov). Bigger sibling: `sarvamai/sarvam-105b` (same licence). **No free host is confirmed yet:** HF free accounts get no inference credit (facts register), so A158 checks for a free host and otherwise keeps today's free router models.
+- **Best open model for Telugu kit text** (day plans, reminders, topic notes): `sarvamai/sarvam-30b`. It is Apache-2.0 and covers Telugu, Hindi, English and 20 other Indian languages; 588k downloads (HF Hub, fetched 6 Nov). Bigger sibling: `sarvamai/sarvam-105b` (same licence). **No free host exists (A158, checked 7 Nov):** not on OpenRouter, Groq or any HF inference provider; Sarvam's own API is paid (₹100 one-time trial credit). Keep the free router: Groq `openai/gpt-oss-120b` wrote fluent Telugu in a live test (facts register).
 
 ## 8. For Akhil to decide (CEO queue)
 1. Pick the first exam: A (TGPSC Telugu), B, C, D or E (TSLPRB police, Telugu).

@@ -51,4 +51,4 @@ jobs:
           git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge 00-hq/agents/memory || true
           git diff --cached --quiet && exit 0
           git commit -q -m "agents(${{ matrix.world }}): queue run $(date -u +%FT%TZ)"
-          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

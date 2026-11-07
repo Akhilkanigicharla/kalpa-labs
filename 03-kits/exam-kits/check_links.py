@@ -21,6 +21,12 @@ def links(exam):
     return list(dict.fromkeys(out))
 
 
+def blocked_dates(exam):
+    """Links a site hides from robots (403) but a person opened by hand: url -> date checked."""
+    res = exam.get("resources") or {}
+    return {o["url"]: o["bot_blocked"] for kind in ("official", "mocks", "channels") for o in res.get(kind, []) if o.get("bot_blocked")}
+
+
 def probe_url(kind, url):
     if kind == "video":
         return "https://www.youtube.com/oembed?format=json&url=" + urllib.parse.quote(url, safe="")
@@ -41,10 +47,13 @@ def fetch(url, timeout=25):
 def check(exams, get=fetch):
     report = {}
     for e in exams:
-        rows = []
+        rows, hand = [], blocked_dates(e)
         for kind, url in links(e):
             code = get(probe_url(kind, url))
-            rows.append({"kind": kind, "url": url, "status": code, "ok": 200 <= code < 400})
+            row = {"kind": kind, "url": url, "status": code, "ok": 200 <= code < 400}
+            if code == 403 and url in hand:  # robots refused; a real 404/timeout still fails
+                row.update(ok=True, note=f"bot-blocked, checked by hand {hand[url]}")
+            rows.append(row)
         report[e["id"]] = rows
     return report
 
@@ -58,7 +67,10 @@ def main(argv):
     (HERE / "link-report.json").write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8")
     bad = [(eid, r["url"], r["status"]) for eid, rows in report.items() for r in rows if not r["ok"]]
     total = sum(len(v) for v in report.values())
-    print(f"{total - len(bad)}/{total} links OK across {len(report)} kits")
+    warn = [(eid, r["url"], r["note"]) for eid, rows in report.items() for r in rows if r.get("note")]
+    print(f"{total - len(bad)}/{total} links OK across {len(report)} kits ({len(warn)} bot-blocked, checked by hand)")
+    for w in warn:
+        print("WARN", *w)
     for b in bad:
         print("BROKEN", *b)
     return 1 if bad else 0

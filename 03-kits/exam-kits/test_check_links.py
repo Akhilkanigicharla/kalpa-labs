@@ -25,5 +25,15 @@ class T(unittest.TestCase):
         self.assertEqual([r["url"] for r in bad], ["https://m.example/a"])
 
 
+class Blocked(unittest.TestCase):
+    def test_bot_blocked_403_is_warning_but_404_still_fails(self):
+        ex = {"id": "y", "official_url": "https://ssc.gov.in", "resources": {"official": [], "channels": [],
+              "mocks": [{"url": "https://a.example", "bot_blocked": "2026-11-07"}, {"url": "https://b.example", "bot_blocked": "2026-11-07"}]}}
+        rep = C.check([ex], get=lambda u: 403 if "a.example" in u else (404 if "b.example" in u else 200))
+        rows = {r["url"]: r for r in rep["y"]}
+        self.assertTrue(rows["https://a.example"]["ok"]); self.assertEqual(rows["https://a.example"]["note"], "bot-blocked, checked by hand 2026-11-07")
+        self.assertFalse(rows["https://b.example"]["ok"])
+
+
 if __name__ == "__main__":
     unittest.main()

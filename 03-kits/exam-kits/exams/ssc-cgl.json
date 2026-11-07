@@ -145,7 +145,8 @@
    {
     "title": "Adda247: free SSC CGL Tier 1 mock tests",
     "url": "https://www.adda247.com/ssc-cgl-kerala/mock-tests-kit",
-    "note": "Free tier; sign-up needed"
+    "note": "Free tier; sign-up needed",
+    "bot_blocked": "2026-11-07"
    },
    {
     "title": "PracticeMock: 1 free full Tier 1 + 1 free Tier 2 mock, 300+ free topic quizzes",
@@ -155,7 +156,8 @@
    {
     "title": "Prepp: free full SSC CGL Tier 1 tests",
     "url": "https://prepp.in/ssc-cgl-exam/mock-test",
-    "note": "Free tier; sign-up needed"
+    "note": "Free tier; sign-up needed",
+    "bot_blocked": "2026-11-07"
    }
   ],
   "channels": [

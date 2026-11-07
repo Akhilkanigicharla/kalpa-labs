@@ -33,3 +33,16 @@ Rules worth testing in A168:
 2. **Entry:** wait for a candle that dips below a recent level (a "liquidity grab") and then closes back above it; stop just below that wick.
 3. **Timing:** only at the session open (his NY open → our NSE open).
 Note: video 1's 100k test found that waiting for a "sweep" lost money on US futures. The two claims conflict, which is exactly why A168 tests both on Nifty/Bank Nifty with costs and a hidden 2-year period.
+
+## Third video: "How To Actually Build an AI Trading Bot With Claude (3 Hour Course)" (AI Pathways, 7 Nov 2026), shared by Akhil 7 Nov 22:25 IST
+https://youtu.be/gJLKVsIqiTE. Same creator (paid Skool community + 1:1 program); method notes only.
+- **ALPHA framework:** Architecture → Logic (exact rules) → Proof (backtest) → Harness (AI layer, connecting the bot, safety) → Adapt (review and change rules).
+- **Architecture:** daily bars → **regime** (trend up/down + calm/volatile, per ticker) → a **core** strategy that rotates between an index fund and **gold** by regime, plus small "sleeve" strategies → **risk rules before any order** (hard stop-loss) → broker → phone alerts (Telegram).
+- **Backtest = paper parity:** the same code runs the backtest and the paper bot, with tests proving it (his: 33 tests).
+- **Never automated:** changing a rule, changing the core strategy, or moving from paper to real money; a human decides (matches CLAUDE.md rule 4: Akhil decides, after backtest + paper).
+- His brokers (Alpaca, IBKR) are US-market; ours is an Indian SEBI-registered broker's API on NSE.
+
+What we take (A168 list, paper only):
+1. **India core rotation:** NIFTYBEES ⇄ GOLDBEES (both NSE ETFs) switched by a daily trend + volatility regime: low-frequency, cheap in costs, fits video 1's "higher timeframes win". Our paper bot already trades NIFTYBEES (`07-trading/src/paper.py`).
+2. **Parity test:** one test that the backtest and `paper.py` give the same trades on the same data.
+3. **Telegram trade alerts** to Akhil's private chat only (the brief already has a private-chat guard).

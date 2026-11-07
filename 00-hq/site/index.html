@@ -230,7 +230,7 @@ footer{border-top:1px solid var(--rule);padding-block:40px 64px;color:var(--mute
 footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between}
 /* bottom bar (phone) */
 .mbar{display:none}
-@media (max-width:760px){html{scroll-padding-bottom:96px}.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:12px max(12px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
+@media (max-width:760px){html{scroll-padding-bottom:calc(96px + var(--badge-h,0px))}.mbar{display:flex;position:fixed;left:0;right:0;bottom:var(--badge-h,0px);z-index:30;gap:8px;padding:12px max(12px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
  .mbar .btn{flex:1;min-height:46px;font-size:15px}
  footer{padding-bottom:112px}
  #ask{scroll-margin-bottom:112px}}
@@ -841,6 +841,15 @@ document.querySelectorAll('a[href="#demo"]').forEach(a=>a.addEventListener('clic
   setTimeout(()=>box.focus({preventScroll:true}),350);
   history.replaceState(null,'','#demo');
 }));
+
+/* Netlify's free-plan badge is a fixed frame in the bottom-right corner that our CSS cannot touch.
+   While it is on screen, lift the phone bottom bar above it; when it goes, the bar drops back. */
+(()=>{const root=document.documentElement;
+ const fit=()=>{const f=document.getElementById('nl-badge-frame');const r=f&&f.getBoundingClientRect();
+  const h=r&&r.height>0&&r.bottom>=innerHeight-8?Math.ceil(innerHeight-r.top):0;
+  root.style.setProperty('--badge-h',h+'px')};
+ new MutationObserver(fit).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style','hidden']});
+ addEventListener('resize',fit);fit();setTimeout(fit,1500);})();
 </script>
 </body>
 </html>

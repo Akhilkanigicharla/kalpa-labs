@@ -18,6 +18,12 @@ TOP_JS = """([x,y])=>{const el=document.elementFromPoint(x,y);
  if(!el) return 'none';
  const c=el.closest('a,button,input,select,textarea,label');
  return c?c.outerHTML.slice(0,90):el.tagName+'.'+el.className}"""
+# Same size and place as Netlify's free-plan "Powered by Netlify" frame on a phone.
+FAKE_BADGE = """addEventListener('DOMContentLoaded',()=>setTimeout(()=>{
+ if(document.getElementById('nl-badge-frame')) return;
+ const f=document.createElement('iframe');f.id='nl-badge-frame';f.title='Powered by Netlify';
+ f.style.cssText='position:fixed;right:0;bottom:0;width:201px;height:64px;border:0;z-index:2147483645';
+ document.body.appendChild(f)},300))"""
 INLINE_JS = """el=>el.tagName==='A'&&!!el.closest('p,li,small,figcaption')
  &&!el.matches('.btn,[class*=btn],[role=button]')"""
 
@@ -72,14 +78,22 @@ def main():
     problems = []
     with sync_playwright() as p:
         b = p.chromium.launch()
-        for scheme in ("light", "dark"):
+        runs = [("light", False), ("dark", False)] + ([("light+badge", True)] if srv else [])
+        for name, badge in runs:
+            scheme = name.split("+")[0]
             pg = b.new_page(viewport={"width": 390, "height": 844}, is_mobile=True,
                             has_touch=True, color_scheme=scheme)
+            if badge:
+                pg.add_init_script(FAKE_BADGE)
             errs = []
             pg.on("pageerror", lambda ex: errs.append(str(ex)[:100]))
-            pg.goto(url, wait_until="networkidle", timeout=60000)
-            problems += [f"[{scheme}] {x}" for x in sweep(pg)]
-            problems += [f"[{scheme}] js error: {x}" for x in errs]
+            pg.goto(url, wait_until="load", timeout=60000)
+            pg.wait_for_timeout(1500)
+            found = sweep(pg)
+            if badge:  # with a simulated badge, being covered by it is a real failure
+                found = [x.replace("IFRAME", "badge frame") for x in found]
+            problems += [f"[{name}] {x}" for x in found]
+            problems += [f"[{name}] js error: {x}" for x in errs]
             pg.close()
         b.close()
     if srv:

@@ -89,6 +89,33 @@ def validate(df: pd.DataFrame, *, max_gap_days: int = 7, jump: float = 0.40) -> 
     return problems
 
 
+def repair_spikes(df: pd.DataFrame, limit: float = 0.40) -> tuple[pd.DataFrame, list[str]]:
+    """Drop bad rows: non-positive prices, and short blocks (up to 5 days) after a jump of more
+    than `limit` when the price then snaps back to the level before the jump (split days stored
+    in the wrong scale). A real, lasting move is kept because it never snaps back.
+    Uses neighbouring rows, so it is for cleaning history before a backtest, not for signals.
+    Returns the cleaned frame and the dropped dates (shown in reports)."""
+    df = df.sort_index()
+    bad = (df[COLUMNS[:4]] <= 0).any(axis=1)
+    dropped = [f"{d:%d %b %Y} (price <= 0)" for d in df.index[bad]]
+    df = df[~bad]
+    c = df["close"].to_numpy()
+    keep = [True] * len(c)
+    i = 1
+    while i < len(c):
+        if abs(c[i] / c[i - 1] - 1) > limit:                 # a jump: does it snap back within 5 days?
+            for k in range(i + 1, min(i + 6, len(c))):
+                if abs(c[k] / c[i - 1] - 1) <= limit:
+                    for m in range(i, k):
+                        keep[m] = False
+                        dropped.append(f"{df.index[m]:%d %b %Y} (wrong-scale block, close {c[m]:.2f})")
+                    i = k
+                    break
+        i += 1
+    df = df[keep]
+    return df, dropped
+
+
 def get_daily(symbol: str, start: str | None = None, end: str | None = None, *,
               cache_dir: Path | str | None = None, fetcher: Fetcher | None = None,
               fallback: Fetcher | None = None, refresh: bool = False,

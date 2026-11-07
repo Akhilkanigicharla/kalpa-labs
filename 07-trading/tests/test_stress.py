@@ -94,3 +94,14 @@ def test_data_problem_blocks_pass_and_is_shown():
     ok, fails = stress.verdict(rep)
     assert not ok and "DATA PROBLEM" in fails[0]
     assert "one-day move" in stress.report_md(rep, "NIFTYBEES", "GOLDBEES", "synthetic")
+
+
+def test_repair_drops_wrong_scale_split_days_but_keeps_real_moves():
+    df = data.synthetic_prices(300, seed=2)
+    df.iloc[100:102, :4] = df.iloc[100:102, :4] / 10                       # 2 days stored at 1/10 scale
+    df.iloc[150, :4] = 0.0                                                  # zero price row
+    df.iloc[200:, :4] = df.iloc[200:, :4] * 0.5                             # a real, lasting halving
+    fixed, dropped = data.repair_spikes(df)
+    assert len(dropped) == 3 and len(fixed) == 297
+    assert any("price <= 0" in d for d in dropped)
+    assert fixed["close"].pct_change().abs().max() > 0.4                    # the lasting move stays

@@ -170,6 +170,7 @@ def report_md(rep: dict, a: str, b: str, source: str) -> str:
         f"- PBO (chance the best in-sample pick is overfit): **{rep['pbo']:.2f}**; Deflated Sharpe of best: **{rep['dsr_best']:.2f}**.",
         "",
         "## Data checks",
+        *[f"- Repaired: {r}" for r in rep.get("repaired", [])],
         *([f"- ⚠ {p}" for p in rep.get("data_problems", [])] + [f"- ⚠ {k}: one-day move {j}" for k, js in rep.get("jumps", {}).items() for j in js]
           or ["- Clean: no gaps, no impossible prices, no one-day jumps above 25%."]),
         "",
@@ -198,6 +199,9 @@ def main(argv: list[str] | None = None) -> int:
         # yfinance returns only ~1 month when no start is given, so always ask for the full history
         da = data.get_daily(args.a, start="2006-01-01", refresh=True, strict=False)
         db = data.get_daily(args.b, start="2006-01-01", refresh=True, strict=False)
+        da, fix_a = data.repair_spikes(da)
+        db, fix_b = data.repair_spikes(db)
+        repaired = [f"{args.a}: removed {d}" for d in fix_a] + [f"{args.b}: removed {d}" for d in fix_b]
         problems = [f"{args.a}: {p}" for p in data.validate(da)] + [f"{args.b}: {p}" for p in data.validate(db)]
         jumps = {args.a: _jumps(da["close"]), args.b: _jumps(db["close"])}
         a, b = da["close"], db["close"]
@@ -206,7 +210,7 @@ def main(argv: list[str] | None = None) -> int:
                   f"{both[0]:%d %b %Y} to {both[-1]:%d %b %Y}, {len(both)} common trading days")
     rep = funnel(a, b)
     if not args.synthetic:
-        rep["data_problems"], rep["jumps"] = problems, jumps
+        rep["data_problems"], rep["jumps"], rep["repaired"] = problems, jumps, repaired
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     path = out / f"stress-{args.a}-{args.b}-{date.today():%Y-%m-%d}.md"
     path.write_text(report_md(rep, args.a, args.b, source), encoding="utf-8")

@@ -1,7 +1,13 @@
 # A85: one live call to Groq with the chat model from 01-botbhai/botbhai/core/models.json.
+# A158: optional `prompt` input (e.g. a Telugu question) for a live language check.
 # Manual only. Needs the GROQ_API_KEY repository secret (Akhil sets it; Claude never sees it). Prints the HTTP status only.
 name: Groq model check
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Prompt to send (default: reply ok)"
+        default: "Reply with the single word: ok"
 permissions: { contents: read }
 jobs:
   check:
@@ -10,12 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Call Groq once
-        env: { GROQ_API_KEY: "${{ secrets.GROQ_API_KEY }}" }
+        env: { GROQ_API_KEY: "${{ secrets.GROQ_API_KEY }}", PROMPT: "${{ inputs.prompt }}" }
         run: |
           test -n "$GROQ_API_KEY" || { echo "GROQ_API_KEY secret is not set"; exit 1; }
           MODEL=$(python3 -c 'import json;print(json.load(open("01-botbhai/botbhai/core/models.json"))["groq_chat"])')
-          BODY=$(python3 -c 'import json,sys;print(json.dumps({"model":sys.argv[1],"reasoning_effort":"low","max_completion_tokens":64,"messages":[{"role":"user","content":"Reply with the single word: ok"}]}))' "$MODEL")
+          BODY=$(python3 -c 'import json,sys;print(json.dumps({"model":sys.argv[1],"reasoning_effort":"low","max_completion_tokens":400,"messages":[{"role":"user","content":sys.argv[2] or "Reply with the single word: ok"}]}))' "$MODEL" "$PROMPT")
           CODE=$(curl -s -o out.json -w '%{http_code}' https://api.groq.com/openai/v1/chat/completions -H "Authorization: Bearer $GROQ_API_KEY" -H "Content-Type: application/json" -d "$BODY")
           echo "model=$MODEL http=$CODE"
-          python3 -c 'import json;d=json.load(open("out.json"));print("reply:", (d.get("choices") or [{}])[0].get("message",{}).get("content","")[:40] if "choices" in d else d.get("error",{}).get("message","")[:120])'
+          python3 -c 'import json;d=json.load(open("out.json"));print("reply:", (d.get("choices") or [{}])[0].get("message",{}).get("content","")[:300] if "choices" in d else d.get("error",{}).get("message","")[:120])'
           test "$CODE" = "200"

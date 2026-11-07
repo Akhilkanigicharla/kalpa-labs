@@ -139,5 +139,20 @@
   "created": "2026-11-06T19:40:00Z",
   "updated": "2026-11-06T19:22:40Z",
   "output": "00-hq/knowledge/K044.md"
+ },
+ {
+  "id": "K034",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Kalpa",
+  "playbook": "marketing-growth-hacker",
+  "title": "Kalpa AI Marketing Team (like the 'AI marketing team that replaces a $5,000/month agency' short): 6 roles (strategist, 5-language copywriter, designer brief writer, scheduler, community replier, analyst), what each does weekly for every stream in VISION.md, which of our free skills/playbooks each uses, and a 4-week content calendar per stream. Same team is sold to BotBhai clients (gyms, salons, real estate) as their social media agent.",
+  "details": "Free tools only; owner approves every post; no buying followers; ASCI #ad on affiliate posts; 5 languages (EN, TE, HI, Tenglish, Hinglish).",
+  "read": [
+   "00-hq/VISION.md",
+   "00-hq/marketing/launch/places-to-post.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-07T15:10:00Z"
  }
 ]

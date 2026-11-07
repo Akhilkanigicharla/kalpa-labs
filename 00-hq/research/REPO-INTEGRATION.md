@@ -48,4 +48,4 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 | OpenWhispr/openwhispr (MIT) | voice-to-text dictation (desktop). Input for the worldwide mobile app search (A152): voice typing for Telugu/Indian languages | 📚 idea input A152 |
 | CapSoftware/Cap (mostly AGPLv3) | Loom-style screen recorder; AGPL, so never copied into a product. Akhil can use it as a tool for demo videos | 📚 tool only |
 | VoiceStudio (repo not identified from the reel) | AI video dubbing in many languages. Idea input for A152 (mobile app) and Exam Kits video help (A151) | 📚 idea input |
-
+| YouTube Short "AI Marketing Team That Replaces a $5,000/Month Agency" (ReStructure AI, 7 Nov) | concept, no repo shown: role-based marketing agents. Built as K034 (Kalpa AI Marketing Team, also sold to BotBhai clients via A155) on our skills: social-media-skills, marketing superpowers, agency-agents playbooks | 🔧 agent task K034 |

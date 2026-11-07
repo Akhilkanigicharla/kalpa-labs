@@ -26,6 +26,7 @@ from . import costs, metrics
 from .strategies import regime_filter
 
 ANN = 252
+START = "2010-02-01"   # Yahoo's GOLDBEES rows before Jan 2010 are mostly zero prices (seen 7 Nov 2026)
 
 
 @dataclass
@@ -136,6 +137,11 @@ def _jumps(close: pd.Series, limit: float = 0.25) -> list[str]:
     return [f"{d:%d %b %Y} {v:+.0%}" for d, v in r[r.abs() > limit].items()]
 
 
+def _group(lines: list[str], show: int = 6) -> list[str]:
+    """Keep reports readable: show the first few repairs, then a count."""
+    return lines if len(lines) <= show else lines[:show] + [f"... and {len(lines) - show} more rows"]
+
+
 def verdict(rep: dict) -> tuple[bool, list[str]]:
     """PASS only if every gate holds; returns the failed gates in plain words."""
     best, fails = rep["best"], []
@@ -170,7 +176,7 @@ def report_md(rep: dict, a: str, b: str, source: str) -> str:
         f"- PBO (chance the best in-sample pick is overfit): **{rep['pbo']:.2f}**; Deflated Sharpe of best: **{rep['dsr_best']:.2f}**.",
         "",
         "## Data checks",
-        *[f"- Repaired: {r}" for r in rep.get("repaired", [])],
+        *[f"- Repaired: {r}" for r in _group(rep.get("repaired", []))],
         *([f"- ⚠ {p}" for p in rep.get("data_problems", [])] + [f"- ⚠ {k}: one-day move {j}" for k, js in rep.get("jumps", {}).items() for j in js]
           or ["- Clean: no gaps, no impossible prices, no one-day jumps above 25%."]),
         "",
@@ -197,8 +203,8 @@ def main(argv: list[str] | None = None) -> int:
     else:
         from . import data
         # yfinance returns only ~1 month when no start is given, so always ask for the full history
-        da = data.get_daily(args.a, start="2006-01-01", refresh=True, strict=False)
-        db = data.get_daily(args.b, start="2006-01-01", refresh=True, strict=False)
+        da = data.get_daily(args.a, start=START, refresh=True, strict=False)
+        db = data.get_daily(args.b, start=START, refresh=True, strict=False)
         da, fix_a = data.repair_spikes(da)
         db, fix_b = data.repair_spikes(db)
         repaired = [f"{args.a}: removed {d}" for d in fix_a] + [f"{args.b}: removed {d}" for d in fix_b]

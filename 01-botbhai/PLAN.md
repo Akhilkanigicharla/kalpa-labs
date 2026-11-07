@@ -111,7 +111,7 @@ The proposal shows the estimate, and the monthly report shows actual spend (P1-M
 | Netlify Functions | 300 credits/mo, **hard stop: all sites pause** | ~3–5 credits | Each prod deploy costs 15 credits, so cap deploys at 8/mo. Buy Personal ($9 ≈ ₹800) at ~10 clients |
 | Supabase | 500 MB, no backups, pauses after 7 idle days | ~3–5 MB/mo | Size lasts to ~40 salons, but there are **no backups**. Nightly dump via Actions (P1-M2-07); Pro ($25 ≈ ₹2,200) at MRR ≥ ₹6,000 |
 | Groq | free | ₹0 | Rate limits at ~50 busy clients |
-| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min; STT ₹0.49/min; TTS ₹3 per 1,000 characters (Sarvam Bulbul v3, sarvam.ai/api-pricing checked 25 Oct 2026). TTS assumption: the bot speaks about half of each call minute at ~800 characters per spoken minute, so ~400 chars ≈ ₹1.2/min. About ₹2.1/min (Plivo figures unverified this check), budget ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
+| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min (single source, plivo.com only; recheck before P1-M3-07, EGM K037.1); STT ₹0.49/min; TTS ₹3 per 1,000 characters (Sarvam Bulbul v3, sarvam.ai/api-pricing checked 25 Oct 2026). TTS assumption: the bot speaks about half of each call minute at ~800 characters per spoken minute, so ~400 chars ≈ ₹1.2/min. About ₹2.1/min (Plivo figures unverified this check), budget ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
 
 **Gross margin:**
 - Lite and Standard: ~95% on free tiers, ~85% once ₹3,000/mo of paid infrastructure is shared across 10 clients.

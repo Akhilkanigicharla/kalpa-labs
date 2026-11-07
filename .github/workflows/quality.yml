@@ -42,6 +42,19 @@ jobs:
       - run: node 00-hq/design/theme.test.mjs
       - run: node 00-hq/agents/tooling.test.mjs
 
+  site-taps:
+    # Every customer tap on the Kalpa Labs site at 390 px, light + dark: nothing covered,
+    # no field off-screen, tap targets >= 44 px, chat buttons open the typing box.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install playwright==1.56.0 && python -m playwright install --with-deps chromium
+      - run: python 00-hq/site/tests/test_tap_sweep.py
+      - run: python 00-hq/site/tests/test_chat_button.py
+
   botbhai:
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -9,7 +9,7 @@ sys.path.insert(0, str(HERE))
 import build as B  # noqa: E402
 
 TODAY = dt.date(2026, 11, 6)
-PORTABLE = {"IF", "MAX", "MIN", "N", "CHOOSE", "COUNTA", "COUNTIF", "COUNTIFS", "COUNT", "ROUND", "OR", "AND", "DATE", "TODAY", "ISNUMBER"}
+PORTABLE = {"IF", "MAX", "MIN", "N", "CHOOSE", "COUNTA", "COUNTIF", "COUNTIFS", "COUNT", "ROUND", "OR", "AND", "DATE", "TODAY", "ISNUMBER", "HYPERLINK"}
 fails = []
 
 
@@ -41,6 +41,20 @@ with tempfile.TemporaryDirectory() as tmp:
         check(len(rows) >= 10, f"{eid}: only {len(rows)} topics")
         check(len(rows) == len(set(rows)), f"{eid}: duplicate topic rows")
         check(all(t.strip() for _, _, t in rows), f"{eid}: empty topic")
+        # A160/A180: verified resources (official links on the exam body's own domain, YouTube channels, one video per topic)
+        res = e.get("resources")
+        if res:
+            host = re.sub(r"^https://(www\.)?", "", e["official_url"]).split("/")[0]
+            check(res.get("checked"), f"{eid}: resources need a checked date")
+            check(res["official"] and all(host in o["url"] for o in res["official"]), f"{eid}: official links must be on {host}")
+            check(len(res.get("mocks", [])) >= 2 and all(o.get("note") for o in res["mocks"]), f"{eid}: 2+ free mocks, each with a note (sign-up etc.)")
+            check(len(res.get("channels", [])) >= 4 and all(c["url"].startswith("https://www.youtube.com/@") for c in res["channels"]), f"{eid}: 4+ YouTube channels as @handle links")
+            vids = e.get("topic_videos", {})
+            names = {t for _, _, t in rows}
+            check(set(vids) <= names, f"{eid}: video for unknown topic {set(vids) - names}")
+            check(all(re.fullmatch(r"https://www\.youtube\.com/watch\?v=[\w-]{11}", v["url"]) and v.get("channel") for v in vids.values()), f"{eid}: bad video link")
+            for o in res["official"] + res["mocks"] + res["channels"]:
+                check(o["url"].startswith("https://"), f"{eid}: link must be https: {o['url']}")
         # build with sample inputs
         src = pathlib.Path(tmp) / B.filename(e)
         B.build(e, src, TODAY)
@@ -51,6 +65,14 @@ with tempfile.TemporaryDirectory() as tmp:
                     if isinstance(c.value, str) and c.value.startswith("="):
                         for fn in re.findall(r"([A-Z]+)\(", c.value):
                             check(fn in PORTABLE, f"{eid}: non-portable {fn} in {ws.title}!{c.coordinate}")
+        for name in ("Resources", "Exam day", "Mind"):
+            check(name in wb.sheetnames, f"{eid}: sheet {name} missing")
+        if res:
+            first_topic = rows[0][2]
+            h5 = str(wb["Syllabus"]["H5"].value or "")
+            check(first_topic not in e.get("topic_videos", {}) or h5.startswith('=HYPERLINK("https://www.youtube.com/watch?v='), f"{eid}: Syllabus H5 should link the topic video, got {h5[:40]}")
+            links = sum(1 for row in wb["Resources"].iter_rows() for c in row if isinstance(c.value, str) and c.value.startswith("=HYPERLINK("))
+            check(links >= len(res["official"]) + len(res["mocks"]) + len(res["channels"]), f"{eid}: Resources has {links} links")
         st, sy, lg, mk, ds = wb["Start"], wb["Syllabus"], wb["Daily log"], wb["Mocks"], wb["Dates"]
         st["B4"] = dt.date(2026, 12, 6)
         for r in (5, 6, 7):

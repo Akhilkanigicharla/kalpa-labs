@@ -81,7 +81,12 @@ def build(exam, out, pinned=None):
         sy.cell(row=r, column=5).fill = INPUT; sy.cell(row=r, column=5).number_format = "dd-mmm-yyyy"
         sy.cell(row=r, column=6, value=0).fill = INPUT
         sy.cell(row=r, column=7, value=f'=IF(E{r}="","",E{r}+CHOOSE(MIN(N(F{r}),3)+1,1,3,7,21))').number_format = "dd-mmm-yyyy"
-        sy.cell(row=r, column=8).fill = INPUT; sy.cell(row=r, column=9).fill = INPUT
+        vid = exam.get("topic_videos", {}).get(topic)
+        if vid:
+            sy.cell(row=r, column=8, value=link(vid["url"], "▶ " + vid["channel"])).font = Font(color=HERO, underline="single")
+        else:
+            sy.cell(row=r, column=8).fill = INPUT
+        sy.cell(row=r, column=9).fill = INPUT
         for c in range(1, 10):
             sy.cell(row=r, column=c).border = BOX; sy.cell(row=r, column=c).alignment = Alignment(wrap_text=True, vertical="top")
     rng = f"A{first}:I{last}"
@@ -149,6 +154,10 @@ def build(exam, out, pinned=None):
     dt_.conditional_formatting.add("A5:D12", FormulaRule(formula=[f'AND(ISNUMBER($C5),$C5<=7)'], font=Font(color=BAD, bold=True)))
 
     # Sources
+    resources_sheet(wb, exam)
+    text_sheet(wb, "Exam day", "The last 7 days and the exam itself, step by step.", EXAM_DAY, ("When", "Do this"))
+    text_sheet(wb, "Mind", "How to keep going: short rules from learning research.", MIND, ("When", "What works"))
+
     so = wb.create_sheet("Sources")
     head(so, "Sources", f"Syllabus checked on {exam['checked']}. Official site wins if anything differs.", 2)
     cols(so, 4, ["No.", "Source"], [5, 90])
@@ -158,6 +167,80 @@ def build(exam, out, pinned=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
     return out
+
+
+def link(url, text):
+    """Sheets/Excel/LibreOffice-portable clickable link (quotes escaped)."""
+    return '=HYPERLINK("%s","%s")' % (url.replace('"', ''), text.replace('"', "'")[:90])
+
+
+EXAM_DAY = [
+    ("7 days before", "Download the admit card from the official site. Check name, photo, centre address. Print 2 copies."),
+    ("7 days before", "Visit or map the centre: travel time + 45 minutes spare. Know the reporting time printed on the card."),
+    ("3 days before", "Stop new topics. Only revise your Notes column and red rows in Syllabus. One last full mock at the real exam time."),
+    ("Night before", "Bag: admit card, original photo ID (same as in the form), 2 passport photos, pen if allowed, water. No phone inside."),
+    ("Night before", "Sleep 7–8 hours. Sleep after study is when memory is saved; an all-nighter costs more marks than it adds."),
+    ("Morning", "Light breakfast, leave early. Read the instructions sheet fully before the timer starts."),
+    ("In the hall", "First pass: answer what you know fast. Mark the rest. Second pass: the marked ones. Never fight one question for more than 2 minutes."),
+    ("In the hall", "Negative marking? Guess only if you can remove 2 options. Blank is better than a blind guess."),
+    ("After", "Note your answers right after the exam; compare with the official answer key when SSC/the board publishes it. Raise objections only inside the window."),
+]
+
+MIND = [
+    ("Can't start today?", "2-minute rule: open the Syllabus, pick one red or yellow row, study it for just 2 minutes. Starting is the hard part; most people keep going."),
+    ("Make it automatic", "Write one if-then line and keep it: 'If it is 7 pm, then I study 2 topics.' Plans tied to a time and place are kept far more often (Gollwitzer 1999)."),
+    ("Re-reading feels good but tests work", "Close the book and recall, then check. Mocks, past questions and self-quizzing beat re-reading (Roediger & Karpicke 2006)."),
+    ("Forgetting is normal", "That is why Next revision follows 1 → 3 → 7 → 21 days. Spaced revision keeps facts for exam day (Cepeda et al. 2006)."),
+    ("Mix topics", "In the practice phase do mixed sets, not one chapter at a time. Harder now, better on exam day (Rohrer & Taylor 2007)."),
+    ("Bad mock?", "A mock is a list of what to fix, not a verdict on you. Write every wrong answer in the Mocks sheet as silly / didn't know / no time, fix the top 3, move on."),
+    ("Missed a few days?", "Do not try to 'catch up' everything. Restart on the next Monday with the plan (fresh-start effect, Dai et al. 2014) and keep the streak from there."),
+    ("Exam nerves", "A racing heart before the exam is your body getting ready. Tell yourself 'I'm excited', breathe in for 4, out for 6, five times (Jamieson et al. 2010)."),
+    ("Phone", "Phone in another room while studying, or the app timer on. Every notification costs minutes of focus to come back."),
+    ("Sleep and food", "7–8 hours of sleep and regular meals are part of the syllabus. Tired brains score lower."),
+]
+
+
+def text_sheet(wb, title, sub, rows, heads):
+    ws = wb.create_sheet(title)
+    head(ws, title, sub, 2)
+    cols(ws, 4, list(heads), [26, 96])
+    for i, (a, b) in enumerate(rows):
+        r = 5 + i
+        ws.cell(row=r, column=1, value=a).font = Font(bold=True, color=INK)
+        ws.cell(row=r, column=2, value=b).alignment = Alignment(wrap_text=True, vertical="top")
+        for c in (1, 2):
+            ws.cell(row=r, column=c).border = BOX
+        ws.row_dimensions[r].height = 34
+    return ws
+
+
+def resources_sheet(wb, exam):
+    ws = wb.create_sheet("Resources")
+    res = exam.get("resources") or {}
+    head(ws, f"{exam['name']}: free resources we checked", f"Every link opened and checked on {res.get('checked', '(not yet)')}. Free tiers may ask you to sign up. Always trust the official site first.", 3)
+    for w, c in zip((34, 60, 30), "ABC"):
+        ws.column_dimensions[c].width = w
+    r = 4
+    def block(title, items, label, extra, fallback=""):
+        nonlocal r
+        ws.cell(row=r, column=1, value=title).font = Font(bold=True, color=HERO, size=12); r += 1
+        for it in items:
+            ws.cell(row=r, column=1, value=it.get(label, fallback))
+            ws.cell(row=r, column=2, value=link(it["url"], it.get("title") or it.get("name"))).font = Font(color=HERO, underline="single")
+            ws.cell(row=r, column=3, value=extra(it)).font = Font(size=9, color=MUTED)
+            for c in (1, 2, 3):
+                ws.cell(row=r, column=c).border = BOX; ws.cell(row=r, column=c).alignment = Alignment(wrap_text=True, vertical="top")
+            r += 1
+        r += 1
+    block("1 · Official (always check here first)", res.get("official", []), "kind", lambda it: "official", "Official")
+    block("2 · Free mock tests", res.get("mocks", []), "kind", lambda it: it.get("note", ""), "Free mock")
+    block("3 · Best free YouTube teachers", res.get("channels", []), "subject", lambda it: it.get("lang", ""))
+    ws.cell(row=r, column=1, value="How to use this kit").font = Font(bold=True, color=HERO, size=12); r += 1
+    for line in ("Learn: watch the ▶ video for a topic in Syllabus, then solve 20 questions on it the same day.",
+                 "Practise: one free mock a week from the list above; log it in Mocks with your mistakes.",
+                 "Revise: red rows in Syllabus are due today. Exam day sheet tells you the last 7 days."):
+        ws.cell(row=r, column=1, value="•"); ws.cell(row=r, column=2, value=line).alignment = Alignment(wrap_text=True); r += 1
+    return ws
 
 
 def filename(exam):

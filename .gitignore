@@ -29,3 +29,4 @@ graphify-out/
 # Paid kit files are built locally or in Actions, never committed (repo is public)
 03-kits/products/
 .netlify
+03-kits/exam-kits/link-report.json

@@ -102,6 +102,10 @@ jobs:
         run: python 03-kits/tax-sip/test_kit.py
       - name: GATE 2027 kit (Lite/Kit/Pro) recalculated in LibreOffice
         run: python 03-kits/gate-2027/test_kit.py
+      - name: 20 exam kits (data, links format, new sheets) recalculated in LibreOffice
+        run: python 03-kits/exam-kits/test_build.py
+      - name: Kit link checker (offline tests)
+        run: python 03-kits/exam-kits/test_check_links.py
 
   jobcard:
     runs-on: ubuntu-latest

@@ -115,6 +115,9 @@
   ],
   "context_chars": 20000,
   "status": "todo",
-  "created": "2026-11-07T10:20:00Z"
+  "created": "2026-11-07T10:20:00Z",
+  "updated": "2026-11-07T10:02:25Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Mark copyright notices and research citations as UNVERIFIED or drop them.\n- Ensure all tool mentions comply with free tools only rule.\n- Verify DPDP consent requirement is explicitly met locally without sending personal data.\n- Remove price assertions if any (none in repo, but keep off pricing claims).\n- Keep output plain short English and within a list of 5 at most."
  }
 ]

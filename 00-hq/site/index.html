@@ -231,7 +231,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-bet
 .mbar{display:none}
 @media (max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:12px max(12px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:var(--panel);border-top:1px solid var(--rule)}
  .mbar .btn{flex:1;min-height:46px;font-size:15px}
- footer{padding-bottom:112px}}
+ footer{padding-bottom:112px}
+ #ask{scroll-margin-bottom:110px}}
 /* robot animations */
 .limb{transform-box:fill-box;transform-origin:50% 4%}
 @media (prefers-reduced-motion:no-preference){
@@ -829,6 +830,16 @@ const SND=(function(){
 
 setLang(lang);
 })();
+
+/* "Chat with our AI" must open the chat, not just scroll near it (bug 7 Nov 2026: on phones the
+   typing box sat under the bottom bar, so taps did nothing visible). */
+document.querySelectorAll('a[href="#demo"]').forEach(a=>a.addEventListener('click',e=>{
+  const box=document.getElementById('askin'); if(!box) return;
+  e.preventDefault();
+  document.getElementById('ask').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>box.focus({preventScroll:true}),350);
+  history.replaceState(null,'','#demo');
+}));
 </script>
 </body>
 </html>

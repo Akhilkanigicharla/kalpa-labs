@@ -100,5 +100,21 @@
   "created": "2026-11-06T23:40:00Z",
   "updated": "2026-11-06T23:24:32Z",
   "output": "00-hq/knowledge/K045.md"
+ },
+ {
+  "id": "K046",
+  "world": "b3",
+  "priority": "P0",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 03-kits/research/kit-v2-design.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts. Judge it as a first-time Indian government-exam aspirant paying Rs 99-199: what would make you feel it was worth the money, what is missing, what is confusing on a phone, what is legally risky (piracy, minors, false promises). Up to 8 findings (severity, exact line, one-line fix) + unstated assumptions + questions only Akhil can answer.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "03-kits/research/kit-v2-design.md"
+  ],
+  "context_chars": 20000,
+  "status": "todo",
+  "created": "2026-11-07T10:20:00Z"
  }
 ]

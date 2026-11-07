@@ -41,6 +41,13 @@ jobs:
         run: python -m pytest -q
       - name: Tear-sheet, Nifty 50
         run: python -m src.tearsheet --symbol ^NSEI --out reports
+      - name: A168 stress test, NIFTYBEES ⇄ GOLDBEES regime rotation (paper only)
+        run: python -m src.stress --a NIFTYBEES --b GOLDBEES --out reports
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stress-report
+          path: 07-trading/reports/stress-*.md
+          retention-days: 90
       - name: No market data tracked in git
         working-directory: .
         run: |

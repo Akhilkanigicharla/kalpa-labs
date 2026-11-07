@@ -25,3 +25,11 @@ Shared by Akhil, 7 Nov 2026. https://youtu.be/z97PnFIPoFg (17 min). Read from th
 - Treat their "4h Change of Character" as a hypothesis to test on NSE, not a strategy to trade.
 - Stop-loss and daily loss cap stay mandatory (CLAUDE.md rule 4). Nothing trades real money until backtest + paper runs pass.
 - Roadmap: A168.
+
+## Second video: Harry Sharp interview (IQ Capital, 6 Nov 2026), shared by Akhil 7 Nov
+https://youtu.be/Rk2G9E7axXw (54 min). The channel is a prop firm that sells $9+ trading evaluations, so the claims are marketing and **unverified**; his "70%+ win rate" says nothing about profit (video 1: win rate barely tracks profit).
+Rules worth testing in A168:
+1. **Session bias:** if yesterday's daily candle and the last 4-hour candle before the session both closed up, trade only longs that session (both down → shorts only). NSE version: previous daily candle + the 4-hour candle closing before the 09:15 open.
+2. **Entry:** wait for a candle that dips below a recent level (a "liquidity grab") and then closes back above it; stop just below that wick.
+3. **Timing:** only at the session open (his NY open → our NSE open).
+Note: video 1's 100k test found that waiting for a "sweep" lost money on US futures. The two claims conflict, which is exactly why A168 tests both on Nifty/Bank Nifty with costs and a hidden 2-year period.

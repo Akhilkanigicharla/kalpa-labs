@@ -38,6 +38,19 @@ class Build(unittest.TestCase):
         self.assertLess(text.index("⚠️ ALERTS"), text.index("Code changes"))
         self.assertIn("A143", text)
 
+    def test_progress_by_world_and_noise_filter(self):
+        road = ("- [x] **A1** b3 · Exam kits batch 1 (done 2026-11-06, abc)\n"
+                "- [x] **A2** b3 · Old kit (done 2026-10-01, abc)\n"
+                "- [x] **A3** HQ · Agent memory (done 2026-11-07, def)\n"
+                "- [ ] **A4** b1 · Depth: BotBhai end to end\n- [~] **A5** b1 · Voice\n")
+        lines = D.progress(road, {"review": 35, "rejected": 2}, D.datetime(2026, 11, 7).date())
+        text = "\n".join(lines)
+        self.assertIn("b3 Exam kits", text); self.assertIn("1 done", text)
+        self.assertNotIn("Old kit", text)
+        self.assertIn("HQ", text); self.assertIn("35", text)
+        self.assertIn("b1", text); self.assertIn("1 in progress", text)
+        self.assertEqual(D.real_commits(["agents(b3): queue run x", "claim A1", "log: x", "A177: fix tests"]), ["A177: fix tests"])
+
     def test_all_clear(self):
         text, alerts = D.build(self.now, [None, None], [], [], [])
         self.assertEqual(alerts, [])

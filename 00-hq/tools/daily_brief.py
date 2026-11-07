@@ -7,7 +7,7 @@ Sends to Akhil's PRIVATE Telegram chat (CEO_CHAT_ID). Never to a channel or grou
 because TELEGRAM_CHAT_ID is the public deals channel (3 Nov 2026 mistake). Without a token it prints (dry run).
 Standard library only. Run: python3 00-hq/tools/daily_brief.py [--dry-run]
 """
-import json, os, re, subprocess, sys, urllib.request, urllib.error
+import glob, json, os, re, subprocess, sys, urllib.request, urllib.error
 from datetime import datetime, timedelta, timezone
 
 IST = timezone(timedelta(hours=5, minutes=30))
@@ -74,7 +74,34 @@ def git_lines(args):
         return []
 
 
-def build(now, checks, runs, commits, ticks):
+WORLDS = {"HQ": "HQ", "b1": "BotBhai", "b2": "JobCard", "b3": "Exam kits", "b4": "Tab Lifeboat",
+          "b5": "Telugu Deals", "b6": "Ledger Peaks", "b7": "Trading Lab"}
+NOISE = re.compile(r"^(agents\(|claim |log[: ]|token row|merge )", re.I)
+
+
+def real_commits(subjects):
+    """Drop robot/bookkeeping commits so the brief shows real work."""
+    return [c for c in subjects if not NOISE.match(c)]
+
+
+def progress(roadmap, task_counts, today, days=7):
+    """Per world: items finished in the last `days`, in progress, open; plus agent drafts awaiting review."""
+    import datetime as _dt
+    since = today - _dt.timedelta(days=days - 1)
+    out = [f"📦 Worlds, last {days} days (finished · in progress · open):"]
+    for w, name in WORLDS.items():
+        rows = re.findall(r"^- \[(.)\] \*\*(A\d+)\*\* " + w + r" · ([^\n]*)", roadmap, re.M)
+        done = [(i, t) for m, i, t in rows if m == "x" and (d := re.search(r"\(done (\d{4}-\d\d-\d\d)", t))
+                and since.isoformat() <= d.group(1) <= today.isoformat()]
+        wip = sum(1 for m, _, _ in rows if m == "~")
+        opn = sum(1 for m, _, _ in rows if m == " ")
+        out.append(f"• {w} {name}: {len(done)} done · {wip} in progress · {opn} open")
+        out += [f"   ✔ {i} {re.sub(r'\s*\(done.*', '', t)[:70]}" for i, t in done[:3]]
+    out.append(f"🤖 Free-model drafts waiting for review: {task_counts.get('review', 0)}")
+    return out
+
+
+def build(now, checks, runs, commits, ticks, extra=None):
     alerts = [a for a in checks if a] + runs
     out = [f"🌳 Kalpa daily brief · {now:%a %d %b, %I:%M %p} IST", ""]
     if alerts:
@@ -85,6 +112,8 @@ def build(now, checks, runs, commits, ticks):
     out += [f"🛠 Code changes (24 h): {len(commits)}"] + [f"• {c[:90]}" for c in commits[:5]]
     if ticks:
         out += ["", f"✔️ Roadmap items finished today: {', '.join(ticks)}"]
+    if extra:
+        out += [""] + extra
     return "\n".join(out)[:3900], alerts
 
 
@@ -97,10 +126,15 @@ def main(argv):
     if N8N_SELF:
         checks.append(classify("Self-hosted n8n", *http(N8N_SELF.rstrip("/") + "/healthz")))
     runs = failing_runs(os.environ.get("GITHUB_REPOSITORY"), os.environ.get("GITHUB_TOKEN"), since_iso)
-    commits = git_lines(["log", "--since=24 hours ago", "--pretty=%s"])
+    commits = real_commits(git_lines(["log", "--since=24 hours ago", "--pretty=%s"]))
     today = now.strftime("%Y-%m-%d")
     ticks = sorted(set(re.findall(r"\*\*(A\d+)\*\*[^\n]*\(done " + today, open("00-hq/ROADMAP.md", encoding="utf-8").read()))) if os.path.exists("00-hq/ROADMAP.md") else []
-    text, alerts = build(now, checks, runs, commits, ticks)
+    road = open("00-hq/ROADMAP.md", encoding="utf-8").read() if os.path.exists("00-hq/ROADMAP.md") else ""
+    counts = {}
+    for f in glob.glob("00-hq/tasks/*.json"):
+        for t in json.load(open(f, encoding="utf-8")):
+            counts[t.get("status", "")] = counts.get(t.get("status", ""), 0) + 1
+    text, alerts = build(now, checks, runs, commits, ticks, progress(road, counts, now.date()))
     tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("CEO_CHAT_ID", "")
     if not private_chat(chat):
         print("refusing to send: CEO_CHAT_ID is not a private chat", file=sys.stderr)

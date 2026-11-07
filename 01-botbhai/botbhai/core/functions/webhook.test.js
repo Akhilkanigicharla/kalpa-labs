@@ -24,7 +24,7 @@ const inbound = (msg, from = "919812345678") => {
   assert.ok(graph.sent.some((m) => m.status === "read" && m.typing_indicator)); console.log("  ✓ blue ticks + typing indicator sent");
   await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Book a service", title: "Book a service" } } });
   await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Hair spa", title: "Hair spa" } } });
-  await inbound({ type: "text", text: { body: "tomorrow" } });
+  await inbound({ type: "text", text: { body: "next monday" } }); // never the demo's closed Sunday, whatever day the test runs (A177)
   await inbound({ type: "interactive", interactive: { list_reply: { id: "t:7:00 PM", title: "7:00 PM" } } });
   await inbound({ type: "text", text: { body: "Ravi Teja" } });
   const confirm = sent.list.find((m) => m.type === "text" && /Booking confirmed/.test(m.text.body));
@@ -40,7 +40,7 @@ const inbound = (msg, from = "919812345678") => {
   // a second customer asking for the same day must not see 7:00 PM (capacity 1)
   await inbound({ type: "text", text: { body: "book" } }, "919800000002");
   await inbound({ type: "interactive", interactive: { list_reply: { id: "t:Hair spa" } } }, "919800000002");
-  await inbound({ type: "text", text: { body: "tomorrow" } }, "919800000002");
+  await inbound({ type: "text", text: { body: "next monday" } }, "919800000002");
   const slotsMsg = sent.list.filter((m) => m.to === "919800000002").pop();
   const titles = slotsMsg.interactive.action.sections ? slotsMsg.interactive.action.sections[0].rows.map((r) => r.title) : slotsMsg.interactive.action.buttons.map((b) => b.reply.title);
   assert.ok(!titles.includes("7:00 PM") && titles.length === 3, titles.join(",")); console.log("  ✓ taken slot hidden from the next customer:", titles.join(", "));

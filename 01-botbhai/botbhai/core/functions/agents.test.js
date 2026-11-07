@@ -45,7 +45,7 @@ const sign = (b) => "sha256=" + crypto.createHmac("sha256", "appsecret").update(
   const iso = d.toISOString().slice(0, 10); const h = d.getUTCHours(), m = d.getUTCMinutes();
   const slot = `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
   assert.ok(Math.abs(appointmentUtc(iso, slot) - appt) < 60000);
-  store.leads.push({ id: "L9", client_id: "gy1", contact: "919811111111", name: "Sai", status: "booked", details: { goal: "Weight loss", date: "tomorrow", date_iso: iso, slot } });
+  store.leads.push({ id: "L9", client_id: "gy1", contact: "919811111111", name: "Sai", status: "booked", details: { goal: "Weight loss", date: "next monday", date_iso: iso, slot } });
   const exp = new Date(Date.now() + 330 * 60000 + 7 * 864e5).toISOString().slice(0, 10);
   store.members.push({ id: "M1", client_id: "gy1", phone: "919822222222", name: "Kiran", plan: "Quarterly plan", expires_on: exp, opted_out: false, reminders: {} });
   const r = await require("./reminders.js").handler();

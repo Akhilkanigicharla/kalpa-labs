@@ -2,6 +2,7 @@
 """A71 chat UI: business card first, real greeting with tap buttons (no "type hi"), one-line booking, typing dots,
 voice mode with a language choice, and the free browser speech wired to the chosen language. 390 px, light + dark.
 Speech is faked (no microphone in CI). Run after build.py; needs Playwright."""
+import datetime
 import http.server, os, pathlib, threading
 from playwright.sync_api import sync_playwright
 dist = pathlib.Path(__file__).resolve().parent.parent / "web" / "dist"
@@ -23,6 +24,7 @@ with sync_playwright() as p:
         pg = b.new_page(viewport={"width": 390, "height": 844}, color_scheme=scheme); errs = []
         pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.add_init_script(FAKE_SPEECH)
+        pg.clock.install(time=datetime.datetime(2026, 10, 14, 11, 0, tzinfo=datetime.timezone(datetime.timedelta(hours=5, minutes=30))))  # a Wednesday: "repu"/"tomorrow" is never the closed Sunday (A177)
         pg.goto(url); pg.wait_for_selector(".b.welcome"); pg.wait_for_selector("#quick button")
         assert "Glow Studio" in pg.inner_text(".b.welcome"), "business card first"
         first = pg.inner_text(".b.in:not(.welcome)")

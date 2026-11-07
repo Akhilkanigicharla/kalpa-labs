@@ -130,9 +130,17 @@ def funnel(close_a: pd.Series, close_b: pd.Series, *, holdout_years: int = 2, mi
     }
 
 
+def _jumps(close: pd.Series, limit: float = 0.25) -> list[str]:
+    """One-day moves above `limit`: an ETF almost never does this, so it is a data error (unadjusted split)."""
+    r = close.pct_change().dropna()
+    return [f"{d:%d %b %Y} {v:+.0%}" for d, v in r[r.abs() > limit].items()]
+
+
 def verdict(rep: dict) -> tuple[bool, list[str]]:
     """PASS only if every gate holds; returns the failed gates in plain words."""
     best, fails = rep["best"], []
+    if rep.get("data_problems") or any(rep.get("jumps", {}).values()):
+        fails.append("DATA PROBLEM: results not trusted until the price series is fixed")
     if best["train_sharpe"] <= 0.5: fails.append("train Sharpe not above 0.5")
     if best["holdout_total"] <= 0: fails.append("lost money in the hold-out")
     if rep["best_vs_random_pct"] < 95: fails.append("not better than 95% of random")
@@ -161,6 +169,10 @@ def report_md(rep: dict, a: str, b: str, source: str) -> str:
         f"- Survivors still profitable in the hold-out: **{rep['survivors_profitable_in_holdout']} of {s['sharpe_ok']}**.",
         f"- PBO (chance the best in-sample pick is overfit): **{rep['pbo']:.2f}**; Deflated Sharpe of best: **{rep['dsr_best']:.2f}**.",
         "",
+        "## Data checks",
+        *([f"- ⚠ {p}" for p in rep.get("data_problems", [])] + [f"- ⚠ {k}: one-day move {j}" for k, js in rep.get("jumps", {}).items() for j in js]
+          or ["- Clean: no gaps, no impossible prices, no one-day jumps above 25%."]),
+        "",
         "## Verdict",
         ("**PASS**: goes to 90 days of paper trading." if ok else "**FAIL**: " + "; ".join(fails) + ". Not traded, not even on paper."),
         "",
@@ -184,12 +196,17 @@ def main(argv: list[str] | None = None) -> int:
     else:
         from . import data
         # yfinance returns only ~1 month when no start is given, so always ask for the full history
-        a = data.get_daily(args.a, start="2006-01-01", refresh=True, strict=False)["close"]
-        b = data.get_daily(args.b, start="2006-01-01", refresh=True, strict=False)["close"]
+        da = data.get_daily(args.a, start="2006-01-01", refresh=True, strict=False)
+        db = data.get_daily(args.b, start="2006-01-01", refresh=True, strict=False)
+        problems = [f"{args.a}: {p}" for p in data.validate(da)] + [f"{args.b}: {p}" for p in data.validate(db)]
+        jumps = {args.a: _jumps(da["close"]), args.b: _jumps(db["close"])}
+        a, b = da["close"], db["close"]
         both = a.index.intersection(b.index)
         source = (f"Yahoo Finance daily bars via yfinance ({args.a}.NS, {args.b}.NS), "
                   f"{both[0]:%d %b %Y} to {both[-1]:%d %b %Y}, {len(both)} common trading days")
     rep = funnel(a, b)
+    if not args.synthetic:
+        rep["data_problems"], rep["jumps"] = problems, jumps
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     path = out / f"stress-{args.a}-{args.b}-{date.today():%Y-%m-%d}.md"
     path.write_text(report_md(rep, args.a, args.b, source), encoding="utf-8")

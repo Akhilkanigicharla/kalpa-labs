@@ -84,3 +84,13 @@ def test_backtest_and_paper_trade_on_the_same_days(strategy):
     paper_days = {s.signal_date for s in run.signals}
     window = set(close.index[-61:-1].date)
     assert paper_days == bt_days & window
+
+
+def test_data_problem_blocks_pass_and_is_shown():
+    a, b = _pair(seed=3, regime_days=120, drift=0.30)
+    a = a.copy(); a.iloc[1000:] *= 10                                   # an unadjusted 1:10 split
+    rep = stress.funnel(a, b, holdout_years=2)
+    rep["jumps"] = {"NIFTYBEES": stress._jumps(a)}
+    ok, fails = stress.verdict(rep)
+    assert not ok and "DATA PROBLEM" in fails[0]
+    assert "one-day move" in stress.report_md(rep, "NIFTYBEES", "GOLDBEES", "synthetic")

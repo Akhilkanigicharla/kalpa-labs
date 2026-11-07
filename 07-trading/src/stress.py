@@ -183,8 +183,12 @@ def main(argv: list[str] | None = None) -> int:
         source = "synthetic (test run)"
     else:
         from . import data
-        a, b = data.get_daily(args.a)["close"], data.get_daily(args.b)["close"]
-        source = f"Yahoo Finance daily bars via yfinance ({args.a}.NS, {args.b}.NS)"
+        # yfinance returns only ~1 month when no start is given, so always ask for the full history
+        a = data.get_daily(args.a, start="2006-01-01", refresh=True, strict=False)["close"]
+        b = data.get_daily(args.b, start="2006-01-01", refresh=True, strict=False)["close"]
+        both = a.index.intersection(b.index)
+        source = (f"Yahoo Finance daily bars via yfinance ({args.a}.NS, {args.b}.NS), "
+                  f"{both[0]:%d %b %Y} to {both[-1]:%d %b %Y}, {len(both)} common trading days")
     rep = funnel(a, b)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     path = out / f"stress-{args.a}-{args.b}-{date.today():%Y-%m-%d}.md"

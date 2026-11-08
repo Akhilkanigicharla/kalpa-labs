@@ -41,6 +41,7 @@ jobs:
       - run: node 00-hq/design/vibecheck.test.mjs
       - run: node 00-hq/design/theme.test.mjs
       - run: node 00-hq/agents/tooling.test.mjs
+      - run: python3 00-hq/agents/test_council.py && python3 00-hq/agents/test_live_status.py
 
   site-taps:
     # Every customer tap on the Kalpa Labs site at 390 px, light + dark: nothing covered,

@@ -1,0 +1,51 @@
+name: council
+# A182 decision council: 7 role seats on free models debate one CEO decision (3 rounds + chair).
+# Start it from the GitHub app: Actions > council > Run workflow (type a question or a C-item like C38),
+# or commit a .txt question file to 00-hq/knowledge/council/requests/.
+on:
+  workflow_dispatch:
+    inputs:
+      question:
+        description: "The decision, in one or two sentences (or a CEO-queue id like C38)"
+        required: true
+  push:
+    branches: [main]
+    paths: ["00-hq/knowledge/council/requests/*.txt"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: council
+  cancel-in-progress: false
+
+jobs:
+  council:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_council.py
+      - name: Run the council
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          QUESTION: ${{ github.event.inputs.question }}
+        run: |
+          if [ -n "$QUESTION" ]; then
+            if echo "$QUESTION" | grep -Eq '^C[0-9]+$'; then python3 00-hq/agents/council.py --c-item "$QUESTION"
+            else python3 00-hq/agents/council.py --question "$QUESTION"; fi
+          else
+            python3 00-hq/agents/council.py --requests
+          fi
+      - name: Save the verdict
+        run: |
+          git config user.name "Akhilkanigicharla"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/knowledge/council
+          git diff --cached --quiet && exit 0
+          git commit -m "council: verdict ($(date -u +%Y-%m-%dT%H:%MZ))"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 5; done

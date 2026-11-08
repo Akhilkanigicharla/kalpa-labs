@@ -1,2 +1,4 @@
 {"at": "2026-11-06T23:23Z", "task": "K003", "lesson": "Vigil asked: Draft is truncated (ends mid-sentence at \"Can I book a facial for 11am\"); complete the JSON lines.; Ensure exactly 200 lines are present; current draft appears to have fewer than 200 entries.; Verify all `expected_intent` values match the defined set (book, greeting, timing, location, price, other, human, complaint, cancel, reschedule).; Check for duplicate messages; remove any exact "}
 {"at": "2026-11-08T19:29Z", "task": "K057", "lesson": "Vigil asked: Shorten the feature gap comparison list to at most 5 items to follow the rule."}
+{"at": "2026-11-08T19:33Z", "task": "K057", "lesson": "Vigil asked: incomplete, 5 of 15 required items. Write all 15, numbered 1 to 15."}
+{"at": "2026-11-08T19:34Z", "task": "K058", "lesson": "Vigil asked: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."}

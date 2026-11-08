@@ -1,19 +1,27 @@
-# Token-saver trial (raw) · 2026-11-08T19:53:48Z · commit 8f5c6a6
+# Token-saver trial (raw) · 2026-11-08T19:58:12Z · commit 9ad1e00
 
 Tokens ≈ characters ÷ 4 of what an agent would read. Lower is better.
 
 ## Baseline: grep -rn (what a session does today)
 | Question | grep tokens |
 |---|---|
-| inbox reply send | 14608 |
-| billing void invoice | 11741 |
-| agents runner free model call | 86744 |
-| tap sweep 44 px | 39698 |
-| seo check canonical | 50161 |
-## codebase-memory-mcp 0.10.7 (MIT)
-- install failed: npm error codebase-memory-mcp: install failed — HTTP 404 for https://github.com/DeusData/codebase-memory-mcp/releases/download/v0.10.7/codebase-memory-mcp-linux-amd64-portable.tar.gz npm error You can install manually: https://github.com/DeusData/codebase-memory-mcp#installation npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-08T19_53_49_052Z-debug-0.log 
+| inbox reply send | 14646 |
+| billing void invoice | 11781 |
+| agents runner free model call | 86789 |
+| tap sweep 44 px | 39736 |
+| seo check canonical | 50200 |
+## codebase-memory-mcp latest (MIT): 0.12.1
+- index exit 0, 4.713145673 s; output: warning: passing raw JSON to 'cli index_repository' is deprecated and will be removed in a future release; use flags (run 'cli index_repository --help'), --args-file <path>, or piped stdin. {"project":"tmp-repo","excluded":{"dirs":[".claude","07-trading/reports","00-hq/vendor","00-hq/site/.netlify",
+| Question | tokens |
+|---|---|
+| inbox reply send | 94 |
+| billing void invoice | 94 |
+| agents runner free model call | 94 |
+| tap sweep 44 px | 94 |
+| seo check canonical | 94 |
+- get_architecture: 96 tokens
 ## Graft @nanonets/graft 0.10.1 (MIT)
-- build exit 0, 3.638683805 s, map folder 12700 KB; output: 381 file, 219 method, 77 class, 60 type, 23 interface), 5156 edges, 381 cards [javascript, python, tsx, typescript]   parsed: 381 of 381 files (0 replayed from cache)   → /tmp/repo/graft   graft/ is git-ignored (added automatically) — a local cache; teammates run `graft build` to get their own. 
+- build exit 0, 6.599118917 s, map folder 12696 KB; output: 381 file, 219 method, 77 class, 60 type, 23 interface), 5133 edges, 381 cards [javascript, python, tsx, typescript]   parsed: 381 of 381 files (0 replayed from cache)   → /tmp/repo/graft   graft/ is git-ignored (added automatically) — a local cache; teammates run `graft build` to get their own. 
 | Question | tokens |
 |---|---|
 | inbox reply send | 2398 |

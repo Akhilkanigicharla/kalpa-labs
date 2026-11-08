@@ -175,6 +175,14 @@
     <p class="kx-note">Your first open tasks, in order. Full list: Work tab → Akhil (CEO).</p>
     <div class="kx-todo"><ol id="needlist" data-source="needs_you"></ol></div>
    </div>
+   <div class="kx-card" id="rooms" data-fetchpriority="high">
+    <div class="lr-head"><h3>Live robot rooms</h3><span class="kx-note" id="lr-updated" data-source="live_meta">—</span></div>
+    <p class="kx-note">Every AI agent, room by room: who is working, waiting, done or sent back. Tap a robot to see its job. Pills under a room are its GitHub machines.</p>
+    <div class="lr-sum" id="lr-sum" data-source="live_agents"></div>
+    <button class="kx-btn" id="lr-refresh" type="button" style="min-height:44px;margin:.3rem 0 .6rem">Refresh now</button>
+    <div class="lr-grid" id="lr-grid" data-source="live_agents live_runs live_meta"></div>
+    <div class="lr-card" id="lr-card" hidden></div>
+   </div>
   <div class="kx-grid">
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
     <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">agent tasks done of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span></div></div></div>
@@ -659,3 +667,4 @@
 })();
 </script>
 <script src="office.js"></script>
+<script src="rooms.js"></script>

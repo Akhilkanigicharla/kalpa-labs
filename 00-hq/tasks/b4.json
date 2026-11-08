@@ -107,8 +107,8 @@
   "status": "todo",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K051.md",
-  "updated": "2026-11-08T15:21:44Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n- The draft is unfinished: it cuts off at pattern 17 and is missing patterns 1–14 and 18–20 (no status, file, or evidence).\n- Do not mark `$19 / ₹899` as UNVERIFIED; it appears in repo file `04-extensions/site/index.html`, so it is VERIFIED.\n- Add a status (✅ / ➖ why / ❌ + roadmap id), file, and evidence line for every one of the 20 patterns.\n- Keep popup findings separate from store-site findings so site pricing/tier claims are not attributed to the popup only."
+  "updated": "2026-11-08T19:25:31Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n- Row 1: Optimistic UI marked ✅ but `main.ts` awaits the background reply before updating the button; change to ❌ or ➖.\n- Row 7: Debouncing marked ✅ but `importText` sends on every input with no ~300 ms wait; change to ❌.\n- Row 5: Loading and empty states marked ✅ but only an empty state exists; no loading view during `refresh()`; change to ❌ or ➖.\n- Row 17: Custom 404 marked ❌ with UNVERIFIED evidence; no directory listing was provided to confirm absence, so change to ➖ UNVERIFIED.\n- Row 15: Onboarding capture marked ✅ but no onboarding form or DPDP consent appears in the files; change to ➖ or ❌."
  }
 ]

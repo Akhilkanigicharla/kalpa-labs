@@ -154,5 +154,21 @@
   ],
   "status": "todo",
   "created": "2026-11-07T15:10:00Z"
- }
+ },
+  {
+    "id": "K048",
+    "world": "hq",
+    "priority": "P1",
+    "owner": "Forge",
+    "title": "Kalpa site (kalpalabs.dpdns.org) UX pattern audit",
+    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+    "read": [
+      "00-hq/design/UX-PATTERNS.md",
+      "00-hq/site/index.html"
+    ],
+    "context_chars": 38000,
+    "status": "todo",
+    "created": "2026-11-08T12:45:00Z",
+    "output": "00-hq/knowledge/K048.md"
+  }
 ]

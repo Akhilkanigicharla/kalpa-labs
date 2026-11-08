@@ -82,5 +82,22 @@
   "created": "2026-11-06T19:05:00Z",
   "updated": "2026-11-06T19:01:27Z",
   "output": "00-hq/knowledge/K042.md"
- }
+ },
+  {
+    "id": "K052",
+    "world": "b6",
+    "priority": "P1",
+    "owner": "Forge",
+    "title": "Ledger Peaks dashboard + landing UX pattern audit",
+    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+    "read": [
+      "00-hq/design/UX-PATTERNS.md",
+      "06-finops/design/dashboard.html",
+      "06-finops/design/landing.html"
+    ],
+    "context_chars": 38000,
+    "status": "todo",
+    "created": "2026-11-08T12:45:00Z",
+    "output": "00-hq/knowledge/K052.md"
+  }
 ]

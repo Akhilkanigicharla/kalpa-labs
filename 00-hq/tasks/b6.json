@@ -118,8 +118,8 @@
   "status": "todo",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K054.md",
-  "updated": "2026-11-08T19:25:04Z",
-  "tries": 1,
-  "vigil_notes": "FIX:\n- Invented URLs (`https://kalpalabs.com/ledger-peaks`, `https://kalpalabs.com/assets/og-ledger-peaks.png`) appear in fixes 1, 2, 4 and 5 without being marked UNVERIFIED.\n- Fix 5 suggests changing `xray.html` to `/xray`; that path is UNVERIFIED in the provided repo files.\n- Check 11 marks the `#` logo link as broken; same-page anchors are not broken links.\n- Checks 1, 2 and 20 say “File not found in workspace” but only two repo files were provided; rephrase as “not visible in provided repo files (UNVERIFIED)”."
+  "updated": "2026-11-08T19:29:48Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n- Row 6: Meta description is ~211 chars, over the 160 limit — mark Fail, not Pass.\n- Row 14: “HTML size under 30 KB” is not in repo files and PageSpeed isn’t live — mark UNVERIFIED, not Pass.\n- Row 17: `href=\"xray.html\"` breaks the “no .html in links we share” rule — mark Fail.\n- Row 15: Only viewport meta is present; 390 px tap sweep not run — mark UNVERIFIED, not Pass.\n- Row 11/12: `xray.html` target existence is unconfirmed in repo files — mark UNVERIFIED."
  }
 ]

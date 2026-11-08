@@ -114,7 +114,9 @@ def check_page(name, p, base, folder):
             continue
         items = data.get("@graph", [data]) if isinstance(data, dict) else data
         types |= {i.get("@type") for i in items if isinstance(i, dict)}
-    if name == "index.html" and p.ldjson and not {"Organization", "WebSite"} <= types:
+    org_types = {"Organization", "LocalBusiness", "BeautySalon", "HealthAndBeautyBusiness", "ExerciseGym", "SportsActivityLocation",
+                 "RealEstateAgent", "EducationalOrganization", "Store", "ProfessionalService"}
+    if name == "index.html" and p.ldjson and not ("WebSite" in types and types & org_types):
         fail(10, f"home needs Organization + WebSite schema (found {sorted(t for t in types if t)})")
     for h in p.hrefs:
         if h.startswith("#") and len(h) > 1 and h[1:] not in p.ids:

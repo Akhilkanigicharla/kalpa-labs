@@ -74,7 +74,8 @@ def jsonld(setup, cfg, page_url, service=None, area=None):
         {"@type": "Question", "name": "What are your timings?", "acceptedAnswer": {"@type": "Answer", "text": cfg["hours"]}},
         {"@type": "Question", "name": f"How do I book at {cfg['business']}?", "acceptedAnswer": {"@type": "Answer", "text": f"Message us on WhatsApp at {cfg['phone']}; booking takes under a minute, any time of day."}},
     ] + [{"@type": "Question", "name": f"Do you offer {f['k'][0]}?", "acceptedAnswer": {"@type": "Answer", "text": clean(f["a"], cfg)}} for f in cfg["faqs"][:4]]}
-    return [biz, faq]
+    site = {"@context": "https://schema.org", "@type": "WebSite", "name": cfg["business"], "url": cfg["site_url"]}
+    return [biz, faq, site]
 
 # Kalpa "Kalpavruksha" design system (00-hq/design/tokens.css), trimmed to what a client site needs. Light + dark.
 # The WhatsApp button is hero canopy green with a fruit-gold ring: AA contrast in both themes (test_seo.py checks it).
@@ -107,8 +108,27 @@ def page(setup, cfg, title, desc, body, url, service=None, area=None):
     wa = html.escape(f"https://wa.me/{cfg['whatsapp']}?text=" + urllib.parse.quote(("Hi, I'd like to book " + (service or "")).strip()))
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
-<meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website">
+<meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}">
+<meta property="og:image" content="{og_image(cfg)}"><meta property="og:image:alt" content="{html.escape(cfg['business'])}"><meta name="twitter:card" content="summary_large_image">
 {FONTS}<style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
+
+def og_image(cfg):
+    """The client's own cover photo when the config has one (https or a path on their site), else our plain card."""
+    c = (cfg.get("cover_photo") or "").strip()
+    if c.startswith("https://"):
+        return html.escape(c)
+    return html.escape(cfg["site_url"].rstrip("/") + "/" + (c.lstrip("/") or "og.png"))
+
+def og_card_png(w=1200, h=630):
+    """A plain 1200x630 share card (hero green, turmeric band) written with the standard library only.
+    WhatsApp and LinkedIn ignore SVG previews, so this is the fallback until the client sends a real photo."""
+    import struct, zlib
+    green, gold = bytes((0x1D, 0x3A, 0x25)), bytes((0xC3, 0x8E, 0x12))
+    band = range(h - 60, h - 36)
+    raw = b"".join(b"\x00" + (gold if y in band else green) * w for y in range(h))
+    chunk = lambda t, d: struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
 
 def favicon(cfg):
     """A small letter mark: turmeric on hero canopy green (5.4:1 contrast), the Kalpavruksha pair."""
@@ -189,6 +209,8 @@ def build(setup, cfg, out):
             kw.append((c["name"], a, f"{c['name'].lower()} in {a.lower()}", f"{c['name'].lower()} near me", pages[a][1] if a in pages else "index.html"))
     today = dt.date.today().isoformat()
     (site / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls) + "</urlset>")
+    if not (cfg.get("cover_photo") or "").strip():
+        (site / "og.png").write_bytes(og_card_png())  # fallback share card; a real cover_photo replaces it
     (site / "favicon.svg").write_text(favicon(cfg))  # stops the /favicon 404 that Lighthouse logged as a console error
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {cfg['site_url']}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"# {cfg['business']}\n\n> {cfg['address']}. {cfg['hours']}. Phone/WhatsApp {cfg['phone']}.\n\n## {cfg['catalogTitle']}\n" + "\n".join(f"- {c['name']}: {c['price']}" for c in cfg["catalog"]) + "\n")

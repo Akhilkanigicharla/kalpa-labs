@@ -33,6 +33,12 @@ node ../../00-hq/agents/tasks.test.js
 python3 leadfinder/test_leadfinder.py
 python3 leadfinder/test_enrich.py
 python3 seo/test_seo.py
+python3 seo/test_private_noindex.py
+for st in salon gym realestate examkits; do  # 20 Kalpa SEO checks on a sample client site of each type
+  d=$(mktemp -d); echo '{"site_url":"https://glow.example","areas":["Jubilee Hills"]}' > "$d/c.json"
+  python3 seo/seo_bot.py --setup "$st" --config "$d/c.json" --out "$d/out" >/dev/null
+  python3 ../../00-hq/site/tests/test_seo.py "$d/out/site" https://glow.example
+done
 python3 tools/test_cards.py
 python3 social/test_social.py
 python3 social/test_voiceover.py

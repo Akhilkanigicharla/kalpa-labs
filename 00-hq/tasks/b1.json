@@ -188,12 +188,12 @@
   ],
   "min_items": 15,
   "context_chars": 38000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K057.md",
-  "updated": "2026-11-08T19:33:15Z",
-  "tries": 2,
-  "vigil_notes": "FIX: incomplete, 5 of 15 required items. Write all 15, numbered 1 to 15."
+  "updated": "2026-11-08T19:48:18Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Shorten the main comparison list to at most 5 items to comply with the rules."
  },
  {
   "id": "K058",
@@ -207,11 +207,10 @@
   ],
   "min_items": 6,
   "context_chars": 20000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K058.md",
-  "updated": "2026-11-08T19:34:05Z",
-  "tries": 1,
-  "vigil_notes": "FIX: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."
+  "updated": "2026-11-08T19:49:10Z",
+  "tries": 1
  }
 ]

@@ -33,7 +33,7 @@ from .risk import Order, RiskBook, check
 HERE = Path(__file__).resolve().parent.parent
 TRIALS = HERE / "research" / "trials.csv"
 MAX_OPS = 5            # orders per second (SEBI threshold for unregistered personal algos is 10)
-MAX_ORDERS_DAY = 40    # daily order budget
+MAX_ORDERS_DAY = 20    # daily order budget (bug guard, A153 research)
 
 
 class Broker(Protocol):

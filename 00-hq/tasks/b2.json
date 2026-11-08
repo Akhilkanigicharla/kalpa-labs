@@ -87,7 +87,7 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K050.md",
   "updated": "2026-11-08T15:21:28Z"

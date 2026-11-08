@@ -210,11 +210,11 @@
   ],
   "min_items": 8,
   "context_chars": 38000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K056.md",
-  "updated": "2026-11-08T19:51:00Z",
-  "tries": 2,
+  "updated": "2026-11-08T19:53:22Z",
+  "tries": 3,
   "vigil_notes": "FIX: incomplete, 3 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

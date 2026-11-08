@@ -5,6 +5,7 @@ and one per GitHub Actions machine, then prints SQL that replaces the D1 tables.
 
   python3 00-hq/agents/live_status.py --sql   > /tmp/live.sql   # refresh D1 with this
   python3 00-hq/agents/live_status.py --json                    # inspect
+  python3 00-hq/agents/live_status.py --roster-sql > /tmp/roster.sql  # every registry agent (after registry.js changes)
 
 GitHub runs come from the public API (repo is public; GITHUB_TOKEN used if set).
 No secrets are read or printed.
@@ -134,6 +135,48 @@ def roles_on_paper(root=ROOT):
         return {}
 
 
+# Every agent in the registry gets a robot (A202). The roster changes only when registry.js changes, so it lives in its
+# own D1 table (agents_roster) and the 2-hourly refresh stays small. The dashboard shows live robots first, then the rest.
+ROSTER_STATE = {"code": "ready", "n8n": "ready", "claude": "on call", "human": "needs you", "planned": "planned"}
+
+
+def registry_agents(root=ROOT):
+    out = subprocess.run(["node", "-e", "const r=require('./00-hq/agents/registry.js');"
+                          "console.log(JSON.stringify(r.AGENTS.map(a=>({id:a.id,name:a.name,unit:a.unit,team:a.team,runs_as:a.runs_as,mission:a.mission}))))"],
+                         cwd=root, capture_output=True, text=True, timeout=30, check=True)
+    return json.loads(out.stdout)
+
+
+def roster_rows(agents, t=None):
+    """Compact rows (id, name, room, team, state, task): runs_as text and the 'roster:' id prefix are added by the
+    dashboard's SQL, so the one-off load stays small."""
+    rows = []
+    for a in agents:
+        mission = " ".join(str(a.get("mission") or "").split())
+        rows.append({"id": a["id"], "name": a["name"], "room": a.get("unit") or "hq", "team": a.get("team") or "",
+                     "state": ROSTER_STATE.get(a.get("runs_as") or "planned", "planned"),
+                     "task": mission if len(mission) <= 90 else mission[:87].rstrip() + "..."})
+    return rows
+
+
+ROSTER_COLS = ("id", "name", "room", "team", "state", "task")
+
+
+def roster_sql(rows, create=True):
+    vals = ",\n".join("(" + ",".join(q(r[c]) for c in ROSTER_COLS) + ")" for r in rows)
+    head = ("DROP TABLE IF EXISTS agents_roster;\nCREATE TABLE agents_roster (id TEXT PRIMARY KEY, name TEXT, room TEXT, "
+            "team TEXT, state TEXT, task TEXT);\n") if create else ""
+    return head + (f"INSERT INTO agents_roster VALUES\n{vals};" if rows else "")
+
+
+# The dashboard's live_agents query: live robots first, then every registry agent that has no live robot.
+DASHBOARD_SQL = ("SELECT id, name, room, team, runs_as, state, task, detail, updated_at FROM agents_live UNION ALL "
+                 "SELECT 'roster:'||id, name, room, team, CASE state WHEN 'ready' THEN 'runs by itself (program or n8n)' "
+                 "WHEN 'on call' THEN 'Claude, on schedule or when asked' WHEN 'needs you' THEN 'needs Akhil (Claude prepares it)' "
+                 "ELSE 'designed, not built yet' END, state, task, id, '' FROM agents_roster "
+                 "WHERE lower(name) NOT IN (SELECT lower(name) FROM agents_live) ORDER BY room, name")
+
+
 def q(v):
     return "NULL" if v is None else "'" + str(v).replace("'", "''") + "'"
 
@@ -164,6 +207,9 @@ def build(root=ROOT, runs=None, t=None):
 
 
 def main(argv):
+    if "--roster-sql" in argv:  # one-off, after registry.js changes
+        print(roster_sql(roster_rows(registry_agents())))
+        return
     try:
         raw = fetch_runs()
     except Exception as e:  # keep the robots even if GitHub is unreachable

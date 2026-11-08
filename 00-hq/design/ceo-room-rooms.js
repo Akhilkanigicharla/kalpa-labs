@@ -10,10 +10,20 @@
  const ROOMS=[['hq','HQ','Kalpa head office'],['b1','BotBhai','WhatsApp bots'],['b2','JobCard','Technician app'],['b3','Kits','Exam kits'],
   ['b4','Extensions','Tab Lifeboat'],['b5','Deals','Telugu deals'],['b6','FinOps','Ledger Peaks'],['b7','Trading','Trading Lab']];
  const LOOK={working:['var(--color-warn)','Working now'],queued:['var(--kx-a,#4a7c59)','Job waiting'],'needs review':['var(--color-ok)','Draft ready, needs review'],
-  redo:['var(--color-bad)','Sent back to redo'],done:['var(--color-ok)','Done'],idle:['var(--color-fg-muted)','Resting']};
+  redo:['var(--color-bad)','Sent back to redo'],done:['var(--color-ok)','Done'],idle:['var(--color-fg-muted)','Resting'],
+  ready:['color-mix(in srgb,var(--color-ok) 60%,var(--color-fg-muted))','Ready: runs by itself'],
+  'on call':['color-mix(in srgb,var(--color-ok) 30%,var(--color-fg-muted))','On call: Claude runs it when needed'],
+  'needs you':['color-mix(in srgb,var(--color-warn) 55%,var(--color-bad))','Needs you (Claude prepares it)'],
+  planned:['var(--color-border-line)','Planned, not built yet']};
  const NEXT={working:'It is on the job right now.',queued:'It starts at the next agent run (every hour at :20).',
   'needs review':'Claude checks this draft in the next build session; good ones go to you.',redo:'The checker found problems; it retries on the next run.',
-  done:'Finished and accepted.',idle:'No job for it now. New jobs come from the roadmap.'};
+  done:'Finished and accepted.',idle:'No job for it now. New jobs come from the roadmap.',
+  ready:'A program or n8n workflow does this job automatically when its trigger fires.',
+  'on call':'Claude does this job in a build sprint or scheduled task, following its spec.',
+  'needs you':'This step needs Akhil (a login, a signature, a visit); Claude prepares everything first.',
+  planned:'Designed in the registry; it gets built when its roadmap item comes up.'};
+ const ORDER=['working','queued','needs review','redo','needs you','done','ready','on call','idle','planned'];
+ const SHOW=24; const open={};
  const reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
  const h=(tag,cls,t)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(t!=null) e.textContent=t; return e;};
  const NS='http://www.w3.org/2000/svg';
@@ -37,6 +47,8 @@
 #rooms .lr-bot svg{width:40px;height:48px;overflow:visible}
 #rooms .lr-bot span{font-size:11px;line-height:1.2;color:var(--color-fg);max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #rooms .lr-empty{font-size:12px;color:var(--color-fg-muted);align-self:center}
+#rooms .lr-more{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 .8rem;margin-top:.4rem;border:1px solid var(--color-border-line);border-radius:999px;font-size:13px;color:var(--color-fg);display:inline-flex;align-items:center}
+#rooms .lr-more:focus-visible{outline:2px solid var(--color-fg);outline-offset:2px}
 #rooms .lr-mach{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem}
 #rooms .lr-m{display:inline-flex;align-items:center;gap:.25rem;font-size:11px;border:1px solid var(--color-border-line);border-radius:999px;padding:.1rem .45rem;color:var(--color-fg)}
 #rooms .lr-m b{width:8px;height:8px;border-radius:50%;display:inline-block}
@@ -93,23 +105,29 @@
   const agents=A.data, runs=R.status==='ok'?R.data:[], meta={}; (M.status==='ok'?M.data:[]).forEach(r=>meta[r.k]=r.v);
   upd.textContent='Updated '+ago(meta.refreshed_at);
   const count=st=>agents.filter(a=>a.state===st).length;
-  [['working','working now'],['queued','waiting to start'],['needs review','drafts ready'],['redo','to redo'],['idle','resting']].forEach(([st,label])=>{
+  [['working','working now'],['queued','waiting to start'],['needs review','drafts ready'],['redo','to redo'],['needs you','need you'],['ready','ready'],['on call','on call'],['idle','resting'],['planned','planned']].forEach(([st,label])=>{
    const n=count(st); if(!n&&st!=='working') return; const x=h('span',null); const i=h('i'); i.style.background=(LOOK[st]||LOOK.idle)[0];
    i.style.cssText+=';display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:.3rem'; x.append(i, h('b',null,String(n)), document.createTextNode(' '+label)); sum.append(x);});
   ROOMS.forEach(([id,name,sub])=>{
-   const room=h('div','lr-room'); room.id='lr-room-'+id; room.append(h('h4',null,name), h('p','lr-sub',sub));
-   const floor=h('div','lr-floor'); const mine=agents.filter(a=>a.room===id);
+   const room=h('div','lr-room'); room.id='lr-room-'+id;
+   const rank=st=>{const i=ORDER.indexOf(st); return i<0?99:i;};
+   const mine=agents.filter(a=>a.room===id).sort((x,y)=>rank(x.state)-rank(y.state)||String(x.name).localeCompare(String(y.name)));
+   room.append(h('h4',null,name), h('p','lr-sub',`${sub} · ${mine.length} robot${mine.length===1?'':'s'}`));
+   const floor=h('div','lr-floor');
    if(!mine.length) floor.append(h('span','lr-empty','No agent working here yet'));
-   mine.forEach(a=>{const b=h('button','lr-bot lr-'+String(a.state).replace(/\s+/g,'-')); b.type='button';
+   const shown=open[id]?mine:mine.slice(0,SHOW);
+   if(picked&&!shown.some(a=>a.id===picked)){const p=mine.find(a=>a.id===picked); if(p) shown.push(p);}
+   shown.forEach(a=>{const b=h('button','lr-bot lr-'+String(a.state).replace(/\s+/g,'-')); b.type='button';
     b.setAttribute('aria-label',`${a.name}, ${(LOOK[a.state]||[0,a.state])[1]}`); b.setAttribute('aria-pressed',String(picked===a.id));
     b.append(robot(a.state), h('span',null,a.name)); b.addEventListener('click',()=>{picked=picked===a.id?null:a.id; draw();}); floor.append(b);});
    room.append(floor);
+   if(mine.length>SHOW){const more=h('button','lr-more',open[id]?'Show fewer':`Show all ${mine.length} robots`); more.type='button';
+    more.setAttribute('aria-expanded',String(!!open[id])); more.addEventListener('click',()=>{open[id]=!open[id]; draw();}); room.append(more);}
    const mach=runs.filter(r=>r.room===id);
    if(mach.length){const m=h('div','lr-mach'); mach.forEach(r=>{const running=r.status==='in_progress'||r.status==='queued';
      const col=running?'var(--color-warn)':r.conclusion==='success'?'var(--color-ok)':r.conclusion?'var(--color-bad)':'var(--color-fg-muted)';
      const x=h('span','lr-m'); const dot=h('b',running?'lr-spin':null); dot.style.background=col; x.title=`${r.workflow}: ${running?'running':r.conclusion||r.status} · ${ago(r.started_at)}`;
      x.append(dot, document.createTextNode(r.workflow)); m.append(x);}); room.append(m);}
-   const roles=meta['roles_'+id]; if(roles) room.append(h('p','lr-roles',`${roles} job roles planned on paper`));
    root.append(room);});
   const a=agents.find(x=>x.id===picked);
   card.hidden=!a; card.replaceChildren();

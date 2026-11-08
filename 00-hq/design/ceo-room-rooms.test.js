@@ -16,6 +16,9 @@ const AGENTS = [
   { id: 'b1:chitti', name: 'Chitti', room: 'b1', team: 'free-model agent', runs_as: 'free models', state: 'needs review', task: '<img src=x onerror="window.pwned=1">5-language test', detail: 'K025', updated_at: ago(600) },
   { id: 'b2:forge', name: 'Forge', room: 'b2', team: 'free-model agent', runs_as: 'free models', state: 'redo', task: 'Voice phrases', detail: 'K026', updated_at: ago(1500) },
   { id: 'b3:kavi', name: 'Kavi', room: 'b3', team: 'free-model agent', runs_as: 'free models', state: 'queued', task: 'Kit blurb', detail: 'K045', updated_at: ago(30) }];
+// A202: every registry agent also gets a robot (roster rows from D1 agents_roster); BotBhai has more than one screen of them.
+for (let i = 0; i < 30; i++) AGENTS.push({ id: 'roster:b1.r' + i, name: 'Roster ' + String(i).padStart(2, '0'), room: 'b1', team: 'sales',
+  runs_as: 'runs by itself (program or n8n)', state: i % 3 ? 'ready' : 'on call', task: 'Job ' + i, detail: 'b1.r' + i, updated_at: '' });
 const RUNS = [{ id: '1', workflow: 'agents', room: 'hq', status: 'in_progress', conclusion: '', started_at: ago(2), url: '' },
   { id: '2', workflow: 'Trading Lab backtest', room: 'b7', status: 'completed', conclusion: 'failure', started_at: ago(200), url: '' }];
 const META = [{ k: 'refreshed_at', v: ago(4) }, { k: 'roles_b1', v: '182' }];
@@ -38,16 +41,21 @@ const page = `<!DOCTYPE html><html><head><meta name="viewport" content="width=de
     await pg.setContent(page);
     const tag = `[${scheme}/${motion}]`;
     assert.strictEqual(await pg.locator('.lr-room').count(), 8, tag + ' 8 rooms');
-    assert.strictEqual(await pg.locator('.lr-bot').count(), AGENTS.length, tag + ' one robot per agent');
+    // b1 has 31 robots: 24 shown first (live ones first), then "Show all"
+    assert.strictEqual(await pg.locator('.lr-bot').count(), AGENTS.length - 7, tag + ' big room shows 24 robots first');
+    assert.match(await pg.textContent('#lr-room-b1'), /31 robots/, tag + ' room counts its robots');
+    assert.match(await pg.locator('#lr-room-b1 .lr-bot').first().textContent(), /Chitti/, tag + ' live robot first');
+    await pg.locator('#lr-room-b1 .lr-more').tap();
+    assert.strictEqual(await pg.locator('.lr-bot').count(), AGENTS.length, tag + ' Show all shows every robot');
+    assert.match(await pg.textContent('#lr-sum'), /20 ready/, tag + ' roster states counted');
     assert.match(await pg.textContent('#lr-updated'), /Updated 4 min ago/, tag + ' freshness shown');
     assert.match(await pg.textContent('#lr-sum'), /1 working now/, tag + ' summary counts');
-    assert.match(await pg.textContent('#lr-room-b1'), /182 job roles planned/, tag + ' roles on paper');
     assert.match(await pg.textContent('#lr-room-b7'), /No agent working here yet/, tag + ' empty room says so');
     assert.strictEqual(await pg.locator('.lr-bot.lr-working').count(), 1, tag + ' working robot styled');
     // no horizontal overflow at 390 px
     assert(await pg.evaluate(() => document.documentElement.scrollWidth <= 390), tag + ' fits 390 px');
     // tap targets
-    for (const bb of await pg.locator('.lr-bot, #lr-refresh').evaluateAll(es => es.map(e => e.getBoundingClientRect())))
+    for (const bb of await pg.locator('.lr-bot, #lr-refresh, .lr-more').evaluateAll(es => es.map(e => e.getBoundingClientRect())))
       assert(bb.height >= 44 && bb.width >= 44, tag + ' tap target >= 44 px');
     // tap a robot -> its job card; text stays text (no HTML injection)
     await pg.locator('.lr-bot', { hasText: 'Chitti' }).tap();

@@ -55,6 +55,22 @@ class LiveStatus(unittest.TestCase):
         self.assertIn("'O''Neil'", sql)
         self.assertIn("'it''s'", sql)
 
+    def test_roster_has_every_registry_agent_with_a_plain_state(self):
+        reg = [{"id": "b1.salon.pitch", "name": "Salon Pitch Writer", "unit": "b1", "team": "sales", "runs_as": "claude", "mission": "Write a 60-word intro. " * 10},
+               {"id": "hq.x", "name": "Bot", "unit": "hq", "team": "ops", "runs_as": "code"},
+               {"id": "hq.y", "name": "Sig", "unit": "hq", "team": "legal", "runs_as": "human"},
+               {"id": "b7.z", "name": "Later", "unit": "b7", "team": "risk", "runs_as": "planned"},
+               {"id": "b2.n", "name": "Flow", "unit": "b2", "team": "ops", "runs_as": "n8n"}]
+        rows = ls.roster_rows(reg, t=T)
+        self.assertEqual([r["state"] for r in rows], ["on call", "ready", "needs you", "planned", "ready"])
+        self.assertTrue(all(len(r["task"]) <= 90 for r in rows))
+        self.assertEqual(rows[0]["id"], "b1.salon.pitch")
+        sql = ls.roster_sql(rows)
+        self.assertIn("CREATE TABLE agents_roster", sql)
+        self.assertEqual(sql.count("INSERT INTO agents_roster"), 1)
+        self.assertNotIn("CREATE", ls.roster_sql(rows[:1], create=False))
+        self.assertIn("NOT IN (SELECT lower(name) FROM agents_live)", ls.DASHBOARD_SQL)
+
     def test_build_has_claude_vigil_and_meta(self):
         d = repo({"b2": [{"owner": "Forge", "status": "review", "updated": "2026-11-06T18:55:01Z"}]})
         agents, runs, meta = ls.build(d, runs=[], t=T)

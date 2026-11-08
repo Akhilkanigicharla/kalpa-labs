@@ -190,6 +190,9 @@
   "context_chars": 38000,
   "status": "todo",
   "created": "2026-11-09T00:00:00Z",
-  "output": "00-hq/knowledge/K057.md"
+  "output": "00-hq/knowledge/K057.md",
+  "updated": "2026-11-08T19:29:20Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Shorten the feature gap comparison list to at most 5 items to follow the rule."
  }
 ]

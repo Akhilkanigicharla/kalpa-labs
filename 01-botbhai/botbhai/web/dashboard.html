@@ -122,6 +122,7 @@ h2{font:400 21px/1.15 var(--f-display);margin:0}
 .inline{display:flex;gap:8px}.inline input{flex:1;min-width:0;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:8px 12px;font-size:15px}
 .toast{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));margin:0 auto;max-width:520px;background:var(--hero);color:var(--hero-fg);border-radius:var(--r-m);padding:12px 16px;box-shadow:var(--shadow);font-size:14px;z-index:9}
 footer{color:var(--muted);font-size:12.5px;text-align:center}
+#key[aria-invalid=true]{border-color:var(--warn);box-shadow:0 0 0 2px var(--warn)}
 </style>
 </head>
 <body>
@@ -306,13 +307,18 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (b) {
     b.addEventListener("click", function () { S.filter = b.getAttribute("data-f"); Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (x) { x.setAttribute("aria-pressed", String(x === b)); }); renderLeads(); });
   });
-  $("q").addEventListener("input", function (e) { S.q = e.target.value; renderLeads(); });
+  $("q").addEventListener("input", function (e) { clearTimeout(S.qt); S.qt = setTimeout(function () { S.q = e.target.value; renderLeads(); }, 250); });  // wait for a pause in typing
   function showSignin(err) { $("signin").hidden = false; $("main").hidden = true; $("tabs").hidden = true; $("signin-err").textContent = err || ""; if (S.timer) clearInterval(S.timer); }
   function start() {
     $("signin").hidden = true; $("main").hidden = false; $("tabs").hidden = false;
     $("foot").textContent = DEMO ? "Demo: sample data, nothing is sent." : "Updates every minute while open.";
     load(); if (!DEMO) S.timer = setInterval(function () { if (document.visibilityState === "visible") load(); }, 60000);
   }
+  (function () {  // check the key when they leave the field, clear the error as soon as it is right
+    var k = $("key"), bad = function () { var v = k.value.trim(); return !(/^[a-f0-9-]{36}$/i.test(v)); };
+    k.addEventListener("blur", function () { if (k.value.trim() && bad()) { k.setAttribute("aria-invalid", "true"); $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; } });
+    k.addEventListener("input", function () { if (k.getAttribute("aria-invalid") === "true" && !bad()) { k.removeAttribute("aria-invalid"); $("signin-err").textContent = ""; } });
+  })();
   $("signin-form").addEventListener("submit", function (e) {
     e.preventDefault(); var v = $("key").value.trim();
     if (!/^[a-f0-9-]{36}$/i.test(v)) { $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; return; }

@@ -67,7 +67,7 @@ h2{font:400 22px/1.15 var(--f-display);margin:0}
 .field input,.field select{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:8px 12px;font-size:15px}
 .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .presets{display:flex;gap:6px;flex-wrap:wrap}
-.chip{min-height:40px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:13.5px;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:13.5px;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
 .chips .chip{min-height:44px;font-size:14px;padding:8px 16px}
@@ -102,6 +102,10 @@ ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .toast{position:fixed;left:16px;right:16px;bottom:16px;margin:0 auto;max-width:520px;background:var(--hero);color:var(--hero-fg);border-radius:var(--r-m);padding:12px 16px;box-shadow:var(--shadow);font-size:14px}
 footer{color:var(--muted);font-size:12.5px;text-align:center}
 @media (max-width:420px){.row2{grid-template-columns:minmax(0,1fr)}}
+#key[aria-invalid=true]{border-color:var(--warn);box-shadow:0 0 0 2px var(--warn)}
+.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:10px 0}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 </style>
 </head>
 <body>
@@ -156,7 +160,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
         <button class="chip" data-f="paid" aria-pressed="false">Paid</button>
         <button class="chip" data-f="all" aria-pressed="false">All</button>
       </div>
-      <ul class="invs" id="invs"></ul>
+      <ul class="invs" id="invs" aria-busy="true"><li aria-hidden="true"><div class="skeleton"></div><div class="skeleton" style="width:70%"></div></li><li aria-hidden="true"><div class="skeleton"></div><div class="skeleton" style="width:55%"></div></li></ul>
     </section>
   </div>
   <footer id="foot"></footer>
@@ -232,7 +236,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     renderList();
   }
   function renderList() {
-    var ul = $("invs"); ul.textContent = "";
+    var ul = $("invs"); ul.textContent = ""; ul.removeAttribute("aria-busy");
     var names = {}; S.data.clients.forEach(function (c) { names[c.id] = c.name; });
     var rows = S.data.invoices.filter(function (i) {
       var s = state(i); return S.filter === "all" || (S.filter === "open" && (s === "due" || s === "late")) || S.filter === s;
@@ -297,6 +301,11 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     $("newkey").value = k; $("newkey").select();
     if (navigator.clipboard) navigator.clipboard.writeText(k).then(function () { toast("Copied. Paste it into Netlify now."); }, function () {});
   });
+  (function () {  // check the key when they leave the field, clear the error as soon as it is right
+    var k = $("key"), bad = function () { var v = k.value.trim(); return !(v.length >= 32); };
+    k.addEventListener("blur", function () { if (k.value.trim() && bad()) { k.setAttribute("aria-invalid", "true"); $("signin-err").textContent = "The billing key is at least 32 characters. Copy it again from Netlify."; } });
+    k.addEventListener("input", function () { if (k.getAttribute("aria-invalid") === "true" && !bad()) { k.removeAttribute("aria-invalid"); $("signin-err").textContent = ""; } });
+  })();
   $("signin-form").addEventListener("submit", function (e) {
     e.preventDefault(); var v = $("key").value.trim();
     if (v.length < 32) { $("signin-err").textContent = "The billing key is at least 32 characters. Copy it again from Netlify."; return; }

@@ -95,7 +95,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);l
 .thead{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
 .thead .title{flex:1;min-width:0}
 .thead .title b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.thead .title a{font:400 12.5px var(--f-mono);color:var(--muted)}
+.thead .title a{font:400 12.5px var(--f-mono);color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
 .iconbtn{min-width:44px;min-height:44px;border-radius:50%;border:1px solid var(--rule);background:none;cursor:pointer;font-size:18px;line-height:1}
 .banner{margin:10px 12px 0;padding:8px 12px;border-radius:var(--r-m);font-size:14px;border:1px solid}
 .banner.human{background:color-mix(in srgb,var(--bad) 9%,var(--panel));border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
@@ -111,6 +111,8 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);l
 .b.customer{background:var(--bubble-in);align-self:flex-start;border-top-left-radius:2px}
 .b.bot{background:var(--bubble-bot);align-self:flex-end;border-top-right-radius:2px}
 .b.staff{background:var(--bubble-staff);align-self:flex-end;border-top-right-radius:2px}
+.b.pending{opacity:.7}
+.b.failed{outline:2px solid var(--warn);outline-offset:1px}
 .b .by{display:block;font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
 .b.staff .by{color:var(--accent)}
 .b time{display:block;text-align:right;font:400 10.5px var(--f-mono);color:var(--muted);margin-top:2px}
@@ -135,6 +137,10 @@ details.more summary{cursor:pointer;min-height:44px;display:flex;align-items:cen
 .rise{animation:rise .3s ease-out both}@keyframes rise{from{opacity:0;transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){.rise{animation:none}}
 footer{color:var(--muted);font-size:12.5px;text-align:center}
+#key[aria-invalid=true]{border-color:var(--warn);box-shadow:0 0 0 2px var(--warn)}
+.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:10px 0}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 </style>
 </head>
 <body>
@@ -168,7 +174,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
         <button class="chip" data-f="resolved" aria-pressed="false">Done</button>
         <button class="chip" data-f="all" aria-pressed="false">All</button>
       </div>
-      <ul class="convos" id="convos"></ul>
+      <ul class="convos" id="convos" aria-busy="true"><li aria-hidden="true"><div class="skeleton"></div><div class="skeleton" style="width:70%"></div></li><li aria-hidden="true"><div class="skeleton"></div><div class="skeleton" style="width:55%"></div></li></ul>
     </section>
     <section class="card thread" id="thread" aria-label="Chat">
       <div class="empty" id="pick">Pick a chat on the left.</div>
@@ -263,7 +269,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     document.title = (n.human ? "(" + n.human + ") " : "") + "BotBhai Inbox";
   }
   function renderList() {
-    var ul = $("convos"); ul.textContent = "";
+    var ul = $("convos"); ul.textContent = ""; ul.removeAttribute("aria-busy");
     var rows = S.list.filter(function (c) { return S.filter === "all" || c.status === S.filter; });
     if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "human" ? "Nobody is waiting for you. 🙌 The bot has it." : "No chats here yet." })); return; }
     rows.forEach(function (c) {
@@ -293,7 +299,11 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
     box.appendChild(el("div", { class: "actions" }, [
       c.status !== "human" ? el("button", { class: "btn warmth", onclick: function () { act("take_over"); }, text: "Take over" }) : el("button", { class: "btn", onclick: function () { act("resume"); }, text: "Resume bot" }),
-      c.status !== "resolved" ? el("button", { class: "btn ghost", onclick: function () { act("resolve"); }, text: "Mark done" }) : null,
+      c.status !== "resolved" ? el("button", { class: "btn ghost", text: S.armed === c.contact ? "Tap again: bot takes over" : "Mark done", onclick: function () {
+        if (S.armed === c.contact) { S.armed = null; act("resolve"); return; }  // two taps: a slip never hands a customer back to the bot
+        S.armed = c.contact; renderThread(true);
+        setTimeout(function () { if (S.armed === c.contact) { S.armed = null; if (S.thread && S.open === c.contact) renderThread(true); } }, 4000);
+      } }) : null,
     ]));
 
     var msgs = el("div", { class: "msgs", id: "msgs", role: "log", "aria-label": "Messages" });
@@ -310,10 +320,18 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     ta.addEventListener("input", function () { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 140) + "px"; });
     ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send(); });
     var btn = el("button", { class: "send", "aria-label": "Send", text: "➤", onclick: function () { send(); } }); btn.disabled = !canReply;
-    function send() {
-      var v = ta.value.trim(); if (!v || !canReply) return;
-      btn.disabled = true;
-      act("reply", { text: v }).then(function (ok) { if (ok) { ta.value = ""; if ($("reply")) $("reply").value = ""; } else btn.disabled = false; });
+    function send() {  // optimistic: show the bubble now; a failed send says so and gives the words back
+      var v = ta.value.trim(); if (!v || !canReply || S.busy) return;
+      btn.disabled = true; ta.value = "";
+      var empty = msgs.querySelector(".empty"); if (empty) empty.remove();
+      var stamp = el("time", { text: "Sending…" });
+      var pend = el("div", { class: "b staff pending" }, [el("span", { class: "by", text: "You" }), v, stamp]);
+      msgs.appendChild(pend); msgs.scrollTop = msgs.scrollHeight;
+      act("reply", { text: v }).then(function (ok) {
+        if (ok) return;
+        pend.className = "b staff failed"; stamp.textContent = "Not sent";
+        if (!ta.value) ta.value = v; btn.disabled = false; ta.focus({ preventScroll: true });
+      });
     }
     box.appendChild(el("div", { class: "compose" }, [ta, btn]));
     if (canReply) box.appendChild(el("p", { class: "hint", text: "Sent from your WhatsApp Business number. Replying pauses the bot for this chat." }));
@@ -343,6 +361,11 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       renderList();
     });
   });
+  (function () {  // check the key when they leave the field, clear the error as soon as it is right
+    var k = $("key"), bad = function () { var v = k.value.trim(); return !(/^[a-f0-9-]{36}$/i.test(v)); };
+    k.addEventListener("blur", function () { if (k.value.trim() && bad()) { k.setAttribute("aria-invalid", "true"); $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; } });
+    k.addEventListener("input", function () { if (k.getAttribute("aria-invalid") === "true" && !bad()) { k.removeAttribute("aria-invalid"); $("signin-err").textContent = ""; } });
+  })();
   $("signin-form").addEventListener("submit", function (e) {
     e.preventDefault(); var v = $("key").value.trim();
     if (!/^[a-f0-9-]{36}$/i.test(v)) { $("signin-err").textContent = "The key is 36 letters and numbers. Copy it again from your setup message."; return; }

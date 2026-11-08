@@ -51,5 +51,11 @@ Read the list, don't install anything from it without its own verdict here. Ten 
 ## 7. OpenViking
 Skipped. Its good idea (read a short summary before the full file) we already do with each world's `README.md` label card, `PLAN.md` and the roadmap.
 
+## 8. Scrapling (D4Vinci/Scrapling, BSD-3, checked 8 Nov 2026)
+Our standard scraper when a job truly needs one (adopted in `docs/toolkit/TOOLKIT.md`, not yet needed in code: today's fetchers are a few lines of urllib, and Ponytail says no dependency for that).
+- Only public pages whose terms and robots.txt allow it: price and plan pages, government data, our own sites. Never Google Maps, Justdial, Instagram, LinkedIn or anyone's personal numbers (CLAUDE.md rule 4).
+- Use its plain `Fetcher` / parser only. **Never its stealth or anti-bot / Cloudflare-bypass modes**: if a site blocks bots (e.g. adda247, prepp for the kit link checker), we record "bot-blocked" and link it as is; we never get around the block.
+- Run it in GitHub Actions (`pip install scrapling`), never on Akhil's PC; identify ourselves in the User-Agent and keep to one request every few seconds.
+
 ## Enforcement
 `.claude/settings.json` deny list (browser profile folders, Claude in Chrome), `enableAllProjectMcpServers: false`, and the test `node 00-hq/agents/tooling.test.mjs`. A rule written only in prose is a wish; a deny rule or a test is a lock.

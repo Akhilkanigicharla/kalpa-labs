@@ -33,6 +33,7 @@ All artifacts are listed at https://claude.ai/code/artifacts
 |---|---|---|---|
 | 🌅 Kalpa Labs · Morning CEO brief | 07:47 daily | Reads the Kingdom, assigns today's quests, push + email | trig_01HgocViToFGTBHpiBoXHSj1 |
 | 🌙 Kalpa Labs · Evening check-in | 20:44 daily | Checks today's quests, one next step, push | trig_01CxGpV6Y4rK9nubmXaAV6Cv |
+| 🤖 Kalpa Labs · Live robot rooms refresh | every 2 h, 08:41–22:41 | Refreshes the CEO Room robot rooms (Cloudflare D1 kalpa-live) from live_status.py | trig_01WfwjaBCsyg5je2gwquKvdp |
 | 🔨 Kalpa Labs · Build sprint | 11:07 and 23:07 daily | Takes the next items from the Agent queue in `ROADMAP.md`, builds, tests, commits, ticks them off, logs to `00-hq/log/` | see `00-hq/log/` |
 
 ## Code and cloud accounts (free tiers)

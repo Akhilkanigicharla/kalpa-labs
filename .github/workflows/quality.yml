@@ -56,6 +56,7 @@ jobs:
       - run: pip install playwright==1.56.0 && python -m playwright install --with-deps chromium
       - run: python 00-hq/site/tests/test_tap_sweep.py
       - run: python 00-hq/site/tests/test_seo.py
+      - run: python 00-hq/site/tests/test_form_ux.py
       - run: python 00-hq/site/tests/test_chat_button.py
 
   botbhai:

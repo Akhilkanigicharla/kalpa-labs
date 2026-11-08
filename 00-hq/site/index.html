@@ -226,7 +226,7 @@ form.signup label{font-weight:600;font-size:14px;display:grid;gap:.3rem}
 form.signup input{min-height:48px;border-radius:12px;border:1px solid var(--rule);background:var(--panel);color:var(--fg);padding:0 .9rem;font:400 16px var(--f-body)}
 form.signup .consent{display:flex;gap:.6rem;align-items:flex-start;font-weight:400;font-size:13.5px}
 form.signup .consent input{min-height:auto;width:20px;height:20px;margin-top:2px}
-.form-msg{font-weight:600;color:var(--ok);min-height:1.4em}
+.form-msg{font-weight:600;color:var(--ok);min-height:1.4em}.field-err{display:block;color:var(--madder);font-size:14px;font-weight:600;margin-top:4px}form.signup [aria-invalid=true]{border-color:var(--madder)}
 .hp{position:absolute;left:-9999px}
 /* faq */
 details{border-bottom:1px solid var(--rule);padding:1rem 0}
@@ -411,7 +411,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin:.6rem 0" data-i="g_h">Tell us what you need. Akhil replies personally.</h2>
    <p style="color:var(--muted)" data-i="g_p">We use your number only to reply about this request. No spam, no sharing, ever.</p>
   </div>
-  <form class="card signup" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" style="padding:24px">
+  <form class="card signup" name="contact" method="POST" data-netlify="true" netlify-honeypot="company" novalidate style="padding:24px">
    <input type="hidden" name="form-name" value="contact"><input type="hidden" name="notes" value="">
    <p class="hp"><label>Company <input name="company" tabindex="-1" autocomplete="off"></label></p>
    <label><span data-i="l_interest">I'm interested in</span>
@@ -421,11 +421,11 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
      <option value="kits" data-i="o_kits">Exam / money kits</option>
      <option value="other" data-i="o_other">Something else</option>
     </select></label>
-   <label><span data-i="l_name">Your name</span><input name="name" required autocomplete="name"></label>
-   <label><span data-i="l_phone">WhatsApp number</span><input name="phone" required inputmode="tel" autocomplete="tel" pattern="[0-9+ ]{10,15}" placeholder="+91"></label>
-   <label class="consent"><input type="checkbox" name="consent" required><span data-i="l_consent">I agree that Kalpa Labs may contact me on WhatsApp about this request. I can ask for my data to be deleted any time.</span></label>
+   <label><span data-i="l_name">Your name</span><input name="name" required autocomplete="name" aria-describedby="name-err"><span class="field-err" id="name-err" hidden></span></label>
+   <label><span data-i="l_phone">WhatsApp number</span><input name="phone" required inputmode="tel" autocomplete="tel" placeholder="+91" aria-describedby="phone-err"><span class="field-err" id="phone-err" hidden></span></label>
+   <label class="consent"><input type="checkbox" name="consent" required><span data-i="l_consent">I agree that Kalpa Labs may contact me on WhatsApp about this request. I can ask for my data to be deleted any time.</span></label><span class="field-err" id="consent-err" hidden></span>
    <button class="btn btn-acc" type="submit" data-i="l_send">Send</button>
-   <div class="form-msg" id="formmsg" role="status"></div>
+   <div class="form-msg" id="formmsg" role="status"></div><button class="btn" type="button" id="formretry" hidden>Try again</button>
   </form>
  </div>
 </section>
@@ -518,7 +518,7 @@ function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';docu
  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
  {const sb=document.getElementById('snd');if(sb){sb.setAttribute('aria-label',l==='te'?'ప్రకృతి శబ్దాలు':'Nature sounds');sb.title=l==='te'?'గాలి, పక్షుల శబ్దాలు':'Breeze and birds';}}
  try{localStorage.setItem('kl-lang',l);}catch(e){}
- renderProducts(); resetChat(); if(typeof renderTeam==='function')renderTeam(); closeTip();}
+ renderProducts(); resetChat(); if(typeof renderTeam==='function')renderTeam(); if(typeof formLang==='function')formLang(); closeTip();}
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
 
 /* ---------- countdown ---------- */
@@ -619,18 +619,46 @@ function renderTeam(){const L=lang==='te'?1:0;
   d.addEventListener('click',()=>{const open=d.getAttribute('aria-expanded')!=='true';d.setAttribute('aria-expanded',String(open));sy.hidden=!open;const m=s.querySelector('g.working,g.waving');if(m&&i!==0)m.setAttribute('class',open?'waving':'working');});
   return d;}));}
 
-/* ---------- form ---------- */
-document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;}));
-const form=document.querySelector('form.signup'), msg=document.getElementById('formmsg');
-form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;
- const fd=new FormData(form); if(fd.get('company')) return; const data=new URLSearchParams(fd).toString();
- const btn=form.querySelector('button[type=submit]'); btn.disabled=true;
+/* ---------- form (UX-PATTERNS 6 autosave, 8 throttle, 9 smart validation, 20 graceful errors) ---------- */
+document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;saveDraft();}));
+const form=document.querySelector('form.signup'), msg=document.getElementById('formmsg'), retry=document.getElementById('formretry');
+const fBtn=form.querySelector('button[type=submit]'), DRAFT='kalpa_pilot_draft';
+const FM={en:{name:'Please write your name.',phone:'Please enter a 10-digit Indian mobile number, like 98765 43210.',consent:'Please tick the box so we may reply on WhatsApp.',
+  sending:'Sending…',send:'Send',ok:'Thank you! Akhil will reply on WhatsApp soon.',offline:'You are offline. Your details are saved here; tap Send when you are back online.',
+  fail:'That did not send. Your details are safe on this page.',retry:'Try again'},
+ te:{name:'దయచేసి మీ పేరు రాయండి.',phone:'దయచేసి 10 అంకెల మొబైల్ నంబర్ ఇవ్వండి, ఉదా. 98765 43210.',consent:'WhatsAppలో జవాబు ఇవ్వడానికి బాక్స్ టిక్ చేయండి.',
+  sending:'పంపుతున్నాం…',send:'పంపండి',ok:'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.',offline:'మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. మీ వివరాలు ఇక్కడే ఉన్నాయి; నెట్ వచ్చాక పంపండి నొక్కండి.',
+  fail:'పంపడం కాలేదు. మీ వివరాలు ఈ పేజీలోనే భద్రంగా ఉన్నాయి.',retry:'మళ్లీ ప్రయత్నించండి'}};
+const T=k=>(FM[lang]||FM.en)[k];
+function mobile(v){let d=String(v||'').replace(/\D/g,'');if(d.length===12&&d.startsWith('91'))d=d.slice(2);if(d.length===11&&d.startsWith('0'))d=d.slice(1);return /^[6-9]\d{9}$/.test(d)?d:'';}
+function fieldErr(el,id,bad,key){const e=document.getElementById(id);e.hidden=!bad;e.textContent=bad?T(key):'';if(el)el.setAttribute('aria-invalid',String(bad));return bad;}
+const checks={name:()=>fieldErr(form.name,'name-err',form.name.value.trim().length<2,'name'),
+ phone:()=>fieldErr(form.phone,'phone-err',!mobile(form.phone.value),'phone'),
+ consent:()=>fieldErr(form.consent,'consent-err',!form.consent.checked,'consent')};
+form.name.addEventListener('blur',()=>{if(form.name.value)checks.name();});
+form.phone.addEventListener('blur',()=>{if(form.phone.value)checks.phone();});
+form.consent.addEventListener('change',()=>{if(form.consent.checked)checks.consent();});
+function saveDraft(){try{localStorage.setItem(DRAFT,JSON.stringify({name:form.name.value,phone:form.phone.value,interest:form.interest.value}));}catch(e){}}
+let draftT; form.addEventListener('input',()=>{clearTimeout(draftT);draftT=setTimeout(saveDraft,250);});
+try{const d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.name)form.name.value=d.name;if(d.phone)form.phone.value=d.phone;if(d.interest)form.interest.value=d.interest;}}catch(e){}
+function say(text,good){msg.style.color=good?'var(--ok)':'var(--madder)';msg.textContent=text;}
+async function sendForm(){
+ if(fBtn.disabled) return;
+ const bad=['name','phone','consent'].filter(k=>checks[k]());
+ if(bad.length){form[bad[0]].focus();return;}
+ const fd=new FormData(form); if(fd.get('company')) return;
+ retry.hidden=true; saveDraft();
+ if(navigator.onLine===false){say(T('offline'),false);return;}
+ fBtn.disabled=true; fBtn.textContent=T('sending'); msg.textContent='';
  let ok=false;
- try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data});ok=ok||r.ok;}catch(e){}
- btn.disabled=false;
- try{ if(!ok) throw 0;
-  msg.style.color='var(--ok)';msg.textContent=lang==='te'?'ధన్యవాదాలు! అఖిల్ త్వరలో WhatsAppలో జవాబిస్తారు.':'Thank you! Akhil will reply on WhatsApp soon.';form.reset();}
- catch(err){msg.style.color='var(--madder)';msg.textContent=lang==='te'?'పంపడం కాలేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.':'That did not send. Please try again in a minute.';}});
+ try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fd).toString()});ok=r.ok;}catch(e){}
+ fBtn.disabled=false; fBtn.textContent=T('send');
+ if(ok){say(T('ok'),true);form.reset();try{localStorage.removeItem(DRAFT);}catch(e){}}
+ else{say(T('fail'),false);retry.textContent=T('retry');retry.hidden=false;retry.focus();}
+}
+form.addEventListener('submit',e=>{e.preventDefault();sendForm();});
+retry.addEventListener('click',sendForm);
+function formLang(){['name','phone','consent'].forEach(k=>{if(!document.getElementById(k+'-err').hidden)checks[k]();});if(!retry.hidden)retry.textContent=T('retry');}
 
 /* ---------- the living Kalpa tree: branches = products, robots = our AI agents at work ---------- */
 document.documentElement.classList.add('js');

@@ -30,3 +30,6 @@ graphify-out/
 03-kits/products/
 .netlify
 03-kits/exam-kits/link-report.json
+
+# Graft code map (A200): local cache
+graft/

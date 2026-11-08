@@ -63,7 +63,9 @@ def call(models, messages, env, post):
             continue
         try:
             hdr = {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"}
-            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 4000}
+            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 8000}
+            if "generativelanguage" in url:  # Gemini thinks inside max_tokens: keep thinking short so the answer fits
+                pay["reasoning_effort"] = "low"
             try:
                 body = post(url, hdr, pay)
             except urllib.error.HTTPError as e:
@@ -71,8 +73,16 @@ def call(models, messages, env, post):
                     raise
                 time.sleep(float(env.get("KL_RETRY_WAIT", 30)))  # free per-minute limit: wait once, retry
                 body = post(url, hdr, pay)
-            text = (body.get("choices") or [{}])[0].get("message", {}).get("content") or ""
-            text = re.sub(r"<think>[\s\S]*?</think>", "", text).strip()
+            choice = (body.get("choices") or [{}])[0]
+            text = choice.get("message", {}).get("content") or ""
+            if choice.get("finish_reason") == "length":  # ran out of room mid-answer: never accept half a draft
+                print(f"  model {model} cut off (finish_reason=length), trying the next model", file=sys.stderr)
+                continue
+            text = re.sub(r"<think>[\s\S]*?</think>", "", text)
+            if "<think>" in text:  # opened thinking that never closed: the answer is missing
+                print(f"  model {model} returned unclosed <think>, trying the next model", file=sys.stderr)
+                continue
+            text = text.strip()
             if text:
                 return text, model
         except Exception as e:  # next model; never print keys
@@ -123,6 +133,12 @@ def pick(queue, n):
     return todo[:n]
 
 
+def count_items(text):
+    """Distinct numbered items: '1.', '2)', '**3.**', '| 4 |' at the start of a line."""
+    nums = re.findall(r"^\s*(?:[-*]\s*)?(?:\*\*)?\|?\s*(\d{1,3})\s*(?:[.)|]|\*\*)", text, re.M)
+    return len({int(n) for n in nums})
+
+
 def vigil_ok(verdict):
     return bool(re.match(r"\s*PASS\b", verdict or "", re.I))
 
@@ -144,6 +160,11 @@ def work(task, env, post=http_post, root=ROOT):
     draft, model = call(MODELS, [{"role": "system", "content": sys_msg}, {"role": "user", "content": user}], env, post)
     if not draft:
         return None
+    need = int(task.get("min_items") or 0)
+    if need:  # e.g. a 20-row audit: a short draft goes back as a fix without spending a Vigil call
+        got = count_items(draft)
+        if got < need:
+            return {"draft": draft, "model": model, "verdict": f"FIX: incomplete, {got} of {need} required items. Write all {need}, numbered 1 to {need}.", "vmodel": "runner"}
     check = (f"You are Vigil, Kalpa Labs' fact and rules checker. {RULES}\nCheck the DRAFT for: invented facts not marked "
              "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")

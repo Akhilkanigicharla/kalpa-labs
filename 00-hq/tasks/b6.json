@@ -95,10 +95,28 @@
    "06-finops/design/dashboard.html",
    "06-finops/design/landing.html"
   ],
+  "min_items": 20,
   "context_chars": 38000,
   "status": "review",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K052.md",
   "updated": "2026-11-08T15:22:27Z"
+ },
+ {
+  "id": "K054",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Ledger Peaks landing SEO audit (for A192)",
+  "details": "Audit this site against the 20 Kalpa SEO checks in 00-hq/design/SEO-CHECKS.md. Output a table with all 20 rows numbered 1 to 20: check, pass / fail / not relevant (why), file and a short quote as evidence. Anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 fixes in order, 1-2 lines each. Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/SEO-CHECKS.md",
+   "06-finops/design/landing.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K054.md"
  }
 ]

@@ -85,6 +85,7 @@
    "02-jobcard/src/src/app/(app)/settings.tsx",
    "02-jobcard/src/src/app/(app)/_layout.tsx"
   ],
+  "min_items": 20,
   "context_chars": 38000,
   "status": "review",
   "created": "2026-11-08T12:45:00Z",

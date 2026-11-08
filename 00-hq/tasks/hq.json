@@ -169,6 +169,7 @@
    "00-hq/design/UX-PATTERNS.md",
    "00-hq/site/index.html"
   ],
+  "min_items": 20,
   "context_chars": 38000,
   "status": "todo",
   "created": "2026-11-08T12:45:00Z",
@@ -176,5 +177,39 @@
   "updated": "2026-11-08T15:22:07Z",
   "tries": 1,
   "vigil_notes": "FIX:\n- The draft is unfinished: it covers only patterns 1–2 and cuts off mid-table; complete the audit for all 20 patterns.\n- “chat relies on server response before appending user bubble” is an assumption not visible in the static HTML; mark UNVERIFIED or remove.\n- Line number `00-hq/site/index.html:158` is unverified; remove exact line numbers unless confirmed from the file.\n- Every pattern status needs file + quote evidence or be marked UNVERIFIED; do not invent missing/missing statuses."
+ },
+ {
+  "id": "K055",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "CEO Room dashboard UX pattern audit (for A189)",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. It is an internal, phone-first dashboard for one CEO. Output the per-UI table with all 20 rows numbered 1 to 20: done / not relevant (why) / missing, with a short quote as evidence. Anything you cannot see is UNVERIFIED. Then the top 5 missing patterns in fix order, 1-2 lines each, using the Kalpa design system only. Plain short English.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "00-hq/design/ceo-room-dashboard.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K055.md"
+ },
+ {
+  "id": "K056",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "last30days topic list per world (for A197)",
+  "details": "For each of the 7 Kalpa worlds plus HQ (read the label cards), write 3 search topics for a monthly 'what people say online' scan: what our buyers complain about, ask for, or compare. Number the worlds 1 to 8; under each give 3 topics as short search phrases (English, plus one Telugu or Hindi phrase where buyers write that way). Public posts only; no personal data, no names of private people.",
+  "read": [
+   "README.md",
+   "00-hq/VISION.md"
+  ],
+  "min_items": 8,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K056.md"
  }
 ]

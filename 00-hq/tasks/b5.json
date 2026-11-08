@@ -84,5 +84,23 @@
   "created": "2026-11-06T19:05:00Z",
   "updated": "2026-11-06T18:55:58Z",
   "output": "00-hq/knowledge/K041.md"
+ },
+ {
+  "id": "K053",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Telugu Deals site SEO audit (for A194)",
+  "details": "Audit this site against the 20 Kalpa SEO checks in 00-hq/design/SEO-CHECKS.md. Output a table with all 20 rows numbered 1 to 20: check, pass / fail / not relevant (why), file and a short quote as evidence. Anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 fixes in order, 1-2 lines each. Plain short English. No code longer than 10 lines. Also flag every affiliate link that lacks an ASCI '#ad' or 'Ad' label.",
+  "read": [
+   "00-hq/design/SEO-CHECKS.md",
+   "05-deals/site/src/layouts/Base.astro",
+   "05-deals/site/src/pages/index.astro"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K053.md"
  }
 ]

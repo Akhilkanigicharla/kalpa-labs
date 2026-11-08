@@ -10,6 +10,8 @@ def fake_post(script):
         item = script.pop(0)
         if isinstance(item, Exception):
             raise item
+        if isinstance(item, tuple):  # (content, finish_reason)
+            return {"choices": [{"message": {"content": item[0]}, "finish_reason": item[1]}]}
         return {"choices": [{"message": {"content": item}}]}
     post.calls = calls
     return post
@@ -57,6 +59,31 @@ class Runner(unittest.TestCase):
         self.assertIsNone(R.work(self.task, {}, fake_post([]), self.root))
         self.assertEqual(R.apply(self.task, None, self.root), "skipped")
         self.assertEqual(self.task["status"], "todo")
+
+    def test_cut_off_or_unclosed_think_tries_next_model(self):
+        post = fake_post([("half a dra", "length"), "<think>still thinking", "full draft", "PASS"])
+        res = R.work(self.task, self.env, post, self.root)
+        self.assertEqual(res["draft"], "full draft")
+        self.assertEqual(len(post.calls), 4)
+
+    def test_gemini_gets_low_reasoning_and_more_room(self):
+        env = {"GEMINI_API_KEY": "x"}
+        post = fake_post(["draft", "PASS"])
+        R.work(self.task, env, post, self.root)
+        url, pay = post.calls[0]
+        self.assertIn("generativelanguage", url)
+        self.assertEqual((pay["max_tokens"], pay.get("reasoning_effort")), (8000, "low"))
+
+    def test_min_items_sends_short_drafts_back(self):
+        self.task["min_items"] = 20
+        short = "\n".join(f"{i}. row" for i in range(1, 13))
+        res = R.work(self.task, self.env, fake_post([short]), self.root)
+        self.assertTrue(res["verdict"].startswith("FIX: incomplete, 12 of 20"))
+        self.assertEqual(R.apply(self.task, res, self.root), "todo")
+        full = "\n".join(f"| {i} | Pattern | done |" for i in range(1, 21))
+        res = R.work(self.task, self.env, fake_post([full, "PASS"]), self.root)
+        self.assertEqual(res["verdict"], "PASS")
+        self.assertEqual(R.count_items("**1.** a\n2) b\n- 3. c\n| 4 | d |\n10. e"), 5)
 
     def test_vigil_unavailable_never_passes(self):
         n = len(R.VIGIL_MODELS)

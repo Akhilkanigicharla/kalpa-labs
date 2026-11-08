@@ -3,8 +3,12 @@
 # Secrets (set by Akhil): GROQ_API_KEY, OPENROUTER_API_KEY, GEMINI_API_KEY. Each world starts on a different free provider.
 name: agents
 on:
-  schedule:
+  schedule:  # GitHub skips busy cron slots, so two slots an hour plus the push trigger below
     - cron: "20 * * * *"
+    - cron: "50 * * * *"
+  push:  # every Claude build sprint (2-hourly) and every new task row also wakes the free agents
+    branches: [main]
+    paths: ["00-hq/log/**", "00-hq/tasks/**"]
   workflow_dispatch:
     inputs:
       max: { description: "tasks per world this run", default: "2" }

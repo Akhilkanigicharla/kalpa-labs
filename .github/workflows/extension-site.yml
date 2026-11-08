@@ -18,6 +18,8 @@ jobs:
         with: { node-version: "22" }
       - run: node 04-extensions/site/build.mjs --release
         env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL }}" }
+      - name: SEO checks (00-hq/design/SEO-CHECKS.md)
+        run: python3 00-hq/site/tests/test_seo.py 04-extensions/site/_dist https://akhilkanigicharla.github.io/kalpa-labs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: 04-extensions/site/_dist }

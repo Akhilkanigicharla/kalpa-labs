@@ -56,3 +56,8 @@ Send one opt-in WhatsApp message to a friend using the current draft. Verify the
 - **Founder time**: test: Review K002 and K025 checklist yourself in 30 minutes using free local notes. · stop if: The salon owner refuses to sign a basic WhatsApp opt-in consent form.
 - **Operations**: test: Run K025's 5‑language script in a free WhatsApp sandbox with one test contact (friend) to verify opt‑in flow and message delivery. · stop if: The sandbox test shows missing consent, message block, or the policy pack (K002) fails review.
 - **Cash & risk**: test: Send a single opt‑in template to Akhil's own phone, log consent, and check WhatsApp's delivery status – free and doable today. · stop if: If consent logging or TRAI opt‑in cannot be demonstrated before launch.
+
+## Claude review (8 Nov, 18:05 IST)
+- Sound: matches CLAUDE.md rule 4 (WhatsApp opt-in, DPDP consent) and the open review state of K025/K002. Verdict accepted as advice; the decision stays Akhil's.
+- Weak spots: "free WhatsApp sandbox" is UNVERIFIED (not checked today); the minority report mixed no/change and gave no case FOR launching. Fixed in council.py: if every seat opposes the plan, the skeptic must argue for it.
+- Useful next step for us: review K025 and K002 in the next build session (both are "needs review" in the robot rooms).

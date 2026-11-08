@@ -38,6 +38,13 @@ class Council(unittest.TestCase):
         risk_r2 = [c for c in post.calls[7:14] if "Cash & risk seat" in c["messages"][0]["content"]][0]
         self.assertIn("strongest case for the best alternative", risk_r2["messages"][1]["content"])
 
+    def test_all_against_plan_also_triggers_devils_advocate(self):
+        res = council.run("x", ENV, fake(["no", "change"]))
+        self.assertTrue(res["unanimous_r1"])
+
+    def test_mixed_round_one_is_not_unanimous(self):
+        self.assertFalse(council.run("x", ENV, fake(["yes", "no"]))["unanimous_r1"])
+
     def test_round_two_is_anonymous(self):
         post = fake(["yes", "no"])
         council.run("x", ENV, post)

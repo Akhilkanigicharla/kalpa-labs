@@ -70,24 +70,25 @@
   "updated": "2026-11-06T18:55:01Z",
   "output": "00-hq/knowledge/K038.md"
  },
-  {
-    "id": "K050",
-    "world": "b2",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "JobCard app screens UX pattern audit",
-    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
-    "read": [
-      "00-hq/design/UX-PATTERNS.md",
-      "02-jobcard/src/src/app/login.tsx",
-      "02-jobcard/src/src/app/onboarding.tsx",
-      "02-jobcard/src/src/app/(app)/index.tsx",
-      "02-jobcard/src/src/app/(app)/settings.tsx",
-      "02-jobcard/src/src/app/(app)/_layout.tsx"
-    ],
-    "context_chars": 38000,
-    "status": "todo",
-    "created": "2026-11-08T12:45:00Z",
-    "output": "00-hq/knowledge/K050.md"
-  }
+ {
+  "id": "K050",
+  "world": "b2",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "JobCard app screens UX pattern audit",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "02-jobcard/src/src/app/login.tsx",
+   "02-jobcard/src/src/app/onboarding.tsx",
+   "02-jobcard/src/src/app/(app)/index.tsx",
+   "02-jobcard/src/src/app/(app)/settings.tsx",
+   "02-jobcard/src/src/app/(app)/_layout.tsx"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-08T12:45:00Z",
+  "output": "00-hq/knowledge/K050.md",
+  "updated": "2026-11-08T15:21:28Z"
+ }
 ]

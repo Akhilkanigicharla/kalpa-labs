@@ -104,11 +104,11 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K051.md",
-  "updated": "2026-11-08T19:25:31Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- Row 1: Optimistic UI marked ✅ but `main.ts` awaits the background reply before updating the button; change to ❌ or ➖.\n- Row 7: Debouncing marked ✅ but `importText` sends on every input with no ~300 ms wait; change to ❌.\n- Row 5: Loading and empty states marked ✅ but only an empty state exists; no loading view during `refresh()`; change to ❌ or ➖.\n- Row 17: Custom 404 marked ❌ with UNVERIFIED evidence; no directory listing was provided to confirm absence, so change to ➖ UNVERIFIED.\n- Row 15: Onboarding capture marked ✅ but no onboarding form or DPDP consent appears in the files; change to ➖ or ❌."
+  "updated": "2026-11-08T19:31:20Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Row 13: `Alt+Shift+L` is not in any repo file; remove it or mark it UNVERIFIED.\n- Row 8: The save button disables on click to prevent double-fire, so throttling is relevant; change ➖ Not relevant to ✅.\n- Row 17: `➖ UNVERIFIED` mixes symbols; use plain `UNVERIFIED` for the missing custom 404 page."
  }
 ]

@@ -36,8 +36,8 @@ jobs:
             for q in "${Q[@]}"; do w=${q%% *}; grep -rIn --exclude-dir=node_modules -i "$w" /tmp/repo > /tmp/g.txt || true; echo "| $q | $(tok /tmp/g.txt) |"; done
           } > "$out"
 
-          echo; echo "## codebase-memory-mcp 0.10.7 (MIT)" >> "$out"
-          if npm install -g codebase-memory-mcp@0.10.7 > /tmp/cbm-install.log 2>&1; then
+          echo; echo "## codebase-memory-mcp latest (MIT): $(npm view codebase-memory-mcp version 2>/dev/null)" >> "$out"
+          if npm install -g codebase-memory-mcp@latest > /tmp/cbm-install.log 2>&1; then
             s=$(date +%s.%N)
             codebase-memory-mcp cli index_repository '{"repo_path": "/tmp/repo"}' > /tmp/cbm-index.txt 2>&1; rc=$?
             e=$(date +%s.%N)

@@ -1,0 +1,1 @@
+heydamir/unslop a6f121e (skills/unslop copied unmodified + LICENSE, 2026-11-08). CC BY 4.0, created by Damir Sokolovsky (https://github.com/heydamir/unslop).

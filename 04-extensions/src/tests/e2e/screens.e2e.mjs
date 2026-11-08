@@ -28,7 +28,7 @@ const LAYOUT = `() => {
     while (p && p !== document.body) { const o = getComputedStyle(p).overflowX; if (o !== 'visible') { clip = true; break; } p = p.parentElement; }
     if (!clip && (r.right > vw + 1 || r.left < -1)) bad.push(el.tagName + (el.id ? '#' + el.id : '') + ' ' + Math.round(r.right));
   }
-  const small = [...document.querySelectorAll('main button:not([hidden])')].filter((b) => { const r = b.getBoundingClientRect(); return r.width && r.height < 36; }).map((b) => b.textContent.trim().slice(0, 24));
+  const small = [...document.querySelectorAll('main button:not([hidden])')].filter((b) => { const r = b.getBoundingClientRect(); return r.width && r.height < 44; }).map((b) => b.textContent.trim().slice(0, 24));
   return { scrollW: document.documentElement.scrollWidth, vw, bad: bad.slice(0, 5), small,
     rozha: [...document.fonts].some((f) => f.family.includes('Rozha') && f.status === 'loaded'),
     bg: getComputedStyle(document.body).backgroundColor };
@@ -75,7 +75,7 @@ try {
       const tag = `${name} ${scheme}`;
       check(r.scrollW <= r.vw && !r.bad.length, `${tag}: no sideways scroll (${r.scrollW}/${r.vw}) ${r.bad.join(", ")}`);
       check(r.rozha, `${tag}: Rozha One loaded from the bundle`);
-      check(!r.small.length, `${tag}: buttons at least 36 px tall ${r.small.join(", ")}`);
+      check(!r.small.length, `${tag}: buttons at least 44 px tall ${r.small.join(", ")}`);
       if (name === "options") {
         const st = await pg.evaluate(() => [...document.querySelectorAll(".stats b")].map((b) => b.textContent));
         check(st.every((t) => t && t !== "–" && !/NaN|undefined/.test(t)), `${tag}: proof numbers filled ${JSON.stringify(st)}`);
@@ -88,5 +88,16 @@ try {
   await pg.emulateMedia({ colorScheme: "light" }); await pg.goto(`chrome-extension://${id}/popup.html`);
   const [opt] = await Promise.all([ctx.waitForEvent("page"), pg.click("#more")]);
   await opt.waitForLoadState(); check(opt.url().endsWith("/options.html"), "popup → Backups and settings opens the options tab");
+  // A186/A187 UX patterns in the popup: loading row is replaced, import preview waits for a pause and explains bad text,
+  // Restore says what it did.
+  await pg.goto(`chrome-extension://${id}/popup.html`); await pg.waitForSelector("#list:not([aria-busy]) li");
+  check(!(await pg.textContent("#list")).includes("Loading"), "popup: loading row replaced by the saved list");
+  await pg.click("#importBox summary"); await pg.fill("#importText", "not a list of links");
+  await pg.waitForTimeout(450);
+  const pv = (await pg.textContent("#preview")).trim();
+  check(pv.length > 0 && (await pg.isDisabled("#doImport")), `popup: bad import text gets a message and Import stays off ("${pv}")`);
+  const pagesBefore = ctx.pages().length; await pg.click("#list li button:text-is('Restore')"); await pg.waitForTimeout(800);
+  const rb = (await pg.textContent("#list li button:has-text('Opened'), #list li button:has-text('Could not open')")) || "";
+  check(/Opened \d/.test(rb) && ctx.pages().length > pagesBefore, `popup: Restore opens tabs and says so ("${rb.trim()}")`);
 } finally { await ctx.close(); server.close(); }
 console.log(failed ? "SCREENS FAILED" : `SCREENS PASSED → ${out}`); process.exit(failed ? 1 : 0);

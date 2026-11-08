@@ -4,7 +4,9 @@ import { stamp } from "../../lib/capture";
 
 type Row = { id: string; name: string; kind: string; createdAt: number; tabs: number; groups: number; windows: number };
 type Status = { lastSnapshot: number | null; persisted: boolean; plan: "free" | "pro"; every: number; limits: { freeAutoSnapshots: number; proAutoDays: number } };
-const send = <T = Record<string, unknown>>(msg: object) => browser.runtime.sendMessage(msg) as Promise<T & { ok: boolean; error?: string }>;
+// Never throw: if the background is asleep or busy, callers get { ok: false } and show a plain message (UX pattern 20).
+const send = <T = Record<string, unknown>>(msg: object) =>
+  (browser.runtime.sendMessage(msg) as Promise<T & { ok: boolean; error?: string }>).catch(() => ({ ok: false, error: "Tab Lifeboat is busy. Try again." }) as T & { ok: boolean; error?: string });
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const n = (x: number) => x.toLocaleString("en-IN");
 const plural = (x: number, w: string) => `${n(x)} ${w}${x === 1 ? "" : "s"}`;
@@ -36,6 +38,7 @@ function draw() {
 
 async function refresh() {
   const [list, st] = await Promise.all([send<{ sessions: Row[] }>({ type: "list" }), send<Status>({ type: "status" })]);
+  if (!list.ok) { const li = document.createElement("li"); li.className = "empty"; li.textContent = err(list.error); $("list").replaceChildren(li); return; }
   rows = list.sessions ?? [];
   $("st-sessions").textContent = n(rows.length);
   $("st-tabs").textContent = n(rows.reduce((a, r) => a + r.tabs, 0));
@@ -81,11 +84,15 @@ $("restore-go").addEventListener("click", async () => {
   $<HTMLButtonElement>("restore-go").hidden = true; pending = ""; await refresh();
 });
 
-$("importText").addEventListener("input", async () => {
-  const text = $<HTMLTextAreaElement>("importText").value;
-  const r = text.trim() ? await send<{ tabs: number; groups: number; skipped: number }>({ type: "preview-import", text }) : null;
-  $("preview").textContent = r?.ok ? `${plural(r.tabs, "tab")} in ${plural(r.groups, "group")}${r.skipped ? `, ${n(r.skipped)} skipped` : ""}` : r ? err(r.error) : "";
-  $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
+let previewT: ReturnType<typeof setTimeout> | undefined;
+$("importText").addEventListener("input", () => {  // wait for a pause before parsing a big paste (UX pattern 7)
+  clearTimeout(previewT); $<HTMLButtonElement>("doImport").disabled = true;
+  previewT = setTimeout(async () => {
+    const text = $<HTMLTextAreaElement>("importText").value;
+    const r = text.trim() ? await send<{ tabs: number; groups: number; skipped: number }>({ type: "preview-import", text }) : null;
+    $("preview").textContent = r?.ok ? `${plural(r.tabs, "tab")} in ${plural(r.groups, "group")}${r.skipped ? `, ${n(r.skipped)} skipped` : ""}` : r ? err(r.error) : "";
+    $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
+  }, 250);
 });
 $("doImport").addEventListener("click", async () => {
   const r = await send<{ nudge: string | null }>({ type: "import", text: $<HTMLTextAreaElement>("importText").value });

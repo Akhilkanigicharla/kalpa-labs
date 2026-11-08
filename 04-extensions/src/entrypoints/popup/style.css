@@ -20,7 +20,7 @@ header { display: flex; align-items: baseline; justify-content: space-between; g
 h1 { font: 400 22px var(--f-display); margin: 0; }
 h2 { font: 400 17px var(--f-display); margin: 16px 0 6px; }
 .eyebrow { font: 500 10px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-button { min-height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--accent); font: 600 13px var(--f-body); cursor: pointer; }
+button { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--accent); font: 600 13px var(--f-body); cursor: pointer; }
 button:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
 button:disabled { opacity: .5; cursor: default; }
 .primary { width: 100%; min-height: 44px; margin-top: 10px; background: var(--accent); color: var(--accent-fg); border: 0; font-size: 15px; }

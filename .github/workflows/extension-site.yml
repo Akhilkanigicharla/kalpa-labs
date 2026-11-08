@@ -20,6 +20,11 @@ jobs:
         env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL }}" }
       - name: SEO checks (00-hq/design/SEO-CHECKS.md)
         run: python3 00-hq/site/tests/test_seo.py 04-extensions/site/_dist https://akhilkanigicharla.github.io/kalpa-labs
+      - name: Phone tap sweep, 390 px light + dark (CLAUDE.md rule 5)
+        run: |
+          pip install playwright==1.56.0 && python -m playwright install --with-deps chromium
+          (cd 04-extensions/site/_dist && python3 -m http.server 8767 >/dev/null 2>&1 &) && sleep 1
+          for p in "" privacy.html terms.html 404.html; do python3 00-hq/site/tests/test_tap_sweep.py "http://127.0.0.1:8767/$p"; done
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: 04-extensions/site/_dist }

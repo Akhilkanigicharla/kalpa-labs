@@ -54,4 +54,4 @@ Built 6 Nov 2026 from the approved plan (`../research/a150-consulting-plan.md`).
 3. **"Guardrails in 1 page":** a sample AI use policy outline: who may use which tool, with what data, and who checks.
 
 ## 6. Delivery workflow (agents → Akhil)
-`client export → Ledger (cost baseline) → Guard + Vigil (risk/guardrail tests) → Doc (report draft) → Akhil review (30–60 min) → send`. Models: today's free router models; Telugu/Hindi client notes may use `sarvamai/sarvam-30b` if A158 finds a free host.
+`client export → Ledger (cost baseline) → Guard + Vigil (risk/guardrail tests) → Doc (report draft) → Akhil review (30–60 min) → send`. Models: today's free router models; Telugu/Hindi client notes may use `sarvamai/sarvam-105b` if a free host appears (A158 found none; Sarvam lists sarvam-30b as deprecated legacy).

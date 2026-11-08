@@ -175,5 +175,21 @@
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K049.md",
   "updated": "2026-11-08T19:25:51Z"
+ },
+ {
+  "id": "K057",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "BotBhai inbox vs Chatwoot feature gap list (for A185)",
+  "details": "Compare the BotBhai inbox (inbox.html) with this list of open-source helpdesk inbox features used by Chatwoot (MIT core): 1 conversation status open/pending/resolved/snoozed, 2 assign to a team member, 3 labels/tags, 4 canned replies with shortcuts, 5 private notes, 6 search across chats, 7 filters by status/label, 8 unread counts, 9 typing and delivery ticks, 10 attachments preview, 11 contact side panel, 12 keyboard shortcuts, 13 bulk actions, 14 business hours / away message, 15 CSAT rating after resolve. Number all 15 rows: have / partly / missing, with a short quote from the file as evidence (anything you cannot see is UNVERIFIED). Then pick the top 5 missing features a small Hyderabad salon or gym owner would use on a phone, 1-2 lines each. Plain short English. No code.",
+  "read": [
+   "01-botbhai/botbhai/web/inbox.html"
+  ],
+  "min_items": 15,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K057.md"
  }
 ]

@@ -12,6 +12,8 @@ let lang = params.get("lang") || store.getItem("jc.lang") || pickLang(navigator.
 const api = config.demo ? null : createApi({ url: config.supabaseUrl, anonKey: config.anonKey, store });
 let data = null; let tab = params.get("tab") || "due"; let query = "";
 const L = (k, v) => t(lang, k, v);
+let toastTimer; let armed = null; let qTimer;
+function toast(msg) { const el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 4200); }
 const nice = (iso) => new Date(iso + "T00:00:00Z").toLocaleDateString(lang === "en" ? "en-IN" : `${lang}-IN`, { day: "numeric", month: "short", timeZone: "UTC" });
 
 function chrome() {
@@ -32,7 +34,12 @@ function signInView(step = "phone", phone = "", err = "") {
            <button class="btn" style="width:100%">${esc(L("sendCode"))}</button>`
         : `<label class="field"><span>${esc(L("code"))}</span><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" enterkeyhint="done" required></label>
            <button class="btn" style="width:100%">${esc(L("verify"))}</button>`}
-      <p class="err" id="err">${esc(err)}</p></form></section>`;
+      <p class="err" id="err" role="alert">${esc(err)}</p></form></section>`;
+  const ph = $("#ph");  // check the number when they leave the field; clear the error as soon as it is right
+  if (ph) {
+    ph.addEventListener("blur", () => { if (ph.value.trim() && !normPhone(ph.value)) { ph.setAttribute("aria-invalid", "true"); $("#err").textContent = L("badPhone"); } });
+    ph.addEventListener("input", () => { if (ph.getAttribute("aria-invalid") === "true" && normPhone(ph.value)) { ph.removeAttribute("aria-invalid"); $("#err").textContent = ""; } });
+  }
   $("#f").addEventListener("submit", async (e) => {
     e.preventDefault(); const btn = $("#f button"); btn.disabled = true;
     try {
@@ -56,14 +63,14 @@ function dueView(v) {
 function customersView(v) {
   const list = filterCustomers(v.customers, query);
   return `<label class="field" style="margin-top:16px"><input id="q" type="search" enterkeyhint="search" placeholder="${esc(L("search"))}" value="${esc(query)}" aria-label="${esc(L("search"))}"></label>
-    <ul class="list">${list.map((c) => `<li class="card"><div class="row"><div><p class="name">${esc(c.name)}</p><p class="meta">${esc(c.area || "")}${c.phone ? " · " + esc(c.phone) : ""}</p></div>
+    ${list.length ? "" : `<p class="card empty">${esc(query ? L("noMatch") : L("none"))}</p>`}<ul class="list">${list.map((c) => `<li class="card"><div class="row"><div><p class="name">${esc(c.name)}</p><p class="meta">${esc(c.area || "")}${c.phone ? " · " + esc(c.phone) : ""}</p></div>
       <div style="text-align:right"><p class="num">${esc(rupees(c.spentPaise))}</p><p class="meta">${c.lastVisit ? esc(nice(c.lastVisit)) : ""}</p></div></div>
       ${c.phone ? `<label class="tick"><input type="checkbox" data-opt="${esc(c.id)}" ${c.opted_in_whatsapp ? "checked" : ""}>${esc(L("optIn"))}</label>` : ""}</li>`).join("")}</ul>`;
 }
 
 function billsView(v) {
   return `<section class="card stat" style="margin-top:16px"><span>${esc(L("unpaid"))}</span><span class="num">${esc(rupees(v.unpaidPaise))}</span></section>
-    <h2>${esc(L("bills"))} · ${v.bills.length}</h2><ul class="list">${v.bills.map((b) => `<li class="card row"><div><p class="name">${esc(b.customer)}</p><p class="meta">${esc(b.number)} · ${esc(nice(b.issued_on))}</p></div>
+    <h2>${esc(L("bills"))} · ${v.bills.length}</h2>${v.bills.length ? "" : `<p class="card empty">${esc(L("noBills"))}</p>`}<ul class="list">${v.bills.map((b) => `<li class="card row"><div><p class="name">${esc(b.customer)}</p><p class="meta">${esc(b.number)} · ${esc(nice(b.issued_on))}</p></div>
       <div style="text-align:right"><p class="num">${esc(rupees(b.payable_paise))}</p><span class="tag ${b.paid ? "ok" : "late"}">${esc(b.paid ? L("paid") : L("notPaid"))}</span></div></li>`).join("")}</ul>`;
 }
 
@@ -104,10 +111,10 @@ function render() {
   $("#who").textContent = data.tech ? data.tech.business_name || data.tech.name : "";
   $("#tabs").hidden = false; $("#signout").hidden = !!config.demo; $("#signout").textContent = L("signOut");
   $("#main").innerHTML = tab === "customers" ? customersView(v) : tab === "bills" ? billsView(v) : tab === "record" ? recordView(v) : dueView(v);
-  const q = $("#q"); if (q) q.addEventListener("input", () => { query = q.value; const pos = q.selectionStart; render(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); });
+  const q = $("#q"); if (q) q.addEventListener("input", () => { clearTimeout(qTimer); qTimer = setTimeout(() => { query = q.value; const pos = q.selectionStart; render(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); }, 250); });  // wait for a pause in typing
   for (const box of document.querySelectorAll("[data-opt]")) box.addEventListener("change", async () => {
     const c = data.customers.find((x) => x.id === box.dataset.opt); c.opted_in_whatsapp = box.checked;
-    if (api) try { await api.setOptIn(c.id, box.checked); } catch { c.opted_in_whatsapp = !box.checked; box.checked = !box.checked; }
+    if (api) try { await api.setOptIn(c.id, box.checked); } catch { c.opted_in_whatsapp = !box.checked; box.checked = !box.checked; toast(L("saveFail")); }
   });
   const mic = $("#mic"); if (mic) mic.addEventListener("click", config.demo ? () => showCard("Split AC gas refill 2500, capacitor 450, customer Sita 9000033333") : toggleRecord);
 }
@@ -117,11 +124,19 @@ async function start() {
   if (config.demo) { data = demoData(istToday()); return render(); }
   if (!api.signedIn()) return signInView();
   try { data = await api.load(istToday()); if (data.tech && !params.get("lang") && !store.getItem("jc.lang")) lang = data.tech.language || lang; render(); }
-  catch (e) { if (e.signedOut) return signInView(); $("#main").innerHTML = `<p class="card err">${esc(L("error"))}</p>`; }
+  catch (e) {
+    if (e.signedOut) return signInView();
+    $("#main").innerHTML = `<section class="card" style="margin-top:16px"><p class="err" role="alert">${esc(navigator.onLine ? L("error") : L("offline"))}</p><button class="btn" id="retry" style="width:100%">${esc(L("retry"))}</button></section>`;
+    $("#retry").addEventListener("click", start);
+  }
 }
 
 $("#tabs").addEventListener("click", (e) => { const b = e.target.closest("button[data-tab]"); if (!b) return; tab = b.dataset.tab; history.replaceState(null, "", `?tab=${tab}`); render(); scrollTo(0, 0); });
-$("#signout").addEventListener("click", () => { api && api.signOut(); data = null; signInView(); });
+$("#signout").addEventListener("click", (e) => {  // two taps: signing in again costs an SMS code
+  const b = e.currentTarget;
+  if (!armed) { armed = setTimeout(() => { armed = null; b.textContent = L("signOut"); }, 4000); b.textContent = L("confirmOut"); return; }
+  clearTimeout(armed); armed = null; api && api.signOut(); data = null; signInView();
+});
 addEventListener("online", chrome); addEventListener("offline", chrome);
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
 start();

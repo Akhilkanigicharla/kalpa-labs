@@ -156,7 +156,7 @@ jobs:
           python -m playwright install --with-deps chromium
           python3 02-jobcard/design/screens.py
       - name: My-customers PWA at 390 px, offline, installable (A37)
-        run: node 02-jobcard/web/build.mjs && python3 02-jobcard/web/check.py
+        run: node 02-jobcard/web/build.mjs && python3 02-jobcard/web/check.py && python3 02-jobcard/web/ux.py
 
   tab-lifeboat:
     runs-on: ubuntu-latest

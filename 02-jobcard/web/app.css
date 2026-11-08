@@ -40,7 +40,7 @@ main{max-width:600px;margin:0 auto;padding:0 16px}
 .btn.line{background:transparent;color:var(--world);border:1px solid var(--rule)}
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.5}
-.ghost{background:none;border:1px solid var(--rule);border-radius:var(--r-s);color:var(--muted);min-height:36px;padding:4px 10px;font:inherit;font-size:13px}
+.ghost{background:none;border:1px solid var(--rule);border-radius:var(--r-s);color:var(--muted);min-height:44px;padding:4px 10px;font:inherit;font-size:13px}
 @media (hover:hover) and (pointer:fine){.btn:hover{filter:brightness(1.08)}.tabs button:hover{color:var(--fg)}}
 .field{display:grid;gap:6px;margin:10px 0}
 .field input{min-height:48px;border:1px solid var(--rule);border-radius:var(--r-m);background:var(--panel);color:var(--fg);padding:10px 12px}
@@ -61,3 +61,12 @@ label.tick input{width:22px;height:22px;accent-color:var(--world)}
 .tabs button[aria-current=page]{color:var(--world)}
 .ico{font-size:20px;line-height:1}
 @media (prefers-reduced-motion:reduce){.btn,.mic{transition:none}.btn:active,.mic:active{transform:none}}
+
+/* A186 UX patterns: skeleton, toast, empty state, invalid field */
+.skel-card{margin-top:16px}
+.skeleton{height:14px;border-radius:6px;margin:8px 0;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));max-width:calc(100% - 32px);background:var(--hero);color:var(--hero-fg);padding:10px 14px;border-radius:var(--r-s);font-size:14px;z-index:20}
+.empty{text-align:center;color:var(--muted);padding:24px 16px}
+input[aria-invalid=true]{border-color:var(--bad);box-shadow:0 0 0 2px color-mix(in srgb,var(--bad) 30%,transparent)}

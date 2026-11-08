@@ -17,3 +17,9 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+
+# A186: any unknown path opens the app (single-page app; no dead pages). Real files win (no force).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

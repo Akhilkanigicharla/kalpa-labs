@@ -171,12 +171,12 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K048.md",
-  "updated": "2026-11-08T19:26:34Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- Pattern 7 is marked ➖ not relevant in the table but appears in the Top 5 Missing fixes; remove it from the fix list or mark it missing in the table.\n- “Single-input short sign-up form” is not visible in the provided repo files; mark UNVERIFIED or drop the claim.\n- Pattern 5 is marked ✅ done, but `…` text placeholders are not a loading view or an empty view with a next action; mark ➖ or ❌.\n- Pattern 15 is marked ✅ done though it applies to app screens/forms (A/F) and the signup form HTML is not fully visible; mark UNVERIFIED or ➖."
+  "updated": "2026-11-08T19:30:06Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Row 9: change ❌ Missing to UNVERIFIED — the HTML slice is truncated and `.field-err` / `[aria-invalid]` CSS already exists, so absence of validation is not confirmed.\n- Row 20: change ❌ Missing to UNVERIFIED — full HTML/JS is not visible in the provided repo slice, so offline/retry handling cannot be confirmed as missing.\n- Row 17: keep UNVERIFIED — `404.html` is not in the provided files.\n- No invented prices, customers, results, or dates; no personal data; language is English."
  },
  {
   "id": "K055",
@@ -193,7 +193,10 @@
   "context_chars": 38000,
   "status": "todo",
   "created": "2026-11-09T00:00:00Z",
-  "output": "00-hq/knowledge/K055.md"
+  "output": "00-hq/knowledge/K055.md",
+  "updated": "2026-11-08T19:32:03Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Pattern 12 marked ✅ Done but HTML shows only empty filter containers; no removable chips or per-user memory visible → change to ❌ Missing or ➖ Not relevant.\n- Pattern 7 marked ➖ Not relevant though `<input class=\"kx-search\">` exists; debouncing applies to search → change to ❌ Missing or UNVERIFIED.\n- Pattern 1 reason claims JS behaviour (“wait for manual event triggers”) not present in repo files → mark UNVERIFIED.\n- Pattern 3 and 13 assume “phone-first” without repo evidence → mark UNVERIFIED or adjust reason.\n- Pattern 20 uses status “UNVERIFIED” instead of ✅ / ➖ / ❌ → move UNVERIFIED to Reason and use ❌ Missing in Status."
  },
  {
   "id": "K056",

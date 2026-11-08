@@ -194,5 +194,21 @@
   "updated": "2026-11-08T19:29:20Z",
   "tries": 1,
   "vigil_notes": "FIX:\n- Shorten the feature gap comparison list to at most 5 items to follow the rule."
+ },
+ {
+  "id": "K058",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "Website glow-up offer: copy + permission form draft (for A199)",
+  "details": "Draft for BotBhai's new 'Website glow-up' offer: we rebuild a small Hyderabad business's OWN old website into a fast, phone-first page. Write numbered sections 1 to 6: 1 a 40-word WhatsApp offer message (opt-in customers only, no hype, no fake urgency), 2 a 120-word web section with 3 benefits, 3 a plain-English permission form: the owner confirms they own or may use every text, photo and logo, allows us to read their public site, and can withdraw consent; 4 a DPDP privacy notice paragraph (what data, why, how long, contact to delete), 5 the same offer message in Telugu script and Hinglish, 6 five FAQs. No prices (Akhil sets them). No legal promises; mark section 3 and 4 'needs Akhil legal check'.",
+  "read": [
+   "01-botbhai/README.md"
+  ],
+  "min_items": 6,
+  "context_chars": 20000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K058.md"
  }
 ]

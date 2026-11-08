@@ -41,6 +41,7 @@ jobs:
       - run: node 00-hq/design/vibecheck.test.mjs
       - run: node 00-hq/design/theme.test.mjs
       - run: node 00-hq/agents/tooling.test.mjs
+      - run: node 00-hq/mods/smoke.test.mjs
       - run: python3 00-hq/agents/test_council.py && python3 00-hq/agents/test_live_status.py
 
   site-taps:
@@ -54,6 +55,7 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install playwright==1.56.0 && python -m playwright install --with-deps chromium
       - run: python 00-hq/site/tests/test_tap_sweep.py
+      - run: python 00-hq/site/tests/test_seo.py
       - run: python 00-hq/site/tests/test_chat_button.py
 
   botbhai:

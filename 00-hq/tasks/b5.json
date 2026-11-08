@@ -99,8 +99,9 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-09T00:00:00Z",
-  "output": "00-hq/knowledge/K053.md"
+  "output": "00-hq/knowledge/K053.md",
+  "updated": "2026-11-08T19:24:42Z"
  }
 ]

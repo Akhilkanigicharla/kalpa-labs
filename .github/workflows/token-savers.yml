@@ -1,0 +1,70 @@
+# A200 (Akhil said yes, 9 Nov 2026): try two MIT code-map tools on a COPY of this repo, in GitHub's cloud only.
+# Measures index time, map size and how much text 5 build-sprint questions return (chars / 4 ≈ tokens)
+# with each tool vs plain grep. Writes 00-hq/research/token-savers-raw.md; Claude reads it and decides.
+# Versions are pinned. Nothing is installed on Akhil's PC; no secrets are used.
+name: token-savers
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/token-savers.yml"]
+permissions:
+  contents: write
+concurrency: { group: token-savers, cancel-in-progress: false }
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Copy repo (tools never write into our tree)
+        run: rsync -a --exclude .git --exclude node_modules ./ /tmp/repo/
+      - name: Run trial
+        shell: bash
+        run: |
+          set -u
+          out=00-hq/research/token-savers-raw.md
+          Q=("inbox reply send" "billing void invoice" "agents runner free model call" "tap sweep 44 px" "seo check canonical")
+          tok() { echo $(( $(wc -c < "$1") / 4 )); }
+          {
+            echo "# Token-saver trial (raw) · $(date -u +%FT%TZ) · commit ${GITHUB_SHA::7}"
+            echo; echo "Tokens ≈ characters ÷ 4 of what an agent would read. Lower is better."; echo
+            echo "## Baseline: grep -rn (what a session does today)"
+            echo "| Question | grep tokens |"; echo "|---|---|"
+            for q in "${Q[@]}"; do w=${q%% *}; grep -rIn --exclude-dir=node_modules -i "$w" /tmp/repo > /tmp/g.txt || true; echo "| $q | $(tok /tmp/g.txt) |"; done
+          } > "$out"
+
+          echo; echo "## codebase-memory-mcp 0.10.7 (MIT)" >> "$out"
+          if npm install -g codebase-memory-mcp@0.10.7 > /tmp/cbm-install.log 2>&1; then
+            s=$(date +%s.%N)
+            codebase-memory-mcp cli index_repository '{"repo_path": "/tmp/repo"}' > /tmp/cbm-index.txt 2>&1; rc=$?
+            e=$(date +%s.%N)
+            echo "- index exit $rc, $(echo "$e - $s" | bc) s; output: $(head -c 300 /tmp/cbm-index.txt | tr '\n' ' ')" >> "$out"
+            echo "| Question | tokens |" >> "$out"; echo "|---|---|" >> "$out"
+            for q in "${Q[@]}"; do w=${q%% *}
+              codebase-memory-mcp cli search_graph "{\"name_pattern\": \".*${w}.*\"}" > /tmp/c.txt 2>&1 || true
+              echo "| $q | $(tok /tmp/c.txt) |" >> "$out"; done
+            codebase-memory-mcp cli get_architecture '{}' > /tmp/arch.txt 2>&1 || true
+            echo "- get_architecture: $(tok /tmp/arch.txt) tokens" >> "$out"
+          else echo "- install failed: $(tail -3 /tmp/cbm-install.log | tr '\n' ' ')" >> "$out"; fi
+
+          echo; echo "## Graft @nanonets/graft 0.10.1 (MIT)" >> "$out"
+          if npm install -g @nanonets/graft@0.10.1 > /tmp/graft-install.log 2>&1; then
+            cd /tmp/repo; s=$(date +%s.%N)
+            graft build > /tmp/graft-build.txt 2>&1; rc=$?
+            e=$(date +%s.%N); cd - > /dev/null
+            sz=$(du -sk /tmp/repo/graft 2>/dev/null | cut -f1)
+            echo "- build exit $rc, $(echo "$e - $s" | bc) s, map folder ${sz:-?} KB; output: $(tail -c 300 /tmp/graft-build.txt | tr '\n' ' ')" >> "$out"
+            echo "| Question | tokens |" >> "$out"; echo "|---|---|" >> "$out"
+            for q in "${Q[@]}"; do (cd /tmp/repo && graft grep "${q%% *}") > /tmp/f.txt 2>&1 || true
+              echo "| $q | $(tok /tmp/f.txt) |" >> "$out"; done
+          else echo "- install failed: $(tail -3 /tmp/graft-install.log | tr '\n' ' ')" >> "$out"; fi
+          cat "$out"
+      - name: Save the result
+        run: |
+          git config user.name "Akhilkanigicharla"; git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/research/token-savers-raw.md
+          git commit -qm "A200: token-saver trial raw numbers" || exit 0
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep 7; done; exit 1

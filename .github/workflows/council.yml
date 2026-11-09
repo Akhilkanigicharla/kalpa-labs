@@ -48,4 +48,4 @@ jobs:
           git add 00-hq/knowledge/council
           git diff --cached --quiet && exit 0
           git commit -m "council: verdict ($(date -u +%Y-%m-%dT%H:%MZ))"
-          for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 5; done
+          for _ in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 5; done

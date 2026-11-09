@@ -97,10 +97,10 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K052.md",
-  "updated": "2026-11-08T15:22:27Z"
+  "updated": "2026-11-09T00:00:00Z"
  },
  {
   "id": "K054",
@@ -120,5 +120,22 @@
   "output": "00-hq/knowledge/K054.md",
   "updated": "2026-11-08T19:33:15Z",
   "tries": 2
+ },
+ {
+  "id": "K059",
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Ledger Peaks free X-ray intake form copy (for A203)",
+  "details": "Write the copy for a 3-field intake form on the Ledger Peaks landing (company name, work email, usage export file). Give: form heading, field labels, helper text for each field (tell them to strip prompt and reply columns and hash customer ids), plain-language error messages for each field, the DPDP consent line (what we collect, why, how long we keep it, how to withdraw; reads like a person, not a lawyer), the success message and the failure message with Retry. English first, then the same in Hindi script and Telugu script. Short sentences. No promises about results.",
+  "read": [
+   "06-finops/design/landing.html",
+   "00-hq/design/UX-PATTERNS.md"
+  ],
+  "min_items": 8,
+  "context_chars": 30000,
+  "status": "todo",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K059.md"
  }
 ]

@@ -1,7 +1,10 @@
 // Ledger Peaks mockups (A12): shared helpers. Data comes from the <script id="lp-data"> block,
 // which design/sample.py fills from the real price engine. All text goes in with textContent.
 const LP = (() => {
-  const data = JSON.parse(document.getElementById('lp-data').textContent);
+  // Bad or missing data must never crash to a blank page (UX pattern 20): LP.ok is false and LP.fail() explains it.
+  let data = null;
+  try { data = JSON.parse(document.getElementById('lp-data').textContent); } catch (e) { data = null; }
+  const ok = !!data && typeof data === 'object';
   const rs = (paise, dp = 0) => '₹' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: dp, maximumFractionDigits: dp });
   const pct = (a, b) => (b ? Math.round((a * 100) / b) : 0) + '%';
   const date = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'UTC' });
@@ -23,7 +26,19 @@ const LP = (() => {
       n.textContent = f === 'int' ? Number(v).toLocaleString('en-IN') : f === 'raw' ? v : f === 'date' ? date(v) : rs(v);
     }
   }
+  // Helpful empty view with the one next action (UX pattern 5).
+  function empty(host, text) {
+    host.append(el(host.tagName === 'UL' ? 'li' : 'p', { class: 'empty muted' }, text));
+  }
+  function fail(root = document.querySelector('main')) {
+    const btn = el('button', { class: 'btn btn-primary', type: 'button' }, 'Retry');
+    btn.onclick = () => location.reload();
+    root.replaceChildren(el('div', { class: 'card cap', id: 'lp-error', role: 'alert' },
+      el('h3', {}, "Couldn't read your usage data"),
+      el('p', {}, 'Your files are safe; nothing was changed or sent. Try again, or upload the export once more.'), btn));
+  }
   function rows(list, obj, label = feat) {
+    if (!obj || !Object.keys(obj).length) return empty(list, 'No usage this week yet. Upload your usage export to see the split.');
     const max = Math.max(...Object.values(obj));
     const total = Object.values(obj).reduce((a, b) => a + b, 0);
     for (const [k, v] of Object.entries(obj)) {
@@ -32,7 +47,9 @@ const LP = (() => {
     }
   }
   function dayChart(svgHost) {
-    const days = Object.entries(data.by_day), max = Math.max(...days.map(([, v]) => v));
+    const days = Object.entries(data.by_day || {});
+    if (!days.length) return empty(svgHost, 'No calls this week yet. Upload your usage export to see cost per day.');
+    const max = Math.max(...days.map(([, v]) => v));
     const ns = 'http://www.w3.org/2000/svg', W = 320, H = 140, bw = W / days.length;
     const svg = document.createElementNS(ns, 'svg');
     svg.setAttribute('viewBox', `0 0 ${W} ${H + 22}`); svg.setAttribute('role', 'img');
@@ -49,5 +66,5 @@ const LP = (() => {
     svgHost.append(svg);
   }
   const LOGO = '<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M2 25 11 9l5 8 4-6 8 14Z" fill="var(--world)"/><path d="M11 9l2.5 4.5h-5Z" fill="var(--gold)"/><path d="M2 27h26" stroke="var(--gold)" stroke-width="2"/></svg>';
-  return { data, rs, pct, date, feat, el, fill, rows, dayChart, LOGO };
+  return { data, ok, empty, fail, rs, pct, date, feat, el, fill, rows, dayChart, LOGO };
 })();

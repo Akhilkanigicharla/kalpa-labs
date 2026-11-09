@@ -70,6 +70,10 @@ const page = `<!DOCTYPE html><html><head><meta name="viewport" content="width=de
     assert(await pg.locator('#lr-card').isHidden(), tag + ' close hides card');
     await pg.locator('#lr-refresh').tap();
     assert.strictEqual(await pg.evaluate(() => window.refreshed), 3, tag + ' refresh asks for all 3 sources');
+    // UX 8 (A189): a second tap within 5 s is ignored and the button says it is busy
+    assert(await pg.locator('#lr-refresh').isDisabled(), tag + ' refresh button rests after a tap');
+    await pg.locator('#lr-refresh').click({ force: true });
+    assert.strictEqual(await pg.evaluate(() => window.refreshed), 3, tag + ' double tap does not refresh twice');
     if (motion === 'reduce') {
       const anim = await pg.locator('.lr-working .lr-body').evaluate(e => getComputedStyle(e).animationName);
       assert.strictEqual(anim, 'none', tag + ' no motion when reduced');

@@ -28,5 +28,5 @@ t("readiness rows: first red reason",r.known&&r.green===1&&r.total===2&&r.rows[0
 // the real board output parses
 const {execFileSync}=require("child_process");
 let real=null;try{real=JSON.parse(execFileSync("python3",[path.join(__dirname,"../launch/check.py"),"--json"],{encoding:"utf8"}));}catch(e){real=e.stdout?JSON.parse(e.stdout):null;}
-const rr=L.readinessRows(real);t("check.py --json renders 11 rows",rr.known&&rr.total===11,rr.total);
+const rr=L.readinessRows(real);const want=real&&real.rows?real.rows.length:-1;t("check.py --json renders every row",rr.known&&rr.total===want,rr.total+" vs "+want);
 process.exitCode=fails?1:0;

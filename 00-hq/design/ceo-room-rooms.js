@@ -136,7 +136,8 @@
     h('p',null,a.task||'—'), h('p','lr-mut',NEXT[a.state]||''), h('p','lr-mut',`${a.team} · ${a.runs_as}${a.detail?' · '+a.detail:''}`));
    const close=h('button','kx-btn','Close'); close.type='button'; close.style.minHeight='44px'; close.addEventListener('click',()=>{picked=null; draw();}); card.append(close);}
  }
- const rb=document.getElementById('lr-refresh'); if(rb) rb.addEventListener('click',()=>['live_agents','live_runs','live_meta'].forEach(id=>dash.refresh(id)));
+ const rb=document.getElementById('lr-refresh'); if(rb) rb.addEventListener('click',()=>{ if(rb.disabled) return; rb.disabled=true; rb.textContent='Refreshing…'; // UX 8: one refresh per 5 s
+  ['live_agents','live_runs','live_meta'].forEach(id=>dash.refresh(id)); setTimeout(()=>{rb.disabled=false; rb.textContent='Refresh now';},5000);});
  dash.onData(draw);
  setInterval(()=>{const u=document.getElementById('lr-updated'); const M=dash.data('live_meta'); if(u&&M.status==='ok'){const r=M.data.find(x=>x.k==='refreshed_at'); if(r) u.textContent='Updated '+ago(r.v);}},60000);
 })();

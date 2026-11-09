@@ -191,7 +191,7 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K055.md",
   "updated": "2026-11-08T19:48:32Z",
@@ -216,5 +216,23 @@
   "updated": "2026-11-08T19:53:22Z",
   "tries": 3,
   "vigil_notes": "FIX: incomplete, 3 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "id": "K060",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Sound-effect cue plan for Kalpa reels (for A196)",
+  "details": "Read the reel workflow and write a cue plan for short 9:16 reels. Give exactly 12 numbered rows: trigger words or moments in a voiceover (for example a number, a price, 'before/after', a question, the call to action), the sound type (whoosh, pop, click, rise, chime...), length in ms, and how loud under the voice (dB below voice). Add 5 Openverse search phrases for CC0 real recordings. Rules: sounds must stay under the voice, at most one cue every 2 seconds, no copyrighted music, no brand jingles.",
+  "read": [
+   ".github/workflows/social-voiceover.yml"
+  ],
+  "min_items": 12,
+  "context_chars": 20000,
+  "status": "todo",
+  "created": "2026-11-09T05:00:00Z",
+  "output": "00-hq/knowledge/K060.md",
+  "updated": "2026-11-09T05:00:00Z",
+  "tries": 0
  }
 ]

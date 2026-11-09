@@ -103,7 +103,7 @@ body{background-color:var(--bg);background-image:radial-gradient(color-mix(in sr
 .fbar{height:5px;border-radius:999px;background:var(--soft);overflow:hidden}
 .fbar i{display:block;height:100%;border-radius:999px;background:repeating-linear-gradient(135deg,var(--gold) 0 5px,color-mix(in srgb,var(--gold) 65%,var(--panel)) 5px 8px)}
 .flist{display:grid;gap:6px}
-.frow{display:grid;grid-template-columns:10px minmax(0,1fr);column-gap:10px;row-gap:2px;align-items:center;text-align:left;border:0;background:var(--soft);border-radius:var(--r-m);padding:9px 12px;cursor:pointer;width:100%}
+.frow{display:grid;grid-template-columns:10px minmax(0,1fr);column-gap:10px;row-gap:2px;align-items:center;text-align:left;border:0;background:var(--soft);border-radius:var(--r-m);min-height:44px;padding:9px 12px;cursor:pointer;width:100%}
 .frow:hover{box-shadow:inset 0 0 0 1.5px var(--wc)}
 .frow .ft{font-weight:600;min-width:0}
 .frow .fm{grid-column:2;font-size:12px;color:var(--muted)}
@@ -136,12 +136,13 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .dot.on{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
 nav.tabs{display:flex;gap:4px;background:var(--panel);padding:4px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--rule)}
-nav.tabs button{border:0;background:none;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;font-size:14.5px}
+nav.tabs button{border:0;background:none;min-height:44px;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;font-size:14.5px}
 nav.tabs button:hover{color:var(--fg)}
 nav.tabs button[aria-current="page"]{background:var(--hero);color:var(--hero-fg)}
 nav.tabs button[aria-current="page"] svg{color:var(--gold)}
 nav.tabs svg{width:18px;height:18px}
 @media (max-width:760px){
+  html{scroll-padding-bottom:96px}
   nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;border-radius:18px 18px 0 0;background:var(--panel);box-shadow:0 -1px 0 var(--rule),0 -12px 30px -20px color-mix(in srgb,var(--accent) 60%,transparent);justify-content:space-around;padding:6px 6px calc(8px + env(safe-area-inset-bottom,0px))}
   nav.tabs button{flex-direction:column;gap:2px;font-size:11.5px;padding:7px 2px;flex:1;border-radius:12px}
 }
@@ -175,7 +176,7 @@ nav.tabs svg{width:18px;height:18px}
 .btn.primary:hover{box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 45%,transparent)}
 .btn.ghost{background:none;border-color:transparent;color:var(--accent)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.sm{min-height:34px;padding:6px 12px;font-size:13.5px}
+.btn.sm{min-height:44px;padding:6px 12px;font-size:13.5px}
 
 /* routine */
 .steps{display:grid;gap:10px}
@@ -184,7 +185,7 @@ nav.tabs svg{width:18px;height:18px}
 
 /* leaderboard */
 .lb{display:grid;gap:8px}
-.lbrow{display:grid;grid-template-columns:22px 1fr 44px;gap:10px;align-items:center;border:0;background:none;padding:7px 6px;border-radius:var(--r-s);cursor:pointer;text-align:left;width:100%}
+.lbrow{display:grid;grid-template-columns:22px 1fr 44px;gap:10px;align-items:center;border:0;background:none;min-height:44px;padding:7px 6px;border-radius:var(--r-s);cursor:pointer;text-align:left;width:100%}
 .lbrow:hover{background:var(--soft)}
 .launchbar{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}.launchbar i{display:block;height:100%;background:var(--accent);border-radius:inherit}
 .bar{height:7px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:4px}
@@ -192,7 +193,7 @@ nav.tabs svg{width:18px;height:18px}
 
 /* unit chips */
 .unitbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
-.unitbar button{flex:none;border:0;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;font-weight:600;font-size:14px}
+.unitbar button{flex:none;min-height:44px;border:0;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;font-weight:600;font-size:14px}
 .unitbar button[aria-pressed="true"]{background:var(--hero);color:var(--hero-fg);box-shadow:none}
 
 /* task cards */
@@ -210,7 +211,7 @@ details.task summary::-webkit-details-marker{display:none}
 .kv dt{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .kv dd{margin:0}
 .seg{display:inline-flex;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--rule);background:var(--panel)}
-.seg button{border:0;background:none;padding:8px 14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted);min-height:42px}
+.seg button{border:0;background:none;padding:8px 14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted);min-height:44px}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
 .phasehead{display:flex;align-items:baseline;gap:10px;margin-top:6px}
 
@@ -225,6 +226,7 @@ svg text{font-family:var(--f-mono)}
 .orggroup>summary,.orgagent>summary{cursor:pointer;list-style-position:outside}
 .orgagent{padding:4px 0;border-top:1px dashed var(--rule)}
 .chips .chip.on{outline:2px solid currentColor}
+button.chip{min-height:44px;cursor:pointer}
 /* agents feed */
 .feed{display:grid;gap:12px}
 .msg{display:grid;grid-template-columns:36px 1fr;gap:10px}
@@ -542,10 +544,10 @@ function renderTabs(){
 let toastTimer;
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2200);}
 async function setState(id,st){
-  const before=game().level;status[id]=st;statusAt[id]=new Date().toISOString();const tk=TASKS.find(t=>t.id===id);if(st==="done"){confetti();}render();const after=game();if(after.level>before)setTimeout(()=>showLevelUp(after),700);
+  const before=game().level,prev=status[id],prevAt=statusAt[id];status[id]=st;statusAt[id]=new Date().toISOString();const tk=TASKS.find(t=>t.id===id);if(st==="done"){confetti();}render();const after=game();if(after.level>before)setTimeout(()=>showLevelUp(after),700);
   if(!db||!canWrite){toast(st==="done"?`🏆 +${xpOf(tk)} XP (not saved — offline)`:"Shown here only — not saved");return;}
   try{await db.collection("status").doc(id).set({s:st,at:new Date().toISOString()});toast(st==="done"?`🏆 Quest complete! +${xpOf(tk)} XP`:st==="doing"?"Marked in progress":"Reset to not started");}
-  catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;setLive();}toast("Couldn't save. Try again.");}
+  catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;setLive();}if(prev===undefined)delete status[id];else status[id]=prev;if(prevAt===undefined)delete statusAt[id];else statusAt[id]=prevAt;render();toast("Couldn't save, so it's back as it was. Try again.");}
 }
 function wire(root){
   root.querySelectorAll("[data-set]").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();setState(b.dataset.id,b.dataset.set);}));

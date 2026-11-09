@@ -72,9 +72,9 @@
 .kx-mate b{font-weight:600}
 .kx-mate .r{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
 .kx-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.kx-btn{border:1px solid var(--color-border-line);background:var(--color-panel);color:var(--color-fg);border-radius:999px;padding:.38rem .8rem;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer}
+.kx-btn{border:1px solid var(--color-border-line);background:var(--color-panel);color:var(--color-fg);border-radius:999px;padding:.38rem .8rem;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer;min-height:44px}
 .kx-btn[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
-.kx-search{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:.5rem .9rem;font:inherit;font-size:16px;min-width:0;flex:1 1 12rem}
+.kx-search{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:.5rem .9rem;font:inherit;font-size:16px;min-width:0;flex:1 1 12rem;min-height:44px}
 .kx-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr));gap:var(--cds-gap-sm)}
 .kx-fact{border-radius:14px;padding:var(--cds-pad-sm) var(--cds-pad-md);background:var(--tint);min-width:0}
 .kx-fact .k{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
@@ -101,6 +101,10 @@
 .kx-fail{display:flex;align-items:center;justify-content:center;gap:.4rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);min-height:3rem}
 .kx-fail::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)}
 [data-dash-source-state=empty]{color:transparent}
+.kx-empty{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);padding:.6rem .2rem}
+[data-dash-source-state=loading]:empty{min-height:3rem;border-radius:14px;background:linear-gradient(90deg,var(--tint,#8881) 25%,color-mix(in srgb,var(--color-fg) 8%,transparent) 50%,var(--tint,#8881) 75%);background-size:200% 100%;animation:kx-skel 1.2s linear infinite}
+@keyframes kx-skel{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){[data-dash-source-state=loading]:empty{animation:none}}
 [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
 
 .kx-meter{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
@@ -385,7 +389,11 @@
  const hostColor=h=>h==='NVIDIA'?KV[1]:h==='Groq'?KV[0]:KV[2];
  const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.append(e); return e;};
  const txt=(tag,cls,t)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(t!=null) e.textContent=t; return e;};
- const fail=e=>{e.replaceChildren(txt('div','kx-fail','Failed to load'));};
+ // UX 20: say what failed and offer Retry (re-asks the raw datasets behind this box)
+ const fail=(e,...ids)=>{const box=txt('div','kx-fail',"Couldn't load this."); if(ids.length){const b=txt('button','kx-btn','Retry'); b.type='button';
+  b.addEventListener('click',()=>{b.disabled=true; b.textContent='Loading…'; ids.forEach(id=>{try{dash.refresh(id);}catch(_){}});}); box.append(b);} e.replaceChildren(box);};
+ // UX 5: an empty list says so in plain words instead of showing a blank box
+ const empty=(e,msg)=>{e.replaceChildren(txt('p','kx-empty',msg));};
 
  // humanoid mini robot (white shell, black visor); feet at (0,0), ~78px tall
  function bot(g,color,opts={}){
@@ -452,7 +460,7 @@
  let pickedBot=null;
  function drawScene(){
   const host=document.getElementById('scene'), b=dash.data('agent_board'), w=dash.data('worlds');
-  if(b.status!=='ok'){ if(b.status==='error') fail(host); return; }
+  if(b.status!=='ok'){ if(b.status==='error') fail(host,'roster','agents'); return; }
   const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 -20 1320 760'); svg.setAttribute('class','kx-scene'); svg.setAttribute('role','img'); svg.setAttribute('aria-label','Isometric office: Akhil in the CEO cabin and the AI agents at team desks');
   const L={floor:el('g',{},svg),tiles:el('g',{},svg),things:el('g',{},svg),labels:el('g',{},svg)};
   const c0=iso(0,0),c1=iso(4,0),c2=iso(4,3),c3=iso(0,3);
@@ -537,7 +545,7 @@
    requestAnimationFrame(()=>{document.getElementById('bar-agent').style.width=pct+'%';});} else t.textContent='—';
   drawScene();
   const n=dash.data('needs_you'), ol=document.getElementById('needlist');
-  if(n.status==='ok') ol.replaceChildren(...n.data.map(r=>{const li=document.createElement('li'); li.dataset.key=r.id; li.append(txt('span','id',r.id),txt('span','tx',r.title)); return li;})); else if(n.status==='error') fail(ol);
+  if(n.status==='ok'&&!n.data.length) empty(ol,'Nothing is waiting for you right now. The agents are working.'); else if(n.status==='ok') ol.replaceChildren(...n.data.map(r=>{const li=document.createElement('li'); li.dataset.key=r.id; li.append(txt('span','id',r.id),txt('span','tx',r.title)); return li;})); else if(n.status==='error') fail(ol,'roadmap');
   const w=dash.data('worlds'), wl=document.getElementById('worldlist');
   const NAME={HQ:'HQ',b1:'BotBhai',b2:'JobCard',b3:'Kits',b4:'Tab Lifeboat',b5:'Deals & Tools',b6:'Ledger Peaks',b7:'Trading Lab',design:'Design',growth:'Growth'};
   if(w.status==='ok') wl.replaceChildren(...w.data.map((r,i)=>{const row=txt('div'); row.style.cssText='display:flex;flex-direction:column;gap:.35rem;min-width:0';
@@ -545,12 +553,12 @@
     const nm=txt('b',null,NAME[r.world]||r.world); nm.style.fontWeight='550';
     const pc=txt('span','kx-sub',r.pct+'%'); pc.setAttribute('data-source','worlds'); pc.setAttribute('data-field','pct'); pc.setAttribute('data-where','world='+encodeURIComponent(r.world));
     top.append(nm,pc); const bar=txt('div','kx-bar'); bar.style.setProperty('--c',KV[i%8]); const sp=txt('span'); bar.append(sp); requestAnimationFrame(()=>{sp.style.width=r.pct+'%';});
-    row.append(top,bar,txt('span','kx-sub',r.done+' of '+r.total+' tasks')); return row;})); else if(w.status==='error') fail(wl);
+    row.append(top,bar,txt('span','kx-sub',r.done+' of '+r.total+' tasks')); return row;})); else if(w.status==='error') fail(wl,'roadmap');
   drawDays();
  }
  function drawDays(){
   const box=document.getElementById('daychart'), d=dash.data('done_by_day');
-  if(d.status!=='ok'){ if(d.status==='error') fail(box); return; }
+  if(d.status!=='ok'){ if(d.status==='error') fail(box,'roadmap'); return; }
   const W=Math.max(260,box.clientWidth||300), H=190, m={t:18,r:8,b:26,l:28};
   const data=d.data.map(r=>({day:new Date(r.day+'T00:00:00Z'),n:r.n,key:r.day}));
   const x=d3.scaleBand(data.map(r=>r.key),[m.l,W-m.r]).padding(.35);
@@ -574,7 +582,8 @@
  let pickedWorker=0;
  function drawWorkers(){
   const w=dash.data('workers'), list=document.getElementById('workerlist');
-  if(w.status!=='ok'){ if(w.status==='error') fail(list); return; }
+  if(w.status!=='ok'){ if(w.status==='error') fail(list,'workers'); return; }
+  if(!w.data.length){ empty(list,'No cloud workers listed yet. The next Build sprint fills this list.'); return; }
   const rows=w.data; if(pickedWorker>=rows.length) pickedWorker=0;
   list.replaceChildren(...rows.map((r,i)=>{const b=document.createElement('button'); b.type='button'; b.className='kx-w'; b.setAttribute('aria-pressed',String(i===pickedWorker)); b.dataset.key=r.name;
    const [cls,label]=stateOf(r);
@@ -601,7 +610,7 @@
   b.addEventListener('click',()=>{pickedBot=r.agent; if(current==='mkt') show('team'); else drawTeam(); document.getElementById('botdetail').scrollIntoView({block:'nearest'});}); return b;}
  function drawTeam(){
   const d=dash.data('agent_board'), grid=document.getElementById('teamgrid'), mk=document.getElementById('mktteam');
-  if(d.status!=='ok'){ if(d.status==='error'){fail(grid);fail(mk);} return; }
+  if(d.status!=='ok'){ if(d.status==='error'){fail(grid,'roster','agents');fail(mk,'roster','agents');} return; }
   const hosts=['All',...new Set(d.data.map(r=>r.host))];
   document.getElementById('hostfilter').replaceChildren(...hosts.map(h=>{const b=txt('button','kx-btn',h==='All'?'Everyone':h); b.type='button'; b.setAttribute('aria-pressed',String(h===hostSel)); b.addEventListener('click',()=>{hostSel=h; drawTeam();}); return b;}));
   grid.replaceChildren(...d.data.filter(r=>hostSel==='All'||r.host===hostSel).map(mate));
@@ -614,7 +623,10 @@
    v.textContent=typeof val==='boolean'?(val?'Yes':'Not yet (draft)'):f==='updated'?(val?fmtDT(val)+' IST':'—'):val; if(mark){v.setAttribute('data-source','agent_board'); v.setAttribute('data-field',f); v.setAttribute('data-row',String(idx));} box.append(v); return box;}));
  }
 
- const qSel={queue:'All',status:'All'};
+ // UX 12: filters + search are kept in this browser (try/catch: storage can be blocked) and clear with one tap
+ const QK='kx-roadmap-filters', qSel={queue:'All',status:'All'};
+ try{const sv=JSON.parse(localStorage.getItem(QK)||'{}'); if(sv.queue) qSel.queue=sv.queue; if(sv.status) qSel.status=sv.status; if(sv.q) document.getElementById('q').value=sv.q;}catch(_){}
+ const saveQ=()=>{try{localStorage.setItem(QK,JSON.stringify({...qSel,q:document.getElementById('q').value||''}));}catch(_){}};
  function rowEl(r,vals,hide){const tr=document.createElement('tr'); tr.dataset.key=r.id; vals.forEach((v,i)=>{const td=document.createElement('td');
    if(i===1){const p=txt('span','kx-pill '+(v==='done'?'p-ok':v==='blocked'?'p-bad':v==='in progress'?'p-warn':'')); p.append(document.createElement('i'),document.createTextNode(v)); td.append(p);} else td.textContent=v;
    if(i===hide) td.className='hide-n'; tr.append(td);}); return tr;}
@@ -622,13 +634,20 @@
   const st=dash.data('stages');
   document.querySelectorAll('#pipeline [data-where]').forEach(e=>{const s=e.getAttribute('data-where').split('=')[1]; e.textContent=st.status==='ok'?((st.data.find(r=>r.stage===s)||{}).n??'—'):'—';});
   const d=dash.data('roadmap'), tb=document.querySelector('#roadtable tbody');
-  if(d.status!=='ok'){ if(d.status==='error') fail(tb.closest('.kx-tablebox')); return; }
-  const mk=(key,opts)=>opts.map(o=>{const b=txt('button','kx-btn',o==='All'?(key==='queue'?'Everyone':'Any stage'):o); b.type='button'; b.setAttribute('aria-pressed',String(qSel[key]===o)); b.addEventListener('click',()=>{qSel[key]=o; drawWork();}); return b;});
+  if(d.status!=='ok'){ if(d.status==='error'){const tr=document.createElement('tr'),td=document.createElement('td'); td.colSpan=4; tr.append(td); tb.replaceChildren(tr); fail(td,'roadmap');} return; }
+  const mk=(key,opts)=>opts.map(o=>{const b=txt('button','kx-btn',o==='All'?(key==='queue'?'Everyone':'Any stage'):o); b.type='button'; b.setAttribute('aria-pressed',String(qSel[key]===o)); b.addEventListener('click',()=>{qSel[key]=o; saveQ(); drawWork();}); return b;});
   document.getElementById('qfilters').replaceChildren(...mk('queue',['All','Agents','Akhil (CEO)']),...mk('status',['All','to do','in progress','blocked','done']));
   const q=(document.getElementById('q').value||'').toLowerCase();
-  tb.replaceChildren(...d.data.filter(r=>(qSel.queue==='All'||r.queue===qSel.queue)&&(qSel.status==='All'||r.status===qSel.status)&&(!q||(r.id+' '+r.title+' '+r.world).toLowerCase().includes(q))).map(r=>rowEl(r,[r.id,r.status,r.world,r.title],2)));
+  const on=qSel.queue!=='All'||qSel.status!=='All'||!!q;
+  if(on){const c=txt('button','kx-btn','Clear filters'); c.type='button'; c.id='qclear'; c.addEventListener('click',()=>{qSel.queue='All'; qSel.status='All'; document.getElementById('q').value=''; saveQ(); drawWork();}); document.getElementById('qfilters').append(c);}
+  const rows=d.data.filter(r=>(qSel.queue==='All'||r.queue===qSel.queue)&&(qSel.status==='All'||r.status===qSel.status)&&(!q||(r.id+' '+r.title+' '+r.world).toLowerCase().includes(q)));
+  if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td'); td.colSpan=4; td.className='kx-empty'; td.textContent=on?'No tasks match these filters. Tap Clear filters.':'No roadmap tasks yet.'; tr.append(td); tb.replaceChildren(tr); return;}
+  tb.replaceChildren(...rows.map(r=>rowEl(r,[r.id,r.status,r.world,r.title],2)));
  }
- document.getElementById('q').addEventListener('input',drawWork);
+ // UX 7: search waits 200 ms after the last key; UX 13: '/' jumps to search, Esc clears it
+ let qT=0; document.getElementById('q').addEventListener('input',()=>{clearTimeout(qT); qT=setTimeout(()=>{saveQ(); drawWork();},200);});
+ document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value=''; saveQ(); drawWork();}});
+ document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||''))&&!e.target.isContentEditable){e.preventDefault(); show('work'); document.getElementById('q').focus();}});
  function drawMkt(){ drawTeam(); const d=dash.data('marketing'), tb=document.querySelector('#mkttable tbody'); if(d.status!=='ok') return; tb.replaceChildren(...d.data.map(r=>rowEl(r,[r.id,r.status,r.title],-1))); }
 
  function drawGame(){
@@ -636,7 +655,7 @@
   document.querySelectorAll('#game [data-source=game_stats]').forEach(e=>{const m=e.getAttribute('data-where').split('=')[1]; const r=s.status==='ok'?s.data.find(x=>x.metric===m):null; e.textContent=r?r.value:'—';});
   if(s.status==='ok'){const p=(s.data.find(x=>x.metric==='overall_pct')||{}).value; requestAnimationFrame(()=>{document.getElementById('xpbar').style.width=Math.max(2,Number(p)||0)+'%';});}
   const g=dash.data('game_worlds'), map=document.getElementById('gmap');
-  if(g.status!=='ok'){ if(g.status==='error') fail(map); return; }
+  if(g.status!=='ok'){ if(g.status==='error') fail(map,'game_worlds'); return; }
   map.replaceChildren(...g.data.map((r,i)=>{const d=txt('div','kx-isle'); const ring=document.createElementNS(NS,'svg'); ring.setAttribute('viewBox','0 0 64 64'); ring.setAttribute('width','60'); ring.setAttribute('height','60');
    const C=2*Math.PI*26, pct=Number(r.pct)||0;
    el('circle',{cx:32,cy:32,r:26,fill:'none',stroke:'var(--cds-chart-grid)','stroke-width':8},ring);

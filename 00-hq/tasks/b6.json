@@ -134,11 +134,11 @@
   ],
   "min_items": 8,
   "context_chars": 30000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K059.md",
-  "updated": "2026-11-09T03:02:57Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- Mark “25 MB” file limit as UNVERIFIED (not in repo files) or remove the specific size.\n- Mark item 8’s five-language chatbot claim as UNVERIFIED (not in repo files).\n- Align DPDP retention line with repo: “14 days after your X-ray unless you sign up” (draft says “after sending your report”).\n- Keep support@kalpalabs.com marked UNVERIFIED (already done)."
+  "updated": "2026-11-09T04:53:40Z",
+  "tries": 3,
+  "vigil_notes": "FIX: incomplete, 7 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

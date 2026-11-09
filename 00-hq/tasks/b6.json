@@ -136,6 +136,9 @@
   "context_chars": 30000,
   "status": "todo",
   "created": "2026-11-09T00:00:00Z",
-  "output": "00-hq/knowledge/K059.md"
+  "output": "00-hq/knowledge/K059.md",
+  "updated": "2026-11-09T02:46:12Z",
+  "tries": 1,
+  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

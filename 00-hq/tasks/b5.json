@@ -116,11 +116,11 @@
   ],
   "min_items": 10,
   "context_chars": 14000,
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-11T09:30:00Z",
   "output": "00-hq/knowledge/K065.md",
-  "updated": "2026-11-11T09:36:10Z",
-  "tries": 2,
+  "updated": "2026-11-11T09:38:28Z",
+  "tries": 3,
   "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
  }
 ]

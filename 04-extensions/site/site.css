@@ -8,6 +8,7 @@
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--f-body)}
 a{color:var(--world);text-underline-offset:3px}
+a.tap{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
 a,button{touch-action:manipulation}
 .temple{height:8px;background:radial-gradient(circle at 4px 3px,var(--gold) 1.6px,transparent 2px) 0 0/8px 8px,var(--hero)}
 .wrap{max-width:880px;margin:0 auto;padding:0 20px}

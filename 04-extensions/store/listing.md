@@ -25,7 +25,7 @@ Lost your tabs to a crash, an update or a "helpful" cleanup? Tab Lifeboat keeps 
 Privacy: your tabs stay on your computer. No account, no servers, no analytics, no ads. Policy: https://<pages-url>/privacy.html
 
 Free for ever: saving, restoring, imports, the backup file and the last 3 snapshots.
-Pro (opens soon) is a one-time licence key, not a subscription: 90-day snapshot history and a daily backup to your own Google Drive. Founding lifetime $19 / ₹899 (first 50), yearly $12 / ₹499, lifetime $29 / ₹1,199. Sold by Dodo Payments as merchant of record; 14-day refunds: https://<pages-url>/terms.html
+Pro is not on sale yet: longer snapshot history and backups that run by themselves will come later, and the price will be shown before it opens. Terms: https://<pages-url>/terms.html
 
 ## Category · language
 
@@ -56,4 +56,4 @@ Save and restore the user's browser tabs, windows and tab groups, including auto
 | Certify: not used or transferred to determine creditworthiness or for lending | ✅ |
 | Privacy policy URL | `https://<pages-url>/privacy.html` |
 
-When Pro opens (E8 licence, E13 Drive), add **Authentication information** (licence key → Dodo Payments) and update both this form and the policy in the same release.
+When Pro opens (E8 licence, E13 Drive), add **Authentication information** (licence key → the payment company Akhil chooses, C54) and update both this form and the policy in the same release.

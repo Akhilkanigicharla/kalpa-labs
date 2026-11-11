@@ -111,6 +111,17 @@ def test_symbols():
     assert data.is_fx("eurinr") and not data.is_fx("NIFTYBEES") and not data.is_fx("^NSEI")
 
 
+def test_fx_bars_with_close_outside_high_low_are_repaired(tmp_path):
+    def messy(symbol, start, end):
+        df = data.synthetic_prices(300, seed=3, sigma=0.05)
+        df.loc[df.index[10], "high"] = df["close"].iloc[10] * 0.99   # Yahoo FX quirk
+        return df
+    with pytest.raises(data.DataError, match="close outside"):
+        data.get_daily("TCS", cache_dir=tmp_path / "a", fetcher=messy)
+    df = data.get_daily("USDINR", cache_dir=tmp_path / "b", fetcher=messy)
+    assert data.validate(df) == [] and (df["high"] >= df["close"]).all()
+
+
 def test_data_folder_is_git_ignored():
     import subprocess
     out = subprocess.run(["git", "check-ignore", "data/x.parquet"], capture_output=True, text=True)

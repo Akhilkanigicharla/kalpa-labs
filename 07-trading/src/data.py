@@ -156,6 +156,9 @@ def get_daily(symbol: str, start: str | None = None, end: str | None = None, *,
             raise DataError(f"no data for {sym}: {last_err}")
         cache.mkdir(parents=True, exist_ok=True)
         df.to_parquet(path)
+    if is_fx(sym):  # Yahoo FX highs/lows are often inconsistent with the close; only the close is used
+        df = df.copy()
+        df["high"], df["low"] = df[COLUMNS[:4]].max(axis=1), df[COLUMNS[:4]].min(axis=1)
     if start:
         df = df[df.index >= pd.Timestamp(start)]
     if end:

@@ -68,3 +68,5 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **X** (C53): https://x.com/kalpalabs_in · **Reddit** (C53): https://www.reddit.com/user/KalpaLabs/ · **Product Hunt** (C53, personal name): https://www.producthunt.com/@akhilkanigicharla. Made by Akhil 29 Oct 2026. No posts until Akhil says go.
 
 - **Kalpa LLM router** (A120, Render free, sleeps after 15 min idle): https://kalpa-llm-router.onrender.com (dashboard needs the admin login; /v1 needs the unified key). Live 29 Oct 2026; outside test: / 200, /v1/models 401 without key.
+
+- Tab Lifeboat site (live 11 Nov 2026): https://akhilkanigicharla.github.io/kalpa-labs/

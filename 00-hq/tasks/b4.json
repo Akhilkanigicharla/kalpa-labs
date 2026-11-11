@@ -125,6 +125,9 @@
   "context_chars": 14000,
   "status": "todo",
   "created": "2026-11-11T09:30:00Z",
-  "output": "00-hq/knowledge/K064.md"
+  "output": "00-hq/knowledge/K064.md",
+  "updated": "2026-11-11T09:27:29Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   Remove specific price \"$29 / ₹1,199 lifetime\" from section 6; mark as UNVERIFIED or remove, as it is not in repo files.\n*   Change \"Import backups from export files of other tools\" to \"Import from Session Buddy and OneTab\" to match verified competitor data.\n*   Clarify \"no daily caps\" in section 1 and 5 to avoid implying competitors have limits; state \"unlimited local saving\" instead.\n*   Ensure \"cloud sync\" description in section 6 aligns with \"charge only for cloud backup and sync\" (verified) but remove unverified pricing."
  }
 ]

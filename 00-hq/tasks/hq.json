@@ -229,7 +229,7 @@
   ],
   "min_items": 12,
   "context_chars": 20000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-09T05:00:00Z",
   "output": "00-hq/knowledge/K060.md",
   "updated": "2026-11-09T04:53:14Z",
@@ -254,7 +254,7 @@
  },
  {
   "priority": "P2",
-  "status": "review",
+  "status": "done",
   "created": "2026-11-11T10:45:00Z",
   "context_chars": 12000,
   "id": "K068",
@@ -285,5 +285,38 @@
   "min_items": 7,
   "output": "00-hq/knowledge/K069.md",
   "updated": "2026-11-11T10:46:38Z"
+ },
+ {
+  "id": "K070",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kavi",
+  "title": "Telugu + Hindi trigger words for reel sound effects (A196 follow-up)",
+  "details": "Give exactly 20 numbered rows: a common spoken Telugu or Hindi word (in its own script) that should trigger one of these reel sound cues: chime (price), thud (warning/mistake), whoosh (first/next step), click (done/booked), pop (a number). Each row: word, script language, English meaning, cue kind. Only everyday words a salon or shop owner would say.",
+  "read": [
+   "01-botbhai/botbhai/social/sfx.py"
+  ],
+  "min_items": "20",
+  "context_chars": "12000",
+  "status": "todo",
+  "created": "2026-11-11T21:00:00Z",
+  "output": "00-hq/knowledge/K070.md"
+ },
+ {
+  "id": "K071",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Unslop checklist per Kalpa UI (A198 prep)",
+  "details": "List every customer-facing Kalpa page or app screen named in README.md files of the seven worlds, one numbered row each (at least 12), with its file path and the 3 most visible 'AI-looking' tells to fix (gradients, emoji labels, uppercase tracked labels, uneven spacing, generic hero copy).",
+  "read": [
+   "README.md",
+   "00-hq/ROADMAP.md"
+  ],
+  "min_items": "12",
+  "context_chars": "20000",
+  "status": "todo",
+  "created": "2026-11-11T21:00:00Z",
+  "output": "00-hq/knowledge/K071.md"
  }
 ]

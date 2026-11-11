@@ -3,6 +3,10 @@
 # Manual only (Actions tab > "Social voice-over" > Run workflow). Leave "text" empty to render the
 # Telugu + English demo scripts in social/voice-scripts/. Nothing is published; WAVs are a 14-day artifact.
 # Needs the HF_TOKEN repo secret (READ token, model terms accepted; roadmap C49). Never printed.
+# A196: every clip also gets sound effects (social/sfx.py): cues planned from word timings (faster-whisper),
+# our own synthesised sounds (earshot only once Akhil okays installing it), an optional CC0 Openverse recording,
+# mixed under the voice with ffmpeg, plus a 9:16 test MP4, credits.txt and a sync + loudness report.
+# "sfx_only" skips Parler and tests the SFX step on a quick espeak-ng voice (no secret needed).
 name: Social voice-over
 on:
   workflow_dispatch:
@@ -20,6 +24,14 @@ on:
         description: "Voice (empty = recommended female voice)"
         required: false
         default: ""
+      real:
+        description: 'CC0 Openverse recording for one cue kind, e.g. chime=cash register (empty = synthesised only)'
+        required: false
+        default: "chime=cash register"
+      sfx_only:
+        description: "Only test the sound-effects step (espeak-ng voice, no HF_TOKEN)"
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -27,6 +39,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   render:
+    if: ${{ !inputs.sfx_only }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     defaults:
@@ -37,6 +50,7 @@ jobs:
       SCRIPT: ${{ inputs.text }}
       LANG_IN: ${{ inputs.lang }}
       SPEAKER: ${{ inputs.speaker }}
+      REAL: ${{ inputs.real }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -71,9 +85,58 @@ jobs:
             if [ -n "$SPEAKER" ]; then set -- "$@" --speaker "$SPEAKER"; fi
             python social/voiceover.py "$@"
           fi
+      - name: Sound-effects tools + tests (ffmpeg, faster-whisper)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install -r social/requirements-captions.txt
+          python social/test_sfx.py
+      - name: Sound effects under each voice-over
+        run: |
+          for w in out/voice-*.wav; do
+            l=$(basename "$w" .wav); l=${l#voice-}
+            set -- --voice "$w" --lang "$l" --out "out/sfx-$l"
+            if [ -z "$SCRIPT" ]; then set -- "$@" --script "social/voice-scripts/demo-$l.txt"
+            else printf '%s' "$SCRIPT" > "out/script-$l.txt"; set -- "$@" --script "out/script-$l.txt"; fi
+            if [ -n "$REAL" ]; then set -- "$@" --real "$REAL"; fi
+            python social/sfx.py "$@"
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: social-voiceover
-          path: 01-botbhai/botbhai/out/*.wav
+          path: |
+            01-botbhai/botbhai/out/*.wav
+            01-botbhai/botbhai/out/sfx-*/
           retention-days: 14
           if-no-files-found: error
+  sfx-test:
+    if: ${{ inputs.sfx_only }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: 01-botbhai/botbhai
+    env:
+      REAL: ${{ inputs.real }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Sound-effects tools + tests (ffmpeg, faster-whisper)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install -r social/requirements-captions.txt
+          python social/test_sfx.py
+      - name: Test voice (espeak-ng) + sound effects + 9:16 MP4
+        run: |
+          mkdir -p out
+          espeak-ng -v en-us -s 150 -f social/voice-scripts/sfx-demo-en.txt -w out/voice-en.wav
+          set -- --voice out/voice-en.wav --lang en --script social/voice-scripts/sfx-demo-en.txt --out out/sfx-en
+          if [ -n "$REAL" ]; then set -- "$@" --real "$REAL"; fi
+          python social/sfx.py "$@"
+          cat out/sfx-en/credits.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: social-sfx-test
+          path: 01-botbhai/botbhai/out/
+          retention-days: 14

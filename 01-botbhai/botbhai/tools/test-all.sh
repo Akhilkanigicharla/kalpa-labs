@@ -44,6 +44,7 @@ python3 social/test_social.py
 python3 social/test_voiceover.py
 python3 social/test_captions.py
 python3 social/test_captions_timing.py
+python3 social/test_sfx.py
 python3 ../../00-hq/marketing/test_marketing.py
 python3 tools/test_sales_kit.py
 python3 tools/test_visit_sheet.py

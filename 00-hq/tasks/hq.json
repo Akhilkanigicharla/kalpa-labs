@@ -247,8 +247,9 @@
   ],
   "min_items": 12,
   "context_chars": 12000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-11T00:00:00Z",
-  "output": "00-hq/knowledge/K061.md"
+  "output": "00-hq/knowledge/K061.md",
+  "updated": "2026-11-11T08:16:32Z"
  }
 ]

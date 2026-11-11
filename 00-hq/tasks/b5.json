@@ -125,7 +125,7 @@
  },
  {
   "priority": "P2",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-11T10:45:00Z",
   "context_chars": 12000,
   "id": "K067",
@@ -138,6 +138,7 @@
    "00-hq/design/SEO-CHECKS.md"
   ],
   "min_items": 11,
-  "output": "00-hq/knowledge/K067.md"
+  "output": "00-hq/knowledge/K067.md",
+  "updated": "2026-11-11T10:45:04Z"
  }
 ]

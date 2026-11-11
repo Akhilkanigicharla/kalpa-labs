@@ -300,7 +300,10 @@
   "context_chars": "12000",
   "status": "todo",
   "created": "2026-11-11T21:00:00Z",
-  "output": "00-hq/knowledge/K070.md"
+  "output": "00-hq/knowledge/K070.md",
+  "updated": "2026-11-11T22:44:39Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n*   **Invented Facts:** The draft lists 20 words, but the `sfx.py` repo file only defines regex triggers for specific words (e.g., `రూపాయ`, `జాగ్రత్త`, `మొదట`, `पहला`, `बुक`). Words like `వంద`, `లాభం`, `ధర`, `ఆఫర్`, `ఖర్చు`, `సెట్`, `పక్కా`, `నష్టం`, `రద్దు`, `దామ్`, `बट्टा`, `पक्का`, `नुकसान`, `फिर` are **not** in the `RULES` list in the repo. They must be marked **UNVERIFIED** or removed, as the current code will not trigger SFX for them.\n*   **Rule Violation (Language):** The draft mixes Telugu and Hindi in a single table. Kalpa rules state \"every Kalpa chatbot speaks 5 languages... plain short English (or Telugu when asked)\". The task asks for \"Telugu + Hindi\", but the output format should ideally separate them or clearly label them as distinct lists if not strictly one language. However, the primary failure is the unverified facts.\n*   **Invented Facts:** `సగం` (half) is not in the `pop` regex (`\\d|^(two|three...|hundred|thousand|lakh|crore|percent|%|రెండు|మూడు|నాలుగు|ఐదు|दो|तीन|चार|पांच|पाँच)$`). It is not a verified trigger.\n*   **Invented Facts:** `పది` (ten) is not in the `pop` regex. The regex has `ten` (English) and specific Telugu/Hindi words for 2-5, but not `పది` or `दस`.\n*   **Invented Facts:** `ఉచితం` (free) is not in the `click` regex (`^(done|ready|booked|confirmed|saved|free|అయిపోయింది|బుక్\\S*|बुक|हो)$`). The Telugu word for free in the regex is not explicitly `ఉచితం` (though `free` is English). `ఉచితం` is not verified."
  },
  {
   "id": "K071",
@@ -317,6 +320,9 @@
   "context_chars": "20000",
   "status": "todo",
   "created": "2026-11-11T21:00:00Z",
-  "output": "00-hq/knowledge/K071.md"
+  "output": "00-hq/knowledge/K071.md",
+  "updated": "2026-11-11T22:46:13Z",
+  "tries": 1,
+  "vigil_notes": "FIX:\n- Tag every file path and UI detail in the table as UNVERIFIED — none of the specific HTML paths or visual descriptions appear in the provided repo files (rows 1, 4, 13, 14, 15 are missing the tag; all “Tell” columns describe unseen UI).\n- Remove Exam Kits (row 10) and Telugu Deals (row 14) or mark them out of scope — ROADMAP A198 lists only site, BotBhai web, JobCard, Tab Lifeboat, Ledger Peaks, and CEO Room.\n- Reframe the “5 Core UI Fixes” as an unsourced draft proposal, not a verified Kalpa rule or repo fact.\n- Add the A198 acceptance checks to the prep list: per-UI audit file, before/after 390 px screenshots, one signature-detail reason, then tap sweep + UX + SEO + vibecheck PASS."
  }
 ]

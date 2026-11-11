@@ -1,0 +1,1061 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kalpa Labs//Exam Kit Engine//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:SSC CGL · Kalpa Exam Kit
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261110@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261110T070000
+DTEND;TZID=Asia/Kolkata:20261110T080000
+SUMMARY:SSC CGL · Day 1: Number system + Simplification and BODMAS
+DESCRIPTION:New today:\n• Number system\n• Simplification and BODMAS\nM
+ ark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261111@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261111T070000
+DTEND;TZID=Asia/Kolkata:20261111T080000
+SUMMARY:SSC CGL · Day 2: Percentages + Ratio and proportion · revise 2
+DESCRIPTION:New today:\n• Percentages\n• Ratio and proportion\nRevise t
+ oday:\n• Number system\n• Simplification and BODMAS\nMark them in your
+  Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261112@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261112T070000
+DTEND;TZID=Asia/Kolkata:20261112T080000
+SUMMARY:SSC CGL · Day 3: Averages + Profit\, loss and discount · revise 2
+DESCRIPTION:New today:\n• Averages\n• Profit\, loss and discount\nRevis
+ e today:\n• Percentages\n• Ratio and proportion\nMark them in your Kal
+ pa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261113@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261113T070000
+DTEND;TZID=Asia/Kolkata:20261113T080000
+SUMMARY:SSC CGL · Day 4: Simple and compound interest + Time and work · r
+ evise 4
+DESCRIPTION:New today:\n• Simple and compound interest\n• Time and work
+ \nRevise today:\n• Number system\n• Simplification and BODMAS\n• Ave
+ rages\n• Profit\, loss and discount\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261114@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261114T070000
+DTEND;TZID=Asia/Kolkata:20261114T080000
+SUMMARY:SSC CGL · Day 5: Pipes and cisterns + Time\, speed and distance ·
+  revise 4
+DESCRIPTION:New today:\n• Pipes and cisterns\n• Time\, speed and distan
+ ce\nRevise today:\n• Percentages\n• Ratio and proportion\n• Simple a
+ nd compound interest\n• Time and work\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261115@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T070000
+DTEND;TZID=Asia/Kolkata:20261115T080000
+SUMMARY:SSC CGL · Day 6: Mixture and alligation + Algebra: identities and 
+ linear equations · revise 4
+DESCRIPTION:New today:\n• Mixture and alligation\n• Algebra: identities
+  and linear equations\nRevise today:\n• Averages\n• Profit\, loss and 
+ discount\n• Pipes and cisterns\n• Time\, speed and distance\nMark them
+  in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261116@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261116T070000
+DTEND;TZID=Asia/Kolkata:20261116T080000
+SUMMARY:SSC CGL · Day 7: Geometry: triangles\, congruence and similarity +
+  Geometry: circles\, chords and tangents · revise 4
+DESCRIPTION:New today:\n• Geometry: triangles\, congruence and similarity
+ \n• Geometry: circles\, chords and tangents\nRevise today:\n• Simple a
+ nd compound interest\n• Time and work\n• Mixture and alligation\n• A
+ lgebra: identities and linear equations\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261117@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261117T070000
+DTEND;TZID=Asia/Kolkata:20261117T080000
+SUMMARY:SSC CGL · Day 8: Mensuration: 2D figures + Mensuration: 3D solids 
+ · revise 6
+DESCRIPTION:New today:\n• Mensuration: 2D figures\n• Mensuration: 3D so
+ lids\nRevise today:\n• Number system\n• Simplification and BODMAS\n•
+  Pipes and cisterns\n• Time\, speed and distance\n• Geometry: triangle
+ s\, congruence and similarity\n• Geometry: circles\, chords and tangents
+ \nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261118@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261118T070000
+DTEND;TZID=Asia/Kolkata:20261118T080000
+SUMMARY:SSC CGL · Day 9: Trigonometry: ratios and identities + Heights and
+  distances · revise 6
+DESCRIPTION:New today:\n• Trigonometry: ratios and identities\n• Height
+ s and distances\nRevise today:\n• Percentages\n• Ratio and proportion\
+ n• Mixture and alligation\n• Algebra: identities and linear equations\
+ n• Mensuration: 2D figures\n• Mensuration: 3D solids\nMark them in you
+ r Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261119@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261119T070000
+DTEND;TZID=Asia/Kolkata:20261119T080000
+SUMMARY:SSC CGL · Day 10: Data interpretation: tables\, bar\, pie and line
+  charts + Statistics basics: mean\, median\, mode · revise 6
+DESCRIPTION:New today:\n• Data interpretation: tables\, bar\, pie and lin
+ e charts\n• Statistics basics: mean\, median\, mode\nRevise today:\n• 
+ Averages\n• Profit\, loss and discount\n• Geometry: triangles\, congru
+ ence and similarity\n• Geometry: circles\, chords and tangents\n• Trig
+ onometry: ratios and identities\n• Heights and distances\nMark them in y
+ our Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261120@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261120T070000
+DTEND;TZID=Asia/Kolkata:20261120T080000
+SUMMARY:SSC CGL · Day 11: Analogy + Classification (odd one out) · revise
+  6
+DESCRIPTION:New today:\n• Analogy\n• Classification (odd one out)\nRevi
+ se today:\n• Simple and compound interest\n• Time and work\n• Mensur
+ ation: 2D figures\n• Mensuration: 3D solids\n• Data interpretation: ta
+ bles\, bar\, pie and line charts\n• Statistics basics: mean\, median\, m
+ ode\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261121@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261121T070000
+DTEND;TZID=Asia/Kolkata:20261121T080000
+SUMMARY:SSC CGL · Day 12: Number and letter series + Coding-decoding · re
+ vise 6
+DESCRIPTION:New today:\n• Number and letter series\n• Coding-decoding\n
+ Revise today:\n• Pipes and cisterns\n• Time\, speed and distance\n• 
+ Trigonometry: ratios and identities\n• Heights and distances\n• Analog
+ y\n• Classification (odd one out)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261122@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261122T070000
+DTEND;TZID=Asia/Kolkata:20261122T080000
+SUMMARY:SSC CGL · Day 13: Blood relations + Direction and distance · revi
+ se 6
+DESCRIPTION:New today:\n• Blood relations\n• Direction and distance\nRe
+ vise today:\n• Mixture and alligation\n• Algebra: identities and linea
+ r equations\n• Data interpretation: tables\, bar\, pie and line charts\n
+ • Statistics basics: mean\, median\, mode\n• Number and letter series\
+ n• Coding-decoding\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261123@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261123T070000
+DTEND;TZID=Asia/Kolkata:20261123T080000
+SUMMARY:SSC CGL · Day 14: Order and ranking + Syllogism · revise 6
+DESCRIPTION:New today:\n• Order and ranking\n• Syllogism\nRevise today:
+ \n• Geometry: triangles\, congruence and similarity\n• Geometry: circl
+ es\, chords and tangents\n• Analogy\n• Classification (odd one out)\n
+ • Blood relations\n• Direction and distance\nMark them in your Kalpa t
+ racker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261124@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261124T070000
+DTEND;TZID=Asia/Kolkata:20261124T080000
+SUMMARY:SSC CGL · Day 15: Venn diagrams + Mathematical operations and symb
+ ol substitution · revise 6
+DESCRIPTION:New today:\n• Venn diagrams\n• Mathematical operations and 
+ symbol substitution\nRevise today:\n• Mensuration: 2D figures\n• Mensu
+ ration: 3D solids\n• Number and letter series\n• Coding-decoding\n• 
+ Order and ranking\n• Syllogism\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261125@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261125T070000
+DTEND;TZID=Asia/Kolkata:20261125T080000
+SUMMARY:SSC CGL · Day 16: Missing number and matrix + Paper folding and cu
+ tting · revise 6
+DESCRIPTION:New today:\n• Missing number and matrix\n• Paper folding an
+ d cutting\nRevise today:\n• Trigonometry: ratios and identities\n• Hei
+ ghts and distances\n• Blood relations\n• Direction and distance\n• V
+ enn diagrams\n• Mathematical operations and symbol substitution\nMark th
+ em in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261126@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261126T070000
+DTEND;TZID=Asia/Kolkata:20261126T080000
+SUMMARY:SSC CGL · Day 17: Mirror and water images + Embedded figures and f
+ igure counting · revise 6
+DESCRIPTION:New today:\n• Mirror and water images\n• Embedded figures a
+ nd figure counting\nRevise today:\n• Data interpretation: tables\, bar\,
+  pie and line charts\n• Statistics basics: mean\, median\, mode\n• Ord
+ er and ranking\n• Syllogism\n• Missing number and matrix\n• Paper fo
+ lding and cutting\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261127@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261127T070000
+DTEND;TZID=Asia/Kolkata:20261127T080000
+SUMMARY:SSC CGL · Day 18: Dice and cubes + Seating arrangement and puzzles
+  · revise 6
+DESCRIPTION:New today:\n• Dice and cubes\n• Seating arrangement and puz
+ zles\nRevise today:\n• Analogy\n• Classification (odd one out)\n• Ve
+ nn diagrams\n• Mathematical operations and symbol substitution\n• Mirr
+ or and water images\n• Embedded figures and figure counting\nMark them i
+ n your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261128@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261128T070000
+DTEND;TZID=Asia/Kolkata:20261128T080000
+SUMMARY:SSC CGL · Day 19: Reading comprehension + Cloze test · revise 6
+DESCRIPTION:New today:\n• Reading comprehension\n• Cloze test\nRevise t
+ oday:\n• Number and letter series\n• Coding-decoding\n• Missing numb
+ er and matrix\n• Paper folding and cutting\n• Dice and cubes\n• Seat
+ ing arrangement and puzzles\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261129@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261129T070000
+DTEND;TZID=Asia/Kolkata:20261129T080000
+SUMMARY:SSC CGL · Day 20: Spot the error + Sentence improvement · revise 
+ 6
+DESCRIPTION:New today:\n• Spot the error\n• Sentence improvement\nRevis
+ e today:\n• Blood relations\n• Direction and distance\n• Mirror and 
+ water images\n• Embedded figures and figure counting\n• Reading compre
+ hension\n• Cloze test\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261130@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261130T070000
+DTEND;TZID=Asia/Kolkata:20261130T080000
+SUMMARY:SSC CGL · Day 21: Fill in the blanks + Synonyms · revise 6
+DESCRIPTION:New today:\n• Fill in the blanks\n• Synonyms\nRevise today:
+ \n• Order and ranking\n• Syllogism\n• Dice and cubes\n• Seating ar
+ rangement and puzzles\n• Spot the error\n• Sentence improvement\nMark 
+ them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261201@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261201T070000
+DTEND;TZID=Asia/Kolkata:20261201T080000
+SUMMARY:SSC CGL · Day 22: Antonyms + Idioms and phrases · revise 8
+DESCRIPTION:New today:\n• Antonyms\n• Idioms and phrases\nRevise today:
+ \n• Number system\n• Simplification and BODMAS\n• Venn diagrams\n•
+  Mathematical operations and symbol substitution\n• Reading comprehensio
+ n\n• Cloze test\n• Fill in the blanks\n• Synonyms\nMark them in your
+  Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261202@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261202T070000
+DTEND;TZID=Asia/Kolkata:20261202T080000
+SUMMARY:SSC CGL · Day 23: One-word substitution + Spelling correction · r
+ evise 8
+DESCRIPTION:New today:\n• One-word substitution\n• Spelling correction\
+ nRevise today:\n• Percentages\n• Ratio and proportion\n• Missing num
+ ber and matrix\n• Paper folding and cutting\n• Spot the error\n• Sen
+ tence improvement\n• Antonyms\n• Idioms and phrases\nMark them in your
+  Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261203@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261203T070000
+DTEND;TZID=Asia/Kolkata:20261203T080000
+SUMMARY:SSC CGL · Day 24: Active and passive voice + Direct and indirect s
+ peech · revise 8
+DESCRIPTION:New today:\n• Active and passive voice\n• Direct and indire
+ ct speech\nRevise today:\n• Averages\n• Profit\, loss and discount\n
+ • Mirror and water images\n• Embedded figures and figure counting\n•
+  Fill in the blanks\n• Synonyms\n• One-word substitution\n• Spelling
+  correction\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261204@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261204T070000
+DTEND;TZID=Asia/Kolkata:20261204T080000
+SUMMARY:SSC CGL · Day 25: Sentence rearrangement (para jumbles) + Ancient 
+ and medieval Indian history · revise 8
+DESCRIPTION:New today:\n• Sentence rearrangement (para jumbles)\n• Anci
+ ent and medieval Indian history\nRevise today:\n• Simple and compound in
+ terest\n• Time and work\n• Dice and cubes\n• Seating arrangement and
+  puzzles\n• Antonyms\n• Idioms and phrases\n• Active and passive voi
+ ce\n• Direct and indirect speech\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261205@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261205T070000
+DTEND;TZID=Asia/Kolkata:20261205T080000
+SUMMARY:SSC CGL · Day 26: Modern Indian history and the freedom struggle +
+  Indian polity and Constitution · revise 8
+DESCRIPTION:New today:\n• Modern Indian history and the freedom struggle\
+ n• Indian polity and Constitution\nRevise today:\n• Pipes and cisterns
+ \n• Time\, speed and distance\n• Reading comprehension\n• Cloze test
+ \n• One-word substitution\n• Spelling correction\n• Sentence rearran
+ gement (para jumbles)\n• Ancient and medieval Indian history\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261206@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261206T070000
+DTEND;TZID=Asia/Kolkata:20261206T080000
+SUMMARY:SSC CGL · Day 27: Indian economy + Geography: India and the world 
+ · revise 8
+DESCRIPTION:New today:\n• Indian economy\n• Geography: India and the wo
+ rld\nRevise today:\n• Mixture and alligation\n• Algebra: identities an
+ d linear equations\n• Spot the error\n• Sentence improvement\n• Acti
+ ve and passive voice\n• Direct and indirect speech\n• Modern Indian hi
+ story and the freedom struggle\n• Indian polity and Constitution\nMark t
+ hem in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261207@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261207T070000
+DTEND;TZID=Asia/Kolkata:20261207T080000
+SUMMARY:SSC CGL · Day 28: Physics basics + Chemistry basics · revise 8
+DESCRIPTION:New today:\n• Physics basics\n• Chemistry basics\nRevise to
+ day:\n• Geometry: triangles\, congruence and similarity\n• Geometry: c
+ ircles\, chords and tangents\n• Fill in the blanks\n• Synonyms\n• Se
+ ntence rearrangement (para jumbles)\n• Ancient and medieval Indian histo
+ ry\n• Indian economy\n• Geography: India and the world\nMark them in y
+ our Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261208@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261208T070000
+DTEND;TZID=Asia/Kolkata:20261208T080000
+SUMMARY:SSC CGL · Day 29: Biology basics + Art and culture · revise 8
+DESCRIPTION:New today:\n• Biology basics\n• Art and culture\nRevise tod
+ ay:\n• Mensuration: 2D figures\n• Mensuration: 3D solids\n• Antonyms
+ \n• Idioms and phrases\n• Modern Indian history and the freedom strugg
+ le\n• Indian polity and Constitution\n• Physics basics\n• Chemistry 
+ basics\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261209@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261209T070000
+DTEND;TZID=Asia/Kolkata:20261209T080000
+SUMMARY:SSC CGL · Day 30: Static GK: awards\, books\, important days + Spo
+ rts · revise 8
+DESCRIPTION:New today:\n• Static GK: awards\, books\, important days\n•
+  Sports\nRevise today:\n• Trigonometry: ratios and identities\n• Heigh
+ ts and distances\n• One-word substitution\n• Spelling correction\n• 
+ Indian economy\n• Geography: India and the world\n• Biology basics\n
+ • Art and culture\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261210@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261210T070000
+DTEND;TZID=Asia/Kolkata:20261210T080000
+SUMMARY:SSC CGL · Day 31: Government schemes + Current affairs (last 6–1
+ 2 months) · revise 8
+DESCRIPTION:New today:\n• Government schemes\n• Current affairs (last 6
+ –12 months)\nRevise today:\n• Data interpretation: tables\, bar\, pie 
+ and line charts\n• Statistics basics: mean\, median\, mode\n• Active a
+ nd passive voice\n• Direct and indirect speech\n• Physics basics\n• 
+ Chemistry basics\n• Static GK: awards\, books\, important days\n• Spor
+ ts\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261211@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261211T070000
+DTEND;TZID=Asia/Kolkata:20261211T080000
+SUMMARY:SSC CGL · Day 32: Computer fundamentals and hardware + Software an
+ d operating systems · revise 8
+DESCRIPTION:New today:\n• Computer fundamentals and hardware\n• Softwar
+ e and operating systems\nRevise today:\n• Analogy\n• Classification (o
+ dd one out)\n• Sentence rearrangement (para jumbles)\n• Ancient and me
+ dieval Indian history\n• Biology basics\n• Art and culture\n• Govern
+ ment schemes\n• Current affairs (last 6–12 months)\nMark them in your 
+ Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261212@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261212T070000
+DTEND;TZID=Asia/Kolkata:20261212T080000
+SUMMARY:SSC CGL · Day 33: MS Office: Word\, Excel\, PowerPoint + Internet 
+ and email · revise 8
+DESCRIPTION:New today:\n• MS Office: Word\, Excel\, PowerPoint\n• Inter
+ net and email\nRevise today:\n• Number and letter series\n• Coding-dec
+ oding\n• Modern Indian history and the freedom struggle\n• Indian poli
+ ty and Constitution\n• Static GK: awards\, books\, important days\n• S
+ ports\n• Computer fundamentals and hardware\n• Software and operating 
+ systems\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261213@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261213T070000
+DTEND;TZID=Asia/Kolkata:20261213T080000
+SUMMARY:SSC CGL · Day 34: Networking basics + Computer security: viruses\,
+  firewalls · revise 8
+DESCRIPTION:New today:\n• Networking basics\n• Computer security: virus
+ es\, firewalls\nRevise today:\n• Blood relations\n• Direction and dist
+ ance\n• Indian economy\n• Geography: India and the world\n• Governme
+ nt schemes\n• Current affairs (last 6–12 months)\n• MS Office: Word\
+ , Excel\, PowerPoint\n• Internet and email\nMark them in your Kalpa trac
+ ker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261214@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261214T070000
+DTEND;TZID=Asia/Kolkata:20261214T080000
+SUMMARY:SSC CGL · Day 35: Data Entry Speed Test practice (typing) + Collec
+ tion\, classification and presentation of data · revise 8
+DESCRIPTION:New today:\n• Data Entry Speed Test practice (typing)\n• Co
+ llection\, classification and presentation of data\nRevise today:\n• Ord
+ er and ranking\n• Syllogism\n• Physics basics\n• Chemistry basics\n
+ • Computer fundamentals and hardware\n• Software and operating systems
+ \n• Networking basics\n• Computer security: viruses\, firewalls\nMark 
+ them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261215@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261215T070000
+DTEND;TZID=Asia/Kolkata:20261215T080000
+SUMMARY:SSC CGL · Day 36: Measures of central tendency + Measures of dispe
+ rsion · revise 8
+DESCRIPTION:New today:\n• Measures of central tendency\n• Measures of d
+ ispersion\nRevise today:\n• Venn diagrams\n• Mathematical operations a
+ nd symbol substitution\n• Biology basics\n• Art and culture\n• MS Of
+ fice: Word\, Excel\, PowerPoint\n• Internet and email\n• Data Entry Sp
+ eed Test practice (typing)\n• Collection\, classification and presentati
+ on of data\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261216@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261216T070000
+DTEND;TZID=Asia/Kolkata:20261216T080000
+SUMMARY:SSC CGL · Day 37: Correlation and regression + Probability theory 
+ and distributions · revise 8
+DESCRIPTION:New today:\n• Correlation and regression\n• Probability the
+ ory and distributions\nRevise today:\n• Missing number and matrix\n• P
+ aper folding and cutting\n• Static GK: awards\, books\, important days\n
+ • Sports\n• Networking basics\n• Computer security: viruses\, firewa
+ lls\n• Measures of central tendency\n• Measures of dispersion\nMark th
+ em in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261217@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261217T070000
+DTEND;TZID=Asia/Kolkata:20261217T080000
+SUMMARY:SSC CGL · Day 38: Sampling theory + Index numbers and time series 
+ · revise 8
+DESCRIPTION:New today:\n• Sampling theory\n• Index numbers and time ser
+ ies\nRevise today:\n• Mirror and water images\n• Embedded figures and 
+ figure counting\n• Government schemes\n• Current affairs (last 6–12 
+ months)\n• Data Entry Speed Test practice (typing)\n• Collection\, cla
+ ssification and presentation of data\n• Correlation and regression\n• 
+ Probability theory and distributions\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261218@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261218T070000
+DTEND;TZID=Asia/Kolkata:20261218T080000
+SUMMARY:SSC CGL · Day 39: revise 8
+DESCRIPTION:Revise today:\n• Dice and cubes\n• Seating arrangement and 
+ puzzles\n• Computer fundamentals and hardware\n• Software and operatin
+ g systems\n• Measures of central tendency\n• Measures of dispersion\n
+ • Sampling theory\n• Index numbers and time series\nMark them in your 
+ Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261219@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261219T070000
+DTEND;TZID=Asia/Kolkata:20261219T080000
+SUMMARY:SSC CGL · Day 40: revise 6
+DESCRIPTION:Revise today:\n• Reading comprehension\n• Cloze test\n• M
+ S Office: Word\, Excel\, PowerPoint\n• Internet and email\n• Correlati
+ on and regression\n• Probability theory and distributions\nMark them in 
+ your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261220@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261220T070000
+DTEND;TZID=Asia/Kolkata:20261220T080000
+SUMMARY:SSC CGL · Day 41: revise 6
+DESCRIPTION:Revise today:\n• Spot the error\n• Sentence improvement\n
+ • Networking basics\n• Computer security: viruses\, firewalls\n• Sam
+ pling theory\n• Index numbers and time series\nMark them in your Kalpa t
+ racker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261221@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261221T070000
+DTEND;TZID=Asia/Kolkata:20261221T080000
+SUMMARY:SSC CGL · Day 42: revise 4
+DESCRIPTION:Revise today:\n• Fill in the blanks\n• Synonyms\n• Data E
+ ntry Speed Test practice (typing)\n• Collection\, classification and pre
+ sentation of data\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261222@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261222T070000
+DTEND;TZID=Asia/Kolkata:20261222T080000
+SUMMARY:SSC CGL · Day 43: revise 4
+DESCRIPTION:Revise today:\n• Antonyms\n• Idioms and phrases\n• Measur
+ es of central tendency\n• Measures of dispersion\nMark them in your Kalp
+ a tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261223@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261223T070000
+DTEND;TZID=Asia/Kolkata:20261223T080000
+SUMMARY:SSC CGL · Day 44: revise 4
+DESCRIPTION:Revise today:\n• One-word substitution\n• Spelling correcti
+ on\n• Correlation and regression\n• Probability theory and distributio
+ ns\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261224@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261224T070000
+DTEND;TZID=Asia/Kolkata:20261224T080000
+SUMMARY:SSC CGL · Day 45: revise 4
+DESCRIPTION:Revise today:\n• Active and passive voice\n• Direct and ind
+ irect speech\n• Sampling theory\n• Index numbers and time series\nMark
+  them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261225@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261225T070000
+DTEND;TZID=Asia/Kolkata:20261225T080000
+SUMMARY:SSC CGL · Day 46: revise 2
+DESCRIPTION:Revise today:\n• Sentence rearrangement (para jumbles)\n• A
+ ncient and medieval Indian history\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261226@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261226T070000
+DTEND;TZID=Asia/Kolkata:20261226T080000
+SUMMARY:SSC CGL · Day 47: revise 2
+DESCRIPTION:Revise today:\n• Modern Indian history and the freedom strugg
+ le\n• Indian polity and Constitution\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261227@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261227T070000
+DTEND;TZID=Asia/Kolkata:20261227T080000
+SUMMARY:SSC CGL · Day 48: revise 2
+DESCRIPTION:Revise today:\n• Indian economy\n• Geography: India and the
+  world\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261228@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261228T070000
+DTEND;TZID=Asia/Kolkata:20261228T080000
+SUMMARY:SSC CGL · Day 49: revise 2
+DESCRIPTION:Revise today:\n• Physics basics\n• Chemistry basics\nMark t
+ hem in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261229@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261229T070000
+DTEND;TZID=Asia/Kolkata:20261229T080000
+SUMMARY:SSC CGL · Day 50: revise 2
+DESCRIPTION:Revise today:\n• Biology basics\n• Art and culture\nMark th
+ em in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261230@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261230T070000
+DTEND;TZID=Asia/Kolkata:20261230T080000
+SUMMARY:SSC CGL · Day 51: revise 2
+DESCRIPTION:Revise today:\n• Static GK: awards\, books\, important days\n
+ • Sports\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20261231@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261231T070000
+DTEND;TZID=Asia/Kolkata:20261231T080000
+SUMMARY:SSC CGL · Day 52: revise 2
+DESCRIPTION:Revise today:\n• Government schemes\n• Current affairs (las
+ t 6–12 months)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270101@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270101T070000
+DTEND;TZID=Asia/Kolkata:20270101T080000
+SUMMARY:SSC CGL · Day 53: revise 2
+DESCRIPTION:Revise today:\n• Computer fundamentals and hardware\n• Soft
+ ware and operating systems\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270102@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270102T070000
+DTEND;TZID=Asia/Kolkata:20270102T080000
+SUMMARY:SSC CGL · Day 54: revise 2
+DESCRIPTION:Revise today:\n• MS Office: Word\, Excel\, PowerPoint\n• In
+ ternet and email\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270103@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270103T070000
+DTEND;TZID=Asia/Kolkata:20270103T080000
+SUMMARY:SSC CGL · Day 55: revise 2
+DESCRIPTION:Revise today:\n• Networking basics\n• Computer security: vi
+ ruses\, firewalls\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270104@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270104T070000
+DTEND;TZID=Asia/Kolkata:20270104T080000
+SUMMARY:SSC CGL · Day 56: revise 2
+DESCRIPTION:Revise today:\n• Data Entry Speed Test practice (typing)\n•
+  Collection\, classification and presentation of data\nMark them in your K
+ alpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270105@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270105T070000
+DTEND;TZID=Asia/Kolkata:20270105T080000
+SUMMARY:SSC CGL · Day 57: revise 2
+DESCRIPTION:Revise today:\n• Measures of central tendency\n• Measures o
+ f dispersion\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270106@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270106T070000
+DTEND;TZID=Asia/Kolkata:20270106T080000
+SUMMARY:SSC CGL · Day 58: revise 2
+DESCRIPTION:Revise today:\n• Correlation and regression\n• Probability 
+ theory and distributions\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-plan-20270107@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270107T070000
+DTEND;TZID=Asia/Kolkata:20270107T080000
+SUMMARY:SSC CGL · Day 59: revise 2
+DESCRIPTION:Revise today:\n• Sampling theory\n• Index numbers and time 
+ series\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ssc-cgl-weekly@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T180000
+DTEND;TZID=Asia/Kolkata:20261115T183000
+RRULE:FREQ=WEEKLY;COUNT=9
+SUMMARY:SSC CGL · Weekly check: update progress %\, check official dates
+DESCRIPTION:Only trust dates on https://ssc.gov.in
+URL:https://ssc.gov.in
+END:VEVENT
+END:VCALENDAR

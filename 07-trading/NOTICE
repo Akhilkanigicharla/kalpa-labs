@@ -18,3 +18,7 @@ Libraries used as unmodified dependencies (see requirements.txt):
 - pandas (BSD-3), numpy (BSD-3), scipy (BSD-3), pyarrow (Apache-2.0)
 - yfinance (Apache-2.0). Yahoo data is for personal research only; never
   redistribute raw prices.
+
+Broker SDKs named in src/live/broker.py (NOT yet dependencies; imported lazily only
+when an adapter is built): fyers-apiv3, dhanhq, delta-rest-client, all MIT per their
+PyPI metadata (checked 7 Nov 2026; confirm the repo LICENSE before adding).

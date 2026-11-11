@@ -1,0 +1,935 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kalpa Labs//Exam Kit Engine//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:RRB NTPC · Kalpa Exam Kit
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261110@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261110T070000
+DTEND;TZID=Asia/Kolkata:20261110T080000
+SUMMARY:RRB NTPC · Day 1: Number system + Decimals and fractions
+DESCRIPTION:New today:\n• Number system\n• Decimals and fractions\nMark
+  them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261111@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261111T070000
+DTEND;TZID=Asia/Kolkata:20261111T080000
+SUMMARY:RRB NTPC · Day 2: LCM and HCF + Ratio and proportion · revise 2
+DESCRIPTION:New today:\n• LCM and HCF\n• Ratio and proportion\nRevise t
+ oday:\n• Number system\n• Decimals and fractions\nMark them in your Ka
+ lpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261112@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261112T070000
+DTEND;TZID=Asia/Kolkata:20261112T080000
+SUMMARY:RRB NTPC · Day 3: Percentage + Mensuration · revise 2
+DESCRIPTION:New today:\n• Percentage\n• Mensuration\nRevise today:\n•
+  LCM and HCF\n• Ratio and proportion\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261113@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261113T070000
+DTEND;TZID=Asia/Kolkata:20261113T080000
+SUMMARY:RRB NTPC · Day 4: Time and work + Time and distance · revise 4
+DESCRIPTION:New today:\n• Time and work\n• Time and distance\nRevise to
+ day:\n• Number system\n• Decimals and fractions\n• Percentage\n• M
+ ensuration\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261114@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261114T070000
+DTEND;TZID=Asia/Kolkata:20261114T080000
+SUMMARY:RRB NTPC · Day 5: Simple and compound interest + Profit and loss 
+ · revise 4
+DESCRIPTION:New today:\n• Simple and compound interest\n• Profit and lo
+ ss\nRevise today:\n• LCM and HCF\n• Ratio and proportion\n• Time and
+  work\n• Time and distance\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261115@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T070000
+DTEND;TZID=Asia/Kolkata:20261115T080000
+SUMMARY:RRB NTPC · Day 6: Elementary algebra + Geometry · revise 4
+DESCRIPTION:New today:\n• Elementary algebra\n• Geometry\nRevise today:
+ \n• Percentage\n• Mensuration\n• Simple and compound interest\n• P
+ rofit and loss\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261116@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261116T070000
+DTEND;TZID=Asia/Kolkata:20261116T080000
+SUMMARY:RRB NTPC · Day 7: Trigonometry + Elementary statistics · revise 4
+DESCRIPTION:New today:\n• Trigonometry\n• Elementary statistics\nRevise
+  today:\n• Time and work\n• Time and distance\n• Elementary algebra\
+ n• Geometry\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261117@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261117T070000
+DTEND;TZID=Asia/Kolkata:20261117T080000
+SUMMARY:RRB NTPC · Day 8: Square root + Age calculations · revise 6
+DESCRIPTION:New today:\n• Square root\n• Age calculations\nRevise today
+ :\n• Number system\n• Decimals and fractions\n• Simple and compound 
+ interest\n• Profit and loss\n• Trigonometry\n• Elementary statistics
+ \nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261118@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261118T070000
+DTEND;TZID=Asia/Kolkata:20261118T080000
+SUMMARY:RRB NTPC · Day 9: Calendar and clock + Pipes and cisterns · revis
+ e 6
+DESCRIPTION:New today:\n• Calendar and clock\n• Pipes and cisterns\nRev
+ ise today:\n• LCM and HCF\n• Ratio and proportion\n• Elementary alge
+ bra\n• Geometry\n• Square root\n• Age calculations\nMark them in you
+ r Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261119@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261119T070000
+DTEND;TZID=Asia/Kolkata:20261119T080000
+SUMMARY:RRB NTPC · Day 10: Analogies + Completion of number and alphabetic
+ al series · revise 6
+DESCRIPTION:New today:\n• Analogies\n• Completion of number and alphabe
+ tical series\nRevise today:\n• Percentage\n• Mensuration\n• Trigonom
+ etry\n• Elementary statistics\n• Calendar and clock\n• Pipes and cis
+ terns\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261120@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261120T070000
+DTEND;TZID=Asia/Kolkata:20261120T080000
+SUMMARY:RRB NTPC · Day 11: Coding and decoding + Mathematical operations 
+ · revise 6
+DESCRIPTION:New today:\n• Coding and decoding\n• Mathematical operation
+ s\nRevise today:\n• Time and work\n• Time and distance\n• Square roo
+ t\n• Age calculations\n• Analogies\n• Completion of number and alpha
+ betical series\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261121@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261121T070000
+DTEND;TZID=Asia/Kolkata:20261121T080000
+SUMMARY:RRB NTPC · Day 12: Similarities and differences + Relationships ·
+  revise 6
+DESCRIPTION:New today:\n• Similarities and differences\n• Relationships
+ \nRevise today:\n• Simple and compound interest\n• Profit and loss\n
+ • Calendar and clock\n• Pipes and cisterns\n• Coding and decoding\n
+ • Mathematical operations\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261122@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261122T070000
+DTEND;TZID=Asia/Kolkata:20261122T080000
+SUMMARY:RRB NTPC · Day 13: Analytical reasoning + Syllogism · revise 6
+DESCRIPTION:New today:\n• Analytical reasoning\n• Syllogism\nRevise tod
+ ay:\n• Elementary algebra\n• Geometry\n• Analogies\n• Completion o
+ f number and alphabetical series\n• Similarities and differences\n• Re
+ lationships\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261123@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261123T070000
+DTEND;TZID=Asia/Kolkata:20261123T080000
+SUMMARY:RRB NTPC · Day 14: Jumbling + Venn diagrams · revise 6
+DESCRIPTION:New today:\n• Jumbling\n• Venn diagrams\nRevise today:\n•
+  Trigonometry\n• Elementary statistics\n• Coding and decoding\n• Mat
+ hematical operations\n• Analytical reasoning\n• Syllogism\nMark them i
+ n your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261124@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261124T070000
+DTEND;TZID=Asia/Kolkata:20261124T080000
+SUMMARY:RRB NTPC · Day 15: Puzzles + Data sufficiency · revise 6
+DESCRIPTION:New today:\n• Puzzles\n• Data sufficiency\nRevise today:\n
+ • Square root\n• Age calculations\n• Similarities and differences\n
+ • Relationships\n• Jumbling\n• Venn diagrams\nMark them in your Kalp
+ a tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261125@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261125T070000
+DTEND;TZID=Asia/Kolkata:20261125T080000
+SUMMARY:RRB NTPC · Day 16: Statement and conclusion + Statement and course
+  of action · revise 6
+DESCRIPTION:New today:\n• Statement and conclusion\n• Statement and cou
+ rse of action\nRevise today:\n• Calendar and clock\n• Pipes and cister
+ ns\n• Analytical reasoning\n• Syllogism\n• Puzzles\n• Data suffici
+ ency\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261126@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261126T070000
+DTEND;TZID=Asia/Kolkata:20261126T080000
+SUMMARY:RRB NTPC · Day 17: Decision making + Maps · revise 6
+DESCRIPTION:New today:\n• Decision making\n• Maps\nRevise today:\n• A
+ nalogies\n• Completion of number and alphabetical series\n• Jumbling\n
+ • Venn diagrams\n• Statement and conclusion\n• Statement and course 
+ of action\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261127@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261127T070000
+DTEND;TZID=Asia/Kolkata:20261127T080000
+SUMMARY:RRB NTPC · Day 18: Interpretation of graphs + Current events of na
+ tional and international importance · revise 6
+DESCRIPTION:New today:\n• Interpretation of graphs\n• Current events of
+  national and international importance\nRevise today:\n• Coding and deco
+ ding\n• Mathematical operations\n• Puzzles\n• Data sufficiency\n• 
+ Decision making\n• Maps\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261128@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261128T070000
+DTEND;TZID=Asia/Kolkata:20261128T080000
+SUMMARY:RRB NTPC · Day 19: Games and sports + Art and culture of India · 
+ revise 6
+DESCRIPTION:New today:\n• Games and sports\n• Art and culture of India\
+ nRevise today:\n• Similarities and differences\n• Relationships\n• S
+ tatement and conclusion\n• Statement and course of action\n• Interpret
+ ation of graphs\n• Current events of national and international importan
+ ce\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261129@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261129T070000
+DTEND;TZID=Asia/Kolkata:20261129T080000
+SUMMARY:RRB NTPC · Day 20: Indian literature + Monuments and places of Ind
+ ia · revise 6
+DESCRIPTION:New today:\n• Indian literature\n• Monuments and places of 
+ India\nRevise today:\n• Analytical reasoning\n• Syllogism\n• Decisio
+ n making\n• Maps\n• Games and sports\n• Art and culture of India\nMa
+ rk them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261130@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261130T070000
+DTEND;TZID=Asia/Kolkata:20261130T080000
+SUMMARY:RRB NTPC · Day 21: General science: physics (up to 10th CBSE) + Ge
+ neral science: chemistry (up to 10th CBSE) · revise 6
+DESCRIPTION:New today:\n• General science: physics (up to 10th CBSE)\n•
+  General science: chemistry (up to 10th CBSE)\nRevise today:\n• Jumbling
+ \n• Venn diagrams\n• Interpretation of graphs\n• Current events of n
+ ational and international importance\n• Indian literature\n• Monuments
+  and places of India\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261201@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261201T070000
+DTEND;TZID=Asia/Kolkata:20261201T080000
+SUMMARY:RRB NTPC · Day 22: General science: biology and life science (up t
+ o 10th CBSE) + History of India and the freedom struggle · revise 8
+DESCRIPTION:New today:\n• General science: biology and life science (up t
+ o 10th CBSE)\n• History of India and the freedom struggle\nRevise today:
+ \n• Number system\n• Decimals and fractions\n• Puzzles\n• Data suf
+ ficiency\n• Games and sports\n• Art and culture of India\n• General 
+ science: physics (up to 10th CBSE)\n• General science: chemistry (up to 
+ 10th CBSE)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261202@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261202T070000
+DTEND;TZID=Asia/Kolkata:20261202T080000
+SUMMARY:RRB NTPC · Day 23: Physical\, social and economic geography of Ind
+ ia and the world + Indian polity and governance: Constitution and politica
+ l system · revise 8
+DESCRIPTION:New today:\n• Physical\, social and economic geography of Ind
+ ia and the world\n• Indian polity and governance: Constitution and polit
+ ical system\nRevise today:\n• LCM and HCF\n• Ratio and proportion\n•
+  Statement and conclusion\n• Statement and course of action\n• Indian 
+ literature\n• Monuments and places of India\n• General science: biolog
+ y and life science (up to 10th CBSE)\n• History of India and the freedom
+  struggle\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261203@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261203T070000
+DTEND;TZID=Asia/Kolkata:20261203T080000
+SUMMARY:RRB NTPC · Day 24: Scientific and technological developments\, inc
+ l. India's space and nuclear programmes + UN and other important world org
+ anisations · revise 8
+DESCRIPTION:New today:\n• Scientific and technological developments\, inc
+ l. India's space and nuclear programmes\n• UN and other important world 
+ organisations\nRevise today:\n• Percentage\n• Mensuration\n• Decisio
+ n making\n• Maps\n• General science: physics (up to 10th CBSE)\n• Ge
+ neral science: chemistry (up to 10th CBSE)\n• Physical\, social and econ
+ omic geography of India and the world\n• Indian polity and governance: C
+ onstitution and political system\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261204@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261204T070000
+DTEND;TZID=Asia/Kolkata:20261204T080000
+SUMMARY:RRB NTPC · Day 25: Environmental issues concerning India and the w
+ orld + Basics of computers and computer applications · revise 8
+DESCRIPTION:New today:\n• Environmental issues concerning India and the w
+ orld\n• Basics of computers and computer applications\nRevise today:\n
+ • Time and work\n• Time and distance\n• Interpretation of graphs\n
+ • Current events of national and international importance\n• General s
+ cience: biology and life science (up to 10th CBSE)\n• History of India a
+ nd the freedom struggle\n• Scientific and technological developments\, i
+ ncl. India's space and nuclear programmes\n• UN and other important worl
+ d organisations\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261205@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261205T070000
+DTEND;TZID=Asia/Kolkata:20261205T080000
+SUMMARY:RRB NTPC · Day 26: Common abbreviations + Transport systems in Ind
+ ia (Railways) · revise 8
+DESCRIPTION:New today:\n• Common abbreviations\n• Transport systems in 
+ India (Railways)\nRevise today:\n• Simple and compound interest\n• Pro
+ fit and loss\n• Games and sports\n• Art and culture of India\n• Phys
+ ical\, social and economic geography of India and the world\n• Indian po
+ lity and governance: Constitution and political system\n• Environmental 
+ issues concerning India and the world\n• Basics of computers and compute
+ r applications\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261206@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261206T070000
+DTEND;TZID=Asia/Kolkata:20261206T080000
+SUMMARY:RRB NTPC · Day 27: Indian economy + Famous personalities of India 
+ and the world · revise 8
+DESCRIPTION:New today:\n• Indian economy\n• Famous personalities of Ind
+ ia and the world\nRevise today:\n• Elementary algebra\n• Geometry\n•
+  Indian literature\n• Monuments and places of India\n• Scientific and 
+ technological developments\, incl. India's space and nuclear programmes\n
+ • UN and other important world organisations\n• Common abbreviations\n
+ • Transport systems in India (Railways)\nMark them in your Kalpa tracker
+ .
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261207@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261207T070000
+DTEND;TZID=Asia/Kolkata:20261207T080000
+SUMMARY:RRB NTPC · Day 28: Flagship government programmes + Flora and faun
+ a of India · revise 8
+DESCRIPTION:New today:\n• Flagship government programmes\n• Flora and f
+ auna of India\nRevise today:\n• Trigonometry\n• Elementary statistics\
+ n• General science: physics (up to 10th CBSE)\n• General science: chem
+ istry (up to 10th CBSE)\n• Environmental issues concerning India and the
+  world\n• Basics of computers and computer applications\n• Indian econ
+ omy\n• Famous personalities of India and the world\nMark them in your Ka
+ lpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261208@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261208T070000
+DTEND;TZID=Asia/Kolkata:20261208T080000
+SUMMARY:RRB NTPC · Day 29: Important government and public sector organisa
+ tions of India + Typing Skill Test practice (English 30 wpm / Hindi 25 wpm
+ ) · revise 8
+DESCRIPTION:New today:\n• Important government and public sector organisa
+ tions of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 
+ wpm)\nRevise today:\n• Square root\n• Age calculations\n• General sc
+ ience: biology and life science (up to 10th CBSE)\n• History of India an
+ d the freedom struggle\n• Common abbreviations\n• Transport systems in
+  India (Railways)\n• Flagship government programmes\n• Flora and fauna
+  of India\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261209@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261209T070000
+DTEND;TZID=Asia/Kolkata:20261209T080000
+SUMMARY:RRB NTPC · Day 30: CBAT (aptitude test) practice for Station Maste
+ r and Traffic Assistant + Full mock tests: CBT 1 pattern · revise 8
+DESCRIPTION:New today:\n• CBAT (aptitude test) practice for Station Maste
+ r and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nRevise today:
+ \n• Calendar and clock\n• Pipes and cisterns\n• Physical\, social an
+ d economic geography of India and the world\n• Indian polity and governa
+ nce: Constitution and political system\n• Indian economy\n• Famous per
+ sonalities of India and the world\n• Important government and public sec
+ tor organisations of India\n• Typing Skill Test practice (English 30 wpm
+  / Hindi 25 wpm)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261210@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261210T070000
+DTEND;TZID=Asia/Kolkata:20261210T080000
+SUMMARY:RRB NTPC · Day 31: Full mock tests: CBT 2 pattern · revise 8
+DESCRIPTION:New today:\n• Full mock tests: CBT 2 pattern\nRevise today:\n
+ • Analogies\n• Completion of number and alphabetical series\n• Scien
+ tific and technological developments\, incl. India's space and nuclear pro
+ grammes\n• UN and other important world organisations\n• Flagship gove
+ rnment programmes\n• Flora and fauna of India\n• CBAT (aptitude test) 
+ practice for Station Master and Traffic Assistant\n• Full mock tests: CB
+ T 1 pattern\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261211@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261211T070000
+DTEND;TZID=Asia/Kolkata:20261211T080000
+SUMMARY:RRB NTPC · Day 32: revise 7
+DESCRIPTION:Revise today:\n• Coding and decoding\n• Mathematical operat
+ ions\n• Environmental issues concerning India and the world\n• Basics 
+ of computers and computer applications\n• Important government and publi
+ c sector organisations of India\n• Typing Skill Test practice (English 3
+ 0 wpm / Hindi 25 wpm)\n• Full mock tests: CBT 2 pattern\nMark them in yo
+ ur Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261212@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261212T070000
+DTEND;TZID=Asia/Kolkata:20261212T080000
+SUMMARY:RRB NTPC · Day 33: revise 6
+DESCRIPTION:Revise today:\n• Similarities and differences\n• Relationsh
+ ips\n• Common abbreviations\n• Transport systems in India (Railways)\n
+ • CBAT (aptitude test) practice for Station Master and Traffic Assistant
+ \n• Full mock tests: CBT 1 pattern\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261213@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261213T070000
+DTEND;TZID=Asia/Kolkata:20261213T080000
+SUMMARY:RRB NTPC · Day 34: revise 5
+DESCRIPTION:Revise today:\n• Analytical reasoning\n• Syllogism\n• Ind
+ ian economy\n• Famous personalities of India and the world\n• Full moc
+ k tests: CBT 2 pattern\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261214@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261214T070000
+DTEND;TZID=Asia/Kolkata:20261214T080000
+SUMMARY:RRB NTPC · Day 35: revise 4
+DESCRIPTION:Revise today:\n• Jumbling\n• Venn diagrams\n• Flagship go
+ vernment programmes\n• Flora and fauna of India\nMark them in your Kalpa
+  tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261215@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261215T070000
+DTEND;TZID=Asia/Kolkata:20261215T080000
+SUMMARY:RRB NTPC · Day 36: revise 4
+DESCRIPTION:Revise today:\n• Puzzles\n• Data sufficiency\n• Important
+  government and public sector organisations of India\n• Typing Skill Tes
+ t practice (English 30 wpm / Hindi 25 wpm)\nMark them in your Kalpa tracke
+ r.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261216@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261216T070000
+DTEND;TZID=Asia/Kolkata:20261216T080000
+SUMMARY:RRB NTPC · Day 37: revise 4
+DESCRIPTION:Revise today:\n• Statement and conclusion\n• Statement and 
+ course of action\n• CBAT (aptitude test) practice for Station Master and
+  Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them in your 
+ Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261217@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261217T070000
+DTEND;TZID=Asia/Kolkata:20261217T080000
+SUMMARY:RRB NTPC · Day 38: revise 3
+DESCRIPTION:Revise today:\n• Decision making\n• Maps\n• Full mock tes
+ ts: CBT 2 pattern\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261218@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261218T070000
+DTEND;TZID=Asia/Kolkata:20261218T080000
+SUMMARY:RRB NTPC · Day 39: revise 2
+DESCRIPTION:Revise today:\n• Interpretation of graphs\n• Current events
+  of national and international importance\nMark them in your Kalpa tracker
+ .
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261219@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261219T070000
+DTEND;TZID=Asia/Kolkata:20261219T080000
+SUMMARY:RRB NTPC · Day 40: revise 2
+DESCRIPTION:Revise today:\n• Games and sports\n• Art and culture of Ind
+ ia\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261220@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261220T070000
+DTEND;TZID=Asia/Kolkata:20261220T080000
+SUMMARY:RRB NTPC · Day 41: revise 2
+DESCRIPTION:Revise today:\n• Indian literature\n• Monuments and places 
+ of India\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261221@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261221T070000
+DTEND;TZID=Asia/Kolkata:20261221T080000
+SUMMARY:RRB NTPC · Day 42: revise 2
+DESCRIPTION:Revise today:\n• General science: physics (up to 10th CBSE)\n
+ • General science: chemistry (up to 10th CBSE)\nMark them in your Kalpa 
+ tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261222@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261222T070000
+DTEND;TZID=Asia/Kolkata:20261222T080000
+SUMMARY:RRB NTPC · Day 43: revise 2
+DESCRIPTION:Revise today:\n• General science: biology and life science (u
+ p to 10th CBSE)\n• History of India and the freedom struggle\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261223@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261223T070000
+DTEND;TZID=Asia/Kolkata:20261223T080000
+SUMMARY:RRB NTPC · Day 44: revise 2
+DESCRIPTION:Revise today:\n• Physical\, social and economic geography of 
+ India and the world\n• Indian polity and governance: Constitution and po
+ litical system\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261224@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261224T070000
+DTEND;TZID=Asia/Kolkata:20261224T080000
+SUMMARY:RRB NTPC · Day 45: revise 2
+DESCRIPTION:Revise today:\n• Scientific and technological developments\, 
+ incl. India's space and nuclear programmes\n• UN and other important wor
+ ld organisations\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261225@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261225T070000
+DTEND;TZID=Asia/Kolkata:20261225T080000
+SUMMARY:RRB NTPC · Day 46: revise 2
+DESCRIPTION:Revise today:\n• Environmental issues concerning India and th
+ e world\n• Basics of computers and computer applications\nMark them in y
+ our Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261226@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261226T070000
+DTEND;TZID=Asia/Kolkata:20261226T080000
+SUMMARY:RRB NTPC · Day 47: revise 2
+DESCRIPTION:Revise today:\n• Common abbreviations\n• Transport systems 
+ in India (Railways)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261227@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261227T070000
+DTEND;TZID=Asia/Kolkata:20261227T080000
+SUMMARY:RRB NTPC · Day 48: revise 2
+DESCRIPTION:Revise today:\n• Indian economy\n• Famous personalities of 
+ India and the world\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261228@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261228T070000
+DTEND;TZID=Asia/Kolkata:20261228T080000
+SUMMARY:RRB NTPC · Day 49: revise 2
+DESCRIPTION:Revise today:\n• Flagship government programmes\n• Flora an
+ d fauna of India\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261229@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261229T070000
+DTEND;TZID=Asia/Kolkata:20261229T080000
+SUMMARY:RRB NTPC · Day 50: revise 2
+DESCRIPTION:Revise today:\n• Important government and public sector organ
+ isations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 
+ 25 wpm)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261230@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261230T070000
+DTEND;TZID=Asia/Kolkata:20261230T080000
+SUMMARY:RRB NTPC · Day 51: revise 2
+DESCRIPTION:Revise today:\n• CBAT (aptitude test) practice for Station Ma
+ ster and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-plan-20261231@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261231T070000
+DTEND;TZID=Asia/Kolkata:20261231T080000
+SUMMARY:RRB NTPC · Day 52: revise 1
+DESCRIPTION:Revise today:\n• Full mock tests: CBT 2 pattern\nMark them in
+  your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:rrb-ntpc-weekly@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T180000
+DTEND;TZID=Asia/Kolkata:20261115T183000
+RRULE:FREQ=WEEKLY;COUNT=8
+SUMMARY:RRB NTPC · Weekly check: update progress %\, check official dates
+DESCRIPTION:Only trust dates on https://www.rrbapply.gov.in
+URL:https://www.rrbapply.gov.in
+END:VEVENT
+END:VCALENDAR

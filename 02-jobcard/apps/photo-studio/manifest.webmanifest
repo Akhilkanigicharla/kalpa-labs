@@ -1,0 +1,11 @@
+{
+  "name": "Kalpa Photo Studio",
+  "short_name": "Photo Studio",
+  "description": "Passport and visa photos made on your phone. Photos never leave the device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2EEE3",
+  "theme_color": "#1D3A25",
+  "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

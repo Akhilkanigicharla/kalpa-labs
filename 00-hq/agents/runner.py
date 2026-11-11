@@ -5,11 +5,14 @@ Queues: 00-hq/tasks/<world>.json; the Action runs one job per world in parallel.
 the owner agent drafts the deliverable with free models (Groq → OpenRouter → Hugging Face router), reading the repo
 files named in the task and its agency-agents playbook. Vigil (a second free model) checks it against Kalpa rules.
 PASS → 00-hq/knowledge/<id>.md + status "review"; FIX → status "todo" with Vigil's notes (max 2 retries, then "rejected").
-The Action commits the changes. No web search: agents must mark any fact they cannot see in the repo as UNVERIFIED.
+The Action commits the changes. No web search (YouTube/Reddit/GitHub links named in a task are read through reach.py, no login): agents must mark any fact they cannot see in the repo as UNVERIFIED.
 Standard library only. Run: python3 00-hq/agents/runner.py --world b1 [--max N] [--dry-run]
 """
 import json, os, re, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import reach  # YouTube/Reddit/GitHub links in a task are read through Agent-Reach (no login), see reach.py
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b7.json, hq.json
@@ -86,17 +89,18 @@ def http_post(url, headers, payload):
         return json.load(r)
 
 
-def read_context(paths, root=ROOT):
+def read_context(paths, root=ROOT, limit=None):
+    limit = MAX_CONTEXT if limit is None else limit
     out, used = [], 0
     for p in paths or []:
         full = os.path.normpath(os.path.join(root, p))
         if not full.startswith(root + os.sep) or not os.path.isfile(full):
             out.append(f"--- {p}: (not found)")
             continue
-        text = open(full, encoding="utf-8", errors="replace").read()[: max(0, MAX_CONTEXT - used)]
+        text = open(full, encoding="utf-8", errors="replace").read()[: max(0, limit - used)]
         used += len(text)
         out.append(f"--- {p} ---\n{text}")
-        if used >= MAX_CONTEXT:
+        if used >= limit:
             break
     return "\n".join(out)
 
@@ -130,9 +134,12 @@ def work(task, env, post=http_post, root=ROOT):
     user = f"TASK {task['id']} ({task.get('world', 'hq')}): {task['title']}\n\n{task.get('details', '')}"
     if task.get("vigil_notes"):
         user += f"\n\nYour last draft was sent back by Vigil. Fix exactly this:\n{task['vigil_notes']}"
-    ctx = read_context(task.get("read"), root)
+    web = reach.context_for(f"{task['title']}\n{task.get('details', '')}", MAX_CONTEXT // 2)  # '' when no links
+    ctx = read_context(task.get("read"), root, MAX_CONTEXT - len(web))
     if ctx:
         user += f"\n\nREPO FILES (the truth about what is built):\n{ctx}"
+    if web:
+        user += f"\n\n{web}"
     draft, model = call(MODELS, [{"role": "system", "content": sys_msg}, {"role": "user", "content": user}], env, post)
     if not draft:
         return None
@@ -140,7 +147,7 @@ def work(task, env, post=http_post, root=ROOT):
              "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
-                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
+                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\n{web[:2000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
     return {"draft": draft, "model": model, "verdict": verdict, "vmodel": vmodel}
 
 

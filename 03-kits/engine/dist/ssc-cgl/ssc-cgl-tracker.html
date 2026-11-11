@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SSC CGL · Kalpa Exam Kit</title><meta name="color-scheme" content="light dark">
+<style>
+/* Kalpa design tokens (Kalpavruksha: the wish-fulfilling tree; leaf green, bark brown, fruit gold). Import in every product UI. Fonts: Rozha One (display), Anek Latin + Anek Telugu (body), JetBrains Mono (data). All OFL, Google Fonts. */
+:root{
+  --bg:#F2EEE3; --panel:#FCFAF4; --fg:#1E2A1F; --muted:#5A6152; --rule:#DCD5C3; --soft:#E9E3D3;
+  --accent:#2F6A3A; --accent-fg:#FFFFFF; --madder:#8A4A28; --gold:#C38E12; --flame:#B35E26;
+  --ok:#2C7A43; --warn:#A06400; --bad:#B13A2D;
+  --hero:#1D3A25; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#5E9E4C; --bark:#6B4226;
+  --l0:#66655A; --l1:#8A4A28; --l2:#2F6F78; --l3:#3B7A3A; --l4:#7A3F5E; --l5:#9C700E; --l6:#A8324F; --l7:#4A5590;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  /* Kalpavruksha vine band (replaces the old Kalamkari temple teeth): gold fruit between leaves */
+  --vine:radial-gradient(circle at 7px 5px,var(--gold) 2.2px,transparent 2.6px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--leaf) 90%,transparent) 0 0/7px 10px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1912; --panel:#16231A; --fg:#ECE7D8; --muted:#A8B39B; --rule:#2A3A2D; --soft:#1D2C21;
+  --accent:#8FCB8C; --accent-fg:#0F1912; --madder:#D98B5F; --gold:#E8B64A; --flame:#E5925A;
+  --ok:#6FD08F; --warn:#E8B64A; --bad:#F07A6B;
+  --hero:#17301F; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#8FCB8C; --bark:#C08A5E;
+  --l0:#B4B3A4; --l1:#D98B5F; --l2:#6FC2CB; --l3:#6FD08F; --l4:#D59AB9; --l5:#E8B64A; --l6:#FF7F9E; --l7:#9DA8E6;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1912; --panel:#16231A; --fg:#ECE7D8; --muted:#A8B39B; --rule:#2A3A2D; --soft:#1D2C21;
+  --accent:#8FCB8C; --accent-fg:#0F1912; --madder:#D98B5F; --gold:#E8B64A; --flame:#E5925A;
+  --ok:#6FD08F; --warn:#E8B64A; --bad:#F07A6B;
+  --hero:#17301F; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#8FCB8C; --bark:#C08A5E;
+  --l0:#B4B3A4; --l1:#D98B5F; --l2:#6FC2CB; --l3:#6FD08F; --l4:#D59AB9; --l5:#E8B64A; --l6:#FF7F9E; --l7:#9DA8E6;
+  color-scheme:dark}
+
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);overflow-wrap:anywhere}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 40px}
+.hero{background:var(--hero);color:var(--hero-fg);padding:18px 14px 16px}
+.hero h1{font:400 26px/1.15 var(--f-display);margin:0 0 4px}
+.hero p{margin:0;color:var(--hero-mute);font-size:14px}
+.hero a{color:var(--hero-fg)}
+.vine{height:10px;background:var(--vine)}
+.stats{display:flex;gap:10px;margin:14px 0}
+.stat{flex:1;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-m);padding:10px 12px;box-shadow:var(--shadow)}
+.stat b{display:block;font:600 24px/1.1 var(--f-mono);color:var(--l3)}
+.stat span{font-size:13px;color:var(--muted)}
+.bar{height:10px;background:var(--soft);border-radius:var(--r-s);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--l3)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+button,select{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-s);min-height:44px;padding:6px 12px}
+select{max-width:100%}
+.tools select{flex:1 1 100%}
+button.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+h2{font:400 21px/1.2 var(--f-display);margin:24px 0 8px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-m);margin:10px 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;padding:12px;font-weight:600;list-style:none;display:flex;gap:8px;align-items:center;justify-content:space-between}
+details summary small{color:var(--muted);font-weight:400}
+.topic{border-top:1px solid var(--rule);padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center}
+.topic .nm{font-size:15px}
+.topic .meta{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.topic.done .nm{color:var(--ok)}
+.due{color:var(--bad);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{border-top:1px solid var(--rule);padding:8px;vertical-align:top}
+.badge{display:inline-block;font:600 11px/1 var(--f-mono);padding:4px 6px;border-radius:var(--r-s);border:1px solid currentColor}
+.CONFIRMED{color:var(--ok)}.EXPECTED{color:var(--warn)}.NOT_ANNOUNCED{color:var(--madder)}
+ul.links{padding-left:18px}ul.links li{margin:6px 0}
+.note{font-size:13px;color:var(--muted)}
+#warn{display:none;background:var(--soft);border:1px solid var(--warn);border-radius:var(--r-s);padding:8px;margin:10px 0;font-size:14px}
+</style></head><body>
+<header class="hero"><div class="wrap" style="padding-bottom:0"><h1>SSC CGL tracker</h1>
+<p>SSC Combined Graduate Level Examination</p>
+<p>Staff Selection Commission (SSC) · <a href="https://ssc.gov.in" rel="noopener" target="_blank">official site</a> · dates checked 2026-11-07</p></div></header>
+<div class="vine" aria-hidden="true"></div>
+<main class="wrap">
+<div id="warn" role="status"></div>
+<div class="stats"><div class="stat"><b id="days">—</b><span id="dayslbl"></span></div>
+<div class="stat"><b id="pct">0%</b><span>syllabus done</span></div><div class="stat"><b id="due">0</b><span>revisions due</span></div></div>
+<div class="bar" aria-hidden="true"><i id="pbar"></i></div>
+<h2>Exam dates and alerts</h2><div class="card"><table><tr><td>Notification (next CGL cycle)<br><span class=note>Check the SSC exam calendar and notice board on ssc.gov.in.</span></td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span> · <a href="https://ssc.gov.in" rel="noopener" target="_blank">official</a></td></tr><tr><td>Last date to apply<br><span class=note>Given in the notice.</span></td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>Tier 1 exam</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>Tier 1 result</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>Tier 2 exam</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>Final result</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr></table></div>
+<p class="note">Only CONFIRMED dates come from the official site. NOT ANNOUNCED means no official date yet: we alert you when it is out.</p>
+<h2>Syllabus (76 topics)</h2>
+<div class="tools"><select id="filter" aria-label="Show"></select><button id="reset" type="button">Reset</button></div>
+<div id="syl"></div>
+<h2>Exam stages</h2><ul class="links"><li>Tier 1 · CBT: Reasoning, General Awareness, Quantitative Aptitude, English (screening)</li><li>Tier 2 · Paper I: Maths, Reasoning, English, General Awareness, Computer Knowledge, Data Entry Speed Test</li><li>Tier 2 · Paper II: Statistics (only for JSO posts)</li><li>Document verification and post preference</li></ul>
+<h2>Best free material</h2><ul class="links"><li><a href="https://ssc.gov.in" rel="noopener" target="_blank">SSC official site: notices, syllabus, previous answer keys</a> <span class=note>(to verify)</span></li><li><a href="https://ncert.nic.in/textbook.php" rel="noopener" target="_blank">NCERT textbooks (free PDFs: history, geography, polity, science)</a> <span class=note>(to verify)</span></li><li><a href="https://pib.gov.in" rel="noopener" target="_blank">PIB press releases for current affairs</a> <span class=note>(to verify)</span></li><li><a href="https://www.indiabudget.gov.in" rel="noopener" target="_blank">Economic Survey of India (free)</a> <span class=note>(to verify)</span></li><li><a href="https://www.nios.ac.in" rel="noopener" target="_blank">NIOS free study material (maths, science, social science)</a> <span class=note>(to verify)</span></li></ul>
+<h2>Best YouTube videos</h2><ul class="links"><li>Quantitative Aptitude: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+maths+arithmetic+full+chapter" rel="noopener" target="_blank">search “SSC CGL maths arithmetic full chapter”</a></li><li>Quantitative Aptitude: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+advanced+maths+geometry+trigonometry" rel="noopener" target="_blank">search “SSC CGL advanced maths geometry trigonometry”</a></li><li>General Intelligence and Reasoning: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+reasoning+verbal+full+course" rel="noopener" target="_blank">search “SSC CGL reasoning verbal full course”</a></li><li>General Intelligence and Reasoning: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+non+verbal+reasoning" rel="noopener" target="_blank">search “SSC CGL non verbal reasoning”</a></li><li>English Comprehension: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+English+grammar+full+course" rel="noopener" target="_blank">search “SSC CGL English grammar full course”</a></li><li>English Comprehension: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+English+vocabulary" rel="noopener" target="_blank">search “SSC CGL English vocabulary”</a></li><li>General Awareness: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+general+awareness+static+GK" rel="noopener" target="_blank">search “SSC CGL general awareness static GK”</a></li><li>General Awareness: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+current+affairs" rel="noopener" target="_blank">search “SSC CGL current affairs”</a></li><li>Computer Knowledge: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+computer+knowledge+tier+2" rel="noopener" target="_blank">search “SSC CGL computer knowledge tier 2”</a></li><li>Computer Knowledge: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+MS+Office+basics" rel="noopener" target="_blank">search “SSC CGL MS Office basics”</a></li><li>Statistics (JSO only): <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+JSO+statistics+paper+2" rel="noopener" target="_blank">search “SSC CGL JSO statistics paper 2”</a></li><li>Statistics (JSO only): <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=SSC+CGL+statistics+correlation+regression" rel="noopener" target="_blank">search “SSC CGL statistics correlation regression”</a></li></ul>
+<p class="note">Progress is saved on this phone only. Not an official Staff Selection Commission (SSC) product. Kalpa Labs · Udyam UDYAM-TS-02-0382711</p>
+</main>
+<script type="application/json" id="kit">{"id": "ssc-cgl", "exam": null, "rev": [1, 3, 7, 21], "statuses": ["Not started", "Learning", "Done"], "subjects": [{"name": "Quantitative Aptitude", "te": ""}, {"name": "General Intelligence and Reasoning", "te": ""}, {"name": "English Comprehension", "te": ""}, {"name": "General Awareness", "te": ""}, {"name": "Computer Knowledge", "te": ""}, {"name": "Statistics (JSO only)", "te": ""}], "topics": [{"n": 1, "subject": "Quantitative Aptitude", "en": "Number system", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Number+system"}, {"n": 2, "subject": "Quantitative Aptitude", "en": "Simplification and BODMAS", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Simplification+and+BODMAS"}, {"n": 3, "subject": "Quantitative Aptitude", "en": "Percentages", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Percentages"}, {"n": 4, "subject": "Quantitative Aptitude", "en": "Ratio and proportion", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Ratio+and+proportion"}, {"n": 5, "subject": "Quantitative Aptitude", "en": "Averages", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Averages"}, {"n": 6, "subject": "Quantitative Aptitude", "en": "Profit, loss and discount", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Profit%2C+loss+and+discount"}, {"n": 7, "subject": "Quantitative Aptitude", "en": "Simple and compound interest", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Simple+and+compound+interest"}, {"n": 8, "subject": "Quantitative Aptitude", "en": "Time and work", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Time+and+work"}, {"n": 9, "subject": "Quantitative Aptitude", "en": "Pipes and cisterns", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Pipes+and+cisterns"}, {"n": 10, "subject": "Quantitative Aptitude", "en": "Time, speed and distance", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Time%2C+speed+and+distance"}, {"n": 11, "subject": "Quantitative Aptitude", "en": "Mixture and alligation", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Mixture+and+alligation"}, {"n": 12, "subject": "Quantitative Aptitude", "en": "Algebra: identities and linear equations", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Algebra%3A+identities+and+linear+equations"}, {"n": 13, "subject": "Quantitative Aptitude", "en": "Geometry: triangles, congruence and similarity", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Geometry%3A+triangles%2C+congruence+and+similarity"}, {"n": 14, "subject": "Quantitative Aptitude", "en": "Geometry: circles, chords and tangents", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Geometry%3A+circles%2C+chords+and+tangents"}, {"n": 15, "subject": "Quantitative Aptitude", "en": "Mensuration: 2D figures", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Mensuration%3A+2D+figures"}, {"n": 16, "subject": "Quantitative Aptitude", "en": "Mensuration: 3D solids", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Mensuration%3A+3D+solids"}, {"n": 17, "subject": "Quantitative Aptitude", "en": "Trigonometry: ratios and identities", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Trigonometry%3A+ratios+and+identities"}, {"n": 18, "subject": "Quantitative Aptitude", "en": "Heights and distances", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Heights+and+distances"}, {"n": 19, "subject": "Quantitative Aptitude", "en": "Data interpretation: tables, bar, pie and line charts", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Data+interpretation%3A+tables%2C+bar%2C+pie+and+line+charts"}, {"n": 20, "subject": "Quantitative Aptitude", "en": "Statistics basics: mean, median, mode", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Statistics+basics%3A+mean%2C+median%2C+mode"}, {"n": 21, "subject": "General Intelligence and Reasoning", "en": "Analogy", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Analogy"}, {"n": 22, "subject": "General Intelligence and Reasoning", "en": "Classification (odd one out)", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Classification+%28odd+one+out%29"}, {"n": 23, "subject": "General Intelligence and Reasoning", "en": "Number and letter series", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Number+and+letter+series"}, {"n": 24, "subject": "General Intelligence and Reasoning", "en": "Coding-decoding", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Coding-decoding"}, {"n": 25, "subject": "General Intelligence and Reasoning", "en": "Blood relations", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Blood+relations"}, {"n": 26, "subject": "General Intelligence and Reasoning", "en": "Direction and distance", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Direction+and+distance"}, {"n": 27, "subject": "General Intelligence and Reasoning", "en": "Order and ranking", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Order+and+ranking"}, {"n": 28, "subject": "General Intelligence and Reasoning", "en": "Syllogism", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Syllogism"}, {"n": 29, "subject": "General Intelligence and Reasoning", "en": "Venn diagrams", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Venn+diagrams"}, {"n": 30, "subject": "General Intelligence and Reasoning", "en": "Mathematical operations and symbol substitution", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Mathematical+operations+and+symbol+substitution"}, {"n": 31, "subject": "General Intelligence and Reasoning", "en": "Missing number and matrix", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Missing+number+and+matrix"}, {"n": 32, "subject": "General Intelligence and Reasoning", "en": "Paper folding and cutting", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Paper+folding+and+cutting"}, {"n": 33, "subject": "General Intelligence and Reasoning", "en": "Mirror and water images", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Mirror+and+water+images"}, {"n": 34, "subject": "General Intelligence and Reasoning", "en": "Embedded figures and figure counting", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Embedded+figures+and+figure+counting"}, {"n": 35, "subject": "General Intelligence and Reasoning", "en": "Dice and cubes", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Dice+and+cubes"}, {"n": 36, "subject": "General Intelligence and Reasoning", "en": "Seating arrangement and puzzles", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Seating+arrangement+and+puzzles"}, {"n": 37, "subject": "English Comprehension", "en": "Reading comprehension", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Reading+comprehension"}, {"n": 38, "subject": "English Comprehension", "en": "Cloze test", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Cloze+test"}, {"n": 39, "subject": "English Comprehension", "en": "Spot the error", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Spot+the+error"}, {"n": 40, "subject": "English Comprehension", "en": "Sentence improvement", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Sentence+improvement"}, {"n": 41, "subject": "English Comprehension", "en": "Fill in the blanks", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Fill+in+the+blanks"}, {"n": 42, "subject": "English Comprehension", "en": "Synonyms", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Synonyms"}, {"n": 43, "subject": "English Comprehension", "en": "Antonyms", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Antonyms"}, {"n": 44, "subject": "English Comprehension", "en": "Idioms and phrases", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Idioms+and+phrases"}, {"n": 45, "subject": "English Comprehension", "en": "One-word substitution", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+One-word+substitution"}, {"n": 46, "subject": "English Comprehension", "en": "Spelling correction", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Spelling+correction"}, {"n": 47, "subject": "English Comprehension", "en": "Active and passive voice", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Active+and+passive+voice"}, {"n": 48, "subject": "English Comprehension", "en": "Direct and indirect speech", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Direct+and+indirect+speech"}, {"n": 49, "subject": "English Comprehension", "en": "Sentence rearrangement (para jumbles)", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Sentence+rearrangement+%28para+jumbles%29"}, {"n": 50, "subject": "General Awareness", "en": "Ancient and medieval Indian history", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Ancient+and+medieval+Indian+history"}, {"n": 51, "subject": "General Awareness", "en": "Modern Indian history and the freedom struggle", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Modern+Indian+history+and+the+freedom+struggle"}, {"n": 52, "subject": "General Awareness", "en": "Indian polity and Constitution", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Indian+polity+and+Constitution"}, {"n": 53, "subject": "General Awareness", "en": "Indian economy", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Indian+economy"}, {"n": 54, "subject": "General Awareness", "en": "Geography: India and the world", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Geography%3A+India+and+the+world"}, {"n": 55, "subject": "General Awareness", "en": "Physics basics", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Physics+basics"}, {"n": 56, "subject": "General Awareness", "en": "Chemistry basics", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Chemistry+basics"}, {"n": 57, "subject": "General Awareness", "en": "Biology basics", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Biology+basics"}, {"n": 58, "subject": "General Awareness", "en": "Art and culture", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Art+and+culture"}, {"n": 59, "subject": "General Awareness", "en": "Static GK: awards, books, important days", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Static+GK%3A+awards%2C+books%2C+important+days"}, {"n": 60, "subject": "General Awareness", "en": "Sports", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Sports"}, {"n": 61, "subject": "General Awareness", "en": "Government schemes", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Government+schemes"}, {"n": 62, "subject": "General Awareness", "en": "Current affairs (last 6–12 months)", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Current+affairs+%28last+6%E2%80%9312+months%29"}, {"n": 63, "subject": "Computer Knowledge", "en": "Computer fundamentals and hardware", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Computer+fundamentals+and+hardware"}, {"n": 64, "subject": "Computer Knowledge", "en": "Software and operating systems", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Software+and+operating+systems"}, {"n": 65, "subject": "Computer Knowledge", "en": "MS Office: Word, Excel, PowerPoint", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+MS+Office%3A+Word%2C+Excel%2C+PowerPoint"}, {"n": 66, "subject": "Computer Knowledge", "en": "Internet and email", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Internet+and+email"}, {"n": 67, "subject": "Computer Knowledge", "en": "Networking basics", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Networking+basics"}, {"n": 68, "subject": "Computer Knowledge", "en": "Computer security: viruses, firewalls", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Computer+security%3A+viruses%2C+firewalls"}, {"n": 69, "subject": "Computer Knowledge", "en": "Data Entry Speed Test practice (typing)", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Data+Entry+Speed+Test+practice+%28typing%29"}, {"n": 70, "subject": "Statistics (JSO only)", "en": "Collection, classification and presentation of data", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Collection%2C+classification+and+presentation+of+data"}, {"n": 71, "subject": "Statistics (JSO only)", "en": "Measures of central tendency", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Measures+of+central+tendency"}, {"n": 72, "subject": "Statistics (JSO only)", "en": "Measures of dispersion", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Measures+of+dispersion"}, {"n": 73, "subject": "Statistics (JSO only)", "en": "Correlation and regression", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Correlation+and+regression"}, {"n": 74, "subject": "Statistics (JSO only)", "en": "Probability theory and distributions", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Probability+theory+and+distributions"}, {"n": 75, "subject": "Statistics (JSO only)", "en": "Sampling theory", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Sampling+theory"}, {"n": 76, "subject": "Statistics (JSO only)", "en": "Index numbers and time series", "te": "", "yt": "https://www.youtube.com/results?search_query=SSC+CGL+Index+numbers+and+time+series"}], "ui": {"due": "Revise now:", "next": "Next revision:", "revised": "Revised ✓", "na": "exam date not announced", "days": "days to the exam", "all": "All subjects", "dueonly": "Due for revision", "confirm": "Clear all progress on this phone?", "nosave": "This browser is not saving progress (private mode?). Your marks will be lost when you close the page."}}</script>
+<script>
+(function(){
+var K=JSON.parse(document.getElementById('kit').textContent);
+var KEY='kalpa-kit:'+K.id+':v1', S={t:{},lang:'en'}, canSave=true;
+try{var raw=window.localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==='object'&&p.t&&typeof p.t==='object')S=p;}}catch(e){canSave=false;}
+function warn(){var w=document.getElementById('warn');w.style.display='block';w.textContent=K.ui.nosave;}
+function save(){if(!canSave){warn();return;}try{window.localStorage.setItem(KEY,JSON.stringify(S));}catch(e){canSave=false;warn();}}
+function el(tag,cls,txt){var x=document.createElement(tag);if(cls)x.className=cls;if(txt!=null)x.textContent=txt;return x;}
+function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+function addDays(s,n){var p=s.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]+n);return iso(d);}
+var TODAY=iso(new Date());
+function st(n){return S.t[n]||{s:'Not started',d:'',r:0};}
+function nextRev(x){if(x.s!=='Done'||!x.d||x.r>=K.rev.length)return '';return addDays(x.d,K.rev[x.r]);}
+function name(t){return S.lang==='te'&&t.te?t.te:t.en;}
+function render(){
+  var done=0,due=0,box=document.getElementById('syl');box.textContent='';
+  var filt=document.getElementById('filter').value;
+  K.subjects.forEach(function(sub){
+    var ts=K.topics.filter(function(t){return t.subject===sub.name;});
+    var sd=ts.filter(function(t){return st(t.n).s==='Done';}).length;done+=sd;
+    var det=el('details','card');det.open=(filt===sub.name);
+    var sm=el('summary');sm.appendChild(el('span',null,(S.lang==='te'&&sub.te?sub.te:sub.name)));
+    sm.appendChild(el('small',null,sd+'/'+ts.length));det.appendChild(sm);
+    var bar=el('div','bar');var bi=el('i');bi.style.width=Math.round(100*sd/ts.length)+'%';bar.appendChild(bi);bar.style.margin='0 12px 10px';det.appendChild(bar);
+    ts.forEach(function(t){
+      var x=st(t.n),nr=nextRev(x),isDue=nr&&nr<=TODAY;if(isDue)due++;
+      if(filt==='__due'&&!isDue)return;
+      var row=el('div','topic'+(x.s==='Done'?' done':''));row.appendChild(el('div','nm',t.n+'. '+name(t)));
+      var sel=el('select');sel.setAttribute('aria-label','Status');K.statuses.forEach(function(o){var op=el('option',null,o);op.value=o;if(o===x.s)op.selected=true;sel.appendChild(op);});
+      sel.onchange=function(){var y=st(t.n);y.s=sel.value;if(y.s==='Done'){if(!y.d)y.d=TODAY;}else{y.d='';y.r=0;}S.t[t.n]=y;save();render();};
+      row.appendChild(sel);
+      var meta=el('div','meta');
+      if(nr){meta.appendChild(el('span',isDue?'due':null,(isDue?K.ui.due:K.ui.next)+' '+nr));
+        if(isDue){var b=el('button',null,K.ui.revised);b.onclick=function(){var y=st(t.n);y.r=(y.r||0)+1;y.d=TODAY;S.t[t.n]=y;save();render();};meta.appendChild(b);}}
+      var a=el('a',null,'▶ YouTube');a.href=t.yt;a.target='_blank';a.rel='noopener';meta.appendChild(a);
+      row.appendChild(meta);det.appendChild(row);
+    });
+    if(filt==='__due'){det.open=true;if(det.querySelectorAll('.topic').length===0)return;}
+    if(filt===''||filt==='__due'||filt===sub.name)box.appendChild(det);
+  });
+  var pct=Math.round(100*done/K.topics.length);
+  document.getElementById('pct').textContent=pct+'%';document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('due').textContent=due;
+}
+function days(){var b=document.getElementById('days'),l=document.getElementById('dayslbl');
+  if(!K.exam){b.textContent='—';l.textContent=K.ui.na;return;}
+  var p=K.exam.split('-'),t=new Date();t.setHours(0,0,0,0);var n=Math.max(0,Math.round((new Date(+p[0],+p[1]-1,+p[2])-t)/864e5));b.textContent=n;l.textContent=K.ui.days;}
+var f=document.getElementById('filter');
+[['',K.ui.all],['__due',K.ui.dueonly]].concat(K.subjects.map(function(s){return [s.name,s.name];})).forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];f.appendChild(op);});
+f.onchange=render;
+var lb=document.getElementById('lang');
+if(lb){lb.onclick=function(){S.lang=S.lang==='te'?'en':'te';lb.className=S.lang==='te'?'on':'';save();render();};lb.className=S.lang==='te'?'on':'';}
+document.getElementById('reset').onclick=function(){if(window.confirm(K.ui.confirm)){S={t:{},lang:S.lang};save();render();}};
+if(!canSave)warn();
+days();render();
+})();
+</script>
+</body></html>

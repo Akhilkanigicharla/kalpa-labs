@@ -1,0 +1,15 @@
+{
+  "name": "kalpa-jyotish",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kalpa Jyotish prototype: AI-free Vedic moon sign, nakshatra, naming syllable, names and muhurat helper (offline PWA).",
+  "license": "UNLICENSED",
+  "main": "src/core.js",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "astronomy-engine": "2.1.19"
+  }
+}

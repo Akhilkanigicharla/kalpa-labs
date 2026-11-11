@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RRB NTPC · Kalpa Exam Kit</title><meta name="color-scheme" content="light dark">
+<style>
+/* Kalpa design tokens (Kalpavruksha: the wish-fulfilling tree; leaf green, bark brown, fruit gold). Import in every product UI. Fonts: Rozha One (display), Anek Latin + Anek Telugu (body), JetBrains Mono (data). All OFL, Google Fonts. */
+:root{
+  --bg:#F2EEE3; --panel:#FCFAF4; --fg:#1E2A1F; --muted:#5A6152; --rule:#DCD5C3; --soft:#E9E3D3;
+  --accent:#2F6A3A; --accent-fg:#FFFFFF; --madder:#8A4A28; --gold:#C38E12; --flame:#B35E26;
+  --ok:#2C7A43; --warn:#A06400; --bad:#B13A2D;
+  --hero:#1D3A25; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#5E9E4C; --bark:#6B4226;
+  --l0:#66655A; --l1:#8A4A28; --l2:#2F6F78; --l3:#3B7A3A; --l4:#7A3F5E; --l5:#9C700E; --l6:#A8324F; --l7:#4A5590;
+  --f-display:"Rozha One","Noto Serif",Georgia,serif;
+  --f-body:"Anek Latin","Anek Telugu",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  /* Kalpavruksha vine band (replaces the old Kalamkari temple teeth): gold fruit between leaves */
+  --vine:radial-gradient(circle at 7px 5px,var(--gold) 2.2px,transparent 2.6px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--leaf) 90%,transparent) 0 0/7px 10px;
+  --shadow:0 1px 0 color-mix(in srgb,var(--fg) 6%,transparent),0 10px 24px -18px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1912; --panel:#16231A; --fg:#ECE7D8; --muted:#A8B39B; --rule:#2A3A2D; --soft:#1D2C21;
+  --accent:#8FCB8C; --accent-fg:#0F1912; --madder:#D98B5F; --gold:#E8B64A; --flame:#E5925A;
+  --ok:#6FD08F; --warn:#E8B64A; --bad:#F07A6B;
+  --hero:#17301F; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#8FCB8C; --bark:#C08A5E;
+  --l0:#B4B3A4; --l1:#D98B5F; --l2:#6FC2CB; --l3:#6FD08F; --l4:#D59AB9; --l5:#E8B64A; --l6:#FF7F9E; --l7:#9DA8E6;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1912; --panel:#16231A; --fg:#ECE7D8; --muted:#A8B39B; --rule:#2A3A2D; --soft:#1D2C21;
+  --accent:#8FCB8C; --accent-fg:#0F1912; --madder:#D98B5F; --gold:#E8B64A; --flame:#E5925A;
+  --ok:#6FD08F; --warn:#E8B64A; --bad:#F07A6B;
+  --hero:#17301F; --hero-fg:#F4EEDC; --hero-mute:#BFCDAE;
+  --leaf:#8FCB8C; --bark:#C08A5E;
+  --l0:#B4B3A4; --l1:#D98B5F; --l2:#6FC2CB; --l3:#6FD08F; --l4:#D59AB9; --l5:#E8B64A; --l6:#FF7F9E; --l7:#9DA8E6;
+  color-scheme:dark}
+
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);overflow-wrap:anywhere}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 40px}
+.hero{background:var(--hero);color:var(--hero-fg);padding:18px 14px 16px}
+.hero h1{font:400 26px/1.15 var(--f-display);margin:0 0 4px}
+.hero p{margin:0;color:var(--hero-mute);font-size:14px}
+.hero a{color:var(--hero-fg)}
+.vine{height:10px;background:var(--vine)}
+.stats{display:flex;gap:10px;margin:14px 0}
+.stat{flex:1;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-m);padding:10px 12px;box-shadow:var(--shadow)}
+.stat b{display:block;font:600 24px/1.1 var(--f-mono);color:var(--l3)}
+.stat span{font-size:13px;color:var(--muted)}
+.bar{height:10px;background:var(--soft);border-radius:var(--r-s);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--l3)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+button,select{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-s);min-height:44px;padding:6px 12px}
+select{max-width:100%}
+.tools select{flex:1 1 100%}
+button.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+h2{font:400 21px/1.2 var(--f-display);margin:24px 0 8px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-m);margin:10px 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;padding:12px;font-weight:600;list-style:none;display:flex;gap:8px;align-items:center;justify-content:space-between}
+details summary small{color:var(--muted);font-weight:400}
+.topic{border-top:1px solid var(--rule);padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center}
+.topic .nm{font-size:15px}
+.topic .meta{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.topic.done .nm{color:var(--ok)}
+.due{color:var(--bad);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{border-top:1px solid var(--rule);padding:8px;vertical-align:top}
+.badge{display:inline-block;font:600 11px/1 var(--f-mono);padding:4px 6px;border-radius:var(--r-s);border:1px solid currentColor}
+.CONFIRMED{color:var(--ok)}.EXPECTED{color:var(--warn)}.NOT_ANNOUNCED{color:var(--madder)}
+ul.links{padding-left:18px}ul.links li{margin:6px 0}
+.note{font-size:13px;color:var(--muted)}
+#warn{display:none;background:var(--soft);border:1px solid var(--warn);border-radius:var(--r-s);padding:8px;margin:10px 0;font-size:14px}
+</style></head><body>
+<header class="hero"><div class="wrap" style="padding-bottom:0"><h1>RRB NTPC tracker</h1>
+<p>RRB Non-Technical Popular Categories (NTPC)</p>
+<p>Railway Recruitment Boards (RRBs) · <a href="https://www.rrbapply.gov.in" rel="noopener" target="_blank">official site</a> · dates checked 2026-11-07</p></div></header>
+<div class="vine" aria-hidden="true"></div>
+<main class="wrap">
+<div id="warn" role="status"></div>
+<div class="stats"><div class="stat"><b id="days">—</b><span id="dayslbl"></span></div>
+<div class="stat"><b id="pct">0%</b><span>syllabus done</span></div><div class="stat"><b id="due">0</b><span>revisions due</span></div></div>
+<div class="bar" aria-hidden="true"><i id="pbar"></i></div>
+<h2>Exam dates and alerts</h2><div class="card"><table><tr><td>Next CEN (notification)<br><span class=note>Check rrbapply.gov.in and your regional RRB site.</span></td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span> · <a href="https://www.rrbapply.gov.in" rel="noopener" target="_blank">official</a></td></tr><tr><td>Last date to apply<br><span class=note>Given in the CEN.</span></td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>CBT 1</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>CBT 1 result</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>CBT 2</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr><tr><td>Typing Skill Test / CBAT</td><td>—<br><span class="badge NOT_ANNOUNCED">NOT ANNOUNCED</span></td></tr></table></div>
+<p class="note">Only CONFIRMED dates come from the official site. NOT ANNOUNCED means no official date yet: we alert you when it is out.</p>
+<h2>Syllabus (61 topics)</h2>
+<div class="tools"><select id="filter" aria-label="Show"></select><button id="reset" type="button">Reset</button></div>
+<div id="syl"></div>
+<h2>Exam stages</h2><ul class="links"><li>CBT 1 · Mathematics, General Intelligence and Reasoning, General Awareness (screening)</li><li>CBT 2 · same subjects, higher level (counts for merit)</li><li>Typing Skill Test (clerk / typist posts) or CBAT (Station Master, Traffic Assistant)</li><li>Document verification and medical exam</li></ul>
+<h2>Best free material</h2><ul class="links"><li><a href="https://www.rrbapply.gov.in" rel="noopener" target="_blank">RRB apply portal: CEN notices, syllabus, answer keys</a> <span class=note>(to verify)</span></li><li><a href="https://ncert.nic.in/textbook.php" rel="noopener" target="_blank">NCERT textbooks up to class 10 (free; RRB general science is 10th CBSE level)</a> <span class=note>(to verify)</span></li><li><a href="https://pib.gov.in" rel="noopener" target="_blank">PIB press releases for current affairs</a> <span class=note>(to verify)</span></li><li><a href="https://indianrailways.gov.in" rel="noopener" target="_blank">Indian Railways official site (railway GK)</a> <span class=note>(to verify)</span></li></ul>
+<h2>Best YouTube videos</h2><ul class="links"><li>Mathematics: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+maths+full+course" rel="noopener" target="_blank">search “RRB NTPC maths full course”</a></li><li>Mathematics: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+maths+previous+year+questions" rel="noopener" target="_blank">search “RRB NTPC maths previous year questions”</a></li><li>General Intelligence and Reasoning: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+reasoning+full+course" rel="noopener" target="_blank">search “RRB NTPC reasoning full course”</a></li><li>General Intelligence and Reasoning: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+reasoning+previous+year+questions" rel="noopener" target="_blank">search “RRB NTPC reasoning previous year questions”</a></li><li>General Awareness: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+general+awareness+static+GK" rel="noopener" target="_blank">search “RRB NTPC general awareness static GK”</a></li><li>General Awareness: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+general+science" rel="noopener" target="_blank">search “RRB NTPC general science”</a></li><li>Skill tests: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+typing+skill+test+practice" rel="noopener" target="_blank">search “RRB NTPC typing skill test practice”</a></li><li>Skill tests: <span class=note>to curate ·</span> <a href="https://www.youtube.com/results?search_query=RRB+NTPC+CBAT+psycho+test+station+master" rel="noopener" target="_blank">search “RRB NTPC CBAT psycho test station master”</a></li></ul>
+<p class="note">Progress is saved on this phone only. Not an official Railway Recruitment Boards (RRBs) product. Kalpa Labs · Udyam UDYAM-TS-02-0382711</p>
+</main>
+<script type="application/json" id="kit">{"id": "rrb-ntpc", "exam": null, "rev": [1, 3, 7, 21], "statuses": ["Not started", "Learning", "Done"], "subjects": [{"name": "Mathematics", "te": ""}, {"name": "General Intelligence and Reasoning", "te": ""}, {"name": "General Awareness", "te": ""}, {"name": "Skill tests", "te": ""}], "topics": [{"n": 1, "subject": "Mathematics", "en": "Number system", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Number+system"}, {"n": 2, "subject": "Mathematics", "en": "Decimals and fractions", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Decimals+and+fractions"}, {"n": 3, "subject": "Mathematics", "en": "LCM and HCF", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+LCM+and+HCF"}, {"n": 4, "subject": "Mathematics", "en": "Ratio and proportion", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Ratio+and+proportion"}, {"n": 5, "subject": "Mathematics", "en": "Percentage", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Percentage"}, {"n": 6, "subject": "Mathematics", "en": "Mensuration", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Mensuration"}, {"n": 7, "subject": "Mathematics", "en": "Time and work", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Time+and+work"}, {"n": 8, "subject": "Mathematics", "en": "Time and distance", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Time+and+distance"}, {"n": 9, "subject": "Mathematics", "en": "Simple and compound interest", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Simple+and+compound+interest"}, {"n": 10, "subject": "Mathematics", "en": "Profit and loss", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Profit+and+loss"}, {"n": 11, "subject": "Mathematics", "en": "Elementary algebra", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Elementary+algebra"}, {"n": 12, "subject": "Mathematics", "en": "Geometry", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Geometry"}, {"n": 13, "subject": "Mathematics", "en": "Trigonometry", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Trigonometry"}, {"n": 14, "subject": "Mathematics", "en": "Elementary statistics", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Elementary+statistics"}, {"n": 15, "subject": "Mathematics", "en": "Square root", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Square+root"}, {"n": 16, "subject": "Mathematics", "en": "Age calculations", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Age+calculations"}, {"n": 17, "subject": "Mathematics", "en": "Calendar and clock", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Calendar+and+clock"}, {"n": 18, "subject": "Mathematics", "en": "Pipes and cisterns", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Pipes+and+cisterns"}, {"n": 19, "subject": "General Intelligence and Reasoning", "en": "Analogies", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Analogies"}, {"n": 20, "subject": "General Intelligence and Reasoning", "en": "Completion of number and alphabetical series", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Completion+of+number+and+alphabetical+series"}, {"n": 21, "subject": "General Intelligence and Reasoning", "en": "Coding and decoding", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Coding+and+decoding"}, {"n": 22, "subject": "General Intelligence and Reasoning", "en": "Mathematical operations", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Mathematical+operations"}, {"n": 23, "subject": "General Intelligence and Reasoning", "en": "Similarities and differences", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Similarities+and+differences"}, {"n": 24, "subject": "General Intelligence and Reasoning", "en": "Relationships", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Relationships"}, {"n": 25, "subject": "General Intelligence and Reasoning", "en": "Analytical reasoning", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Analytical+reasoning"}, {"n": 26, "subject": "General Intelligence and Reasoning", "en": "Syllogism", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Syllogism"}, {"n": 27, "subject": "General Intelligence and Reasoning", "en": "Jumbling", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Jumbling"}, {"n": 28, "subject": "General Intelligence and Reasoning", "en": "Venn diagrams", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Venn+diagrams"}, {"n": 29, "subject": "General Intelligence and Reasoning", "en": "Puzzles", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Puzzles"}, {"n": 30, "subject": "General Intelligence and Reasoning", "en": "Data sufficiency", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Data+sufficiency"}, {"n": 31, "subject": "General Intelligence and Reasoning", "en": "Statement and conclusion", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Statement+and+conclusion"}, {"n": 32, "subject": "General Intelligence and Reasoning", "en": "Statement and course of action", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Statement+and+course+of+action"}, {"n": 33, "subject": "General Intelligence and Reasoning", "en": "Decision making", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Decision+making"}, {"n": 34, "subject": "General Intelligence and Reasoning", "en": "Maps", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Maps"}, {"n": 35, "subject": "General Intelligence and Reasoning", "en": "Interpretation of graphs", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Interpretation+of+graphs"}, {"n": 36, "subject": "General Awareness", "en": "Current events of national and international importance", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Current+events+of+national+and+international+importance"}, {"n": 37, "subject": "General Awareness", "en": "Games and sports", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Games+and+sports"}, {"n": 38, "subject": "General Awareness", "en": "Art and culture of India", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Art+and+culture+of+India"}, {"n": 39, "subject": "General Awareness", "en": "Indian literature", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Indian+literature"}, {"n": 40, "subject": "General Awareness", "en": "Monuments and places of India", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Monuments+and+places+of+India"}, {"n": 41, "subject": "General Awareness", "en": "General science: physics (up to 10th CBSE)", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+General+science%3A+physics+%28up+to+10th+CBSE%29"}, {"n": 42, "subject": "General Awareness", "en": "General science: chemistry (up to 10th CBSE)", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+General+science%3A+chemistry+%28up+to+10th+CBSE%29"}, {"n": 43, "subject": "General Awareness", "en": "General science: biology and life science (up to 10th CBSE)", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+General+science%3A+biology+and+life+science+%28up+to+10th+CBSE%29"}, {"n": 44, "subject": "General Awareness", "en": "History of India and the freedom struggle", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+History+of+India+and+the+freedom+struggle"}, {"n": 45, "subject": "General Awareness", "en": "Physical, social and economic geography of India and the world", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Physical%2C+social+and+economic+geography+of+India+and+the+world"}, {"n": 46, "subject": "General Awareness", "en": "Indian polity and governance: Constitution and political system", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Indian+polity+and+governance%3A+Constitution+and+political+system"}, {"n": 47, "subject": "General Awareness", "en": "Scientific and technological developments, incl. India's space and nuclear programmes", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Scientific+and+technological+developments%2C+incl.+India%27s+space+and+nuclear+programmes"}, {"n": 48, "subject": "General Awareness", "en": "UN and other important world organisations", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+UN+and+other+important+world+organisations"}, {"n": 49, "subject": "General Awareness", "en": "Environmental issues concerning India and the world", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Environmental+issues+concerning+India+and+the+world"}, {"n": 50, "subject": "General Awareness", "en": "Basics of computers and computer applications", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Basics+of+computers+and+computer+applications"}, {"n": 51, "subject": "General Awareness", "en": "Common abbreviations", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Common+abbreviations"}, {"n": 52, "subject": "General Awareness", "en": "Transport systems in India (Railways)", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Transport+systems+in+India+%28Railways%29"}, {"n": 53, "subject": "General Awareness", "en": "Indian economy", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Indian+economy"}, {"n": 54, "subject": "General Awareness", "en": "Famous personalities of India and the world", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Famous+personalities+of+India+and+the+world"}, {"n": 55, "subject": "General Awareness", "en": "Flagship government programmes", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Flagship+government+programmes"}, {"n": 56, "subject": "General Awareness", "en": "Flora and fauna of India", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Flora+and+fauna+of+India"}, {"n": 57, "subject": "General Awareness", "en": "Important government and public sector organisations of India", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Important+government+and+public+sector+organisations+of+India"}, {"n": 58, "subject": "Skill tests", "en": "Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Typing+Skill+Test+practice+%28English+30+wpm+%2F+Hindi+25+wpm%29"}, {"n": 59, "subject": "Skill tests", "en": "CBAT (aptitude test) practice for Station Master and Traffic Assistant", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+CBAT+%28aptitude+test%29+practice+for+Station+Master+and+Traffic+Assistant"}, {"n": 60, "subject": "Skill tests", "en": "Full mock tests: CBT 1 pattern", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Full+mock+tests%3A+CBT+1+pattern"}, {"n": 61, "subject": "Skill tests", "en": "Full mock tests: CBT 2 pattern", "te": "", "yt": "https://www.youtube.com/results?search_query=RRB+NTPC+Full+mock+tests%3A+CBT+2+pattern"}], "ui": {"due": "Revise now:", "next": "Next revision:", "revised": "Revised ✓", "na": "exam date not announced", "days": "days to the exam", "all": "All subjects", "dueonly": "Due for revision", "confirm": "Clear all progress on this phone?", "nosave": "This browser is not saving progress (private mode?). Your marks will be lost when you close the page."}}</script>
+<script>
+(function(){
+var K=JSON.parse(document.getElementById('kit').textContent);
+var KEY='kalpa-kit:'+K.id+':v1', S={t:{},lang:'en'}, canSave=true;
+try{var raw=window.localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==='object'&&p.t&&typeof p.t==='object')S=p;}}catch(e){canSave=false;}
+function warn(){var w=document.getElementById('warn');w.style.display='block';w.textContent=K.ui.nosave;}
+function save(){if(!canSave){warn();return;}try{window.localStorage.setItem(KEY,JSON.stringify(S));}catch(e){canSave=false;warn();}}
+function el(tag,cls,txt){var x=document.createElement(tag);if(cls)x.className=cls;if(txt!=null)x.textContent=txt;return x;}
+function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+function addDays(s,n){var p=s.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]+n);return iso(d);}
+var TODAY=iso(new Date());
+function st(n){return S.t[n]||{s:'Not started',d:'',r:0};}
+function nextRev(x){if(x.s!=='Done'||!x.d||x.r>=K.rev.length)return '';return addDays(x.d,K.rev[x.r]);}
+function name(t){return S.lang==='te'&&t.te?t.te:t.en;}
+function render(){
+  var done=0,due=0,box=document.getElementById('syl');box.textContent='';
+  var filt=document.getElementById('filter').value;
+  K.subjects.forEach(function(sub){
+    var ts=K.topics.filter(function(t){return t.subject===sub.name;});
+    var sd=ts.filter(function(t){return st(t.n).s==='Done';}).length;done+=sd;
+    var det=el('details','card');det.open=(filt===sub.name);
+    var sm=el('summary');sm.appendChild(el('span',null,(S.lang==='te'&&sub.te?sub.te:sub.name)));
+    sm.appendChild(el('small',null,sd+'/'+ts.length));det.appendChild(sm);
+    var bar=el('div','bar');var bi=el('i');bi.style.width=Math.round(100*sd/ts.length)+'%';bar.appendChild(bi);bar.style.margin='0 12px 10px';det.appendChild(bar);
+    ts.forEach(function(t){
+      var x=st(t.n),nr=nextRev(x),isDue=nr&&nr<=TODAY;if(isDue)due++;
+      if(filt==='__due'&&!isDue)return;
+      var row=el('div','topic'+(x.s==='Done'?' done':''));row.appendChild(el('div','nm',t.n+'. '+name(t)));
+      var sel=el('select');sel.setAttribute('aria-label','Status');K.statuses.forEach(function(o){var op=el('option',null,o);op.value=o;if(o===x.s)op.selected=true;sel.appendChild(op);});
+      sel.onchange=function(){var y=st(t.n);y.s=sel.value;if(y.s==='Done'){if(!y.d)y.d=TODAY;}else{y.d='';y.r=0;}S.t[t.n]=y;save();render();};
+      row.appendChild(sel);
+      var meta=el('div','meta');
+      if(nr){meta.appendChild(el('span',isDue?'due':null,(isDue?K.ui.due:K.ui.next)+' '+nr));
+        if(isDue){var b=el('button',null,K.ui.revised);b.onclick=function(){var y=st(t.n);y.r=(y.r||0)+1;y.d=TODAY;S.t[t.n]=y;save();render();};meta.appendChild(b);}}
+      var a=el('a',null,'▶ YouTube');a.href=t.yt;a.target='_blank';a.rel='noopener';meta.appendChild(a);
+      row.appendChild(meta);det.appendChild(row);
+    });
+    if(filt==='__due'){det.open=true;if(det.querySelectorAll('.topic').length===0)return;}
+    if(filt===''||filt==='__due'||filt===sub.name)box.appendChild(det);
+  });
+  var pct=Math.round(100*done/K.topics.length);
+  document.getElementById('pct').textContent=pct+'%';document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('due').textContent=due;
+}
+function days(){var b=document.getElementById('days'),l=document.getElementById('dayslbl');
+  if(!K.exam){b.textContent='—';l.textContent=K.ui.na;return;}
+  var p=K.exam.split('-'),t=new Date();t.setHours(0,0,0,0);var n=Math.max(0,Math.round((new Date(+p[0],+p[1]-1,+p[2])-t)/864e5));b.textContent=n;l.textContent=K.ui.days;}
+var f=document.getElementById('filter');
+[['',K.ui.all],['__due',K.ui.dueonly]].concat(K.subjects.map(function(s){return [s.name,s.name];})).forEach(function(o){var op=el('option',null,o[1]);op.value=o[0];f.appendChild(op);});
+f.onchange=render;
+var lb=document.getElementById('lang');
+if(lb){lb.onclick=function(){S.lang=S.lang==='te'?'en':'te';lb.className=S.lang==='te'?'on':'';save();render();};lb.className=S.lang==='te'?'on':'';}
+document.getElementById('reset').onclick=function(){if(window.confirm(K.ui.confirm)){S={t:{},lang:S.lang};save();render();}};
+if(!canSave)warn();
+days();render();
+})();
+</script>
+</body></html>

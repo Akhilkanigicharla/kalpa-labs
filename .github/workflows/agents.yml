@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py
+      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py && python3 00-hq/agents/test_reach.py
   world:
     needs: test
     runs-on: ubuntu-latest
@@ -37,15 +37,33 @@ jobs:
           - { world: hq, prefer: gemini }
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # third-party Agent-Reach code runs in this job; the push token is added only in the save step
+      # Agent-Reach v1.6.1 (MIT) for no-login YouTube captions / Reddit / GitHub / web reads (00-hq/agents/reach.py).
+      # NOT `pip install agent-reach`: that PyPI name is a different project. Pinned release zip + sha256, own venv,
+      # --no-deps so yt-dlp's GPL extra (mutagen) is never installed. If this fails, agents run without it.
+      - name: Install Agent-Reach 1.6.1 (pinned)
+        continue-on-error: true
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/agent-reach.zip" https://github.com/Panniantong/Agent-Reach/releases/download/v1.6.1/agent-reach.zip
+          echo "51443d733bcb26064262442083a8f8abf6ba5e3e7df54beebafe98c88be04a60  $RUNNER_TEMP/agent-reach.zip" | sha256sum -c -
+          python3 -m venv "$RUNNER_TEMP/ar"
+          "$RUNNER_TEMP/ar/bin/pip" install -q --no-deps "$RUNNER_TEMP/agent-reach.zip"
+          "$RUNNER_TEMP/ar/bin/pip" install -q requests==2.32.5 loguru==0.7.3 PyYAML==6.0.3 yt-dlp==2026.8.19 yt-dlp-ejs==0.8.0
+          "$RUNNER_TEMP/ar/bin/agent-reach" version
       - name: Agents of ${{ matrix.world }} work their queue
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           KL_PREFER: ${{ matrix.prefer }}
+          KL_AGENT_REACH: ${{ runner.temp }}/ar/bin/agent-reach
         run: python3 00-hq/agents/runner.py --world ${{ matrix.world }} --max "${{ github.event.inputs.max || '2' }}"
       - name: Save results (each world only touches its own queue file)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git config user.name "kalpa-agents"
           git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
           git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge || true

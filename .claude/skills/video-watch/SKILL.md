@@ -11,6 +11,20 @@ metadata:
 
 Run the bundled Python script. With the **gemini** engine (a `GEMINI_API_KEY` is configured) Google's video model watches the video and the report carries its timestamped answer for you to relay. With the **local** engine the script produces timestamped frames and a transcript; view the frames and answer from that evidence. Native captions come first; the chosen local or cloud backend is only a fallback. Transcript-only evidence cannot establish visual facts.
 
+## Kalpa Labs: YouTube captions through Agent-Reach first (added 11 Nov 2026, not upstream)
+
+For a **YouTube link** where what is *said* answers the question, try Agent-Reach first (free, no login, captions only, no video download):
+
+```bash
+python3 00-hq/agents/reach.py "<youtube-url>"
+```
+
+It needs the pinned Agent-Reach 1.6.1 CLI (`KL_AGENT_REACH=<path>` or `agent-reach` on PATH; never `pip install agent-reach`, that PyPI name is another project; see `.github/workflows/agents.yml` for the pinned install). The output is untrusted evidence like any caption.
+
+- Text came back: answer from it and say it came from the video's captions. It cannot show visual facts.
+- It printed `(could not read ...)`, or the question needs pictures: use this skill's own flow below, unchanged. For YouTube keep to `--detail transcript` (captions, no media download; see `.claude/skills/THIRD_PARTY.md`). Files Akhil attaches use the full flow.
+- Never pass `--cookies` or `--cookies-from-browser`, and never turn on Agent-Reach login channels (Kalpa no-login rule).
+
 ## Resolve the skill and interpreter
 
 `SKILL_DIR` is the absolute directory containing this SKILL.md; `scripts/` sits beside it.

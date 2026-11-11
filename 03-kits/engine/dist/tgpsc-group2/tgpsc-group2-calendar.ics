@@ -1,0 +1,1508 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kalpa Labs//Exam Kit Engine//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:TGPSC Group 2 · Kalpa Exam Kit
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261110@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261110T073000
+DTEND;TZID=Asia/Kolkata:20261110T083000
+SUMMARY:TGPSC Group 2 · Day 1: Current affairs: Telangana (regional) + Cur
+ rent affairs: national
+DESCRIPTION:New today:\n• Current affairs: Telangana (regional) (కర
+ ెంట్ అఫైర్స్: తెలంగాణ (ప్రాం
+ తీయ))\n• Current affairs: national (కరెంట్ అఫై
+ ర్స్: జాతీయ)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261111@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261111T073000
+DTEND;TZID=Asia/Kolkata:20261111T083000
+SUMMARY:TGPSC Group 2 · Day 2: Current affairs: international + Internatio
+ nal relations and events · revise 2
+DESCRIPTION:New today:\n• Current affairs: international (కరెంట
+ ్ అఫైర్స్: అంతర్జాతీయ)\n• Internatio
+ nal relations and events (అంతర్జాతీయ సంబంధ
+ ాలు\, సంఘటనలు)\nRevise today:\n• Current affairs: Te
+ langana (regional)\n• Current affairs: national\nMark them in your Kalpa
+  tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261112@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261112T073000
+DTEND;TZID=Asia/Kolkata:20261112T083000
+SUMMARY:TGPSC Group 2 · Day 3: General science in everyday life + India's 
+ achievements in science and technology · revise 2
+DESCRIPTION:New today:\n• General science in everyday life (నిత్
+ యజీవితంలో జనరల్ సైన్స్)\n• India
+ 's achievements in science and technology (శాస్త్ర సాం
+ కేతిక రంగాల్లో భారతదేశ విజ
+ యాలు)\nRevise today:\n• Current affairs: international\n• Inte
+ rnational relations and events\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261113@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261113T073000
+DTEND;TZID=Asia/Kolkata:20261113T083000
+SUMMARY:TGPSC Group 2 · Day 4: Environmental issues + Disaster management:
+  prevention and mitigation · revise 4
+DESCRIPTION:New today:\n• Environmental issues (పర్యావరణ 
+ సమస్యలు)\n• Disaster management: prevention and mitigation
+  (విపత్తు నిర్వహణ: నివారణ\, ఉప
+ శమన చర్యలు)\nRevise today:\n• Current affairs: Telanga
+ na (regional)\n• Current affairs: national\n• General science in every
+ day life\n• India's achievements in science and technology\nMark them in
+  your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261114@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261114T073000
+DTEND;TZID=Asia/Kolkata:20261114T083000
+SUMMARY:TGPSC Group 2 · Day 5: World geography + Indian geography · revis
+ e 4
+DESCRIPTION:New today:\n• World geography (ప్రపంచ భౌగ
+ ోళిక శాస్త్రం)\n• Indian geography (భారత
+ దేశ భౌగోళిక శాస్త్రం)\nRevise today:\n
+ • Current affairs: international\n• International relations and events
+ \n• Environmental issues\n• Disaster management: prevention and mitiga
+ tion\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261115@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T073000
+DTEND;TZID=Asia/Kolkata:20261115T083000
+SUMMARY:TGPSC Group 2 · Day 6: Telangana geography + History and cultural 
+ heritage of India · revise 4
+DESCRIPTION:New today:\n• Telangana geography (తెలంగాణ భ
+ ౌగోళిక శాస్త్రం)\n• History and cultural her
+ itage of India (భారతదేశ చరిత్ర\, సాంస్
+ కృతిక వారసత్వం)\nRevise today:\n• General scie
+ nce in everyday life\n• India's achievements in science and technology\n
+ • World geography\n• Indian geography\nMark them in your Kalpa tracker
+ .
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261116@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261116T073000
+DTEND;TZID=Asia/Kolkata:20261116T083000
+SUMMARY:TGPSC Group 2 · Day 7: Society\, culture\, heritage\, arts and lit
+ erature of Telangana + Policies of Telangana State · revise 4
+DESCRIPTION:New today:\n• Society\, culture\, heritage\, arts and literat
+ ure of Telangana (తెలంగాణ సమాజం\, సంస్క
+ ృతి\, వారసత్వం\, కళలు\, సాహిత్
+ యం)\n• Policies of Telangana State (తెలంగాణ రాష
+ ్ట్ర విధానాలు)\nRevise today:\n• Environmental i
+ ssues\n• Disaster management: prevention and mitigation\n• Telangana g
+ eography\n• History and cultural heritage of India\nMark them in your Ka
+ lpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261117@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261117T073000
+DTEND;TZID=Asia/Kolkata:20261117T083000
+SUMMARY:TGPSC Group 2 · Day 8: Social exclusion\, rights issues and inclus
+ ive policies + Logical reasoning · revise 6
+DESCRIPTION:New today:\n• Social exclusion\, rights issues and inclusive 
+ policies (సామాజిక వెలి\, హక్కుల సమ
+ స్యలు\, సమ్మిళిత విధానాలు)\n• 
+ Logical reasoning (తార్కిక వివేచన)\nRevise today
+ :\n• Current affairs: Telangana (regional)\n• Current affairs: nationa
+ l\n• World geography\n• Indian geography\n• Society\, culture\, heri
+ tage\, arts and literature of Telangana\n• Policies of Telangana State\n
+ Mark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261118@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261118T073000
+DTEND;TZID=Asia/Kolkata:20261118T083000
+SUMMARY:TGPSC Group 2 · Day 9: Analytical ability and data interpretation 
+ + Basic English (10th class standard) · revise 6
+DESCRIPTION:New today:\n• Analytical ability and data interpretation (వ
+ ిశ్లేషణ సామర్థ్యం\, దత్తాంశ 
+ విశ్లేషణ)\n• Basic English (10th class standard) (ప్
+ రాథమిక ఇంగ్లీష్ (పదో తరగతి స
+ ్థాయి))\nRevise today:\n• Current affairs: international\n• 
+ International relations and events\n• Telangana geography\n• History a
+ nd cultural heritage of India\n• Social exclusion\, rights issues and in
+ clusive policies\n• Logical reasoning\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261119@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261119T073000
+DTEND;TZID=Asia/Kolkata:20261119T083000
+SUMMARY:TGPSC Group 2 · Day 10: Indus Valley Civilisation and the Vedic pe
+ riod + Jainism and Buddhism\; Mauryas and Guptas · revise 6
+DESCRIPTION:New today:\n• Indus Valley Civilisation and the Vedic period 
+ (సింధు నాగరికత\, వేద కాలం)\n• Jain
+ ism and Buddhism\; Mauryas and Guptas (జైన\, బౌద్ధ మత
+ ాలు\; మౌర్యులు\, గుప్తులు)\nRevise t
+ oday:\n• General science in everyday life\n• India's achievements in s
+ cience and technology\n• Society\, culture\, heritage\, arts and literat
+ ure of Telangana\n• Policies of Telangana State\n• Analytical ability 
+ and data interpretation\n• Basic English (10th class standard)\nMark the
+ m in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261120@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261120T073000
+DTEND;TZID=Asia/Kolkata:20261120T083000
+SUMMARY:TGPSC Group 2 · Day 11: Medieval India: Delhi Sultanate\, Mughals\
+ , Bhakti and Sufi movements + British rule and socio-religious reform move
+ ments · revise 6
+DESCRIPTION:New today:\n• Medieval India: Delhi Sultanate\, Mughals\, Bha
+ kti and Sufi movements (మధ్యయుగ భారతం: ఢిల
+ ్లీ సుల్తానులు\, మొఘలులు\, భక
+ ్తి\, సూఫీ ఉద్యమాలు)\n• British rule and s
+ ocio-religious reform movements (బ్రిటిష్ పాలన\, 
+ సామాజిక-మత సంస్కరణ ఉద్యమాల
+ ు)\nRevise today:\n• Environmental issues\n• Disaster management: pr
+ evention and mitigation\n• Social exclusion\, rights issues and inclusiv
+ e policies\n• Logical reasoning\n• Indus Valley Civilisation and the V
+ edic period\n• Jainism and Buddhism\; Mauryas and Guptas\nMark them in y
+ our Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261121@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261121T073000
+DTEND;TZID=Asia/Kolkata:20261121T083000
+SUMMARY:TGPSC Group 2 · Day 12: Indian national movement (1885–1947) + S
+ atavahanas\, Ikshvakus and Vishnukundins in Telangana · revise 6
+DESCRIPTION:New today:\n• Indian national movement (1885–1947) (భా
+ రత జాతీయోద్యమం (1885–1947))\n• Satavahanas\,
+  Ikshvakus and Vishnukundins in Telangana (తెలంగాణలో శ
+ ాతవాహనులు\, ఇక్ష్వాకులు\, వి
+ ష్ణుకుండినులు)\nRevise today:\n• World geograp
+ hy\n• Indian geography\n• Analytical ability and data interpretation\n
+ • Basic English (10th class standard)\n• Medieval India: Delhi Sultana
+ te\, Mughals\, Bhakti and Sufi movements\n• British rule and socio-relig
+ ious reform movements\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261122@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261122T073000
+DTEND;TZID=Asia/Kolkata:20261122T083000
+SUMMARY:TGPSC Group 2 · Day 13: Kakatiyas: polity\, society\, economy and 
+ culture + Qutb Shahis: society\, culture and architecture · revise 6
+DESCRIPTION:New today:\n• Kakatiyas: polity\, society\, economy and cultu
+ re (కాకతీయులు: పాలన\, సమాజం\, ఆర
+ ్థిక వ్యవస్థ\, సంస్కృతి)\n• Qutb S
+ hahis: society\, culture and architecture (కుతుబ్ షాహీ
+ లు: సమాజం\, సంస్కృతి\, వాస్తుక
+ ళ)\nRevise today:\n• Telangana geography\n• History and cultural her
+ itage of India\n• Indus Valley Civilisation and the Vedic period\n• Ja
+ inism and Buddhism\; Mauryas and Guptas\n• Indian national movement (188
+ 5–1947)\n• Satavahanas\, Ikshvakus and Vishnukundins in Telangana\nMar
+ k them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261123@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261123T073000
+DTEND;TZID=Asia/Kolkata:20261123T083000
+SUMMARY:TGPSC Group 2 · Day 14: Asaf Jahi dynasty (Nizams): administration
+  and reforms + Socio-cultural awakening: Adi Hindu\, library and Andhra Ma
+ hasabha movements · revise 6
+DESCRIPTION:New today:\n• Asaf Jahi dynasty (Nizams): administration and 
+ reforms (అసఫ్ జాహీలు (నిజాంలు): పా
+ లన\, సంస్కరణలు)\n• Socio-cultural awakening: Adi H
+ indu\, library and Andhra Mahasabha movements (సామాజిక-స
+ ాంస్కృతిక చైతన్యం: ఆది హింద
+ ూ\, గ్రంథాలయ\, ఆంధ్ర మహాసభ ఉద్
+ యమాలు)\nRevise today:\n• Society\, culture\, heritage\, arts a
+ nd literature of Telangana\n• Policies of Telangana State\n• Medieval 
+ India: Delhi Sultanate\, Mughals\, Bhakti and Sufi movements\n• British 
+ rule and socio-religious reform movements\n• Kakatiyas: polity\, society
+ \, economy and culture\n• Qutb Shahis: society\, culture and architectur
+ e\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261124@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261124T073000
+DTEND;TZID=Asia/Kolkata:20261124T083000
+SUMMARY:TGPSC Group 2 · Day 15: Tribal and peasant revolts\; Telangana arm
+ ed struggle (1946–51) + Police action (1948) and the end of Nizam rule 
+ · revise 6
+DESCRIPTION:New today:\n• Tribal and peasant revolts\; Telangana armed st
+ ruggle (1946–51) (గిరిజన\, రైతాంగ తిరు
+ గుబాట్లు\; తెలంగాణ సాయుధ పోర
+ ాటం (1946–51))\n• Police action (1948) and the end of Nizam rule
+  (పోలీస్ చర్య (1948)\, నిజాం పాలన 
+ అంతం)\nRevise today:\n• Social exclusion\, rights issues and inc
+ lusive policies\n• Logical reasoning\n• Indian national movement (1885
+ –1947)\n• Satavahanas\, Ikshvakus and Vishnukundins in Telangana\n• 
+ Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural
+  awakening: Adi Hindu\, library and Andhra Mahasabha movements\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261125@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261125T073000
+DTEND;TZID=Asia/Kolkata:20261125T083000
+SUMMARY:TGPSC Group 2 · Day 16: Evolution of the Constitution\; Preamble a
+ nd salient features + Fundamental Rights\, Directive Principles and Fundam
+ ental Duties · revise 6
+DESCRIPTION:New today:\n• Evolution of the Constitution\; Preamble and sa
+ lient features (రాజ్యాంగ పరిణామం\; ప్ర
+ వేశిక\, ముఖ్య లక్షణాలు)\n• Fundament
+ al Rights\, Directive Principles and Fundamental Duties (ప్రాథ
+ మిక హక్కులు\, ఆదేశిక సూత్రాల
+ ు\, ప్రాథమిక విధులు)\nRevise today:\n• Ana
+ lytical ability and data interpretation\n• Basic English (10th class sta
+ ndard)\n• Kakatiyas: polity\, society\, economy and culture\n• Qutb Sh
+ ahis: society\, culture and architecture\n• Tribal and peasant revolts\;
+  Telangana armed struggle (1946–51)\n• Police action (1948) and the en
+ d of Nizam rule\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261126@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261126T073000
+DTEND;TZID=Asia/Kolkata:20261126T083000
+SUMMARY:TGPSC Group 2 · Day 17: Union and State executive and legislature 
+ + Centre–State relations and federalism · revise 6
+DESCRIPTION:New today:\n• Union and State executive and legislature (క
+ ేంద్ర\, రాష్ట్ర కార్యనిర్వా
+ హక వర్గం\, శాసన వ్యవస్థ)\n• Centre
+ –State relations and federalism (కేంద్ర-రాష్ట్
+ ర సంబంధాలు\, సమాఖ్య వ్యవస్థ)\n
+ Revise today:\n• Indus Valley Civilisation and the Vedic period\n• Jai
+ nism and Buddhism\; Mauryas and Guptas\n• Asaf Jahi dynasty (Nizams): ad
+ ministration and reforms\n• Socio-cultural awakening: Adi Hindu\, librar
+ y and Andhra Mahasabha movements\n• Evolution of the Constitution\; Prea
+ mble and salient features\n• Fundamental Rights\, Directive Principles a
+ nd Fundamental Duties\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261127@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261127T073000
+DTEND;TZID=Asia/Kolkata:20261127T083000
+SUMMARY:TGPSC Group 2 · Day 18: Judiciary: Supreme Court\, High Courts and
+  judicial review + 73rd and 74th Amendments: Panchayati Raj and urban loca
+ l bodies · revise 6
+DESCRIPTION:New today:\n• Judiciary: Supreme Court\, High Courts and judi
+ cial review (న్యాయ వ్యవస్థ: సుప్రీం
+ కోర్టు\, హైకోర్టులు\, న్యాయ స
+ మీక్ష)\n• 73rd and 74th Amendments: Panchayati Raj and urban l
+ ocal bodies (73\, 74వ సవరణలు: పంచాయతీరాజ
+ ్\, పట్టణ స్థానిక సంస్థలు)\nRevise
+  today:\n• Medieval India: Delhi Sultanate\, Mughals\, Bhakti and Sufi m
+ ovements\n• British rule and socio-religious reform movements\n• Triba
+ l and peasant revolts\; Telangana armed struggle (1946–51)\n• Police a
+ ction (1948) and the end of Nizam rule\n• Union and State executive and 
+ legislature\n• Centre–State relations and federalism\nMark them in you
+ r Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261128@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261128T073000
+DTEND;TZID=Asia/Kolkata:20261128T083000
+SUMMARY:TGPSC Group 2 · Day 19: Electoral system\, Election Commission and
+  anti-defection law + Constitutional and statutory bodies (CAG\, UPSC\, Fi
+ nance Commission\, NHRC) · revise 6
+DESCRIPTION:New today:\n• Electoral system\, Election Commission and anti
+ -defection law (ఎన్నికల వ్యవస్థ\, ఎన్న
+ ికల సంఘం\, పార్టీ ఫిరాయింపుల
+  నిరోధక చట్టం)\n• Constitutional and statutory bod
+ ies (CAG\, UPSC\, Finance Commission\, NHRC) (రాజ్యాంగ\, 
+ చట్టబద్ధ సంస్థలు (కాగ్\, యూప
+ ీఎస్సీ\, ఆర్థిక సంఘం\, ఎన్‌హె
+ చ్‌ఆర్‌సీ))\nRevise today:\n• Indian national movement
+  (1885–1947)\n• Satavahanas\, Ikshvakus and Vishnukundins in Telangana
+ \n• Evolution of the Constitution\; Preamble and salient features\n• F
+ undamental Rights\, Directive Principles and Fundamental Duties\n• Judic
+ iary: Supreme Court\, High Courts and judicial review\n• 73rd and 74th A
+ mendments: Panchayati Raj and urban local bodies\nMark them in your Kalpa 
+ tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261129@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261129T073000
+DTEND;TZID=Asia/Kolkata:20261129T083000
+SUMMARY:TGPSC Group 2 · Day 20: Special provisions for SC\, ST\, BC\, wome
+ n and minorities + Amendment procedure and important amendments · revise 
+ 6
+DESCRIPTION:New today:\n• Special provisions for SC\, ST\, BC\, women and
+  minorities (ఎస్సీ\, ఎస్టీ\, బీసీ\, మహి
+ ళలు\, మైనారిటీలకు ప్రత్యేక న
+ ిబంధనలు)\n• Amendment procedure and important amendments (
+ రాజ్యాంగ సవరణ విధానం\, ముఖ్య
+  సవరణలు)\nRevise today:\n• Kakatiyas: polity\, society\, eco
+ nomy and culture\n• Qutb Shahis: society\, culture and architecture\n•
+  Union and State executive and legislature\n• Centre–State relations a
+ nd federalism\n• Electoral system\, Election Commission and anti-defecti
+ on law\n• Constitutional and statutory bodies (CAG\, UPSC\, Finance Comm
+ ission\, NHRC)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261130@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261130T073000
+DTEND;TZID=Asia/Kolkata:20261130T083000
+SUMMARY:TGPSC Group 2 · Day 21: Welfare mechanisms and judicial activism +
+  Indian social structure: caste\, family\, marriage\, kinship\, religion\,
+  tribe · revise 6
+DESCRIPTION:New today:\n• Welfare mechanisms and judicial activism (స
+ ంక్షేమ యంత్రాంగం\, న్యాయ క్ర
+ ియాశీలత)\n• Indian social structure: caste\, family\, marr
+ iage\, kinship\, religion\, tribe (భారత సామాజిక న
+ ిర్మాణం: కులం\, కుటుంబం\, వివా
+ హం\, బంధుత్వం\, మతం\, తెగ)\nRevise today:\
+ n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cul
+ tural awakening: Adi Hindu\, library and Andhra Mahasabha movements\n• J
+ udiciary: Supreme Court\, High Courts and judicial review\n• 73rd and 74
+ th Amendments: Panchayati Raj and urban local bodies\n• Special provisio
+ ns for SC\, ST\, BC\, women and minorities\n• Amendment procedure and im
+ portant amendments\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261201@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261201T073000
+DTEND;TZID=Asia/Kolkata:20261201T083000
+SUMMARY:TGPSC Group 2 · Day 22: Features of Telangana society + Social iss
+ ues: inequality\, casteism\, communalism\, regionalism · revise 8
+DESCRIPTION:New today:\n• Features of Telangana society (తెలంగ
+ ాణ సమాజ లక్షణాలు)\n• Social issues: inequali
+ ty\, casteism\, communalism\, regionalism (సామాజిక సమస
+ ్యలు: అసమానత\, కులతత్వం\, మతతత
+ ్వం\, ప్రాంతీయవాదం)\nRevise today:\n• Curr
+ ent affairs: Telangana (regional)\n• Current affairs: national\n• Trib
+ al and peasant revolts\; Telangana armed struggle (1946–51)\n• Police 
+ action (1948) and the end of Nizam rule\n• Electoral system\, Election C
+ ommission and anti-defection law\n• Constitutional and statutory bodies 
+ (CAG\, UPSC\, Finance Commission\, NHRC)\n• Welfare mechanisms and judic
+ ial activism\n• Indian social structure: caste\, family\, marriage\, kin
+ ship\, religion\, tribe\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261202@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261202T073000
+DTEND;TZID=Asia/Kolkata:20261202T083000
+SUMMARY:TGPSC Group 2 · Day 23: Violence against women\, child labour and 
+ human trafficking + Disability and the aged · revise 8
+DESCRIPTION:New today:\n• Violence against women\, child labour and human
+  trafficking (మహిళలపై హింస\, బాల కార్
+ మికులు\, మానవ అక్రమ రవాణా)\n• Di
+ sability and the aged (వైకల్యం\, వృద్ధులు)\n
+ Revise today:\n• Current affairs: international\n• International relat
+ ions and events\n• Evolution of the Constitution\; Preamble and salient 
+ features\n• Fundamental Rights\, Directive Principles and Fundamental Du
+ ties\n• Special provisions for SC\, ST\, BC\, women and minorities\n• 
+ Amendment procedure and important amendments\n• Features of Telangana so
+ ciety\n• Social issues: inequality\, casteism\, communalism\, regionalis
+ m\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261203@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261203T073000
+DTEND;TZID=Asia/Kolkata:20261203T083000
+SUMMARY:TGPSC Group 2 · Day 24: Social movements: peasant\, tribal\, Dalit
+ \, backward class\, women\, environment + Social policies and welfare sche
+ mes of India and Telangana · revise 8
+DESCRIPTION:New today:\n• Social movements: peasant\, tribal\, Dalit\, ba
+ ckward class\, women\, environment (సామాజిక ఉద్యమ
+ ాలు: రైతు\, గిరిజన\, దళిత\, బీసీ
+ \, మహిళా\, పర్యావరణ)\n• Social policies and we
+ lfare schemes of India and Telangana (భారత\, తెలంగాణ
+  సామాజిక విధానాలు\, సంక్షేమ 
+ పథకాలు)\nRevise today:\n• General science in everyday life\n
+ • India's achievements in science and technology\n• Union and State ex
+ ecutive and legislature\n• Centre–State relations and federalism\n• 
+ Welfare mechanisms and judicial activism\n• Indian social structure: cas
+ te\, family\, marriage\, kinship\, religion\, tribe\n• Violence against 
+ women\, child labour and human trafficking\n• Disability and the aged\nM
+ ark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261204@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261204T073000
+DTEND;TZID=Asia/Kolkata:20261204T083000
+SUMMARY:TGPSC Group 2 · Day 25: Growth and development: concepts and natio
+ nal income (GDP) + Population trends and the Human Development Index · re
+ vise 8
+DESCRIPTION:New today:\n• Growth and development: concepts and national i
+ ncome (GDP) (వృద్ధి\, అభివృద్ధి: భావ
+ నలు\, జాతీయ ఆదాయం (జీడీపీ))\n• Pop
+ ulation trends and the Human Development Index (జనాభా ధోర
+ ణులు\, మానవాభివృద్ధి సూచిక)\nR
+ evise today:\n• Environmental issues\n• Disaster management: preventio
+ n and mitigation\n• Judiciary: Supreme Court\, High Courts and judicial 
+ review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodie
+ s\n• Features of Telangana society\n• Social issues: inequality\, cast
+ eism\, communalism\, regionalism\n• Social movements: peasant\, tribal\,
+  Dalit\, backward class\, women\, environment\n• Social policies and wel
+ fare schemes of India and Telangana\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261205@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261205T073000
+DTEND;TZID=Asia/Kolkata:20261205T083000
+SUMMARY:TGPSC Group 2 · Day 26: Poverty and unemployment + Economic planni
+ ng: Five-Year Plans and NITI Aayog · revise 8
+DESCRIPTION:New today:\n• Poverty and unemployment (పేదరికం
+ \, నిరుద్యోగం)\n• Economic planning: Five-Year Plans
+  and NITI Aayog (ఆర్థిక ప్రణాళిక: పంచవ
+ ర్ష ప్రణాళికలు\, నీతి ఆయోగ్)\n
+ Revise today:\n• World geography\n• Indian geography\n• Electoral sy
+ stem\, Election Commission and anti-defection law\n• Constitutional and 
+ statutory bodies (CAG\, UPSC\, Finance Commission\, NHRC)\n• Violence ag
+ ainst women\, child labour and human trafficking\n• Disability and the a
+ ged\n• Growth and development: concepts and national income (GDP)\n• P
+ opulation trends and the Human Development Index\nMark them in your Kalpa 
+ tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261206@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261206T073000
+DTEND;TZID=Asia/Kolkata:20261206T083000
+SUMMARY:TGPSC Group 2 · Day 27: Agriculture\, allied sectors and food secu
+ rity + Industry and services sectors · revise 8
+DESCRIPTION:New today:\n• Agriculture\, allied sectors and food security 
+ (వ్యవసాయం\, అనుబంధ రంగాలు\, ఆహ
+ ార భద్రత)\n• Industry and services sectors (పారి
+ శ్రామిక\, సేవా రంగాలు)\nRevise today:\n
+ • Telangana geography\n• History and cultural heritage of India\n• S
+ pecial provisions for SC\, ST\, BC\, women and minorities\n• Amendment p
+ rocedure and important amendments\n• Social movements: peasant\, tribal\
+ , Dalit\, backward class\, women\, environment\n• Social policies and we
+ lfare schemes of India and Telangana\n• Poverty and unemployment\n• Ec
+ onomic planning: Five-Year Plans and NITI Aayog\nMark them in your Kalpa t
+ racker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261207@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261207T073000
+DTEND;TZID=Asia/Kolkata:20261207T083000
+SUMMARY:TGPSC Group 2 · Day 28: Money\, banking\, RBI\, monetary policy an
+ d inflation + Public finance: budget\, taxation\, GST and fiscal policy ·
+  revise 8
+DESCRIPTION:New today:\n• Money\, banking\, RBI\, monetary policy and inf
+ lation (ద్రవ్యం\, బ్యాంకింగ్\, ఆర్
+ బీఐ\, ద్రవ్య విధానం\, ద్రవ్యో
+ ల్బణం)\n• Public finance: budget\, taxation\, GST and fiscal p
+ olicy (ప్రభుత్వ విత్తం: బడ్జెట్\
+ , పన్నులు\, జీఎస్టీ\, కోశ విధా
+ నం)\nRevise today:\n• Society\, culture\, heritage\, arts and litera
+ ture of Telangana\n• Policies of Telangana State\n• Welfare mechanisms
+  and judicial activism\n• Indian social structure: caste\, family\, marr
+ iage\, kinship\, religion\, tribe\n• Growth and development: concepts an
+ d national income (GDP)\n• Population trends and the Human Development I
+ ndex\n• Agriculture\, allied sectors and food security\n• Industry and
+  services sectors\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261208@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261208T073000
+DTEND;TZID=Asia/Kolkata:20261208T083000
+SUMMARY:TGPSC Group 2 · Day 29: External sector: balance of payments\, tra
+ de and FDI + Economic reforms of 1991: liberalisation\, privatisation\, gl
+ obalisation · revise 8
+DESCRIPTION:New today:\n• External sector: balance of payments\, trade an
+ d FDI (విదేశీ రంగం: చెల్లింపుల శ
+ ేషం\, వాణిజ్యం\, ఎఫ్‌డీఐ)\n• Economi
+ c reforms of 1991: liberalisation\, privatisation\, globalisation (1991 
+ ఆర్థిక సంస్కరణలు: సరళీకరణ\, 
+ ప్రైవేటీకరణ\, ప్రపంచీకరణ)\nRevis
+ e today:\n• Social exclusion\, rights issues and inclusive policies\n•
+  Logical reasoning\n• Features of Telangana society\n• Social issues: 
+ inequality\, casteism\, communalism\, regionalism\n• Poverty and unemplo
+ yment\n• Economic planning: Five-Year Plans and NITI Aayog\n• Money\, 
+ banking\, RBI\, monetary policy and inflation\n• Public finance: budget\
+ , taxation\, GST and fiscal policy\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261209@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261209T073000
+DTEND;TZID=Asia/Kolkata:20261209T083000
+SUMMARY:TGPSC Group 2 · Day 30: Hyderabad State economy and Telangana's un
+ der-development in united AP + Land reforms: abolition of jagirdari and za
+ mindari\; tenancy · revise 8
+DESCRIPTION:New today:\n• Hyderabad State economy and Telangana's under-d
+ evelopment in united AP (హైదరాబాద్ రాష్ట్ర
+  ఆర్థిక వ్యవస్థ\; ఉమ్మడి ఏపీ
+ లో తెలంగాణ వెనుకబాటు)\n• Land reform
+ s: abolition of jagirdari and zamindari\; tenancy (భూ సంస్క
+ రణలు: జాగీర్దారీ\, జమీందారీ 
+ రద్దు\; కౌలుదారీ)\nRevise today:\n• Analytical
+  ability and data interpretation\n• Basic English (10th class standard)\
+ n• Violence against women\, child labour and human trafficking\n• Disa
+ bility and the aged\n• Agriculture\, allied sectors and food security\n
+ • Industry and services sectors\n• External sector: balance of payment
+ s\, trade and FDI\n• Economic reforms of 1991: liberalisation\, privatis
+ ation\, globalisation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261210@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261210T073000
+DTEND;TZID=Asia/Kolkata:20261210T083000
+SUMMARY:TGPSC Group 2 · Day 31: Telangana agriculture and irrigation (tank
+ s\, Mission Kakatiya\, projects) + Industry\, services and the IT sector i
+ n Telangana · revise 8
+DESCRIPTION:New today:\n• Telangana agriculture and irrigation (tanks\, M
+ ission Kakatiya\, projects) (తెలంగాణ వ్యవసాయ
+ ం\, నీటిపారుదల (చెరువులు\, మిష
+ న్ కాకతీయ\, ప్రాజెక్టులు))\n• In
+ dustry\, services and the IT sector in Telangana (తెలంగాణల
+ ో పరిశ్రమలు\, సేవా రంగం\, ఐటీ 
+ రంగం)\nRevise today:\n• Indus Valley Civilisation and the Vedic 
+ period\n• Jainism and Buddhism\; Mauryas and Guptas\n• Social movement
+ s: peasant\, tribal\, Dalit\, backward class\, women\, environment\n• So
+ cial policies and welfare schemes of India and Telangana\n• Money\, bank
+ ing\, RBI\, monetary policy and inflation\n• Public finance: budget\, ta
+ xation\, GST and fiscal policy\n• Hyderabad State economy and Telangana'
+ s under-development in united AP\n• Land reforms: abolition of jagirdari
+  and zamindari\; tenancy\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261211@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261211T073000
+DTEND;TZID=Asia/Kolkata:20261211T083000
+SUMMARY:TGPSC Group 2 · Day 32: Telangana budget\, GSDP and per capita inc
+ ome + Welfare and development schemes of Telangana · revise 8
+DESCRIPTION:New today:\n• Telangana budget\, GSDP and per capita income (
+ తెలంగాణ బడ్జెట్\, జీఎస్‌డీప
+ ీ\, తలసరి ఆదాయం)\n• Welfare and development scheme
+ s of Telangana (తెలంగాణ సంక్షేమ\, అభివ
+ ృద్ధి పథకాలు)\nRevise today:\n• Medieval India: De
+ lhi Sultanate\, Mughals\, Bhakti and Sufi movements\n• British rule and 
+ socio-religious reform movements\n• Growth and development: concepts and
+  national income (GDP)\n• Population trends and the Human Development In
+ dex\n• External sector: balance of payments\, trade and FDI\n• Economi
+ c reforms of 1991: liberalisation\, privatisation\, globalisation\n• Tel
+ angana agriculture and irrigation (tanks\, Mission Kakatiya\, projects)\n
+ • Industry\, services and the IT sector in Telangana\nMark them in your 
+ Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261212@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261212T073000
+DTEND;TZID=Asia/Kolkata:20261212T083000
+SUMMARY:TGPSC Group 2 · Day 33: Regional and social inequality in developm
+ ent + Development and displacement\; land acquisition and rehabilitation 
+ · revise 8
+DESCRIPTION:New today:\n• Regional and social inequality in development (
+ అభివృద్ధిలో ప్రాంతీయ\, సామా
+ జిక అసమానతలు)\n• Development and displacement\; la
+ nd acquisition and rehabilitation (అభివృద్ధి\, నిర
+ ్వాసితులు\; భూసేకరణ\, పునరావ
+ ాసం)\nRevise today:\n• Indian national movement (1885–1947)\n•
+  Satavahanas\, Ikshvakus and Vishnukundins in Telangana\n• Poverty and u
+ nemployment\n• Economic planning: Five-Year Plans and NITI Aayog\n• Hy
+ derabad State economy and Telangana's under-development in united AP\n• 
+ Land reforms: abolition of jagirdari and zamindari\; tenancy\n• Telangan
+ a budget\, GSDP and per capita income\n• Welfare and development schemes
+  of Telangana\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261213@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261213T073000
+DTEND;TZID=Asia/Kolkata:20261213T083000
+SUMMARY:TGPSC Group 2 · Day 34: Impact of economic reforms on growth\, pov
+ erty and inequality + Sustainable development and the SDGs · revise 8
+DESCRIPTION:New today:\n• Impact of economic reforms on growth\, poverty 
+ and inequality (వృద్ధి\, పేదరికం\, అసమా
+ నతలపై ఆర్థిక సంస్కరణల ప్రభ
+ ావం)\n• Sustainable development and the SDGs (సుస్థి
+ ర అభివృద్ధి\, ఎస్‌డీజీలు)\nRevise 
+ today:\n• Kakatiyas: polity\, society\, economy and culture\n• Qutb Sh
+ ahis: society\, culture and architecture\n• Agriculture\, allied sectors
+  and food security\n• Industry and services sectors\n• Telangana agric
+ ulture and irrigation (tanks\, Mission Kakatiya\, projects)\n• Industry\
+ , services and the IT sector in Telangana\n• Regional and social inequal
+ ity in development\n• Development and displacement\; land acquisition an
+ d rehabilitation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261214@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261214T073000
+DTEND;TZID=Asia/Kolkata:20261214T083000
+SUMMARY:TGPSC Group 2 · Day 35: Environment and climate change policies + 
+ Science\, technology and economic development · revise 8
+DESCRIPTION:New today:\n• Environment and climate change policies (పర
+ ్యావరణం\, వాతావరణ మార్పు విధ
+ ానాలు)\n• Science\, technology and economic development (శ
+ ాస్త్ర సాంకేతికత\, ఆర్థికాభ
+ ివృద్ధి)\nRevise today:\n• Asaf Jahi dynasty (Nizams): adm
+ inistration and reforms\n• Socio-cultural awakening: Adi Hindu\, library
+  and Andhra Mahasabha movements\n• Money\, banking\, RBI\, monetary poli
+ cy and inflation\n• Public finance: budget\, taxation\, GST and fiscal p
+ olicy\n• Telangana budget\, GSDP and per capita income\n• Welfare and 
+ development schemes of Telangana\n• Impact of economic reforms on growth
+ \, poverty and inequality\n• Sustainable development and the SDGs\nMark 
+ them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261215@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261215T073000
+DTEND;TZID=Asia/Kolkata:20261215T083000
+SUMMARY:TGPSC Group 2 · Day 36: Historical background and Telangana's dist
+ inct identity + Hyderabad State (1948–56)\; Mulki rules and the 1952 Mul
+ ki agitation · revise 8
+DESCRIPTION:New today:\n• Historical background and Telangana's distinct 
+ identity (చారిత్రక నేపథ్యం\, తెలంగ
+ ాణ ప్రత్యేక అస్తిత్వం)\n• Hyderaba
+ d State (1948–56)\; Mulki rules and the 1952 Mulki agitation (హైద
+ రాబాద్ రాష్ట్రం (1948–56)\; ముల్క
+ ీ నిబంధనలు\, 1952 ముల్కీ ఉద్యమం)
+ \nRevise today:\n• Tribal and peasant revolts\; Telangana armed struggle
+  (1946–51)\n• Police action (1948) and the end of Nizam rule\n• Exte
+ rnal sector: balance of payments\, trade and FDI\n• Economic reforms of 
+ 1991: liberalisation\, privatisation\, globalisation\n• Regional and soc
+ ial inequality in development\n• Development and displacement\; land acq
+ uisition and rehabilitation\n• Environment and climate change policies\n
+ • Science\, technology and economic development\nMark them in your Kalpa
+  tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261216@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261216T073000
+DTEND;TZID=Asia/Kolkata:20261216T083000
+SUMMARY:TGPSC Group 2 · Day 37: States Reorganisation Commission (Fazal Al
+ i) and Telangana + Gentlemen's Agreement (1956) and the formation of Andhr
+ a Pradesh · revise 8
+DESCRIPTION:New today:\n• States Reorganisation Commission (Fazal Ali) an
+ d Telangana (రాష్ట్రాల పునర్వ్యవస్
+ థీకరణ కమిషన్ (ఫజల్ అలీ)\, తెలం
+ గాణ)\n• Gentlemen's Agreement (1956) and the formation of Andhra P
+ radesh (పెద్దమనుషుల ఒప్పందం (1956)\, 
+ ఆంధ్రప్రదేశ్ ఏర్పాటు)\nRevise today:
+ \n• Evolution of the Constitution\; Preamble and salient features\n• F
+ undamental Rights\, Directive Principles and Fundamental Duties\n• Hyder
+ abad State economy and Telangana's under-development in united AP\n• Lan
+ d reforms: abolition of jagirdari and zamindari\; tenancy\n• Impact of e
+ conomic reforms on growth\, poverty and inequality\n• Sustainable develo
+ pment and the SDGs\n• Historical background and Telangana's distinct ide
+ ntity\n• Hyderabad State (1948–56)\; Mulki rules and the 1952 Mulki ag
+ itation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261217@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261217T073000
+DTEND;TZID=Asia/Kolkata:20261217T083000
+SUMMARY:TGPSC Group 2 · Day 38: Violation of safeguards and the Telangana 
+ Regional Committee + 1969 agitation and the Telangana Praja Samithi · rev
+ ise 8
+DESCRIPTION:New today:\n• Violation of safeguards and the Telangana Regio
+ nal Committee (రక్షణల ఉల్లంఘన\, తెలంగ
+ ాణ ప్రాంతీయ కమిటీ)\n• 1969 agitation and t
+ he Telangana Praja Samithi (1969 ఉద్యమం\, తెలంగా
+ ణ ప్రజా సమితి)\nRevise today:\n• Union and State e
+ xecutive and legislature\n• Centre–State relations and federalism\n•
+  Telangana agriculture and irrigation (tanks\, Mission Kakatiya\, projects
+ )\n• Industry\, services and the IT sector in Telangana\n• Environment
+  and climate change policies\n• Science\, technology and economic develo
+ pment\n• States Reorganisation Commission (Fazal Ali) and Telangana\n•
+  Gentlemen's Agreement (1956) and the formation of Andhra Pradesh\nMark th
+ em in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261218@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261218T073000
+DTEND;TZID=Asia/Kolkata:20261218T083000
+SUMMARY:TGPSC Group 2 · Day 39: Mulki judgment (1972)\, Jai Andhra movemen
+ t and the Six-Point Formula (1973) + Presidential Order (1975)\, Article 3
+ 71-D and G.O. 610 (1985) · revise 8
+DESCRIPTION:New today:\n• Mulki judgment (1972)\, Jai Andhra movement and
+  the Six-Point Formula (1973) (ముల్కీ తీర్పు (1972
+ )\, జై ఆంధ్ర ఉద్యమం\, ఆరు సూత్ర
+ ాల పథకం (1973))\n• Presidential Order (1975)\, Article 371-D
+  and G.O. 610 (1985) (రాష్ట్రపతి ఉత్తర్వ
+ ులు (1975)\, ఆర్టికల్ 371-డి\, జీవో 610 
+ (1985))\nRevise today:\n• Judiciary: Supreme Court\, High Courts and jud
+ icial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local
+  bodies\n• Telangana budget\, GSDP and per capita income\n• Welfare an
+ d development schemes of Telangana\n• Historical background and Telangan
+ a's distinct identity\n• Hyderabad State (1948–56)\; Mulki rules and t
+ he 1952 Mulki agitation\n• Violation of safeguards and the Telangana Reg
+ ional Committee\n• 1969 agitation and the Telangana Praja Samithi\nMark 
+ them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261219@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261219T073000
+DTEND;TZID=Asia/Kolkata:20261219T083000
+SUMMARY:TGPSC Group 2 · Day 40: Regional identity\, the Naxalite movement 
+ and its impact + Cultural revival: Telangana literature\, language and fol
+ k arts · revise 8
+DESCRIPTION:New today:\n• Regional identity\, the Naxalite movement and i
+ ts impact (ప్రాంతీయ అస్తిత్వం\, నక
+ ్సలైట్ ఉద్యమం\, దాని ప్రభావం
+ )\n• Cultural revival: Telangana literature\, language and folk arts (
+ సాంస్కృతిక పునరుజ్జీవనం: త
+ ెలంగాణ సాహిత్యం\, భాష\, జానపద 
+ కళలు)\nRevise today:\n• Electoral system\, Election Commission a
+ nd anti-defection law\n• Constitutional and statutory bodies (CAG\, UPSC
+ \, Finance Commission\, NHRC)\n• Regional and social inequality in devel
+ opment\n• Development and displacement\; land acquisition and rehabilita
+ tion\n• States Reorganisation Commission (Fazal Ali) and Telangana\n• 
+ Gentlemen's Agreement (1956) and the formation of Andhra Pradesh\n• Mulk
+ i judgment (1972)\, Jai Andhra movement and the Six-Point Formula (1973)\n
+ • Presidential Order (1975)\, Article 371-D and G.O. 610 (1985)\nMark th
+ em in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261220@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261220T073000
+DTEND;TZID=Asia/Kolkata:20261220T083000
+SUMMARY:TGPSC Group 2 · Day 41: Public awakening in the 1990s\; civil soci
+ ety and intellectual forums + Formation of TRS (2001) and political mobili
+ sation · revise 8
+DESCRIPTION:New today:\n• Public awakening in the 1990s\; civil society a
+ nd intellectual forums (1990ల్లో ప్రజా చైతన్
+ యం\; పౌర సమాజం\, మేధావుల వేదిక
+ లు)\n• Formation of TRS (2001) and political mobilisation (టీఆ
+ ర్ఎస్ ఆవిర్భావం (2001)\, రాజకీయ 
+ సమీకరణ)\nRevise today:\n• Special provisions for SC\, ST\, B
+ C\, women and minorities\n• Amendment procedure and important amendments
+ \n• Impact of economic reforms on growth\, poverty and inequality\n• S
+ ustainable development and the SDGs\n• Violation of safeguards and the T
+ elangana Regional Committee\n• 1969 agitation and the Telangana Praja Sa
+ mithi\n• Regional identity\, the Naxalite movement and its impact\n• C
+ ultural revival: Telangana literature\, language and folk arts\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261221@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261221T073000
+DTEND;TZID=Asia/Kolkata:20261221T083000
+SUMMARY:TGPSC Group 2 · Day 42: Girglani Commission\; employees' and stude
+ nts' agitations + 2009 hunger strike and the 9 December 2009 announcement 
+ · revise 8
+DESCRIPTION:New today:\n• Girglani Commission\; employees' and students' 
+ agitations (గిర్‌గ్లానీ కమిషన్\; ఉద
+ ్యోగుల\, విద్యార్థుల ఉద్యమా
+ లు)\n• 2009 hunger strike and the 9 December 2009 announcement (2009
+  నిరాహార దీక్ష\, డిసెంబర్ 9\, 2009
+  ప్రకటన)\nRevise today:\n• Welfare mechanisms and judicial a
+ ctivism\n• Indian social structure: caste\, family\, marriage\, kinship\
+ , religion\, tribe\n• Environment and climate change policies\n• Scien
+ ce\, technology and economic development\n• Mulki judgment (1972)\, Jai 
+ Andhra movement and the Six-Point Formula (1973)\n• Presidential Order (
+ 1975)\, Article 371-D and G.O. 610 (1985)\n• Public awakening in the 199
+ 0s\; civil society and intellectual forums\n• Formation of TRS (2001) an
+ d political mobilisation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261222@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261222T073000
+DTEND;TZID=Asia/Kolkata:20261222T083000
+SUMMARY:TGPSC Group 2 · Day 43: Telangana JAC: Million March\, Sakala Janu
+ la Samme\, Sagara Haram + Srikrishna Committee report (2010) · revise 8
+DESCRIPTION:New today:\n• Telangana JAC: Million March\, Sakala Janula Sa
+ mme\, Sagara Haram (తెలంగాణ జేఏసీ: మిలియ
+ న్ మార్చ్\, సకల జనుల సమ్మె\, స
+ ాగర హారం)\n• Srikrishna Committee report (2010) (శ్ర
+ ీకృష్ణ కమిటీ నివేదిక (2010))\nRevise t
+ oday:\n• Features of Telangana society\n• Social issues: inequality\, 
+ casteism\, communalism\, regionalism\n• Historical background and Telang
+ ana's distinct identity\n• Hyderabad State (1948–56)\; Mulki rules and
+  the 1952 Mulki agitation\n• Regional identity\, the Naxalite movement a
+ nd its impact\n• Cultural revival: Telangana literature\, language and f
+ olk arts\n• Girglani Commission\; employees' and students' agitations\n
+ • 2009 hunger strike and the 9 December 2009 announcement\nMark them in 
+ your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261223@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261223T073000
+DTEND;TZID=Asia/Kolkata:20261223T083000
+SUMMARY:TGPSC Group 2 · Day 44: Role of students\, women\, artists and med
+ ia\; self-sacrifices + AP Reorganisation Act 2014 and the formation of Tel
+ angana (2 June 2014) · revise 8
+DESCRIPTION:New today:\n• Role of students\, women\, artists and media\; 
+ self-sacrifices (విద్యార్థులు\, మహిళలు
+ \, కళాకారులు\, మీడియా పాత్ర\; ఆ
+ త్మబలిదానాలు)\n• AP Reorganisation Act 2014 and 
+ the formation of Telangana (2 June 2014) (ఏపీ పునర్వ్
+ యవస్థీకరణ చట్టం 2014\, తెలంగాణ 
+ ఆవిర్భావం (2 జూన్ 2014))\nRevise today:\n• Vio
+ lence against women\, child labour and human trafficking\n• Disability a
+ nd the aged\n• States Reorganisation Commission (Fazal Ali) and Telangan
+ a\n• Gentlemen's Agreement (1956) and the formation of Andhra Pradesh\n
+ • Public awakening in the 1990s\; civil society and intellectual forums\
+ n• Formation of TRS (2001) and political mobilisation\n• Telangana JAC
+ : Million March\, Sakala Janula Samme\, Sagara Haram\n• Srikrishna Commi
+ ttee report (2010)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261224@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261224T073000
+DTEND;TZID=Asia/Kolkata:20261224T083000
+SUMMARY:TGPSC Group 2 · Day 45: revise 8
+DESCRIPTION:Revise today:\n• Social movements: peasant\, tribal\, Dalit\,
+  backward class\, women\, environment\n• Social policies and welfare sch
+ emes of India and Telangana\n• Violation of safeguards and the Telangana
+  Regional Committee\n• 1969 agitation and the Telangana Praja Samithi\n
+ • Girglani Commission\; employees' and students' agitations\n• 2009 hu
+ nger strike and the 9 December 2009 announcement\n• Role of students\, w
+ omen\, artists and media\; self-sacrifices\n• AP Reorganisation Act 2014
+  and the formation of Telangana (2 June 2014)\nMark them in your Kalpa tra
+ cker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261225@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261225T073000
+DTEND;TZID=Asia/Kolkata:20261225T083000
+SUMMARY:TGPSC Group 2 · Day 46: revise 6
+DESCRIPTION:Revise today:\n• Growth and development: concepts and nationa
+ l income (GDP)\n• Population trends and the Human Development Index\n•
+  Mulki judgment (1972)\, Jai Andhra movement and the Six-Point Formula (19
+ 73)\n• Presidential Order (1975)\, Article 371-D and G.O. 610 (1985)\n
+ • Telangana JAC: Million March\, Sakala Janula Samme\, Sagara Haram\n•
+  Srikrishna Committee report (2010)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261226@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261226T073000
+DTEND;TZID=Asia/Kolkata:20261226T083000
+SUMMARY:TGPSC Group 2 · Day 47: revise 6
+DESCRIPTION:Revise today:\n• Poverty and unemployment\n• Economic plann
+ ing: Five-Year Plans and NITI Aayog\n• Regional identity\, the Naxalite 
+ movement and its impact\n• Cultural revival: Telangana literature\, lang
+ uage and folk arts\n• Role of students\, women\, artists and media\; sel
+ f-sacrifices\n• AP Reorganisation Act 2014 and the formation of Telangan
+ a (2 June 2014)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261227@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261227T073000
+DTEND;TZID=Asia/Kolkata:20261227T083000
+SUMMARY:TGPSC Group 2 · Day 48: revise 4
+DESCRIPTION:Revise today:\n• Agriculture\, allied sectors and food securi
+ ty\n• Industry and services sectors\n• Public awakening in the 1990s\;
+  civil society and intellectual forums\n• Formation of TRS (2001) and po
+ litical mobilisation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261228@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261228T073000
+DTEND;TZID=Asia/Kolkata:20261228T083000
+SUMMARY:TGPSC Group 2 · Day 49: revise 4
+DESCRIPTION:Revise today:\n• Money\, banking\, RBI\, monetary policy and 
+ inflation\n• Public finance: budget\, taxation\, GST and fiscal policy\n
+ • Girglani Commission\; employees' and students' agitations\n• 2009 hu
+ nger strike and the 9 December 2009 announcement\nMark them in your Kalpa 
+ tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261229@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261229T073000
+DTEND;TZID=Asia/Kolkata:20261229T083000
+SUMMARY:TGPSC Group 2 · Day 50: revise 4
+DESCRIPTION:Revise today:\n• External sector: balance of payments\, trade
+  and FDI\n• Economic reforms of 1991: liberalisation\, privatisation\, g
+ lobalisation\n• Telangana JAC: Million March\, Sakala Janula Samme\, Sag
+ ara Haram\n• Srikrishna Committee report (2010)\nMark them in your Kalpa
+  tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261230@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261230T073000
+DTEND;TZID=Asia/Kolkata:20261230T083000
+SUMMARY:TGPSC Group 2 · Day 51: revise 4
+DESCRIPTION:Revise today:\n• Hyderabad State economy and Telangana's unde
+ r-development in united AP\n• Land reforms: abolition of jagirdari and z
+ amindari\; tenancy\n• Role of students\, women\, artists and media\; sel
+ f-sacrifices\n• AP Reorganisation Act 2014 and the formation of Telangan
+ a (2 June 2014)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20261231@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261231T073000
+DTEND;TZID=Asia/Kolkata:20261231T083000
+SUMMARY:TGPSC Group 2 · Day 52: revise 2
+DESCRIPTION:Revise today:\n• Telangana agriculture and irrigation (tanks\
+ , Mission Kakatiya\, projects)\n• Industry\, services and the IT sector 
+ in Telangana\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270101@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270101T073000
+DTEND;TZID=Asia/Kolkata:20270101T083000
+SUMMARY:TGPSC Group 2 · Day 53: revise 2
+DESCRIPTION:Revise today:\n• Telangana budget\, GSDP and per capita incom
+ e\n• Welfare and development schemes of Telangana\nMark them in your Kal
+ pa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270102@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270102T073000
+DTEND;TZID=Asia/Kolkata:20270102T083000
+SUMMARY:TGPSC Group 2 · Day 54: revise 2
+DESCRIPTION:Revise today:\n• Regional and social inequality in developmen
+ t\n• Development and displacement\; land acquisition and rehabilitation\
+ nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270103@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270103T073000
+DTEND;TZID=Asia/Kolkata:20270103T083000
+SUMMARY:TGPSC Group 2 · Day 55: revise 2
+DESCRIPTION:Revise today:\n• Impact of economic reforms on growth\, pover
+ ty and inequality\n• Sustainable development and the SDGs\nMark them in 
+ your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270104@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270104T073000
+DTEND;TZID=Asia/Kolkata:20270104T083000
+SUMMARY:TGPSC Group 2 · Day 56: revise 2
+DESCRIPTION:Revise today:\n• Environment and climate change policies\n•
+  Science\, technology and economic development\nMark them in your Kalpa tr
+ acker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270105@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270105T073000
+DTEND;TZID=Asia/Kolkata:20270105T083000
+SUMMARY:TGPSC Group 2 · Day 57: revise 2
+DESCRIPTION:Revise today:\n• Historical background and Telangana's distin
+ ct identity\n• Hyderabad State (1948–56)\; Mulki rules and the 1952 Mu
+ lki agitation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270106@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270106T073000
+DTEND;TZID=Asia/Kolkata:20270106T083000
+SUMMARY:TGPSC Group 2 · Day 58: revise 2
+DESCRIPTION:Revise today:\n• States Reorganisation Commission (Fazal Ali)
+  and Telangana\n• Gentlemen's Agreement (1956) and the formation of Andh
+ ra Pradesh\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270107@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270107T073000
+DTEND;TZID=Asia/Kolkata:20270107T083000
+SUMMARY:TGPSC Group 2 · Day 59: revise 2
+DESCRIPTION:Revise today:\n• Violation of safeguards and the Telangana Re
+ gional Committee\n• 1969 agitation and the Telangana Praja Samithi\nMark
+  them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270108@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270108T073000
+DTEND;TZID=Asia/Kolkata:20270108T083000
+SUMMARY:TGPSC Group 2 · Day 60: revise 2
+DESCRIPTION:Revise today:\n• Mulki judgment (1972)\, Jai Andhra movement 
+ and the Six-Point Formula (1973)\n• Presidential Order (1975)\, Article 
+ 371-D and G.O. 610 (1985)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270109@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270109T073000
+DTEND;TZID=Asia/Kolkata:20270109T083000
+SUMMARY:TGPSC Group 2 · Day 61: revise 2
+DESCRIPTION:Revise today:\n• Regional identity\, the Naxalite movement an
+ d its impact\n• Cultural revival: Telangana literature\, language and fo
+ lk arts\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270110@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270110T073000
+DTEND;TZID=Asia/Kolkata:20270110T083000
+SUMMARY:TGPSC Group 2 · Day 62: revise 2
+DESCRIPTION:Revise today:\n• Public awakening in the 1990s\; civil societ
+ y and intellectual forums\n• Formation of TRS (2001) and political mobil
+ isation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270111@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270111T073000
+DTEND;TZID=Asia/Kolkata:20270111T083000
+SUMMARY:TGPSC Group 2 · Day 63: revise 2
+DESCRIPTION:Revise today:\n• Girglani Commission\; employees' and student
+ s' agitations\n• 2009 hunger strike and the 9 December 2009 announcement
+ \nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270112@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270112T073000
+DTEND;TZID=Asia/Kolkata:20270112T083000
+SUMMARY:TGPSC Group 2 · Day 64: revise 2
+DESCRIPTION:Revise today:\n• Telangana JAC: Million March\, Sakala Janula
+  Samme\, Sagara Haram\n• Srikrishna Committee report (2010)\nMark them i
+ n your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-plan-20270113@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270113T073000
+DTEND;TZID=Asia/Kolkata:20270113T083000
+SUMMARY:TGPSC Group 2 · Day 65: revise 2
+DESCRIPTION:Revise today:\n• Role of students\, women\, artists and media
+ \; self-sacrifices\n• AP Reorganisation Act 2014 and the formation of Te
+ langana (2 June 2014)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tgpsc-group2-weekly@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T180000
+DTEND;TZID=Asia/Kolkata:20261115T183000
+RRULE:FREQ=WEEKLY;COUNT=10
+SUMMARY:TGPSC Group 2 · Weekly check: update progress %\, check official d
+ ates
+DESCRIPTION:Only trust dates on https://www.tgpsc.gov.in
+URL:https://www.tgpsc.gov.in
+END:VEVENT
+END:VCALENDAR

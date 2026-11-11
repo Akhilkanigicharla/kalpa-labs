@@ -1,0 +1,11 @@
+{
+  "name": "kalpa-bhasha-kids",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Prototype PWA: Telugu and Hindi practice for NRI kids aged 4 to 10. No accounts, no network, data stays on the device.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "start": "python3 -m http.server 8080"
+  }
+}

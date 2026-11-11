@@ -1,0 +1,11 @@
+{
+  "name": "kalpa-photo-studio",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Kalpa Photo Studio prototype PWA: passport and visa photos, on-device only.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "serve": "python3 -m http.server 8080"
+  }
+}

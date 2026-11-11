@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "company": {
+    "name": "Demo Co (SYNTHETIC, not a real client)",
+    "website": "https://example.com",
+    "city": "Hyderabad",
+    "country": "IN",
+    "sells": "B2B SaaS for clinics, sold in India and the EU",
+    "team_size": 18,
+    "contact_name": "Test Founder",
+    "contact_role": "CEO",
+    "contact_email": "founder@example.com"
+  },
+  "ai_systems": [
+    {"name": "Support chatbot", "purpose": "Answer customer FAQs", "built": "in-house",
+     "providers": ["openai"], "models": ["gpt-4o"], "affected": ["customers"],
+     "customer_facing": true, "discloses_ai": false, "personal_data": true,
+     "personal_data_kinds": ["name", "phone", "chat text"], "status": "live"},
+    {"name": "Doc summary", "purpose": "Summarise uploaded PDFs for staff", "built": "in-house",
+     "providers": ["anthropic"], "models": ["claude-sonnet-4-5"], "affected": ["staff"],
+     "customer_facing": false, "personal_data": false, "status": "live"}
+  ],
+  "spend": {"monthly_amount": 115, "currency": "USD", "providers": ["openai", "anthropic", "google"],
+            "usage_export_available": true, "tags_by_feature": true, "uses_prompt_caching": false,
+            "uses_response_cache": false, "uses_batch": false},
+  "markets": {"user_countries": ["IN", "EU"], "industry_rules": [], "enterprise_asks_ai_governance": true},
+  "governance": {"ai_policy": "draft", "inventory": false, "risk_register": false, "ai_risk_owner": "",
+                 "injection_tested": false, "privacy_notice_names_ai": false, "grievance_contact": true,
+                 "certifications": [], "wants_iso42001": true},
+  "goals": {"packages": ["P1", "P2", "P3"], "top_worry": "EU customer sent an AI governance questionnaire",
+            "deadline": "2027-01-31"},
+  "consent": {"data_processing": true, "delete_after_days": 30, "case_study": "with review"}
+}

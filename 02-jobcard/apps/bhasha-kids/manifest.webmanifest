@@ -1,0 +1,16 @@
+{
+  "name": "Kalpa Bhasha Kids",
+  "short_name": "Bhasha Kids",
+  "description": "Telugu and Hindi practice for kids. Works offline; progress stays on this device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2EEE3",
+  "theme_color": "#1D3A25",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

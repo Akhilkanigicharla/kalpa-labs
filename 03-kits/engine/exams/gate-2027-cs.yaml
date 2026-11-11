@@ -1,0 +1,178 @@
+# GATE 2027 CS · Kalpa exam kit data, converted from ../gate-2027/build_kit.py (SUBJECTS). How to edit: see ../README.md.
+# Keep in sync: tests/test_data.py fails if the topics here differ from the GATE kit's SUBJECTS list.
+id: gate-2027-cs
+short: GATE 2027 CS
+name: GATE 2027 · Computer Science and Information Technology (CS)
+body: IIT Madras (organising institute, GATE 2027)
+category: entrance
+official_site: https://gate2027.iitm.ac.in
+languages: [en]
+checked_on: 2026-10-16
+
+stages:
+  - {name: "Single computer-based test, 3 hours, 100 marks (General Aptitude 15 + Engineering Mathematics and CS 85)"}
+  - {name: "Result and scorecard (valid for PSU and M.Tech admissions)"}
+
+key_dates:
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-06, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-07, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-13, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-14, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-20, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Exam day (one session per paper; your paper's day is on the admit card)", status: CONFIRMED, date: 2027-02-21, source: "https://gate2027.iitm.ac.in", note: "IIT Madras press release; checked 16 Oct 2026 by the GATE kit."}
+  - {event: "Admit card download", status: NOT_ANNOUNCED, date: null, source: null, note: "Usually early January (past cycles); wait for gate2027.iitm.ac.in."}
+  - {event: "Result", status: NOT_ANNOUNCED, date: null, source: null, note: "Usually mid-March (past cycles)."}
+
+plan: {topics_per_day: 2, reminder_time: "07:30", revision_days: [1, 3, 7, 21]}
+
+materials:
+  - {title: "GATE 2027 official site: syllabus PDF, previous papers, answer keys", url: "https://gate2027.iitm.ac.in", kind: official, status: TO_VERIFY}
+  - {title: "NPTEL free courses (CS core subjects)", url: "https://nptel.ac.in", kind: course, status: TO_VERIFY}
+  - {title: "GATE Overflow: previous-year questions with community answers (free)", url: "https://gateoverflow.in", kind: practice, status: TO_VERIFY}
+
+youtube:
+  query_template: "GATE CSE {topic}"
+
+subjects:
+  - name: "Engineering Mathematics"
+    paper: CS paper
+    weight_marks: [10, 13, 12]
+    videos:
+      - {query: "GATE CSE Engineering Mathematics full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Engineering Mathematics previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Discrete Mathematics: propositional and first-order logic"}
+      - {en: "Sets, relations, functions, partial orders, lattices"}
+      - {en: "Monoids, groups"}
+      - {en: "Graphs: connectivity, matching, colouring"}
+      - {en: "Combinatorics: counting, recurrences, generating functions"}
+      - {en: "Linear Algebra: matrices, determinants, systems of linear equations"}
+      - {en: "Eigenvalues and eigenvectors, LU decomposition"}
+      - {en: "Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration"}
+      - {en: "Probability: random variables, uniform, normal, exponential, Poisson, binomial"}
+      - {en: "Mean, median, mode, standard deviation; conditional probability, Bayes"}
+  - name: "Digital Logic"
+    paper: CS paper
+    weight_marks: [6, 5, 6]
+    videos:
+      - {query: "GATE CSE Digital Logic full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Digital Logic previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Boolean algebra"}
+      - {en: "Combinational circuits"}
+      - {en: "Sequential circuits"}
+      - {en: "Minimisation"}
+      - {en: "Number representations and computer arithmetic (fixed and floating point)"}
+  - name: "Computer Organization and Architecture"
+    paper: CS paper
+    weight_marks: [12, 9, 8]
+    videos:
+      - {query: "GATE CSE Computer Organization and Architecture full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Computer Organization and Architecture previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Machine instructions and addressing modes"}
+      - {en: "ALU, data-path and control unit"}
+      - {en: "Hardwired control design (2027)"}
+      - {en: "Microprogrammed control design (2027)"}
+      - {en: "Instruction pipelining, pipeline hazards"}
+      - {en: "Memory hierarchy: cache memory"}
+      - {en: "Cache memory mapping (2027)"}
+      - {en: "I/O interface (interrupt and DMA mode)"}
+  - name: "Programming and Data Structures"
+    paper: CS paper
+    weight_marks: [11, 8, 10]
+    videos:
+      - {query: "GATE CSE Programming and Data Structures full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Programming and Data Structures previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Programming in C"}
+      - {en: "Recursion"}
+      - {en: "Arrays, stacks, queues"}
+      - {en: "Linked lists"}
+      - {en: "Trees, binary search trees, binary heaps"}
+      - {en: "Graphs"}
+  - name: "Algorithms"
+    paper: CS paper
+    weight_marks: [6, 8, 8]
+    videos:
+      - {query: "GATE CSE Algorithms full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Algorithms previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Searching, sorting, hashing"}
+      - {en: "Asymptotic worst-case time and space complexity"}
+      - {en: "Greedy"}
+      - {en: "Divide-and-conquer"}
+      - {en: "Dynamic programming"}
+      - {en: "Graph traversals, minimum spanning trees, shortest paths"}
+  - name: "Theory of Computation"
+    paper: CS paper
+    weight_marks: [9, 7, 9]
+    videos:
+      - {query: "GATE CSE Theory of Computation full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Theory of Computation previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Regular expressions and finite automata"}
+      - {en: "Context-free grammars and push-down automata"}
+      - {en: "Regular and context-free languages, pumping lemma"}
+      - {en: "Turing machines and undecidability"}
+  - name: "Compiler Design"
+    paper: CS paper
+    weight_marks: [5, 8, 5]
+    videos:
+      - {query: "GATE CSE Compiler Design full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Compiler Design previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Lexical analysis, parsing, syntax-directed translation"}
+      - {en: "Runtime environments"}
+      - {en: "Intermediate code generation"}
+      - {en: "Local optimisation"}
+      - {en: "Data flow analyses: constant propagation, liveness analysis, common subexpression elimination"}
+  - name: "Operating System"
+    paper: CS paper
+    weight_marks: [7, 10, 8]
+    videos:
+      - {query: "GATE CSE Operating System full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Operating System previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "System calls, processes, threads, inter-process communication"}
+      - {en: "Concurrency and synchronisation"}
+      - {en: "Deadlock"}
+      - {en: "CPU and I/O scheduling"}
+      - {en: "Memory management and virtual memory"}
+      - {en: "File systems"}
+  - name: "Databases"
+    paper: CS paper
+    weight_marks: [5, 8, 8]
+    videos:
+      - {query: "GATE CSE Databases full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Databases previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "ER-model"}
+      - {en: "Relational model: relational algebra, tuple calculus, SQL"}
+      - {en: "Integrity constraints, normal forms"}
+      - {en: "File organisation, indexing (B and B+ trees)"}
+      - {en: "Transactions and concurrency control"}
+  - name: "Computer Networks"
+    paper: CS paper
+    weight_marks: [8, 9, 8]
+    videos:
+      - {query: "GATE CSE Computer Networks full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE Computer Networks previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Packet, circuit and virtual circuit switching"}
+      - {en: "Data link layer: framing, error detection, MAC, Ethernet bridging"}
+      - {en: "Routing protocols: shortest path, flooding, distance vector, link state"}
+      - {en: "Fragmentation and IP addressing, IPv4, CIDR notation"}
+      - {en: "Transport layer: flow control and congestion control, UDP, TCP, sockets"}
+      - {en: "Application layer: DNS, HTTP (2027: only these two)"}
+  - name: "General Aptitude"
+    paper: CS paper
+    weight_marks: [15, 15, 15]
+    videos:
+      - {query: "GATE CSE General Aptitude full course", status: TO_CURATE, url: null}
+      - {query: "GATE CSE General Aptitude previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Verbal aptitude"}
+      - {en: "Quantitative aptitude"}
+      - {en: "Analytical aptitude"}
+      - {en: "Spatial aptitude"}

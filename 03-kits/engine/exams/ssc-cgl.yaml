@@ -1,0 +1,150 @@
+# SSC CGL · Kalpa exam kit data. How to edit: see ../README.md.
+# Syllabus: Tier 1 + Tier 2 subjects as in recent SSC CGL notices. Re-check against the new notice before selling (data gap CGL-1).
+id: ssc-cgl
+short: SSC CGL
+name: SSC Combined Graduate Level Examination
+body: Staff Selection Commission (SSC)
+category: central-govt
+official_site: https://ssc.gov.in
+languages: [en]
+checked_on: 2026-11-07
+
+stages:
+  - {name: "Tier 1 · CBT: Reasoning, General Awareness, Quantitative Aptitude, English (screening)"}
+  - {name: "Tier 2 · Paper I: Maths, Reasoning, English, General Awareness, Computer Knowledge, Data Entry Speed Test"}
+  - {name: "Tier 2 · Paper II: Statistics (only for JSO posts)"}
+  - {name: "Document verification and post preference"}
+
+key_dates:
+  - {event: "Notification (next CGL cycle)", status: NOT_ANNOUNCED, date: null, source: "https://ssc.gov.in", note: "Check the SSC exam calendar and notice board on ssc.gov.in."}
+  - {event: "Last date to apply", status: NOT_ANNOUNCED, date: null, source: null, note: "Given in the notice."}
+  - {event: "Tier 1 exam", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Tier 1 result", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Tier 2 exam", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Final result", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+
+plan: {topics_per_day: 2, reminder_time: "07:00", revision_days: [1, 3, 7, 21]}
+
+materials:
+  - {title: "SSC official site: notices, syllabus, previous answer keys", url: "https://ssc.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "NCERT textbooks (free PDFs: history, geography, polity, science)", url: "https://ncert.nic.in/textbook.php", kind: textbook, status: TO_VERIFY}
+  - {title: "PIB press releases for current affairs", url: "https://pib.gov.in", kind: current-affairs, status: TO_VERIFY}
+  - {title: "Economic Survey of India (free)", url: "https://www.indiabudget.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "NIOS free study material (maths, science, social science)", url: "https://www.nios.ac.in", kind: textbook, status: TO_VERIFY}
+
+youtube:
+  query_template: "SSC CGL {topic}"
+
+subjects:
+  - name: Quantitative Aptitude
+    paper: Tier 1 + Tier 2
+    videos:
+      - {query: "SSC CGL maths arithmetic full chapter", status: TO_CURATE, url: null}
+      - {query: "SSC CGL advanced maths geometry trigonometry", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Number system"}
+      - {en: "Simplification and BODMAS"}
+      - {en: "Percentages"}
+      - {en: "Ratio and proportion"}
+      - {en: "Averages"}
+      - {en: "Profit, loss and discount"}
+      - {en: "Simple and compound interest"}
+      - {en: "Time and work"}
+      - {en: "Pipes and cisterns"}
+      - {en: "Time, speed and distance"}
+      - {en: "Mixture and alligation"}
+      - {en: "Algebra: identities and linear equations"}
+      - {en: "Geometry: triangles, congruence and similarity"}
+      - {en: "Geometry: circles, chords and tangents"}
+      - {en: "Mensuration: 2D figures"}
+      - {en: "Mensuration: 3D solids"}
+      - {en: "Trigonometry: ratios and identities"}
+      - {en: "Heights and distances"}
+      - {en: "Data interpretation: tables, bar, pie and line charts"}
+      - {en: "Statistics basics: mean, median, mode"}
+  - name: General Intelligence and Reasoning
+    paper: Tier 1 + Tier 2
+    videos:
+      - {query: "SSC CGL reasoning verbal full course", status: TO_CURATE, url: null}
+      - {query: "SSC CGL non verbal reasoning", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Analogy"}
+      - {en: "Classification (odd one out)"}
+      - {en: "Number and letter series"}
+      - {en: "Coding-decoding"}
+      - {en: "Blood relations"}
+      - {en: "Direction and distance"}
+      - {en: "Order and ranking"}
+      - {en: "Syllogism"}
+      - {en: "Venn diagrams"}
+      - {en: "Mathematical operations and symbol substitution"}
+      - {en: "Missing number and matrix"}
+      - {en: "Paper folding and cutting"}
+      - {en: "Mirror and water images"}
+      - {en: "Embedded figures and figure counting"}
+      - {en: "Dice and cubes"}
+      - {en: "Seating arrangement and puzzles"}
+  - name: English Comprehension
+    paper: Tier 1 + Tier 2
+    videos:
+      - {query: "SSC CGL English grammar full course", status: TO_CURATE, url: null}
+      - {query: "SSC CGL English vocabulary", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Reading comprehension"}
+      - {en: "Cloze test"}
+      - {en: "Spot the error"}
+      - {en: "Sentence improvement"}
+      - {en: "Fill in the blanks"}
+      - {en: "Synonyms"}
+      - {en: "Antonyms"}
+      - {en: "Idioms and phrases"}
+      - {en: "One-word substitution"}
+      - {en: "Spelling correction"}
+      - {en: "Active and passive voice"}
+      - {en: "Direct and indirect speech"}
+      - {en: "Sentence rearrangement (para jumbles)"}
+  - name: General Awareness
+    paper: Tier 1 + Tier 2
+    videos:
+      - {query: "SSC CGL general awareness static GK", status: TO_CURATE, url: null}
+      - {query: "SSC CGL current affairs", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Ancient and medieval Indian history"}
+      - {en: "Modern Indian history and the freedom struggle"}
+      - {en: "Indian polity and Constitution"}
+      - {en: "Indian economy"}
+      - {en: "Geography: India and the world"}
+      - {en: "Physics basics"}
+      - {en: "Chemistry basics"}
+      - {en: "Biology basics"}
+      - {en: "Art and culture"}
+      - {en: "Static GK: awards, books, important days"}
+      - {en: "Sports"}
+      - {en: "Government schemes"}
+      - {en: "Current affairs (last 6–12 months)"}
+  - name: Computer Knowledge
+    paper: Tier 2 Paper I
+    videos:
+      - {query: "SSC CGL computer knowledge tier 2", status: TO_CURATE, url: null}
+      - {query: "SSC CGL MS Office basics", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Computer fundamentals and hardware"}
+      - {en: "Software and operating systems"}
+      - {en: "MS Office: Word, Excel, PowerPoint"}
+      - {en: "Internet and email"}
+      - {en: "Networking basics"}
+      - {en: "Computer security: viruses, firewalls"}
+      - {en: "Data Entry Speed Test practice (typing)"}
+  - name: Statistics (JSO only)
+    paper: Tier 2 Paper II
+    videos:
+      - {query: "SSC CGL JSO statistics paper 2", status: TO_CURATE, url: null}
+      - {query: "SSC CGL statistics correlation regression", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Collection, classification and presentation of data"}
+      - {en: "Measures of central tendency"}
+      - {en: "Measures of dispersion"}
+      - {en: "Correlation and regression"}
+      - {en: "Probability theory and distributions"}
+      - {en: "Sampling theory"}
+      - {en: "Index numbers and time series"}

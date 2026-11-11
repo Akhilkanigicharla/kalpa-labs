@@ -1,0 +1,614 @@
+{
+"exam": "gate-2027-cs",
+"short": "GATE 2027 CS",
+"timezone": "Asia/Kolkata",
+"start": "2026-11-10",
+"topics_per_day": 2,
+"flow": "BotBhai Telegram (01-botbhai/botbhai/core/functions/telegram.js) · Library of Ranks channel / opted-in subscribers",
+"method": "sendMessage",
+"rules": [
+"At most one message a day per language.",
+"Send only to people who joined or opted in.",
+"No 'only today' or rank-guarantee wording.",
+"This file sends nothing; the bot flow fills chat_id and sends."
+],
+"messages": [
+{
+"id": "gate-2027-cs-20261110-en",
+"send_at": "2026-11-10T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study"
+],
+"text": "📚 GATE 2027 CS · Day 1\nNew today:\n• Discrete Mathematics: propositional and first-order logic\n• Sets, relations, functions, partial orders, lattices\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261111-en",
+"send_at": "2026-11-11T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 2\nNew today:\n• Monoids, groups\n• Graphs: connectivity, matching, colouring\nRevise today:\n• Discrete Mathematics: propositional and first-order logic\n• Sets, relations, functions, partial orders, lattices\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261112-en",
+"send_at": "2026-11-12T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 3\nNew today:\n• Combinatorics: counting, recurrences, generating functions\n• Linear Algebra: matrices, determinants, systems of linear equations\nRevise today:\n• Monoids, groups\n• Graphs: connectivity, matching, colouring\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261113-en",
+"send_at": "2026-11-13T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 4\nNew today:\n• Eigenvalues and eigenvectors, LU decomposition\n• Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration\nRevise today:\n• Discrete Mathematics: propositional and first-order logic\n• Sets, relations, functions, partial orders, lattices\n• Combinatorics: counting, recurrences, generating functions\n• Linear Algebra: matrices, determinants, systems of linear equations\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261114-en",
+"send_at": "2026-11-14T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 5\nNew today:\n• Probability: random variables, uniform, normal, exponential, Poisson, binomial\n• Mean, median, mode, standard deviation; conditional probability, Bayes\nRevise today:\n• Monoids, groups\n• Graphs: connectivity, matching, colouring\n• Eigenvalues and eigenvectors, LU decomposition\n• Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261115-en",
+"send_at": "2026-11-15T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 6\nNew today:\n• Boolean algebra\n• Combinational circuits\nRevise today:\n• Combinatorics: counting, recurrences, generating functions\n• Linear Algebra: matrices, determinants, systems of linear equations\n• Probability: random variables, uniform, normal, exponential, Poisson, binomial\n• Mean, median, mode, standard deviation; conditional probability, Bayes\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261116-en",
+"send_at": "2026-11-16T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 7\nNew today:\n• Sequential circuits\n• Minimisation\nRevise today:\n• Eigenvalues and eigenvectors, LU decomposition\n• Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration\n• Boolean algebra\n• Combinational circuits\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261117-en",
+"send_at": "2026-11-17T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 8\nNew today:\n• Number representations and computer arithmetic (fixed and floating point)\n• Machine instructions and addressing modes\nRevise today:\n• Discrete Mathematics: propositional and first-order logic\n• Sets, relations, functions, partial orders, lattices\n• Probability: random variables, uniform, normal, exponential, Poisson, binomial\n• Mean, median, mode, standard deviation; conditional probability, Bayes\n• Sequential circuits\n• Minimisation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261118-en",
+"send_at": "2026-11-18T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 9\nNew today:\n• ALU, data-path and control unit\n• Hardwired control design (2027)\nRevise today:\n• Monoids, groups\n• Graphs: connectivity, matching, colouring\n• Boolean algebra\n• Combinational circuits\n• Number representations and computer arithmetic (fixed and floating point)\n• Machine instructions and addressing modes\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261119-en",
+"send_at": "2026-11-19T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 10\nNew today:\n• Microprogrammed control design (2027)\n• Instruction pipelining, pipeline hazards\nRevise today:\n• Combinatorics: counting, recurrences, generating functions\n• Linear Algebra: matrices, determinants, systems of linear equations\n• Sequential circuits\n• Minimisation\n• ALU, data-path and control unit\n• Hardwired control design (2027)\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261120-en",
+"send_at": "2026-11-20T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 11\nNew today:\n• Memory hierarchy: cache memory\n• Cache memory mapping (2027)\nRevise today:\n• Eigenvalues and eigenvectors, LU decomposition\n• Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration\n• Number representations and computer arithmetic (fixed and floating point)\n• Machine instructions and addressing modes\n• Microprogrammed control design (2027)\n• Instruction pipelining, pipeline hazards\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261121-en",
+"send_at": "2026-11-21T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 12\nNew today:\n• I/O interface (interrupt and DMA mode)\n• Programming in C\nRevise today:\n• Probability: random variables, uniform, normal, exponential, Poisson, binomial\n• Mean, median, mode, standard deviation; conditional probability, Bayes\n• ALU, data-path and control unit\n• Hardwired control design (2027)\n• Memory hierarchy: cache memory\n• Cache memory mapping (2027)\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261122-en",
+"send_at": "2026-11-22T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 13\nNew today:\n• Recursion\n• Arrays, stacks, queues\nRevise today:\n• Boolean algebra\n• Combinational circuits\n• Microprogrammed control design (2027)\n• Instruction pipelining, pipeline hazards\n• I/O interface (interrupt and DMA mode)\n• Programming in C\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261123-en",
+"send_at": "2026-11-23T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 14\nNew today:\n• Linked lists\n• Trees, binary search trees, binary heaps\nRevise today:\n• Sequential circuits\n• Minimisation\n• Memory hierarchy: cache memory\n• Cache memory mapping (2027)\n• Recursion\n• Arrays, stacks, queues\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261124-en",
+"send_at": "2026-11-24T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 15\nNew today:\n• Graphs\n• Searching, sorting, hashing\nRevise today:\n• Number representations and computer arithmetic (fixed and floating point)\n• Machine instructions and addressing modes\n• I/O interface (interrupt and DMA mode)\n• Programming in C\n• Linked lists\n• Trees, binary search trees, binary heaps\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261125-en",
+"send_at": "2026-11-25T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 16\nNew today:\n• Asymptotic worst-case time and space complexity\n• Greedy\nRevise today:\n• ALU, data-path and control unit\n• Hardwired control design (2027)\n• Recursion\n• Arrays, stacks, queues\n• Graphs\n• Searching, sorting, hashing\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261126-en",
+"send_at": "2026-11-26T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 17\nNew today:\n• Divide-and-conquer\n• Dynamic programming\nRevise today:\n• Microprogrammed control design (2027)\n• Instruction pipelining, pipeline hazards\n• Linked lists\n• Trees, binary search trees, binary heaps\n• Asymptotic worst-case time and space complexity\n• Greedy\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261127-en",
+"send_at": "2026-11-27T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 18\nNew today:\n• Graph traversals, minimum spanning trees, shortest paths\n• Regular expressions and finite automata\nRevise today:\n• Memory hierarchy: cache memory\n• Cache memory mapping (2027)\n• Graphs\n• Searching, sorting, hashing\n• Divide-and-conquer\n• Dynamic programming\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261128-en",
+"send_at": "2026-11-28T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 19\nNew today:\n• Context-free grammars and push-down automata\n• Regular and context-free languages, pumping lemma\nRevise today:\n• I/O interface (interrupt and DMA mode)\n• Programming in C\n• Asymptotic worst-case time and space complexity\n• Greedy\n• Graph traversals, minimum spanning trees, shortest paths\n• Regular expressions and finite automata\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261129-en",
+"send_at": "2026-11-29T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 20\nNew today:\n• Turing machines and undecidability\n• Lexical analysis, parsing, syntax-directed translation\nRevise today:\n• Recursion\n• Arrays, stacks, queues\n• Divide-and-conquer\n• Dynamic programming\n• Context-free grammars and push-down automata\n• Regular and context-free languages, pumping lemma\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261130-en",
+"send_at": "2026-11-30T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 21\nNew today:\n• Runtime environments\n• Intermediate code generation\nRevise today:\n• Linked lists\n• Trees, binary search trees, binary heaps\n• Graph traversals, minimum spanning trees, shortest paths\n• Regular expressions and finite automata\n• Turing machines and undecidability\n• Lexical analysis, parsing, syntax-directed translation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261201-en",
+"send_at": "2026-12-01T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 22\nNew today:\n• Local optimisation\n• Data flow analyses: constant propagation, liveness analysis, common subexpression elimination\nRevise today:\n• Discrete Mathematics: propositional and first-order logic\n• Sets, relations, functions, partial orders, lattices\n• Graphs\n• Searching, sorting, hashing\n• Context-free grammars and push-down automata\n• Regular and context-free languages, pumping lemma\n• Runtime environments\n• Intermediate code generation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261202-en",
+"send_at": "2026-12-02T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 23\nNew today:\n• System calls, processes, threads, inter-process communication\n• Concurrency and synchronisation\nRevise today:\n• Monoids, groups\n• Graphs: connectivity, matching, colouring\n• Asymptotic worst-case time and space complexity\n• Greedy\n• Turing machines and undecidability\n• Lexical analysis, parsing, syntax-directed translation\n• Local optimisation\n• Data flow analyses: constant propagation, liveness analysis, common subexpression elimination\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261203-en",
+"send_at": "2026-12-03T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 24\nNew today:\n• Deadlock\n• CPU and I/O scheduling\nRevise today:\n• Combinatorics: counting, recurrences, generating functions\n• Linear Algebra: matrices, determinants, systems of linear equations\n• Divide-and-conquer\n• Dynamic programming\n• Runtime environments\n• Intermediate code generation\n• System calls, processes, threads, inter-process communication\n• Concurrency and synchronisation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261204-en",
+"send_at": "2026-12-04T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 25\nNew today:\n• Memory management and virtual memory\n• File systems\nRevise today:\n• Eigenvalues and eigenvectors, LU decomposition\n• Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration\n• Graph traversals, minimum spanning trees, shortest paths\n• Regular expressions and finite automata\n• Local optimisation\n• Data flow analyses: constant propagation, liveness analysis, common subexpression elimination\n• Deadlock\n• CPU and I/O scheduling\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261205-en",
+"send_at": "2026-12-05T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 26\nNew today:\n• ER-model\n• Relational model: relational algebra, tuple calculus, SQL\nRevise today:\n• Probability: random variables, uniform, normal, exponential, Poisson, binomial\n• Mean, median, mode, standard deviation; conditional probability, Bayes\n• Context-free grammars and push-down automata\n• Regular and context-free languages, pumping lemma\n• System calls, processes, threads, inter-process communication\n• Concurrency and synchronisation\n• Memory management and virtual memory\n• File systems\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261206-en",
+"send_at": "2026-12-06T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 27\nNew today:\n• Integrity constraints, normal forms\n• File organisation, indexing (B and B+ trees)\nRevise today:\n• Boolean algebra\n• Combinational circuits\n• Turing machines and undecidability\n• Lexical analysis, parsing, syntax-directed translation\n• Deadlock\n• CPU and I/O scheduling\n• ER-model\n• Relational model: relational algebra, tuple calculus, SQL\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261207-en",
+"send_at": "2026-12-07T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 28\nNew today:\n• Transactions and concurrency control\n• Packet, circuit and virtual circuit switching\nRevise today:\n• Sequential circuits\n• Minimisation\n• Runtime environments\n• Intermediate code generation\n• Memory management and virtual memory\n• File systems\n• Integrity constraints, normal forms\n• File organisation, indexing (B and B+ trees)\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261208-en",
+"send_at": "2026-12-08T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 29\nNew today:\n• Data link layer: framing, error detection, MAC, Ethernet bridging\n• Routing protocols: shortest path, flooding, distance vector, link state\nRevise today:\n• Number representations and computer arithmetic (fixed and floating point)\n• Machine instructions and addressing modes\n• Local optimisation\n• Data flow analyses: constant propagation, liveness analysis, common subexpression elimination\n• ER-model\n• Relational model: relational algebra, tuple calculus, SQL\n• Transactions and concurrency control\n• Packet, circuit and virtual circuit switching\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261209-en",
+"send_at": "2026-12-09T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 30\nNew today:\n• Fragmentation and IP addressing, IPv4, CIDR notation\n• Transport layer: flow control and congestion control, UDP, TCP, sockets\nRevise today:\n• ALU, data-path and control unit\n• Hardwired control design (2027)\n• System calls, processes, threads, inter-process communication\n• Concurrency and synchronisation\n• Integrity constraints, normal forms\n• File organisation, indexing (B and B+ trees)\n• Data link layer: framing, error detection, MAC, Ethernet bridging\n• Routing protocols: shortest path, flooding, distance vector, link state\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261210-en",
+"send_at": "2026-12-10T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 31\nNew today:\n• Application layer: DNS, HTTP (2027: only these two)\n• Verbal aptitude\nRevise today:\n• Microprogrammed control design (2027)\n• Instruction pipelining, pipeline hazards\n• Deadlock\n• CPU and I/O scheduling\n• Transactions and concurrency control\n• Packet, circuit and virtual circuit switching\n• Fragmentation and IP addressing, IPv4, CIDR notation\n• Transport layer: flow control and congestion control, UDP, TCP, sockets\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261211-en",
+"send_at": "2026-12-11T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 32\nNew today:\n• Quantitative aptitude\n• Analytical aptitude\nRevise today:\n• Memory hierarchy: cache memory\n• Cache memory mapping (2027)\n• Memory management and virtual memory\n• File systems\n• Data link layer: framing, error detection, MAC, Ethernet bridging\n• Routing protocols: shortest path, flooding, distance vector, link state\n• Application layer: DNS, HTTP (2027: only these two)\n• Verbal aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261212-en",
+"send_at": "2026-12-12T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 33\nNew today:\n• Spatial aptitude\nRevise today:\n• I/O interface (interrupt and DMA mode)\n• Programming in C\n• ER-model\n• Relational model: relational algebra, tuple calculus, SQL\n• Fragmentation and IP addressing, IPv4, CIDR notation\n• Transport layer: flow control and congestion control, UDP, TCP, sockets\n• Quantitative aptitude\n• Analytical aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261213-en",
+"send_at": "2026-12-13T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 34\nRevise today:\n• Recursion\n• Arrays, stacks, queues\n• Integrity constraints, normal forms\n• File organisation, indexing (B and B+ trees)\n• Application layer: DNS, HTTP (2027: only these two)\n• Verbal aptitude\n• Spatial aptitude\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261214-en",
+"send_at": "2026-12-14T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 35\nRevise today:\n• Linked lists\n• Trees, binary search trees, binary heaps\n• Transactions and concurrency control\n• Packet, circuit and virtual circuit switching\n• Quantitative aptitude\n• Analytical aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261215-en",
+"send_at": "2026-12-15T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 36\nRevise today:\n• Graphs\n• Searching, sorting, hashing\n• Data link layer: framing, error detection, MAC, Ethernet bridging\n• Routing protocols: shortest path, flooding, distance vector, link state\n• Spatial aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261216-en",
+"send_at": "2026-12-16T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 37\nRevise today:\n• Asymptotic worst-case time and space complexity\n• Greedy\n• Fragmentation and IP addressing, IPv4, CIDR notation\n• Transport layer: flow control and congestion control, UDP, TCP, sockets\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261217-en",
+"send_at": "2026-12-17T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 38\nRevise today:\n• Divide-and-conquer\n• Dynamic programming\n• Application layer: DNS, HTTP (2027: only these two)\n• Verbal aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261218-en",
+"send_at": "2026-12-18T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 39\nRevise today:\n• Graph traversals, minimum spanning trees, shortest paths\n• Regular expressions and finite automata\n• Quantitative aptitude\n• Analytical aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261219-en",
+"send_at": "2026-12-19T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 40\nRevise today:\n• Context-free grammars and push-down automata\n• Regular and context-free languages, pumping lemma\n• Spatial aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261220-en",
+"send_at": "2026-12-20T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 41\nRevise today:\n• Turing machines and undecidability\n• Lexical analysis, parsing, syntax-directed translation\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261221-en",
+"send_at": "2026-12-21T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 42\nRevise today:\n• Runtime environments\n• Intermediate code generation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261222-en",
+"send_at": "2026-12-22T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 43\nRevise today:\n• Local optimisation\n• Data flow analyses: constant propagation, liveness analysis, common subexpression elimination\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261223-en",
+"send_at": "2026-12-23T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 44\nRevise today:\n• System calls, processes, threads, inter-process communication\n• Concurrency and synchronisation\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261224-en",
+"send_at": "2026-12-24T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 45\nRevise today:\n• Deadlock\n• CPU and I/O scheduling\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261225-en",
+"send_at": "2026-12-25T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 46\nRevise today:\n• Memory management and virtual memory\n• File systems\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261226-en",
+"send_at": "2026-12-26T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 47\nRevise today:\n• ER-model\n• Relational model: relational algebra, tuple calculus, SQL\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261227-en",
+"send_at": "2026-12-27T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 GATE 2027 CS · Day 48\nRevise today:\n• Integrity constraints, normal forms\n• File organisation, indexing (B and B+ trees)\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20261228-en",
+"send_at": "2026-12-28T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 49\nRevise today:\n• Transactions and concurrency control\n• Packet, circuit and virtual circuit switching\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261229-en",
+"send_at": "2026-12-29T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 50\nRevise today:\n• Data link layer: framing, error detection, MAC, Ethernet bridging\n• Routing protocols: shortest path, flooding, distance vector, link state\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261230-en",
+"send_at": "2026-12-30T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 51\nRevise today:\n• Fragmentation and IP addressing, IPv4, CIDR notation\n• Transport layer: flow control and congestion control, UDP, TCP, sockets\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20261231-en",
+"send_at": "2026-12-31T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 52\nRevise today:\n• Application layer: DNS, HTTP (2027: only these two)\n• Verbal aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20270101-en",
+"send_at": "2027-01-01T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 53\nRevise today:\n• Quantitative aptitude\n• Analytical aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20270102-en",
+"send_at": "2027-01-02T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 GATE 2027 CS · Day 54\nRevise today:\n• Spatial aptitude\nMark them Done in your tracker."
+},
+{
+"id": "gate-2027-cs-20270103-en",
+"send_at": "2027-01-03T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"weekly"
+],
+"text": "🗓 GATE 2027 CS · weekly check\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20270110-en",
+"send_at": "2027-01-10T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"weekly"
+],
+"text": "🗓 GATE 2027 CS · weekly check\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20270117-en",
+"send_at": "2027-01-17T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"weekly"
+],
+"text": "🗓 GATE 2027 CS · weekly check\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20270124-en",
+"send_at": "2027-01-24T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"weekly"
+],
+"text": "🗓 GATE 2027 CS · weekly check\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20270130-en",
+"send_at": "2027-01-30T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"date_alert"
+],
+"text": "📌 GATE 2027 CS\n⏰ 7 days to Exam day (one session per paper; your paper's day is on the admit card) (06 Feb 2027). Official: https://gate2027.iitm.ac.in"
+},
+{
+"id": "gate-2027-cs-20270131-en",
+"send_at": "2027-01-31T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"weekly"
+],
+"text": "🗓 GATE 2027 CS · weekly check\n🗓 Weekly check: update your progress %.\nNot announced yet: Admit card download, Result. Only trust https://gate2027.iitm.ac.in."
+},
+{
+"id": "gate-2027-cs-20270205-en",
+"send_at": "2027-02-05T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"date_alert"
+],
+"text": "📌 GATE 2027 CS\n⏰ Tomorrow: Exam day (one session per paper; your paper's day is on the admit card). Official: https://gate2027.iitm.ac.in"
+},
+{
+"id": "gate-2027-cs-20270206-en",
+"send_at": "2027-02-06T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"date_alert"
+],
+"text": "📌 GATE 2027 CS\n📌 Today: Exam day (one session per paper; your paper's day is on the admit card). All the best!"
+}
+]
+}

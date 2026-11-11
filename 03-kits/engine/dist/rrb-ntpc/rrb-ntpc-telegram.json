@@ -1,0 +1,522 @@
+{
+"exam": "rrb-ntpc",
+"short": "RRB NTPC",
+"timezone": "Asia/Kolkata",
+"start": "2026-11-10",
+"topics_per_day": 2,
+"flow": "BotBhai Telegram (01-botbhai/botbhai/core/functions/telegram.js) · Library of Ranks channel / opted-in subscribers",
+"method": "sendMessage",
+"rules": [
+"At most one message a day per language.",
+"Send only to people who joined or opted in.",
+"No 'only today' or rank-guarantee wording.",
+"This file sends nothing; the bot flow fills chat_id and sends."
+],
+"messages": [
+{
+"id": "rrb-ntpc-20261110-en",
+"send_at": "2026-11-10T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study"
+],
+"text": "📚 RRB NTPC · Day 1\nNew today:\n• Number system\n• Decimals and fractions\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261111-en",
+"send_at": "2026-11-11T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 2\nNew today:\n• LCM and HCF\n• Ratio and proportion\nRevise today:\n• Number system\n• Decimals and fractions\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261112-en",
+"send_at": "2026-11-12T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 3\nNew today:\n• Percentage\n• Mensuration\nRevise today:\n• LCM and HCF\n• Ratio and proportion\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261113-en",
+"send_at": "2026-11-13T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 4\nNew today:\n• Time and work\n• Time and distance\nRevise today:\n• Number system\n• Decimals and fractions\n• Percentage\n• Mensuration\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261114-en",
+"send_at": "2026-11-14T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 5\nNew today:\n• Simple and compound interest\n• Profit and loss\nRevise today:\n• LCM and HCF\n• Ratio and proportion\n• Time and work\n• Time and distance\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261115-en",
+"send_at": "2026-11-15T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 6\nNew today:\n• Elementary algebra\n• Geometry\nRevise today:\n• Percentage\n• Mensuration\n• Simple and compound interest\n• Profit and loss\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261116-en",
+"send_at": "2026-11-16T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 7\nNew today:\n• Trigonometry\n• Elementary statistics\nRevise today:\n• Time and work\n• Time and distance\n• Elementary algebra\n• Geometry\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261117-en",
+"send_at": "2026-11-17T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 8\nNew today:\n• Square root\n• Age calculations\nRevise today:\n• Number system\n• Decimals and fractions\n• Simple and compound interest\n• Profit and loss\n• Trigonometry\n• Elementary statistics\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261118-en",
+"send_at": "2026-11-18T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 9\nNew today:\n• Calendar and clock\n• Pipes and cisterns\nRevise today:\n• LCM and HCF\n• Ratio and proportion\n• Elementary algebra\n• Geometry\n• Square root\n• Age calculations\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261119-en",
+"send_at": "2026-11-19T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 10\nNew today:\n• Analogies\n• Completion of number and alphabetical series\nRevise today:\n• Percentage\n• Mensuration\n• Trigonometry\n• Elementary statistics\n• Calendar and clock\n• Pipes and cisterns\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261120-en",
+"send_at": "2026-11-20T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 11\nNew today:\n• Coding and decoding\n• Mathematical operations\nRevise today:\n• Time and work\n• Time and distance\n• Square root\n• Age calculations\n• Analogies\n• Completion of number and alphabetical series\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261121-en",
+"send_at": "2026-11-21T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 12\nNew today:\n• Similarities and differences\n• Relationships\nRevise today:\n• Simple and compound interest\n• Profit and loss\n• Calendar and clock\n• Pipes and cisterns\n• Coding and decoding\n• Mathematical operations\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261122-en",
+"send_at": "2026-11-22T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 13\nNew today:\n• Analytical reasoning\n• Syllogism\nRevise today:\n• Elementary algebra\n• Geometry\n• Analogies\n• Completion of number and alphabetical series\n• Similarities and differences\n• Relationships\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261123-en",
+"send_at": "2026-11-23T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 14\nNew today:\n• Jumbling\n• Venn diagrams\nRevise today:\n• Trigonometry\n• Elementary statistics\n• Coding and decoding\n• Mathematical operations\n• Analytical reasoning\n• Syllogism\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261124-en",
+"send_at": "2026-11-24T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 15\nNew today:\n• Puzzles\n• Data sufficiency\nRevise today:\n• Square root\n• Age calculations\n• Similarities and differences\n• Relationships\n• Jumbling\n• Venn diagrams\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261125-en",
+"send_at": "2026-11-25T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 16\nNew today:\n• Statement and conclusion\n• Statement and course of action\nRevise today:\n• Calendar and clock\n• Pipes and cisterns\n• Analytical reasoning\n• Syllogism\n• Puzzles\n• Data sufficiency\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261126-en",
+"send_at": "2026-11-26T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 17\nNew today:\n• Decision making\n• Maps\nRevise today:\n• Analogies\n• Completion of number and alphabetical series\n• Jumbling\n• Venn diagrams\n• Statement and conclusion\n• Statement and course of action\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261127-en",
+"send_at": "2026-11-27T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 18\nNew today:\n• Interpretation of graphs\n• Current events of national and international importance\nRevise today:\n• Coding and decoding\n• Mathematical operations\n• Puzzles\n• Data sufficiency\n• Decision making\n• Maps\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261128-en",
+"send_at": "2026-11-28T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 19\nNew today:\n• Games and sports\n• Art and culture of India\nRevise today:\n• Similarities and differences\n• Relationships\n• Statement and conclusion\n• Statement and course of action\n• Interpretation of graphs\n• Current events of national and international importance\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261129-en",
+"send_at": "2026-11-29T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 20\nNew today:\n• Indian literature\n• Monuments and places of India\nRevise today:\n• Analytical reasoning\n• Syllogism\n• Decision making\n• Maps\n• Games and sports\n• Art and culture of India\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261130-en",
+"send_at": "2026-11-30T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 21\nNew today:\n• General science: physics (up to 10th CBSE)\n• General science: chemistry (up to 10th CBSE)\nRevise today:\n• Jumbling\n• Venn diagrams\n• Interpretation of graphs\n• Current events of national and international importance\n• Indian literature\n• Monuments and places of India\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261201-en",
+"send_at": "2026-12-01T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 22\nNew today:\n• General science: biology and life science (up to 10th CBSE)\n• History of India and the freedom struggle\nRevise today:\n• Number system\n• Decimals and fractions\n• Puzzles\n• Data sufficiency\n• Games and sports\n• Art and culture of India\n• General science: physics (up to 10th CBSE)\n• General science: chemistry (up to 10th CBSE)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261202-en",
+"send_at": "2026-12-02T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 23\nNew today:\n• Physical, social and economic geography of India and the world\n• Indian polity and governance: Constitution and political system\nRevise today:\n• LCM and HCF\n• Ratio and proportion\n• Statement and conclusion\n• Statement and course of action\n• Indian literature\n• Monuments and places of India\n• General science: biology and life science (up to 10th CBSE)\n• History of India and the freedom struggle\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261203-en",
+"send_at": "2026-12-03T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 24\nNew today:\n• Scientific and technological developments, incl. India's space and nuclear programmes\n• UN and other important world organisations\nRevise today:\n• Percentage\n• Mensuration\n• Decision making\n• Maps\n• General science: physics (up to 10th CBSE)\n• General science: chemistry (up to 10th CBSE)\n• Physical, social and economic geography of India and the world\n• Indian polity and governance: Constitution and political system\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261204-en",
+"send_at": "2026-12-04T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 25\nNew today:\n• Environmental issues concerning India and the world\n• Basics of computers and computer applications\nRevise today:\n• Time and work\n• Time and distance\n• Interpretation of graphs\n• Current events of national and international importance\n• General science: biology and life science (up to 10th CBSE)\n• History of India and the freedom struggle\n• Scientific and technological developments, incl. India's space and nuclear programmes\n• UN and other important world organisations\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261205-en",
+"send_at": "2026-12-05T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 26\nNew today:\n• Common abbreviations\n• Transport systems in India (Railways)\nRevise today:\n• Simple and compound interest\n• Profit and loss\n• Games and sports\n• Art and culture of India\n• Physical, social and economic geography of India and the world\n• Indian polity and governance: Constitution and political system\n• Environmental issues concerning India and the world\n• Basics of computers and computer applications\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261206-en",
+"send_at": "2026-12-06T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 27\nNew today:\n• Indian economy\n• Famous personalities of India and the world\nRevise today:\n• Elementary algebra\n• Geometry\n• Indian literature\n• Monuments and places of India\n• Scientific and technological developments, incl. India's space and nuclear programmes\n• UN and other important world organisations\n• Common abbreviations\n• Transport systems in India (Railways)\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261207-en",
+"send_at": "2026-12-07T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 28\nNew today:\n• Flagship government programmes\n• Flora and fauna of India\nRevise today:\n• Trigonometry\n• Elementary statistics\n• General science: physics (up to 10th CBSE)\n• General science: chemistry (up to 10th CBSE)\n• Environmental issues concerning India and the world\n• Basics of computers and computer applications\n• Indian economy\n• Famous personalities of India and the world\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261208-en",
+"send_at": "2026-12-08T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 29\nNew today:\n• Important government and public sector organisations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)\nRevise today:\n• Square root\n• Age calculations\n• General science: biology and life science (up to 10th CBSE)\n• History of India and the freedom struggle\n• Common abbreviations\n• Transport systems in India (Railways)\n• Flagship government programmes\n• Flora and fauna of India\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261209-en",
+"send_at": "2026-12-09T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 30\nNew today:\n• CBAT (aptitude test) practice for Station Master and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nRevise today:\n• Calendar and clock\n• Pipes and cisterns\n• Physical, social and economic geography of India and the world\n• Indian polity and governance: Constitution and political system\n• Indian economy\n• Famous personalities of India and the world\n• Important government and public sector organisations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261210-en",
+"send_at": "2026-12-10T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 RRB NTPC · Day 31\nNew today:\n• Full mock tests: CBT 2 pattern\nRevise today:\n• Analogies\n• Completion of number and alphabetical series\n• Scientific and technological developments, incl. India's space and nuclear programmes\n• UN and other important world organisations\n• Flagship government programmes\n• Flora and fauna of India\n• CBAT (aptitude test) practice for Station Master and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261211-en",
+"send_at": "2026-12-11T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 32\nRevise today:\n• Coding and decoding\n• Mathematical operations\n• Environmental issues concerning India and the world\n• Basics of computers and computer applications\n• Important government and public sector organisations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)\n• Full mock tests: CBT 2 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261212-en",
+"send_at": "2026-12-12T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 33\nRevise today:\n• Similarities and differences\n• Relationships\n• Common abbreviations\n• Transport systems in India (Railways)\n• CBAT (aptitude test) practice for Station Master and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261213-en",
+"send_at": "2026-12-13T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 34\nRevise today:\n• Analytical reasoning\n• Syllogism\n• Indian economy\n• Famous personalities of India and the world\n• Full mock tests: CBT 2 pattern\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261214-en",
+"send_at": "2026-12-14T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 35\nRevise today:\n• Jumbling\n• Venn diagrams\n• Flagship government programmes\n• Flora and fauna of India\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261215-en",
+"send_at": "2026-12-15T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 36\nRevise today:\n• Puzzles\n• Data sufficiency\n• Important government and public sector organisations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261216-en",
+"send_at": "2026-12-16T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 37\nRevise today:\n• Statement and conclusion\n• Statement and course of action\n• CBAT (aptitude test) practice for Station Master and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261217-en",
+"send_at": "2026-12-17T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 38\nRevise today:\n• Decision making\n• Maps\n• Full mock tests: CBT 2 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261218-en",
+"send_at": "2026-12-18T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 39\nRevise today:\n• Interpretation of graphs\n• Current events of national and international importance\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261219-en",
+"send_at": "2026-12-19T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 40\nRevise today:\n• Games and sports\n• Art and culture of India\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261220-en",
+"send_at": "2026-12-20T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 41\nRevise today:\n• Indian literature\n• Monuments and places of India\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261221-en",
+"send_at": "2026-12-21T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 42\nRevise today:\n• General science: physics (up to 10th CBSE)\n• General science: chemistry (up to 10th CBSE)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261222-en",
+"send_at": "2026-12-22T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 43\nRevise today:\n• General science: biology and life science (up to 10th CBSE)\n• History of India and the freedom struggle\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261223-en",
+"send_at": "2026-12-23T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 44\nRevise today:\n• Physical, social and economic geography of India and the world\n• Indian polity and governance: Constitution and political system\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261224-en",
+"send_at": "2026-12-24T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 45\nRevise today:\n• Scientific and technological developments, incl. India's space and nuclear programmes\n• UN and other important world organisations\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261225-en",
+"send_at": "2026-12-25T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 46\nRevise today:\n• Environmental issues concerning India and the world\n• Basics of computers and computer applications\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261226-en",
+"send_at": "2026-12-26T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 47\nRevise today:\n• Common abbreviations\n• Transport systems in India (Railways)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261227-en",
+"send_at": "2026-12-27T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 RRB NTPC · Day 48\nRevise today:\n• Indian economy\n• Famous personalities of India and the world\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Next CEN (notification), Last date to apply, CBT 1, CBT 1 result, CBT 2, Typing Skill Test / CBAT. Only trust https://www.rrbapply.gov.in."
+},
+{
+"id": "rrb-ntpc-20261228-en",
+"send_at": "2026-12-28T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 49\nRevise today:\n• Flagship government programmes\n• Flora and fauna of India\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261229-en",
+"send_at": "2026-12-29T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 50\nRevise today:\n• Important government and public sector organisations of India\n• Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261230-en",
+"send_at": "2026-12-30T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 51\nRevise today:\n• CBAT (aptitude test) practice for Station Master and Traffic Assistant\n• Full mock tests: CBT 1 pattern\nMark them Done in your tracker."
+},
+{
+"id": "rrb-ntpc-20261231-en",
+"send_at": "2026-12-31T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 RRB NTPC · Day 52\nRevise today:\n• Full mock tests: CBT 2 pattern\nMark them Done in your tracker."
+}
+]
+}

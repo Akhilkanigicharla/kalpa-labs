@@ -1,0 +1,123 @@
+# RRB NTPC · Kalpa exam kit data. How to edit: see ../README.md.
+# Syllabus: CBT 1 / CBT 2 subjects as listed in recent RRB NTPC CEN notices (graduate and undergraduate levels share them).
+# Re-check against the next CEN before selling (data gap NTPC-1).
+id: rrb-ntpc
+short: RRB NTPC
+name: RRB Non-Technical Popular Categories (NTPC)
+body: Railway Recruitment Boards (RRBs)
+category: central-govt
+official_site: https://www.rrbapply.gov.in
+languages: [en]
+checked_on: 2026-11-07
+
+stages:
+  - {name: "CBT 1 · Mathematics, General Intelligence and Reasoning, General Awareness (screening)"}
+  - {name: "CBT 2 · same subjects, higher level (counts for merit)"}
+  - {name: "Typing Skill Test (clerk / typist posts) or CBAT (Station Master, Traffic Assistant)"}
+  - {name: "Document verification and medical exam"}
+
+key_dates:
+  - {event: "Next CEN (notification)", status: NOT_ANNOUNCED, date: null, source: "https://www.rrbapply.gov.in", note: "Check rrbapply.gov.in and your regional RRB site."}
+  - {event: "Last date to apply", status: NOT_ANNOUNCED, date: null, source: null, note: "Given in the CEN."}
+  - {event: "CBT 1", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "CBT 1 result", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "CBT 2", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Typing Skill Test / CBAT", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+
+plan: {topics_per_day: 2, reminder_time: "07:00", revision_days: [1, 3, 7, 21]}
+
+materials:
+  - {title: "RRB apply portal: CEN notices, syllabus, answer keys", url: "https://www.rrbapply.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "NCERT textbooks up to class 10 (free; RRB general science is 10th CBSE level)", url: "https://ncert.nic.in/textbook.php", kind: textbook, status: TO_VERIFY}
+  - {title: "PIB press releases for current affairs", url: "https://pib.gov.in", kind: current-affairs, status: TO_VERIFY}
+  - {title: "Indian Railways official site (railway GK)", url: "https://indianrailways.gov.in", kind: official, status: TO_VERIFY}
+
+youtube:
+  query_template: "RRB NTPC {topic}"
+
+subjects:
+  - name: Mathematics
+    paper: CBT 1 + CBT 2
+    videos:
+      - {query: "RRB NTPC maths full course", status: TO_CURATE, url: null}
+      - {query: "RRB NTPC maths previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Number system"}
+      - {en: "Decimals and fractions"}
+      - {en: "LCM and HCF"}
+      - {en: "Ratio and proportion"}
+      - {en: "Percentage"}
+      - {en: "Mensuration"}
+      - {en: "Time and work"}
+      - {en: "Time and distance"}
+      - {en: "Simple and compound interest"}
+      - {en: "Profit and loss"}
+      - {en: "Elementary algebra"}
+      - {en: "Geometry"}
+      - {en: "Trigonometry"}
+      - {en: "Elementary statistics"}
+      - {en: "Square root"}
+      - {en: "Age calculations"}
+      - {en: "Calendar and clock"}
+      - {en: "Pipes and cisterns"}
+  - name: General Intelligence and Reasoning
+    paper: CBT 1 + CBT 2
+    videos:
+      - {query: "RRB NTPC reasoning full course", status: TO_CURATE, url: null}
+      - {query: "RRB NTPC reasoning previous year questions", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Analogies"}
+      - {en: "Completion of number and alphabetical series"}
+      - {en: "Coding and decoding"}
+      - {en: "Mathematical operations"}
+      - {en: "Similarities and differences"}
+      - {en: "Relationships"}
+      - {en: "Analytical reasoning"}
+      - {en: "Syllogism"}
+      - {en: "Jumbling"}
+      - {en: "Venn diagrams"}
+      - {en: "Puzzles"}
+      - {en: "Data sufficiency"}
+      - {en: "Statement and conclusion"}
+      - {en: "Statement and course of action"}
+      - {en: "Decision making"}
+      - {en: "Maps"}
+      - {en: "Interpretation of graphs"}
+  - name: General Awareness
+    paper: CBT 1 + CBT 2
+    videos:
+      - {query: "RRB NTPC general awareness static GK", status: TO_CURATE, url: null}
+      - {query: "RRB NTPC general science", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Current events of national and international importance"}
+      - {en: "Games and sports"}
+      - {en: "Art and culture of India"}
+      - {en: "Indian literature"}
+      - {en: "Monuments and places of India"}
+      - {en: "General science: physics (up to 10th CBSE)"}
+      - {en: "General science: chemistry (up to 10th CBSE)"}
+      - {en: "General science: biology and life science (up to 10th CBSE)"}
+      - {en: "History of India and the freedom struggle"}
+      - {en: "Physical, social and economic geography of India and the world"}
+      - {en: "Indian polity and governance: Constitution and political system"}
+      - {en: "Scientific and technological developments, incl. India's space and nuclear programmes"}
+      - {en: "UN and other important world organisations"}
+      - {en: "Environmental issues concerning India and the world"}
+      - {en: "Basics of computers and computer applications"}
+      - {en: "Common abbreviations"}
+      - {en: "Transport systems in India (Railways)"}
+      - {en: "Indian economy"}
+      - {en: "Famous personalities of India and the world"}
+      - {en: "Flagship government programmes"}
+      - {en: "Flora and fauna of India"}
+      - {en: "Important government and public sector organisations of India"}
+  - name: Skill tests
+    paper: Stage 3
+    videos:
+      - {query: "RRB NTPC typing skill test practice", status: TO_CURATE, url: null}
+      - {query: "RRB NTPC CBAT psycho test station master", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Typing Skill Test practice (English 30 wpm / Hindi 25 wpm)"}
+      - {en: "CBAT (aptitude test) practice for Station Master and Traffic Assistant"}
+      - {en: "Full mock tests: CBT 1 pattern"}
+      - {en: "Full mock tests: CBT 2 pattern"}

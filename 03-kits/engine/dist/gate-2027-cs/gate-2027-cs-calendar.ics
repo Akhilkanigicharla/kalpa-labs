@@ -1,0 +1,1181 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kalpa Labs//Exam Kit Engine//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:GATE 2027 CS · Kalpa Exam Kit
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:gate-2027-cs-date-0@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270206
+DTEND;VALUE=DATE:20270207
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-date-1@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270207
+DTEND;VALUE=DATE:20270208
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-date-2@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270213
+DTEND;VALUE=DATE:20270214
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-date-3@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270214
+DTEND;VALUE=DATE:20270215
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-date-4@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270220
+DTEND;VALUE=DATE:20270221
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-date-5@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;VALUE=DATE:20270221
+DTEND;VALUE=DATE:20270222
+SUMMARY:GATE 2027 CS: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+DESCRIPTION:IIT Madras press release\; checked 16 Oct 2026 by the GATE kit.
+  Official: https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:7 days to Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Tomorrow: Exam day (one session per paper\; your paper's day is
+  on the admit card)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261110@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261110T073000
+DTEND;TZID=Asia/Kolkata:20261110T083000
+SUMMARY:GATE 2027 CS · Day 1: Discrete Mathematics: propositional and firs
+ t-order logic + Sets\, relations\, functions\, partial orders\, lattices
+DESCRIPTION:New today:\n• Discrete Mathematics: propositional and first-o
+ rder logic\n• Sets\, relations\, functions\, partial orders\, lattices\n
+ Mark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261111@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261111T073000
+DTEND;TZID=Asia/Kolkata:20261111T083000
+SUMMARY:GATE 2027 CS · Day 2: Monoids\, groups + Graphs: connectivity\, ma
+ tching\, colouring · revise 2
+DESCRIPTION:New today:\n• Monoids\, groups\n• Graphs: connectivity\, ma
+ tching\, colouring\nRevise today:\n• Discrete Mathematics: propositional
+  and first-order logic\n• Sets\, relations\, functions\, partial orders\
+ , lattices\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261112@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261112T073000
+DTEND;TZID=Asia/Kolkata:20261112T083000
+SUMMARY:GATE 2027 CS · Day 3: Combinatorics: counting\, recurrences\, gene
+ rating functions + Linear Algebra: matrices\, determinants\, systems of li
+ near equations · revise 2
+DESCRIPTION:New today:\n• Combinatorics: counting\, recurrences\, generat
+ ing functions\n• Linear Algebra: matrices\, determinants\, systems of li
+ near equations\nRevise today:\n• Monoids\, groups\n• Graphs: connectiv
+ ity\, matching\, colouring\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261113@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261113T073000
+DTEND;TZID=Asia/Kolkata:20261113T083000
+SUMMARY:GATE 2027 CS · Day 4: Eigenvalues and eigenvectors\, LU decomposit
+ ion + Calculus: limits\, continuity\, differentiability\, maxima and minim
+ a\, mean value theorem\, integration · revise 4
+DESCRIPTION:New today:\n• Eigenvalues and eigenvectors\, LU decomposition
+ \n• Calculus: limits\, continuity\, differentiability\, maxima and minim
+ a\, mean value theorem\, integration\nRevise today:\n• Discrete Mathemat
+ ics: propositional and first-order logic\n• Sets\, relations\, functions
+ \, partial orders\, lattices\n• Combinatorics: counting\, recurrences\, 
+ generating functions\n• Linear Algebra: matrices\, determinants\, system
+ s of linear equations\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261114@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261114T073000
+DTEND;TZID=Asia/Kolkata:20261114T083000
+SUMMARY:GATE 2027 CS · Day 5: Probability: random variables\, uniform\, no
+ rmal\, exponential\, Poisson\, binomial + Mean\, median\, mode\, standard 
+ deviation\; conditional probability\, Bayes · revise 4
+DESCRIPTION:New today:\n• Probability: random variables\, uniform\, norma
+ l\, exponential\, Poisson\, binomial\n• Mean\, median\, mode\, standard 
+ deviation\; conditional probability\, Bayes\nRevise today:\n• Monoids\, 
+ groups\n• Graphs: connectivity\, matching\, colouring\n• Eigenvalues a
+ nd eigenvectors\, LU decomposition\n• Calculus: limits\, continuity\, di
+ fferentiability\, maxima and minima\, mean value theorem\, integration\nMa
+ rk them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261115@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T073000
+DTEND;TZID=Asia/Kolkata:20261115T083000
+SUMMARY:GATE 2027 CS · Day 6: Boolean algebra + Combinational circuits · 
+ revise 4
+DESCRIPTION:New today:\n• Boolean algebra\n• Combinational circuits\nRe
+ vise today:\n• Combinatorics: counting\, recurrences\, generating functi
+ ons\n• Linear Algebra: matrices\, determinants\, systems of linear equat
+ ions\n• Probability: random variables\, uniform\, normal\, exponential\,
+  Poisson\, binomial\n• Mean\, median\, mode\, standard deviation\; condi
+ tional probability\, Bayes\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261116@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261116T073000
+DTEND;TZID=Asia/Kolkata:20261116T083000
+SUMMARY:GATE 2027 CS · Day 7: Sequential circuits + Minimisation · revise
+  4
+DESCRIPTION:New today:\n• Sequential circuits\n• Minimisation\nRevise t
+ oday:\n• Eigenvalues and eigenvectors\, LU decomposition\n• Calculus: 
+ limits\, continuity\, differentiability\, maxima and minima\, mean value t
+ heorem\, integration\n• Boolean algebra\n• Combinational circuits\nMar
+ k them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261117@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261117T073000
+DTEND;TZID=Asia/Kolkata:20261117T083000
+SUMMARY:GATE 2027 CS · Day 8: Number representations and computer arithmet
+ ic (fixed and floating point) + Machine instructions and addressing modes 
+ · revise 6
+DESCRIPTION:New today:\n• Number representations and computer arithmetic 
+ (fixed and floating point)\n• Machine instructions and addressing modes\
+ nRevise today:\n• Discrete Mathematics: propositional and first-order lo
+ gic\n• Sets\, relations\, functions\, partial orders\, lattices\n• Pro
+ bability: random variables\, uniform\, normal\, exponential\, Poisson\, bi
+ nomial\n• Mean\, median\, mode\, standard deviation\; conditional probab
+ ility\, Bayes\n• Sequential circuits\n• Minimisation\nMark them in you
+ r Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261118@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261118T073000
+DTEND;TZID=Asia/Kolkata:20261118T083000
+SUMMARY:GATE 2027 CS · Day 9: ALU\, data-path and control unit + Hardwired
+  control design (2027) · revise 6
+DESCRIPTION:New today:\n• ALU\, data-path and control unit\n• Hardwired
+  control design (2027)\nRevise today:\n• Monoids\, groups\n• Graphs: c
+ onnectivity\, matching\, colouring\n• Boolean algebra\n• Combinational
+  circuits\n• Number representations and computer arithmetic (fixed and f
+ loating point)\n• Machine instructions and addressing modes\nMark them i
+ n your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261119@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261119T073000
+DTEND;TZID=Asia/Kolkata:20261119T083000
+SUMMARY:GATE 2027 CS · Day 10: Microprogrammed control design (2027) + Ins
+ truction pipelining\, pipeline hazards · revise 6
+DESCRIPTION:New today:\n• Microprogrammed control design (2027)\n• Inst
+ ruction pipelining\, pipeline hazards\nRevise today:\n• Combinatorics: c
+ ounting\, recurrences\, generating functions\n• Linear Algebra: matrices
+ \, determinants\, systems of linear equations\n• Sequential circuits\n
+ • Minimisation\n• ALU\, data-path and control unit\n• Hardwired cont
+ rol design (2027)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261120@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261120T073000
+DTEND;TZID=Asia/Kolkata:20261120T083000
+SUMMARY:GATE 2027 CS · Day 11: Memory hierarchy: cache memory + Cache memo
+ ry mapping (2027) · revise 6
+DESCRIPTION:New today:\n• Memory hierarchy: cache memory\n• Cache memor
+ y mapping (2027)\nRevise today:\n• Eigenvalues and eigenvectors\, LU dec
+ omposition\n• Calculus: limits\, continuity\, differentiability\, maxima
+  and minima\, mean value theorem\, integration\n• Number representations
+  and computer arithmetic (fixed and floating point)\n• Machine instructi
+ ons and addressing modes\n• Microprogrammed control design (2027)\n• I
+ nstruction pipelining\, pipeline hazards\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261121@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261121T073000
+DTEND;TZID=Asia/Kolkata:20261121T083000
+SUMMARY:GATE 2027 CS · Day 12: I/O interface (interrupt and DMA mode) + Pr
+ ogramming in C · revise 6
+DESCRIPTION:New today:\n• I/O interface (interrupt and DMA mode)\n• Pro
+ gramming in C\nRevise today:\n• Probability: random variables\, uniform\
+ , normal\, exponential\, Poisson\, binomial\n• Mean\, median\, mode\, st
+ andard deviation\; conditional probability\, Bayes\n• ALU\, data-path an
+ d control unit\n• Hardwired control design (2027)\n• Memory hierarchy:
+  cache memory\n• Cache memory mapping (2027)\nMark them in your Kalpa tr
+ acker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261122@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261122T073000
+DTEND;TZID=Asia/Kolkata:20261122T083000
+SUMMARY:GATE 2027 CS · Day 13: Recursion + Arrays\, stacks\, queues · rev
+ ise 6
+DESCRIPTION:New today:\n• Recursion\n• Arrays\, stacks\, queues\nRevise
+  today:\n• Boolean algebra\n• Combinational circuits\n• Microprogram
+ med control design (2027)\n• Instruction pipelining\, pipeline hazards\n
+ • I/O interface (interrupt and DMA mode)\n• Programming in C\nMark the
+ m in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261123@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261123T073000
+DTEND;TZID=Asia/Kolkata:20261123T083000
+SUMMARY:GATE 2027 CS · Day 14: Linked lists + Trees\, binary search trees\
+ , binary heaps · revise 6
+DESCRIPTION:New today:\n• Linked lists\n• Trees\, binary search trees\,
+  binary heaps\nRevise today:\n• Sequential circuits\n• Minimisation\n
+ • Memory hierarchy: cache memory\n• Cache memory mapping (2027)\n• R
+ ecursion\n• Arrays\, stacks\, queues\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261124@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261124T073000
+DTEND;TZID=Asia/Kolkata:20261124T083000
+SUMMARY:GATE 2027 CS · Day 15: Graphs + Searching\, sorting\, hashing · r
+ evise 6
+DESCRIPTION:New today:\n• Graphs\n• Searching\, sorting\, hashing\nRevi
+ se today:\n• Number representations and computer arithmetic (fixed and f
+ loating point)\n• Machine instructions and addressing modes\n• I/O int
+ erface (interrupt and DMA mode)\n• Programming in C\n• Linked lists\n
+ • Trees\, binary search trees\, binary heaps\nMark them in your Kalpa tr
+ acker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261125@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261125T073000
+DTEND;TZID=Asia/Kolkata:20261125T083000
+SUMMARY:GATE 2027 CS · Day 16: Asymptotic worst-case time and space comple
+ xity + Greedy · revise 6
+DESCRIPTION:New today:\n• Asymptotic worst-case time and space complexity
+ \n• Greedy\nRevise today:\n• ALU\, data-path and control unit\n• Har
+ dwired control design (2027)\n• Recursion\n• Arrays\, stacks\, queues\
+ n• Graphs\n• Searching\, sorting\, hashing\nMark them in your Kalpa tr
+ acker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261126@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261126T073000
+DTEND;TZID=Asia/Kolkata:20261126T083000
+SUMMARY:GATE 2027 CS · Day 17: Divide-and-conquer + Dynamic programming ·
+  revise 6
+DESCRIPTION:New today:\n• Divide-and-conquer\n• Dynamic programming\nRe
+ vise today:\n• Microprogrammed control design (2027)\n• Instruction pi
+ pelining\, pipeline hazards\n• Linked lists\n• Trees\, binary search t
+ rees\, binary heaps\n• Asymptotic worst-case time and space complexity\n
+ • Greedy\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261127@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261127T073000
+DTEND;TZID=Asia/Kolkata:20261127T083000
+SUMMARY:GATE 2027 CS · Day 18: Graph traversals\, minimum spanning trees\,
+  shortest paths + Regular expressions and finite automata · revise 6
+DESCRIPTION:New today:\n• Graph traversals\, minimum spanning trees\, sho
+ rtest paths\n• Regular expressions and finite automata\nRevise today:\n
+ • Memory hierarchy: cache memory\n• Cache memory mapping (2027)\n• G
+ raphs\n• Searching\, sorting\, hashing\n• Divide-and-conquer\n• Dyna
+ mic programming\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261128@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261128T073000
+DTEND;TZID=Asia/Kolkata:20261128T083000
+SUMMARY:GATE 2027 CS · Day 19: Context-free grammars and push-down automat
+ a + Regular and context-free languages\, pumping lemma · revise 6
+DESCRIPTION:New today:\n• Context-free grammars and push-down automata\n
+ • Regular and context-free languages\, pumping lemma\nRevise today:\n•
+  I/O interface (interrupt and DMA mode)\n• Programming in C\n• Asympto
+ tic worst-case time and space complexity\n• Greedy\n• Graph traversals
+ \, minimum spanning trees\, shortest paths\n• Regular expressions and fi
+ nite automata\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261129@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261129T073000
+DTEND;TZID=Asia/Kolkata:20261129T083000
+SUMMARY:GATE 2027 CS · Day 20: Turing machines and undecidability + Lexica
+ l analysis\, parsing\, syntax-directed translation · revise 6
+DESCRIPTION:New today:\n• Turing machines and undecidability\n• Lexical
+  analysis\, parsing\, syntax-directed translation\nRevise today:\n• Recu
+ rsion\n• Arrays\, stacks\, queues\n• Divide-and-conquer\n• Dynamic p
+ rogramming\n• Context-free grammars and push-down automata\n• Regular 
+ and context-free languages\, pumping lemma\nMark them in your Kalpa tracke
+ r.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261130@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261130T073000
+DTEND;TZID=Asia/Kolkata:20261130T083000
+SUMMARY:GATE 2027 CS · Day 21: Runtime environments + Intermediate code ge
+ neration · revise 6
+DESCRIPTION:New today:\n• Runtime environments\n• Intermediate code gen
+ eration\nRevise today:\n• Linked lists\n• Trees\, binary search trees\
+ , binary heaps\n• Graph traversals\, minimum spanning trees\, shortest p
+ aths\n• Regular expressions and finite automata\n• Turing machines and
+  undecidability\n• Lexical analysis\, parsing\, syntax-directed translat
+ ion\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261201@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261201T073000
+DTEND;TZID=Asia/Kolkata:20261201T083000
+SUMMARY:GATE 2027 CS · Day 22: Local optimisation + Data flow analyses: co
+ nstant propagation\, liveness analysis\, common subexpression elimination 
+ · revise 8
+DESCRIPTION:New today:\n• Local optimisation\n• Data flow analyses: con
+ stant propagation\, liveness analysis\, common subexpression elimination\n
+ Revise today:\n• Discrete Mathematics: propositional and first-order log
+ ic\n• Sets\, relations\, functions\, partial orders\, lattices\n• Grap
+ hs\n• Searching\, sorting\, hashing\n• Context-free grammars and push-
+ down automata\n• Regular and context-free languages\, pumping lemma\n•
+  Runtime environments\n• Intermediate code generation\nMark them in your
+  Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261202@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261202T073000
+DTEND;TZID=Asia/Kolkata:20261202T083000
+SUMMARY:GATE 2027 CS · Day 23: System calls\, processes\, threads\, inter-
+ process communication + Concurrency and synchronisation · revise 8
+DESCRIPTION:New today:\n• System calls\, processes\, threads\, inter-proc
+ ess communication\n• Concurrency and synchronisation\nRevise today:\n•
+  Monoids\, groups\n• Graphs: connectivity\, matching\, colouring\n• As
+ ymptotic worst-case time and space complexity\n• Greedy\n• Turing mach
+ ines and undecidability\n• Lexical analysis\, parsing\, syntax-directed 
+ translation\n• Local optimisation\n• Data flow analyses: constant prop
+ agation\, liveness analysis\, common subexpression elimination\nMark them 
+ in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261203@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261203T073000
+DTEND;TZID=Asia/Kolkata:20261203T083000
+SUMMARY:GATE 2027 CS · Day 24: Deadlock + CPU and I/O scheduling · revise
+  8
+DESCRIPTION:New today:\n• Deadlock\n• CPU and I/O scheduling\nRevise to
+ day:\n• Combinatorics: counting\, recurrences\, generating functions\n
+ • Linear Algebra: matrices\, determinants\, systems of linear equations\
+ n• Divide-and-conquer\n• Dynamic programming\n• Runtime environments
+ \n• Intermediate code generation\n• System calls\, processes\, threads
+ \, inter-process communication\n• Concurrency and synchronisation\nMark 
+ them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261204@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261204T073000
+DTEND;TZID=Asia/Kolkata:20261204T083000
+SUMMARY:GATE 2027 CS · Day 25: Memory management and virtual memory + File
+  systems · revise 8
+DESCRIPTION:New today:\n• Memory management and virtual memory\n• File 
+ systems\nRevise today:\n• Eigenvalues and eigenvectors\, LU decompositio
+ n\n• Calculus: limits\, continuity\, differentiability\, maxima and mini
+ ma\, mean value theorem\, integration\n• Graph traversals\, minimum span
+ ning trees\, shortest paths\n• Regular expressions and finite automata\n
+ • Local optimisation\n• Data flow analyses: constant propagation\, liv
+ eness analysis\, common subexpression elimination\n• Deadlock\n• CPU a
+ nd I/O scheduling\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261205@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261205T073000
+DTEND;TZID=Asia/Kolkata:20261205T083000
+SUMMARY:GATE 2027 CS · Day 26: ER-model + Relational model: relational alg
+ ebra\, tuple calculus\, SQL · revise 8
+DESCRIPTION:New today:\n• ER-model\n• Relational model: relational alge
+ bra\, tuple calculus\, SQL\nRevise today:\n• Probability: random variabl
+ es\, uniform\, normal\, exponential\, Poisson\, binomial\n• Mean\, media
+ n\, mode\, standard deviation\; conditional probability\, Bayes\n• Conte
+ xt-free grammars and push-down automata\n• Regular and context-free lang
+ uages\, pumping lemma\n• System calls\, processes\, threads\, inter-proc
+ ess communication\n• Concurrency and synchronisation\n• Memory managem
+ ent and virtual memory\n• File systems\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261206@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261206T073000
+DTEND;TZID=Asia/Kolkata:20261206T083000
+SUMMARY:GATE 2027 CS · Day 27: Integrity constraints\, normal forms + File
+  organisation\, indexing (B and B+ trees) · revise 8
+DESCRIPTION:New today:\n• Integrity constraints\, normal forms\n• File 
+ organisation\, indexing (B and B+ trees)\nRevise today:\n• Boolean algeb
+ ra\n• Combinational circuits\n• Turing machines and undecidability\n
+ • Lexical analysis\, parsing\, syntax-directed translation\n• Deadlock
+ \n• CPU and I/O scheduling\n• ER-model\n• Relational model: relation
+ al algebra\, tuple calculus\, SQL\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261207@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261207T073000
+DTEND;TZID=Asia/Kolkata:20261207T083000
+SUMMARY:GATE 2027 CS · Day 28: Transactions and concurrency control + Pack
+ et\, circuit and virtual circuit switching · revise 8
+DESCRIPTION:New today:\n• Transactions and concurrency control\n• Packe
+ t\, circuit and virtual circuit switching\nRevise today:\n• Sequential c
+ ircuits\n• Minimisation\n• Runtime environments\n• Intermediate code
+  generation\n• Memory management and virtual memory\n• File systems\n
+ • Integrity constraints\, normal forms\n• File organisation\, indexing
+  (B and B+ trees)\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261208@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261208T073000
+DTEND;TZID=Asia/Kolkata:20261208T083000
+SUMMARY:GATE 2027 CS · Day 29: Data link layer: framing\, error detection\
+ , MAC\, Ethernet bridging + Routing protocols: shortest path\, flooding\, 
+ distance vector\, link state · revise 8
+DESCRIPTION:New today:\n• Data link layer: framing\, error detection\, MA
+ C\, Ethernet bridging\n• Routing protocols: shortest path\, flooding\, d
+ istance vector\, link state\nRevise today:\n• Number representations and
+  computer arithmetic (fixed and floating point)\n• Machine instructions 
+ and addressing modes\n• Local optimisation\n• Data flow analyses: cons
+ tant propagation\, liveness analysis\, common subexpression elimination\n
+ • ER-model\n• Relational model: relational algebra\, tuple calculus\, 
+ SQL\n• Transactions and concurrency control\n• Packet\, circuit and vi
+ rtual circuit switching\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261209@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261209T073000
+DTEND;TZID=Asia/Kolkata:20261209T083000
+SUMMARY:GATE 2027 CS · Day 30: Fragmentation and IP addressing\, IPv4\, CI
+ DR notation + Transport layer: flow control and congestion control\, UDP\,
+  TCP\, sockets · revise 8
+DESCRIPTION:New today:\n• Fragmentation and IP addressing\, IPv4\, CIDR n
+ otation\n• Transport layer: flow control and congestion control\, UDP\, 
+ TCP\, sockets\nRevise today:\n• ALU\, data-path and control unit\n• Ha
+ rdwired control design (2027)\n• System calls\, processes\, threads\, in
+ ter-process communication\n• Concurrency and synchronisation\n• Integr
+ ity constraints\, normal forms\n• File organisation\, indexing (B and B+
+  trees)\n• Data link layer: framing\, error detection\, MAC\, Ethernet b
+ ridging\n• Routing protocols: shortest path\, flooding\, distance vector
+ \, link state\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261210@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261210T073000
+DTEND;TZID=Asia/Kolkata:20261210T083000
+SUMMARY:GATE 2027 CS · Day 31: Application layer: DNS\, HTTP (2027: only t
+ hese two) + Verbal aptitude · revise 8
+DESCRIPTION:New today:\n• Application layer: DNS\, HTTP (2027: only these
+  two)\n• Verbal aptitude\nRevise today:\n• Microprogrammed control des
+ ign (2027)\n• Instruction pipelining\, pipeline hazards\n• Deadlock\n
+ • CPU and I/O scheduling\n• Transactions and concurrency control\n• 
+ Packet\, circuit and virtual circuit switching\n• Fragmentation and IP a
+ ddressing\, IPv4\, CIDR notation\n• Transport layer: flow control and co
+ ngestion control\, UDP\, TCP\, sockets\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261211@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261211T073000
+DTEND;TZID=Asia/Kolkata:20261211T083000
+SUMMARY:GATE 2027 CS · Day 32: Quantitative aptitude + Analytical aptitude
+  · revise 8
+DESCRIPTION:New today:\n• Quantitative aptitude\n• Analytical aptitude\
+ nRevise today:\n• Memory hierarchy: cache memory\n• Cache memory mappi
+ ng (2027)\n• Memory management and virtual memory\n• File systems\n•
+  Data link layer: framing\, error detection\, MAC\, Ethernet bridging\n•
+  Routing protocols: shortest path\, flooding\, distance vector\, link stat
+ e\n• Application layer: DNS\, HTTP (2027: only these two)\n• Verbal ap
+ titude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261212@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261212T073000
+DTEND;TZID=Asia/Kolkata:20261212T083000
+SUMMARY:GATE 2027 CS · Day 33: Spatial aptitude · revise 8
+DESCRIPTION:New today:\n• Spatial aptitude\nRevise today:\n• I/O interf
+ ace (interrupt and DMA mode)\n• Programming in C\n• ER-model\n• Rela
+ tional model: relational algebra\, tuple calculus\, SQL\n• Fragmentation
+  and IP addressing\, IPv4\, CIDR notation\n• Transport layer: flow contr
+ ol and congestion control\, UDP\, TCP\, sockets\n• Quantitative aptitude
+ \n• Analytical aptitude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261213@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261213T073000
+DTEND;TZID=Asia/Kolkata:20261213T083000
+SUMMARY:GATE 2027 CS · Day 34: revise 7
+DESCRIPTION:Revise today:\n• Recursion\n• Arrays\, stacks\, queues\n•
+  Integrity constraints\, normal forms\n• File organisation\, indexing (B
+  and B+ trees)\n• Application layer: DNS\, HTTP (2027: only these two)\n
+ • Verbal aptitude\n• Spatial aptitude\nMark them in your Kalpa tracker
+ .
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261214@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261214T073000
+DTEND;TZID=Asia/Kolkata:20261214T083000
+SUMMARY:GATE 2027 CS · Day 35: revise 6
+DESCRIPTION:Revise today:\n• Linked lists\n• Trees\, binary search tree
+ s\, binary heaps\n• Transactions and concurrency control\n• Packet\, c
+ ircuit and virtual circuit switching\n• Quantitative aptitude\n• Analy
+ tical aptitude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261215@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261215T073000
+DTEND;TZID=Asia/Kolkata:20261215T083000
+SUMMARY:GATE 2027 CS · Day 36: revise 5
+DESCRIPTION:Revise today:\n• Graphs\n• Searching\, sorting\, hashing\n
+ • Data link layer: framing\, error detection\, MAC\, Ethernet bridging\n
+ • Routing protocols: shortest path\, flooding\, distance vector\, link s
+ tate\n• Spatial aptitude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261216@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261216T073000
+DTEND;TZID=Asia/Kolkata:20261216T083000
+SUMMARY:GATE 2027 CS · Day 37: revise 4
+DESCRIPTION:Revise today:\n• Asymptotic worst-case time and space complex
+ ity\n• Greedy\n• Fragmentation and IP addressing\, IPv4\, CIDR notatio
+ n\n• Transport layer: flow control and congestion control\, UDP\, TCP\, 
+ sockets\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261217@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261217T073000
+DTEND;TZID=Asia/Kolkata:20261217T083000
+SUMMARY:GATE 2027 CS · Day 38: revise 4
+DESCRIPTION:Revise today:\n• Divide-and-conquer\n• Dynamic programming\
+ n• Application layer: DNS\, HTTP (2027: only these two)\n• Verbal apti
+ tude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261218@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261218T073000
+DTEND;TZID=Asia/Kolkata:20261218T083000
+SUMMARY:GATE 2027 CS · Day 39: revise 4
+DESCRIPTION:Revise today:\n• Graph traversals\, minimum spanning trees\, 
+ shortest paths\n• Regular expressions and finite automata\n• Quantitat
+ ive aptitude\n• Analytical aptitude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261219@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261219T073000
+DTEND;TZID=Asia/Kolkata:20261219T083000
+SUMMARY:GATE 2027 CS · Day 40: revise 3
+DESCRIPTION:Revise today:\n• Context-free grammars and push-down automata
+ \n• Regular and context-free languages\, pumping lemma\n• Spatial apti
+ tude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261220@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261220T073000
+DTEND;TZID=Asia/Kolkata:20261220T083000
+SUMMARY:GATE 2027 CS · Day 41: revise 2
+DESCRIPTION:Revise today:\n• Turing machines and undecidability\n• Lexi
+ cal analysis\, parsing\, syntax-directed translation\nMark them in your Ka
+ lpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261221@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261221T073000
+DTEND;TZID=Asia/Kolkata:20261221T083000
+SUMMARY:GATE 2027 CS · Day 42: revise 2
+DESCRIPTION:Revise today:\n• Runtime environments\n• Intermediate code 
+ generation\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261222@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261222T073000
+DTEND;TZID=Asia/Kolkata:20261222T083000
+SUMMARY:GATE 2027 CS · Day 43: revise 2
+DESCRIPTION:Revise today:\n• Local optimisation\n• Data flow analyses: 
+ constant propagation\, liveness analysis\, common subexpression eliminatio
+ n\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261223@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261223T073000
+DTEND;TZID=Asia/Kolkata:20261223T083000
+SUMMARY:GATE 2027 CS · Day 44: revise 2
+DESCRIPTION:Revise today:\n• System calls\, processes\, threads\, inter-p
+ rocess communication\n• Concurrency and synchronisation\nMark them in yo
+ ur Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261224@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261224T073000
+DTEND;TZID=Asia/Kolkata:20261224T083000
+SUMMARY:GATE 2027 CS · Day 45: revise 2
+DESCRIPTION:Revise today:\n• Deadlock\n• CPU and I/O scheduling\nMark t
+ hem in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261225@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261225T073000
+DTEND;TZID=Asia/Kolkata:20261225T083000
+SUMMARY:GATE 2027 CS · Day 46: revise 2
+DESCRIPTION:Revise today:\n• Memory management and virtual memory\n• Fi
+ le systems\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261226@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261226T073000
+DTEND;TZID=Asia/Kolkata:20261226T083000
+SUMMARY:GATE 2027 CS · Day 47: revise 2
+DESCRIPTION:Revise today:\n• ER-model\n• Relational model: relational a
+ lgebra\, tuple calculus\, SQL\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261227@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261227T073000
+DTEND;TZID=Asia/Kolkata:20261227T083000
+SUMMARY:GATE 2027 CS · Day 48: revise 2
+DESCRIPTION:Revise today:\n• Integrity constraints\, normal forms\n• Fi
+ le organisation\, indexing (B and B+ trees)\nMark them in your Kalpa track
+ er.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261228@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261228T073000
+DTEND;TZID=Asia/Kolkata:20261228T083000
+SUMMARY:GATE 2027 CS · Day 49: revise 2
+DESCRIPTION:Revise today:\n• Transactions and concurrency control\n• Pa
+ cket\, circuit and virtual circuit switching\nMark them in your Kalpa trac
+ ker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261229@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261229T073000
+DTEND;TZID=Asia/Kolkata:20261229T083000
+SUMMARY:GATE 2027 CS · Day 50: revise 2
+DESCRIPTION:Revise today:\n• Data link layer: framing\, error detection\,
+  MAC\, Ethernet bridging\n• Routing protocols: shortest path\, flooding\
+ , distance vector\, link state\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261230@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261230T073000
+DTEND;TZID=Asia/Kolkata:20261230T083000
+SUMMARY:GATE 2027 CS · Day 51: revise 2
+DESCRIPTION:Revise today:\n• Fragmentation and IP addressing\, IPv4\, CID
+ R notation\n• Transport layer: flow control and congestion control\, UDP
+ \, TCP\, sockets\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20261231@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261231T073000
+DTEND;TZID=Asia/Kolkata:20261231T083000
+SUMMARY:GATE 2027 CS · Day 52: revise 2
+DESCRIPTION:Revise today:\n• Application layer: DNS\, HTTP (2027: only th
+ ese two)\n• Verbal aptitude\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20270101@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270101T073000
+DTEND;TZID=Asia/Kolkata:20270101T083000
+SUMMARY:GATE 2027 CS · Day 53: revise 2
+DESCRIPTION:Revise today:\n• Quantitative aptitude\n• Analytical aptitu
+ de\nMark them in your Kalpa tracker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-plan-20270102@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20270102T073000
+DTEND;TZID=Asia/Kolkata:20270102T083000
+SUMMARY:GATE 2027 CS · Day 54: revise 1
+DESCRIPTION:Revise today:\n• Spatial aptitude\nMark them in your Kalpa tr
+ acker.
+CATEGORIES:Study plan
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Study block in 10 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:gate-2027-cs-weekly@kalpalabs
+DTSTAMP:20261110T000000Z
+DTSTART;TZID=Asia/Kolkata:20261115T180000
+DTEND;TZID=Asia/Kolkata:20261115T183000
+RRULE:FREQ=WEEKLY;COUNT=8
+SUMMARY:GATE 2027 CS · Weekly check: update progress %\, check official da
+ tes
+DESCRIPTION:Only trust dates on https://gate2027.iitm.ac.in
+URL:https://gate2027.iitm.ac.in
+END:VEVENT
+END:VCALENDAR

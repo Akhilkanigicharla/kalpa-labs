@@ -1,0 +1,1109 @@
+{
+"exam": "tgpsc-group3",
+"short": "TGPSC Group 3",
+"timezone": "Asia/Kolkata",
+"start": "2026-11-10",
+"topics_per_day": 2,
+"flow": "BotBhai Telegram (01-botbhai/botbhai/core/functions/telegram.js) · Library of Ranks channel / opted-in subscribers",
+"method": "sendMessage",
+"rules": [
+"At most one message a day per language.",
+"Send only to people who joined or opted in.",
+"No 'only today' or rank-guarantee wording.",
+"This file sends nothing; the bot flow fills chat_id and sends."
+],
+"messages": [
+{
+"id": "tgpsc-group3-20261110-en",
+"send_at": "2026-11-10T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study"
+],
+"text": "📚 TGPSC Group 3 · Day 1\nNew today:\n• Current affairs: Telangana (regional)\n• Current affairs: national\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261110-te",
+"send_at": "2026-11-10T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study"
+],
+"text": "📚 TGPSC Group 3 · రోజు 1\nఈరోజు కొత్త టాపిక్‌లు:\n• కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)\n• కరెంట్ అఫైర్స్: జాతీయ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261111-en",
+"send_at": "2026-11-11T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 2\nNew today:\n• Current affairs: international\n• International relations and events\nRevise today:\n• Current affairs: Telangana (regional)\n• Current affairs: national\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261111-te",
+"send_at": "2026-11-11T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 2\nఈరోజు కొత్త టాపిక్‌లు:\n• కరెంట్ అఫైర్స్: అంతర్జాతీయ\n• అంతర్జాతీయ సంబంధాలు, సంఘటనలు\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)\n• కరెంట్ అఫైర్స్: జాతీయ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261112-en",
+"send_at": "2026-11-12T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 3\nNew today:\n• General science in everyday life\n• India's achievements in science and technology\nRevise today:\n• Current affairs: international\n• International relations and events\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261112-te",
+"send_at": "2026-11-12T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 3\nఈరోజు కొత్త టాపిక్‌లు:\n• నిత్యజీవితంలో జనరల్ సైన్స్\n• శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: అంతర్జాతీయ\n• అంతర్జాతీయ సంబంధాలు, సంఘటనలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261113-en",
+"send_at": "2026-11-13T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 4\nNew today:\n• Environmental issues\n• Disaster management: prevention and mitigation\nRevise today:\n• Current affairs: Telangana (regional)\n• Current affairs: national\n• General science in everyday life\n• India's achievements in science and technology\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261113-te",
+"send_at": "2026-11-13T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 4\nఈరోజు కొత్త టాపిక్‌లు:\n• పర్యావరణ సమస్యలు\n• విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)\n• కరెంట్ అఫైర్స్: జాతీయ\n• నిత్యజీవితంలో జనరల్ సైన్స్\n• శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261114-en",
+"send_at": "2026-11-14T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 5\nNew today:\n• World geography\n• Indian geography\nRevise today:\n• Current affairs: international\n• International relations and events\n• Environmental issues\n• Disaster management: prevention and mitigation\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261114-te",
+"send_at": "2026-11-14T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 5\nఈరోజు కొత్త టాపిక్‌లు:\n• ప్రపంచ భౌగోళిక శాస్త్రం\n• భారతదేశ భౌగోళిక శాస్త్రం\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: అంతర్జాతీయ\n• అంతర్జాతీయ సంబంధాలు, సంఘటనలు\n• పర్యావరణ సమస్యలు\n• విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261115-en",
+"send_at": "2026-11-15T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 6\nNew today:\n• Telangana geography\n• History and cultural heritage of India\nRevise today:\n• General science in everyday life\n• India's achievements in science and technology\n• World geography\n• Indian geography\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261115-te",
+"send_at": "2026-11-15T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 6\nఈరోజు కొత్త టాపిక్‌లు:\n• తెలంగాణ భౌగోళిక శాస్త్రం\n• భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం\nఈరోజు రివిజన్:\n• నిత్యజీవితంలో జనరల్ సైన్స్\n• శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు\n• ప్రపంచ భౌగోళిక శాస్త్రం\n• భారతదేశ భౌగోళిక శాస్త్రం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261116-en",
+"send_at": "2026-11-16T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 7\nNew today:\n• Society, culture, heritage, arts and literature of Telangana\n• Policies of Telangana State\nRevise today:\n• Environmental issues\n• Disaster management: prevention and mitigation\n• Telangana geography\n• History and cultural heritage of India\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261116-te",
+"send_at": "2026-11-16T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 7\nఈరోజు కొత్త టాపిక్‌లు:\n• తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం\n• తెలంగాణ రాష్ట్ర విధానాలు\nఈరోజు రివిజన్:\n• పర్యావరణ సమస్యలు\n• విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు\n• తెలంగాణ భౌగోళిక శాస్త్రం\n• భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261117-en",
+"send_at": "2026-11-17T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 8\nNew today:\n• Social exclusion, rights issues and inclusive policies\n• Logical reasoning\nRevise today:\n• Current affairs: Telangana (regional)\n• Current affairs: national\n• World geography\n• Indian geography\n• Society, culture, heritage, arts and literature of Telangana\n• Policies of Telangana State\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261117-te",
+"send_at": "2026-11-17T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 8\nఈరోజు కొత్త టాపిక్‌లు:\n• సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు\n• తార్కిక వివేచన\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)\n• కరెంట్ అఫైర్స్: జాతీయ\n• ప్రపంచ భౌగోళిక శాస్త్రం\n• భారతదేశ భౌగోళిక శాస్త్రం\n• తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం\n• తెలంగాణ రాష్ట్ర విధానాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261118-en",
+"send_at": "2026-11-18T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 9\nNew today:\n• Analytical ability and data interpretation\n• Basic English (10th class standard)\nRevise today:\n• Current affairs: international\n• International relations and events\n• Telangana geography\n• History and cultural heritage of India\n• Social exclusion, rights issues and inclusive policies\n• Logical reasoning\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261118-te",
+"send_at": "2026-11-18T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 9\nఈరోజు కొత్త టాపిక్‌లు:\n• విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ\n• ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: అంతర్జాతీయ\n• అంతర్జాతీయ సంబంధాలు, సంఘటనలు\n• తెలంగాణ భౌగోళిక శాస్త్రం\n• భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం\n• సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు\n• తార్కిక వివేచన\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261119-en",
+"send_at": "2026-11-19T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 10\nNew today:\n• Indus Valley Civilisation and the Vedic period\n• Jainism and Buddhism; Mauryas and Guptas\nRevise today:\n• General science in everyday life\n• India's achievements in science and technology\n• Society, culture, heritage, arts and literature of Telangana\n• Policies of Telangana State\n• Analytical ability and data interpretation\n• Basic English (10th class standard)\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261119-te",
+"send_at": "2026-11-19T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 10\nఈరోజు కొత్త టాపిక్‌లు:\n• సింధు నాగరికత, వేద కాలం\n• జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు\nఈరోజు రివిజన్:\n• నిత్యజీవితంలో జనరల్ సైన్స్\n• శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు\n• తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం\n• తెలంగాణ రాష్ట్ర విధానాలు\n• విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ\n• ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261120-en",
+"send_at": "2026-11-20T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 11\nNew today:\n• Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements\n• British rule and socio-religious reform movements\nRevise today:\n• Environmental issues\n• Disaster management: prevention and mitigation\n• Social exclusion, rights issues and inclusive policies\n• Logical reasoning\n• Indus Valley Civilisation and the Vedic period\n• Jainism and Buddhism; Mauryas and Guptas\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261120-te",
+"send_at": "2026-11-20T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 11\nఈరోజు కొత్త టాపిక్‌లు:\n• మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు\n• బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు\nఈరోజు రివిజన్:\n• పర్యావరణ సమస్యలు\n• విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు\n• సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు\n• తార్కిక వివేచన\n• సింధు నాగరికత, వేద కాలం\n• జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261121-en",
+"send_at": "2026-11-21T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 12\nNew today:\n• Indian national movement (1885–1947)\n• Satavahanas, Ikshvakus and Vishnukundins in Telangana\nRevise today:\n• World geography\n• Indian geography\n• Analytical ability and data interpretation\n• Basic English (10th class standard)\n• Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements\n• British rule and socio-religious reform movements\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261121-te",
+"send_at": "2026-11-21T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 12\nఈరోజు కొత్త టాపిక్‌లు:\n• భారత జాతీయోద్యమం (1885–1947)\n• తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు\nఈరోజు రివిజన్:\n• ప్రపంచ భౌగోళిక శాస్త్రం\n• భారతదేశ భౌగోళిక శాస్త్రం\n• విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ\n• ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)\n• మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు\n• బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261122-en",
+"send_at": "2026-11-22T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 13\nNew today:\n• Kakatiyas: polity, society, economy and culture\n• Qutb Shahis: society, culture and architecture\nRevise today:\n• Telangana geography\n• History and cultural heritage of India\n• Indus Valley Civilisation and the Vedic period\n• Jainism and Buddhism; Mauryas and Guptas\n• Indian national movement (1885–1947)\n• Satavahanas, Ikshvakus and Vishnukundins in Telangana\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261122-te",
+"send_at": "2026-11-22T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 13\nఈరోజు కొత్త టాపిక్‌లు:\n• కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి\n• కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ\nఈరోజు రివిజన్:\n• తెలంగాణ భౌగోళిక శాస్త్రం\n• భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం\n• సింధు నాగరికత, వేద కాలం\n• జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు\n• భారత జాతీయోద్యమం (1885–1947)\n• తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261123-en",
+"send_at": "2026-11-23T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 14\nNew today:\n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements\nRevise today:\n• Society, culture, heritage, arts and literature of Telangana\n• Policies of Telangana State\n• Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements\n• British rule and socio-religious reform movements\n• Kakatiyas: polity, society, economy and culture\n• Qutb Shahis: society, culture and architecture\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261123-te",
+"send_at": "2026-11-23T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 14\nఈరోజు కొత్త టాపిక్‌లు:\n• అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు\n• సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు\nఈరోజు రివిజన్:\n• తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం\n• తెలంగాణ రాష్ట్ర విధానాలు\n• మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు\n• బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు\n• కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి\n• కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261124-en",
+"send_at": "2026-11-24T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 15\nNew today:\n• Tribal and peasant revolts; Telangana armed struggle (1946–51)\n• Police action (1948) and the end of Nizam rule\nRevise today:\n• Social exclusion, rights issues and inclusive policies\n• Logical reasoning\n• Indian national movement (1885–1947)\n• Satavahanas, Ikshvakus and Vishnukundins in Telangana\n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261124-te",
+"send_at": "2026-11-24T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 15\nఈరోజు కొత్త టాపిక్‌లు:\n• గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)\n• పోలీస్ చర్య (1948), నిజాం పాలన అంతం\nఈరోజు రివిజన్:\n• సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు\n• తార్కిక వివేచన\n• భారత జాతీయోద్యమం (1885–1947)\n• తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు\n• అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు\n• సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261125-en",
+"send_at": "2026-11-25T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 16\nNew today:\n• Evolution of the Constitution; Preamble and salient features\n• Fundamental Rights, Directive Principles and Fundamental Duties\nRevise today:\n• Analytical ability and data interpretation\n• Basic English (10th class standard)\n• Kakatiyas: polity, society, economy and culture\n• Qutb Shahis: society, culture and architecture\n• Tribal and peasant revolts; Telangana armed struggle (1946–51)\n• Police action (1948) and the end of Nizam rule\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261125-te",
+"send_at": "2026-11-25T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 16\nఈరోజు కొత్త టాపిక్‌లు:\n• రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు\n• ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు\nఈరోజు రివిజన్:\n• విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ\n• ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)\n• కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి\n• కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ\n• గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)\n• పోలీస్ చర్య (1948), నిజాం పాలన అంతం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261126-en",
+"send_at": "2026-11-26T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 17\nNew today:\n• Union and State executive and legislature\n• Centre–State relations and federalism\nRevise today:\n• Indus Valley Civilisation and the Vedic period\n• Jainism and Buddhism; Mauryas and Guptas\n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements\n• Evolution of the Constitution; Preamble and salient features\n• Fundamental Rights, Directive Principles and Fundamental Duties\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261126-te",
+"send_at": "2026-11-26T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 17\nఈరోజు కొత్త టాపిక్‌లు:\n• కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ\n• కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ\nఈరోజు రివిజన్:\n• సింధు నాగరికత, వేద కాలం\n• జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు\n• అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు\n• సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు\n• రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు\n• ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261127-en",
+"send_at": "2026-11-27T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 18\nNew today:\n• Judiciary: Supreme Court, High Courts and judicial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodies\nRevise today:\n• Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements\n• British rule and socio-religious reform movements\n• Tribal and peasant revolts; Telangana armed struggle (1946–51)\n• Police action (1948) and the end of Nizam rule\n• Union and State executive and legislature\n• Centre–State relations and federalism\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261127-te",
+"send_at": "2026-11-27T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 18\nఈరోజు కొత్త టాపిక్‌లు:\n• న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష\n• 73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు\nఈరోజు రివిజన్:\n• మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు\n• బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు\n• గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)\n• పోలీస్ చర్య (1948), నిజాం పాలన అంతం\n• కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ\n• కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261128-en",
+"send_at": "2026-11-28T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 19\nNew today:\n• Electoral system, Election Commission and anti-defection law\n• Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)\nRevise today:\n• Indian national movement (1885–1947)\n• Satavahanas, Ikshvakus and Vishnukundins in Telangana\n• Evolution of the Constitution; Preamble and salient features\n• Fundamental Rights, Directive Principles and Fundamental Duties\n• Judiciary: Supreme Court, High Courts and judicial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodies\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261128-te",
+"send_at": "2026-11-28T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 19\nఈరోజు కొత్త టాపిక్‌లు:\n• ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం\n• రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)\nఈరోజు రివిజన్:\n• భారత జాతీయోద్యమం (1885–1947)\n• తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు\n• రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు\n• ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు\n• న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష\n• 73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261129-en",
+"send_at": "2026-11-29T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 20\nNew today:\n• Special provisions for SC, ST, BC, women and minorities\n• Amendment procedure and important amendments\nRevise today:\n• Kakatiyas: polity, society, economy and culture\n• Qutb Shahis: society, culture and architecture\n• Union and State executive and legislature\n• Centre–State relations and federalism\n• Electoral system, Election Commission and anti-defection law\n• Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261129-te",
+"send_at": "2026-11-29T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 20\nఈరోజు కొత్త టాపిక్‌లు:\n• ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు\n• రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు\nఈరోజు రివిజన్:\n• కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి\n• కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ\n• కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ\n• కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ\n• ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం\n• రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261130-en",
+"send_at": "2026-11-30T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 21\nNew today:\n• Welfare mechanisms and judicial activism\n• Indian social structure: caste, family, marriage, kinship, religion, tribe\nRevise today:\n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements\n• Judiciary: Supreme Court, High Courts and judicial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodies\n• Special provisions for SC, ST, BC, women and minorities\n• Amendment procedure and important amendments\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261130-te",
+"send_at": "2026-11-30T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 21\nఈరోజు కొత్త టాపిక్‌లు:\n• సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత\n• భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ\nఈరోజు రివిజన్:\n• అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు\n• సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు\n• న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష\n• 73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు\n• ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు\n• రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261201-en",
+"send_at": "2026-12-01T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 22\nNew today:\n• Features of Telangana society\n• Social issues: inequality, casteism, communalism, regionalism\nRevise today:\n• Current affairs: Telangana (regional)\n• Current affairs: national\n• Tribal and peasant revolts; Telangana armed struggle (1946–51)\n• Police action (1948) and the end of Nizam rule\n• Electoral system, Election Commission and anti-defection law\n• Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)\n• Welfare mechanisms and judicial activism\n• Indian social structure: caste, family, marriage, kinship, religion, tribe\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261201-te",
+"send_at": "2026-12-01T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 22\nఈరోజు కొత్త టాపిక్‌లు:\n• తెలంగాణ సమాజ లక్షణాలు\n• సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)\n• కరెంట్ అఫైర్స్: జాతీయ\n• గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)\n• పోలీస్ చర్య (1948), నిజాం పాలన అంతం\n• ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం\n• రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)\n• సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత\n• భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261202-en",
+"send_at": "2026-12-02T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 23\nNew today:\n• Violence against women, child labour and human trafficking\n• Disability and the aged\nRevise today:\n• Current affairs: international\n• International relations and events\n• Evolution of the Constitution; Preamble and salient features\n• Fundamental Rights, Directive Principles and Fundamental Duties\n• Special provisions for SC, ST, BC, women and minorities\n• Amendment procedure and important amendments\n• Features of Telangana society\n• Social issues: inequality, casteism, communalism, regionalism\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261202-te",
+"send_at": "2026-12-02T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 23\nఈరోజు కొత్త టాపిక్‌లు:\n• మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా\n• వైకల్యం, వృద్ధులు\nఈరోజు రివిజన్:\n• కరెంట్ అఫైర్స్: అంతర్జాతీయ\n• అంతర్జాతీయ సంబంధాలు, సంఘటనలు\n• రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు\n• ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు\n• ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు\n• రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు\n• తెలంగాణ సమాజ లక్షణాలు\n• సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261203-en",
+"send_at": "2026-12-03T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 24\nNew today:\n• Social movements: peasant, tribal, Dalit, backward class, women, environment\n• Social policies and welfare schemes of India and Telangana\nRevise today:\n• General science in everyday life\n• India's achievements in science and technology\n• Union and State executive and legislature\n• Centre–State relations and federalism\n• Welfare mechanisms and judicial activism\n• Indian social structure: caste, family, marriage, kinship, religion, tribe\n• Violence against women, child labour and human trafficking\n• Disability and the aged\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261203-te",
+"send_at": "2026-12-03T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 24\nఈరోజు కొత్త టాపిక్‌లు:\n• సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ\n• భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు\nఈరోజు రివిజన్:\n• నిత్యజీవితంలో జనరల్ సైన్స్\n• శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు\n• కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ\n• కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ\n• సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత\n• భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ\n• మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా\n• వైకల్యం, వృద్ధులు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261204-en",
+"send_at": "2026-12-04T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 25\nNew today:\n• Growth and development: concepts and national income (GDP)\n• Population trends and the Human Development Index\nRevise today:\n• Environmental issues\n• Disaster management: prevention and mitigation\n• Judiciary: Supreme Court, High Courts and judicial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodies\n• Features of Telangana society\n• Social issues: inequality, casteism, communalism, regionalism\n• Social movements: peasant, tribal, Dalit, backward class, women, environment\n• Social policies and welfare schemes of India and Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261204-te",
+"send_at": "2026-12-04T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 25\nఈరోజు కొత్త టాపిక్‌లు:\n• వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)\n• జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక\nఈరోజు రివిజన్:\n• పర్యావరణ సమస్యలు\n• విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు\n• న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష\n• 73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు\n• తెలంగాణ సమాజ లక్షణాలు\n• సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం\n• సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ\n• భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261205-en",
+"send_at": "2026-12-05T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 26\nNew today:\n• Poverty and unemployment\n• Economic planning: Five-Year Plans and NITI Aayog\nRevise today:\n• World geography\n• Indian geography\n• Electoral system, Election Commission and anti-defection law\n• Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)\n• Violence against women, child labour and human trafficking\n• Disability and the aged\n• Growth and development: concepts and national income (GDP)\n• Population trends and the Human Development Index\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261205-te",
+"send_at": "2026-12-05T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 26\nఈరోజు కొత్త టాపిక్‌లు:\n• పేదరికం, నిరుద్యోగం\n• ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్\nఈరోజు రివిజన్:\n• ప్రపంచ భౌగోళిక శాస్త్రం\n• భారతదేశ భౌగోళిక శాస్త్రం\n• ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం\n• రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)\n• మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా\n• వైకల్యం, వృద్ధులు\n• వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)\n• జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261206-en",
+"send_at": "2026-12-06T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 27\nNew today:\n• Agriculture, allied sectors and food security\n• Industry and services sectors\nRevise today:\n• Telangana geography\n• History and cultural heritage of India\n• Special provisions for SC, ST, BC, women and minorities\n• Amendment procedure and important amendments\n• Social movements: peasant, tribal, Dalit, backward class, women, environment\n• Social policies and welfare schemes of India and Telangana\n• Poverty and unemployment\n• Economic planning: Five-Year Plans and NITI Aayog\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261206-te",
+"send_at": "2026-12-06T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 27\nఈరోజు కొత్త టాపిక్‌లు:\n• వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత\n• పారిశ్రామిక, సేవా రంగాలు\nఈరోజు రివిజన్:\n• తెలంగాణ భౌగోళిక శాస్త్రం\n• భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం\n• ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు\n• రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు\n• సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ\n• భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు\n• పేదరికం, నిరుద్యోగం\n• ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261207-en",
+"send_at": "2026-12-07T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 28\nNew today:\n• Money, banking, RBI, monetary policy and inflation\n• Public finance: budget, taxation, GST and fiscal policy\nRevise today:\n• Society, culture, heritage, arts and literature of Telangana\n• Policies of Telangana State\n• Welfare mechanisms and judicial activism\n• Indian social structure: caste, family, marriage, kinship, religion, tribe\n• Growth and development: concepts and national income (GDP)\n• Population trends and the Human Development Index\n• Agriculture, allied sectors and food security\n• Industry and services sectors\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261207-te",
+"send_at": "2026-12-07T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 28\nఈరోజు కొత్త టాపిక్‌లు:\n• ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం\n• ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం\nఈరోజు రివిజన్:\n• తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం\n• తెలంగాణ రాష్ట్ర విధానాలు\n• సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత\n• భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ\n• వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)\n• జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక\n• వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత\n• పారిశ్రామిక, సేవా రంగాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261208-en",
+"send_at": "2026-12-08T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 29\nNew today:\n• External sector: balance of payments, trade and FDI\n• Economic reforms of 1991: liberalisation, privatisation, globalisation\nRevise today:\n• Social exclusion, rights issues and inclusive policies\n• Logical reasoning\n• Features of Telangana society\n• Social issues: inequality, casteism, communalism, regionalism\n• Poverty and unemployment\n• Economic planning: Five-Year Plans and NITI Aayog\n• Money, banking, RBI, monetary policy and inflation\n• Public finance: budget, taxation, GST and fiscal policy\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261208-te",
+"send_at": "2026-12-08T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 29\nఈరోజు కొత్త టాపిక్‌లు:\n• విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ\n• 1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ\nఈరోజు రివిజన్:\n• సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు\n• తార్కిక వివేచన\n• తెలంగాణ సమాజ లక్షణాలు\n• సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం\n• పేదరికం, నిరుద్యోగం\n• ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్\n• ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం\n• ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261209-en",
+"send_at": "2026-12-09T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 30\nNew today:\n• Hyderabad State economy and Telangana's under-development in united AP\n• Land reforms: abolition of jagirdari and zamindari; tenancy\nRevise today:\n• Analytical ability and data interpretation\n• Basic English (10th class standard)\n• Violence against women, child labour and human trafficking\n• Disability and the aged\n• Agriculture, allied sectors and food security\n• Industry and services sectors\n• External sector: balance of payments, trade and FDI\n• Economic reforms of 1991: liberalisation, privatisation, globalisation\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261209-te",
+"send_at": "2026-12-09T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 30\nఈరోజు కొత్త టాపిక్‌లు:\n• హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు\n• భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ\nఈరోజు రివిజన్:\n• విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ\n• ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)\n• మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా\n• వైకల్యం, వృద్ధులు\n• వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత\n• పారిశ్రామిక, సేవా రంగాలు\n• విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ\n• 1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261210-en",
+"send_at": "2026-12-10T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 31\nNew today:\n• Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)\n• Industry, services and the IT sector in Telangana\nRevise today:\n• Indus Valley Civilisation and the Vedic period\n• Jainism and Buddhism; Mauryas and Guptas\n• Social movements: peasant, tribal, Dalit, backward class, women, environment\n• Social policies and welfare schemes of India and Telangana\n• Money, banking, RBI, monetary policy and inflation\n• Public finance: budget, taxation, GST and fiscal policy\n• Hyderabad State economy and Telangana's under-development in united AP\n• Land reforms: abolition of jagirdari and zamindari; tenancy\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261210-te",
+"send_at": "2026-12-10T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 31\nఈరోజు కొత్త టాపిక్‌లు:\n• తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)\n• తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం\nఈరోజు రివిజన్:\n• సింధు నాగరికత, వేద కాలం\n• జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు\n• సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ\n• భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు\n• ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం\n• ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం\n• హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు\n• భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261211-en",
+"send_at": "2026-12-11T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 32\nNew today:\n• Telangana budget, GSDP and per capita income\n• Welfare and development schemes of Telangana\nRevise today:\n• Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements\n• British rule and socio-religious reform movements\n• Growth and development: concepts and national income (GDP)\n• Population trends and the Human Development Index\n• External sector: balance of payments, trade and FDI\n• Economic reforms of 1991: liberalisation, privatisation, globalisation\n• Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)\n• Industry, services and the IT sector in Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261211-te",
+"send_at": "2026-12-11T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 32\nఈరోజు కొత్త టాపిక్‌లు:\n• తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం\n• తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు\nఈరోజు రివిజన్:\n• మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు\n• బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు\n• వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)\n• జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక\n• విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ\n• 1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ\n• తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)\n• తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261212-en",
+"send_at": "2026-12-12T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 33\nNew today:\n• Regional and social inequality in development\n• Development and displacement; land acquisition and rehabilitation\nRevise today:\n• Indian national movement (1885–1947)\n• Satavahanas, Ikshvakus and Vishnukundins in Telangana\n• Poverty and unemployment\n• Economic planning: Five-Year Plans and NITI Aayog\n• Hyderabad State economy and Telangana's under-development in united AP\n• Land reforms: abolition of jagirdari and zamindari; tenancy\n• Telangana budget, GSDP and per capita income\n• Welfare and development schemes of Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261212-te",
+"send_at": "2026-12-12T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 33\nఈరోజు కొత్త టాపిక్‌లు:\n• అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు\n• అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం\nఈరోజు రివిజన్:\n• భారత జాతీయోద్యమం (1885–1947)\n• తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు\n• పేదరికం, నిరుద్యోగం\n• ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్\n• హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు\n• భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ\n• తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం\n• తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261213-en",
+"send_at": "2026-12-13T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 34\nNew today:\n• Impact of economic reforms on growth, poverty and inequality\n• Sustainable development and the SDGs\nRevise today:\n• Kakatiyas: polity, society, economy and culture\n• Qutb Shahis: society, culture and architecture\n• Agriculture, allied sectors and food security\n• Industry and services sectors\n• Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)\n• Industry, services and the IT sector in Telangana\n• Regional and social inequality in development\n• Development and displacement; land acquisition and rehabilitation\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261213-te",
+"send_at": "2026-12-13T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 34\nఈరోజు కొత్త టాపిక్‌లు:\n• వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం\n• సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు\nఈరోజు రివిజన్:\n• కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి\n• కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ\n• వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత\n• పారిశ్రామిక, సేవా రంగాలు\n• తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)\n• తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం\n• అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు\n• అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261214-en",
+"send_at": "2026-12-14T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 35\nNew today:\n• Environment and climate change policies\n• Science, technology and economic development\nRevise today:\n• Asaf Jahi dynasty (Nizams): administration and reforms\n• Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements\n• Money, banking, RBI, monetary policy and inflation\n• Public finance: budget, taxation, GST and fiscal policy\n• Telangana budget, GSDP and per capita income\n• Welfare and development schemes of Telangana\n• Impact of economic reforms on growth, poverty and inequality\n• Sustainable development and the SDGs\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261214-te",
+"send_at": "2026-12-14T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 35\nఈరోజు కొత్త టాపిక్‌లు:\n• పర్యావరణం, వాతావరణ మార్పు విధానాలు\n• శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి\nఈరోజు రివిజన్:\n• అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు\n• సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు\n• ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం\n• ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం\n• తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం\n• తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు\n• వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం\n• సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261215-en",
+"send_at": "2026-12-15T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 36\nRevise today:\n• Tribal and peasant revolts; Telangana armed struggle (1946–51)\n• Police action (1948) and the end of Nizam rule\n• External sector: balance of payments, trade and FDI\n• Economic reforms of 1991: liberalisation, privatisation, globalisation\n• Regional and social inequality in development\n• Development and displacement; land acquisition and rehabilitation\n• Environment and climate change policies\n• Science, technology and economic development\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261215-te",
+"send_at": "2026-12-15T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 36\nఈరోజు రివిజన్:\n• గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)\n• పోలీస్ చర్య (1948), నిజాం పాలన అంతం\n• విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ\n• 1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ\n• అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు\n• అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం\n• పర్యావరణం, వాతావరణ మార్పు విధానాలు\n• శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261216-en",
+"send_at": "2026-12-16T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 37\nRevise today:\n• Evolution of the Constitution; Preamble and salient features\n• Fundamental Rights, Directive Principles and Fundamental Duties\n• Hyderabad State economy and Telangana's under-development in united AP\n• Land reforms: abolition of jagirdari and zamindari; tenancy\n• Impact of economic reforms on growth, poverty and inequality\n• Sustainable development and the SDGs\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261216-te",
+"send_at": "2026-12-16T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 37\nఈరోజు రివిజన్:\n• రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు\n• ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు\n• హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు\n• భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ\n• వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం\n• సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261217-en",
+"send_at": "2026-12-17T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 38\nRevise today:\n• Union and State executive and legislature\n• Centre–State relations and federalism\n• Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)\n• Industry, services and the IT sector in Telangana\n• Environment and climate change policies\n• Science, technology and economic development\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261217-te",
+"send_at": "2026-12-17T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 38\nఈరోజు రివిజన్:\n• కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ\n• కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ\n• తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)\n• తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం\n• పర్యావరణం, వాతావరణ మార్పు విధానాలు\n• శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261218-en",
+"send_at": "2026-12-18T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 39\nRevise today:\n• Judiciary: Supreme Court, High Courts and judicial review\n• 73rd and 74th Amendments: Panchayati Raj and urban local bodies\n• Telangana budget, GSDP and per capita income\n• Welfare and development schemes of Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261218-te",
+"send_at": "2026-12-18T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 39\nఈరోజు రివిజన్:\n• న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష\n• 73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు\n• తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం\n• తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261219-en",
+"send_at": "2026-12-19T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 40\nRevise today:\n• Electoral system, Election Commission and anti-defection law\n• Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)\n• Regional and social inequality in development\n• Development and displacement; land acquisition and rehabilitation\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261219-te",
+"send_at": "2026-12-19T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 40\nఈరోజు రివిజన్:\n• ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం\n• రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)\n• అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు\n• అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261220-en",
+"send_at": "2026-12-20T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 41\nRevise today:\n• Special provisions for SC, ST, BC, women and minorities\n• Amendment procedure and important amendments\n• Impact of economic reforms on growth, poverty and inequality\n• Sustainable development and the SDGs\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261220-te",
+"send_at": "2026-12-20T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 41\nఈరోజు రివిజన్:\n• ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు\n• రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు\n• వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం\n• సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261221-en",
+"send_at": "2026-12-21T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 42\nRevise today:\n• Welfare mechanisms and judicial activism\n• Indian social structure: caste, family, marriage, kinship, religion, tribe\n• Environment and climate change policies\n• Science, technology and economic development\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261221-te",
+"send_at": "2026-12-21T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 42\nఈరోజు రివిజన్:\n• సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత\n• భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ\n• పర్యావరణం, వాతావరణ మార్పు విధానాలు\n• శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261222-en",
+"send_at": "2026-12-22T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 43\nRevise today:\n• Features of Telangana society\n• Social issues: inequality, casteism, communalism, regionalism\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261222-te",
+"send_at": "2026-12-22T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 43\nఈరోజు రివిజన్:\n• తెలంగాణ సమాజ లక్షణాలు\n• సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261223-en",
+"send_at": "2026-12-23T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 44\nRevise today:\n• Violence against women, child labour and human trafficking\n• Disability and the aged\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261223-te",
+"send_at": "2026-12-23T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 44\nఈరోజు రివిజన్:\n• మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా\n• వైకల్యం, వృద్ధులు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261224-en",
+"send_at": "2026-12-24T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 45\nRevise today:\n• Social movements: peasant, tribal, Dalit, backward class, women, environment\n• Social policies and welfare schemes of India and Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261224-te",
+"send_at": "2026-12-24T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 45\nఈరోజు రివిజన్:\n• సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ\n• భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261225-en",
+"send_at": "2026-12-25T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 46\nRevise today:\n• Growth and development: concepts and national income (GDP)\n• Population trends and the Human Development Index\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261225-te",
+"send_at": "2026-12-25T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 46\nఈరోజు రివిజన్:\n• వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)\n• జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261226-en",
+"send_at": "2026-12-26T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 47\nRevise today:\n• Poverty and unemployment\n• Economic planning: Five-Year Plans and NITI Aayog\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261226-te",
+"send_at": "2026-12-26T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 47\nఈరోజు రివిజన్:\n• పేదరికం, నిరుద్యోగం\n• ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261227-en",
+"send_at": "2026-12-27T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 48\nRevise today:\n• Agriculture, allied sectors and food security\n• Industry and services sectors\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20261227-te",
+"send_at": "2026-12-27T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 48\nఈరోజు రివిజన్:\n• వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత\n• పారిశ్రామిక, సేవా రంగాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20261228-en",
+"send_at": "2026-12-28T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 49\nRevise today:\n• Money, banking, RBI, monetary policy and inflation\n• Public finance: budget, taxation, GST and fiscal policy\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261228-te",
+"send_at": "2026-12-28T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 49\nఈరోజు రివిజన్:\n• ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం\n• ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261229-en",
+"send_at": "2026-12-29T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 50\nRevise today:\n• External sector: balance of payments, trade and FDI\n• Economic reforms of 1991: liberalisation, privatisation, globalisation\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261229-te",
+"send_at": "2026-12-29T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 50\nఈరోజు రివిజన్:\n• విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ\n• 1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261230-en",
+"send_at": "2026-12-30T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 51\nRevise today:\n• Hyderabad State economy and Telangana's under-development in united AP\n• Land reforms: abolition of jagirdari and zamindari; tenancy\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261230-te",
+"send_at": "2026-12-30T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 51\nఈరోజు రివిజన్:\n• హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు\n• భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20261231-en",
+"send_at": "2026-12-31T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 52\nRevise today:\n• Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)\n• Industry, services and the IT sector in Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20261231-te",
+"send_at": "2026-12-31T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 52\nఈరోజు రివిజన్:\n• తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)\n• తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20270101-en",
+"send_at": "2027-01-01T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 53\nRevise today:\n• Telangana budget, GSDP and per capita income\n• Welfare and development schemes of Telangana\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20270101-te",
+"send_at": "2027-01-01T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 53\nఈరోజు రివిజన్:\n• తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం\n• తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20270102-en",
+"send_at": "2027-01-02T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 54\nRevise today:\n• Regional and social inequality in development\n• Development and displacement; land acquisition and rehabilitation\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20270102-te",
+"send_at": "2027-01-02T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 54\nఈరోజు రివిజన్:\n• అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు\n• అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+},
+{
+"id": "tgpsc-group3-20270103-en",
+"send_at": "2027-01-03T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · Day 55\nRevise today:\n• Impact of economic reforms on growth, poverty and inequality\n• Sustainable development and the SDGs\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (new Group 3 recruitment), Online application opens, Last date to apply, Hall ticket download, Written exam (Papers I to III), Preliminary answer key, Result / general ranking list. Only trust https://www.tgpsc.gov.in."
+},
+{
+"id": "tgpsc-group3-20270103-te",
+"send_at": "2027-01-03T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 TGPSC Group 3 · రోజు 55\nఈరోజు రివిజన్:\n• వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం\n• సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి.\n🗓 వారపు సమీక్ష: మీ ప్రోగ్రెస్ % అప్‌డేట్ చేయండి.\nఇంకా ప్రకటించలేదు: నోటిఫికేషన్, ఆన్‌లైన్ దరఖాస్తు ప్రారంభం, దరఖాస్తుకు చివరి తేదీ, హాల్ టికెట్ డౌన్‌లోడ్, రాత పరీక్ష (పేపర్లు I–III), ప్రాథమిక కీ, ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా. అధికారిక సమాచారం https://www.tgpsc.gov.in లో మాత్రమే."
+},
+{
+"id": "tgpsc-group3-20270104-en",
+"send_at": "2027-01-04T07:30:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · Day 56\nRevise today:\n• Environment and climate change policies\n• Science, technology and economic development\nMark them Done in your tracker."
+},
+{
+"id": "tgpsc-group3-20270104-te",
+"send_at": "2027-01-04T07:30:00+05:30",
+"lang": "te",
+"kinds": [
+"revision"
+],
+"text": "📚 TGPSC Group 3 · రోజు 56\nఈరోజు రివిజన్:\n• పర్యావరణం, వాతావరణ మార్పు విధానాలు\n• శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి\nపూర్తయ్యాక ట్రాకర్‌లో Done అని గుర్తు పెట్టండి."
+}
+]
+}

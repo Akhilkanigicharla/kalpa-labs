@@ -1,0 +1,2 @@
+system_id,name,purpose,owner,status,users_affected,model_provider,model,hosting_region,data_types,personal_data,children_data,eu_users,human_review,customer_facing,discloses_ai,logs_kept_days,provider_terms_signed,risk_level,last_tested,notes
+AI-001,EXAMPLE (delete) Support chatbot,Answer customer FAQs on website and WhatsApp,Support lead,live,customers,openai,gpt-4o-mini,US,chat text; name; phone,yes,no,unknown,escalates to human,yes,yes,365,yes,medium,2026-11-01,EXAMPLE ROW: replace with the client's real systems

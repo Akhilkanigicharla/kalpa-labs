@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; connect-src 'none'; script-src 'self' file:; style-src 'self' file:; font-src 'self' file:; img-src 'self' file: data:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1D3A25">
+<meta name="description" content="Kalpa Jyotish: birth star, naming syllable, name ideas and traditional good days, worked out on your phone.">
+<title>Kalpa Jyotish</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-in">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="40" height="40">
+      <div>
+        <h1 data-t="title">Kalpa Jyotish</h1>
+        <p class="tag" data-t="tagline"></p>
+      </div>
+    </div>
+    <div class="tools">
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" class="pill" data-lang="en" lang="en">EN</button>
+        <button type="button" class="pill" data-lang="te" lang="te">తెలుగు</button>
+        <button type="button" class="pill" data-lang="hi" lang="hi">हिंदी</button>
+      </div>
+      <button type="button" class="pill" id="theme" data-t="theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<p class="disclaimer" data-t="disclaimer"></p>
+
+<nav class="tabs" role="tablist">
+  <button type="button" role="tab" class="tab" data-view="star" data-t="tabStar"></button>
+  <button type="button" role="tab" class="tab" data-view="names" data-t="tabNames"></button>
+  <button type="button" role="tab" class="tab" data-view="days" data-t="tabDays"></button>
+  <button type="button" role="tab" class="tab" data-view="about" data-t="tabAbout"></button>
+</nav>
+
+<main>
+  <section class="view" id="view-star" role="tabpanel">
+    <form class="card cap" id="star-form" novalidate>
+      <h2 data-t="tabStar"></h2>
+      <div class="row2">
+        <label><span data-t="birthDate"></span><input type="date" id="b-date" required min="1700-01-01" max="2200-12-31"></label>
+        <label><span data-t="birthTime"></span><input type="time" id="b-time" required></label>
+      </div>
+      <label><span data-t="place"></span><select id="b-city"></select></label>
+      <div class="row3 hidden" id="b-other">
+        <label><span data-t="lat"></span><input type="number" id="b-lat" step="0.0001" min="-90" max="90" inputmode="decimal"></label>
+        <label><span data-t="lon"></span><input type="number" id="b-lon" step="0.0001" min="-180" max="180" inputmode="decimal"></label>
+        <label><span data-t="tz"></span><input type="text" id="b-tz" placeholder="Asia/Kolkata or +05:30" autocomplete="off"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="b-remember"><span data-t="remember"></span></label>
+      <button type="submit" class="btn" data-t="find"></button>
+      <p class="err" id="star-err" role="alert"></p>
+    </form>
+    <div id="star-out" aria-live="polite"></div>
+  </section>
+
+  <section class="view" id="view-names" role="tabpanel" hidden>
+    <div class="card cap">
+      <h2 data-t="tabNames"></h2>
+      <label><span data-t="syllable"></span><select id="n-syl"></select></label>
+      <div class="row3">
+        <label><span data-t="gender"></span><select id="n-gender"></select></label>
+        <label><span data-t="letter"></span><input type="text" id="n-letter" maxlength="1" autocomplete="off" autocapitalize="characters"></label>
+        <label><span data-t="number"></span><select id="n-num"></select></label>
+      </div>
+      <p class="muted" id="n-count"></p>
+    </div>
+    <div id="n-list" class="names"></div>
+    <div class="card">
+      <h3 data-t="checkName"></h3>
+      <label><span data-t="nameInput"></span><input type="text" id="n-check" autocomplete="off"></label>
+      <p class="big-num" id="n-check-out" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="view" id="view-days" role="tabpanel" hidden>
+    <form class="card cap" id="days-form" novalidate>
+      <h2 data-t="tabDays"></h2>
+      <p class="note" data-t="priest"></p>
+      <div class="row2">
+        <label><span data-t="from"></span><input type="date" id="d-from" required min="1700-01-01" max="2200-12-31"></label>
+        <label><span data-t="days"></span><select id="d-days"><option>7</option><option selected>30</option><option>60</option><option>90</option></select></label>
+      </div>
+      <label><span data-t="place"></span><select id="d-city"></select></label>
+      <label class="check"><input type="checkbox" id="d-clear"><span data-t="onlyClear"></span></label>
+      <button type="submit" class="btn" data-t="show"></button>
+      <p class="err" id="days-err" role="alert"></p>
+    </form>
+    <p class="muted" data-t="atSunrise"></p>
+    <ol id="d-list" class="days"></ol>
+  </section>
+
+  <section class="view" id="view-about" role="tabpanel" hidden>
+    <div class="card">
+      <h2 data-t="privacyH"></h2>
+      <p data-t="privacyP"></p>
+      <button type="button" class="btn ghost" id="clear" data-t="clear"></button>
+      <p class="muted" id="cleared" aria-live="polite"></p>
+    </div>
+    <div class="card">
+      <h2 data-t="howH"></h2>
+      <p data-t="howP"></p>
+    </div>
+    <div class="card">
+      <h2 data-t="creditsH"></h2>
+      <p data-t="credits"></p>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/astronomy.browser.min.js"></script>
+<script src="src/data.js"></script>
+<script src="src/names.js"></script>
+<script src="src/core.js"></script>
+<script src="src/i18n.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Kalpa Jyotish",
+  "short_name": "Jyotish",
+  "description": "Birth star, name syllable, name ideas and traditional good days, worked out on your phone. For guidance and tradition.",
+  "lang": "en",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2EEE3",
+  "theme_color": "#1D3A25",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

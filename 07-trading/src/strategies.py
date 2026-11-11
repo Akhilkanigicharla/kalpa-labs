@@ -8,7 +8,10 @@ delivery, daily bars, low turnover):
   1. tsmom      time-series momentum (Moskowitz, Ooi & Pedersen 2012)
   2. ma_filter  long moving-average trend filter (Faber 2007)
   3. *_vt       volatility-targeting overlay (Moreira & Muir 2017; Harvey et al. 2018)
-  4. sma_cross  the a8 fast/slow SMA crossover, kept as the NEGATIVE CONTROL that the
+  4. markov_regime  3-state (bear/sideways/bull) Markov chain on trailing returns, with
+                the transition matrix rebuilt each day from past days only (A153,
+                Akhil's video idea; an UNTESTED candidate until the gate says otherwise)
+  5. sma_cross  the a8 fast/slow SMA crossover, kept as the NEGATIVE CONTROL that the
                 gate must reject on data without a planted trend.
 Research code only. Not advice; paper trading only.
 """
@@ -64,6 +67,54 @@ def ma_filter_vt(close: pd.Series, window: int = 200, target: float = 0.12) -> p
     return vol_target(ma_filter(close, window), close, target)
 
 
+BEAR, SIDE, BULL = 0, 1, 2
+
+
+def regime_states(close: pd.Series, window: int = 20, threshold: float = 0.05) -> pd.Series:
+    """Label each day by its trailing `window`-day return: bull (>= +thr), bear (<= -thr),
+    else sideways. NaN until `window` days exist. Uses data up to that day only."""
+    r = close / close.shift(window) - 1
+    s = pd.Series(SIDE, index=close.index, dtype=float)
+    s[r >= threshold] = BULL
+    s[r <= -threshold] = BEAR
+    return s.where(r.notna())
+
+
+def markov_matrix(states: pd.Series) -> np.ndarray:
+    """3x3 row-stochastic day-to-day transition matrix from a state sequence.
+    Rows with no observations are uniform (no information)."""
+    s = states.dropna().astype(int).to_numpy()
+    m = np.zeros((3, 3))
+    np.add.at(m, (s[:-1], s[1:]), 1.0)
+    rows = m.sum(axis=1, keepdims=True)
+    return np.where(rows > 0, m / np.where(rows > 0, rows, 1.0), 1.0 / 3)
+
+
+def markov_regime(close: pd.Series, window: int = 20, threshold: float = 0.05) -> pd.Series:
+    """Long-only weight = clip(P(bull tomorrow) - P(bear tomorrow), 0, 1).
+
+    Walk-forward: on day t the counts hold only transitions s[i-1] -> s[i] with i <= t
+    (both states known at t's close), so no future bar is used. Cash when the current
+    state's row has no history yet.
+    """
+    st = regime_states(close, window, threshold).to_numpy()
+    counts = np.zeros((3, 3))
+    out = np.zeros(len(st))
+    prev = np.nan
+    for i, cur in enumerate(st):
+        if np.isnan(cur):
+            continue
+        c = int(cur)
+        if not np.isnan(prev):
+            counts[int(prev), c] += 1.0
+        row = counts[c]
+        n = row.sum()
+        if n > 0:
+            out[i] = min(max((row[BULL] - row[BEAR]) / n, 0.0), 1.0)
+        prev = cur
+    return pd.Series(out, index=close.index)
+
+
 # Every grid has an even number (>= 4) of configs: with an odd N the median OOS rank
 # gives logit 0 and biases PBO upward (N=3 -> chance PBO of 2/3 instead of 1/2).
 REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
@@ -71,6 +122,7 @@ REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
     "ma_filter":    (ma_filter,    {"window": [50, 100, 150, 200]}),
     "tsmom_vt":     (tsmom_vt,     {"lookback": [126, 252], "target": [0.10, 0.15]}),
     "ma_filter_vt": (ma_filter_vt, {"window": [150, 200], "target": [0.10, 0.15]}),
+    "markov_regime": (markov_regime, {"window": [20, 40], "threshold": [0.03, 0.05]}),
     "sma_cross":    (sma_cross,    {"fast": [5, 10, 20], "slow": [50, 100]}),
 }
 

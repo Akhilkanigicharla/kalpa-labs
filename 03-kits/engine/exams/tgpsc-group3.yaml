@@ -1,0 +1,184 @@
+# TGPSC Group 3 · Kalpa exam kit data. How to edit: see ../README.md.
+# Syllabus: topic names follow the TSPSC Group 3 scheme (Notification 29/2022, 3 papers: the Group 2 Papers I–III
+# without the Telangana Movement paper). Re-check against the official syllabus PDF in the new notification (data gap G3-1).
+id: tgpsc-group3
+short: TGPSC Group 3
+name: TGPSC Group 3 Services
+name_te: టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు
+body: Telangana State Public Service Commission (TGPSC)
+category: state-govt
+official_site: https://www.tgpsc.gov.in
+languages: [en, te]
+checked_on: 2026-11-07
+
+stages:
+  - {name: "Paper I · General Studies and General Abilities (150 marks, objective)", name_te: "పేపర్ I · సాధారణ అధ్యయనాలు, సాధారణ సామర్థ్యాలు"}
+  - {name: "Paper II · History, Polity and Society (150 marks, objective)", name_te: "పేపర్ II · చరిత్ర, రాజనీతి, సమాజం"}
+  - {name: "Paper III · Economy and Development (150 marks, objective)", name_te: "పేపర్ III · ఆర్థిక వ్యవస్థ, అభివృద్ధి"}
+  - {name: "Certificate verification", name_te: "ధ్రువపత్రాల పరిశీలన"}
+
+key_dates:
+  - {event: "Notification (new Group 3 recruitment)", event_te: "నోటిఫికేషన్", status: NOT_ANNOUNCED, date: null, source: "https://www.tgpsc.gov.in", note: "No new notification known on 7 Nov 2026 (unverified: agents confirm on tgpsc.gov.in weekly)."}
+  - {event: "Online application opens", event_te: "ఆన్‌లైన్ దరఖాస్తు ప్రారంభం", status: NOT_ANNOUNCED, date: null, source: null, note: "Given in the notification."}
+  - {event: "Last date to apply", event_te: "దరఖాస్తుకు చివరి తేదీ", status: NOT_ANNOUNCED, date: null, source: null, note: "Given in the notification."}
+  - {event: "Hall ticket download", event_te: "హాల్ టికెట్ డౌన్‌లోడ్", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Written exam (Papers I to III)", event_te: "రాత పరీక్ష (పేపర్లు I–III)", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Preliminary answer key", event_te: "ప్రాథమిక కీ", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+  - {event: "Result / general ranking list", event_te: "ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా", status: NOT_ANNOUNCED, date: null, source: null, note: ""}
+
+plan: {topics_per_day: 2, reminder_time: "07:30", revision_days: [1, 3, 7, 21]}
+
+materials:
+  - {title: "TGPSC official site: notifications, syllabus PDF, previous question papers", url: "https://www.tgpsc.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "Telangana SCERT textbooks (free, Telugu and English medium, classes 6–10)", url: "https://scert.telangana.gov.in", kind: textbook, status: TO_VERIFY}
+  - {title: "NCERT textbooks (free PDFs: history, geography, polity, economy)", url: "https://ncert.nic.in/textbook.php", kind: textbook, status: TO_VERIFY}
+  - {title: "Telangana Socio Economic Outlook (Planning Dept, free)", url: "https://www.telangana.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "Economic Survey of India (free)", url: "https://www.indiabudget.gov.in", kind: official, status: TO_VERIFY}
+  - {title: "PIB press releases for current affairs", url: "https://pib.gov.in", kind: current-affairs, status: TO_VERIFY}
+
+youtube:
+  query_template: "TGPSC Group 3 {topic} Telugu"
+
+subjects:
+  - name: Current affairs and general science
+    name_te: కరెంట్ అఫైర్స్, జనరల్ సైన్స్
+    paper: Paper I
+    videos:
+      - {query: "TGPSC Group 3 current affairs Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 science and technology Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Current affairs: Telangana (regional)", te: "కరెంట్ అఫైర్స్: తెలంగాణ (ప్రాంతీయ)"}
+      - {en: "Current affairs: national", te: "కరెంట్ అఫైర్స్: జాతీయ"}
+      - {en: "Current affairs: international", te: "కరెంట్ అఫైర్స్: అంతర్జాతీయ"}
+      - {en: "International relations and events", te: "అంతర్జాతీయ సంబంధాలు, సంఘటనలు"}
+      - {en: "General science in everyday life", te: "నిత్యజీవితంలో జనరల్ సైన్స్"}
+      - {en: "India's achievements in science and technology", te: "శాస్త్ర సాంకేతిక రంగాల్లో భారతదేశ విజయాలు"}
+      - {en: "Environmental issues", te: "పర్యావరణ సమస్యలు"}
+      - {en: "Disaster management: prevention and mitigation", te: "విపత్తు నిర్వహణ: నివారణ, ఉపశమన చర్యలు"}
+  - name: "Geography: world, India, Telangana"
+    name_te: "భౌగోళిక శాస్త్రం: ప్రపంచం, భారతదేశం, తెలంగాణ"
+    paper: Paper I
+    videos:
+      - {query: "TGPSC Group 3 Indian geography Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 Telangana geography Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "World geography", te: "ప్రపంచ భౌగోళిక శాస్త్రం"}
+      - {en: "Indian geography", te: "భారతదేశ భౌగోళిక శాస్త్రం"}
+      - {en: "Telangana geography", te: "తెలంగాణ భౌగోళిక శాస్త్రం"}
+  - name: Heritage, Telangana policies and inclusion
+    name_te: వారసత్వం, తెలంగాణ విధానాలు, సమ్మిళితం
+    paper: Paper I
+    videos:
+      - {query: "TGPSC Group 3 Telangana culture heritage Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 Telangana state policies Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "History and cultural heritage of India", te: "భారతదేశ చరిత్ర, సాంస్కృతిక వారసత్వం"}
+      - {en: "Society, culture, heritage, arts and literature of Telangana", te: "తెలంగాణ సమాజం, సంస్కృతి, వారసత్వం, కళలు, సాహిత్యం"}
+      - {en: "Policies of Telangana State", te: "తెలంగాణ రాష్ట్ర విధానాలు"}
+      - {en: "Social exclusion, rights issues and inclusive policies", te: "సామాజిక వెలి, హక్కుల సమస్యలు, సమ్మిళిత విధానాలు"}
+  - name: Reasoning, data interpretation and English
+    name_te: తార్కిక వివేచన, దత్తాంశ విశ్లేషణ, ఇంగ్లీష్
+    paper: Paper I
+    videos:
+      - {query: "TGPSC Group 3 reasoning Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 basic English Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Logical reasoning", te: "తార్కిక వివేచన"}
+      - {en: "Analytical ability and data interpretation", te: "విశ్లేషణ సామర్థ్యం, దత్తాంశ విశ్లేషణ"}
+      - {en: "Basic English (10th class standard)", te: "ప్రాథమిక ఇంగ్లీష్ (పదో తరగతి స్థాయి)"}
+
+  - name: Socio-cultural history of India and Telangana
+    name_te: భారతదేశ, తెలంగాణ సామాజిక-సాంస్కృతిక చరిత్ర
+    paper: Paper II
+    videos:
+      - {query: "TGPSC Group 3 Indian history Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 Telangana history Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Indus Valley Civilisation and the Vedic period", te: "సింధు నాగరికత, వేద కాలం"}
+      - {en: "Jainism and Buddhism; Mauryas and Guptas", te: "జైన, బౌద్ధ మతాలు; మౌర్యులు, గుప్తులు"}
+      - {en: "Medieval India: Delhi Sultanate, Mughals, Bhakti and Sufi movements", te: "మధ్యయుగ భారతం: ఢిల్లీ సుల్తానులు, మొఘలులు, భక్తి, సూఫీ ఉద్యమాలు"}
+      - {en: "British rule and socio-religious reform movements", te: "బ్రిటిష్ పాలన, సామాజిక-మత సంస్కరణ ఉద్యమాలు"}
+      - {en: "Indian national movement (1885–1947)", te: "భారత జాతీయోద్యమం (1885–1947)"}
+      - {en: "Satavahanas, Ikshvakus and Vishnukundins in Telangana", te: "తెలంగాణలో శాతవాహనులు, ఇక్ష్వాకులు, విష్ణుకుండినులు"}
+      - {en: "Kakatiyas: polity, society, economy and culture", te: "కాకతీయులు: పాలన, సమాజం, ఆర్థిక వ్యవస్థ, సంస్కృతి"}
+      - {en: "Qutb Shahis: society, culture and architecture", te: "కుతుబ్ షాహీలు: సమాజం, సంస్కృతి, వాస్తుకళ"}
+      - {en: "Asaf Jahi dynasty (Nizams): administration and reforms", te: "అసఫ్ జాహీలు (నిజాంలు): పాలన, సంస్కరణలు"}
+      - {en: "Socio-cultural awakening: Adi Hindu, library and Andhra Mahasabha movements", te: "సామాజిక-సాంస్కృతిక చైతన్యం: ఆది హిందూ, గ్రంథాలయ, ఆంధ్ర మహాసభ ఉద్యమాలు"}
+      - {en: "Tribal and peasant revolts; Telangana armed struggle (1946–51)", te: "గిరిజన, రైతాంగ తిరుగుబాట్లు; తెలంగాణ సాయుధ పోరాటం (1946–51)"}
+      - {en: "Police action (1948) and the end of Nizam rule", te: "పోలీస్ చర్య (1948), నిజాం పాలన అంతం"}
+  - name: Overview of the Indian Constitution and politics
+    name_te: భారత రాజ్యాంగం, రాజకీయాల అవలోకనం
+    paper: Paper II
+    videos:
+      - {query: "TGPSC Group 3 Indian Polity Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 Indian Constitution Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Evolution of the Constitution; Preamble and salient features", te: "రాజ్యాంగ పరిణామం; ప్రవేశిక, ముఖ్య లక్షణాలు"}
+      - {en: "Fundamental Rights, Directive Principles and Fundamental Duties", te: "ప్రాథమిక హక్కులు, ఆదేశిక సూత్రాలు, ప్రాథమిక విధులు"}
+      - {en: "Union and State executive and legislature", te: "కేంద్ర, రాష్ట్ర కార్యనిర్వాహక వర్గం, శాసన వ్యవస్థ"}
+      - {en: "Centre–State relations and federalism", te: "కేంద్ర-రాష్ట్ర సంబంధాలు, సమాఖ్య వ్యవస్థ"}
+      - {en: "Judiciary: Supreme Court, High Courts and judicial review", te: "న్యాయ వ్యవస్థ: సుప్రీంకోర్టు, హైకోర్టులు, న్యాయ సమీక్ష"}
+      - {en: "73rd and 74th Amendments: Panchayati Raj and urban local bodies", te: "73, 74వ సవరణలు: పంచాయతీరాజ్, పట్టణ స్థానిక సంస్థలు"}
+      - {en: "Electoral system, Election Commission and anti-defection law", te: "ఎన్నికల వ్యవస్థ, ఎన్నికల సంఘం, పార్టీ ఫిరాయింపుల నిరోధక చట్టం"}
+      - {en: "Constitutional and statutory bodies (CAG, UPSC, Finance Commission, NHRC)", te: "రాజ్యాంగ, చట్టబద్ధ సంస్థలు (కాగ్, యూపీఎస్సీ, ఆర్థిక సంఘం, ఎన్‌హెచ్‌ఆర్‌సీ)"}
+      - {en: "Special provisions for SC, ST, BC, women and minorities", te: "ఎస్సీ, ఎస్టీ, బీసీ, మహిళలు, మైనారిటీలకు ప్రత్యేక నిబంధనలు"}
+      - {en: "Amendment procedure and important amendments", te: "రాజ్యాంగ సవరణ విధానం, ముఖ్య సవరణలు"}
+      - {en: "Welfare mechanisms and judicial activism", te: "సంక్షేమ యంత్రాంగం, న్యాయ క్రియాశీలత"}
+  - name: Social structure, issues and public policies
+    name_te: సామాజిక నిర్మాణం, సమస్యలు, ప్రజా విధానాలు
+    paper: Paper II
+    videos:
+      - {query: "TGPSC Group 3 Indian society Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 social issues public policies Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Indian social structure: caste, family, marriage, kinship, religion, tribe", te: "భారత సామాజిక నిర్మాణం: కులం, కుటుంబం, వివాహం, బంధుత్వం, మతం, తెగ"}
+      - {en: "Features of Telangana society", te: "తెలంగాణ సమాజ లక్షణాలు"}
+      - {en: "Social issues: inequality, casteism, communalism, regionalism", te: "సామాజిక సమస్యలు: అసమానత, కులతత్వం, మతతత్వం, ప్రాంతీయవాదం"}
+      - {en: "Violence against women, child labour and human trafficking", te: "మహిళలపై హింస, బాల కార్మికులు, మానవ అక్రమ రవాణా"}
+      - {en: "Disability and the aged", te: "వైకల్యం, వృద్ధులు"}
+      - {en: "Social movements: peasant, tribal, Dalit, backward class, women, environment", te: "సామాజిక ఉద్యమాలు: రైతు, గిరిజన, దళిత, బీసీ, మహిళా, పర్యావరణ"}
+      - {en: "Social policies and welfare schemes of India and Telangana", te: "భారత, తెలంగాణ సామాజిక విధానాలు, సంక్షేమ పథకాలు"}
+
+  - name: "Indian economy: issues and challenges"
+    name_te: "భారత ఆర్థిక వ్యవస్థ: సమస్యలు, సవాళ్లు"
+    paper: Paper III
+    videos:
+      - {query: "TGPSC Group 3 Indian economy Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 banking budget Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Growth and development: concepts and national income (GDP)", te: "వృద్ధి, అభివృద్ధి: భావనలు, జాతీయ ఆదాయం (జీడీపీ)"}
+      - {en: "Population trends and the Human Development Index", te: "జనాభా ధోరణులు, మానవాభివృద్ధి సూచిక"}
+      - {en: "Poverty and unemployment", te: "పేదరికం, నిరుద్యోగం"}
+      - {en: "Economic planning: Five-Year Plans and NITI Aayog", te: "ఆర్థిక ప్రణాళిక: పంచవర్ష ప్రణాళికలు, నీతి ఆయోగ్"}
+      - {en: "Agriculture, allied sectors and food security", te: "వ్యవసాయం, అనుబంధ రంగాలు, ఆహార భద్రత"}
+      - {en: "Industry and services sectors", te: "పారిశ్రామిక, సేవా రంగాలు"}
+      - {en: "Money, banking, RBI, monetary policy and inflation", te: "ద్రవ్యం, బ్యాంకింగ్, ఆర్బీఐ, ద్రవ్య విధానం, ద్రవ్యోల్బణం"}
+      - {en: "Public finance: budget, taxation, GST and fiscal policy", te: "ప్రభుత్వ విత్తం: బడ్జెట్, పన్నులు, జీఎస్టీ, కోశ విధానం"}
+      - {en: "External sector: balance of payments, trade and FDI", te: "విదేశీ రంగం: చెల్లింపుల శేషం, వాణిజ్యం, ఎఫ్‌డీఐ"}
+      - {en: "Economic reforms of 1991: liberalisation, privatisation, globalisation", te: "1991 ఆర్థిక సంస్కరణలు: సరళీకరణ, ప్రైవేటీకరణ, ప్రపంచీకరణ"}
+  - name: Economy and development of Telangana
+    name_te: తెలంగాణ ఆర్థిక వ్యవస్థ, అభివృద్ధి
+    paper: Paper III
+    videos:
+      - {query: "TGPSC Group 3 Telangana economy Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 Telangana budget schemes Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Hyderabad State economy and Telangana's under-development in united AP", te: "హైదరాబాద్ రాష్ట్ర ఆర్థిక వ్యవస్థ; ఉమ్మడి ఏపీలో తెలంగాణ వెనుకబాటు"}
+      - {en: "Land reforms: abolition of jagirdari and zamindari; tenancy", te: "భూ సంస్కరణలు: జాగీర్దారీ, జమీందారీ రద్దు; కౌలుదారీ"}
+      - {en: "Telangana agriculture and irrigation (tanks, Mission Kakatiya, projects)", te: "తెలంగాణ వ్యవసాయం, నీటిపారుదల (చెరువులు, మిషన్ కాకతీయ, ప్రాజెక్టులు)"}
+      - {en: "Industry, services and the IT sector in Telangana", te: "తెలంగాణలో పరిశ్రమలు, సేవా రంగం, ఐటీ రంగం"}
+      - {en: "Telangana budget, GSDP and per capita income", te: "తెలంగాణ బడ్జెట్, జీఎస్‌డీపీ, తలసరి ఆదాయం"}
+      - {en: "Welfare and development schemes of Telangana", te: "తెలంగాణ సంక్షేమ, అభివృద్ధి పథకాలు"}
+  - name: Issues of development and change
+    name_te: అభివృద్ధి, మార్పు సమస్యలు
+    paper: Paper III
+    videos:
+      - {query: "TGPSC Group 3 development issues Telugu", status: TO_CURATE, url: null}
+      - {query: "TGPSC Group 3 sustainable development Telugu", status: TO_CURATE, url: null}
+    topics:
+      - {en: "Regional and social inequality in development", te: "అభివృద్ధిలో ప్రాంతీయ, సామాజిక అసమానతలు"}
+      - {en: "Development and displacement; land acquisition and rehabilitation", te: "అభివృద్ధి, నిర్వాసితులు; భూసేకరణ, పునరావాసం"}
+      - {en: "Impact of economic reforms on growth, poverty and inequality", te: "వృద్ధి, పేదరికం, అసమానతలపై ఆర్థిక సంస్కరణల ప్రభావం"}
+      - {en: "Sustainable development and the SDGs", te: "సుస్థిర అభివృద్ధి, ఎస్‌డీజీలు"}
+      - {en: "Environment and climate change policies", te: "పర్యావరణం, వాతావరణ మార్పు విధానాలు"}
+      - {en: "Science, technology and economic development", te: "శాస్త్ర సాంకేతికత, ఆర్థికాభివృద్ధి"}

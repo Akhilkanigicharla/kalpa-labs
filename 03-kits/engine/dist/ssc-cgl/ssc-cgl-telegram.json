@@ -1,0 +1,593 @@
+{
+"exam": "ssc-cgl",
+"short": "SSC CGL",
+"timezone": "Asia/Kolkata",
+"start": "2026-11-10",
+"topics_per_day": 2,
+"flow": "BotBhai Telegram (01-botbhai/botbhai/core/functions/telegram.js) · Library of Ranks channel / opted-in subscribers",
+"method": "sendMessage",
+"rules": [
+"At most one message a day per language.",
+"Send only to people who joined or opted in.",
+"No 'only today' or rank-guarantee wording.",
+"This file sends nothing; the bot flow fills chat_id and sends."
+],
+"messages": [
+{
+"id": "ssc-cgl-20261110-en",
+"send_at": "2026-11-10T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study"
+],
+"text": "📚 SSC CGL · Day 1\nNew today:\n• Number system\n• Simplification and BODMAS\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261111-en",
+"send_at": "2026-11-11T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 2\nNew today:\n• Percentages\n• Ratio and proportion\nRevise today:\n• Number system\n• Simplification and BODMAS\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261112-en",
+"send_at": "2026-11-12T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 3\nNew today:\n• Averages\n• Profit, loss and discount\nRevise today:\n• Percentages\n• Ratio and proportion\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261113-en",
+"send_at": "2026-11-13T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 4\nNew today:\n• Simple and compound interest\n• Time and work\nRevise today:\n• Number system\n• Simplification and BODMAS\n• Averages\n• Profit, loss and discount\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261114-en",
+"send_at": "2026-11-14T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 5\nNew today:\n• Pipes and cisterns\n• Time, speed and distance\nRevise today:\n• Percentages\n• Ratio and proportion\n• Simple and compound interest\n• Time and work\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261115-en",
+"send_at": "2026-11-15T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 6\nNew today:\n• Mixture and alligation\n• Algebra: identities and linear equations\nRevise today:\n• Averages\n• Profit, loss and discount\n• Pipes and cisterns\n• Time, speed and distance\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261116-en",
+"send_at": "2026-11-16T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 7\nNew today:\n• Geometry: triangles, congruence and similarity\n• Geometry: circles, chords and tangents\nRevise today:\n• Simple and compound interest\n• Time and work\n• Mixture and alligation\n• Algebra: identities and linear equations\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261117-en",
+"send_at": "2026-11-17T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 8\nNew today:\n• Mensuration: 2D figures\n• Mensuration: 3D solids\nRevise today:\n• Number system\n• Simplification and BODMAS\n• Pipes and cisterns\n• Time, speed and distance\n• Geometry: triangles, congruence and similarity\n• Geometry: circles, chords and tangents\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261118-en",
+"send_at": "2026-11-18T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 9\nNew today:\n• Trigonometry: ratios and identities\n• Heights and distances\nRevise today:\n• Percentages\n• Ratio and proportion\n• Mixture and alligation\n• Algebra: identities and linear equations\n• Mensuration: 2D figures\n• Mensuration: 3D solids\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261119-en",
+"send_at": "2026-11-19T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 10\nNew today:\n• Data interpretation: tables, bar, pie and line charts\n• Statistics basics: mean, median, mode\nRevise today:\n• Averages\n• Profit, loss and discount\n• Geometry: triangles, congruence and similarity\n• Geometry: circles, chords and tangents\n• Trigonometry: ratios and identities\n• Heights and distances\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261120-en",
+"send_at": "2026-11-20T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 11\nNew today:\n• Analogy\n• Classification (odd one out)\nRevise today:\n• Simple and compound interest\n• Time and work\n• Mensuration: 2D figures\n• Mensuration: 3D solids\n• Data interpretation: tables, bar, pie and line charts\n• Statistics basics: mean, median, mode\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261121-en",
+"send_at": "2026-11-21T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 12\nNew today:\n• Number and letter series\n• Coding-decoding\nRevise today:\n• Pipes and cisterns\n• Time, speed and distance\n• Trigonometry: ratios and identities\n• Heights and distances\n• Analogy\n• Classification (odd one out)\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261122-en",
+"send_at": "2026-11-22T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 13\nNew today:\n• Blood relations\n• Direction and distance\nRevise today:\n• Mixture and alligation\n• Algebra: identities and linear equations\n• Data interpretation: tables, bar, pie and line charts\n• Statistics basics: mean, median, mode\n• Number and letter series\n• Coding-decoding\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261123-en",
+"send_at": "2026-11-23T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 14\nNew today:\n• Order and ranking\n• Syllogism\nRevise today:\n• Geometry: triangles, congruence and similarity\n• Geometry: circles, chords and tangents\n• Analogy\n• Classification (odd one out)\n• Blood relations\n• Direction and distance\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261124-en",
+"send_at": "2026-11-24T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 15\nNew today:\n• Venn diagrams\n• Mathematical operations and symbol substitution\nRevise today:\n• Mensuration: 2D figures\n• Mensuration: 3D solids\n• Number and letter series\n• Coding-decoding\n• Order and ranking\n• Syllogism\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261125-en",
+"send_at": "2026-11-25T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 16\nNew today:\n• Missing number and matrix\n• Paper folding and cutting\nRevise today:\n• Trigonometry: ratios and identities\n• Heights and distances\n• Blood relations\n• Direction and distance\n• Venn diagrams\n• Mathematical operations and symbol substitution\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261126-en",
+"send_at": "2026-11-26T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 17\nNew today:\n• Mirror and water images\n• Embedded figures and figure counting\nRevise today:\n• Data interpretation: tables, bar, pie and line charts\n• Statistics basics: mean, median, mode\n• Order and ranking\n• Syllogism\n• Missing number and matrix\n• Paper folding and cutting\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261127-en",
+"send_at": "2026-11-27T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 18\nNew today:\n• Dice and cubes\n• Seating arrangement and puzzles\nRevise today:\n• Analogy\n• Classification (odd one out)\n• Venn diagrams\n• Mathematical operations and symbol substitution\n• Mirror and water images\n• Embedded figures and figure counting\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261128-en",
+"send_at": "2026-11-28T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 19\nNew today:\n• Reading comprehension\n• Cloze test\nRevise today:\n• Number and letter series\n• Coding-decoding\n• Missing number and matrix\n• Paper folding and cutting\n• Dice and cubes\n• Seating arrangement and puzzles\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261129-en",
+"send_at": "2026-11-29T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 20\nNew today:\n• Spot the error\n• Sentence improvement\nRevise today:\n• Blood relations\n• Direction and distance\n• Mirror and water images\n• Embedded figures and figure counting\n• Reading comprehension\n• Cloze test\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261130-en",
+"send_at": "2026-11-30T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 21\nNew today:\n• Fill in the blanks\n• Synonyms\nRevise today:\n• Order and ranking\n• Syllogism\n• Dice and cubes\n• Seating arrangement and puzzles\n• Spot the error\n• Sentence improvement\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261201-en",
+"send_at": "2026-12-01T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 22\nNew today:\n• Antonyms\n• Idioms and phrases\nRevise today:\n• Number system\n• Simplification and BODMAS\n• Venn diagrams\n• Mathematical operations and symbol substitution\n• Reading comprehension\n• Cloze test\n• Fill in the blanks\n• Synonyms\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261202-en",
+"send_at": "2026-12-02T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 23\nNew today:\n• One-word substitution\n• Spelling correction\nRevise today:\n• Percentages\n• Ratio and proportion\n• Missing number and matrix\n• Paper folding and cutting\n• Spot the error\n• Sentence improvement\n• Antonyms\n• Idioms and phrases\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261203-en",
+"send_at": "2026-12-03T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 24\nNew today:\n• Active and passive voice\n• Direct and indirect speech\nRevise today:\n• Averages\n• Profit, loss and discount\n• Mirror and water images\n• Embedded figures and figure counting\n• Fill in the blanks\n• Synonyms\n• One-word substitution\n• Spelling correction\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261204-en",
+"send_at": "2026-12-04T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 25\nNew today:\n• Sentence rearrangement (para jumbles)\n• Ancient and medieval Indian history\nRevise today:\n• Simple and compound interest\n• Time and work\n• Dice and cubes\n• Seating arrangement and puzzles\n• Antonyms\n• Idioms and phrases\n• Active and passive voice\n• Direct and indirect speech\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261205-en",
+"send_at": "2026-12-05T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 26\nNew today:\n• Modern Indian history and the freedom struggle\n• Indian polity and Constitution\nRevise today:\n• Pipes and cisterns\n• Time, speed and distance\n• Reading comprehension\n• Cloze test\n• One-word substitution\n• Spelling correction\n• Sentence rearrangement (para jumbles)\n• Ancient and medieval Indian history\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261206-en",
+"send_at": "2026-12-06T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 27\nNew today:\n• Indian economy\n• Geography: India and the world\nRevise today:\n• Mixture and alligation\n• Algebra: identities and linear equations\n• Spot the error\n• Sentence improvement\n• Active and passive voice\n• Direct and indirect speech\n• Modern Indian history and the freedom struggle\n• Indian polity and Constitution\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261207-en",
+"send_at": "2026-12-07T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 28\nNew today:\n• Physics basics\n• Chemistry basics\nRevise today:\n• Geometry: triangles, congruence and similarity\n• Geometry: circles, chords and tangents\n• Fill in the blanks\n• Synonyms\n• Sentence rearrangement (para jumbles)\n• Ancient and medieval Indian history\n• Indian economy\n• Geography: India and the world\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261208-en",
+"send_at": "2026-12-08T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 29\nNew today:\n• Biology basics\n• Art and culture\nRevise today:\n• Mensuration: 2D figures\n• Mensuration: 3D solids\n• Antonyms\n• Idioms and phrases\n• Modern Indian history and the freedom struggle\n• Indian polity and Constitution\n• Physics basics\n• Chemistry basics\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261209-en",
+"send_at": "2026-12-09T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 30\nNew today:\n• Static GK: awards, books, important days\n• Sports\nRevise today:\n• Trigonometry: ratios and identities\n• Heights and distances\n• One-word substitution\n• Spelling correction\n• Indian economy\n• Geography: India and the world\n• Biology basics\n• Art and culture\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261210-en",
+"send_at": "2026-12-10T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 31\nNew today:\n• Government schemes\n• Current affairs (last 6–12 months)\nRevise today:\n• Data interpretation: tables, bar, pie and line charts\n• Statistics basics: mean, median, mode\n• Active and passive voice\n• Direct and indirect speech\n• Physics basics\n• Chemistry basics\n• Static GK: awards, books, important days\n• Sports\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261211-en",
+"send_at": "2026-12-11T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 32\nNew today:\n• Computer fundamentals and hardware\n• Software and operating systems\nRevise today:\n• Analogy\n• Classification (odd one out)\n• Sentence rearrangement (para jumbles)\n• Ancient and medieval Indian history\n• Biology basics\n• Art and culture\n• Government schemes\n• Current affairs (last 6–12 months)\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261212-en",
+"send_at": "2026-12-12T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 33\nNew today:\n• MS Office: Word, Excel, PowerPoint\n• Internet and email\nRevise today:\n• Number and letter series\n• Coding-decoding\n• Modern Indian history and the freedom struggle\n• Indian polity and Constitution\n• Static GK: awards, books, important days\n• Sports\n• Computer fundamentals and hardware\n• Software and operating systems\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261213-en",
+"send_at": "2026-12-13T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 34\nNew today:\n• Networking basics\n• Computer security: viruses, firewalls\nRevise today:\n• Blood relations\n• Direction and distance\n• Indian economy\n• Geography: India and the world\n• Government schemes\n• Current affairs (last 6–12 months)\n• MS Office: Word, Excel, PowerPoint\n• Internet and email\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261214-en",
+"send_at": "2026-12-14T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 35\nNew today:\n• Data Entry Speed Test practice (typing)\n• Collection, classification and presentation of data\nRevise today:\n• Order and ranking\n• Syllogism\n• Physics basics\n• Chemistry basics\n• Computer fundamentals and hardware\n• Software and operating systems\n• Networking basics\n• Computer security: viruses, firewalls\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261215-en",
+"send_at": "2026-12-15T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 36\nNew today:\n• Measures of central tendency\n• Measures of dispersion\nRevise today:\n• Venn diagrams\n• Mathematical operations and symbol substitution\n• Biology basics\n• Art and culture\n• MS Office: Word, Excel, PowerPoint\n• Internet and email\n• Data Entry Speed Test practice (typing)\n• Collection, classification and presentation of data\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261216-en",
+"send_at": "2026-12-16T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 37\nNew today:\n• Correlation and regression\n• Probability theory and distributions\nRevise today:\n• Missing number and matrix\n• Paper folding and cutting\n• Static GK: awards, books, important days\n• Sports\n• Networking basics\n• Computer security: viruses, firewalls\n• Measures of central tendency\n• Measures of dispersion\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261217-en",
+"send_at": "2026-12-17T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"study",
+"revision"
+],
+"text": "📚 SSC CGL · Day 38\nNew today:\n• Sampling theory\n• Index numbers and time series\nRevise today:\n• Mirror and water images\n• Embedded figures and figure counting\n• Government schemes\n• Current affairs (last 6–12 months)\n• Data Entry Speed Test practice (typing)\n• Collection, classification and presentation of data\n• Correlation and regression\n• Probability theory and distributions\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261218-en",
+"send_at": "2026-12-18T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 39\nRevise today:\n• Dice and cubes\n• Seating arrangement and puzzles\n• Computer fundamentals and hardware\n• Software and operating systems\n• Measures of central tendency\n• Measures of dispersion\n• Sampling theory\n• Index numbers and time series\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261219-en",
+"send_at": "2026-12-19T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 40\nRevise today:\n• Reading comprehension\n• Cloze test\n• MS Office: Word, Excel, PowerPoint\n• Internet and email\n• Correlation and regression\n• Probability theory and distributions\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261220-en",
+"send_at": "2026-12-20T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 41\nRevise today:\n• Spot the error\n• Sentence improvement\n• Networking basics\n• Computer security: viruses, firewalls\n• Sampling theory\n• Index numbers and time series\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261221-en",
+"send_at": "2026-12-21T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 42\nRevise today:\n• Fill in the blanks\n• Synonyms\n• Data Entry Speed Test practice (typing)\n• Collection, classification and presentation of data\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261222-en",
+"send_at": "2026-12-22T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 43\nRevise today:\n• Antonyms\n• Idioms and phrases\n• Measures of central tendency\n• Measures of dispersion\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261223-en",
+"send_at": "2026-12-23T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 44\nRevise today:\n• One-word substitution\n• Spelling correction\n• Correlation and regression\n• Probability theory and distributions\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261224-en",
+"send_at": "2026-12-24T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 45\nRevise today:\n• Active and passive voice\n• Direct and indirect speech\n• Sampling theory\n• Index numbers and time series\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261225-en",
+"send_at": "2026-12-25T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 46\nRevise today:\n• Sentence rearrangement (para jumbles)\n• Ancient and medieval Indian history\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261226-en",
+"send_at": "2026-12-26T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 47\nRevise today:\n• Modern Indian history and the freedom struggle\n• Indian polity and Constitution\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261227-en",
+"send_at": "2026-12-27T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 48\nRevise today:\n• Indian economy\n• Geography: India and the world\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20261228-en",
+"send_at": "2026-12-28T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 49\nRevise today:\n• Physics basics\n• Chemistry basics\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261229-en",
+"send_at": "2026-12-29T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 50\nRevise today:\n• Biology basics\n• Art and culture\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261230-en",
+"send_at": "2026-12-30T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 51\nRevise today:\n• Static GK: awards, books, important days\n• Sports\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20261231-en",
+"send_at": "2026-12-31T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 52\nRevise today:\n• Government schemes\n• Current affairs (last 6–12 months)\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270101-en",
+"send_at": "2027-01-01T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 53\nRevise today:\n• Computer fundamentals and hardware\n• Software and operating systems\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270102-en",
+"send_at": "2027-01-02T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 54\nRevise today:\n• MS Office: Word, Excel, PowerPoint\n• Internet and email\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270103-en",
+"send_at": "2027-01-03T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision",
+"weekly"
+],
+"text": "📚 SSC CGL · Day 55\nRevise today:\n• Networking basics\n• Computer security: viruses, firewalls\nMark them Done in your tracker.\n🗓 Weekly check: update your progress %.\nNot announced yet: Notification (next CGL cycle), Last date to apply, Tier 1 exam, Tier 1 result, Tier 2 exam, Final result. Only trust https://ssc.gov.in."
+},
+{
+"id": "ssc-cgl-20270104-en",
+"send_at": "2027-01-04T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 56\nRevise today:\n• Data Entry Speed Test practice (typing)\n• Collection, classification and presentation of data\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270105-en",
+"send_at": "2027-01-05T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 57\nRevise today:\n• Measures of central tendency\n• Measures of dispersion\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270106-en",
+"send_at": "2027-01-06T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 58\nRevise today:\n• Correlation and regression\n• Probability theory and distributions\nMark them Done in your tracker."
+},
+{
+"id": "ssc-cgl-20270107-en",
+"send_at": "2027-01-07T07:00:00+05:30",
+"lang": "en",
+"kinds": [
+"revision"
+],
+"text": "📚 SSC CGL · Day 59\nRevise today:\n• Sampling theory\n• Index numbers and time series\nMark them Done in your tracker."
+}
+]
+}

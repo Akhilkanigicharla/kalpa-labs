@@ -236,7 +236,7 @@
   "tries": 0
  },
  {
-  "id": "K059",
+  "id": "K061",
   "world": "hq",
   "priority": "P2",
   "owner": "Scout",
@@ -249,6 +249,6 @@
   "context_chars": 12000,
   "status": "todo",
   "created": "2026-11-11T00:00:00Z",
-  "output": "00-hq/knowledge/K059.md"
+  "output": "00-hq/knowledge/K061.md"
  }
 ]

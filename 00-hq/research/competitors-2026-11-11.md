@@ -99,3 +99,5 @@ In four of five worlds the leaders are free or far bigger. The proposals all mov
 - **b4 extension:** leaders are free, so the core stays free. Sync plan $2.99 a month (under the $4.99 median extension subscription, DebugBear 2020) or lifetime $24. No rival price verified today, so this is the weakest-evidenced proposal.
 - **b5 deals:** nothing to price. Commission rates must be read from the Amazon Associates dashboard by Akhil (login needed) before the category mix is changed.
 - **b6 consulting:** keep the ₹4,999 audit; it is one fifth of the cheapest Indian AI-compliance offer found (₹24,999) and far under ₹1.5 lakh consulting. Add savings-share: 20% of the first 3 months' proven savings as an alternative to the fixed fee (the 20% has no benchmark; it is a starting number). Never say "ISO 42001" or "certified" on the page.
+
+**All proposals in Addendum 2 APPROVED by Akhil, 11 Nov 15:09 IST ("prices all ok").** b5 mix change still waits for the real Amazon rates from his Associates dashboard (laptop).

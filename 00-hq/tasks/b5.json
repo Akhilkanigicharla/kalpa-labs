@@ -103,5 +103,21 @@
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K053.md",
   "updated": "2026-11-08T19:24:42Z"
+ },
+ {
+  "id": "K065",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "title": "Telugu Deals post format: is this deal real?",
+  "details": "Design the post format for a Telugu deals channel that checks deals before posting. Give 10 numbered items: 1 post template with fields (product, price, verdict, why, link, #ad), 6 example verdict lines in Telugu script with English meaning (good deal, average, wait, EMI costs more, card offer maths, price was lower before), 1 channel description in Telugu + English, 1 pinned 'how we check deals' message, 1 list of 5 rules for what we never post. No real prices or product claims; use [PRICE] and [PRODUCT]. Mark Telugu 'needs native check'.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 10,
+  "context_chars": 14000,
+  "status": "todo",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K065.md"
  }
 ]

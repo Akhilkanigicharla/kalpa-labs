@@ -119,5 +119,21 @@
   "updated": "2026-11-07T10:24:37Z",
   "tries": 1,
   "output": "00-hq/knowledge/K046.md"
+ },
+ {
+  "id": "K063",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "title": "Exam kit page copy: one payment, no expiry, in Telugu and English",
+  "details": "Write page copy for a Kalpa exam kit (planner + tracker + exam-date alerts for Andhra Pradesh and Telangana state exams). Angle: one payment, yours forever; a plan, not another mock-test subscription; works alongside free mock tests. Give 8 numbered blocks, each in English and then Telugu script: headline, sub-headline, 3 benefits (one block each), what is inside, who it is for, FAQ of 4 questions. No invented pass rates, student counts or testimonials. Mark every Telugu block 'needs native check'.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "todo",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K063.md"
  }
 ]

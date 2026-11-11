@@ -110,5 +110,21 @@
   "updated": "2026-11-08T19:31:20Z",
   "tries": 3,
   "vigil_notes": "FIX:\n- Row 13: `Alt+Shift+L` is not in any repo file; remove it or mark it UNVERIFIED.\n- Row 8: The save button disables on click to prevent double-fire, so throttling is relevant; change ➖ Not relevant to ✅.\n- Row 17: `➖ UNVERIFIED` mixes symbols; use plain `UNVERIFIED` for the missing custom 404 page."
+ },
+ {
+  "id": "K064",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Lifeboat",
+  "title": "Tab Lifeboat store listing: never lose your tabs",
+  "details": "Write a Chrome Web Store listing for Tab Lifeboat. Angle: never lose your tabs: free saving and restoring with no daily limit, import from other tab savers' export files, automatic local backups and an export file; paid plan only for cloud backup and sync. Give 8 numbered blocks: short description (under 132 characters), 3 headline options (one block), long description, 5 feature bullets (one block), privacy paragraph (data stays on the device unless sync is on), free vs paid table in text, 4 FAQ, 5 screenshot captions. No rival names, no user counts, no claims about other products' bugs.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "todo",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K064.md"
  }
 ]

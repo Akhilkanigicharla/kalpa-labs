@@ -140,5 +140,21 @@
   "updated": "2026-11-09T04:53:40Z",
   "tries": 3,
   "vigil_notes": "FIX: incomplete, 7 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "id": "K066",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "title": "AI cost consulting offer page: we install, find savings, hand over the paperwork",
+  "details": "Write the offer page for Kalpa's AI cost and guardrails service for Indian startups. Angle: we install an open-source LLM cost tracker for you, find where the bill can drop, and hand over India paperwork (DPDP privacy notice, AI usage policy, model register). Fee options: fixed audit or a share of proven savings: leave amounts as [PRICE]. Give 8 numbered blocks: headline, sub-headline, what you get (5 bullets, one block), how it works in 4 steps, who it is for, fee options, what we do not claim (no certification, no guaranteed savings), FAQ of 5. No invented client names, savings percentages or certificates.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "todo",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K066.md"
  }
 ]

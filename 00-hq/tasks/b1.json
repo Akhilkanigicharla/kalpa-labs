@@ -212,5 +212,21 @@
   "output": "00-hq/knowledge/K058.md",
   "updated": "2026-11-08T19:49:10Z",
   "tries": 1
+ },
+ {
+  "id": "K062",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "BotBhai landing copy: front desk in 5 languages, set up and run by us",
+  "details": "Write landing-page copy for BotBhai aimed at gym and salon owners in Hyderabad. Angle: 'your front desk that answers and books on WhatsApp, in English, Telugu, Hindi, Tenglish and Hinglish, set up and run by us, no software to learn, no per-staff fee'. Give 10 numbered blocks: 3 headline options, 1 sub-headline, 3 benefit bullets as one block each, 1 'how it works in 3 steps', 1 price ladder wording (one-time starter pack, Lite monthly, Standard monthly: leave amounts as [PRICE]), 1 FAQ of 5 questions. Plain words a shop owner uses. No invented numbers, reviews, customer counts or guarantees. No rival names.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 10,
+  "context_chars": 14000,
+  "status": "todo",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K062.md"
  }
 ]

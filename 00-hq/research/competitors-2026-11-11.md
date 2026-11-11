@@ -64,3 +64,17 @@ Mobile app (no product chosen yet) and b7 Trading (nothing is sold).
 
 ## Overall
 In four of five worlds the leaders are free or far bigger. The proposals all move the same way: stop competing on features or volume, and compete on Telugu, done-for-you service, and trust.
+
+## Addendum, 11 Nov 15:10 IST: rivals' OWN pricing pages fetched today (for A211 prices)
+| Rival | Own page says | Matches second source? |
+|---|---|---|
+| AiSensy (aisensy.com/pricing) | Basic ₹1,500/month, Pro ₹3,200; add-ons: AI Chat Agent ₹1,350/month, Chatbot Flows ₹2,500/month | Yes (richautomate.in, wanotifier.com) |
+| Wati (wati.io/pricing, India view) | Growth ₹2,699/month billed quarterly, includes chatbots + 1 AI agent; Pro ₹5,799 | Partly: other sites still list ₹2,499 or ₹1,999, so the price rose |
+| MioSalon (miosalon.com/pricing) | Standard 2,500 per month per outlet (2,083 on the longer term); Premium 4,000 (3,333). Currency symbol not shown; INR assumed | Yes (codingclave.com ₹999 to ₹2,500 upper end) |
+| Salonist (salonist.io/pricing) | USD 59 / 109 / 179 a month, seen from a US address | INR ₹1,056 to ₹1,887 from codingclave.com is UNVERIFIED |
+| Dingg (dingg.app/pricing) | No public price; page redirects to "book a demo" | ₹2,000 to ₹4,000 is from Dingg's own blog only |
+| Interakt | USD page shown from a US address | INR UNVERIFIED |
+| SalonBoost | own page not fetched | ₹499 to ₹1,199 UNVERIFIED (two listing sites disagree) |
+**Correction to the b1 section above:** the cheapest salon suite verified on its own page is MioSalon at 2,500 a month, not about ₹1,000. A WhatsApp bot with AI answers costs ₹2,850 on AiSensy (Basic + AI agent) and ₹2,699 on Wati. So BotBhai at ₹1,499 is below every verified rival; only the unverified SalonBoost figures are lower.
+
+**Proposed BotBhai ladder (needs Akhil's yes):** Starter pack ₹999 one-time (no monthly); Lite ₹1,999 setup + ₹999/month (unchanged); Standard ₹2,999 setup + ₹1,499/month (the founding price becomes the normal price); the old ₹4,999 + ₹2,999/month tier is paused because it sits above Wati's ₹2,699. Meta's message fees are paid by the owner on their own account, as with every rival.

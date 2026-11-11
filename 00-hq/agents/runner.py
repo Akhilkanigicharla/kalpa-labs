@@ -131,6 +131,11 @@ def work(task, env, post=http_post, root=ROOT):
     sys_msg = (f"You are {task.get('owner', 'a Kalpa Labs agent')}, an agent of Kalpa Labs (Hyderabad, one founder, Akhil). "
                f"Write the finished deliverable, ready to use, not a plan to make it.\n{RULES}\n{style_rules(root)}\n"
                + (f"\nYOUR PLAYBOOK:\n{playbook(task.get('playbook'), root)}" if task.get("playbook") else ""))
+    try:  # Autoresearch ON (Akhil, 11 Nov 2026): kept + pending playbook lines from autoresearch-ledger.json. Add-only;
+        import autoresearch  # compose() refuses output that lost a KALPA RULES line. Lazy import (autoresearch imports runner).
+        sys_msg = autoresearch.compose(sys_msg, task.get("owner", ""), autoresearch.load_ledger())
+    except Exception as e:  # a bad ledger never stops an agent
+        print(f"autoresearch overlay skipped: {e}", file=sys.stderr)
     user = f"TASK {task['id']} ({task.get('world', 'hq')}): {task['title']}\n\n{task.get('details', '')}"
     if task.get("vigil_notes"):
         user += f"\n\nYour last draft was sent back by Vigil. Fix exactly this:\n{task['vigil_notes']}"

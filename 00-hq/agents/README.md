@@ -40,7 +40,7 @@ python3 00-hq/agents/autoresearch.py --write                # run one cycle and 
 python3 -m pytest -q 00-hq/agents/test_autoresearch.py      # 19 tests
 ```
 
-**Today it is switched off:** nothing calls it, and `runner.py` does not read the ledger. To switch it on (needs Akhil's yes):
+**Switched ON 11 Nov 2026 (Akhil: yes).** Steps 1 and 2 below are done (`runner.py` `work()` and the `improve` job in `.github/workflows/agents.yml`). How it was switched on:
 1. In `runner.py` `work()`, after building `sys_msg`, add `sys_msg = autoresearch.compose(sys_msg, task.get("owner", ""), autoresearch.load_ledger())`
    so kept and pending lines reach the agent (compose refuses output that lost any KALPA RULES line).
 2. In the hourly workflow, after the runner jobs, run `python3 00-hq/agents/autoresearch.py --write` once and commit the ledger.

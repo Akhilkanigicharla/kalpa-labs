@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py && python3 00-hq/agents/test_reach.py
+      - run: pip install -q pytest==8.4.2 && KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py && python3 00-hq/agents/test_reach.py && python3 -m pytest -q 00-hq/agents/test_autoresearch.py
   world:
     needs: test
     runs-on: ubuntu-latest
@@ -69,4 +69,27 @@ jobs:
           git add 00-hq/tasks/${{ matrix.world }}.json 00-hq/knowledge || true
           git diff --cached --quiet && exit 0
           git commit -q -m "agents(${{ matrix.world }}): queue run $(date -u +%FT%TZ)"
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1
+  improve:
+    # Autoresearch ON (Akhil, 11 Nov 2026): after all worlds ran, score agents by Vigil pass rate, keep/revert pending
+    # playbook lines, start at most one new experiment. No LLM calls, no network. Method: chrisworsey55/atlas-gic (MIT).
+    needs: world
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: git pull -q --rebase https://github.com/${{ github.repository }}.git ${{ github.ref_name }} || true
+      - run: python3 00-hq/agents/autoresearch.py --write
+      - name: Save ledger
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git config user.name "kalpa-agents"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/agents/autoresearch-ledger.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "agents: autoresearch cycle $(date -u +%FT%TZ)"
           for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

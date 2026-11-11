@@ -1,0 +1,17 @@
+# Kalpa Jyotish on Netlify (free), deployed like 02-jobcard: a separate site with base directory 02-jobcard/apps/jyotish.
+# Static files only, no build. Security headers (engineering checklist), checked by 00-hq/site/test_headers.py and
+# in Chromium by 00-hq/site/tests/csp_browser.py. The CSP matches the page's own <meta> CSP plus the parts a meta tag
+# cannot carry (frame-ancestors). No network at all (connect-src 'none'), no device permissions.
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; manifest-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"

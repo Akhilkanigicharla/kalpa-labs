@@ -270,4 +270,4 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--out", default=str(pathlib.Path(__file__).resolve().parent.parent / "products" / "Kalpa-Tax-SIP-Planner-2026-27.xlsx"))
     ap.add_argument("--extra", help="JSON list of [gross, deductions, age, expected_new, expected_old] rows (tests)")
     a = ap.parse_args()
-    print(build(a.out, json.loads(pathlib.Path(a.extra).read_text()) if a.extra else ()))
+    print(build(a.out, json.loads(pathlib.Path(a.extra).read_text(encoding="utf-8")) if a.extra else ()))

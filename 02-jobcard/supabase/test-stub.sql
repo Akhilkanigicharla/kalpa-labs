@@ -14,3 +14,10 @@ grant execute on function auth.uid() to authenticated, anon;
 grant usage on schema public to service_role;
 alter default privileges in schema public grant all on tables to service_role;
 alter default privileges in schema public grant all on sequences to service_role;
+-- Supabase's real defaults (security hardening, 12 Nov 2026): service_role bypasses RLS, and every new table, sequence and
+-- function in public is granted to anon + authenticated too, so the tests see the same exposure a real project has.
+alter role service_role bypassrls;
+grant usage on schema public to anon, authenticated, service_role;
+alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
+alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
+alter default privileges in schema public grant all on functions to anon, authenticated, service_role;

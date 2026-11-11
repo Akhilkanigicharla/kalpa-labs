@@ -11,4 +11,6 @@ trap '$PSQL -d postgres -c "drop database if exists $DB" >/dev/null' EXIT
 $PSQL -d $DB -f test-stub.sql >/dev/null
 $PSQL -d $DB -f schema.sql >/dev/null
 $PSQL -d $DB -f schema.sql >/dev/null   # idempotent: a second apply must not fail
+for f in migrations/*.sql; do $PSQL -d $DB -f "$f" >/dev/null; done   # security fixes, applied after schema.sql
+$PSQL -d $DB -f schema.sql >/dev/null; for f in migrations/*.sql; do $PSQL -d $DB -f "$f" >/dev/null; done   # re-run order stays safe
 $PSQL -d $DB -tA -f test.sql | tail -1

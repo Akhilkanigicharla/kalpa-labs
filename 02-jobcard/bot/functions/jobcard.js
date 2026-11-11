@@ -26,16 +26,29 @@ const MAX_VOICE_S = 120; // research a4: cap notes at about 2 min
 
 // ---------------------------------------------------------------- small I/O helpers
 const env = (k) => process.env[k] || "";
+// Every outbound call has a timeout; only reads (GET) retry, with exponential backoff, on a network error, timeout, 429 or
+// 5xx (a retried write could save a bill twice or message twice).
+export async function fetchRetry(url, opts = {}, { timeoutMs = 8000, retries } = {}) {
+  const tries = 1 + (retries ?? ((opts.method || "GET") === "GET" ? 2 : 0));
+  const wait = (a) => new Promise((r) => setTimeout(r, process.env.NO_DELAY ? 0 : 250 * 2 ** a + Math.floor(Math.random() * 100)));
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const r = await fetch(url, { ...opts, signal: AbortSignal.timeout(timeoutMs) });
+      if (attempt + 1 < tries && (r.status === 429 || r.status >= 500)) { await wait(attempt); continue; }
+      return r;
+    } catch (e) { if (attempt + 1 >= tries) throw e; await wait(attempt); }
+  }
+}
 export async function db(path, { method = "GET", body, prefer } = {}) {
-  const r = await fetch(`${env("SUPABASE_URL")}/rest/v1/${path}`, { method, body: body === undefined ? undefined : JSON.stringify(body),
+  const r = await fetchRetry(`${env("SUPABASE_URL")}/rest/v1/${path}`, { method, body: body === undefined ? undefined : JSON.stringify(body),
     headers: { apikey: env("SUPABASE_SERVICE_ROLE_KEY"), Authorization: `Bearer ${env("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) } });
   if (!r.ok) throw new Error(`db ${method} ${path.split("?")[0]} ${r.status}`);
   const t = await r.text(); return t ? JSON.parse(t) : null;
 }
 const rpc = (fn, args) => db(`rpc/${fn}`, { method: "POST", body: args });
 async function graph(path, { method = "GET", body, form } = {}) {
-  const r = await fetch(`${GRAPH}/${path}`, { method, body: form || (body && JSON.stringify(body)),
-    headers: { Authorization: `Bearer ${env("WA_ACCESS_TOKEN")}`, ...(form ? {} : { "Content-Type": "application/json" }) } });
+  const r = await fetchRetry(`${GRAPH}/${path}`, { method, body: form || (body && JSON.stringify(body)),
+    headers: { Authorization: `Bearer ${env("WA_ACCESS_TOKEN")}`, ...(form ? {} : { "Content-Type": "application/json" }) } }, { timeoutMs: 10000 });
   if (!r.ok) throw new Error(`graph ${path} ${r.status}`);
   return r.json();
 }
@@ -144,7 +157,11 @@ export function mergeCard(prev, next) {
 async function transcribe(mediaId, lang) { // returns { text, seconds } or null
   try {
     const meta = await graph(mediaId);
-    const audio = Buffer.from(await (await fetch(meta.url, { headers: { Authorization: `Bearer ${env("WA_ACCESS_TOKEN")}` } })).arrayBuffer());
+    // the media link comes from Graph; only follow an https link, and never send our token anywhere else
+    if (!/^https:\/\/[^/]+\.(fbsbx\.com|fbcdn\.net|whatsapp\.net)\//.test(String(meta.url || ""))) return null;
+    const media = await fetchRetry(meta.url, { headers: { Authorization: `Bearer ${env("WA_ACCESS_TOKEN")}` } }, { timeoutMs: 10000 });
+    if (!media.ok || Number(media.headers?.get?.("content-length") || 0) > 16 * 1024 * 1024) return null; // WhatsApp audio is <= 16 MB
+    const audio = Buffer.from(await media.arrayBuffer());
     const r = await fetch(`${env("SUPABASE_URL")}/functions/v1/transcribe-extract`, { method: "POST", signal: AbortSignal.timeout(20000),
       headers: { Authorization: `Bearer ${env("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json" },
       body: JSON.stringify({ audio_base64: audio.toString("base64"), mime: meta.mime_type || "audio/ogg", lang: `${String(lang).split("-")[0]}-IN` }) });
@@ -251,8 +268,11 @@ async function handleMessage(pnid, msg) {
 export async function handler(event) {
   if (event.httpMethod === "GET") { // Meta verifies the webhook once
     const q = event.queryStringParameters || {};
-    if (q["hub.mode"] === "subscribe" && env("WA_VERIFY_TOKEN") && q["hub.verify_token"] === env("WA_VERIFY_TOKEN")) return { statusCode: 200, body: q["hub.challenge"] };
-    return { statusCode: 403, body: "forbidden" };
+    const want = env("WA_VERIFY_TOKEN"), got = String(q["hub.verify_token"] || ""), challenge = String(q["hub.challenge"] || "");
+    const h = (s) => crypto.createHash("sha256").update(s).digest(); // constant-time compare; only a plain challenge is echoed, as text
+    if (q["hub.mode"] === "subscribe" && want && got && crypto.timingSafeEqual(h(got), h(want)) && /^[A-Za-z0-9_-]{1,128}$/.test(challenge))
+      return { statusCode: 200, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" }, body: challenge };
+    return { statusCode: 403, headers: { "Content-Type": "text/plain; charset=utf-8" }, body: "forbidden" };
   }
   if (event.httpMethod !== "POST") return json(405, { error: "method" });
   if (!validSignature(event)) return json(401, { error: "bad signature" });

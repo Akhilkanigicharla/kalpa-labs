@@ -10,7 +10,7 @@ async function loadSpecs() {
   const res = await fetch('specs.json');
   const { specs } = await res.json();
   state.specs = specs;
-  $('spec').innerHTML = specs.map(s => `<option value="${s.id}">${esc(s.country)} · ${esc(s.document)}</option>`).join('');
+  $('spec').innerHTML = specs.map(s => `<option value="${esc(s.id)}">${esc(s.country)} · ${esc(s.document)}</option>`).join('');
   pickSpec(specs[0].id);
 }
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -27,7 +27,7 @@ function pickSpec(id) {
   $('specInfo').innerHTML = `
     <p>${s.verified ? '' : '<span class="badge unchecked">spec to be checked</span>'}</p>
     <dl>
-      <dt class="k">Size</dt><dd>${s.print_mm.w} x ${s.print_mm.h} mm</dd>
+      <dt class="k">Size</dt><dd>${esc(s.print_mm.w)} x ${esc(s.print_mm.h)} mm</dd>
       <dt class="k">Head</dt><dd>${esc(head)}</dd>
       ${s.eye_from_bottom_mm ? `<dt class="k">Eyes</dt><dd>${range(s.eye_from_bottom_mm)} mm from bottom</dd>` : ''}
       <dt class="k">Background</dt><dd>${esc(s.background)}</dd>
@@ -179,7 +179,7 @@ function outMode() { const v = $('outMode').value; return v === 'digital' ? 'dig
 function drawChecks(result) {
   const ic = { pass: '✓', warn: '!', fail: '✗' };
   $('checks').innerHTML = result.reasons.map(r =>
-    `<li class="${r.level}"><span class="ic" aria-label="${r.level}">${ic[r.level]}</span><span>${esc(r.msg)}</span></li>`).join('');
+    `<li class="${esc(r.level)}"><span class="ic" aria-label="${esc(r.level)}">${esc(ic[r.level])}</span><span>${esc(r.msg)}</span></li>`).join('');
 }
 
 function refresh() {

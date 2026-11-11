@@ -78,7 +78,7 @@ def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
         return 2
-    rows = compare(json.loads(Path(argv[0]).read_text()))
+    rows = compare(json.loads(Path(argv[0]).read_text(encoding="utf-8")))
     for r in rows:
         print(f"{r['status']:<30} {r['model']:<32} {r.get('ours', '')} | {r.get('litellm', '')}")
     return 1 if any(r["status"] == "MISMATCH" for r in rows) else 0

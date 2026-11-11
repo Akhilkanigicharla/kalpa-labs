@@ -128,4 +128,61 @@ do $$ declare c int; begin
 end $$;
 reset role;
 
+-- ---- security hardening (0003_security.sql, 12 Nov 2026)
+-- least privilege: under Supabase's default grants, the browser roles must still not run the roll-up or purge
+do $$ begin
+  if has_function_privilege('authenticated', 'public.purge_raw(integer)', 'execute')
+     or has_function_privilege('anon', 'public.purge_raw(integer)', 'execute')
+     or has_function_privilege('authenticated', 'public.rollup_daily(date,date)', 'execute')
+     or has_function_privilege('anon', 'public.rollup_daily(date,date)', 'execute')
+  then raise exception 'browser roles can run rollup_daily/purge_raw'; end if;
+  if has_table_privilege('anon', 'public.usage_event', 'select') or has_table_privilege('anon', 'public.audit_log', 'select')
+     or has_table_privilege('authenticated', 'public.usage_rollup_day', 'select')
+  then raise exception 'anon/authenticated have table access they do not need'; end if;
+  if exists (select 1 from information_schema.role_table_grants where table_schema = 'public' and grantee in ('anon', 'authenticated')
+             and privilege_type in ('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE'))
+  then raise exception 'a browser role can write a Ledger Peaks table'; end if;
+end $$;
+-- idempotent ingest: the same event_id for the same tenant lands once; another tenant may reuse it; bad ids are refused
+set role service_role;
+do $$ declare c int; begin
+  insert into public.usage_event (tenant_id, ts, provider, model, event_id) values ('10000000-0000-0000-0000-00000000000a', now(), 'openai', 'gpt-x', 'evt-0001-retry');
+  insert into public.usage_event (tenant_id, ts, provider, model, event_id) values ('10000000-0000-0000-0000-00000000000a', now(), 'openai', 'gpt-x', 'evt-0001-retry')
+    on conflict (tenant_id, event_id) do nothing;
+  select count(*) into c from public.usage_event where event_id = 'evt-0001-retry'; assert c = 1, 'retried event stored ' || c || ' times';
+  insert into public.usage_event (tenant_id, ts, provider, model, event_id) values ('10000000-0000-0000-0000-00000000000b', now(), 'openai', 'gpt-x', 'evt-0001-retry');
+  begin insert into public.usage_event (tenant_id, ts, provider, model, event_id) values ('10000000-0000-0000-0000-00000000000a', now(), 'openai', 'gpt-x', 'x y');
+        raise exception 'malformed event_id accepted';
+  exception when check_violation then null; end;
+end $$;
+-- audit log: key creation and revocation are recorded (never the hash); a revoked key cannot come back; the log is append-only
+do $$ declare k bigint; c int; begin
+  insert into public.api_key (tenant_id, key_hash, label) values ('10000000-0000-0000-0000-00000000000a', repeat('d', 64), 'audit test') returning id into k;
+  update public.api_key set revoked_at = now() where id = k;
+  select count(*) into c from public.audit_log where table_name = 'api_key' and row_ref = k::text; assert c = 2, 'audit rows for key: ' || c;
+  assert not exists (select 1 from public.audit_log where changes::text like '%dddddddd%'), 'key hash copied into the audit log';
+  assert exists (select 1 from public.audit_log where row_ref = k::text and action = 'UPDATE' and changes ? 'revoked_at'), 'revocation not audited';
+  begin update public.api_key set revoked_at = null where id = k; raise exception 'revoked key restored';
+  exception when insufficient_privilege then null; end;
+  begin delete from public.audit_log; raise exception 'audit log deleted';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+-- owners read their own tenant's audit trail; viewers and other tenants see nothing
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ declare c int; begin
+  select count(*) into c from public.audit_log; assert c >= 2, 'owner sees ' || c || ' audit rows';
+  assert not exists (select 1 from public.audit_log where tenant_id <> '10000000-0000-0000-0000-00000000000a'), 'owner sees another tenant''s audit';
+  begin perform public.purge_raw(0); raise exception 'member purged raw usage';
+  exception when insufficient_privilege then null; end;
+end $$;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000a2', false);
+do $$ declare c int; begin select count(*) into c from public.audit_log; assert c = 0, 'viewer sees audit rows'; end $$;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b', false);
+do $$ declare c int; begin
+  select count(*) into c from public.audit_log where tenant_id = '10000000-0000-0000-0000-00000000000a'; assert c = 0, 'B sees A''s audit';
+end $$;
+reset role;
+
 select 'ALL LEDGER PEAKS SCHEMA TESTS PASSED';

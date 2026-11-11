@@ -1,0 +1,84 @@
+{
+ "counts": {
+  "00-hq": {
+   "CRITICAL": 0,
+   "HIGH": 0,
+   "MEDIUM": 0,
+   "INFO": 2
+  },
+  "b1 01-botbhai": {
+   "CRITICAL": 0,
+   "HIGH": 0,
+   "MEDIUM": 0,
+   "INFO": 2
+  },
+  "b6 06-finops": {
+   "CRITICAL": 0,
+   "HIGH": 0,
+   "MEDIUM": 0,
+   "INFO": 1
+  }
+ },
+ "findings": [
+  {
+   "world": "00-hq",
+   "severity": "MEDIUM",
+   "rule": "XSS-HTML-SINK",
+   "file": "00-hq/site/site.js",
+   "line": 53,
+   "message": "HTML built from unescaped value(s): v",
+   "fix": "Wrap each value in esc(...) or set textContent instead.",
+   "waived": "v comes only from this file's own EN/TE text (data-html elements), never from users"
+  },
+  {
+   "world": "00-hq",
+   "severity": "INFO",
+   "rule": "DEPS-BOT",
+   "file": ".github",
+   "line": 0,
+   "message": "No .github/dependabot.yml (free weekly dependency-update PRs)",
+   "fix": "Add Dependabot for npm, pip and github-actions.",
+   "waived": ""
+  },
+  {
+   "world": "00-hq",
+   "severity": "INFO",
+   "rule": "TESTS-NOT-IN-CI",
+   "file": "00-hq",
+   "line": 0,
+   "message": "1 of 22 test files may not run in CI, e.g. 00-hq/site/tests/chat.test.mjs",
+   "fix": "Wire them into .github/workflows/quality.yml or delete dead tests.",
+   "waived": ""
+  },
+  {
+   "world": "b1 01-botbhai",
+   "severity": "INFO",
+   "rule": "CORS-ANY",
+   "file": "01-botbhai/botbhai/core/functions/_lib.js",
+   "line": 37,
+   "message": "Any website may call this endpoint (CORS *)",
+   "fix": "Fine for public endpoints only; owner endpoints must not use *.",
+   "waived": ""
+  },
+  {
+   "world": "b1 01-botbhai",
+   "severity": "INFO",
+   "rule": "CORS-ANY",
+   "file": "01-botbhai/botbhai/core/functions/chat.js",
+   "line": 10,
+   "message": "Any website may call this endpoint (CORS *)",
+   "fix": "Fine for public endpoints only; owner endpoints must not use *.",
+   "waived": ""
+  },
+  {
+   "world": "b6 06-finops",
+   "severity": "INFO",
+   "rule": "TESTS-NOT-IN-CI",
+   "file": "06-finops",
+   "line": 0,
+   "message": "1 of 10 test files may not run in CI, e.g. 06-finops/src/api/ingest.test.js",
+   "fix": "Wire them into .github/workflows/quality.yml or delete dead tests.",
+   "waived": ""
+  }
+ ]
+}

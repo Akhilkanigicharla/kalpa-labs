@@ -191,14 +191,14 @@ def inject(data: dict, check: bool = False) -> list[str]:
     stale = []
     for name in PAGES:
         p = HERE / name
-        html = p.read_text()
+        html = p.read_text(encoding="utf-8")
         if not DATA_RE.search(html):
             raise SystemExit(f"{name}: no <script id=\"lp-data\"> block")
         new = DATA_RE.sub(lambda m: m.group(1) + blob + m.group(3), html)
         if new != html:
             stale.append(name)
             if not check:
-                p.write_text(new)
+                p.write_text(new, encoding="utf-8")
     return stale
 
 
@@ -206,7 +206,7 @@ def main(argv: list[str]) -> int:
     data = build()
     check = "--check" in argv
     if not check:
-        (HERE / "sample.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n")
+        (HERE / "sample.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     stale = inject(data, check)
     if check and stale:
         print("out of date: " + ", ".join(stale) + " (run python3 design/sample.py)")

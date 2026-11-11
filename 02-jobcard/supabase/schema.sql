@@ -2,7 +2,7 @@
 -- Every row belongs to one technician (auth.users.id). A technician sees and changes only their own rows.
 -- Invoice numbers follow the GST rules: unique per technician per financial year, <= 16 characters,
 -- series JC/26-27/0001 restarting every 1 April (CGST Rule 46(b) / 49).
--- Apply: Supabase SQL editor, or `psql -f schema.sql` (tests: supabase/test.sh on a local Postgres).
+-- Apply: Supabase SQL editor, or `psql -f schema.sql`, THEN every file in migrations/ in order (tests: supabase/test.sh on a local Postgres).
 
 create extension if not exists pgcrypto;
 

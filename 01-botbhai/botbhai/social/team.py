@@ -59,19 +59,19 @@ def main(argv=None) -> int:
     ap.add_argument("--base-url", default="https://example.invalid/social/")
     ap.add_argument("--ig-user", default="IG_USER_ID")
     ap.add_argument("--page", default=None)
-    ap.add_argument("--now", default=dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+    ap.add_argument("--now", default=dt.datetime.now(dt.timezone(dt.timedelta(hours=5, minutes=30))).strftime("%Y-%m-%d %H:%M"))  # IST: clients post on Hyderabad time
     ap.add_argument("--views", help="insights CSV export -> posting time per format learned from real views (8+ posts)")
     ap.add_argument("--channel", default=None, help="only rows of this channel in --views, e.g. instagram")
     ap.add_argument("--insights", help="JSON list of post results -> weekly report + new pillar weights")
     a = ap.parse_args(argv)
     out = pathlib.Path(a.out)
     if a.insights:
-        rows = json.loads(pathlib.Path(a.insights).read_text())
+        rows = json.loads(pathlib.Path(a.insights).read_text(encoding="utf-8"))
         print(analyst.report(rows))
         print(json.dumps(analyst.new_weights(rows)))
         return 0
     if a.reply or a.publish:
-        m = json.loads((out / "manifest.json").read_text())
+        m = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
         if a.reply:
             r = approve.parse_reply(a.reply, len(m["items"]))
             if r["unknown"]:

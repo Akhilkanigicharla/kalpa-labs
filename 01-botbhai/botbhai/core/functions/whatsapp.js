@@ -42,7 +42,7 @@ async function transcribe(mediaId) { // voice note → text (Groq Whisper, free 
   if (!process.env.GROQ_API_KEY) return null;
   try {
     const meta = await L.graph(mediaId);
-    const audio = await (await fetch(meta.url, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } })).arrayBuffer();
+    const audio = await (await L.fetchRetry(meta.url, { headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}` } }, { timeoutMs: 8000 })).arrayBuffer();
     const form = new FormData();
     form.append("file", new Blob([audio], { type: meta.mime_type || "audio/ogg" }), "voice.ogg");
     form.append("model", require("../models.json").groq_speech_to_text);
@@ -124,7 +124,7 @@ async function handleMessage(client, v, msg) {
   for (const r of replies) { const d = Math.min(typingDelayMs(r.text), budget); budget -= d; await sleep(d); await L.sendReply(phoneNumberId, contact, r).catch((e) => console.error("send", e.message)); }
   if (out.events.some((e) => e.type === "booking")) { const card = L.cardUrl(client, `${client.niche}-booking_confirmed.png`); if (card) await L.sendImage(phoneNumberId, contact, card, "").catch(() => {}); }
   if (msg.type === "audio" && cfg.voice_replies && process.env.VOICE_SERVER_URL && process.env.VOICE_SERVER_KEY && replies.length)
-    fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }) }).catch(() => {});
+    fetch(`${process.env.VOICE_SERVER_URL}/voicenote`, { method: "POST", headers: { "Content-Type": "application/json", "X-BotBhai-Key": process.env.VOICE_SERVER_KEY }, body: JSON.stringify({ phone_number_id: phoneNumberId, to: contact, text: replies.map((r) => r.text).join("\n"), lang, setup: client.niche }), signal: AbortSignal.timeout(8000) }).catch(() => {});
 
   for (const e of out.events) {
     if (["notify_owner", "handoff", "forward_to_owner"].includes(e.type)) await L.alertOwner(client, e.type === "handoff" ? inboxHint(e.text) : e.text);
@@ -140,14 +140,11 @@ async function handleMessage(client, v, msg) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "GET") { // Meta verifies the webhook once
-    const q = event.queryStringParameters || {};
-    if (q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN) return { statusCode: 200, body: q["hub.challenge"] };
-    return { statusCode: 403, body: "forbidden" };
-  }
+  if (event.httpMethod === "GET") return L.metaVerify(event); // Meta verifies the webhook once
   if (event.httpMethod !== "POST") return L.json(405, { error: "method" });
   if (!validSignature(event)) return L.json(401, { error: "bad signature" });
-  const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
+  const body = L.parseBody(event);
+  if (!body) return L.json(400, { error: "bad json" });
   for (const entry of body.entry || []) for (const change of entry.changes || []) {
     const v = change.value || {}; const pnid = v.metadata && v.metadata.phone_number_id;
     for (const msg of v.messages || []) {

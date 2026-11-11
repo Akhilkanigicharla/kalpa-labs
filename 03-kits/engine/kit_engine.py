@@ -13,7 +13,7 @@ b3 Exam Kits engine: one data file per exam (exams/<id>.yaml) -> four kit files 
 No network calls. Reuses the GATE kit's palette and sheet helpers (../gate-2027/build_kit.py).
 Date rule: only CONFIRMED dates carry a day, and every CONFIRMED date needs an official https source.
 """
-import argparse, datetime as dt, importlib.util, json, math, pathlib, re, sys, urllib.parse
+import argparse, base64, datetime as dt, hashlib, importlib.util, json, math, pathlib, re, sys, urllib.parse
 import yaml
 from openpyxl import Workbook
 from openpyxl.formatting.rule import CellIsRule
@@ -400,6 +400,7 @@ a{color:var(--accent)}
 .hero{background:var(--hero);color:var(--hero-fg);padding:18px 14px 16px}
 .hero h1{font:400 26px/1.15 var(--f-display);margin:0 0 4px}
 .hero p{margin:0;color:var(--hero-mute);font-size:14px}
+.hero .wrap.top{padding-bottom:0}
 .hero a{color:var(--hero-fg)}
 .vine{height:10px;background:var(--vine)}
 .stats{display:flex;gap:10px;margin:14px 0}
@@ -520,13 +521,19 @@ def build_html(d, out):
         for s in d["subjects"] for v in (s.get("videos") or []))
     stages = "".join(f"<li>{_h(s['name'])}" + (f" <span class=note>· {_h(s['name_te'])}</span>" if te and s.get("name_te") else "") + "</li>" for s in d["stages"])
     lang_btn = '<button id="lang" type="button">తెలుగు</button>' if te else ""
+    # The page is a single file the buyer opens on a phone (often from disk), so its CSP is a <meta> tag: no network,
+    # and only this exact inline style and script may run (sha256), never anything injected (engineering checklist).
+    style = f"\n{tokens}\n{CSS}"
+    sha = lambda t: "'sha256-" + base64.b64encode(hashlib.sha256(t.encode("utf-8")).digest()).decode() + "'"
+    csp_meta = ('<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src ' + sha(JS) +
+                '; style-src ' + sha(style) + "; img-src data:; base-uri 'none'; form-action 'none'; object-src 'none'\">"
+                '<meta name="referrer" content="strict-origin-when-cross-origin">')
     page = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_h(d['short'])} · Kalpa Exam Kit</title><meta name="color-scheme" content="light dark">
-<style>
-{tokens}
-{CSS}</style></head><body>
-<header class="hero"><div class="wrap" style="padding-bottom:0"><h1>{_h(d['short'])} tracker</h1>
+{csp_meta}
+<style>{style}</style></head><body>
+<header class="hero"><div class="wrap top"><h1>{_h(d['short'])} tracker</h1>
 <p>{_h(d['name'])}{(' · ' + _h(d['name_te'])) if te and d.get('name_te') else ''}</p>
 <p>{_h(d['body'])} · <a href="{_h(d['official_site'])}" rel="noopener" target="_blank">official site</a> · dates checked {_h(d['checked_on'])}</p></div></header>
 <div class="vine" aria-hidden="true"></div>

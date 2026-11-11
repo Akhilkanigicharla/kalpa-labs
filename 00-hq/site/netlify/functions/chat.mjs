@@ -86,7 +86,8 @@ async function saveLead(a, fetchImpl) {
     interest: String(a.interest || "other").slice(0, 40), consent: "on",
     notes: `[chat] ${String(a.notes || "").slice(0, 300)} | best time: ${String(a.best_time || "any").slice(0, 40)} | lang: ${String(a.language || "").slice(0, 10)}` });
   try {
-    const r = await fetchImpl(SITE + "/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() });
+    const r = await fetchImpl(SITE + "/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString(),
+      signal: AbortSignal.timeout(8000) }); // never hang the visitor's chat; not retried (no duplicate callbacks)
     return r.ok ? "SAVED" : "NOT SAVED. Our system had a problem; ask them to use the form below the chat.";
   } catch { return "NOT SAVED. Our system had a problem; ask them to use the form below the chat."; }
 }

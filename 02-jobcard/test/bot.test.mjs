@@ -9,7 +9,7 @@ import { installFake, sign } from "./fake.mjs";
 
 const TECH = { id: "t1", name: "Ravi", phone: "9000022222", business_name: "Ravi Cooling Services", address: "SR Nagar, Hyderabad", gst_kind: "unregistered", state: "Telangana", language: "te", plan: "pro", upi_vpa: "ravi@okaxis" };
 const fx = installFake({ technicians: [{ ...TECH }] });
-const { handler, cardText, mergeCard } = await import("../bot/functions/jobcard.js");
+const { handler, cardText, mergeCard, fetchRetry } = await import("../bot/functions/jobcard.js");
 const notes = JSON.parse(fs.readFileSync(new URL("./fixtures/notes.json", import.meta.url)));
 let mid = 0;
 const inbound = (msg, from = "919000022222") => {
@@ -25,6 +25,24 @@ test("Meta verification and forged signatures", async () => {
   assert.equal((await handler({ httpMethod: "GET", queryStringParameters: { "hub.mode": "subscribe", "hub.verify_token": "nope" } })).statusCode, 403);
   assert.equal((await handler({ httpMethod: "POST", headers: { "x-hub-signature-256": "sha256=00" }, body: "{}" })).statusCode, 401);
   assert.equal((await handler({ httpMethod: "PUT" })).statusCode, 405);
+});
+
+test("checklist: verify fails closed, echoes only a plain challenge; outbound calls time out and only reads retry", async () => {
+  const q = (extra) => ({ httpMethod: "GET", queryStringParameters: { "hub.mode": "subscribe", "hub.challenge": "1158201444", ...extra } });
+  const good = await handler(q({ "hub.verify_token": "verify" }));
+  assert.equal(good.body, "1158201444"); assert.match(good.headers["Content-Type"], /text\/plain/);
+  assert.equal((await handler(q({ "hub.verify_token": "verify", "hub.challenge": "<img src=x onerror=alert(1)>" }))).statusCode, 403);
+  const saved = process.env.WA_VERIFY_TOKEN; delete process.env.WA_VERIFY_TOKEN;
+  try { assert.equal((await handler(q({}))).statusCode, 403); } finally { process.env.WA_VERIFY_TOKEN = saved; }
+  const real = globalThis.fetch; const seen = []; process.env.NO_DELAY = "1";
+  const script = (sts) => { let i = 0; globalThis.fetch = async (url, o) => { seen.push(o); const st = sts[Math.min(i++, sts.length - 1)];
+    if (st === "net") throw new TypeError("fetch failed"); return { ok: st < 400, status: st }; }; };
+  try {
+    script([503, "net", 200]); assert.equal((await fetchRetry("https://x.supabase.co/rest/v1/a")).status, 200);
+    assert.equal(seen.length, 3); assert.ok(seen.every((o) => o.signal instanceof AbortSignal), "no timeout");
+    seen.length = 0; script([503]); assert.equal((await fetchRetry("https://x/rest/v1/invoices", { method: "POST" })).status, 503);
+    assert.equal(seen.length, 1, "a write was retried");
+  } finally { globalThis.fetch = real; }
 });
 
 test("voice note → card with ✅ / edit buttons; voice seconds metered", async () => {

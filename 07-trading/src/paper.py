@@ -140,7 +140,7 @@ def write_ledger(run: PaperRun, path: Path, trial: str) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     new = not path.exists()
-    with open(path, "a", newline="") as fh:
+    with open(path, "a", newline="", encoding="utf-8") as fh:
         wr = csv.writer(fh)
         if new:
             wr.writerow(LEDGER_COLUMNS)

@@ -6,7 +6,7 @@ const env = { GROQ_API_KEY: "g", OPENROUTER_API_KEY: "o" };
 function fake(script) { // script: list of model messages to return in order; records calls
   const calls = []; let i = 0;
   const f = async (url, opts) => {
-    calls.push({ url, body: opts.body });
+    calls.push({ url, body: opts.body, signal: opts.signal });
     if (url.endsWith("/")) return { ok: true };
     const next = script[i++];
     if (next === "fail") return { ok: false, status: 429 };
@@ -63,3 +63,12 @@ f = fake([{ content: "ok" }]);
 await reply({ chatInput: "repu slot undi aa?" }, { fetchImpl: f, env });
 assert.match(JSON.parse(f.calls[0].body).messages.at(-2).content, /TENGLISH.*Do NOT use Telugu script/);
 console.log("site chat tests passed (9 groups)");
+
+// checklist (12 Nov 2026): every outbound call (models and the lead save) carries a timeout
+{
+  const g = fake([{ tool_calls: [{ id: "t1", function: { name: "save_callback", arguments: JSON.stringify({ name: "Ravi Kumar", phone: "9876543210", interest: "botbhai", consent_said_yes: true }) } }] }, { content: "Saved." }]);
+  await reply({ chatInput: "call me" }, { fetchImpl: g, env });
+  assert.ok(g.calls.some((c) => c.url.endsWith("/")), "lead save not reached");
+  assert.ok(g.calls.length >= 2 && g.calls.every((c) => c.signal instanceof AbortSignal), "an outbound call has no timeout");
+  console.log("ok - outbound calls time out");
+}

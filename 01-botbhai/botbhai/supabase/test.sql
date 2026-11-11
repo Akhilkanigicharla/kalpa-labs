@@ -90,4 +90,56 @@ begin
   delete from clients where id = c2;
   if exists (select 1 from vault.secrets where name like 'client:' || c2 || ':%') then raise exception 'orphan secrets after client delete'; end if;
 end $$;
+-- Security hardening (migrations/0001_security.sql, 12 Nov 2026)
+do $$
+declare c uuid; r invoices; n text;
+begin
+  -- least privilege: under Supabase's default grants, browser roles still hold no table, sequence or server-function rights
+  select string_agg(distinct table_name, ', ') into n from information_schema.role_table_grants
+   where table_schema = 'public' and grantee in ('anon', 'authenticated');
+  if n is not null then raise exception 'browser roles have table grants on: %', n; end if;
+  if has_function_privilege('anon', 'rate_hit(text,integer,integer)', 'execute') or has_function_privilege('authenticated', 'create_invoice(uuid,date,date,text,jsonb,jsonb,bigint)', 'execute')
+  then raise exception 'browser roles can run server functions'; end if;
+  if not has_function_privilege('service_role', 'book_slot(uuid,text,text,text,date,text,integer,text,date,text)', 'execute')
+     or not has_function_privilege('service_role', 'rate_hit(text,integer,integer)', 'execute')
+  then raise exception 'server lost access to its functions'; end if;
+  if obj_description('public.leads'::regclass) not like 'service-role only%' then raise exception 'leads not marked service-role only'; end if;
+
+  -- validation the API can't skip
+  insert into clients (name, niche) values ('Guard Salon', 'salon') returning id into c;
+  begin perform book_slot(c, repeat('9', 81), 'X', 'Cut', '2028-01-05', '10:00', 1); raise exception 'oversized contact booked';
+  exception when check_violation then null; end;
+  begin perform book_slot(c, '919800000001', 'X', 'Cut', '2028-01-05', '10:00', 1, 'sms'); raise exception 'unknown booking source accepted';
+  exception when check_violation then null; end;
+  if not book_slot(c, '919800000001', 'Asha', 'Cut', '2028-01-05', '10:00', 1, 'telegram') then raise exception 'valid telegram booking refused'; end if;
+  begin perform rate_hit(repeat('k', 201), 60, 5); raise exception 'oversized rate key accepted';
+  exception when check_violation then null; end;
+  begin perform create_invoice(c, '2030-05-01', null, null, '[]', '[]', 100); raise exception 'bill_to array accepted';
+  exception when check_violation then null; end;
+
+  -- invoices are permanent: no delete, no edits to money fields, status only due -> paid | void
+  r := create_invoice(c, '2030-05-02', null, 'May 2030', '{"name":"Guard Salon"}', '[{"desc":"Plan","qty":1,"rate_paise":149900}]', 149900);
+  begin delete from invoices where id = r.id; raise exception 'invoice deleted';
+  exception when insufficient_privilege then null; end;
+  begin update invoices set total_paise = 1 where id = r.id; raise exception 'invoice amount edited';
+  exception when insufficient_privilege then null; end;
+  begin update invoices set number = 'KL/30-31/999' where id = r.id; raise exception 'invoice renumbered';
+  exception when insufficient_privilege then null; end;
+  update invoices set sent_at = now() where id = r.id;                                    -- allowed: sent
+  update invoices set status = 'paid', paid_on = '2030-05-03', paid_ref = 'UTR123456' where id = r.id;  -- allowed: due -> paid
+  begin update invoices set status = 'due' where id = r.id; raise exception 'paid invoice reopened';
+  exception when insufficient_privilege then null; end;
+  begin update invoices set status = 'void' where id = r.id; raise exception 'paid invoice voided';
+  exception when insufficient_privilege then null; end;
+
+  -- audit trail: invoice life and client changes are logged, secrets never copied, log is append-only
+  if (select count(*) from audit_log where row_id = r.id::text) < 3 then raise exception 'invoice changes not audited'; end if;
+  if not exists (select 1 from audit_log where row_id = r.id::text and changes -> 'status' ->> 'new' = 'paid') then raise exception 'paid not audited'; end if;
+  update clients set active = false where id = c;
+  if not exists (select 1 from audit_log where table_name = 'clients' and row_id = c::text and changes ? 'active') then raise exception 'client deactivation not audited'; end if;
+  if exists (select 1 from audit_log a join clients k on a.changes::text like '%' || k.dashboard_token || '%') then raise exception 'dashboard token copied into audit log'; end if;
+  if exists (select 1 from audit_log a join invoices i on a.changes::text like '%' || i.view_key || '%') then raise exception 'invoice view key copied into audit log'; end if;
+  begin delete from audit_log; raise exception 'audit log erased';
+  exception when insufficient_privilege then null; end;
+end $$;
 select 'schema checks passed';

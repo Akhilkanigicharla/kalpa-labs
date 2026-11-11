@@ -18,7 +18,7 @@ function validSecret(event) {
 }
 
 async function tg(method, body) {
-  const r = await fetch(`${API()}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const r = await fetch(`${API()}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(8000) }); // not retried: no double sends
   if (r.ok === false) throw new Error(`telegram ${method} ${r.status}`);
   return r.json();
 }

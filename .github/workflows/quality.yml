@@ -30,6 +30,28 @@ jobs:
       - name: Lint workflows
         run: actionlint -color
 
+  engineering:
+    # ~100 engineering practices (00-hq/quality/ENGINEERING-CHECKLIST.md): static scan of every world.
+    # CRITICAL fails the run; HIGH/MEDIUM/INFO go to the job summary as the fix list.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pytest==9.1.1
+      - name: Scanner tests
+        run: python -m pytest -q 00-hq/quality/
+      - name: Security headers on every site (CSP, HSTS, framing, nosniff)
+        run: python 00-hq/site/test_headers.py
+      - name: Engineering audit (strict on CRITICAL)
+        run: |
+          set +e
+          python 00-hq/quality/eng_audit.py --strict --md "$RUNNER_TEMP/eng.md" --json "$RUNNER_TEMP/eng.json"
+          code=$?
+          cat "$RUNNER_TEMP/eng.md" >> "$GITHUB_STEP_SUMMARY"
+          exit "$code"
+
   design:
     # 20 "vibecoded" tells (gradients, glass, emoji headings, scroll fades, em dashes, off-scale spacing …) across every site
     runs-on: ubuntu-latest

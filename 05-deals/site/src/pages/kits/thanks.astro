@@ -19,7 +19,10 @@ import Base from "../../layouts/Base.astro";
         const s = await (await fetch("/api/kit?p=" + encodeURIComponent(p), { cache: "no-store" })).json();
         if (s.state === "paid" && s.copyUrl) {
           msg.textContent = "Payment confirmed: " + s.name + ".";
-          (document.getElementById("copy") as HTMLAnchorElement).href = s.copyUrl;
+          // Only a Google Sheets copy link may become the button's target (no open redirect / javascript: URL).
+          const u = new URL(String(s.copyUrl), location.href);
+          if (u.protocol !== "https:" || u.hostname !== "docs.google.com") throw new Error("unexpected kit link");
+          (document.getElementById("copy") as HTMLAnchorElement).href = u.href;
           (document.getElementById("pdf") as HTMLAnchorElement).href = "/api/kit-guide?p=" + encodeURIComponent(p);
           go.hidden = false; return;
         }

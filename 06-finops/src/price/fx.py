@@ -52,7 +52,7 @@ class FxTable:
 
     @classmethod
     def load(cls, path: str | Path = DEFAULT_PATH) -> "FxTable":
-        obj = json.loads(Path(path).read_text())
+        obj = json.loads(Path(path).read_text(encoding="utf-8"))
         return cls([FxRate(r["date"], Decimal(r["inr_per_usd"]), r["source"], r.get("source_url", ""),
                            r.get("retrieved", "")) for r in obj["rates"]])
 
@@ -95,12 +95,12 @@ def parse_rbi_home(html: str, retrieved: str | None = None) -> FxRate:
 def add_rate(rate: FxRate, path: str | Path = DEFAULT_PATH) -> bool:
     """Append a rate if its date is new. Returns True if the file changed."""
     p = Path(path)
-    obj = json.loads(p.read_text())
+    obj = json.loads(p.read_text(encoding="utf-8"))
     if any(r["date"] == rate.date for r in obj["rates"]):
         return False
     obj["rates"].append(rate.to_json())
     obj["rates"].sort(key=lambda r: r["date"])
-    p.write_text(json.dumps(obj, indent=2) + "\n")
+    p.write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8")
     return True
 
 

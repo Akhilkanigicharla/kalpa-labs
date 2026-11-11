@@ -123,7 +123,7 @@ def _new_state(capital: float) -> dict:
 
 def load_state(path: Path, capital: float) -> dict:
     if path.exists():
-        st = json.loads(path.read_text())
+        st = json.loads(path.read_text(encoding="utf-8"))
         st.setdefault("trade_pnl", [])
         if abs(st["capital"] - capital) > 1e-9:
             raise SystemExit(f"state {path} was started with capital {st['capital']}; use that or a new --out")
@@ -236,12 +236,12 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
     st["traded"] = {k: sorted(v) for k, v in guard.traded.items()}
     if d.isoformat() not in st["paper_days"]:
         st["paper_days"].append(d.isoformat())
-    spath.write_text(json.dumps(st, indent=1))
+    spath.write_text(json.dumps(st, indent=1), encoding="utf-8")
 
     rows = _ledger_rows(track, strategy, symbol, capital, d, at, w, decisions, bot, bench)
     _append_ledger(out / f"ledger-{track}.csv", rows)
     text = summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard)
-    (out / f"summary-{track}.txt").write_text(text + "\n")
+    (out / f"summary-{track}.txt").write_text(text + "\n", encoding="utf-8")
     return {"weight": w, "decisions": decisions, "bot": bot, "bench": bench, "summary": text,
             "state": st, "rows": rows}
 
@@ -265,7 +265,7 @@ def _ledger_rows(track, strategy, symbol, capital, d, at, w, decisions, bot, ben
 
 def _append_ledger(path: Path, rows: list[list]) -> None:
     new = not path.exists()
-    with open(path, "a", newline="") as fh:
+    with open(path, "a", newline="", encoding="utf-8") as fh:
         wr = csv.writer(fh)
         if new:
             wr.writerow(LEDGER_COLUMNS)

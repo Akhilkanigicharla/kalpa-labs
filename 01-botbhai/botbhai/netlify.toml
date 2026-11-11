@@ -8,12 +8,107 @@
   node_bundler = "esbuild"
   included_files = ["core/**", "setups/**"]
 
+# Security headers (engineering checklist). Checked by 00-hq/site/test_headers.py (every page in web/dist must
+# match exactly one CSP rule) and in Chromium by 00-hq/site/tests/csp_browser.py (zero CSP violations).
+# Rules never overlap for the same header, so Netlify never has to merge two CSPs.
+# - Every path: HSTS, nosniff, referrer policy.
+# - The chat page (/ and /index.html) is FRAMED ON PURPOSE: widget.js on client websites opens it in an iframe, and
+#   client domains are not known in advance, so frame-ancestors allows any https: site and there is no
+#   X-Frame-Options. The page refuses its owner (token) view when framed, so framing exposes only the public chat.
+#   Microphone is allowed for voice chat (widget iframe has allow="microphone").
+# - Owner pages (inbox, dashboard, billing, invoice sample, artifact copy): frame-ancestors 'none' + X-Frame-Options DENY.
+# Scripts: none inline (build.py writes app.js; inbox/dashboard/billing.js). The invoice's Print button script is
+# allowed by its sha256 (core/billing.js PRINT_HASH; test_headers.py checks it). style-src keeps 'unsafe-inline' because
+# the pages and their scripts write style="" attributes; CSS cannot run script. Fonts: Google Fonts.
+# Off-site scripts on the chat page only: SheetJS from cdnjs (pinned, with SRI) and Cloudflare Turnstile (+ its frame).
 [[headers]]
   for = "/*"
   [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "microphone=(self)"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'self' https:; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'self' https:; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+
+[[headers]]
+  for = "/inbox"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/inbox.html"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/dashboard"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/billing"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/billing.html"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/invoice-sample"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-xEUKt/XIr4d0R1e2pIGLr9mhXXPSRJww6PGe77cDblE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/invoice-sample.html"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-xEUKt/XIr4d0R1e2pIGLr9mhXXPSRJww6PGe77cDblE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/artifact"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/artifact.html"
+  [headers.values]
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
 
 [functions."reminders"]
   schedule = "@hourly"

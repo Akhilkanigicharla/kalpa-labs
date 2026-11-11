@@ -7,11 +7,19 @@
   directory = "bot/functions"
   node_bundler = "esbuild"
 
+# Security headers (engineering checklist), checked by 00-hq/site/test_headers.py and, in Chromium, by
+# 00-hq/site/tests/csp_browser.py. No inline scripts (app.mjs is a module). connect-src allows the Supabase
+# project (build.mjs only accepts https://<project>.supabase.co). microphone=(self): the Record tab.
+# style-src keeps 'unsafe-inline' because app.mjs renders views with style="" attributes (no script risk).
 [[headers]]
   for = "/*"
   [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
 
 [[headers]]
   for = "/sw.js"

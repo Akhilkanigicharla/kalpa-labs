@@ -11,8 +11,8 @@ SETUP_DIRS = {"salon": "salon", "realestate": "realestate", "gym": "gym", "examk
 
 def load_setup(setup_id: str, overrides: dict | None = None) -> dict:
     d = SETUPS_DIR / SETUP_DIRS[setup_id]
-    cfg = json.loads((d / "bot.config.json").read_text())
-    meta = json.loads((d / "setup.meta.json").read_text())
+    cfg = json.loads((d / "bot.config.json").read_text(encoding="utf-8"))
+    meta = json.loads((d / "setup.meta.json").read_text(encoding="utf-8"))
     cfg.update(overrides or {})
     cfg["_voice"] = meta["voice"]
     return cfg

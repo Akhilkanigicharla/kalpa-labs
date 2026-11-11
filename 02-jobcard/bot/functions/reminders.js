@@ -20,7 +20,7 @@ const LANG = { te: "te", hi: "hi", en: "en", "te-latn": "te", "hi-latn": "hi" };
 const REMINDER_PLANS = new Set(["pro", "team"]); // PLAN.md §2: AMC reminders are a Pro feature
 
 async function sendTemplate(to, lang, count, names) {
-  const r = await fetch(`${GRAPH}/${process.env.WA_PHONE_NUMBER_ID}/messages`, { method: "POST",
+  const r = await fetch(`${GRAPH}/${process.env.WA_PHONE_NUMBER_ID}/messages`, { method: "POST", signal: AbortSignal.timeout(10000), // never retried: no double messages
     headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" },
     body: JSON.stringify({ messaging_product: "whatsapp", to, type: "template", template: {
       name: process.env.WA_REMINDER_TEMPLATE || "jobcard_due_list", language: { code: LANG[lang] || "te" },

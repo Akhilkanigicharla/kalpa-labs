@@ -7,5 +7,19 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Security headers (engineering checklist). Checked by 00-hq/site/test_headers.py; CSP proven in Chromium by
+# 00-hq/site/tests/csp_browser.py (zero violations). Page JS lives in site.js, so scripts need no 'unsafe-inline'.
+# style-src keeps 'unsafe-inline': the page and site.js write style="" attributes (tree/robot animation, tabs);
+# CSS cannot run script, and script-src stays strict.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
+
 [functions]
   directory = "netlify/functions"

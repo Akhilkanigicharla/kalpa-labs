@@ -141,7 +141,7 @@ def submit(o: Order, b: RiskBook) -> Outcome:
         if b.breach_log is not None:
             new = not Path(b.breach_log).exists()
             Path(b.breach_log).parent.mkdir(parents=True, exist_ok=True)
-            with open(b.breach_log, "a", newline="") as f:
+            with open(b.breach_log, "a", newline="", encoding="utf-8") as f:
                 w = csv.writer(f)
                 if new:
                     w.writerow(["date", "symbol", "side", "qty", "source", "breaches"])

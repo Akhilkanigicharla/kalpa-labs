@@ -80,7 +80,28 @@ test('supabase store: looks up active keys, caches, inserts with service key', a
   assert.equal(calls.length, 1); assert.match(calls[0][0], /revoked_at=is\.null/);
   assert.equal(await st.tenantForKeyHash('not-hex'), null);
   await st.insertEvents([{ a: 1 }]);
-  assert.equal(calls[1][0], 'https://p.supabase.co/rest/v1/usage_event');
+  assert.equal(calls[1][0], 'https://p.supabase.co/rest/v1/usage_event?on_conflict=tenant_id,event_id');
+  assert.match(calls[1][1].headers.prefer, /resolution=ignore-duplicates/);
+  assert.ok(calls.every(([, o]) => o.signal instanceof AbortSignal), 'Supabase calls need a timeout');
   assert.equal(calls[1][1].headers.authorization, 'Bearer svc');
   assert.throws(() => supabaseStore({ url: '', serviceKey: '' }));
+});
+
+test('checklist: event_id makes retries idempotent; bad or repeated ids are rejected', async () => {
+  const s = await fakeStore();
+  const r = await handle(req({ events: [{ ...ok, event_id: 'run-42:call-1' }, { ...ok, event_id: 'run-42:call-1' }, { ...ok, event_id: 'x' }, ok] }), s, NOW);
+  assert.equal(r.status, 202);
+  const b = await r.json();
+  assert.equal(b.accepted, 2);
+  assert.deepEqual(b.rejected.map((x) => x.index), [1, 2]);
+  assert.match(b.rejected[0].error, /duplicate event_id/);
+  assert.equal(s.rows[0].event_id, 'run-42:call-1'); assert.equal(s.rows[1].event_id, null);
+  assert.equal(normalizeEvent({ ...ok, 'ledger.event_id': 'otel-span-1234' }, NOW).event_id, 'otel-span-1234');
+});
+
+test('checklist: a key-lookup failure is a plain 503, never an internal error', async () => {
+  const s = { tenantForKeyHash: async () => { throw new Error('key lookup 500 at db.internal:5432'); }, insertEvents: async () => {} };
+  const r = await handle(req({ events: [ok] }), s, NOW);
+  assert.equal(r.status, 503);
+  assert.doesNotMatch(await r.text(), /internal|5432/);
 });

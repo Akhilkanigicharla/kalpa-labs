@@ -14,7 +14,8 @@ if (require.main === module) (async () => {
   let bad = 0;
   for (const c of spec.cases) {
     const r = await fetch(spec.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'sendMessage', sessionId: 'eval-' + c.id + '-' + Date.now(), chatInput: c.ask }) });
+      body: JSON.stringify({ action: 'sendMessage', sessionId: 'eval-' + c.id + '-' + Date.now(), chatInput: c.ask }),
+      signal: AbortSignal.timeout(60000) });  // a stuck agent fails the case instead of hanging the run
     const d = await r.json(); const out = String((Array.isArray(d) ? d[0]?.output : d.output) || '');
     const fails = check(c, out); if (fails.length) bad++;
     console.log((fails.length ? '  ✗ ' : '  ✓ ') + c.id + (fails.length ? ': ' + fails.join(', ') : '') + '\n    ' + out.slice(0, 220));

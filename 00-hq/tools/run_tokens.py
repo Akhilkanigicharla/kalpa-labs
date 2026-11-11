@@ -27,7 +27,7 @@ def main():
     out = os.path.join(root, "00-hq", "log", "tokens.csv")
     new = not os.path.exists(out)
     ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime("%Y-%m-%d %H:%M")
-    with open(out, "a", newline="") as f:
+    with open(out, "a", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         if new: w.writerow(["ist", "label", "api_calls", "output", "input", "cache_write", "cache_read"])
         w.writerow([ist, label, t["turns"], t["output_tokens"], t["input_tokens"], t["cache_creation_input_tokens"], t["cache_read_input_tokens"]])

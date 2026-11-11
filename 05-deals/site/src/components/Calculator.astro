@@ -6,7 +6,7 @@ const { slug, lang } = Astro.props;
 const c = bySlug(slug);
 const rows = c.compute(defaults(c));
 ---
-<form class="card calc" data-slug={slug} data-lang={lang} onsubmit="return false">
+<form class="card calc" data-slug={slug} data-lang={lang}>
   <div class="fields">
     {c.fields.map((f) => (
       <label>
@@ -40,6 +40,7 @@ const rows = c.compute(defaults(c));
       }));
     };
     form.addEventListener("input", run);
+    form.addEventListener("submit", (e) => e.preventDefault()); // no inline onsubmit: the CSP allows no inline script
   }
 </script>
 <style>

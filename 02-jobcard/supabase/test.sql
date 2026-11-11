@@ -121,4 +121,54 @@ do $$ declare n text; s int; begin
   exception when unique_violation then null; end;
 end $$;
 reset role;
+-- ---- security hardening (migrations/0001_security.sql, 12 Nov 2026)
+-- mass assignment on invoices: GST kind, number/fy and totals are checked by the database, not trusted from the app
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ declare cust uuid; c int; begin
+  begin insert into public.invoices (number, fy, kind, lines, taxable_paise, payable_paise) values ('JC/26-27/0101', '26-27', 'regular', '[{}]', 100, 100);
+        raise exception 'unregistered technician issued a GST (regular) bill';
+  exception when check_violation then if sqlerrm not like '%GST registration%' then raise; end if; end;
+  begin insert into public.invoices (number, fy, kind, lines, taxable_paise, payable_paise) values ('JC/25-26/0102', '26-27', 'unregistered', '[{}]', 100, 100);
+        raise exception 'number from another financial year accepted';
+  exception when check_violation then null; end;
+  begin insert into public.invoices (number, fy, kind, lines, taxable_paise, payable_paise) values ('INV-0103', '26-27', 'unregistered', '[{}]', 100, 100);
+        raise exception 'non-JC number accepted';
+  exception when check_violation then null; end;
+  begin insert into public.invoices (number, fy, kind, lines, taxable_paise, payable_paise) values ('JC/26-27/0104', '26-27', 'unregistered', '[{}]', 100, 99900);
+        raise exception 'payable that is not taxable + GST accepted';
+  exception when check_violation then null; end;
+  insert into public.invoices (number, fy, kind, lines, taxable_paise, payable_paise) values ('JC/26-27/0105', '26-27', 'unregistered', '[{}]', 12345, 12300); -- 45 paise round-off is fine
+  -- a technician can't delete his own profile (it would take his GST invoices with it)
+  begin delete from public.technicians; raise exception 'technician deleted his profile and invoices';
+  exception when insufficient_privilege then null; end;
+  -- a billed customer can't be deleted (the bill would lose its buyer)
+  select id into cust from public.customers where phone = '9848012345';
+  insert into public.invoices (customer_id, number, fy, kind, lines, taxable_paise, payable_paise) values (cust, 'JC/26-27/0106', '26-27', 'unregistered', '[{}]', 500, 500);
+  begin delete from public.customers where id = cust; raise exception 'billed customer deleted';
+  exception when foreign_key_violation then null; end;
+  -- audit: A reads his own trail, can't erase it
+  select count(*) into c from public.audit_log where table_name = 'invoices' and action = 'INSERT'; assert c >= 3, 'invoice inserts audited: ' || c;
+  update public.invoices set paid = true where number = 'JC/26-27/0106';
+  assert exists (select 1 from public.audit_log where action = 'UPDATE' and changes ? 'paid'), 'marking paid not audited';
+  begin delete from public.audit_log; raise exception 'audit log erased';
+  exception when insufficient_privilege then null; end;
+end $$;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b', false);
+do $$ declare c int; begin select count(*) into c from public.audit_log; assert c = 0, 'B sees A''s audit trail'; end $$;
+reset role;
+-- the server's plan change is audited; anon has no table or function access; every function has a fixed search_path
+set role service_role;
+update public.technicians set plan = 'pro' where id = '00000000-0000-0000-0000-00000000000b';
+reset role;
+do $$ declare n text; begin
+  assert exists (select 1 from public.audit_log where table_name = 'technicians' and changes -> 'plan' ->> 'new' = 'pro'), 'plan change not audited';
+  select string_agg(table_name || ':' || privilege_type, ', ') into n from information_schema.role_table_grants where table_schema = 'public' and grantee = 'anon';
+  if n is not null then raise exception 'anon still has table grants: %', n; end if;
+  if has_function_privilege('anon', 'public.next_invoice_no(date)', 'execute') then raise exception 'anon can take invoice numbers'; end if;
+  select string_agg(p.proname, ', ') into n from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prolang <> 13 -- skip C (extension) functions
+    and p.proname in ('fy_of','next_invoice_no','next_invoice_no_for','add_usage','same_owner_check','invoice_owner_check','plan_guard','invoice_integrity','audit_row','audit_append_only')
+    and not exists (select 1 from unnest(coalesce(p.proconfig, '{}')) c where c like 'search_path=%');
+  if n is not null then raise exception 'functions without a fixed search_path: %', n; end if;
+end $$;
 select 'ALL JOBCARD SCHEMA TESTS PASSED' as result;

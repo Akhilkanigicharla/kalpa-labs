@@ -58,7 +58,7 @@ def main(argv=None) -> int:
     for w in targets:
         if a.reply:
             mf = out / w / "manifest.json"
-            m = json.loads(mf.read_text())
+            m = json.loads(mf.read_text(encoding="utf-8"))
             approve.apply(m["items"], approve.parse_reply(a.reply, len(m["items"])))
             mf.write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
             print(w, {s: sum(1 for i in m["items"] if i["status"] == s) for s in {i["status"] for i in m["items"]}})

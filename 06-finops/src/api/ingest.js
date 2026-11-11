@@ -12,6 +12,7 @@ export const MAX_BATCH = 1000;
 export const MAX_BODY_BYTES = 1_000_000;
 const HASH_RE = /^c_[0-9a-f]{16}$/;
 const KEY_RE = /^lp_[A-Za-z0-9_-]{24,64}$/;
+const EVENT_ID_RE = /^[A-Za-z0-9._:-]{8,80}$/;   // optional; makes a retried batch safe (db: unique per tenant)
 const TEXT_KEYS = ['prompt', 'completion', 'messages', 'input', 'output', 'content', 'response',
   'gen_ai.prompt', 'gen_ai.completion', 'gen_ai.input.messages', 'gen_ai.output.messages'];
 
@@ -30,6 +31,7 @@ const FIELDS = {
   feature: ['feature', 'ledger.feature'],
   batch: ['batch', 'ledger.batch'],
   served_from_cache: ['served_from_cache', 'ledger.served_from_cache'],
+  event_id: ['event_id', 'ledger.event_id'],
 };
 const INTS = ['input_tokens', 'output_tokens', 'cache_read_tokens', 'cache_write_tokens', 'reasoning_tokens'];
 
@@ -79,6 +81,9 @@ export function normalizeEvent(e, now = Date.now()) {
     if (typeof v !== 'boolean') throw new Error(`${f} must be true or false`);
     row[f] = v;
   }
+  const eid = pick(e, FIELDS.event_id);
+  if (eid !== undefined && (typeof eid !== 'string' || !EVENT_ID_RE.test(eid))) throw new Error('event_id must be 8-80 letters, digits or . _ : -');
+  row.event_id = eid ?? null;
   row.cost_paise = null;
   row.source = 'api';
   return row;
@@ -104,7 +109,9 @@ export async function handle(request, store, now = Date.now()) {
   const auth = request.headers.get('authorization') || '';
   const key = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
   if (!KEY_RE.test(key)) return json(401, { error: 'missing or malformed API key' });
-  const tenant = await store.tenantForKeyHash(await sha256Hex(key));
+  let tenant;
+  try { tenant = await store.tenantForKeyHash(await sha256Hex(key)); }
+  catch { return json(503, { error: 'storage unavailable, retry later' }); }   // never leak the internal error
   if (!tenant) return json(401, { error: 'unknown or revoked API key' });
   const len = Number(request.headers.get('content-length') || 0);
   if (len > MAX_BODY_BYTES) return json(413, { error: `body over ${MAX_BODY_BYTES} bytes` });
@@ -116,9 +123,14 @@ export async function handle(request, store, now = Date.now()) {
   if (!Array.isArray(events) || events.length === 0) return json(400, { error: 'send {"events": [...]}' });
   if (events.length > MAX_BATCH) return json(413, { error: `at most ${MAX_BATCH} events per request` });
   const rows = [], rejected = [];
+  const ids = new Set();
   events.forEach((e, index) => {
-    try { rows.push({ tenant_id: tenant, ...normalizeEvent(e, now) }); }
-    catch (err) { rejected.push({ index, error: err.message }); }
+    try {
+      const row = normalizeEvent(e, now);
+      if (row.event_id && ids.has(row.event_id)) throw new Error('duplicate event_id in this batch');
+      if (row.event_id) ids.add(row.event_id);
+      rows.push({ tenant_id: tenant, ...row });
+    } catch (err) { rejected.push({ index, error: err.message }); }
   });
   if (rows.length) {
     try { await store.insertEvents(rows); }

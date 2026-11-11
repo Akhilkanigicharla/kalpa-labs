@@ -33,11 +33,16 @@ MODELS = [  # all free; first one with a key that answers wins
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash-lite"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-flash-lite-latest"),
+    # Cloudflare Workers AI free: 10,000 neurons/day shared, resets 00:00 UTC (cloudflare.com/plans + developersdigest, checked
+    # 12 Nov 2026). Needs secrets CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID; skipped until both exist. Last-resort backup.
+    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-120b"),
+    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-20b"),
 ]
 VIGIL_MODELS = [
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash-lite"),
+    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-20b"),
 ]
 
 RULES = """KALPA RULES (never break): free tools only; never invent prices, customers, results or dates; any fact you cannot see in the
@@ -64,6 +69,10 @@ def call(models, messages, env, post):
     for key, url, model in models:
         if not env.get(key):
             continue
+        if "{CLOUDFLARE_ACCOUNT_ID}" in url:  # account id is part of the Cloudflare URL
+            if not env.get("CLOUDFLARE_ACCOUNT_ID"):
+                continue
+            url = url.replace("{CLOUDFLARE_ACCOUNT_ID}", env["CLOUDFLARE_ACCOUNT_ID"])
         try:
             hdr = {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"}
             pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 4000}

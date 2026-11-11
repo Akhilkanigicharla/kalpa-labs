@@ -1,0 +1,12 @@
+# Security headers for the calculators site on Cloudflare Pages (same syntax works on Netlify). Engineering checklist.
+# Checked by 00-hq/site/test_headers.py and, in Chromium, by 00-hq/site/tests/csp_browser.py (zero CSP violations).
+# astro.config.mjs keeps every script and stylesheet in /_astro/ files, so the CSP needs no 'unsafe-inline'.
+# JSON-LD <script type="application/ld+json"> is data and is not blocked. Fonts come from Google Fonts.
+# connect-src 'self': the thank-you page polls /api/kit (Pages Functions in functions/api).
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests

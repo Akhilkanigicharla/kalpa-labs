@@ -105,5 +105,20 @@ class Runner(unittest.TestCase):
             self.assertIn(t["priority"], ("P0", "P1", "P2"))
 
 
+class CloudflareBackupTest(unittest.TestCase):
+    def test_cloudflare_url_and_skip(self):
+        import runner
+        cf = [m for m in runner.MODELS if m[0] == "CLOUDFLARE_API_TOKEN"]
+        self.assertTrue(cf)
+        seen = []
+        def post(url, hdr, pay):
+            seen.append(url)
+            return {"choices": [{"message": {"content": "ok"}}]}
+        self.assertEqual(runner.call(cf, [], {"CLOUDFLARE_API_TOKEN": "t"}, post), (None, None))  # no account id: skipped
+        text, model = runner.call(cf, [], {"CLOUDFLARE_API_TOKEN": "t", "CLOUDFLARE_ACCOUNT_ID": "abc"}, post)
+        self.assertEqual(text, "ok")
+        self.assertEqual(seen[0], "https://api.cloudflare.com/client/v4/accounts/abc/ai/v1/chat/completions")
+
+
 if __name__ == "__main__":
     unittest.main()

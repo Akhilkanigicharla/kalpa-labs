@@ -15,7 +15,7 @@ srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(H, dir
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 base = f"http://127.0.0.1:{srv.server_port}"
 
-m = json.loads((web / "manifest.webmanifest").read_text())
+m = json.loads((web / "manifest.webmanifest").read_text(encoding="utf-8"))
 assert m["display"] == "standalone" and m["start_url"].startswith("/") and m["name"] and m["short_name"]
 from PIL import Image
 for i in m["icons"]:

@@ -130,7 +130,7 @@ def build(video, out, every=1.0, scene=0.25, max_frames=60, audio=True, model="s
     speech, lang = (transcribe(p, model, model_dir) if audio and meta["audio"] else (None, "no audio track" if audio else "skipped"))
     rep = {"video": p.name, **meta, "scene_changes": n_scenes, "frames": len(frames), "sheets": sheets(frames, out),
            "speech_language": lang, "speech": speech or [], "timeline": frames}
-    (out / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1))
+    (out / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1), encoding="utf-8")
     lines = [f"# {p.name}", "",
              f"{meta['duration']:.1f} s · {meta['width']}x{meta['height']} · {meta['fps']} fps · {n_scenes} scene changes · "
              f"{len(frames)} frames · speech: {lang}", "", "Contact sheets: " + ", ".join(rep["sheets"]), "", "## Timeline"]
@@ -140,7 +140,7 @@ def build(video, out, every=1.0, scene=0.25, max_frames=60, audio=True, model="s
         lines.append(f"- **{f['t']:.1f}s** `{Path(f['file']).name}`" + (" · " + " · ".join(bits) if bits else ""))
     if rep["speech"]:
         lines += ["", "## Full speech"] + [f"- {s['start']}–{s['end']}s: {s['text']}" for s in rep["speech"]]
-    (out / "report.md").write_text("\n".join(lines) + "\n")
+    (out / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return rep
 
 

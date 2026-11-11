@@ -14,6 +14,7 @@ concurrency: { group: agents, cancel-in-progress: false }
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - run: pip install -q pytest==8.4.2 && KL_RETRY_WAIT=0 python3 00-hq/agents/test_runner.py && python3 00-hq/agents/test_reach.py && python3 -m pytest -q 00-hq/agents/test_autoresearch.py
@@ -56,6 +57,8 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}  # optional: Workers AI free backup
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           KL_PREFER: ${{ matrix.prefer }}
           KL_AGENT_REACH: ${{ runner.temp }}/ar/bin/agent-reach
         run: python3 00-hq/agents/runner.py --world ${{ matrix.world }} --max "${{ github.event.inputs.max || '2' }}"
@@ -76,6 +79,7 @@ jobs:
     needs: world
     if: always()
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:

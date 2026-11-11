@@ -18,7 +18,7 @@ For one client it generates (into --out):
 Usage: python seo/seo_bot.py --setup salon --config client.json --out build/glow-studio
        (client.json overrides the setup's bot.config.json: business, address, phone, whatsapp, areas, site_url)
 """
-import argparse, csv, datetime as dt, html, json, pathlib, re, sys, urllib.parse
+import argparse, base64, csv, datetime as dt, hashlib, html, json, pathlib, re, sys, urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCHEMA_TYPE = {"salon": "BeautySalon", "gym": "ExerciseGym", "realestate": "RealEstateAgent", "examkits": "EducationalOrganization"}
@@ -51,7 +51,7 @@ PLACEHOLDER_URL = "https://example.netlify.app"
 
 
 def load(setup, overrides):
-    cfg = json.loads((ROOT / "setups" / setup / "bot.config.json").read_text())
+    cfg = json.loads((ROOT / "setups" / setup / "bot.config.json").read_text(encoding="utf-8"))
     cfg.update(overrides)
     cfg.setdefault("areas", ["Jubilee Hills", "Banjara Hills", "Madhapur", "Kukatpally", "Gachibowli"])
     cfg.setdefault("site_url", PLACEHOLDER_URL)
@@ -109,6 +109,19 @@ def page(setup, cfg, title, desc, body, url, service=None, area=None):
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
 <meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:type" content="website">
 {FONTS}<style>{CSS}</style>{ld}</head><body><main>{body}</main><a class="wa" href="{wa}">Book on WhatsApp</a></body></html>"""
+
+def headers_file():
+    """Netlify/Cloudflare Pages `_headers` for the client site (engineering checklist): HSTS, nosniff, referrer policy,
+    no framing, no device permissions, and a CSP with no inline script at all (the pages have none; JSON-LD is data,
+    not run). The one inline <style> is allowed by its sha256, so style-src needs no 'unsafe-inline'."""
+    css = "'sha256-" + base64.b64encode(hashlib.sha256(CSS.encode()).digest()).decode() + "'"
+    csp = ("default-src 'none'; script-src 'none'; style-src " + css + " https://fonts.googleapis.com; "
+           "font-src https://fonts.gstatic.com; img-src 'self' https:; form-action 'none'; frame-ancestors 'none'; "
+           "base-uri 'none'; object-src 'none'; upgrade-insecure-requests")
+    return ("/*\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n  X-Content-Type-Options: nosniff\n"
+            "  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: DENY\n"
+            "  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()\n"
+            f"  Content-Security-Policy: {csp}\n")
 
 def favicon(cfg):
     """A small letter mark: turmeric on hero canopy green (5.4:1 contrast), the Kalpavruksha pair."""
@@ -177,21 +190,22 @@ def build(setup, cfg, out):
     for a, why in skipped: print(f"  ! no page for {a}: {why} (listed on the home page instead)", file=sys.stderr)
     area_list = ", ".join(f'<a href="{pages[a][1]}">{html.escape(a)}</a>' if a in pages else html.escape(a) for a in cfg["areas"])
     body = f"<h1>{html.escape(cfg['business'])}</h1>{nap}<p>{html.escape(clean(cfg['greeting'], cfg))}</p><h2>{html.escape(cfg['catalogTitle'])}</h2>{services_table(cfg)}<h2>Areas we serve</h2><p>{area_list}</p><h2>Questions</h2>{faqs}"
-    (site / "index.html").write_text(page(setup, cfg, f"{cfg['business']} — {cfg['catalogTitle']}, Hyderabad", f"{cfg['business']} in Hyderabad. Prices, timings and instant WhatsApp booking.", body, cfg["site_url"] + "/"))
+    (site / "index.html").write_text(page(setup, cfg, f"{cfg['business']} — {cfg['catalogTitle']}, Hyderabad", f"{cfg['business']} in Hyderabad. Prices, timings and instant WhatsApp booking.", body, cfg["site_url"] + "/"), encoding="utf-8")
     urls.append(cfg["site_url"] + "/")
     for a, (b, name) in pages.items():
         url = f"{cfg['site_url']}/{name}"
         (site / name).write_text(page(setup, cfg, f"{cfg['business']} near {a} — directions and {cfg['catalogTitle'].lower()}",
-                                      f"How to reach {cfg['business']} from {a}. Prices, timings and WhatsApp booking.", b, url, None, a))
+                                      f"How to reach {cfg['business']} from {a}. Prices, timings and WhatsApp booking.", b, url, None, a), encoding="utf-8")
         urls.append(url)
     for c in cfg["catalog"]:
         for a in cfg["areas"]:
             kw.append((c["name"], a, f"{c['name'].lower()} in {a.lower()}", f"{c['name'].lower()} near me", pages[a][1] if a in pages else "index.html"))
     today = dt.date.today().isoformat()
-    (site / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls) + "</urlset>")
-    (site / "favicon.svg").write_text(favicon(cfg))  # stops the /favicon 404 that Lighthouse logged as a console error
-    (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {cfg['site_url']}/sitemap.xml\n")
-    (site / "llms.txt").write_text(f"# {cfg['business']}\n\n> {cfg['address']}. {cfg['hours']}. Phone/WhatsApp {cfg['phone']}.\n\n## {cfg['catalogTitle']}\n" + "\n".join(f"- {c['name']}: {c['price']}" for c in cfg["catalog"]) + "\n")
+    (site / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls) + "</urlset>", encoding="utf-8")
+    (site / "_headers").write_text(headers_file(), encoding="utf-8")  # security headers for Netlify / Cloudflare Pages
+    (site / "favicon.svg").write_text(favicon(cfg), encoding="utf-8")  # stops the /favicon 404 that Lighthouse logged as a console error
+    (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {cfg['site_url']}/sitemap.xml\n", encoding="utf-8")
+    (site / "llms.txt").write_text(f"# {cfg['business']}\n\n> {cfg['address']}. {cfg['hours']}. Phone/WhatsApp {cfg['phone']}.\n\n## {cfg['catalogTitle']}\n" + "\n".join(f"- {c['name']}: {c['price']}" for c in cfg["catalog"]) + "\n", encoding="utf-8")
     with open(out / "keywords.csv", "w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f); w.writerow(["service", "area", "primary phrase", "secondary phrase", "page"]); w.writerows(kw)
     # 12 weeks of Google Business Profile posts
@@ -218,7 +232,7 @@ Reply to every review within 24 hours (Google ranks active profiles higher). Use
 **1–2 stars:** We're sorry, {{name}}. This isn't the experience we want for anyone. Please WhatsApp us on {cfg['phone']}; the owner will personally look into it.
 
 Never offer discounts in exchange for reviews, and never post reviews on the business's behalf: both break Google's policies and Indian consumer rules on fake reviews.
-""")
+""", encoding="utf-8")
     return urls
 
 if __name__ == "__main__":
@@ -226,7 +240,7 @@ if __name__ == "__main__":
     ap.add_argument("--setup", required=True, choices=list(SCHEMA_TYPE)); ap.add_argument("--config", help="client JSON overrides"); ap.add_argument("--out", required=True)
     ap.add_argument("--draft", action="store_true", help="preview without a real site_url (placeholder links)")
     a = ap.parse_args()
-    cfg = load(a.setup, json.loads(pathlib.Path(a.config).read_text()) if a.config else {})
+    cfg = load(a.setup, json.loads(pathlib.Path(a.config).read_text(encoding="utf-8")) if a.config else {})
     cfg["draft"] = cfg.get("draft") or a.draft
     urls = build(a.setup, cfg, pathlib.Path(a.out))
     print(f"{len(urls)} pages + sitemap, 12 GBP posts, citations and review replies → {a.out}")

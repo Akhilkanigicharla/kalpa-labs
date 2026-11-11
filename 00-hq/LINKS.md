@@ -12,6 +12,12 @@ Where each piece of work lives outside this repo. All private to Akhil unless he
 
 All artifacts are listed at https://claude.ai/code/artifacts
 
+## Read the code on your phone (no login)
+
+| Label | What | Link |
+|---|---|---|
+| 🔎 HQ · Repo in VS Code view | Read-only code browser (github1s, from a reel 12 Nov 2026): add `1s` after `github` in any repo link | https://github1s.com/Akhilkanigicharla/kalpa-labs |
+
 ## Telegram (b5 Deals · b3 Kits), made by Akhil 20 Oct 2026
 
 | Label | What | Link |

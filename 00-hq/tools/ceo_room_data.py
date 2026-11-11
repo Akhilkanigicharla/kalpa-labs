@@ -3,7 +3,7 @@
 # Then upload each JSON as an asset to the CEO Room artifact and point datasets/<id>.source.url at it.
 import json,glob,os,re,sys
 S=sys.argv[1]
-wf=json.load(open(S+"/wf.json"))["workflows"]
+wf=json.load(open(S+"/wf.json", encoding="utf-8"))["workflows"]
 desc={"agents":"All 8 worlds' agents work their task lists in parallel, hourly (free Groq/OpenRouter, Vigil checks)",
  "daily-brief":"9 PM IST Telegram brief to Akhil with alerts first","n8n-keepalive":"Keeps self-hosted n8n awake 6 AM-midnight",
  "n8n-sync":"Pushes workflows + keys from GitHub into self-hosted n8n","sloplint":"Hallmark design check on the website"}
@@ -11,24 +11,24 @@ rows=[{"id":"n8n-councils","name":"n8n · Kalpa Morning Councils (all worlds)","
 for w in wf:
     n=os.path.basename(w["path"]).replace(".yml","")
     rows.append({"id":str(w["id"]),"name":"GitHub · "+w["name"],"description":desc.get(n,""),"active":w["state"]=="active"})
-json.dump(rows,open(S+"/n8n_workflows.json","w"))
-runs=json.load(open(S+"/runs.json"))["workflow_runs"]
+json.dump(rows,open(S+"/n8n_workflows.json","w", encoding="utf-8"))
+runs=json.load(open(S+"/runs.json", encoding="utf-8"))["workflow_runs"]
 rr=[{"id":str(r["id"]),"workflowId":str(r["workflow_id"]),"startedAt":r["run_started_at"],"mode":r["event"],"status":{"success":"success","failure":"error","cancelled":"canceled"}.get(r["conclusion"] or "", r["status"])} for r in runs[:20]]
-json.dump(rr,open(S+"/n8n_runs.json","w"))
+json.dump(rr,open(S+"/n8n_runs.json","w", encoding="utf-8"))
 tasks=[]
 for f in glob.glob("00-hq/tasks/*.json"):
-    for t in json.load(open(f)):
+    for t in json.load(open(f, encoding="utf-8")):
         summ=""
         if t.get("output") and os.path.exists(t["output"]):
-            body=open(t["output"]).read().split("\n",3)[-1]
+            body=open(t["output"], encoding="utf-8").read().split("\n",3)[-1]
             summ=re.sub(r"[#*_>|`\-]+"," ",body)
             summ=re.sub(r"\s+"," ",summ)[:400].strip()
         elif t.get("vigil_notes"): summ="Vigil: "+re.sub(r"\s+"," ",t["vigil_notes"])[:300]
         tasks.append({"id":t["id"],"title":t["title"],"owner_agent":t.get("owner",""),"stream":t["world"],"status":t["status"],"priority":t["priority"],"output_summary":summ,"updatedAt":t.get("updated",t["created"])})
 tasks.sort(key=lambda t:t["updatedAt"],reverse=True)
-json.dump(tasks,open(S+"/kl_tasks.json","w"))
-json.dump([{"status":"todo","n":sum(t["status"]=="todo" for t in tasks)}],open(S+"/kl_queue.json","w"))
+json.dump(tasks,open(S+"/kl_tasks.json","w", encoding="utf-8"))
+json.dump([{"status":"todo","n":sum(t["status"]=="todo" for t in tasks)}],open(S+"/kl_queue.json","w", encoding="utf-8"))
 ow={}
 for t in tasks: ow.setdefault(t["owner_agent"],t["updatedAt"])
-json.dump([{"id":o,"name":o+" ("+", ".join(sorted({x['stream'] for x in tasks if x['owner_agent']==o}))+")","updatedAt":u,"published":True} for o,u in ow.items()],open(S+"/agents.json","w"))
+json.dump([{"id":o,"name":o+" ("+", ".join(sorted({x['stream'] for x in tasks if x['owner_agent']==o}))+")","updatedAt":u,"published":True} for o,u in ow.items()],open(S+"/agents.json","w", encoding="utf-8"))
 print(len(rows),"automations",len(rr),"runs",len(tasks),"tasks",sum(t['status']=='review' for t in tasks),"review",len(ow),"agents")

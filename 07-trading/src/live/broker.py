@@ -194,7 +194,7 @@ def go_blockers(env: Mapping[str, str] | None = None, go_file: Path | None = Non
     if env.get("LIVE_TRADING") != "YES":
         out.append("env LIVE_TRADING is not YES")
     try:
-        first = go_file.read_text().strip().splitlines()[0].strip().lower() if go_file.exists() else ""
+        first = go_file.read_text(encoding="utf-8").strip().splitlines()[0].strip().lower() if go_file.exists() else ""
     except (OSError, IndexError):
         first = ""
     if first != "go":

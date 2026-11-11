@@ -1,0 +1,206 @@
+{
+ "name": "Daily n8n Workflow Backup to GitHub",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1"
+ },
+ "nodes": [
+  {
+   "id": "40911c83-6489-4256-84aa-d326ee5e0153",
+   "name": "Every Day at 2 AM",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.4,
+   "position": [
+    0,
+    48
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "days",
+       "daysInterval": 1,
+       "triggerAtHour": 2,
+       "triggerAtMinute": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "5166da55-60ff-471e-8ff5-47ebf8ea6819",
+   "name": "Get All Workflows",
+   "type": "n8n-nodes-base.n8n",
+   "typeVersion": 1,
+   "position": [
+    224,
+    48
+   ],
+   "parameters": {
+    "resource": "workflow",
+    "operation": "getAll",
+    "returnAll": true,
+    "filters": {
+     "activeWorkflows": false,
+     "excludePinnedData": true
+    }
+   },
+   "credentials": {
+    "n8nApi": {
+     "id": "",
+     "name": "n8n account"
+    }
+   }
+  },
+  {
+   "id": "9792fd35-79db-4d4d-ac25-39495b4d64b2",
+   "name": "Update Backup File",
+   "type": "n8n-nodes-base.github",
+   "typeVersion": 1.1,
+   "position": [
+    672,
+    0
+   ],
+   "parameters": {
+    "resource": "file",
+    "operation": "edit",
+    "authentication": "oAuth2",
+    "owner": {
+     "__rl": true,
+     "value": "Akhilkanigicharla",
+     "mode": "name"
+    },
+    "repository": {
+     "__rl": true,
+     "value": "kalpa-labs",
+     "mode": "name"
+    },
+    "filePath": "=workflows/{{ $(\"Loop Over Workflows\").item.json.id }}.json",
+    "binaryData": false,
+    "fileContent": "={{ JSON.stringify($(\"Loop Over Workflows\").item.json, null, 2) }}",
+    "commitMessage": "=Backup: {{ $(\"Loop Over Workflows\").item.json.name }} ({{ $now.toFormat(\"yyyy-MM-dd\") }})"
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "id": "",
+     "name": "GitHub account"
+    }
+   },
+   "onError": "continueErrorOutput"
+  },
+  {
+   "id": "ac81b57b-a4ee-4b0d-baea-adbdea840260",
+   "name": "Loop Over Workflows",
+   "type": "n8n-nodes-base.splitInBatches",
+   "typeVersion": 3,
+   "position": [
+    448,
+    48
+   ],
+   "parameters": {
+    "batchSize": 1,
+    "options": {}
+   }
+  },
+  {
+   "id": "f65fa423-078d-40cc-bf5c-14fee08ac9e8",
+   "name": "Create Backup File",
+   "type": "n8n-nodes-base.github",
+   "typeVersion": 1.1,
+   "position": [
+    896,
+    80
+   ],
+   "parameters": {
+    "resource": "file",
+    "operation": "create",
+    "authentication": "oAuth2",
+    "owner": {
+     "__rl": true,
+     "value": "Akhilkanigicharla",
+     "mode": "name"
+    },
+    "repository": {
+     "__rl": true,
+     "value": "kalpa-labs",
+     "mode": "name"
+    },
+    "filePath": "=workflows/{{ $(\"Loop Over Workflows\").item.json.id }}.json",
+    "binaryData": false,
+    "fileContent": "={{ JSON.stringify($(\"Loop Over Workflows\").item.json, null, 2) }}",
+    "commitMessage": "=Backup (new): {{ $(\"Loop Over Workflows\").item.json.name }} ({{ $now.toFormat(\"yyyy-MM-dd\") }})"
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "id": "",
+     "name": "GitHub account"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every Day at 2 AM": {
+   "main": [
+    [
+     {
+      "node": "Get All Workflows",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Get All Workflows": {
+   "main": [
+    [
+     {
+      "node": "Loop Over Workflows",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Update Backup File": {
+   "main": [
+    [
+     {
+      "node": "Loop Over Workflows",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Create Backup File",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Loop Over Workflows": {
+   "main": [
+    [],
+    [
+     {
+      "node": "Update Backup File",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Create Backup File": {
+   "main": [
+    [
+     {
+      "node": "Loop Over Workflows",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

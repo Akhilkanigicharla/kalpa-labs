@@ -1,0 +1,273 @@
+{
+ "name": "Kalpa Site Chat (Kalpa Bhai)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "cb7ebb62-48f6-4523-ad6b-f4a310f9cf31",
+   "name": "Website Chat",
+   "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+   "typeVersion": 1.5,
+   "position": [
+    0,
+    112
+   ],
+   "parameters": {
+    "public": true,
+    "mode": "webhook",
+    "authentication": "none",
+    "options": {
+     "responseMode": "lastNode",
+     "allowedOrigins": "*",
+     "loadPreviousSession": "notSupported"
+    }
+   }
+  },
+  {
+   "id": "24595047-0479-4780-80dc-273751283c62",
+   "name": "Kalpa Bhai",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    352,
+    112
+   ],
+   "parameters": {
+    "promptType": "auto",
+    "needsFallback": true,
+    "options": {
+     "systemMessage": "You are \"Kalpa Bhai\", the website assistant of Kalpa Labs, a one-person AI company in Hyderabad (founder: Akhil Kanigicharla, Udyam-registered MSME). You are an AI; say so if asked.\n\nLANGUAGE (most important): ALWAYS reply in the SAME language and script as the visitor's LAST message. Telugu script in -> reply fully in Telugu script. Hindi -> Hindi. English -> English. Tenglish/Hinglish in Latin letters -> same mix. Product names and prices stay as they are.\nSTYLE: plain text only (no markdown, no bold, no lists, no headings). Warm, human, 1-4 short sentences. Ask at most 2 things at a time.\n\nHONESTY: Only state the facts below, with their status. Never say something is live, on sale or proven if the status says otherwise. No invented prices, dates, customers, reviews or results. We have no paying customers yet; say so if asked.\n\nFACTS WITH STATUS:\n- BotBhai (BUILT AND TESTED, NOT YET LIVE WITH A CUSTOMER): AI assistant for salons (also gyms, coaching) for WhatsApp and website chat in Telugu, Hindi, English; understands repu/kal = tomorrow; books slots; reminders 24 h and 2 h before; hands over to staff; owner daily list. Free 14-day pilots for the first 3 founding salons, starting on or after Mon 16 Nov 2026 (never earlier), once the salon's WhatsApp number is connected. After the pilot, only if the owner says yes: ₹2,999 one-time setup + ₹1,499/month for months 1-3. Nothing is charged before that. Social Team add-on ₹999/month: PLANNED, sample month being prepared.\n- Workshop \"Claude Code with me\" (Telugu, beginners, Sun 29 Nov 2026, 11:00 AM IST, Google Meet, planned price ₹299): agenda and materials are being prepared and tested now. Only a FREE WAITLIST is open; payment opens only after the agenda is published; 7-day full refund. No income promises.\n- Exam & Money Kits (GATE 2027 tracker, Tax + SIP planner FY 2026-27): BUILT, NOT ON SALE yet (opens after payment setup). Planned price ₹199-499. Offer the waitlist.\n- Telugu Deals: 10 free calculators built; Telegram deals channel COMING SOON (not live); affiliate links will be marked #ad.\n- JobCard (AC technicians app): PLANNED for 2027. Tab Lifeboat (browser tab saver): IN DEVELOPMENT. Ledger Peaks (AI cost tracking for software teams): engine built, EARLY ACCESS LIST only.\n- Public launch planned Sun 13 Dec 2026.\n- Data: India's DPDP Act followed; data kept in a secure database we run for the business and deleted on request.\n\nWHAT YOU DO:\n1. Answer questions honestly using the facts and status above. If you don't know, say Akhil will confirm, and offer a callback.\n2. When someone is interested (pilot, workshop waitlist, kits waitlist, anything), offer a callback from Akhil. You need: name, phone/WhatsApp number, business or need, best time to call.\n3. You must have their explicit YES to \"Is it OK for Kalpa Labs to call or WhatsApp you about this?\" (a message saying the consent box was ticked counts as yes). Then call save_callback once with the real details. If it returns NOT SAVED, ask for what is missing. If SAVED, confirm Akhil will contact them, usually within 1 working day (IST). Never say a call is arranged before SAVED.\n4. Never ask for passwords, OTPs, bank or card numbers, Aadhaar or PAN; if shared, tell them not to and don't repeat them. Never take payments in chat.\n5. No financial, stock or trading tips; no medical or legal advice; no income or results guarantees.\n6. Stay on Kalpa Labs topics; politely steer back otherwise.",
+     "maxIterations": 4,
+     "enableStreaming": false
+    }
+   }
+  },
+  {
+   "id": "71091450-8ffd-4ac7-8124-e94254710141",
+   "name": "Groq gpt-oss-20b",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    224,
+    336
+   ],
+   "parameters": {
+    "model": "openai/gpt-oss-20b",
+    "options": {
+     "maxTokensToSample": 3000,
+     "temperature": 0.4
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  },
+  {
+   "id": "b2643299-ecc4-41ba-ad45-00525cfca0d5",
+   "name": "Groq qwen backup",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    352,
+    336
+   ],
+   "parameters": {
+    "model": "qwen/qwen3.8-27b",
+    "options": {
+     "maxTokensToSample": 3000,
+     "temperature": 0.4
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  },
+  {
+   "id": "e74c0ad0-8d3d-45d3-afd4-abb744c86ea9",
+   "name": "Chat Memory",
+   "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+   "typeVersion": 1.4,
+   "position": [
+    480,
+    336
+   ],
+   "parameters": {
+    "sessionIdType": "fromInput",
+    "contextWindowLength": 8
+   }
+  },
+  {
+   "id": "2681d429-4bd1-4564-94a7-fd6c22c22760",
+   "name": "save_callback",
+   "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+   "typeVersion": 2.2,
+   "position": [
+    600,
+    420
+   ],
+   "parameters": {
+    "description": "Save a callback request for Akhil. Use ONLY real details the visitor typed (never placeholders) and only after they said yes to being contacted. Returns SAVED or NOT SAVED with what is still missing.",
+    "source": "database",
+    "workflowId": {
+     "__rl": true,
+     "cachedResultName": "Save Site Lead (guarded)",
+     "mode": "id",
+     "value": "0L8c66aom2JiP86b"
+    },
+    "workflowInputs": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "name",
+       "id": "name",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "phone",
+       "id": "phone",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "business",
+       "id": "business",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "interest",
+       "id": "interest",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "best_time",
+       "id": "best_time",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "language",
+       "id": "language",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "notes",
+       "id": "notes",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "consent_said_yes",
+       "id": "consent_said_yes",
+       "required": false,
+       "type": "boolean"
+      }
+     ],
+     "value": {
+      "best_time": "={{ $fromAI('best_time', 'Best time to call or any', 'string') }}",
+      "business": "={{ $fromAI('business', 'Their business or need', 'string') }}",
+      "consent_said_yes": "={{ $fromAI('consent_said_yes', 'true ONLY if the visitor explicitly said yes to being called/WhatsApped', 'boolean') }}",
+      "interest": "={{ $fromAI('interest', 'salon_pilot, workshop, kits, deals or other', 'string') }}",
+      "language": "={{ $fromAI('language', 'te, hi, en or mix', 'string') }}",
+      "name": "={{ $fromAI('name', 'Visitor name exactly as they typed it', 'string') }}",
+      "notes": "={{ $fromAI('notes', 'One-line summary for Akhil', 'string') }}",
+      "phone": "={{ $fromAI('phone', 'Phone/WhatsApp number exactly as typed', 'string') }}"
+     }
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Website Chat": {
+   "main": [
+    [
+     {
+      "node": "Kalpa Bhai",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq gpt-oss-20b": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Kalpa Bhai",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq qwen backup": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Kalpa Bhai",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Chat Memory": {
+   "ai_memory": [
+    [
+     {
+      "node": "Kalpa Bhai",
+      "type": "ai_memory",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "save_callback": {
+   "ai_tool": [
+    [
+     {
+      "node": "Kalpa Bhai",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,314 @@
+{
+ "name": "Kalpa Smart Router (Jev)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true,
+  "binaryMode": "separate"
+ },
+ "nodes": [
+  {
+   "parameters": {
+    "options": {
+     "responseMode": "lastNode"
+    }
+   },
+   "id": "babb2863-32d7-45b6-a666-99d5144eb358",
+   "name": "Ask Kalpa",
+   "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+   "typeVersion": 1.5,
+   "position": [
+    208,
+    512
+   ]
+  },
+  {
+   "parameters": {
+    "operation": "route",
+    "model": {
+     "__rl": true,
+     "mode": "list",
+     "value": "jev-latest",
+     "cachedResultName": "jev-latest"
+    },
+    "stateText": "={{ $json.chatInput }}",
+    "routeQuestionType": "score",
+    "routeInstructions": "How much reasoning does it take to answer this request well? Low = a quick fact, definition, short reply or simple rewrite. Medium = a few steps, a short plan, code snippet or comparison. High = multi-part strategy, architecture, long research, legal/financial nuance or anything risky.",
+    "routeLevels": {
+     "level": [
+      {
+       "level": "low"
+      },
+      {
+       "level": "medium"
+      },
+      {
+       "level": "high"
+      }
+     ]
+    },
+    "options": {
+     "includeOtherFields": true,
+     "simplify": true,
+     "timeout": 15000
+    }
+   },
+   "id": "9b3b0f72-d8f3-40c6-8e30-64e7f81bcb69",
+   "name": "Jev: Score Complexity",
+   "type": "@typesafe-ai/n8n-nodes-typesafe-ai.typeSafeAi",
+   "typeVersion": 1,
+   "position": [
+    432,
+    496
+   ],
+   "credentials": {
+    "typeSafeAiApi": {
+     "id": "",
+     "name": "Gateway credits",
+     "__aiGatewayManaged": true
+    }
+   }
+  },
+  {
+   "parameters": {
+    "promptType": "define",
+    "text": "={{ $(\"Ask Kalpa\").item.json.chatInput }}",
+    "options": {
+     "systemMessage": "You are a Kalpa Labs assistant (one-person company in Hyderabad, CEO Akhil, free tools only, build mode with no clients yet). Reply in simple English. Never invent facts, numbers or links; say \"unknown\" if unsure. No investment tips (paper trading only). Answer in at most 5 short lines."
+    }
+   },
+   "id": "47ecaf60-b576-4a09-90fa-b418283ae1e1",
+   "name": "Quick Answer (low)",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    656,
+    0
+   ]
+  },
+  {
+   "parameters": {
+    "model": "poolside/laguna-xs-2.1:free",
+    "options": {
+     "maxTokens": 600,
+     "temperature": 0.3
+    }
+   },
+   "id": "49482703-c017-4436-8116-0a43e62dbce4",
+   "name": "Laguna XS (fast, free)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+   "typeVersion": 1,
+   "position": [
+    664,
+    232
+   ],
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "sessionIdType": "customKey",
+    "sessionKey": "={{ $('Ask Kalpa').item.json.sessionId }}",
+    "contextWindowLength": 8
+   },
+   "id": "ed927afc-e01e-46f4-8e37-48a487e59a8a",
+   "name": "Shared Chat Memory",
+   "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+   "typeVersion": 1.3,
+   "position": [
+    792,
+    232
+   ]
+  },
+  {
+   "parameters": {
+    "promptType": "define",
+    "text": "={{ $(\"Ask Kalpa\").item.json.chatInput }}",
+    "options": {
+     "systemMessage": "You are a Kalpa Labs assistant (one-person company in Hyderabad, CEO Akhil, free tools only, build mode with no clients yet). Reply in simple English. Never invent facts, numbers or links; say \"unknown\" if unsure. No investment tips (paper trading only). Give a short step-by-step answer, max 12 lines, code only if asked."
+    }
+   },
+   "id": "a78a7f63-86a2-477d-9a88-79436bccd1d6",
+   "name": "Worked Answer (medium)",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    656,
+    400
+   ]
+  },
+  {
+   "parameters": {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "options": {
+     "temperature": 0.4
+    }
+   },
+   "id": "ff548f63-2762-4d12-9e9d-22ed1ab5c22e",
+   "name": "Nemotron Nano Omni (reasoning, free)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+   "typeVersion": 1,
+   "position": [
+    728,
+    632
+   ],
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "promptType": "define",
+    "text": "={{ $(\"Ask Kalpa\").item.json.chatInput }}",
+    "options": {
+     "systemMessage": "You are a Kalpa Labs assistant (one-person company in Hyderabad, CEO Akhil, free tools only, build mode with no clients yet). Reply in simple English. Never invent facts, numbers or links; say \"unknown\" if unsure. No investment tips (paper trading only). Think it through. Structure: answer first, then plan, risks, next step. Flag anything needing the CEO's decision or money."
+    }
+   },
+   "id": "57ffcbeb-43f4-4993-b9b4-700aa6fbc05d",
+   "name": "Deep Answer (high)",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    656,
+    912
+   ]
+  },
+  {
+   "parameters": {
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "options": {
+     "temperature": 0.4
+    }
+   },
+   "id": "85a5df23-4fc9-4b72-bf9c-4d6d7f1e88ce",
+   "name": "Nemotron Super 120B (deep, free)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+   "typeVersion": 1,
+   "position": [
+    728,
+    1128
+   ],
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "content": "## Kalpa Smart Router (Jev)\nJev decides, n8n routes, the right free model answers.\n- **low** → Laguna XS (fast)\n- **medium** → Nemotron Nano reasoning\n- **high** → Nemotron Super 120B\nSaves the 50/day OpenRouter free quota on big models. Jev runs on n8n credits. Idea from the SSRR Rise video \"Smart AI Routing with n8n & Jev\".",
+    "height": 256,
+    "width": 416,
+    "color": 5
+   },
+   "id": "c4cdea44-7720-401f-8cd0-8e86bfcb58e0",
+   "name": "Sticky Note 9f8471ed",
+   "type": "n8n-nodes-base.stickyNote",
+   "typeVersion": 1,
+   "position": [
+    160,
+    432
+   ]
+  }
+ ],
+ "connections": {
+  "Ask Kalpa": {
+   "main": [
+    [
+     {
+      "node": "Jev: Score Complexity",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Jev: Score Complexity": {
+   "main": [
+    [
+     {
+      "node": "Quick Answer (low)",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Worked Answer (medium)",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Deep Answer (high)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Laguna XS (fast, free)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Quick Answer (low)",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Shared Chat Memory": {
+   "ai_memory": [
+    [
+     {
+      "node": "Quick Answer (low)",
+      "type": "ai_memory",
+      "index": 0
+     },
+     {
+      "node": "Worked Answer (medium)",
+      "type": "ai_memory",
+      "index": 0
+     },
+     {
+      "node": "Deep Answer (high)",
+      "type": "ai_memory",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Nemotron Nano Omni (reasoning, free)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Worked Answer (medium)",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Nemotron Super 120B (deep, free)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Deep Answer (high)",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

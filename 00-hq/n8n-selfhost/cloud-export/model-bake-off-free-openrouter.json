@@ -1,0 +1,193 @@
+{
+ "name": "Model Bake-off (free OpenRouter)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "d7e0d2bd-7052-45e3-86f8-2fc69cf0c24c",
+   "name": "Run Bake-off",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    112
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "97d8bcdb-59e7-43f0-97f3-c5795a25f826",
+   "name": "Candidate Models",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    224,
+    112
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "return ['nvidia/nemotron-3-ultra-550b-a55b:free','nvidia/nemotron-3.5-super-vl:free','nvidia/nemotron-3-super-120b-a12b:free','poolside/laguna-s-2.1:free','thinkingmachines/inkling:free','dots-studio/dots-3-note-preview:free'].map(m => ({ json: { model: m, t0: Date.now() } }));"
+   }
+  },
+  {
+   "id": "5323e337-0167-49a0-a8de-f31f7a0c8aad",
+   "name": "Test Agent",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    448,
+    112
+   ],
+   "parameters": {
+    "promptType": "define",
+    "text": "Call read_kalpa_file with path 00-hq/SERVICE-DESK.md. Then answer ONLY with JSON: {\"charge_now\":[offers whose Charge now? column starts with Yes],\"free_offers\":[offers marked n/a (free)],\"botbhai_monthly_inr\":number,\"botbhai_blockers\":[the C-codes listed as missing for BotBhai],\"never_sold\":[offers marked Never]}",
+    "options": {
+     "maxIterations": 4,
+     "enableStreaming": false,
+     "systemMessage": "You are a precise analyst. Use the tool, then output valid JSON only, no prose."
+    },
+    "batching": {
+     "batchSize": 1
+    }
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "8558b805-d936-407f-bfc4-0be64f39364d",
+   "name": "OpenRouter (per item)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+   "typeVersion": 1,
+   "position": [
+    464,
+    336
+   ],
+   "parameters": {
+    "model": "={{ $json.model }}",
+    "options": {
+     "temperature": 0.2,
+     "maxTokens": 1500,
+     "maxRetries": 0,
+     "timeout": 120000
+    }
+   },
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "id": "a0233187-6504-4840-a734-0fe14eddc090",
+   "name": "read_kalpa_file",
+   "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+   "typeVersion": 2.2,
+   "position": [
+    592,
+    336
+   ],
+   "parameters": {
+    "description": "Read a file from Kalpa repo (max 6000 chars). Use 00-hq/SERVICE-DESK.md.",
+    "source": "database",
+    "workflowId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "lieND9d1YMozBIJD",
+     "cachedResultName": "Read Kalpa Repo File (for agents)"
+    },
+    "workflowInputs": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "path": "={{ $fromAI('path', 'Repo file path', 'string') }}"
+     },
+     "schema": [
+      {
+       "id": "path",
+       "displayName": "path",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "0da0cf44-7475-48a3-9b0d-87c8cad43845",
+   "name": "Score",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    800,
+    112
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "const ins = $('Candidate Models').all();\nreturn $input.all().map((it, i) => {\n  const model = ins[i] ? ins[i].json.model : '?';\n  const raw = String(it.json.output || it.json.error || JSON.stringify(it.json)).slice(0, 1500);\n  let j = null; try { j = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1)); } catch (e) {}\n  let pts = 0; const notes = [];\n  if (!j) notes.push('no valid JSON');\n  else {\n    if (Array.isArray(j.charge_now) && j.charge_now.length === 0) pts++; else notes.push('charge_now wrong');\n    const fo = JSON.stringify(j.free_offers || '').toLowerCase(); if (fo.includes('chat') && fo.includes('deal')) pts++; else notes.push('free_offers wrong');\n    if (Number(j.botbhai_monthly_inr) === 1499) pts++; else notes.push('price wrong');\n    const bl = JSON.stringify(j.botbhai_blockers || ''); if (bl.includes('C02') && bl.includes('C14')) pts++; else notes.push('blockers wrong');\n    if (JSON.stringify(j.never_sold || '').toLowerCase().includes('trading')) pts++; else notes.push('never_sold wrong');\n  }\n  return { json: { model, score: pts + '/5', notes: notes.join('; '), sample: raw.slice(0, 300) } };\n});"
+   }
+  }
+ ],
+ "connections": {
+  "Run Bake-off": {
+   "main": [
+    [
+     {
+      "node": "Candidate Models",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Candidate Models": {
+   "main": [
+    [
+     {
+      "node": "Test Agent",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Test Agent": {
+   "main": [
+    [
+     {
+      "node": "Score",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "OpenRouter (per item)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Test Agent",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "read_kalpa_file": {
+   "ai_tool": [
+    [
+     {
+      "node": "Test Agent",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

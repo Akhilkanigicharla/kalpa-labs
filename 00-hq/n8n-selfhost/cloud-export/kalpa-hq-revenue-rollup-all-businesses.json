@@ -1,0 +1,275 @@
+{
+ "name": "Kalpa HQ Revenue Rollup (all businesses)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true,
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "c77baa9f-089f-4419-a38c-574211768b19",
+   "name": "Daily 8:30 PM IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.4,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "0 30 20 * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "af64d8d1-b5f8-4b2f-b1e8-69f86ae38892",
+   "name": "All kit items",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    224,
+    96
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "SCUeS3YQfXS1yxhf",
+     "cachedResultName": "KL GTM Kit"
+    },
+    "returnAll": true
+   },
+   "executeOnce": true
+  },
+  {
+   "id": "8782a4c5-8d8a-4c38-b793-ab8286b3e528",
+   "name": "All pipeline deals",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    448,
+    96
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "Pqxl3ZzCkC69XT8w",
+     "cachedResultName": "KL Pipeline"
+    },
+    "returnAll": true
+   },
+   "executeOnce": true,
+   "alwaysOutputData": true
+  },
+  {
+   "id": "755efbff-f912-4071-a351-907c93a616e2",
+   "name": "All leads",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    672,
+    96
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "pdD6nm9KtK73bDHw",
+     "cachedResultName": "KL Leads"
+    },
+    "returnAll": true
+   },
+   "executeOnce": true,
+   "alwaysOutputData": true
+  },
+  {
+   "id": "36b8dd5e-191d-49c1-92de-3c575d1ededb",
+   "name": "Consolidate HQ report",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    896,
+    96
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "jsCode": "const N={b1:'BotBhai',b2:'JobCard',b3:'Kits',b4:'Tab Lifeboat',b5:'Deals & Tools',b6:'Ledger Peaks',b7:'Trading Lab'};\nconst kit=$('All kit items').all().map(i=>i.json).filter(r=>r.stream);\nconst pipe=$('All pipeline deals').all().map(i=>i.json).filter(r=>r.stream);\nconst leads=$('All leads').all().map(i=>i.json).filter(r=>r.business);\nconst today=new Date(Date.now()+330*60000).toISOString().slice(0,10);\nlet tg='Kalpa HQ revenue report '+today+'\\n'; let md='# Kalpa HQ revenue report, '+today+'\\n\\nMade by the n8n workflow \"Kalpa HQ Revenue Rollup\" from KL GTM Kit, KL Pipeline and KL Leads. Drafts are written by free models: check every [TO VERIFY] and [CEO] mark before use.\\n\\n| Business | Kit items done | Need CEO | Leads | Open deals | Pipeline value (INR) | Won (INR) |\\n|---|---|---|---|---|---|---|\\n';\nlet totDone=0,totAll=0,totPipe=0,totWon=0; const body=[];\nfor (const s of Object.keys(N)) {\n const k=kit.filter(r=>r.stream===s); const live=k.filter(r=>r.status!=='skip-sebi'); const done=live.filter(r=>r.status==='draft'||r.status==='approved');\n const ceo=done.filter(r=>r.needs_ceo).length; const p=pipe.filter(r=>r.stream===s);\n const open=p.filter(r=>!['won','lost'].includes(r.stage)); const pv=open.reduce((a,r)=>a+(Number(r.value_inr)||0),0); const won=p.filter(r=>r.stage==='won').reduce((a,r)=>a+(Number(r.value_inr)||0),0);\n const l=leads.filter(r=>r.stream===s || (!r.stream && s==='b1')).length;\n totDone+=done.length; totAll+=live.length; totPipe+=pv; totWon+=won;\n md+='| '+s+' '+N[s]+' | '+done.length+'/'+live.length+' | '+ceo+' | '+l+' | '+open.length+' | '+pv+' | '+won+' |\\n';\n tg+='\\n'+N[s]+': kit '+done.length+'/'+live.length+', CEO checks '+ceo+', leads '+l+', open deals '+open.length+(won?', won Rs '+won:'');\n if (done.length) { body.push('\\n## '+s+' '+N[s]+'\\n'); for (const r of done.sort((a,b)=>a.item_no-b.item_no)) body.push('\\n### '+r.item_no+'. '+r.item+' (owner: '+r.owner_agent+', '+r.pod+')\\n\\n'+String(r.output||'')+'\\n'); }\n}\nmd+='\\n**All businesses:** kit '+totDone+'/'+totAll+' items drafted, open pipeline Rs '+totPipe+', won Rs '+totWon+'.\\n'+body.join('');\ntg+='\\n\\nTotal: '+totDone+'/'+totAll+' items drafted, pipeline Rs '+totPipe+', won Rs '+totWon+'. Full report in GitHub 00-hq/revenue/daily/'+today+'.md';\nreturn [{json:{today,tg,md}}];"
+   }
+  },
+  {
+   "id": "6b5484cd-8a45-4e2f-ab85-e0cb724c9bd0",
+   "name": "Send to Akhil",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1120,
+    96
+   ],
+   "parameters": {
+    "resource": "message",
+    "operation": "sendMessage",
+    "chatId": "1905524851",
+    "text": "={{ $json.tg }}",
+    "additionalFields": {
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Telegram account"
+    }
+   }
+  },
+  {
+   "id": "b1c3e6b6-b91f-4d20-9699-dad5501ed46c",
+   "name": "Save report to GitHub",
+   "type": "n8n-nodes-base.github",
+   "typeVersion": 1.1,
+   "position": [
+    1344,
+    96
+   ],
+   "parameters": {
+    "resource": "file",
+    "operation": "create",
+    "authentication": "oAuth2",
+    "owner": {
+     "__rl": true,
+     "mode": "name",
+     "value": "akhilkanigicharla"
+    },
+    "repository": {
+     "__rl": true,
+     "mode": "name",
+     "value": "kalpa-labs"
+    },
+    "filePath": "=00-hq/revenue/daily/{{ $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd-HHmm') }}.md",
+    "binaryData": false,
+    "fileContent": "={{ $('Consolidate HQ report').item.json.md }}",
+    "commitMessage": "=HQ revenue report {{ $('Consolidate HQ report').item.json.today }} (n8n rollup)",
+    "additionalParameters": {
+     "author": {
+      "name": "Akhilkanigicharla",
+      "email": "84580207+Akhilkanigicharla@users.noreply.github.com"
+     },
+     "committer": {
+      "name": "Akhilkanigicharla",
+      "email": "84580207+Akhilkanigicharla@users.noreply.github.com"
+     }
+    }
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "id": "",
+     "name": "GitHub account"
+    }
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "093e3f29-1100-4877-ab28-eccc35817d42",
+   "name": "Run now",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    192
+   ],
+   "parameters": {}
+  }
+ ],
+ "connections": {
+  "Daily 8:30 PM IST": {
+   "main": [
+    [
+     {
+      "node": "All kit items",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "All kit items": {
+   "main": [
+    [
+     {
+      "node": "All pipeline deals",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "All pipeline deals": {
+   "main": [
+    [
+     {
+      "node": "All leads",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "All leads": {
+   "main": [
+    [
+     {
+      "node": "Consolidate HQ report",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Consolidate HQ report": {
+   "main": [
+    [
+     {
+      "node": "Send to Akhil",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Send to Akhil": {
+   "main": [
+    [
+     {
+      "node": "Save report to GitHub",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Run now": {
+   "main": [
+    [
+     {
+      "node": "All kit items",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

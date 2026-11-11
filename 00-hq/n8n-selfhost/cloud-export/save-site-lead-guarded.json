@@ -1,0 +1,360 @@
+{
+ "name": "Save Site Lead (guarded)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "89e33e25-386c-4403-89fe-ba5d9e70acd6",
+   "name": "From Kalpa Bhai",
+   "type": "n8n-nodes-base.executeWorkflowTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    96
+   ],
+   "parameters": {
+    "inputSource": "workflowInputs",
+    "workflowInputs": {
+     "values": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "phone",
+       "type": "string"
+      },
+      {
+       "name": "business",
+       "type": "string"
+      },
+      {
+       "name": "interest",
+       "type": "string"
+      },
+      {
+       "name": "best_time",
+       "type": "string"
+      },
+      {
+       "name": "language",
+       "type": "string"
+      },
+      {
+       "name": "notes",
+       "type": "string"
+      },
+      {
+       "name": "consent_said_yes",
+       "type": "boolean"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "4c0b2435-fd9b-4e7f-bbc3-650426ae51c0",
+   "name": "Check Details",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    224,
+    96
+   ],
+   "parameters": {
+    "mode": "runOnceForEachItem",
+    "language": "javaScript",
+    "jsCode": "const j = $json;\nconst name = String(j.name || '').trim();\nconst digits = String(j.phone || '').replace(/\\D/g, '');\nconst missing = [];\nif (!name || /[\\[\\]<>{}]/.test(name) || /^(name|visitor|user|unknown|n\\/a)$/i.test(name)) missing.push('real name');\nif (digits.length < 10 || digits.length > 13 || /^(\\d)\\1+$/.test(digits)) missing.push('a valid 10-digit phone/WhatsApp number');\nif (j.consent_said_yes !== true && String(j.consent_said_yes).toLowerCase() !== 'true') missing.push('the visitor saying YES to being contacted');\nreturn { json: { ok: missing.length === 0, missing: missing.join(', '), name, phone: digits.length === 10 ? '+91' + digits : '+' + digits,\n  business: String(j.business || '').slice(0, 200), interest: String(j.interest || 'other').slice(0, 40), best_time: String(j.best_time || 'any').slice(0, 80),\n  language: String(j.language || '').slice(0, 10), notes: String(j.notes || '').slice(0, 400) } };"
+   }
+  },
+  {
+   "id": "506fbbda-aecc-44d9-983c-d1f5e7de83d5",
+   "name": "Details OK?",
+   "type": "n8n-nodes-base.if",
+   "typeVersion": 2.2,
+   "position": [
+    448,
+    96
+   ],
+   "parameters": {
+    "conditions": {
+     "options": {
+      "caseSensitive": true,
+      "leftValue": "",
+      "typeValidation": "loose"
+     },
+     "conditions": [
+      {
+       "leftValue": "={{ $json.ok }}",
+       "operator": {
+        "type": "boolean",
+        "operation": "true",
+        "singleValue": true
+       }
+      }
+     ],
+     "combinator": "and"
+    }
+   }
+  },
+  {
+   "id": "8c8a3b74-472c-470b-b725-5526229ba62c",
+   "name": "Insert Lead",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    672,
+    0
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "insert",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "EywHFcZami3U9fTO",
+     "cachedResultName": "Site Leads"
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "name": "={{ $json.name }}",
+      "phone": "={{ $json.phone }}",
+      "business": "={{ $json.business }}",
+      "interest": "={{ $json.interest }}",
+      "best_time": "={{ $json.best_time }}",
+      "language": "={{ $json.language }}",
+      "notes": "={{ $json.notes }}",
+      "consent": true,
+      "status": "new"
+     },
+     "schema": [
+      {
+       "id": "name",
+       "displayName": "name",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "phone",
+       "displayName": "phone",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "business",
+       "displayName": "business",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "interest",
+       "displayName": "interest",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "best_time",
+       "displayName": "best_time",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "language",
+       "displayName": "language",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "notes",
+       "displayName": "notes",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "consent",
+       "displayName": "consent",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "boolean",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "status",
+       "displayName": "status",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "26afc724-e543-4386-8947-0f3b5679e846",
+   "name": "Saved",
+   "type": "n8n-nodes-base.set",
+   "typeVersion": 3.4,
+   "position": [
+    896,
+    0
+   ],
+   "parameters": {
+    "mode": "manual",
+    "includeOtherFields": false,
+    "assignments": {
+     "assignments": [
+      {
+       "id": "r1",
+       "name": "result",
+       "value": "SAVED. Tell the visitor Akhil will contact them, usually within 1 working day.",
+       "type": "string"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "63d8ae6d-4f13-4928-8092-ff5adc4b5c34",
+   "name": "Not Saved",
+   "type": "n8n-nodes-base.set",
+   "typeVersion": 3.4,
+   "position": [
+    672,
+    192
+   ],
+   "parameters": {
+    "mode": "manual",
+    "includeOtherFields": false,
+    "assignments": {
+     "assignments": [
+      {
+       "id": "r2",
+       "name": "result",
+       "value": "=NOT SAVED. Still needed from the visitor: {{ $json.missing }}. Ask for it politely; never invent it.",
+       "type": "string"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "0adae66a-c2f5-487e-9b59-961c5f227c84",
+   "name": "Alert Akhil on Telegram",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    900,
+    0
+   ],
+   "parameters": {
+    "additionalFields": {
+     "appendAttribution": false,
+     "parse_mode": "HTML"
+    },
+    "chatId": "1905524851",
+    "operation": "sendMessage",
+    "resource": "message",
+    "text": "={{ '📞 New website lead\\n' + $('Check Details').item.json.name + ' · ' + $('Check Details').item.json.phone + '\\nWants: ' + $('Check Details').item.json.interest + ' · ' + $('Check Details').item.json.business + '\\nBest time: ' + $('Check Details').item.json.best_time + ' · Lang: ' + $('Check Details').item.json.language + '\\n' + $('Check Details').item.json.notes + '\\nThey agreed to a call/WhatsApp. Reply within 1 working day.' }}"
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Telegram account"
+    }
+   },
+   "onError": "continueRegularOutput"
+  }
+ ],
+ "connections": {
+  "From Kalpa Bhai": {
+   "main": [
+    [
+     {
+      "node": "Check Details",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Check Details": {
+   "main": [
+    [
+     {
+      "node": "Details OK?",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Details OK?": {
+   "main": [
+    [
+     {
+      "node": "Insert Lead",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Not Saved",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Insert Lead": {
+   "main": [
+    [
+     {
+      "node": "Alert Akhil on Telegram",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Alert Akhil on Telegram": {
+   "main": [
+    [
+     {
+      "node": "Saved",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

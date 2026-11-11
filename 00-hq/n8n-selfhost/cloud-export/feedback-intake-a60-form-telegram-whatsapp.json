@@ -1,0 +1,376 @@
+{
+ "name": "Feedback Intake (A60, Form + Telegram + WhatsApp)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "05e6dd73-2de6-4ad6-bb7d-64775f13f693",
+   "name": "Google Form Responses",
+   "type": "n8n-nodes-base.googleSheetsTrigger",
+   "typeVersion": 1,
+   "position": [
+    224,
+    192
+   ],
+   "parameters": {
+    "pollTimes": {
+     "item": [
+      {
+       "mode": "everyHour"
+      }
+     ]
+    },
+    "authentication": "triggerOAuth2",
+    "documentId": "<__PLACEHOLDER_VALUE__Google Sheet linked to the feedback Google Form (responses)__>",
+    "sheetName": "<__PLACEHOLDER_VALUE__Form Responses 1__>",
+    "event": "rowAdded",
+    "options": {
+     "valueRender": "FORMATTED_VALUE"
+    }
+   }
+  },
+  {
+   "id": "028cf442-66ad-4548-83a2-a28003c70124",
+   "name": "Form → Feedback",
+   "type": "n8n-nodes-base.set",
+   "typeVersion": 3.4,
+   "position": [
+    448,
+    192
+   ],
+   "parameters": {
+    "mode": "manual",
+    "includeOtherFields": false,
+    "assignments": {
+     "assignments": [
+      {
+       "id": "f1",
+       "name": "source",
+       "type": "string",
+       "value": "form"
+      },
+      {
+       "id": "f2",
+       "name": "product",
+       "type": "string",
+       "value": "={{ $json['Which product?'] ?? $json['Product'] ?? '' }}"
+      },
+      {
+       "id": "f3",
+       "name": "text",
+       "type": "string",
+       "value": "={{ $json['Your feedback'] ?? $json['Feedback'] ?? '' }}"
+      },
+      {
+       "id": "f4",
+       "name": "created",
+       "type": "string",
+       "value": "={{ $now.toISO() }}"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "da3f980a-e824-4cf2-91c0-fefc73cc2d44",
+   "name": "Feedback Save",
+   "type": "n8n-nodes-base.executeWorkflow",
+   "typeVersion": 1.4,
+   "position": [
+    672,
+    192
+   ],
+   "parameters": {
+    "mode": "each",
+    "source": "database",
+    "workflowId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "yQy1c7gXnS1Mub7m",
+     "cachedResultName": "Feedback Save (A60, clean + sentiment + insert)"
+    },
+    "workflowInputs": {
+     "mappingMode": "defineBelow",
+     "matchingColumns": [],
+     "attemptToConvertTypes": false,
+     "value": {
+      "source": "={{ $json.source }}",
+      "product": "={{ $json.product }}",
+      "text": "={{ $json.text }}",
+      "created": "={{ $json.created }}"
+     },
+     "schema": [
+      {
+       "id": "source",
+       "displayName": "source",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "canBeUsedToMatch": true,
+       "type": "string"
+      },
+      {
+       "id": "product",
+       "displayName": "product",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "canBeUsedToMatch": true,
+       "type": "string"
+      },
+      {
+       "id": "text",
+       "displayName": "text",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "canBeUsedToMatch": true,
+       "type": "string"
+      },
+      {
+       "id": "created",
+       "displayName": "created",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "canBeUsedToMatch": true,
+       "type": "string"
+      }
+     ]
+    },
+    "options": {
+     "waitForSubWorkflow": true
+    }
+   }
+  },
+  {
+   "id": "5160c19c-3f96-4ad7-ba75-93de6cbc38c1",
+   "name": "Telegram Feedback",
+   "type": "n8n-nodes-base.telegramTrigger",
+   "typeVersion": 1.5,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "updates": [
+     "message"
+    ]
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Telegram account"
+    }
+   }
+  },
+  {
+   "id": "3ff40b83-bbed-40d1-a042-2ad32eba6559",
+   "name": "Telegram → Feedback",
+   "type": "n8n-nodes-base.set",
+   "typeVersion": 3.4,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "mode": "manual",
+    "includeOtherFields": false,
+    "assignments": {
+     "assignments": [
+      {
+       "id": "t1",
+       "name": "source",
+       "type": "string",
+       "value": "telegram"
+      },
+      {
+       "id": "t2",
+       "name": "product",
+       "type": "string",
+       "value": "={{ ((($json.message?.text || '').match(/#([a-z-]+)/i)) || ['', ''])[1] }}"
+      },
+      {
+       "id": "t3",
+       "name": "text",
+       "type": "string",
+       "value": "={{ String($json.message?.text || '').replace(/^\\/feedback(@\\w+)?\\s*/i, '') }}"
+      },
+      {
+       "id": "t4",
+       "name": "created",
+       "type": "string",
+       "value": "={{ $json.message?.date ? DateTime.fromSeconds($json.message.date).toISO() : $now.toISO() }}"
+      },
+      {
+       "id": "t5",
+       "name": "isCommand",
+       "type": "boolean",
+       "value": "={{ /^\\/(?!feedback)/i.test(String($json.message?.text || '')) }}"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "9c0bca38-e4d9-48d4-8479-735b53741966",
+   "name": "Skip Bot Commands",
+   "type": "n8n-nodes-base.filter",
+   "typeVersion": 2.2,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "conditions": {
+     "options": {
+      "caseSensitive": true,
+      "leftValue": "",
+      "typeValidation": "loose"
+     },
+     "conditions": [
+      {
+       "leftValue": "={{ $json.isCommand }}",
+       "operator": {
+        "type": "boolean",
+        "operation": "false",
+        "singleValue": true
+       },
+       "rightValue": ""
+      }
+     ],
+     "combinator": "and"
+    }
+   }
+  },
+  {
+   "id": "6bd38b3c-53c7-4915-a5e8-1105bac02ce8",
+   "name": "WhatsApp Replies (Meta webhook)",
+   "type": "n8n-nodes-base.webhook",
+   "typeVersion": 2.2,
+   "position": [
+    224,
+    384
+   ],
+   "parameters": {
+    "httpMethod": "POST",
+    "path": "kalpa-feedback-whatsapp",
+    "responseMode": "onReceived",
+    "options": {}
+   }
+  },
+  {
+   "id": "126c99d0-5aab-465c-9e87-dcd8b2f4f894",
+   "name": "WhatsApp → Feedback",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    448,
+    384
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "// Meta WhatsApp Cloud API webhook -> feedback items. Only text replies; status updates are ignored.\n// The sender number (from) is NOT kept: the desk needs the words, not the person (DPDP minimum data).\nconst out = [];\nfor (const item of $input.all()) {\n  const body = item.json.body ?? item.json;\n  if (!body || body.object !== 'whatsapp_business_account') continue;\n  for (const entry of body.entry || []) for (const ch of entry.changes || []) {\n    for (const m of (ch.value && ch.value.messages) || []) {\n      const text = m.type === 'text' ? m.text?.body : m.type === 'button' ? m.button?.text : m.type === 'interactive' ? (m.interactive?.button_reply?.title || m.interactive?.list_reply?.title) : '';\n      if (!text) continue;\n      const ts = Number(m.timestamp);\n      out.push({ json: { source: 'whatsapp', product: '', text: String(text), created: ts ? new Date(ts * 1000).toISOString() : new Date().toISOString() } });\n    }\n  }\n}\nreturn out;\n"
+   }
+  },
+  {
+   "id": "d01b1024-ef58-4304-bed2-2a782d0fe9ad",
+   "name": "Sticky Note 862172ac",
+   "type": "n8n-nodes-base.stickyNote",
+   "typeVersion": 1,
+   "position": [
+    -32,
+    -96
+   ],
+   "parameters": {
+    "content": "## Feedback Intake (A60) · UNPUBLISHED until Akhil says go\nThree intakes, one save sub-flow. No scraping: only people who write to us (Form, our Telegram bot, WhatsApp replies to our number).\nBefore go: connect the Google Sheets Trigger credential + pick the form sheet; Telegram bot can have only one webhook (check no other published flow uses this bot); WhatsApp needs Meta app, GET verify token step and X-Hub-Signature-256 check.",
+    "color": 3,
+    "width": 384,
+    "height": 608
+   }
+  }
+ ],
+ "connections": {
+  "Google Form Responses": {
+   "main": [
+    [
+     {
+      "node": "Form → Feedback",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Form → Feedback": {
+   "main": [
+    [
+     {
+      "node": "Feedback Save",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Telegram Feedback": {
+   "main": [
+    [
+     {
+      "node": "Telegram → Feedback",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Telegram → Feedback": {
+   "main": [
+    [
+     {
+      "node": "Skip Bot Commands",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Skip Bot Commands": {
+   "main": [
+    [
+     {
+      "node": "Feedback Save",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "WhatsApp Replies (Meta webhook)": {
+   "main": [
+    [
+     {
+      "node": "WhatsApp → Feedback",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "WhatsApp → Feedback": {
+   "main": [
+    [
+     {
+      "node": "Feedback Save",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

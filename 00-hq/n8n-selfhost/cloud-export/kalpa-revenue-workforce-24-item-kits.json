@@ -1,0 +1,662 @@
+{
+ "name": "Kalpa Revenue Workforce (24-item kits)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true,
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "ef0ae3e7-e1aa-4279-ac64-b1f4e1edae83",
+   "name": "Every 10 minutes",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.4,
+   "position": [
+    0,
+    336
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "minutes",
+       "minutesInterval": 10
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "24fb2e0a-8dee-4d11-b50a-4f2017c89db4",
+   "name": "Next todo job",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    224,
+    336
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "SCUeS3YQfXS1yxhf",
+     "cachedResultName": "KL GTM Kit"
+    },
+    "matchType": "allConditions",
+    "filters": {
+     "conditions": [
+      {
+       "keyName": "status",
+       "condition": "eq",
+       "keyValue": "todo"
+      }
+     ]
+    },
+    "returnAll": false,
+    "limit": 1,
+    "orderBy": true,
+    "orderByColumn": "id",
+    "orderByDirection": "ASC"
+   }
+  },
+  {
+   "id": "4b5e1a7c-b89f-4b79-81ea-650428d7cf2d",
+   "name": "Read world PLAN.md",
+   "type": "n8n-nodes-base.github",
+   "typeVersion": 1.1,
+   "position": [
+    448,
+    336
+   ],
+   "parameters": {
+    "resource": "file",
+    "operation": "get",
+    "authentication": "oAuth2",
+    "owner": {
+     "__rl": true,
+     "mode": "name",
+     "value": "akhilkanigicharla"
+    },
+    "repository": {
+     "__rl": true,
+     "mode": "name",
+     "value": "kalpa-labs"
+    },
+    "filePath": "={{ ({b1:'01-botbhai',b2:'02-jobcard',b3:'03-kits',b4:'04-extensions',b5:'05-deals',b6:'06-finops',b7:'07-trading'})[$('Next todo job').item.json.stream] }}/PLAN.md",
+    "asBinaryProperty": false
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "id": "",
+     "name": "GitHub account"
+    }
+   }
+  },
+  {
+   "id": "c60855d0-b2c9-48b2-9264-a286a8fb53a6",
+   "name": "Read GTM rules",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    672,
+    336
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "iOJMuvV1AOu8ywr6",
+     "cachedResultName": "KL Knowledge"
+    },
+    "matchType": "allConditions",
+    "filters": {
+     "conditions": [
+      {
+       "keyName": "category",
+       "condition": "eq",
+       "keyValue": "rules"
+      }
+     ]
+    },
+    "returnAll": false,
+    "limit": 5
+   },
+   "executeOnce": true
+  },
+  {
+   "id": "ca2e7091-c471-4afa-8c6c-d8a85672fe0e",
+   "name": "Read team drafts",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    896,
+    336
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "SCUeS3YQfXS1yxhf",
+     "cachedResultName": "KL GTM Kit"
+    },
+    "matchType": "allConditions",
+    "filters": {
+     "conditions": [
+      {
+       "keyName": "stream",
+       "condition": "eq",
+       "keyValue": "={{ $('Next todo job').item.json.stream }}"
+      },
+      {
+       "keyName": "status",
+       "condition": "eq",
+       "keyValue": "draft"
+      }
+     ]
+    },
+    "returnAll": true
+   },
+   "executeOnce": true,
+   "alwaysOutputData": true
+  },
+  {
+   "id": "782696eb-023a-425b-a87f-67be488385ae",
+   "name": "Build brief",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1120,
+    336
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "jsCode": "const job=$('Next todo job').first().json;\nconst raw=Buffer.from(($('Read world PLAN.md').first().json.content||''),'base64').toString('utf8');\nconst cut=raw.indexOf('\\n## 4')>0?raw.slice(0,raw.indexOf('\\n## 4')):raw; const plan=cut.slice(0,7000);\nconst rules=$('Read GTM rules').all().map(r=>r.json.summary).filter(Boolean).join('\\n');\nconst prior=$('Read team drafts').all().map(r=>r.json).filter(r=>r.item&&r.output).sort((a,b)=>a.item_no-b.item_no)\n .map(r=>'['+r.item_no+' '+r.item+'] '+String(r.output).replace(/\\s+/g,' ').slice(0,500)).join('\\n').slice(0,3500);\nconst B={1:\"Site map (pages + purpose) and full copy for home, product, pricing, about, contact, privacy notice outline. Mobile-first, Telugu+English where the plan says so. Hero headline options x3.\",\n2:\"The most profitable sub-niche to start with: score 3-5 candidate segments on pain, ability to pay, reachability from Hyderabad with 1 hour/day, competition, delivery cost. Pick one with reasons.\",\n3:\"Top 5-8 real competitors (Indian first, then global) with price, positioning, strengths, gaps, and how we win. Name only companies you are confident exist; mark uncertain facts [TO VERIFY].\",\n4:\"Ideal customer profile: firmographics, the person who decides, jobs-to-be-done, top pains in their words, triggers to buy, disqualifiers, where they hang out, budget.\",\n5:\"Exactly where to find potential customers legally: named directories, associations, events, online communities, OpenStreetMap categories, partners, inbound sources. A weekly sourcing routine with target counts.\",\n6:\"Lead generation plan: inbound and outbound mix, lead magnet, lead scoring rules (0-100) with fields for the KL Leads table, weekly volume targets, owner per step.\",\n7:\"The offer: core promise, deliverables, guarantee that we can honour, bonuses, founding-customer terms, what is NOT included. Use the approved prices from the plan only.\",\n8:\"Pricing: tiers and exact INR prices consistent with the plan, unit economics (cost to serve, margin), discount rules, payment terms, GST note. Show the maths.\",\n9:\"Cold email sequence: 5 emails (day 0, 3, 7, 12, 20), subject lines (36-50 chars), bodies under 120 words, plain text, one ask each, merge fields, opt-out line and sender identity.\",\n10:\"Personalised outreach: research checklist per prospect, 5 personalisation hooks, templates for email, LinkedIn (manual), WhatsApp reply (only after opt-in) and in-person visit opener, with 2 filled examples using fictional businesses.\",\n11:\"Sales proposal template: problem, solution, scope, timeline, price table, terms, next step, signature block. Fill one example for a typical customer.\",\n12:\"One campaign landing page: headline, subhead, 3 benefit blocks, how it works, proof section (no fake testimonials), pricing teaser, FAQ (6), CTA and form fields, plus A/B headline variants.\",\n13:\"30-day marketing content plan: pillars, platforms, cadence, 12 post ideas with hooks, 2 long-form pieces, repurposing map. Respect ASCI/SEBI rules.\",\n14:\"Ad creatives: 6 ad concepts (Meta + Google) with primary text, headline, description, visual brief for 1080x1080 and 1080x1920, targeting, budget test plan in INR, success metric.\",\n15:\"Sales funnel: stages from stranger to paying customer to referral, conversion target per stage, assets and agent owner per stage, leak checks.\",\n16:\"CRM automation design on n8n: pipeline stages for the KL Pipeline table, fields, triggers, automatic tasks, alerts to Akhil on Telegram, data retention and DPDP notes.\",\n17:\"Follow-up sequences: after inquiry, after demo, after proposal, after no-reply, after purchase; channel, timing and message for each step.\",\n18:\"Sales call script: opener, permission, 8 discovery questions, demo flow, pricing moment, close, next-step booking. Telugu/English mix where natural.\",\n19:\"Objection handling: the 12 most likely objections with a short, honest answer and a question back. No pressure tactics.\",\n20:\"Case studies: we have no customers yet. Write the case-study template, the data to capture from the first pilot (baseline, after, quote with permission), and the consent wording. No invented results.\",\n21:\"Customer onboarding system: day 0-30 checklist, welcome message, setup steps, training, first-value milestone, health check, handover to support.\",\n22:\"Repetitive tasks to automate: list 10 with current time cost, n8n workflow design for each, which agent runs it, risk if it fails.\",\n23:\"KPIs: north-star metric, 8-10 weekly KPIs with formulas and targets, where each number comes from (table/source), and the weekly review ritual.\",\n24:\"Conversion improvement: 8 experiments ranked by impact/effort (ICE), hypothesis, metric, sample size needed, how to run each with zero budget.\"};\nconst sys='You are '+job.owner_agent+', a senior '+job.pod+' specialist in the Kalpa Labs '+job.stream+' revenue team (Hyderabad, India). Akhil is the CEO: beginner, 1 hour a day, free tools only, no money taken until delivery is proven live. Write world-class, specific, ready-to-use work in plain English, not generic advice. Never invent customers, testimonials, statistics or company facts; mark anything unverified [TO VERIFY]. Mark anything only Akhil can do with [CEO]. Follow every rule below. Stay consistent with the plan and with the team drafts.';\nconst user='RULES:\\n'+rules+'\\n\\nBUSINESS PLAN (excerpt):\\n'+plan+'\\n\\nTEAM DRAFTS SO FAR:\\n'+(prior||'none yet')+'\\n\\nYOUR TASK - item '+job.item_no+' of 24: '+job.item+'\\n'+B[job.item_no]+'\\n\\nOutput: Markdown, 500-1000 words, headings and tables where useful. End with \"Next 3 actions\" (owner + minutes).';\nreturn [{json:{id:job.id,stream:job.stream,item_no:job.item_no,system:sys,prompt:user}}];"
+   }
+  },
+  {
+   "id": "fb7de0f3-878e-4e4c-b7ca-f86064923c42",
+   "name": "Agent writes item",
+   "type": "@n8n/n8n-nodes-langchain.chainLlm",
+   "typeVersion": 1.9,
+   "position": [
+    1344,
+    336
+   ],
+   "parameters": {
+    "promptType": "define",
+    "text": "={{ $json.prompt }}",
+    "needsFallback": true,
+    "messages": {
+     "messageValues": [
+      {
+       "type": "SystemMessagePromptTemplate",
+       "message": "={{ $json.system }}"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d405ab08-f351-405f-be36-855bd3b95184",
+   "name": "NVIDIA Nemotron (free)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+   "typeVersion": 1,
+   "position": [
+    1360,
+    560
+   ],
+   "parameters": {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "options": {
+     "temperature": 0.4,
+     "maxTokens": 4000,
+     "timeout": 240000,
+     "maxRetries": 1
+    }
+   },
+   "credentials": {
+    "nvidiaApi": {
+     "id": "",
+     "name": "NVIDIA Nemotron account"
+    }
+   }
+  },
+  {
+   "id": "61c26857-1c76-45aa-ac57-b62bd08b4534",
+   "name": "Groq gpt-oss-120b (fallback)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    1488,
+    560
+   ],
+   "parameters": {
+    "model": "openai/gpt-oss-120b",
+    "options": {
+     "temperature": 0.4,
+     "maxTokensToSample": 2500
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  },
+  {
+   "id": "cf4b7e23-ad5f-418b-ba7b-1a6ce88f7e56",
+   "name": "Save draft",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    1696,
+    336
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "update",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "SCUeS3YQfXS1yxhf",
+     "cachedResultName": "KL GTM Kit"
+    },
+    "matchType": "allConditions",
+    "filters": {
+     "conditions": [
+      {
+       "keyName": "id",
+       "condition": "eq",
+       "keyValue": "={{ $('Build brief').item.json.id }}"
+      }
+     ]
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "status": "draft",
+      "output": "={{ $json.text.replace(/<think>[\\s\\S]*?<\\/think>/g,'').trim() }}\n\n---\n## Guard check\n{{ $('Guard reviews draft').item.json.text.replace(/<think>[\\s\\S]*?<\\/think>/g,'').trim() }}",
+      "model_used": "nemotron-nano-omni (+Groq fallback), Guard-reviewed",
+      "needs_ceo": "={{ $json.text.includes('[CEO]') }}",
+      "updated_on": "={{ $now.toISO() }}"
+     }
+    }
+   }
+  },
+  {
+   "id": "39c39e90-1dcf-4ea7-a7c6-33117705abf4",
+   "name": "Guard reviews draft",
+   "type": "@n8n/n8n-nodes-langchain.chainLlm",
+   "typeVersion": 1.9,
+   "position": [
+    1900,
+    300
+   ],
+   "parameters": {
+    "messages": {
+     "messageValues": [
+      {
+       "message": "You are Guard, Kalpa Labs' compliance and fact-check reviewer. Compare the DRAFT with the RULES, the COMPANY FACTS and the BUSINESS PLAN above. Prices, dates and products written in the BUSINESS PLAN are correct; do not flag them. Flag only real problems: invented facts (company type, founding year, team, customers, reviews, guarantees, discounts, trials, offices) not in the plan; rule breaks (Justdial/Google Maps/Instagram scraping, unsolicited calls or SMS, WhatsApp without opt-in, LinkedIn automation, missing #ad, SEBI advice); claims about platforms or laws that may be outdated; numbers with no source; missing parts of the task. Reply in this exact form and nothing else:\nISSUES:\n- <quote the wrong text> -> <exact fix>\n(at most 8 bullets, most serious first). If there is nothing to fix reply exactly: ISSUES: none",
+       "type": "SystemMessagePromptTemplate"
+      }
+     ]
+    },
+    "needsFallback": true,
+    "promptType": "define",
+    "text": "={{ $('Build brief').item.json.prompt }}\n\n=== DRAFT TO CHECK ===\n{{ $json.text.replace(/<think>[\\s\\S]*?<\\/think>/g,'') }}"
+   }
+  },
+  {
+   "id": "6bbd0f7b-783d-4998-9e02-2a1548f287fd",
+   "name": "NVIDIA (Guard)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+   "typeVersion": 1,
+   "position": [
+    1860,
+    520
+   ],
+   "parameters": {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "options": {
+     "maxRetries": 1,
+     "maxTokens": 1500,
+     "temperature": 0.1,
+     "timeout": 180000
+    }
+   },
+   "credentials": {
+    "nvidiaApi": {
+     "id": "",
+     "name": "NVIDIA Nemotron account"
+    }
+   }
+  },
+  {
+   "id": "80787a4f-7462-46ac-acc4-aa6e2b67e2b5",
+   "name": "Groq (Guard fallback)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    2000,
+    520
+   ],
+   "parameters": {
+    "model": "openai/gpt-oss-120b",
+    "options": {
+     "maxTokensToSample": 1200,
+     "temperature": 0.1
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  },
+  {
+   "id": "4fa5a801-a21f-46a0-bc3e-e1f1d1bdd540",
+   "name": "Requeue early drafts (run once)",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    700
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "e87a16aa-df87-455c-afb0-efc5072d627d",
+   "name": "Set ids 1-2 back to todo",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    220,
+    700
+   ],
+   "parameters": {
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "status": "todo"
+     }
+    },
+    "dataTableId": {
+     "__rl": true,
+     "cachedResultName": "KL GTM Kit",
+     "mode": "id",
+     "value": "SCUeS3YQfXS1yxhf"
+    },
+    "filters": {
+     "conditions": [
+      {
+       "condition": "lte",
+       "keyName": "id",
+       "keyValue": "3"
+      }
+     ]
+    },
+    "matchType": "allConditions",
+    "operation": "update",
+    "resource": "row"
+   }
+  },
+  {
+   "id": "997367ff-c669-4ef1-b8b3-fdc94f49e55f",
+   "name": "Writer fixes issues",
+   "type": "@n8n/n8n-nodes-langchain.chainLlm",
+   "typeVersion": 1.9,
+   "position": [
+    2150,
+    300
+   ],
+   "parameters": {
+    "messages": {
+     "messageValues": [
+      {
+       "message": "You are the Kalpa Labs agent who wrote this draft. Apply every fix in GUARD'S ISSUES exactly; change nothing else; keep the full length, headings, tables and the Next 3 actions. If the issues say 'none', return the draft unchanged. Return ONLY the final Markdown document.",
+       "type": "SystemMessagePromptTemplate"
+      }
+     ]
+    },
+    "needsFallback": true,
+    "promptType": "define",
+    "text": "={{ $('Build brief').item.json.prompt.split('BUSINESS PLAN (excerpt):')[0] }}\n\nTASK: item {{ $('Build brief').item.json.item_no }} for {{ $('Build brief').item.json.stream }}\n\n=== YOUR DRAFT ===\n{{ $('Agent writes item').item.json.text.replace(/<think>[\\s\\S]*?<\\/think>/g,'') }}\n\n=== GUARD'S ISSUES ===\n{{ $json.text.replace(/<think>[\\s\\S]*?<\\/think>/g,'') }}"
+   }
+  },
+  {
+   "id": "6e83686b-a6af-4c16-af75-55fc3aa9d1d6",
+   "name": "NVIDIA (revise)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+   "typeVersion": 1,
+   "position": [
+    2110,
+    520
+   ],
+   "parameters": {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "options": {
+     "maxRetries": 1,
+     "maxTokens": 4500,
+     "temperature": 0.2,
+     "timeout": 240000
+    }
+   },
+   "credentials": {
+    "nvidiaApi": {
+     "id": "",
+     "name": "NVIDIA Nemotron account"
+    }
+   }
+  },
+  {
+   "id": "84b7629b-82e5-4f6c-ad18-99fdf498772b",
+   "name": "Groq (revise fallback)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    2250,
+    520
+   ],
+   "parameters": {
+    "model": "openai/gpt-oss-20b",
+    "options": {
+     "maxTokensToSample": 3000,
+     "temperature": 0.2
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Next todo job": {
+   "main": [
+    [
+     {
+      "node": "Read world PLAN.md",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read world PLAN.md": {
+   "main": [
+    [
+     {
+      "node": "Read GTM rules",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read GTM rules": {
+   "main": [
+    [
+     {
+      "node": "Read team drafts",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read team drafts": {
+   "main": [
+    [
+     {
+      "node": "Build brief",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build brief": {
+   "main": [
+    [
+     {
+      "node": "Agent writes item",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "NVIDIA Nemotron (free)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Agent writes item",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq gpt-oss-120b (fallback)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Agent writes item",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Agent writes item": {
+   "main": [
+    [
+     {
+      "node": "Guard reviews draft",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "NVIDIA (Guard)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Guard reviews draft",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq (Guard fallback)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Guard reviews draft",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Requeue early drafts (run once)": {
+   "main": [
+    [
+     {
+      "node": "Set ids 1-2 back to todo",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Guard reviews draft": {
+   "main": [
+    [
+     {
+      "node": "Writer fixes issues",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Writer fixes issues": {
+   "main": [
+    [
+     {
+      "node": "Save draft",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "NVIDIA (revise)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Writer fixes issues",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq (revise fallback)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Writer fixes issues",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Every 10 minutes": {
+   "main": [
+    [
+     {
+      "node": "Next todo job",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,98 @@
+{
+ "name": "Web Search (compact, for agents)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "5fa3d671-3df3-44c5-a0ac-ee37a3a2be47",
+   "name": "Query In",
+   "type": "n8n-nodes-base.executeWorkflowTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "inputSource": "workflowInputs",
+    "workflowInputs": {
+     "values": [
+      {
+       "name": "query",
+       "type": "string"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e41cbfd7-899d-4c63-905f-175ab38349ad",
+   "name": "Brave Web",
+   "type": "@brave/n8n-nodes-brave-search.braveSearch",
+   "typeVersion": 1.1,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "operation": "web",
+    "query": "={{ String($json.query || \"\").slice(0, 380) }}",
+    "count": 5,
+    "additionalParameters": {
+     "country": "IN",
+     "search_lang": "en",
+     "text_decorations": false
+    }
+   },
+   "onError": "continueRegularOutput",
+   "credentials": {
+    "braveSearchApi": {
+     "id": "",
+     "name": "Gateway credits",
+     "__aiGatewayManaged": true
+    }
+   }
+  },
+  {
+   "id": "8a05fe71-e7da-4c9c-99cb-f67b1fc67bcf",
+   "name": "Compact Results",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "const all = $input.all().map(i => i.json);\nlet res = [];\nfor (const j of all) {\n  if (Array.isArray(j?.web?.results)) res = res.concat(j.web.results);\n  else if (j?.url && j?.title) res.push(j);\n}\nconst lines = res.slice(0, 5).map((r, i) => (i + 1) + '. ' + String(r.title || '').slice(0, 120) + ' | ' + r.url + ' | ' + String(r.description || '').replace(/<[^>]+>/g, '').slice(0, 300));\nreturn [{ json: { results: lines.length ? lines.join('\\n') : 'No results (or search failed). Try a different, more specific query.' } }];"
+   }
+  }
+ ],
+ "connections": {
+  "Query In": {
+   "main": [
+    [
+     {
+      "node": "Brave Web",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Brave Web": {
+   "main": [
+    [
+     {
+      "node": "Compact Results",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

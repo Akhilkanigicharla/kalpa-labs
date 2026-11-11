@@ -153,11 +153,10 @@
   ],
   "min_items": 8,
   "context_chars": 14000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-11T09:30:00Z",
   "output": "00-hq/knowledge/K066.md",
-  "updated": "2026-11-11T09:27:07Z",
-  "tries": 1,
-  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+  "updated": "2026-11-11T09:36:21Z",
+  "tries": 1
  }
 ]

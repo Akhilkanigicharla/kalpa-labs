@@ -1,5 +1,9 @@
 // Server-side regression tests for the review agent's findings. Run: NO_DELAY=1 node core/functions/hardening.test.js
 process.env.NO_DELAY = "1"; process.env.SITE_URL = "https://botbhai.example";
+// A218: fixed clock (Friday 13 Nov 2026, 10:00 IST, still ticking) so "next monday" never lands on the
+// day the A50 tests book (today + 4 / + 5 days). Before this, every Thursday run failed.
+{ const RealDate = Date, t0 = RealDate.now(), base = RealDate.parse("2026-11-13T04:30:00Z");
+  global.Date = class extends RealDate { constructor(...a) { if (a.length) super(...a); else super(base + RealDate.now() - t0); } static now() { return base + RealDate.now() - t0; } }; }
 const assert = require("assert");
 const crypto = require("crypto");
 const { store, graph } = require("./_fake.js")({

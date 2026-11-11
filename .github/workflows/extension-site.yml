@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: node 04-extensions/site/build.mjs --release
-        env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL }}" }
+        env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL || secrets.CONTACT_EMAIL }}" }   # Akhil saved it under Secrets (11 Nov); either place works
       - name: SEO checks (00-hq/design/SEO-CHECKS.md)
         run: python3 00-hq/site/tests/test_seo.py 04-extensions/site/_dist https://akhilkanigicharla.github.io/kalpa-labs
       - name: Phone tap sweep, 390 px light + dark (CLAUDE.md rule 5)

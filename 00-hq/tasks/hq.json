@@ -234,5 +234,21 @@
   "output": "00-hq/knowledge/K060.md",
   "updated": "2026-11-09T04:53:14Z",
   "tries": 0
+ },
+ {
+  "id": "K059",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Scout",
+  "title": "Free public APIs worth using in Kalpa (from the public-apis list)",
+  "details": "From your knowledge of the public-apis/public-apis GitHub list, propose 12 free public APIs that could help Kalpa Labs: Telugu Deals & calculators (b5), Exam Kits (b3), BotBhai salon/gym bots (b1), Trading Lab research (b7). Number them 1 to 12. For each: name, what it gives, which Kalpa world uses it and for what, auth needed (none / key), and write 'free limit: UNVERIFIED' (Claude checks limits later). India-relevant first (holidays, pincode, weather, exchange rates, public exam calendars). No scraping APIs, no APIs that return personal data.",
+  "read": [
+   "README.md"
+  ],
+  "min_items": 12,
+  "context_chars": 12000,
+  "status": "todo",
+  "created": "2026-11-11T00:00:00Z",
+  "output": "00-hq/knowledge/K059.md"
  }
 ]

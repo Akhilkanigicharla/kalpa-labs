@@ -254,7 +254,7 @@
  },
  {
   "priority": "P2",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-11T10:45:00Z",
   "context_chars": 12000,
   "id": "K068",
@@ -266,11 +266,12 @@
    "00-hq/ROADMAP.md"
   ],
   "min_items": 12,
-  "output": "00-hq/knowledge/K068.md"
+  "output": "00-hq/knowledge/K068.md",
+  "updated": "2026-11-11T10:45:11Z"
  },
  {
   "priority": "P2",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-11T10:45:00Z",
   "context_chars": 12000,
   "id": "K069",
@@ -282,6 +283,7 @@
    "00-hq/VISION.md"
   ],
   "min_items": 7,
-  "output": "00-hq/knowledge/K069.md"
+  "output": "00-hq/knowledge/K069.md",
+  "updated": "2026-11-11T10:46:38Z"
  }
 ]

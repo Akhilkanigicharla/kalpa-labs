@@ -28,6 +28,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
+from .data import is_fx
 from .risk import Order, RiskBook, check
 
 HERE = Path(__file__).resolve().parent.parent
@@ -167,6 +168,10 @@ class Guard:
         today = today or datetime.now(timezone.utc).date()
         if self._day != today:
             self._day, self.sent_today = today, 0
+        fx = [s for s in targets if is_fx(s)]
+        if fx:  # RBI: rupee currency derivatives need a real foreign-currency exposure to hedge
+            self._say(f"BLOCKED: {', '.join(fx)} is research only (currency pairs are never traded by the bot)")
+            targets = {s: v for s, v in targets.items() if not is_fx(s)}
         unknown = [s for s in targets if s not in self.universe]
         if unknown:
             self._say(f"BLOCKED: {', '.join(unknown)} not in the bot's universe")

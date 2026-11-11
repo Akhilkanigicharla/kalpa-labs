@@ -92,6 +92,14 @@ def test_symbol_outside_universe_refused(tmp_path):
     assert "not in the bot's universe" in g.alerts[0]
 
 
+def test_currency_pairs_are_research_only(tmp_path):
+    b = DryRunBroker(prices={"USDINR": 90.0, "NIFTYBEES": 100.0}, cash_inr=5000)
+    g = Guard(broker=b, trial_id="T9", book=RiskBook(pot=5000), env={"KL_LIVE_CAPITAL": "5000"},
+              trials_path=trials(tmp_path), root=tmp_path, universe=("USDINR", "NIFTYBEES"))
+    assert g.run_once({"USDINR": (1, 85.0)}, D) == [] and b.orders == []
+    assert "research only" in g.alerts[0]
+
+
 def test_daily_order_budget_and_reset(tmp_path, monkeypatch):
     import src.live as L
     monkeypatch.setattr(L, "MAX_ORDERS_DAY", 1)

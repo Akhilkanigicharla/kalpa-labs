@@ -107,6 +107,8 @@ def test_symbols():
     assert data.nse_symbol("reliance") == "RELIANCE.NS"
     assert data.nse_symbol("^NSEI") == "^NSEI"
     assert data.nse_symbol("SBIN.BO") == "SBIN.BO"
+    assert data.nse_symbol("usdinr") == "USDINR=X" == data.nse_symbol("USDINR=X")
+    assert data.is_fx("eurinr") and not data.is_fx("NIFTYBEES") and not data.is_fx("^NSEI")
 
 
 def test_data_folder_is_git_ignored():

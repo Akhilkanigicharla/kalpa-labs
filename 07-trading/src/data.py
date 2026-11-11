@@ -22,10 +22,22 @@ class DataError(ValueError):
     pass
 
 
+# Rupee currency pairs, RESEARCH ONLY (A210). Prices are Yahoo's spot rate, not NSE futures.
+# RBI: exchange-traded rupee currency derivatives are for hedging a real foreign-currency
+# exposure, so live.Guard refuses these symbols (07-trading/research/currency.md).
+FX_PAIRS = ("USDINR", "EURINR", "GBPINR", "JPYINR")
+
+
+def is_fx(symbol: str) -> bool:
+    return symbol.strip().upper().removesuffix("=X") in FX_PAIRS
+
+
 def nse_symbol(symbol: str) -> str:
-    """'TCS' -> 'TCS.NS'; indices (^NSEI) and already-suffixed symbols are kept."""
+    """'TCS' -> 'TCS.NS'; 'USDINR' -> 'USDINR=X'; indices (^NSEI) and suffixed symbols are kept."""
     s = symbol.strip().upper()
-    return s if s.startswith("^") or "." in s else f"{s}.NS"
+    if is_fx(s):
+        return s.removesuffix("=X") + "=X"
+    return s if s.startswith("^") or "." in s or "=" in s else f"{s}.NS"
 
 
 def _yf_fetch(symbol: str, start: str | None, end: str | None) -> pd.DataFrame:

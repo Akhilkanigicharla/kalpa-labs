@@ -1,6 +1,6 @@
 # n8n Cloud export (9 Nov 2026)
 
-Akhil downloaded these 18 workflows after the n8n Cloud trial ended. Cleaned: credential IDs and webhook IDs removed, all set inactive. **Not synced**: `sync.py` only loads `../workflows/`. Moving one to the self-hosted n8n is roadmap item A203 (data tables must be recreated; anything with a public URL waits for Akhil's go).
+Akhil downloaded these 18 workflows after the n8n Cloud trial ended. Cleaned: credential IDs and webhook IDs removed, all set inactive. **Not synced**: `sync.py` only loads `../workflows/`. Moving one to the self-hosted n8n is roadmap item A204 (data tables must be recreated; anything with a public URL waits for Akhil's go).
 
 | Workflow | File | Uses n8n data tables | Public entry | Credentials |
 |---|---|---|---|---|

@@ -1,9 +1,10 @@
 """SEO checks (00-hq/design/SEO-CHECKS.md) for any static Kalpa site folder.
 
   python3 00-hq/site/tests/test_seo.py                       # 00-hq/site, https://kalpalabs.dpdns.org
-  python3 00-hq/site/tests/test_seo.py <folder> <base-url> [--live]
+  python3 00-hq/site/tests/test_seo.py <folder> <base-url> [--live] [--private=kits/thanks/index.html,...]
 
-Checks every public .html page in the folder (404.html is checked but must be noindex and is left out of the sitemap).
+Checks every public .html page in the folder and its subfolders (Astro dist/x/index.html too). 404.html and any
+--private pages must be noindex and stay out of the sitemap (sitemap.xml, or Astro's sitemap-index.xml).
 --live also requests each external link once (checks 12). Exit 1 on any FAIL.
 """
 import json, re, sys, urllib.request, xml.etree.ElementTree as ET
@@ -71,17 +72,39 @@ def parse(path):
     return p
 
 
+def page_url(base, name):
+    """index.html -> base/, emi/index.html -> base/emi/ (Astro directory format), about.html -> base/about."""
+    if name == "index.html":
+        return base + "/"
+    if name.endswith("/index.html"):
+        return base + "/" + name.removesuffix("index.html")
+    return base + "/" + name.removesuffix(".html")
+
+
+def sitemap_locs(folder, base):
+    """(file name, locs) from sitemap.xml, or from sitemap-index.xml and its child sitemaps (Astro)."""
+    for fname in ("sitemap.xml", "sitemap-index.xml"):
+        sm = folder / fname
+        if sm.exists():
+            locs = [e.text for e in ET.parse(sm).iter() if e.tag.endswith("loc")]
+            if fname == "sitemap-index.xml":
+                kids = [folder / l[len(base):].lstrip("/") for l in locs if l.startswith(base)]
+                locs = [e.text for k in kids if k.exists() for e in ET.parse(k).iter() if e.tag.endswith("loc")]
+            return fname, locs
+    return None, []
+
+
 def check_page(name, p, base, folder):
     out = []
     fail = lambda n, msg: out.append(f"FAIL [{n}] {name}: {msg}")
     robots = p.meta.get("robots", "").lower()
     if name in PRIVATE:
         if "noindex" not in robots:
-            fail(3, "404 page must be noindex")
+            fail(3, "private page must be noindex")
         return out
     if "noindex" in robots:
         fail(3, "public page has noindex")
-    url = base + ("/" if name == "index.html" else "/" + name.removesuffix(".html"))
+    url = page_url(base, name)
     if len(p.canonical) != 1 or not p.canonical[0].startswith("https://"):
         fail(4, f"needs exactly one https canonical (found {p.canonical})")
     elif p.canonical[0].rstrip("/") != url.rstrip("/"):
@@ -145,28 +168,30 @@ def check_page(name, p, base, folder):
     return out
 
 
-def check_site(folder, base, live=False):
+def check_site(folder, base, live=False, private=()):
     folder, out = Path(folder), []
-    pages = sorted(f for f in folder.glob("*.html"))
+    PRIVATE.update(private)
+    pages = sorted(f for f in folder.rglob("*.html") if "node_modules" not in f.parts and "tests" not in f.parts)
     if not pages:
         return [f"FAIL [0] no .html pages in {folder}"]
-    public = [f.name for f in pages if f.name not in PRIVATE]
+    names = {f: f.relative_to(folder).as_posix() for f in pages}
+    public = [n for n in names.values() if n not in PRIVATE]
     robots = folder / "robots.txt"
     if not robots.exists():
         out.append("FAIL [2] robots.txt missing")
     else:
         r = robots.read_text()
-        if f"Sitemap: {base}/sitemap.xml" not in r:
+        smname = sitemap_locs(folder, base)[0] or "sitemap.xml"
+        if f"Sitemap: {base}/{smname}" not in r:
             out.append("FAIL [2] robots.txt must name the sitemap")
         if re.search(r"^Disallow:\s*/\s*$", r, re.M):
             out.append("FAIL [2] robots.txt blocks the whole site")
-    sm = folder / "sitemap.xml"
-    if not sm.exists():
+    smname, locs = sitemap_locs(folder, base)
+    if not smname:
         out.append("FAIL [1] sitemap.xml missing")
     else:
-        locs = [e.text for e in ET.parse(sm).iter() if e.tag.endswith("loc")]
-        want = {base + ("/" if n == "index.html" else "/" + n.removesuffix(".html")) for n in public}
-        if set(locs) != want:
+        want = {page_url(base, n).rstrip("/") for n in public}
+        if {l.rstrip("/") for l in locs} != want:
             out.append(f"FAIL [1] sitemap lists {sorted(locs)}, expected {sorted(want)}")
         if not all(l.startswith("https://") for l in locs):
             out.append("FAIL [1] sitemap URLs must be https")
@@ -174,7 +199,7 @@ def check_site(folder, base, live=False):
     if not llms.exists() or not llms.read_text().startswith("# "):
         out.append("FAIL [20] llms.txt missing or has no '# Title' first line")
     for f in pages:
-        out += check_page(f.name, parse(f), base, folder)
+        out += check_page(names[f], parse(f), base, folder)
     for img in list(folder.rglob("*.png")) + list(folder.rglob("*.jpg")) + list(folder.rglob("*.webp")):
         if img.stat().st_size > 300_000 and "test" not in img.parts:
             out.append(f"FAIL [13] {img.name} is {img.stat().st_size // 1000} KB")
@@ -200,7 +225,8 @@ def main(argv):
     args = [a for a in argv if not a.startswith("--")]
     folder = Path(args[0]) if args else ROOT
     base = (args[1] if len(args) > 1 else BASE).rstrip("/")
-    problems = check_site(folder, base, "--live" in argv)
+    private = [x for a in argv if a.startswith("--private=") for x in a.split("=", 1)[1].split(",") if x]
+    problems = check_site(folder, base, "--live" in argv, private)
     for p in problems:
         print(p)
     print("PASS SEO checks" if not problems else f"{len(problems)} SEO problem(s)")

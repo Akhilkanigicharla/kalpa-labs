@@ -6,7 +6,7 @@ interface Props { tier: Tier; kit: string; featured?: boolean }
 const { tier, kit, featured = false } = Astro.props;
 const early = tier.earlyBird && tier.earlyBird.active && tier.buyUrl ? tier.earlyBird : null;
 ---
-<article class:list={["tier", { featured }]}>
+<article id={tier.id} class:list={["tier", { featured }]}>
   <h3>{tier.name}</h3>
   <p class="price">{early ? <><s>{priceLabel(tier)}</s> ₹{early.price}</> : priceLabel(tier)}</p>
   {early && <p class="note">Early-bird price for the first {early.buyers} buyers. We change this page the moment they're gone.</p>}

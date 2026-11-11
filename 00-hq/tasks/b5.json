@@ -122,5 +122,22 @@
   "updated": "2026-11-11T09:38:28Z",
   "tries": 3,
   "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
+ },
+ {
+  "priority": "P2",
+  "status": "todo",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K067",
+  "world": "b5",
+  "owner": "Scout",
+  "title": "Target search words for the free money calculators site (English + Telugu)",
+  "details": "For each of the 11 calculators in 05-deals/site/src/lib/calcs.ts (income tax 2026-27 new vs old, salary in hand, GST, gratuity, SIP, EMI, FD, RD, PPF, HRA, and the home page) give the 3 search phrases an Indian person would type, in English and in Telugu script, as a numbered list of 11 items (one per page). Plain phrases only, no search-volume numbers (we cannot verify them). Mark Telugu 'needs native check'.",
+  "read": [
+   "05-deals/site/src/lib/calcs.ts",
+   "00-hq/design/SEO-CHECKS.md"
+  ],
+  "min_items": 11,
+  "output": "00-hq/knowledge/K067.md"
  }
 ]

@@ -2,7 +2,7 @@
 // Razorpay Payment Page → "Redirect after payment" → https://<site>/kits/thanks/  (Razorpay adds ?razorpay_payment_id=…)
 import Base from "../../layouts/Base.astro";
 ---
-<Base title="Thank you | Kalpa Kits" description="Your kit is ready." lang="en" path="/kits/thanks/" noAlt>
+<Base title="Thank you | Kalpa Kits" description="Your kit is ready." lang="en" path="/kits/thanks/" noAlt noindex>
   <h1>Thank you!</h1>
   <div class="card" id="box" aria-live="polite"><p id="msg">Confirming your payment…</p><div id="go" hidden>
     <p><a class="btn" id="copy" href="#" rel="noopener">Open your kit (Make a copy)</a></p>

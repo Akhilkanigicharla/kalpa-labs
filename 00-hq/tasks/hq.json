@@ -251,5 +251,37 @@
   "created": "2026-11-11T00:00:00Z",
   "output": "00-hq/knowledge/K061.md",
   "updated": "2026-11-11T08:16:32Z"
+ },
+ {
+  "priority": "P2",
+  "status": "todo",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K068",
+  "world": "hq",
+  "owner": "Kavi",
+  "title": "Sound-effect cue plan for Kalpa reels (A196 prep)",
+  "details": "Write a numbered list of 12 cue rules for short 9:16 explainer reels: for each, the trigger in the script (e.g. a number appears, a list item, a price, a warning, a reveal, the call to action), the cue type (whoosh, pop, tick, soft chime, low hit...), length in ms, and volume relative to the voice (always under it). Also 3 rules for when NOT to add a sound. No product or brand names of paid libraries; sounds will be generated or CC0 only.",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "min_items": 12,
+  "output": "00-hq/knowledge/K068.md"
+ },
+ {
+  "priority": "P2",
+  "status": "todo",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K069",
+  "world": "hq",
+  "owner": "Scout",
+  "title": "Monthly 'what people say' topics and query phrasing per world (A197 prep)",
+  "details": "For each of the 7 Kalpa worlds in 00-hq/VISION.md give 3 topics and 2 search queries each for Reddit, Hacker News, YouTube and GitHub only (numbered list, 7 items, one per world). Rules: topics are problems and opinions, never named private people; no Instagram, X, Google Maps or Justdial; no personal phone numbers or emails. Add one line per world on what answer would change our plan.",
+  "read": [
+   "00-hq/VISION.md"
+  ],
+  "min_items": 7,
+  "output": "00-hq/knowledge/K069.md"
  }
 ]

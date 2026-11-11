@@ -78,3 +78,24 @@ In four of five worlds the leaders are free or far bigger. The proposals all mov
 **Correction to the b1 section above:** the cheapest salon suite verified on its own page is MioSalon at 2,500 a month, not about ₹1,000. A WhatsApp bot with AI answers costs ₹2,850 on AiSensy (Basic + AI agent) and ₹2,699 on Wati. So BotBhai at ₹1,499 is below every verified rival; only the unverified SalonBoost figures are lower.
 
 **Proposed BotBhai ladder (needs Akhil's yes):** Starter pack ₹999 one-time (no monthly); Lite ₹1,999 setup + ₹999/month (unchanged); Standard ₹2,999 setup + ₹1,499/month (the founding price becomes the normal price); the old ₹4,999 + ₹2,999/month tier is paused because it sits above Wati's ₹2,699. Meta's message fees are paid by the owner on their own account, as with every rival.
+
+## Addendum 2, 11 Nov 15:25 IST: BotBhai ladder APPROVED; own-page checks and price proposals for the other worlds
+**b1 approved by Akhil ("prices ok"):** Starter ₹999 once; Lite ₹1,999 + ₹999/month; Standard ₹2,999 + ₹1,499/month; old ₹4,999 + ₹2,999/month tier paused.
+
+| World | Rival, own page fetched today | Says |
+|---|---|---|
+| b3 | testbook.com/pass (India view) | Yearly Testbook Pass ₹749 (struck-through ₹1,199), 365 days |
+| b3 | getvidya.in | own page did not load; ₹149/month seen only in a search snippet of its site: UNVERIFIED |
+| b4 | workona.com/pricing | Pro and Team prices not readable from the page; $8 to $12 is third-party: UNVERIFIED |
+| b5 | Amazon India Associates fee page | returned an error (500); commission rates stay UNVERIFIED |
+| b6 | langfuse.com/pricing | Hobby free 50k units/month; Core $29; Pro $199; self-host free |
+| b6 | helicone.ai/pricing | Hobby free 10,000 requests; Pro $79; Team $799 |
+| b6 | tcsa.in (ISO 42001 consulting, India) | consulting "indicative ₹1.5 to 5 lakh", audit-body fees separate |
+| b6 | incorpx.io | ISO certification for AI companies "from ₹24,999" |
+| b6 | certpro.com | gap analysis and readiness $3,000 to $15,000 |
+
+**Proposals (need Akhil's yes):**
+- **b3 kits:** a full year of Testbook costs ₹749, so the whole Kalpa bundle must sit clearly under that. Single kit ₹199 (was ₹199 to ₹299); bundle of all kits ₹499 (unchanged); institute bulk ₹99 a copy, minimum 30 copies. One payment, no expiry.
+- **b4 extension:** leaders are free, so the core stays free. Sync plan $2.99 a month (under the $4.99 median extension subscription, DebugBear 2020) or lifetime $24. No rival price verified today, so this is the weakest-evidenced proposal.
+- **b5 deals:** nothing to price. Commission rates must be read from the Amazon Associates dashboard by Akhil (login needed) before the category mix is changed.
+- **b6 consulting:** keep the ₹4,999 audit; it is one fifth of the cheapest Indian AI-compliance offer found (₹24,999) and far under ₹1.5 lakh consulting. Add savings-share: 20% of the first 3 months' proven savings as an alternative to the fixed fee (the 20% has no benchmark; it is a starting number). Never say "ISO 42001" or "certified" on the page.

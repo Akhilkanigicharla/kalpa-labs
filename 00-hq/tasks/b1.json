@@ -1,271 +1,273 @@
 [
-  {
-    "id": "K001",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Kavi",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "BotBhai founding-salon pitch: WhatsApp/Telegram message (Telugu + English) a salon owner reads in 30 seconds, plus a 1-page A5 leaflet text",
-    "details": "Free 14-day pilot from 16 Nov, then the founding price in OFFER.md. Telegram is the live channel today; WhatsApp once Meta approves. No invented results.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "done",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T16:26:01Z",
-    "tries": 2,
-    "output": "00-hq/knowledge/K001-v2.md",
-    "akhil": "5 Nov: approved with changes (all 5 languages; hold until A87)"
-  },
-  {
-    "id": "K002",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Vigil",
-    "playbook": "support-legal-compliance-checker",
-    "title": "BotBhai policy pack draft: Terms of Service, customer privacy notice (DPDP, salon = fiduciary, Kalpa = processor), acceptable use, support & SLA, refund, data retention 180 days, incident response 72 h",
-    "details": "Plain English, short sections, India law. Mark every legal point that needs a lawyer as 'LAWYER CHECK'. This feeds A135.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T07:53:31Z",
-    "output": "00-hq/knowledge/K002.md"
-  },
-  {
-    "id": "K003",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Chitti",
-    "playbook": "testing-reality-checker",
-    "title": "200 real-style salon customer test messages for BotBhai (Telugu script, Hindi, English, Tenglish, typos, repu/kal, price asks, angry customers, multi-turn), as JSON lines {msg, expected_intent}",
-    "details": "Intents: greeting, price, book, reschedule, cancel, timing, location, complaint, human, other. This feeds A87 tests.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "rejected",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-06T01:37:36Z",
-    "tries": 3,
-    "vigil_notes": "FIX:\n- Draft is truncated (ends mid-sentence at \"Can I book a facial for 11am\"); complete the JSON lines.\n- Ensure exactly 200 lines are present; current draft appears to have fewer than 200 entries.\n- Verify all `expected_intent` values match the defined set (book, greeting, timing, location, price, other, human, complaint, cancel, reschedule).\n- Check for duplicate messages; remove any exact duplicates to ensure 200 unique test cases.\n- Ensure Telugu messages use correct script and natural phrasing; fix any transliteration errors."
-  },
-  {
-    "id": "K004",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Kavi",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "BotBhai objection handling: the 12 things a Hyderabad salon owner will say (cost, 'my staff answers', trust, data, WhatsApp ban fear...) with honest 2-line answers in Telugu + English",
-    "details": "Honest answers only; never promise results.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T16:27:22Z",
-    "tries": 1,
-    "output": "00-hq/knowledge/K004.md"
-  },
-  {
-    "id": "K005",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Kalpa",
-    "playbook": "specialized-chief-of-staff",
-    "title": "Pilot Day (16 Nov) runbook for one salon: setup checklist, 14-day check-in schedule, what to measure (bookings, replies, hand-overs), how to ask for the paid switch",
-    "details": "Use the real pieces in BLUEPRINT.md section 1.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T22:40:33Z",
-    "output": "00-hq/knowledge/K005.md"
-  },
-  {
-    "id": "K025",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Chitti",
-    "playbook": "testing-reality-checker",
-    "title": "BotBhai 5-language test script: 25 multi-turn salon conversations (5 each in English, Telugu script, Hindi script, Tenglish, Hinglish) with expected bot behaviour, incl. booking, reschedule, angry customer, price, timing",
-    "details": "Feeds A87 tests. Realistic Hyderabad salon style; no real phone numbers.",
-    "read": [
-      "01-botbhai/docs/OFFER.md"
-    ],
-    "status": "review",
-    "created": "2026-11-06T13:20:00Z",
-    "updated": "2026-11-06T12:31:02Z",
-    "output": "00-hq/knowledge/K025.md"
-  },
-  {
-    "id": "K032",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Kavi",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "BotBhai for GYMS: pitch message (Telugu + English, mention all 5 languages), 10 objections with honest answers, and what the gym owner sees each day (trial bookings, membership renewals, class slots)",
-    "details": "Gym setup: setups/gym. Same pilot terms as OFFER.md. Never invent results.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "review",
-    "created": "2026-11-06T13:40:00Z",
-    "updated": "2026-11-06T17:32:49Z",
-    "output": "00-hq/knowledge/K032.md"
-  },
-  {
-    "id": "K033",
-    "world": "b1",
-    "priority": "P0",
-    "owner": "Kavi",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "BotBhai for REAL ESTATE AGENTS: pitch message (Telugu + English, 5 languages), 10 objections with honest answers, and the daily flow (enquiry → budget/area/BHK questions → site-visit booking → agent alert)",
-    "details": "Real estate setup: setups/realestate. No promises of sales; RERA: never state project approvals; same pilot terms.",
-    "read": [
-      "01-botbhai/docs/OFFER.md",
-      "01-botbhai/docs/BLUEPRINT.md"
-    ],
-    "status": "review",
-    "created": "2026-11-06T13:40:00Z",
-    "updated": "2026-11-06T17:33:40Z",
-    "output": "00-hq/knowledge/K033.md"
-  },
-  {
-    "id": "K037",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Goldfish",
-    "title": "Elephant-Goldfish review of 01-botbhai/PLAN.md: you are a zero-context goldfish reviewer",
-    "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
-    "read": [
-      "00-hq/vendor/egm/agents/zoom_out.md",
-      "00-hq/vendor/egm/agents/implementation_readiness.md",
-      "01-botbhai/PLAN.md"
-    ],
-    "context_chars": 38000,
-    "status": "review",
-    "created": "2026-11-06T19:05:00Z",
-    "updated": "2026-11-06T19:00:42Z",
-    "tries": 1,
-    "output": "00-hq/knowledge/K037.md"
-  },
-  {
-    "id": "K049",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "BotBhai web (dashboard + inbox) UX pattern audit",
-    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
-    "read": [
-      "00-hq/design/UX-PATTERNS.md",
-      "01-botbhai/botbhai/web/dashboard.html",
-      "01-botbhai/botbhai/web/inbox.html"
-    ],
-    "min_items": 20,
-    "context_chars": 38000,
-    "status": "done",
-    "created": "2026-11-08T12:45:00Z",
-    "output": "00-hq/knowledge/K049.md",
-    "updated": "2026-11-08T19:25:51Z"
-  },
-  {
-    "id": "K057",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "BotBhai inbox vs Chatwoot feature gap list (for A185)",
-    "details": "Compare the BotBhai inbox (inbox.html) with this list of open-source helpdesk inbox features used by Chatwoot (MIT core): 1 conversation status open/pending/resolved/snoozed, 2 assign to a team member, 3 labels/tags, 4 canned replies with shortcuts, 5 private notes, 6 search across chats, 7 filters by status/label, 8 unread counts, 9 typing and delivery ticks, 10 attachments preview, 11 contact side panel, 12 keyboard shortcuts, 13 bulk actions, 14 business hours / away message, 15 CSAT rating after resolve. Number all 15 rows: have / partly / missing, with a short quote from the file as evidence (anything you cannot see is UNVERIFIED). Then pick the top 5 missing features a small Hyderabad salon or gym owner would use on a phone, 1-2 lines each. Plain short English. No code.",
-    "read": [
-      "01-botbhai/botbhai/web/inbox.html"
-    ],
-    "min_items": 15,
-    "context_chars": 38000,
-    "status": "rejected",
-    "created": "2026-11-09T00:00:00Z",
-    "output": "00-hq/knowledge/K057.md",
-    "updated": "2026-11-08T19:48:18Z",
-    "tries": 3,
-    "vigil_notes": "FIX:\n- Shorten the main comparison list to at most 5 items to comply with the rules."
-  },
-  {
-    "id": "K058",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Kavi",
-    "title": "Website glow-up offer: copy + permission form draft (for A199)",
-    "details": "Draft for BotBhai's new 'Website glow-up' offer: we rebuild a small Hyderabad business's OWN old website into a fast, phone-first page. Write numbered sections 1 to 6: 1 a 40-word WhatsApp offer message (opt-in customers only, no hype, no fake urgency), 2 a 120-word web section with 3 benefits, 3 a plain-English permission form: the owner confirms they own or may use every text, photo and logo, allows us to read their public site, and can withdraw consent; 4 a DPDP privacy notice paragraph (what data, why, how long, contact to delete), 5 the same offer message in Telugu script and Hinglish, 6 five FAQs. No prices (Akhil sets them). No legal promises; mark section 3 and 4 'needs Akhil legal check'.",
-    "read": [
-      "01-botbhai/README.md"
-    ],
-    "min_items": 6,
-    "context_chars": 20000,
-    "status": "done",
-    "created": "2026-11-09T00:00:00Z",
-    "output": "00-hq/knowledge/K058.md",
-    "updated": "2026-11-12T10:50:00Z",
-    "tries": 1,
-    "note": "Used for A199: checked by Claude, invented email and untested claims removed; final in 01-botbhai/docs/glowup-permission.md"
-  },
-  {
-    "id": "K062",
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Kavi",
-    "title": "BotBhai landing copy: front desk in 5 languages, set up and run by us",
-    "details": "Write landing-page copy for BotBhai aimed at gym and salon owners in Hyderabad. Angle: 'your front desk that answers and books on WhatsApp, in English, Telugu, Hindi, Tenglish and Hinglish, set up and run by us, no software to learn, no per-staff fee'. Give 10 numbered blocks: 3 headline options, 1 sub-headline, 3 benefit bullets as one block each, 1 'how it works in 3 steps', 1 price ladder wording (one-time starter pack, Lite monthly, Standard monthly: leave amounts as [PRICE]), 1 FAQ of 5 questions. Plain words a shop owner uses. No invented numbers, reviews, customer counts or guarantees. No rival names.",
-    "read": [
-      "00-hq/research/competitors-2026-11-11.md"
-    ],
-    "min_items": 10,
-    "context_chars": 14000,
-    "status": "done",
-    "created": "2026-11-11T09:30:00Z",
-    "output": "00-hq/knowledge/K062.md",
-    "updated": "2026-11-12T18:50:00Z",
-    "used_by": "A211: headline, no-per-staff, 14-day pilot and how-it-works ideas used; 'works alongside your POS', 'perfect Telugu' and 'appointments flood in' dropped as unbacked claims"
-  },
-  {
-    "world": "b1",
-    "priority": "P2",
-    "owner": "Chitti",
-    "context_chars": 20000,
-    "tries": 3,
-    "id": "K077",
-    "title": "Goldfish review of the glow-up permission form + offer lines (A199 egm-review)",
-    "details": "You have no other context. Read the file and review it as a careful outsider: (1) list every sentence a small Hyderabad business owner could misunderstand; (2) list anything missing for India's DPDP Act 2023 consent (purpose, data, retention, withdrawal, grievance contact) and mark each 'needs Akhil/lawyer check'; (3) list any claim about speed, price or results that is not backed up; (4) suggest 2 more WhatsApp offer lines (English + Tenglish), no exclamation marks, no prices. One finding per bullet.",
-    "read": [
-      "01-botbhai/docs/glowup-permission.md"
-    ],
-    "status": "rejected",
-    "created": "2026-11-12T09:00:00Z",
-    "output": "00-hq/knowledge/K077.md",
-    "min_items": 6,
-    "updated": "2026-11-12T11:54:13Z",
-    "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
-  },
-  {
-    "world": "b1",
-    "priority": "P1",
-    "owner": "Chitti",
-    "context_chars": 20000,
-    "id": "K086",
-    "title": "Goldfish review of the new BotBhai pitch card + price block (A211 egm-review, Telugu check)",
-    "details": "You have no other context. Read the file. (1) For each Telugu sentence in the card() function, say if a Hyderabad salon owner would find it natural; give a better plain Telugu version where not. (2) List any sentence an owner could misunderstand about price, the one-time Starter pack, the 14-day pilot or 'no per-staff fee'. (3) List any claim not backed up. One finding per numbered item, at least 6 items.",
-    "read": [
-      "01-botbhai/botbhai/tools/sales_kit.js"
-    ],
-    "output": "00-hq/knowledge/K086.md",
-    "min_items": 6,
-    "created": "2026-11-12T18:50:00Z",
-    "status": "todo",
-    "tries": 3
-  }
+ {
+  "id": "K001",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai founding-salon pitch: WhatsApp/Telegram message (Telugu + English) a salon owner reads in 30 seconds, plus a 1-page A5 leaflet text",
+  "details": "Free 14-day pilot from 16 Nov, then the founding price in OFFER.md. Telegram is the live channel today; WhatsApp once Meta approves. No invented results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "done",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:26:01Z",
+  "tries": 2,
+  "output": "00-hq/knowledge/K001-v2.md",
+  "akhil": "5 Nov: approved with changes (all 5 languages; hold until A87)"
+ },
+ {
+  "id": "K002",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Vigil",
+  "playbook": "support-legal-compliance-checker",
+  "title": "BotBhai policy pack draft: Terms of Service, customer privacy notice (DPDP, salon = fiduciary, Kalpa = processor), acceptable use, support & SLA, refund, data retention 180 days, incident response 72 h",
+  "details": "Plain English, short sections, India law. Mark every legal point that needs a lawyer as 'LAWYER CHECK'. This feeds A135.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T07:53:31Z",
+  "output": "00-hq/knowledge/K002.md"
+ },
+ {
+  "id": "K003",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Chitti",
+  "playbook": "testing-reality-checker",
+  "title": "200 real-style salon customer test messages for BotBhai (Telugu script, Hindi, English, Tenglish, typos, repu/kal, price asks, angry customers, multi-turn), as JSON lines {msg, expected_intent}",
+  "details": "Intents: greeting, price, book, reschedule, cancel, timing, location, complaint, human, other. This feeds A87 tests.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "rejected",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-06T01:37:36Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Draft is truncated (ends mid-sentence at \"Can I book a facial for 11am\"); complete the JSON lines.\n- Ensure exactly 200 lines are present; current draft appears to have fewer than 200 entries.\n- Verify all `expected_intent` values match the defined set (book, greeting, timing, location, price, other, human, complaint, cancel, reschedule).\n- Check for duplicate messages; remove any exact duplicates to ensure 200 unique test cases.\n- Ensure Telugu messages use correct script and natural phrasing; fix any transliteration errors."
+ },
+ {
+  "id": "K004",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai objection handling: the 12 things a Hyderabad salon owner will say (cost, 'my staff answers', trust, data, WhatsApp ban fear...) with honest 2-line answers in Telugu + English",
+  "details": "Honest answers only; never promise results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:27:22Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K004.md"
+ },
+ {
+  "id": "K005",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Pilot Day (16 Nov) runbook for one salon: setup checklist, 14-day check-in schedule, what to measure (bookings, replies, hand-overs), how to ask for the paid switch",
+  "details": "Use the real pieces in BLUEPRINT.md section 1.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T22:40:33Z",
+  "output": "00-hq/knowledge/K005.md"
+ },
+ {
+  "id": "K025",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Chitti",
+  "playbook": "testing-reality-checker",
+  "title": "BotBhai 5-language test script: 25 multi-turn salon conversations (5 each in English, Telugu script, Hindi script, Tenglish, Hinglish) with expected bot behaviour, incl. booking, reschedule, angry customer, price, timing",
+  "details": "Feeds A87 tests. Realistic Hyderabad salon style; no real phone numbers.",
+  "read": [
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:31:02Z",
+  "output": "00-hq/knowledge/K025.md"
+ },
+ {
+  "id": "K032",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai for GYMS: pitch message (Telugu + English, mention all 5 languages), 10 objections with honest answers, and what the gym owner sees each day (trial bookings, membership renewals, class slots)",
+  "details": "Gym setup: setups/gym. Same pilot terms as OFFER.md. Never invent results.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T13:40:00Z",
+  "updated": "2026-11-06T17:32:49Z",
+  "output": "00-hq/knowledge/K032.md"
+ },
+ {
+  "id": "K033",
+  "world": "b1",
+  "priority": "P0",
+  "owner": "Kavi",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "BotBhai for REAL ESTATE AGENTS: pitch message (Telugu + English, 5 languages), 10 objections with honest answers, and the daily flow (enquiry → budget/area/BHK questions → site-visit booking → agent alert)",
+  "details": "Real estate setup: setups/realestate. No promises of sales; RERA: never state project approvals; same pilot terms.",
+  "read": [
+   "01-botbhai/docs/OFFER.md",
+   "01-botbhai/docs/BLUEPRINT.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T13:40:00Z",
+  "updated": "2026-11-06T17:33:40Z",
+  "output": "00-hq/knowledge/K033.md"
+ },
+ {
+  "id": "K037",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 01-botbhai/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "01-botbhai/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T19:00:42Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K037.md"
+ },
+ {
+  "id": "K049",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "BotBhai web (dashboard + inbox) UX pattern audit",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "01-botbhai/botbhai/web/dashboard.html",
+   "01-botbhai/botbhai/web/inbox.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "done",
+  "created": "2026-11-08T12:45:00Z",
+  "output": "00-hq/knowledge/K049.md",
+  "updated": "2026-11-08T19:25:51Z"
+ },
+ {
+  "id": "K057",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "BotBhai inbox vs Chatwoot feature gap list (for A185)",
+  "details": "Compare the BotBhai inbox (inbox.html) with this list of open-source helpdesk inbox features used by Chatwoot (MIT core): 1 conversation status open/pending/resolved/snoozed, 2 assign to a team member, 3 labels/tags, 4 canned replies with shortcuts, 5 private notes, 6 search across chats, 7 filters by status/label, 8 unread counts, 9 typing and delivery ticks, 10 attachments preview, 11 contact side panel, 12 keyboard shortcuts, 13 bulk actions, 14 business hours / away message, 15 CSAT rating after resolve. Number all 15 rows: have / partly / missing, with a short quote from the file as evidence (anything you cannot see is UNVERIFIED). Then pick the top 5 missing features a small Hyderabad salon or gym owner would use on a phone, 1-2 lines each. Plain short English. No code.",
+  "read": [
+   "01-botbhai/botbhai/web/inbox.html"
+  ],
+  "min_items": 15,
+  "context_chars": 38000,
+  "status": "rejected",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K057.md",
+  "updated": "2026-11-08T19:48:18Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Shorten the main comparison list to at most 5 items to comply with the rules."
+ },
+ {
+  "id": "K058",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "Website glow-up offer: copy + permission form draft (for A199)",
+  "details": "Draft for BotBhai's new 'Website glow-up' offer: we rebuild a small Hyderabad business's OWN old website into a fast, phone-first page. Write numbered sections 1 to 6: 1 a 40-word WhatsApp offer message (opt-in customers only, no hype, no fake urgency), 2 a 120-word web section with 3 benefits, 3 a plain-English permission form: the owner confirms they own or may use every text, photo and logo, allows us to read their public site, and can withdraw consent; 4 a DPDP privacy notice paragraph (what data, why, how long, contact to delete), 5 the same offer message in Telugu script and Hinglish, 6 five FAQs. No prices (Akhil sets them). No legal promises; mark section 3 and 4 'needs Akhil legal check'.",
+  "read": [
+   "01-botbhai/README.md"
+  ],
+  "min_items": 6,
+  "context_chars": 20000,
+  "status": "done",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K058.md",
+  "updated": "2026-11-12T10:50:00Z",
+  "tries": 1,
+  "note": "Used for A199: checked by Claude, invented email and untested claims removed; final in 01-botbhai/docs/glowup-permission.md"
+ },
+ {
+  "id": "K062",
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "BotBhai landing copy: front desk in 5 languages, set up and run by us",
+  "details": "Write landing-page copy for BotBhai aimed at gym and salon owners in Hyderabad. Angle: 'your front desk that answers and books on WhatsApp, in English, Telugu, Hindi, Tenglish and Hinglish, set up and run by us, no software to learn, no per-staff fee'. Give 10 numbered blocks: 3 headline options, 1 sub-headline, 3 benefit bullets as one block each, 1 'how it works in 3 steps', 1 price ladder wording (one-time starter pack, Lite monthly, Standard monthly: leave amounts as [PRICE]), 1 FAQ of 5 questions. Plain words a shop owner uses. No invented numbers, reviews, customer counts or guarantees. No rival names.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 10,
+  "context_chars": 14000,
+  "status": "done",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K062.md",
+  "updated": "2026-11-12T18:50:00Z",
+  "used_by": "A211: headline, no-per-staff, 14-day pilot and how-it-works ideas used; 'works alongside your POS', 'perfect Telugu' and 'appointments flood in' dropped as unbacked claims"
+ },
+ {
+  "world": "b1",
+  "priority": "P2",
+  "owner": "Chitti",
+  "context_chars": 20000,
+  "tries": 3,
+  "id": "K077",
+  "title": "Goldfish review of the glow-up permission form + offer lines (A199 egm-review)",
+  "details": "You have no other context. Read the file and review it as a careful outsider: (1) list every sentence a small Hyderabad business owner could misunderstand; (2) list anything missing for India's DPDP Act 2023 consent (purpose, data, retention, withdrawal, grievance contact) and mark each 'needs Akhil/lawyer check'; (3) list any claim about speed, price or results that is not backed up; (4) suggest 2 more WhatsApp offer lines (English + Tenglish), no exclamation marks, no prices. One finding per bullet.",
+  "read": [
+   "01-botbhai/docs/glowup-permission.md"
+  ],
+  "status": "rejected",
+  "created": "2026-11-12T09:00:00Z",
+  "output": "00-hq/knowledge/K077.md",
+  "min_items": 6,
+  "updated": "2026-11-12T11:54:13Z",
+  "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
+ },
+ {
+  "world": "b1",
+  "priority": "P1",
+  "owner": "Chitti",
+  "context_chars": 20000,
+  "id": "K086",
+  "title": "Goldfish review of the new BotBhai pitch card + price block (A211 egm-review, Telugu check)",
+  "details": "You have no other context. Read the file. (1) For each Telugu sentence in the card() function, say if a Hyderabad salon owner would find it natural; give a better plain Telugu version where not. (2) List any sentence an owner could misunderstand about price, the one-time Starter pack, the 14-day pilot or 'no per-staff fee'. (3) List any claim not backed up. One finding per numbered item, at least 6 items.",
+  "read": [
+   "01-botbhai/botbhai/tools/sales_kit.js"
+  ],
+  "output": "00-hq/knowledge/K086.md",
+  "min_items": 6,
+  "created": "2026-11-12T18:50:00Z",
+  "status": "rejected",
+  "tries": 4,
+  "updated": "2026-11-12T22:44:18Z",
+  "vigil_notes": "FIX:\n* Correct section 3: facts present in the provided repo code (such as the Google review prompt and 14-day pilot) are VERIFIED per instructions, not UNVERIFIED.\n* Ensure proposed Telugu tweaks remain aligned with the 5 languages supported by Kalpa chatbots."
+ }
 ]

@@ -70,3 +70,5 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **Kalpa LLM router** (A120, Render free, sleeps after 15 min idle): https://kalpa-llm-router.onrender.com (dashboard needs the admin login; /v1 needs the unified key). Live 29 Oct 2026; outside test: / 200, /v1/models 401 without key.
 
 - Tab Lifeboat site (live 11 Nov 2026): https://akhilkanigicharla.github.io/kalpa-labs/
+
+- Tab Lifeboat Chrome Web Store item id: kkdmhgljkdoclnifiegbiaklgjmnbfcc (submitted 12 Nov 2026, pending review). Public URL once approved: https://chromewebstore.google.com/detail/kkdmhgljkdoclnifiegbiaklgjmnbfcc

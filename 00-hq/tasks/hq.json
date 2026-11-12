@@ -350,10 +350,25 @@
   "read": "['02-jobcard/web/i18n.mjs']",
   "min_items": "5",
   "context_chars": "20000",
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T04:55:00Z",
   "output": "00-hq/knowledge/K073.md",
-  "updated": "2026-11-12T06:37:56Z",
+  "updated": "2026-11-12T08:00:00Z",
+  "tries": "0",
+  "note": "Checked 12 Nov: output was 5 placeholder rows, not used; audit done from code (00-hq/design/unslop-audit-jobcard.md). Lesson: no min_items when \"none\" is a valid answer."
+ },
+ {
+  "id": "K074",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Tab Lifeboat popup copy pass for unslop (A198 part 4 prep)",
+  "details": "Read 04-extensions/src/entrypoints/popup/index.html and main.ts. List every user-visible English string that has an exclamation mark, an emoji, ALL CAPS words, a plural bug like '1 tabs', or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: file, the current text exactly as in the file, a plain sentence-case rewrite under 12 words. Quote only text that is really in the files. If a check finds nothing, write 'none' for it. Do not invent rows.",
+  "read": "['04-extensions/src/entrypoints/popup/index.html', '04-extensions/src/entrypoints/popup/main.ts']",
+  "context_chars": "20000",
+  "status": "todo",
+  "created": "2026-11-12T08:00:00Z",
+  "output": "00-hq/knowledge/K074.md",
   "tries": "0"
  }
 ]

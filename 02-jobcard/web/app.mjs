@@ -27,13 +27,13 @@ function chrome() {
 
 function signInView(step = "phone", phone = "", err = "") {
   $("#tabs").hidden = true; $("#signout").hidden = true;
-  $("#main").innerHTML = `<section class="card" style="margin-top:16px"><h2 style="margin-top:0">${esc(L("signIn"))}</h2>
+  $("#main").innerHTML = `<section class="card gap-top"><h2>${esc(L("signIn"))}</h2>
     <form id="f" novalidate>
       ${step === "phone"
         ? `<label class="field"><span>${esc(L("phone"))}</span><input id="ph" type="tel" inputmode="numeric" autocomplete="tel-national" enterkeyhint="send" placeholder="90000 00000" value="${esc(phone)}" required></label>
-           <button class="btn" style="width:100%">${esc(L("sendCode"))}</button>`
+           <button class="btn wide">${esc(L("sendCode"))}</button>`
         : `<label class="field"><span>${esc(L("code"))}</span><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" enterkeyhint="done" required></label>
-           <button class="btn" style="width:100%">${esc(L("verify"))}</button>`}
+           <button class="btn wide">${esc(L("verify"))}</button>`}
       <p class="err" id="err" role="alert">${esc(err)}</p></form></section>`;
   const ph = $("#ph");  // check the number when they leave the field; clear the error as soon as it is right
   if (ph) {
@@ -57,36 +57,38 @@ function dueView(v) {
       <span class="tag ${d.overdue ? "late" : ""}">${esc(d.overdue ? L("overdue") : L("dueOn"))} ${esc(nice(d.due))}</span></div>
       <div class="actions"><a class="btn wa" href="${esc(d.wa)}" target="_blank" rel="noopener">${esc(L("remind"))}</a><a class="btn line" href="tel:+91${esc(d.phone)}">${esc(L("call"))}</a></div></li>`).join("")}</ul>`
     : `<p class="card meta">${esc(L("none"))}</p>`}
-    ${v.notOpted ? `<p class="meta" style="margin-top:8px">${esc(L("notOpted", { n: v.notOpted }))}</p>` : ""}${amc}`;
+    ${v.notOpted ? `<p class="meta gap-top-s">${esc(L("notOpted", { n: v.notOpted }))}</p>` : ""}${amc}`;
 }
 
 function customersView(v) {
   const list = filterCustomers(v.customers, query);
-  return `<label class="field" style="margin-top:16px"><input id="q" type="search" enterkeyhint="search" placeholder="${esc(L("search"))}" value="${esc(query)}" aria-label="${esc(L("search"))}"></label>
+  return `<label class="field gap-top"><input id="q" type="search" enterkeyhint="search" placeholder="${esc(L("search"))}" value="${esc(query)}" aria-label="${esc(L("search"))}"></label>
     ${list.length ? "" : `<p class="card empty">${esc(query ? L("noMatch") : L("none"))}</p>`}<ul class="list">${list.map((c) => `<li class="card"><div class="row"><div><p class="name">${esc(c.name)}</p><p class="meta">${esc(c.area || "")}${c.phone ? " · " + esc(c.phone) : ""}</p></div>
-      <div style="text-align:right"><p class="num">${esc(rupees(c.spentPaise))}</p><p class="meta">${c.lastVisit ? esc(nice(c.lastVisit)) : ""}</p></div></div>
+      <div class="end"><p class="num">${esc(rupees(c.spentPaise))}</p><p class="meta">${c.lastVisit ? esc(nice(c.lastVisit)) : ""}</p></div></div>
       ${c.phone ? `<label class="tick"><input type="checkbox" data-opt="${esc(c.id)}" ${c.opted_in_whatsapp ? "checked" : ""}>${esc(L("optIn"))}</label>` : ""}</li>`).join("")}</ul>`;
 }
 
 function billsView(v) {
-  return `<section class="card stat" style="margin-top:16px"><span>${esc(L("unpaid"))}</span><span class="num">${esc(rupees(v.unpaidPaise))}</span></section>
+  return `<section class="card stat gap-top"><span>${esc(L("unpaid"))}</span><span class="num">${esc(rupees(v.unpaidPaise))}</span></section>
     <h2>${esc(L("bills"))} · ${v.bills.length}</h2>${v.bills.length ? "" : `<p class="card empty">${esc(L("noBills"))}</p>`}<ul class="list">${v.bills.map((b) => `<li class="card row"><div><p class="name">${esc(b.customer)}</p><p class="meta">${esc(b.number)} · ${esc(nice(b.issued_on))}</p></div>
-      <div style="text-align:right"><p class="num">${esc(rupees(b.payable_paise))}</p><span class="tag ${b.paid ? "ok" : "late"}">${esc(b.paid ? L("paid") : L("notPaid"))}</span></div></li>`).join("")}</ul>`;
+      <div class="end"><p class="num">${esc(rupees(b.payable_paise))}</p><span class="tag ${b.paid ? "ok" : "late"}">${esc(b.paid ? L("paid") : L("notPaid"))}</span></div></li>`).join("")}</ul>`;
 }
 
 let rec = null;
+const MIC_ICO = '<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>';
+const STOP_ICO = '<svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>';
 function recordView(v) {
-  return `<button class="mic ${rec ? "on" : ""}" id="mic" aria-label="${esc(rec ? L("stop") : L("hold"))}">${rec ? "■" : "●"}</button>
-    <p class="center" style="font-weight:700">${esc(rec ? L("stop") : L("hold"))}</p>
+  return `<button class="mic ${rec ? "on" : ""}" id="mic" aria-label="${esc(rec ? L("stop") : L("hold"))}">${rec ? STOP_ICO : MIC_ICO}</button>
+    <p class="center strong">${esc(rec ? L("stop") : L("hold"))}</p>
     <p class="center meta">${esc(L("minutes", { used: Math.round(v.quota.usedSeconds / 60), limit: v.quota.limitSeconds / 60 }))}</p>
     <div id="heard"></div>`;
 }
 
 function showCard(text) {
   const c = parseTranscript(text); const sum = c.parts.reduce((s, p) => s + (p.rate || 0), 0);
-  $("#heard").innerHTML = `<section class="card"><h2 style="margin-top:0">${esc(L("heard"))}</h2><p class="meta">${esc(text)}</p>
-    <ul class="list" style="margin-top:8px">${c.parts.map((p) => `<li class="row"><span>${esc(p.desc)}</span><span class="num">${p.rate == null ? "₹ ?" : esc(rupees(p.rate * 100))}</span></li>`).join("")}
-    <li class="row"><strong>Total</strong><span class="num">${esc(rupees(sum * 100))}</span></li></ul></section>`;
+  $("#heard").innerHTML = `<section class="card"><h2>${esc(L("heard"))}</h2><p class="meta">${esc(text)}</p>
+    <ul class="list gap-top-s">${c.parts.map((p) => `<li class="row"><span>${esc(p.desc)}</span><span class="num">${p.rate == null ? "₹ ?" : esc(rupees(p.rate * 100))}</span></li>`).join("")}
+    <li class="row"><strong>${esc(L("spent"))}</strong><span class="num">${esc(rupees(sum * 100))}</span></li></ul></section>`;
 }
 
 async function toggleRecord() {
@@ -126,7 +128,7 @@ async function start() {
   try { data = await api.load(istToday()); if (data.tech && !params.get("lang") && !store.getItem("jc.lang")) lang = data.tech.language || lang; render(); }
   catch (e) {
     if (e.signedOut) return signInView();
-    $("#main").innerHTML = `<section class="card" style="margin-top:16px"><p class="err" role="alert">${esc(navigator.onLine ? L("error") : L("offline"))}</p><button class="btn" id="retry" style="width:100%">${esc(L("retry"))}</button></section>`;
+    $("#main").innerHTML = `<section class="card gap-top"><p class="err" role="alert">${esc(navigator.onLine ? L("error") : L("offline"))}</p><button class="btn wide" id="retry">${esc(L("retry"))}</button></section>`;
     $("#retry").addEventListener("click", start);
   }
 }

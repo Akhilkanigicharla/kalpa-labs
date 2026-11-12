@@ -13,7 +13,7 @@ export const STR = {
     hold: "दबाकर बोलिए", stop: "रोकने के लिए दबाएँ", heard: "मैंने क्या सुना", offline: "इंटरनेट नहीं है। सूचियाँ देख सकते हैं; रिकॉर्डिंग के लिए सिग्नल चाहिए।", minutes: "इस महीने वॉइस: {used}/{limit} मिनट",
     demo: "डेमो: बनाए हुए नाम और नंबर", signOut: "लॉग आउट", error: "कुछ गड़बड़ हुई। फिर कोशिश करें।", noMic: "इस फ़ोन में माइक नहीं मिला।" },
   en: { retry: "Try again", noMatch: "No customer matches that.", noBills: "No bills yet.", confirmOut: "Tap again to sign out", saveFail: "Couldn't save. Please try again.", tabDue: "Due", due: "Service due", customers: "Customers", bills: "Bills", record: "Record", amc: "AMC ending soon",
-    remind: "Remind on WhatsApp", call: "Call", overdue: "overdue", dueOn: "due", none: "Nobody this month.", notOpted: "{n} due customers haven't agreed to WhatsApp: tick them in Customers.",
+    remind: "Remind on WhatsApp", call: "Call", overdue: "overdue", dueOn: "due", none: "Nobody this month.", notOpted: "Not agreed to WhatsApp reminders yet: {n}. Tick them in Customers.",
     search: "Name, area or phone", spent: "Total", last: "Last visit", optIn: "Agreed to WhatsApp reminders", unpaid: "Money to collect", paid: "paid", notPaid: "unpaid",
     signIn: "Sign in with your phone", phone: "Mobile number", sendCode: "Send code", code: "6-digit code from the SMS", verify: "Sign in", badPhone: "Enter a 10-digit mobile number",
     hold: "Tap and speak", stop: "Tap to stop", heard: "What I heard", offline: "No internet. Lists still work; recording needs signal.", minutes: "Voice this month: {used}/{limit} min",

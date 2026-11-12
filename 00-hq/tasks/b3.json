@@ -136,5 +136,20 @@
   "created": "2026-11-11T09:30:00Z",
   "output": "00-hq/knowledge/K063.md",
   "updated": "2026-11-11T09:27:46Z"
+ },
+ {
+  "id": "K075",
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Exam Kits explainer clip scripts (A201 prep)",
+  "details": "Write 3 scripts for 20-30 second vertical (9:16) explainer clips for Indian exam students: (1) one formula explained (e.g. compound interest), (2) one graph read step by step (e.g. a simple line graph of marks over months), (3) one step-by-step sum. For each clip: title, 5-7 numbered on-screen steps (what appears, under 10 words each), the English caption for each step and the same caption in Telugu script. Use only correct maths; show the worked numbers. No brand claims, no prices, no exclamation marks.",
+  "read": "['03-kits/exam-kits/README.md']",
+  "min_items": "3",
+  "context_chars": "12000",
+  "status": "todo",
+  "created": "2026-11-12T08:00:00Z",
+  "output": "00-hq/knowledge/K075.md",
+  "tries": "0"
  }
 ]

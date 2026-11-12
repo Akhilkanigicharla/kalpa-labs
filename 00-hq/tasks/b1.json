@@ -236,18 +236,18 @@
   "priority": "P2",
   "owner": "Chitti",
   "context_chars": 20000,
-  "tries": 2,
+  "tries": 3,
   "id": "K077",
   "title": "Goldfish review of the glow-up permission form + offer lines (A199 egm-review)",
   "details": "You have no other context. Read the file and review it as a careful outsider: (1) list every sentence a small Hyderabad business owner could misunderstand; (2) list anything missing for India's DPDP Act 2023 consent (purpose, data, retention, withdrawal, grievance contact) and mark each 'needs Akhil/lawyer check'; (3) list any claim about speed, price or results that is not backed up; (4) suggest 2 more WhatsApp offer lines (English + Tenglish), no exclamation marks, no prices. One finding per bullet.",
   "read": [
    "01-botbhai/docs/glowup-permission.md"
   ],
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-12T09:00:00Z",
   "output": "00-hq/knowledge/K077.md",
   "min_items": 6,
-  "updated": "2026-11-12T10:48:13Z",
-  "vigil_notes": "FIX:\n- Reduce the draft's list to 5 items at most.\n- Add Hindi and Hinglish offer lines to meet the 5-languages rule.\n- Remove unverified complaints against the repo's approved offer text."
+  "updated": "2026-11-12T11:54:13Z",
+  "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
  }
 ]

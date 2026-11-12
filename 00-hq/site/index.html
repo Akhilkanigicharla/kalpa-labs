@@ -88,7 +88,9 @@ nav.links a:hover{color:var(--fg)}
 .treebox{position:relative;width:min(560px,100%);margin-inline:auto}
 #wind{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:15}
 #tree{display:block;cursor:grab;touch-action:manipulation;width:100%;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
-#tree .trunk{fill:var(--bark)}#tree .root{fill:none;stroke:var(--bark);stroke-linecap:round}
+#tree .trunk{fill:url(#barkG)}
+#tree .perch{cursor:pointer;transition:opacity .2s cubic-bezier(0.23,1,0.32,1),transform .2s cubic-bezier(0.23,1,0.32,1)}#tree .perch.away{opacity:0;transform:translateY(-6px);pointer-events:none}#tree .perch .bd{fill:var(--bird)}#tree .perch .bk{fill:var(--gold)}#tree .perch .ey{fill:var(--panel)}#tree .perch .hd{transform-box:fill-box;transform-origin:30% 90%}
+@media (prefers-reduced-motion:no-preference){#tree .perch .hd{animation:peck 4.2s ease-in-out var(--pd,0s) infinite}@keyframes peck{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-14deg)}84%{transform:rotate(6deg)}}}#tree .root{fill:none;stroke:var(--bark);stroke-linecap:round}
 #tree .walker{transition:opacity .6s}.grow #tree .walker,#tree.grow .walker{opacity:0}#tree.grown .walker{opacity:1}
 #tree .br{fill:none;stroke:var(--bark);stroke-linecap:round}
 #tree .ground{fill:color-mix(in srgb,var(--leaf) 26%,transparent)}
@@ -210,7 +212,7 @@ section.s{padding-block:clamp(56px,8vw,96px)}
 .mate{flex:0 0 150px;scroll-snap-align:start;padding:16px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.25rem}
 .mate svg{width:76px;height:100px}
 .mate b{font-weight:700}.mate span{font-size:13px;color:var(--muted)}
-/* offer + workshop */
+/* offer + starter */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:860px){.two{grid-template-columns:1fr}}
 .offer{padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden}
@@ -278,7 +280,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
  <div class="wrap">
   <a class="brand" href="#top" aria-label="Kalpa Labs home"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 56c5-2.5 11-3.5 18-3.5s13 1 18 3.5" fill="none" stroke="var(--bark)" stroke-width="2.5" stroke-linecap="round"/><path d="M29 55c1-6 1-12 0-18-3-3-7-4-11-4 4-1 8 0 11 2 0-3-1-6-3-8 3 1 5 4 6 7 1-3 3-6 6-7-2 2-3 5-3 8 3-2 7-3 11-2-4 0-8 1-11 4-1 6-1 12 0 18z" fill="var(--bark)"/><g fill="var(--accent)"><circle cx="32" cy="18" r="11"/><circle cx="19" cy="25" r="9"/><circle cx="45" cy="25" r="9"/></g><g fill="var(--leaf)"><circle cx="25" cy="15" r="7"/><circle cx="40" cy="15" r="7"/><circle cx="32" cy="27" r="7"/></g><g fill="#E8B64A"><circle cx="22" cy="21" r="2.6"/><circle cx="33" cy="12" r="2.6"/><circle cx="43" cy="22" r="2.6"/><circle cx="29" cy="26" r="2.2"/><circle cx="38" cy="28" r="2.2"/></g></svg>Kalpa Labs</a>
   <nav class="links" aria-label="Main">
-   <a href="#demo" data-i="nav_live">Live AI</a><a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#workshop" data-i="nav_workshop">Workshop</a><a href="#faq" data-i="nav_faq">FAQ</a>
+   <a href="#demo" data-i="nav_live">Live AI</a><a href="#products" data-i="nav_products">Products</a><a href="#how" data-i="nav_how">How it works</a><a href="#founding" data-i="nav_prices">Prices</a><a href="#faq" data-i="nav_faq">FAQ</a>
   </nav>
   <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="te" aria-pressed="false">తెలుగు</button></div>
   <button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Nature sounds" title="Breeze and birds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path class="w" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="x" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
@@ -292,7 +294,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
  <div class="wrap">
   <div>
    <h1 id="h1" data-i="h1" data-html="1">Replies in <em>Telugu, Hindi or English</em>, even at 11 PM.</h1>
-   <p class="lead" data-i="lead">BotBhai answers customers of gyms, salons and real estate agents, books the slot and sends reminders. Free 14-day pilot from 16 November.</p>
+   <p class="lead" data-i="lead">BotBhai answers customers of gyms, salons and real estate agents, books the slot and sends reminders. Free 14-day pilot, and no payment until you say yes.</p>
    <div class="ctas"><a class="btn btn-acc" href="#founding" data-i="cta_salon">Get a free 14-day pilot</a><a class="btn btn-ghost" href="#demo" data-i="cta_demo">Chat with our AI</a></div>
    <div class="trust">
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg><span data-i="trust1">Built on the official WhatsApp API</span></span>
@@ -303,8 +305,15 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
   <div>
    <div class="treebox" id="treebox">
     <svg id="tree" class="grow" viewBox="0 0 600 600" role="group" aria-labelledby="treetitle">
-     <title id="treetitle">The Kalpa tree: one branch and one fruit for each Kalpa Labs product, with AI helper robots at work</title>
+     <title id="treetitle">The Kalpa tree: one branch and one fruit for each Kalpa Labs product, with AI helper robots at work and birds resting in it</title>
+     <defs>
+      <linearGradient id="barkG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" style="stop-color:color-mix(in srgb,var(--bark) 72%,var(--gold))"/><stop offset=".45" style="stop-color:var(--bark)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--bark) 62%,#000)"/></linearGradient>
+      <radialGradient id="blob1" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,var(--tl3) 70%,var(--gold))"/><stop offset=".6" style="stop-color:var(--tl1)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--tl1) 70%,#000)"/></radialGradient>
+      <radialGradient id="blob2" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,var(--tl4) 75%,var(--gold))"/><stop offset=".6" style="stop-color:var(--tl2)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--tl2) 70%,#000)"/></radialGradient>
+      <radialGradient id="dropG" cx=".5" cy=".5" r=".5"><stop offset="0" style="stop-color:#000;stop-opacity:.22"/><stop offset="1" style="stop-color:#000;stop-opacity:0"/></radialGradient>
+     </defs>
      <ellipse class="ground" cx="300" cy="566" rx="260" ry="22"/>
+     <ellipse cx="300" cy="566" rx="150" ry="16" fill="url(#dropG)"/>
      <g id="tback"></g>
      <path class="root" stroke-width="7" d="M282 552C262 560 240 566 214 570"/><path class="root" stroke-width="7" d="M318 552C340 560 364 566 392 572"/><path class="root" stroke-width="5" d="M296 556C292 566 286 572 276 578"/>
      <path class="trunk" d="M268 560C280 500 284 440 281 382C279 340 284 300 290 262L310 262C316 300 321 340 319 382C316 440 320 500 332 560Z"/>
@@ -323,10 +332,10 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 
 <div class="wrap strip">
  <div class="stats">
-  <div class="stat"><b class="gold" id="cd-pilot">…</b><span data-i="st_pilot">days to Pilot Day (16 Nov)</span></div>
-  <div class="stat"><b id="cd-launch">…</b><span data-i="st_launch">days to public launch (13 Dec)</span></div>
-  <div class="stat"><b class="madder">22</b><span data-i="st_agents">AI agents working with one human founder</span></div>
-  <div class="stat"><b>3</b><span data-i="st_langs">languages: Telugu, Hindi, English</span></div>
+  <div class="stat"><b class="gold">7</b><span data-i="st_products">products growing on one tree</span></div>
+  <div class="stat"><b>₹0</b><span data-i="st_try">to try BotBhai for 14 days</span></div>
+  <div class="stat"><b class="madder">300</b><span data-i="st_agents">AI agent roles, one human founder</span></div>
+  <div class="stat"><b>5</b><span data-i="st_langs">languages: English, Telugu, Hindi, Tenglish, Hinglish</span></div>
  </div>
 </div>
 
@@ -336,7 +345,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <h2 id="dh" style="font-size:clamp(1.8rem,4.2vw,2.8rem)" data-i="d_h">Talk to our AI right now</h2>
    <p style="color:var(--muted);font-size:1.08rem" data-i="d_p">Kalpa Bhai is a real AI, the same kind BotBhai puts in your business. If it can't help, it asks for your number so Akhil can call you.</p>
    <ul>
-    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l1">Ask about prices, the free pilot or the workshop</span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l1">Ask about prices, the free pilot or how setup works</span></li>
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l2">Type in Telugu, Hindi, English or a mix</span></li>
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="d_l3">Say "call me" and leave your number</span></li>
    </ul>
@@ -376,7 +385,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 
 <section class="s" id="team" style="padding-top:0">
  <div class="wrap">
-  <div class="s-head"><h2 data-i="t_h">One founder. 22 AI teammates.</h2><p data-i="t_p">Kalpa Labs runs on free, open AI models. Every line on this page is checked against what we have actually built; anything not ready is marked planned.</p></div>
+  <div class="s-head"><h2 data-i="t_h">One founder. A team of AI agents.</h2><p data-i="t_p">Kalpa Labs runs on free, open AI models. Every line on this page is checked against what we have actually built; anything not ready is marked planned.</p></div>
   <div class="team" id="teamrow"></div>
  </div>
 </section>
@@ -384,23 +393,23 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 <section class="s" id="founding" style="padding-top:0">
  <div class="wrap two">
   <div class="card offer" style="--c:var(--l1)">
-   <div class="ribbon" data-i="ribbon">3 spots left</div>
-   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="f_h">Free 14-day pilot, then founding prices</h2>
-   <div class="big">₹1,499<small data-i="f_per"> / month for months 1–3</small></div>
+   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="f_h">Standard: free 14-day pilot, then ₹1,499 a month</h2>
+   <div class="big">₹1,499<small data-i="f_per"> / month</small></div>
    <ul>
     <li data-i="f1">₹2,999 one-time setup, done for you</li>
     <li data-i="f2">WhatsApp bot, bookings, reminders, owner alerts, dashboard</li>
-    <li data-i="f3">Telugu, Hindi and English</li>
+    <li data-i="f3">Replies in English, Telugu, Hindi, Tenglish and Hinglish</li>
     <li data-i="f4">Optional Social Team add-on: ₹999 / month</li>
    </ul>
    <a class="btn btn-gold" href="#signup" data-i="f_cta" data-pick="salon">Ask for a pilot</a>
    <p class="muted" style="margin:0;color:var(--muted);font-size:14px" data-i="f_small">No payment until the pilot ends and you say yes.</p>
   </div>
-  <div class="card offer dark-card" id="workshop">
-   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="w_h">"Claude Code with me": build 3 small AI tools in 90 minutes</h2>
-   <div class="big">₹299<small class="muted" style="color:var(--hero-mute)" data-i="w_when">, Sun 29 Nov, 11:00 AM IST, on Google Meet, in Telugu</small></div>
-   <p class="muted" data-i="w_p">For beginners. We learn together; this is not an expert course and nobody promises income. The full agenda and materials are being prepared and tested now. Join the free waitlist: payment opens only after the agenda is published, with a full refund within 7 days if it was not useful.</p>
-   <a class="btn btn-gold" href="#signup" data-i="w_cta" data-pick="workshop">Join the free waitlist</a>
+  <div class="card offer dark-card" id="starter">
+   <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)" data-i="s_h">Not ready for a monthly plan?</h2>
+   <div class="big">₹999<small class="muted" style="color:var(--hero-mute)" data-i="s_per"> once</small></div>
+   <p class="muted" data-i="s_p">Starter pack: a WhatsApp chat link and a QR poster for your counter, ready-made quick replies, and a tidy-up of your Google Business Profile. No monthly fee.</p>
+   <p class="muted" data-i="s_lite">Lite plan: ₹1,999 setup + ₹999 a month for the WhatsApp bot with bookings, reminders, owner alerts and the dashboard.</p>
+   <a class="btn btn-gold" href="#signup" data-i="s_cta" data-pick="salon">Ask about Starter or Lite</a>
   </div>
  </div>
 </section>
@@ -417,7 +426,6 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <label><span data-i="l_interest">I'm interested in</span>
     <select name="interest" id="interest" style="min-height:48px;border-radius:12px;border:1px solid var(--rule);background:var(--panel);color:var(--fg);padding:0 .75rem;font:400 16px var(--f-body)">
      <option value="salon" data-i="o_salon">BotBhai for my gym, salon or real estate business (free pilot)</option>
-     <option value="workshop" data-i="o_workshop">Workshop waitlist (free) · 29 Nov</option>
      <option value="kits" data-i="o_kits">Exam / money kits</option>
      <option value="other" data-i="o_other">Something else</option>
     </select></label>
@@ -495,19 +503,19 @@ document.querySelectorAll('[data-bot]').forEach(g=>bot(g,g.dataset.bot,'waving')
 document.querySelectorAll('[data-human]').forEach(g=>human(g));
 
 /* ---------- i18n ---------- */
-const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. చెట్టును ట్యాప్ చేస్తే ఆకులు రాలుతాయి. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా వర్క్‌షాప్ గురించి అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_workshop:'వర్క్‌షాప్',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత 14 రోజుల పైలట్',cta_demo:'AIతో చాట్ చేయండి',
+const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. చెట్టును ట్యాప్ చేస్తే ఆకులు రాలుతాయి. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా సెటప్ ఎలా జరుగుతుందో అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_prices:'ధరలు',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత 14 రోజుల పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
-lead:'BotBhai జిమ్‌లు, సెలూన్లు, రియల్ ఎస్టేట్ ఏజెంట్ల కస్టమర్లకు 5 భాషల్లో జవాబిస్తుంది, స్లాట్ లేదా సైట్ విజిట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీకు అప్పగిస్తుంది. 16 నవంబర్ నుంచి 14 రోజుల ఉచిత పైలట్.',
+lead:'BotBhai జిమ్‌లు, సెలూన్లు, రియల్ ఎస్టేట్ ఏజెంట్ల కస్టమర్లకు 5 భాషల్లో జవాబిస్తుంది, స్లాట్ లేదా సైట్ విజిట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీకు అప్పగిస్తుంది. 14 రోజుల ఉచిత పైలట్; మీరు అవును అనే వరకు చెల్లింపు లేదు.',
 trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · 5 భాషలు',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
-st_pilot:'పైలట్ డేకి రోజులు (16 నవం)',st_launch:'పబ్లిక్ లాంచ్‌కి రోజులు (13 డిసెం)',st_agents:'ఒక వ్యవస్థాపకుడితో పనిచేసే AI ఏజెంట్లు',st_langs:'భాషలు: తెలుగు, హిందీ, ఇంగ్లీష్',
+st_products:'ఒకే చెట్టుపై పెరుగుతున్న ఉత్పత్తులు',st_try:'BotBhaiని 14 రోజులు ప్రయత్నించడానికి',st_agents:'AI ఏజెంట్ పాత్రలు, ఒక్క వ్యవస్థాపకుడు',st_langs:'భాషలు: ఇంగ్లీష్, తెలుగు, హిందీ, టెంగ్లీష్, హింగ్లీష్',
 p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
 h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
 s2h:'BotBhai జవాబు',s2p:'మీ సెలూన్ వివరాల నుంచే ధరలు, సమయాలు, ఖాళీ స్లాట్లు. ధరను ఎప్పుడూ ఊహించదు; సందేహం ఉంటే మీ సిబ్బందికి పంపుతుంది.',s3h:'నియంత్రణ మీదే',s3p:'బుకింగ్ కన్ఫర్మ్, 24 గం, 2 గం ముందు రిమైండర్లు, యజమానికి రోజువారీ జాబితా. ఏ చాట్‌నైనా ఒక్క ట్యాప్‌తో మీరు తీసుకోవచ్చు.',
-t_h:'ఒక వ్యవస్థాపకుడు. 22 AI సహచరులు.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
-ribbon:'3 స్థానాలు',f_h:'14 రోజుల ఉచిత పైలట్, తర్వాత ఫౌండింగ్ ధరలు',f_per:' / నెల, మొదటి 3 నెలలు',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
-w_h:'"Claude Code with me": 90 నిమిషాల్లో 3 చిన్న AI టూల్స్',w_when:', ఆది 29 నవం, ఉ. 11:00, Google Meetలో, తెలుగులో',w_p:'ప్రారంభకుల కోసం. మనం కలిసి నేర్చుకుంటాం; ఇది నిపుణుల కోర్సు కాదు, ఆదాయ హామీ లేదు. పూర్తి అజెండా, మెటీరియల్ ఇప్పుడు తయారు చేసి పరీక్షిస్తున్నాం. ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి: అజెండా ప్రచురించిన తర్వాతే చెల్లింపు, ఉపయోగపడకపోతే 7 రోజుల్లో పూర్తి రిఫండ్.',w_cta:'ఉచిత వెయిట్‌లిస్ట్‌లో చేరండి',
+t_h:'ఒక వ్యవస్థాపకుడు. AI ఏజెంట్ల బృందం.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
+f_h:'స్టాండర్డ్: 14 రోజుల ఉచిత పైలట్, తర్వాత నెలకు ₹1,499',f_per:' / నెల',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
+s_h:'నెలవారీ ప్లాన్‌కి ఇంకా సిద్ధంగా లేరా?',s_per:' ఒక్కసారి',s_p:'స్టార్టర్ ప్యాక్: WhatsApp చాట్ లింక్, మీ కౌంటర్ కోసం QR పోస్టర్, సిద్ధంగా ఉన్న త్వరిత జవాబులు, మీ Google Business ప్రొఫైల్ సరిదిద్దడం. నెలవారీ రుసుము లేదు.',s_lite:'లైట్ ప్లాన్: ₹1,999 సెటప్ + నెలకు ₹999; బుకింగ్‌లు, రిమైండర్‌లు, యజమానికి అలర్ట్‌లు, డాష్‌బోర్డ్‌తో WhatsApp బాట్.',s_cta:'స్టార్టర్ లేదా లైట్ గురించి అడగండి',
 g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
-l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా జిమ్/సెలూన్/రియల్ ఎస్టేట్ కోసం BotBhai (ఉచిత పైలట్)',o_workshop:'వర్క్‌షాప్ వెయిట్‌లిస్ట్ (ఉచితం) · 29 నవం',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
+l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా జిమ్/సెలూన్/రియల్ ఎస్టేట్ కోసం BotBhai (ఉచిత పైలట్)',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
 q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
 fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs పేరు కల్పవృక్షం నుంచి వచ్చింది: ఒక చెట్టు, ఏడు కొమ్మలు, ప్రతి కొమ్మ రోజువారీ పనికి ఒక చిన్న టూల్. హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
 ft0:'ఒక చెట్టు, అనేక శాఖలు, అందరికీ పండ్లు',ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'AIతో చాట్ చేయండి',mb2:'ఉచిత సెలూన్ పైలట్'};
@@ -522,14 +530,12 @@ function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';docu
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
 
 /* ---------- countdown ---------- */
-function cd(){const d=t=>Math.max(0,Math.ceil((new Date(t)-Date.now())/864e5));
- document.getElementById('cd-pilot').textContent=d('2026-11-16T00:00:00+05:30');document.getElementById('cd-launch').textContent=d('2026-12-13T06:12:00+05:30');}
-cd(); setInterval(cd,60000);
+
 
 /* ---------- products ---------- */
 const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 const P=[
- {id:'botbhai',c:'--l1',name:'BotBhai',st:['Built · free pilots from 16 Nov','తయారైంది · 16 నవం నుంచి ఉచిత పైలట్లు'],stc:'--warn',
+ {id:'botbhai',c:'--l1',name:'BotBhai',st:['Being finished · free pilots open soon','పూర్తి చేస్తున్నాం · ఉచిత పైలట్లు త్వరలో'],stc:'--warn',
   for:['For salons, gyms and coaching centres','సెలూన్లు, జిమ్‌లు, కోచింగ్ సెంటర్ల కోసం'],
   pts:[['WhatsApp + website chat in 3 languages','3 భాషల్లో WhatsApp + వెబ్‌సైట్ చాట్'],['Bookings, 24 h and 2 h reminders','బుకింగ్స్, 24 గం, 2 గం రిమైండర్లు'],['Owner alerts and a one-tap shared inbox','యజమాని అలర్ట్స్, ఒక ట్యాప్ షేర్డ్ ఇన్‌బాక్స్']],
   price:['Free pilot, then ₹1,499/mo','ఉచిత పైలట్, తర్వాత ₹1,499/నెల'],cta:'#founding',art:'chat'},
@@ -572,8 +578,8 @@ function renderProducts(){const L=lang==='te'?1:0; const tabs=document.getElemen
 /* ---------- live AI chat (Netlify function netlify/functions/chat.mjs, A145; was n8n until the trial ended) ---------- */
 const CHAT_URL='/api/chat'; const HIST=[];
 const STARTERS={
- en:['How does BotBhai help my salon?','Is the pilot really free?','Tell me about the ₹299 workshop','Please call me back'],
- te:['BotBhai నా సెలూన్‌కి ఎలా సహాయం చేస్తుంది?','పైలట్ నిజంగా ఉచితమా?','₹299 వర్క్‌షాప్ గురించి చెప్పండి','నాకు కాల్ చేయండి']};
+ en:['How does BotBhai help my salon?','Is the pilot really free?','What does it cost?','Please call me back'],
+ te:['BotBhai నా సెలూన్‌కి ఎలా సహాయం చేస్తుంది?','పైలట్ నిజంగా ఉచితమా?','దీని ధర ఎంత?','నాకు కాల్ చేయండి']};
 const HELLO={en:'Namaste! I\'m Kalpa Bhai, Kalpa Labs\' AI assistant (yes, a bot 🙂). Ask me anything in Telugu, Hindi or English, or leave your number and Akhil will call you.',
  te:'నమస్తే! నేను Kalpa Bhai, Kalpa Labs AI సహాయకుడిని (అవును, బాట్‌నే 🙂). తెలుగు, హిందీ, ఇంగ్లీష్, Tenglish లేదా Hinglish లో ఏదైనా అడగండి, లేదా మీ నంబర్ ఇవ్వండి, అఖిల్ కాల్ చేస్తారు.'};
 const OFFLINE={en:'I can\'t reach my brain right now 😅. Please use the form below and Akhil will WhatsApp you.',
@@ -676,7 +682,7 @@ const BR=[ // [path, width, world id, name, world colour]
 const SHORT={kits:'Kits',deals:'Deals',ledger:'Ledger'};
 const LEAF='M0 0C6-7 16-7 24 0C16 7 6 7 0 0Z';
 function cluster(par,cx,cy,R,n){
- for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'var(--tl'+(1+(k%2))+')',style:'animation-delay:'+(1.2+Math.hypot(cx-300,cy-560)/600*1.2).toFixed(2)+'s'},par);
+ for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'url(#blob'+(1+(k%2))+')',style:'animation-delay:'+(1.2+Math.hypot(cx-300,cy-560)/600*1.2).toFixed(2)+'s'},par);
  for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
   const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
   const d=(1.1+Math.hypot(x-300,y-560)/600*1.2+rnd()*.3).toFixed(2);
@@ -732,6 +738,22 @@ const WALK=[ // branch, name, colour, tasks [en, te]
  [4,'Kavi','#3B7A3A',[['Writing a Telugu post for Akhil to approve','అఖిల్ ఆమోదం కోసం తెలుగు పోస్ట్ రాస్తోంది'],['Translating a reply into Hindi','జవాబును హిందీలోకి అనువదిస్తోంది']]],
  [5,'Vigil','#A8324F',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Confirming a rule on the official site','అధికారిక సైట్‌లో నియమాన్ని నిర్ధారిస్తోంది']]]];
 const bubbles=document.getElementById('bubbles');
+/* birds resting in the tree: tap one (or shake the tree) and they fly off; they come back after a while */
+const PERCH=[[0,.32,1],[1,.3,-1],[6,.62,1]].map(([b,at,face],k)=>{
+ const pt=paths[b].getPointAtLength(paths[b].getTotalLength()*at);
+ const g=el('g',{class:'perch','aria-hidden':'true',transform:`translate(${pt.x.toFixed(1)} ${(pt.y-4).toFixed(1)}) scale(${face*1.15} 1.15)`,style:'--pd:'+(k*1.3)+'s'},tfront);
+ el('circle',{cx:0,cy:-12,r:30,fill:'transparent'},g); // 44 px tap target on a phone
+ el('path',{class:'bd',d:'M-9-8L-19-4L-9-5Z'},g);                       // tail
+ el('ellipse',{class:'bd',cx:-1,cy:-9,rx:10,ry:6.5,transform:'rotate(-14 -1 -9)'},g); // body
+ el('path',{d:'M-6-10Q0-15 6-9',fill:'none',stroke:'var(--panel)','stroke-opacity':'.35','stroke-width':1.6,'stroke-linecap':'round'},g); // wing line
+ el('path',{d:'M-2-3L-3 1M2-3L2 1',stroke:'var(--bird)','stroke-width':1.4,'stroke-linecap':'round'},g); // legs
+ const hd=el('g',{class:'hd'},g); el('circle',{class:'bd',cx:8,cy:-15,r:5},hd); el('path',{class:'bk',d:'M12.5-16.2L17.5-15L12.5-13.6Z'},hd); el('circle',{class:'ey',cx:9.6,cy:-16.2,r:1.2},hd);
+ return {g,face,away:false};});
+const BIRDS={fly:null}; // the wind layer fills this in when motion is allowed
+function scare(list){list.forEach(p=>{if(p.away)return;p.away=true;p.g.classList.add('away');
+ const r=p.g.getBoundingClientRect(); if(BIRDS.fly)BIRDS.fly(p,r.left+r.width/2,r.top+r.height/2);
+ else setTimeout(()=>{p.away=false;p.g.classList.remove('away');},6000);});}
+PERCH.forEach(p=>p.g.addEventListener('pointerdown',e=>{e.stopPropagation();scare([p]);}));
 const walkers=WALK.map(([b,name,col,tasks],k)=>{
  const front=tfront.children[b], p=paths[b], L=p.getTotalLength();
  const g=el('g',{class:'walker'},front); const inner=el('g',{},g); bot(inner,col,'working');
@@ -833,17 +855,26 @@ const SND=(function(){
   for(let i=0;i<n;i++)B.push({x:ltr?-30-i*46:W+30+i*46,y:y+i*(14+Math.random()*10),vx:ltr?sp:-sp,s:(small?6:8)+Math.random()*3,ph:Math.random()*6.28,glide:0,bob:Math.random()*6.28});
   SND.chirp(ltr?-.7:.7);}
  function drawBird(b,t){const flap=b.glide>0?.25:Math.sin(t*11+b.ph),s=b.s,w=s*(.15+.55*(flap*.5+.5));
-  cx.save();cx.translate(b.x,b.y);if(b.vx<0)cx.scale(-1,1);cx.strokeStyle=BIRDC;cx.lineWidth=1.7;cx.lineCap='round';cx.lineJoin='round';
+  cx.save();cx.globalAlpha=overText(b.x,b.y)?.15:1;cx.translate(b.x,b.y);if(b.vx<0)cx.scale(-1,1);cx.strokeStyle=BIRDC;cx.lineWidth=1.7;cx.lineCap='round';cx.lineJoin='round';
   cx.beginPath();cx.moveTo(-s,-w);cx.quadraticCurveTo(-s*.45,-w*.2,0,0);cx.quadraticCurveTo(s*.45,-w*.2,s,-w);cx.stroke();
   cx.fillStyle=BIRDC;cx.beginPath();cx.ellipse(0,.6,1.8,1.2,0,0,6.28);cx.fill();cx.restore();}
  let BIRDC='#2a3326'; function birdCol(){BIRDC=getComputedStyle(document.documentElement).getPropertyValue('--bird').trim()||BIRDC;} birdCol();
+ // a startled bird climbs away from the tree; 14-24 s later it flies back in from the edge and lands on its branch
+ BIRDS.fly=(p,x,y)=>{const dir=p.face*(Math.random()<.3?-1:1);B.push({x,y,vx:dir*(small?120:150),vy:-120,s:small?7:8.5,ph:Math.random()*6.28,glide:0,bob:0,up:1});SND.chirp(x/W*2-1);
+  setTimeout(()=>{const r=p.g.getBoundingClientRect();
+   if(document.hidden||r.bottom<0||r.top>H){p.away=false;p.g.classList.remove('away');return;}
+   const ltr=Math.random()<.5;B.push({x:ltr?-30:W+30,y:Math.max(20,r.top-H*.25),vx:0,vy:0,s:small?7:8.5,ph:Math.random()*6.28,glide:0,bob:0,land:p});},14000+Math.random()*10000);};
+ // text zones: leaves fade almost away while they pass over words, so nothing is ever hard to read
+ const TXT=[...document.querySelectorAll('h1,h2,h3,p,li,label,.btn,.stat,.flabel,.bub,.trust span,input,select,textarea')]; let ZONES=[],zt=0;
+ function zones(){ZONES=[];for(const e of TXT){const r=e.getBoundingClientRect();if(r.bottom>-20&&r.top<H+20&&r.width)ZONES.push([r.left-6,r.top-6,r.right+6,r.bottom+6]);}}
+ const overText=(x,y)=>ZONES.some(z=>x>z[0]&&x<z[2]&&y>z[1]&&y<z[3]);
  document.querySelector('.hero').addEventListener('pointerdown',e=>{for(const b of B){if(Math.hypot(e.clientX-b.x,e.clientY-b.y)<34){b.vx*=2.2;b.glide=0;SND.chirp(b.x/W*2-1);}}});
  WIND.gust=280; let px=-1,py=-1,pvx=0,pvy=0,lastP=0,trail=0;
  addEventListener('pointermove',e=>{const t=performance.now(),dt=Math.max(8,t-lastP);if(px>=0){const ix=(e.clientX-px)/dt*1000,iy=(e.clientY-py)/dt*1000;pvx=pvx*.6+ix*.4;pvy=pvy*.6+iy*.4;
    trail+=Math.hypot(e.clientX-px,e.clientY-py); if(trail>140&&e.target.closest&&e.target.closest('.hero')&&L.length<140){trail=0;leaf(e.clientX,e.clientY,pvx*.3,pvy*.3,false);}}
   px=e.clientX;py=e.clientY;lastP=t;},{passive:true});
  // tap the tree (not a fruit): it shakes and showers leaves; tap the sky: a gust
- tree.addEventListener('pointerdown',e=>{if(e.target.closest('.fruit'))return;WIND.shake=1;const r=tbox.getBoundingClientRect();
+ tree.addEventListener('pointerdown',e=>{if(e.target.closest('.fruit,.perch'))return;WIND.shake=1;scare(PERCH);const r=tbox.getBoundingClientRect();
   for(let i=0;i<(small?16:26);i++)leaf(r.left+r.width*(.2+Math.random()*.6),r.top+r.height*(.12+Math.random()*.45),(Math.random()-.5)*220,-60+Math.random()*120,false);});
  document.querySelector('.hero').addEventListener('pointerdown',e=>{if(e.target.closest('a,button,#tree,input,.tip'))return;WIND.gust=Math.max(WIND.gust,200);
   for(let i=0;i<10;i++){const a=Math.random()*6.28;leaf(e.clientX,e.clientY,Math.cos(a)*180+120,Math.sin(a)*140,false);}});
@@ -854,15 +885,19 @@ const SND=(function(){
  function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
   WIND.gust*=Math.pow(.42,dt); WIND.shake*=Math.pow(.25,dt); pvx*=Math.pow(.05,dt); pvy*=Math.pow(.05,dt);
   WIND.v=16+12*Math.sin(t*.45)+6*Math.sin(t*1.3)+WIND.gust;
-  if(!document.hidden){cx.clearRect(0,0,W,H);
+  if(!document.hidden){cx.clearRect(0,0,W,H); if(now-zt>250){zt=now;zones();}
    for(let i=L.length-1;i>=0;i--){const p=L[i];let wx=WIND.v,wy=0;
     if(px>=0){const dx=p.x-px,dy=p.y-py,d=Math.hypot(dx,dy);if(d<150){const k=(1-d/150);wx+=pvx*k*.9+dx/(d+1)*90*k*Math.min(1,Math.hypot(pvx,pvy)/300);wy+=pvy*k*.9+dy/(d+1)*90*k*Math.min(1,Math.hypot(pvx,pvy)/300);}}
     p.vx+=(wx-p.vx)*Math.min(1,dt*1.6); p.vy+=((34+p.s*2.2+wy)-p.vy)*Math.min(1,dt*1.2);
     p.x+=(p.vx+Math.sin(t*1.7+p.ph)*26)*dt; p.y+=(p.vy+Math.cos(t*2.3+p.ph)*14)*dt; p.r+=(p.vr+p.vx*.004)*dt; p.f+=p.fs*dt;
     if(p.y>H+30||p.x>W+60||p.x<-80&&p.vx<0){ if(p.keep){p.x=Math.random()*W*1.1-W*.15;p.y=-20-Math.random()*60;p.vx=WIND.v;} else {L.splice(i,1);continue;} }
-    draw(p);}
+    p.a=(p.a??1)+((overText(p.x,p.y)?.08:1)-(p.a??1))*Math.min(1,dt*9); cx.globalAlpha=p.a; draw(p); cx.globalAlpha=1;}
    if(now>nextBird&&!B.length){spawnBirds();nextBird=now+9000+Math.random()*12000;}
    for(let i=B.length-1;i>=0;i--){const b=B[i];b.bob+=dt*2;if(b.glide>0)b.glide-=dt;else if(Math.random()<dt*.35)b.glide=.6+Math.random()*1.2;
+    if(b.land){const r=b.land.g.getBoundingClientRect(),tx=r.left+r.width/2,ty=r.top+r.height/2,dx=tx-b.x,dy=ty-b.y,d=Math.hypot(dx,dy);
+     const sp=Math.min(small?150:190,40+d*1.6); b.vx+=(dx/(d||1)*sp-b.vx)*Math.min(1,dt*3); b.vy+=(dy/(d||1)*sp-b.vy)*Math.min(1,dt*3); b.glide=d<60?1:b.glide;
+     b.x+=b.vx*dt; b.y+=b.vy*dt; if(d<8){b.land.away=false;b.land.g.classList.remove('away');B.splice(i,1);continue;} drawBird(b,t); continue;}
+    if(b.up){b.vy-=60*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.y<-60||b.x<-80||b.x>W+80){B.splice(i,1);continue;}drawBird(b,t);continue;}
     b.x+=(b.vx+WIND.v*.15)*dt;b.y+=Math.sin(b.bob)*8*dt-(b.glide>0?-4:2)*dt;
     if(b.x<-80||b.x>W+80){B.splice(i,1);continue;}drawBird(b,t);}}
   requestAnimationFrame(tick);}

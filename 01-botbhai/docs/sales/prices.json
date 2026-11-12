@@ -1,16 +1,14 @@
 {
-  "_source": "01-botbhai/PLAN.md §2 'Salon price ladder' (tools/test_sales_kit.py fails if they differ)",
+  "_source": "01-botbhai/PLAN.md §2 'Salon price ladder' (tools/test_sales_kit.py fails if they differ). Ladder approved by Akhil 11 Nov 2026 ('prices ok')",
   "currency": "INR",
   "tiers": [
     {
-      "id": "founding",
-      "name": "Founding",
-      "setup": 2999,
-      "monthly": 1499,
-      "monthly_after": 1999,
-      "monthly_after_month": 4,
-      "note": "First 3 salons; price fixed for 12 months",
-      "gives": "Standard features. In return: a baseline from your register, a testimonial, and use of anonymised numbers"
+      "id": "starter",
+      "name": "Starter pack",
+      "setup": 999,
+      "monthly": 0,
+      "one_time": true,
+      "gives": "A WhatsApp chat link and a QR poster for your counter, ready-made quick replies, and a tidy-up of your Google Business Profile. No monthly fee"
     },
     {
       "id": "lite",
@@ -22,8 +20,8 @@
     {
       "id": "standard",
       "name": "Standard",
-      "setup": 4999,
-      "monthly": 2999,
+      "setup": 2999,
+      "monthly": 1499,
       "gives": "Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site, web voice, monthly ROI report"
     },
     {

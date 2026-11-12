@@ -2,7 +2,7 @@
 
 **What it is:** WhatsApp booking bot + voice agent + lead finder + ads guard + SEO bot for salons, gyms, coaching and real estate in Hyderabad.
 **Status (13 Oct 2026):** Built (v3, 623 QA checks pass). Selling not started: needs the demo WhatsApp number and a deploy.
-**Price:** Founding salons ₹4,999 setup + ₹1,999/month, standard ₹9,999 + ₹2,999/month.
+**Price (approved 11 Nov 2026):** Starter pack ₹999 once; Lite ₹1,999 setup + ₹999/month; Standard ₹2,999 setup + ₹1,499/month. No per-staff fee. Source of truth: `docs/sales/prices.json` = PLAN.md §2.
 
 ## What's in this folder
 

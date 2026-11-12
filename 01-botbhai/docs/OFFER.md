@@ -18,7 +18,7 @@ Built from the first 12 of 24 agent research jobs (KL Tasks, Vigil PASS). Figure
 - **Gross margin at ₹1,499/month ≈ 97% before Akhil's time.** The real cost is setup and support hours (to be measured in the pilot).
 
 ## 3. Price (draft, to test in pilots)
-- Free 14-day pilot, then ₹2,999 setup + ₹1,499/month (months 1–3), ₹1,999 after.
+- Free 14-day pilot, then Standard ₹2,999 setup + ₹1,499/month, or Lite ₹1,999 + ₹999/month; Starter pack ₹999 once (approved 11 Nov 2026). No per-staff fee.
 - Market today (agent research, re-check before quoting): DINGG ₹999–2,499; MioSalon ₹999–2,500; Cleomitra from ₹499; AiSensy ₹1,500 + per message; Interakt ₹2,799; WATI ₹4,999; Salonist from US$59. BotBhai sits in the middle and is the only one built for Telugu chat booking.
 - Open: whether the setup fee scares small salons (price-ladder job still running).
 

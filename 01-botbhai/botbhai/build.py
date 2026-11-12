@@ -14,6 +14,14 @@ for k, c in cfgs.items():
     (root / "setups" / k / "bot.config.json").write_text(json.dumps(c2, indent=2, ensure_ascii=False))
 register = "\n".join(f"BotBhai.register({json.dumps(cfgs[s], ensure_ascii=False)});" for s in setups)
 page = (root / "web" / "index.src.html").read_text().replace("/*ENGINE*/", (root / "core" / "engine.js").read_text() + "\n" + register)
+# A211 price ladder: rendered from the one price file, so the page can never drift from PLAN.md §2
+P = json.loads((root.parent / "docs" / "sales" / "prices.json").read_text()); T = {x["id"]: x for x in P["tiers"]}
+inr = lambda n: "₹" + format(n, ",")  # all prices are under ₹1 lakh, so Western grouping equals Indian grouping
+def tier(x, up=False):
+    price = f'{inr(x["setup"])} <small>once, no monthly</small>' if x.get("one_time") else f'{inr(x["monthly"])}<small>/month + {inr(x["setup"])} setup</small>'
+    return f'<div class="tier{" up" if up else ""}"><h3>{x["name"]}</h3><p class="price">{price}</p><p>{x["gives"]}.</p></div>'
+page = page.replace("<!--LADDER-->", tier(T["starter"]) + tier(T["lite"]) + tier(T["standard"], up=True)).replace(
+    "<!--FEES-->", f'{inr(P["whatsapp_fees"]["lite_no_marketing"])}–{inr(P["whatsapp_fees"]["typical"])} a month')
 dist = root / "web" / "dist"; dist.mkdir(parents=True, exist_ok=True)
 head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>'
 (dist / "index.html").write_text(head + page + "</body></html>")

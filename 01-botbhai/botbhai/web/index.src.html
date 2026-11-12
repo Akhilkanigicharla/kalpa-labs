@@ -158,15 +158,28 @@ footer{color:var(--muted);font-size:12.5px}
 .cardgrid figure{margin:0;display:flex;flex-direction:column;gap:8px}
 .cardgrid img{width:100%;height:auto;aspect-ratio:1;border-radius:var(--r-m);border:1px solid var(--line);background:var(--bg)}
 .cardgrid figcaption{font-size:12.5px;color:var(--muted)}
-body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
+.offer{margin-top:28px;display:flex;flex-direction:column;gap:12px}.offer h2{margin:0}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.tier{border:1px solid var(--line);border-radius:var(--r-m);padding:14px;background:var(--panel);display:flex;flex-direction:column;gap:6px}
+.tier.up{border-color:var(--world);box-shadow:inset 0 3px 0 var(--world)}.tier h3{margin:0;font-size:17px}
+.tier .price{font:600 22px/1.2 var(--f-body);color:var(--fg);margin:0}.tier .price small{font-size:13px;color:var(--muted);font-weight:400}
+.tier p{margin:0;font-size:13.5px;color:var(--muted)}
+.offer .btn{display:inline-flex;align-items:center;text-decoration:none}
+.compare{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;font-size:14px}
+.crow{display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid var(--line)}.crow:first-child{border-top:0}
+.crow>span{padding:10px 12px;overflow-wrap:anywhere}.crow>span:last-child{color:var(--fg);font-weight:600}.crow [role=rowheader]{color:var(--muted)}
+.chead{background:var(--soft,var(--bg));font-weight:600}
+@media (max-width:520px){.crow{grid-template-columns:1fr 1fr}.crow [role=rowheader]{grid-column:1/-1;padding-bottom:0;font-size:12.5px}.chead [role=columnheader]:first-child{display:none}}
+body.embed{padding:0}body.embed header,body.embed .console,body.embed footer,body.embed .offer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
 </style>
 
 <div class="wrap">
   <header>
     <div>
-      <h1>Bot<span>Bhai</span>: your business, booking customers while you sleep</h1>
+      <h1>Bot<span>Bhai</span>: your front desk that answers and books, in 5 languages, set up and run by us</h1>
       <p class="eyebrow">Kalpa Labs · b1 · live demo</p>
-      <p class="sub">Pick a business, chat as a customer on the phone, and watch the lead appear in the owner's console. Same engine runs on real WhatsApp, the website chat and the voice agent.</p>
+      <p class="sub">Replies on WhatsApp in English, Telugu, Hindi, Tenglish or Hinglish, books real slots and reminds customers. We set it up with your prices and keep it running: no software to learn, no per-staff fee. <a href="#offer">See prices</a>.</p>
+      <p class="sub">Try it now: pick a business, chat as a customer on the phone, and watch the lead appear in the owner's console. Same engine runs on real WhatsApp, the website chat and the voice agent.</p>
     </div>
     <div class="niches" id="niches" role="group" aria-label="Business type"></div>
   </header>
@@ -292,6 +305,22 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
       </div>
     </section>
   </div>
+  <section class="offer" id="offer" aria-labelledby="offer-h">
+    <p class="eyebrow">Prices · no per-staff fee</p>
+    <h2 id="offer-h">Start small. Upgrade when it pays.</h2>
+    <div class="tiers"><!--LADDER--></div>
+    <p class="note">Lite and Standard: free 14-day pilot first, then stop any month (no lock-in). Setup fee is paid half on signing, half at go-live. WhatsApp's own message fees (about <!--FEES-->) go from you to Meta on your own account; we add no markup. No per-staff fee: same price whether you have 2 staff or 12.</p>
+    <div class="compare" id="compare" role="table" aria-label="Software you must learn vs BotBhai">
+      <div class="crow chead" role="row"><span role="columnheader"></span><span role="columnheader">Software you must learn</span><span role="columnheader">BotBhai</span></div>
+      <div class="crow" role="row"><span role="rowheader">Who sets it up</span><span role="cell">You and your staff</span><span role="cell">We do, with your price list</span></div>
+      <div class="crow" role="row"><span role="rowheader">Who answers at 11 PM</span><span role="cell">Nobody, until morning</span><span role="cell">BotBhai, and it books the slot</span></div>
+      <div class="crow" role="row"><span role="rowheader">Languages</span><span role="cell">Usually English menus</span><span role="cell">English, Telugu, Hindi, Tenglish, Hinglish</span></div>
+      <div class="crow" role="row"><span role="rowheader">Staff training</span><span role="cell">Needed</span><span role="cell">None: it works inside WhatsApp</span></div>
+      <div class="crow" role="row"><span role="rowheader">Price grows with staff</span><span role="cell">Often per staff or per seat</span><span role="cell">No per-staff fee</span></div>
+      <div class="crow" role="row"><span role="rowheader">Your billing software</span><span role="cell">Move everything into it</span><span role="cell">Keep it; BotBhai sits in front</span></div>
+    </div>
+    <p><a class="btn" href="https://kalpalabs.dpdns.org/#signup">Ask for the free 14-day pilot</a></p>
+  </section>
   <footer>BotBhai by Kalpa Labs · demo data is fictional; business names are examples.</footer>
 </div>
 

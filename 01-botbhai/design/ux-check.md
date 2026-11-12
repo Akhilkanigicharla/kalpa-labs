@@ -18,7 +18,7 @@ Tests: `bash 01-botbhai/botbhai/tools/test-all.sh` (includes `test_web_ux.py` fo
 | 11 | Reusable data table | ➖ Cards and timelines on a phone instead of tables; Excel download for the full table. |
 | 12 | Advanced filtering | ✅ Status chips (Hot / All…, Needs you / Bot / Done, invoice status) + lead search. |
 | 13 | Keyboard shortcuts | ✅ Ctrl/⌘ + Enter sends an inbox reply (agent had this as "not relevant"; corrected). |
-| 14 | Tier-based UI indicators | ➖ One pilot plan, no tiers yet. Add when paid tiers exist. |
+| 14 | Tier-based UI indicators | ✅ A211, 13 Nov: the demo page's #offer section shows the 3 approved tiers (Starter once, Lite, Standard marked as the upgrade), rendered by `build.py` from `docs/sales/prices.json`, plus the "software you must learn vs BotBhai" comparison (no rival named) and "no per-staff fee". `tools/test_offer.py` checks it; tap sweep PASS at 390 px light + dark. In-app tier badges for the owner come when billing has more than one live plan. |
 | 15 | Onboarding data capture | ➖ The owner gets a setup link with the key; no sign-up form on these screens. |
 | 16 | Referral pages | ➖ Not part of the owner tools. |
 | 17 | Custom 404 | ➖ App screens are single files; the public site's 404 is covered by the SEO site (A193). |

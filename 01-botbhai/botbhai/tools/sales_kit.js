@@ -47,7 +47,7 @@ const doc = (title, size, css, body) => `<!doctype html><html lang="en"><head><m
 
 // ---------------------------------------------------------------- 1. A5 leave-behind card (front Telugu, back English)
 function card({ demo = DEMO_URL } = {}) {
-  const f = TIER.founding;
+  const st = TIER.starter, lite = TIER.lite, std = TIER.standard;
   const css = `.page{width:148mm;height:210mm;display:flex;flex-direction:column}
 .band h1{font-size:21pt;line-height:1.15}.band h1.te{font-family:var(--f-te);font-weight:700;font-size:19pt;line-height:1.35}
 .body{padding:6mm 8mm 0;display:flex;flex-direction:column;gap:4mm;flex:1}
@@ -60,31 +60,33 @@ ul{margin:0;padding-left:5mm}li{margin:0 0 1.4mm}
 .foot{margin-top:auto;padding:3mm 8mm 5mm;display:flex;justify-content:space-between;gap:4mm;border-top:1px solid var(--rule)}
 .write{display:inline-block;min-width:38mm;border-bottom:1px solid var(--fg);height:4.5mm}`;
   const front = `<section class="page te" lang="te">
-<header class="band"><p class="eyebrow">BotBhai · Kalpa Labs</p><h1 class="te">రాత్రి 11 గంటలకూ మీ WhatsApp తెలుగులో జవాబిస్తుంది</h1></header>
+<header class="band"><p class="eyebrow">BotBhai · Kalpa Labs</p><h1 class="te">మీ ఫ్రంట్ డెస్క్: WhatsApp లో 5 భాషల్లో జవాబిస్తుంది, బుక్ చేస్తుంది. మేమే సెట్ చేసి నడుపుతాం.</h1></header>
 <div class="body">
 <ul><li>స్లాట్ బుక్ చేస్తుంది, కస్టమర్‌కి రెండుసార్లు గుర్తు చేస్తుంది (ఒక రోజు ముందు, 2 గంటల ముందు).</li>
 <li>సంతోషంగా వెళ్లిన కస్టమర్లను మాత్రమే Google రివ్యూ అడుగుతుంది.</li>
 <li>కోపంగా ఉన్న కస్టమర్ వస్తే వెంటనే మీకు చెబుతుంది; మీరే జవాబిస్తారు.</li>
-<li>60 రోజుల్లో లాభం కనిపించకపోతే, నెలవారీ డబ్బు కట్టడం ఆపేయండి. లాక్-ఇన్ లేదు.</li></ul>
+<li>నేర్చుకోవాల్సిన సాఫ్ట్‌వేర్ లేదు. ఒక్కో స్టాఫ్‌కి ఫీజు లేదు.</li>
+<li>14 రోజులు ఉచితంగా వాడి చూడండి. తర్వాత ఏ నెలైనా ఆపేయవచ్చు. లాక్-ఇన్ లేదు.</li></ul>
 <div class="qrrow"><div class="qr">${qr(demo)}</div><p>ఈ QR స్కాన్ చేసి మీ ఫోన్‌లోనే డెమో చూడండి: <b>"repu haircut kavali"</b> అని టైప్ చేయండి.</p></div>
 <div class="loss"><p class="eyebrow" style="display:block">మీ సెలూన్ లెక్కలు</p>
 <p><span>రాత్రి 9 తర్వాత వచ్చే WhatsApp లు (వారానికి)</span><i></i></p>
 <p><span>గత శనివారం రాని కస్టమర్లు</span><i></i></p>
 <p><span>ఫేషియల్ చేస్తుంటే ఫోన్ ఎవరు ఎత్తుతారు?</span><i></i></p></div>
-<div class="offer">మొదటి 3 సెలూన్లకు: సెటప్ <b>${inr(f.setup)}</b> · నెలకు <b>${inr(f.monthly)}</b> (3 నెలలు), తర్వాత ${inr(f.monthly_after)}.</div>
+<div class="offer">స్టార్టర్ ప్యాక్ <b>${inr(st.setup)}</b> ఒక్కసారే · Lite నెలకు <b>${inr(lite.monthly)}</b> · Standard నెలకు <b>${inr(std.monthly)}</b>.</div>
 </div>
 <div class="foot"><span>ఫోన్ / WhatsApp: <span class="write"></span></span><span class="mono">${KALPA.udyam}</span></div></section>`;
   const back = `<section class="page" lang="en">
-<header class="band"><p class="eyebrow">BotBhai · Kalpa Labs</p><h1>Your WhatsApp answers at 11 PM, in Telugu.</h1></header>
+<header class="band"><p class="eyebrow">BotBhai · Kalpa Labs</p><h1>Your front desk that answers and books, in 5 languages, set up and run by us.</h1></header>
 <div class="body">
-<ul><li>Books the slot, then reminds the customer twice: the day before and 2 hours before.</li>
+<ul><li>Answers every WhatsApp, even at 11 PM, in English, Telugu, Hindi, Tenglish or Hinglish: whichever the customer writes in.</li>
+<li>Books the slot, then reminds the customer twice: the day before and 2 hours before.</li>
 <li>Asks only happy, completed visits for a Google review.</li>
 <li>Tells you at once about an unhappy customer, and you reply yourself from your phone.</li>
-<li>Done for you: we set it up with your prices in 10 days. Nothing for your staff to learn.</li>
-<li>If it doesn't pay for itself in 60 days, stop paying. No lock-in.</li></ul>
+<li>Set up and run by us, with your prices, in 10 days. No software to learn and no per-staff fee.</li>
+<li>Free 14-day pilot first. After that, stop any month. No lock-in.</li></ul>
 <table><thead><tr><th>Plan</th><th class="n">Setup</th><th class="n">Monthly</th></tr></thead><tbody>
-${["lite", "standard", "pro"].map((id) => `<tr><td><b>${TIER[id].name}</b></td><td class="n">${inr(TIER[id].setup)}</td><td class="n">${inr(TIER[id].monthly)}</td></tr>`).join("")}
-<tr><td><b>Founding</b> <span class="muted small">(first 3 salons)</span></td><td class="n">${inr(f.setup)}</td><td class="n">${inr(f.monthly)} → ${inr(f.monthly_after)}</td></tr></tbody></table>
+<tr><td><b>${esc(st.name)}</b> <span class="muted small">(chat link, QR poster, quick replies)</span></td><td class="n">${inr(st.setup)} once</td><td class="n">no monthly</td></tr>
+${[lite, std].map((t) => `<tr><td><b>${esc(t.name)}</b></td><td class="n">${inr(t.setup)}</td><td class="n">${inr(t.monthly)}</td></tr>`).join("")}</tbody></table>
 <p class="small muted" style="margin:0">WhatsApp's own message fees (about ${inr(P.whatsapp_fees.lite_no_marketing)}–${inr(P.whatsapp_fees.typical)} a month) are paid by you directly to Meta, with no markup. Setup: ${esc(P.terms.setup_split)}. Annual prepay: ${esc(P.terms.annual_prepay)}.</p>
 <div class="qrrow"><div class="qr">${qr(demo)}</div><p>Scan to try the demo on your own phone. Type <b>"repu haircut kavali"</b> and book a slot.</p></div>
 </div>
@@ -96,7 +98,7 @@ ${["lite", "standard", "pro"].map((id) => `<tr><td><b>${TIER[id].name}</b></td><
 // The maths is shown on the page so the owner can check it. Assumptions are conservative and stated, never promised.
 const ASSUME = { book_rate: 0.25, weeks: 4.3, saturdays: 4, reminder_cut: 1 / 3 };
 function proposalNumbers(s) {
-  const t = TIER[s.tier || "founding"]; if (!t) throw new Error(`unknown tier ${s.tier}`);
+  const t = TIER[s.tier || "standard"]; if (!t) throw new Error(`unknown tier ${s.tier}`);
   const ticket = Number(s.avg_ticket); const late = Number(s.after9_per_week); const noshow = Number(s.noshows_last_saturday);
   if (!(ticket > 0) || !(late >= 0) || !(noshow >= 0)) throw new Error("proposal needs avg_ticket > 0, after9_per_week ≥ 0, noshows_last_saturday ≥ 0");
   const lostBookings = Math.round(late * ASSUME.weeks * ASSUME.book_rate);
@@ -165,7 +167,7 @@ p{margin:0 0 1.6mm}ol{margin:0 0 1.6mm;padding-left:4.5mm}li{margin-bottom:1mm}
 table{font-size:8.3pt;break-inside:avoid}.sign{column-span:all;display:grid;grid-template-columns:1fr 1fr;gap:12mm;margin-top:10mm}
 .sign div{border-top:1px solid var(--fg);padding-top:1.5mm;font-size:8.5pt;color:var(--muted)}
 .attrib{column-span:all;margin-top:5mm;font-size:7.5pt;color:var(--muted)}`;
-  const tiers = P.tiers.map((t) => `${t.name} ${inr(t.setup)} + ${inr(t.monthly)}/month${t.monthly_after ? ` (then ${inr(t.monthly_after)})` : ""}`).join("; ");
+  const tiers = P.tiers.map((t) => t.one_time ? `${t.name} ${inr(t.setup)} one-time, no monthly fee` : `${t.name} ${inr(t.setup)} + ${inr(t.monthly)}/month${t.monthly_after ? ` (then ${inr(t.monthly_after)})` : ""}`).join("; ");
   const body = `<section class="page"><header class="band"><p class="eyebrow">BotBhai service agreement · ${VERSION}</p><h1>Agreement between ${KALPA.name} and your salon</h1>
 <p class="muted" style="margin:2mm 0 0">Plain-English terms. Please read them; ask us about anything that isn't clear.</p></header>
 <div class="wrap">
@@ -177,7 +179,7 @@ table{font-size:8.3pt;break-inside:avoid}.sign{column-span:all;display:grid;grid
 <ol><li>Setup fee: ${esc(P.terms.setup_split)}. Monthly fee: paid each month in advance, by UPI, against our invoice. Annual prepay: ${esc(P.terms.annual_prepay)}.</li>
 <li>We are not registered under GST, so our invoices carry no GST. If that changes, we will tell you 30 days before any GST is added.</li>
 <li>WhatsApp's own message fees and any ad spend are paid by you directly to Meta from your own account. We never add a markup to them.</li>
-<li>Founding salons: the founding price stays fixed for 12 months. You can still stop any month.</li></ol>
+<li>No per-staff fee: the price is the same however many people work in your salon. The Starter pack is a one-time fee with nothing monthly.</li></ol>
 <h2>4. Go-live promise</h2>
 <p>We go live within ${P.terms.live_in_days} days of receiving your price list and access to your WhatsApp Business account. If we miss that, we return your setup advance in full.</p>
 <h2>5. Stopping</h2>
@@ -197,7 +199,7 @@ table{font-size:8.3pt;break-inside:avoid}.sign{column-span:all;display:grid;grid
 <li><b>Keep it only as long as needed:</b> chat messages for 180 days, bookings and leads while you are our client, unless you ask for less.</li>
 <li><b>When you stop:</b> on request we send you an export (Excel) within 7 days, then delete your customers' data within 30 days. We keep only what the law makes us keep, such as our invoices to you.</li></ol>
 <h2>8. Confidentiality</h2>
-<p>Each of us keeps the other's business information private, during this agreement and after it. Founding salons agree that we may share anonymised results (no names or numbers) as case studies.</p>
+<p>Each of us keeps the other's business information private, during this agreement and after it. We may share anonymised results only with your written yes (no names or numbers) as case studies.</p>
 <h2>9. What we can and can't promise</h2>
 <p>We set up and run BotBhai with care and fix problems quickly. We can't promise a number of bookings or income, and we aren't responsible for outages or rule changes at WhatsApp, Meta or other providers. Neither of us is liable for indirect losses. Our total liability is limited to the fees you paid us in the 3 months before the claim, except for breaking section 7 through our own fault.</p>
 <h2>10. Law and disputes</h2>

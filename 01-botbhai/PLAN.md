@@ -35,13 +35,13 @@ Each figure is MRR plus that month's setup fees. "Likely" at month 12 means abou
 
 ### Salon price ladder
 
-This is a recommended change to `setups/salon/setup.meta.json`. A ₹9,999 setup fee is a hard first ask when DINGG starts at ₹999/month, so ₹9,999 moves to the Pro tier.
+Approved by Akhil on 11 Nov 2026 ("prices ok"; evidence in `00-hq/research/competitors-2026-11-11.md`). The entry sits clearly under the salon suites: a one-time Starter pack and Lite at ₹999/month, with Standard at ₹1,499/month as the upgrade (the old founding price is now the normal Standard price). The old ₹4,999 + ₹2,999/month tier is paused. No per-staff fee on any tier.
 
 | Tier | Setup | Monthly | Includes |
 |---|---|---|---|
-| **Founding** (first 3 salons, 12-month lock) | ₹2,999 | ₹1,499 for months 1–3, then ₹1,999 | Standard features. In return: a baseline from the salon's register, a testimonial, and use of anonymised numbers |
+| **Starter** (one-time) | ₹999 | ₹0 (no monthly) | WhatsApp chat link + QR poster for the counter, ready-made quick replies, Google Business Profile tidy-up |
 | **Lite** | ₹1,999 | ₹999 | WhatsApp bot (prices, FAQ, booking, reschedule/cancel), 24 h + 2 h reminders, owner alerts, dashboard + Excel |
-| **Standard** | ₹4,999 | ₹2,999 | Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site (`seo/seo_bot.py`), web voice, monthly ROI report |
+| **Standard** | ₹2,999 | ₹1,499 | Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site (`seo/seo_bot.py`), web voice, monthly ROI report |
 | **Pro** | ₹9,999 | ₹4,999 | Standard plus Meta ads management (`core/functions/adsbot.js`; the salon pays ad spend) and a phone voice receptionist (300 min included, then ₹3/min) |
 
 Terms for every tier:

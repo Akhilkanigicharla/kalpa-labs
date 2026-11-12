@@ -26,7 +26,7 @@ button:disabled { opacity: .5; cursor: default; }
 .primary { width: 100%; min-height: 44px; margin-top: 12px; background: var(--accent); color: var(--accent-fg); border: 0; font-size: 15px; }
 .ghost { color: var(--muted); }
 .hint { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
-.hint.warn, #nudge { color: var(--fg); border-left: 3px solid var(--gold); padding-left: 8px; }
+.hint.warn, #nudge { color: var(--fg); border: 1px solid var(--gold); border-radius: 12px; padding: 8px 12px; }
 ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-height: 260px; overflow: auto; }
 li { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 12px; }
 li.empty { color: var(--muted); justify-content: center; }

@@ -229,5 +229,22 @@
   "created": "2026-11-11T09:30:00Z",
   "output": "00-hq/knowledge/K062.md",
   "updated": "2026-11-11T09:27:09Z"
+ },
+ {
+  "world": "b1",
+  "priority": "P2",
+  "owner": "Chitti",
+  "context_chars": "20000",
+  "tries": "0",
+  "id": "K077",
+  "title": "Website glow-up offer: permission letter + offer copy draft (A199 prep)",
+  "details": "Draft for BotBhai's 'website glow-up' offer (A199): (1) a one-page written-permission letter in plain English that a small Hyderabad business owner signs, saying Kalpa Labs may reuse ONLY the text, photos and logo they own from their current website to build a new page, that they confirm they own those, and that they can withdraw permission; (2) 5 short offer lines for WhatsApp (opt-in customers only), English + Tenglish, no exclamation marks, no price claims. Mark anything legal as 'needs Akhil/lawyer check'.",
+  "read": [
+   "01-botbhai/README.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-12T09:00:00Z",
+  "output": "00-hq/knowledge/K077.md",
+  "min_items": 6
  }
 ]

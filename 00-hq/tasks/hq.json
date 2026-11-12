@@ -416,8 +416,8 @@
   "priority": "P2",
   "owner": "Ganaka",
   "context_chars": 20000,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-12T12:30:00Z",
   "id": "K081",
   "title": "A219 prep: what a privacy-safe browser error log may keep",
@@ -427,7 +427,7 @@
   ],
   "output": "00-hq/knowledge/K081.md",
   "min_items": 8,
-  "updated": "2026-11-12T12:54:09Z",
-  "vigil_notes": "FIX:\n*   Item 7: \"30 days\" is not in repo files; mark as UNVERIFIED or remove specific number.\n*   Item 8: \"5 error beacons\" is not in repo files; mark as UNVERIFIED or remove specific number.\n*   Item 8: Conflicts with verified rule (12 msgs/min); clarify if this is a separate limit or align with verified data."
+  "updated": "2026-11-12T13:13:48Z",
+  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

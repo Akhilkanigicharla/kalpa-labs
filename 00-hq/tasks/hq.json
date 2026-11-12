@@ -350,10 +350,10 @@
   "read": "['02-jobcard/web/i18n.mjs']",
   "min_items": "5",
   "context_chars": "20000",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T04:55:00Z",
   "output": "00-hq/knowledge/K073.md",
-  "updated": "2026-11-12T04:55:00Z",
+  "updated": "2026-11-12T06:37:56Z",
   "tries": "0"
  }
 ]

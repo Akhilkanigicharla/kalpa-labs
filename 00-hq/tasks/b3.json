@@ -67,5 +67,21 @@
   "updated": "2026-11-06T12:31:29Z",
   "output": "00-hq/knowledge/K027.md",
   "akhil_note": "6 Nov: no workshop"
+ },
+ {
+  "id": "K036",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Forge",
+  "playbook": "engineering-backend-architect",
+  "title": "Plan: exam-kit tracker as a free Google Sheets template + Workspace Marketplace add-on (store listing = free distribution)",
+  "details": "From Starter Story micro-apps video: builder shipped Google Workspace add-ons (SheetAI) and Chrome extensions so the store brings users. Write a short plan: what the add-on does (reminders, progress %, exam alerts from 03-kits/engine data), Google's add-on publishing steps and review rules (cite developers.google.com pages), cost (must be free), what Akhil must do (desktop login). No code yet.",
+  "read": [
+   "03-kits/engine/README.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-12T06:36:37Z",
+  "updated": "2026-11-12T06:36:37Z",
+  "tries": 0
  }
 ]

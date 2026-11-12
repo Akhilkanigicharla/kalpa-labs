@@ -51,5 +51,40 @@
   "tries": 1,
   "vigil_notes": "FIX:\n- Draft is incomplete; it cuts off at Test Case 15 and only contains 15 of the required 40 phrases.\n- Test Case 01 misclassifies \"gas fill\" as \"labour\"; refrigerant gas is a consumable part, so the type should be \"part\".\n- Test Case 08 mixes unrelated services (fan motor and gas topup) in a single voice note, which is unrealistic for a single job card context.\n- Test Case 04 misclassifies \"gas charging\" as \"labour\"; gas is a material/consumable, so the type should be \"part\".\n- Test Case 13 misclassifies \"gas refilling\" as \"labour\"; gas is a material/consumable, so the type should be \"part\".",
   "akhil_note": "6 Nov: JobCard parked, not in Akhil's plan"
+ },
+ {
+  "id": "K034",
+  "world": "b2",
+  "priority": "P1",
+  "owner": "Scout",
+  "playbook": "product-trend-researcher",
+  "title": "Micro-app idea scan from TrustMRR: 10 small apps with verified revenue that solve ONE problem and get users from a platform store (Chrome Web Store, Google Workspace Marketplace, Play Store)",
+  "details": "Method from Starter Story 'How I Made $1M Building 30 Micro-Apps' (Sanskar Tiwari: 30+ products, 8 earning, ideas from TrustMRR revenue signals). Read https://trustmrr.com/llms.txt and https://trustmrr.com/startups (public, AI-readable .md pages: https://trustmrr.com/startup/{slug}.md). For each: name, link, verified MRR, one-line problem, store it lives on, could Kalpa build a v1 in under 2 weeks (yes/no + why). Facts only from those pages; mark anything else UNVERIFIED. Don't copy anyone's product or brand.",
+  "read": [
+   "02-jobcard/research/a152-app-ideas.md",
+   "00-hq/research/reels-2026-11-12.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-12T06:36:37Z",
+  "updated": "2026-11-12T06:36:37Z",
+  "tries": 0
+ },
+ {
+  "id": "K035",
+  "world": "b2",
+  "priority": "P1",
+  "owner": "Kavi",
+  "playbook": "marketing-content-creator",
+  "title": "Evergreen YouTube demo scripts for the 3 Kalpa app prototypes (Jyotish, Photo Studio, Bhasha Kids): one 60-90 s 'how to do X' video each, search-title first",
+  "details": "Distribution method from the same Starter Story video: one evergreen demo video per product that keeps getting search views. English with Telugu title options. Show only features that exist in 02-jobcard/apps/*/README.md (no claims beyond what is built; apps are not live yet).",
+  "read": [
+   "02-jobcard/apps/jyotish/README.md",
+   "02-jobcard/apps/photo-studio/README.md",
+   "02-jobcard/apps/bhasha-kids/README.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-12T06:36:37Z",
+  "updated": "2026-11-12T06:36:37Z",
+  "tries": 0
  }
 ]

@@ -62,3 +62,12 @@ Scores are Claude's judgement on the facts above, not measured data.
 
 ## 6. For Akhil to decide (CEO queue C63)
 Pick one: **A** (astrology + naming), **B** (photo studio) or **C** (NRI kids tutor). Or name your own idea.
+
+## 7. Lessons from "How I Made $1M Building 30 Micro-Apps" (Starter Story, Sanskar Tiwari), added 12 Nov 2026
+Source: stork.ai write-up of the video (the video's captions were blocked here).
+- **Many small apps, not one big bet:** 30+ products in 6 years, 8 earn, about 1,000 paying customers, over $1M total. First 2 years: zero revenue.
+- **One problem per app** (MagicSlides makes slides, SheetAI adds AI to Sheets, MagicForm turns content into quizzes).
+- **Ideas from data:** TrustMRR (public, payment-verified revenue of 8,800+ startups), Twitter talk, his own daily pain.
+- **Proof before building:** a simple offer page; only real purchases count. Kalpa rule (18 Oct): no money taken until delivery is proven, so Kalpa uses a free "notify me" list as the first signal and real payments only after Akhil's go.
+- **Free distribution from stores and video:** Google Workspace add-ons, Chrome extensions, Facebook groups, AppSumo, one evergreen YouTube demo channel per product, short videos.
+- **What Kalpa does with it (agent tasks):** K034 Scout: 10 TrustMRR micro-apps Kalpa could build in under 2 weeks. K035 Kavi: evergreen demo video scripts for the 3 prototypes. K036 Forge: exam tracker as a free Google Sheets add-on (store = distribution). Same idea already in Kalpa: b4 Chrome extension, 3 small apps.

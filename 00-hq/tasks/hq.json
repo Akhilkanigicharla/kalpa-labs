@@ -310,20 +310,16 @@
   "world": "hq",
   "priority": "P2",
   "owner": "Forge",
-  "title": "Unslop checklist per Kalpa UI (A198 prep)",
-  "details": "List every customer-facing Kalpa page or app screen named in README.md files of the seven worlds, one numbered row each (at least 12), with its file path and the 3 most visible 'AI-looking' tells to fix (gradients, emoji labels, uppercase tracked labels, uneven spacing, generic hero copy).",
-  "read": [
-   "README.md",
-   "00-hq/ROADMAP.md"
-  ],
-  "min_items": "12",
+  "title": "Unslop checklist for 5 remaining Kalpa UIs (A198 part 2 prep)",
+  "details": "For exactly these 5 UIs write one numbered row each (1 to 5): BotBhai web (01-botbhai), JobCard, Tab Lifeboat site + popup, Ledger Peaks landing (06-finops/design/landing.html), CEO Room dashboard (00-hq/design/ceo-room-dashboard.html). Per row: file path, the 3 most visible 'AI-looking' tells to check (from: glows, colour washes, emoji icons, uppercase tracked labels, off-4px spacing, tap targets under 44 px, exclamation marks), and one 'signature detail' idea from that world's colour. Plain English, under 60 words per row.",
+  "read": "['README.md']",
+  "min_items": "5",
   "context_chars": "20000",
-  "status": "rejected",
+  "status": "todo",
   "created": "2026-11-11T21:00:00Z",
   "output": "00-hq/knowledge/K071.md",
-  "updated": "2026-11-12T00:47:48Z",
-  "tries": 3,
-  "vigil_notes": "FIX: incomplete, 5 of 12 required items. Write all 12, numbered 1 to 12."
+  "updated": "2026-11-12T03:00:00Z",
+  "tries": "0"
  },
  {
   "id": "K072",

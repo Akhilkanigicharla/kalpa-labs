@@ -103,8 +103,12 @@ CSS = (":root{" + _vars(LIGHT) + ";--f-display:'Rozha One','Noto Serif',Georgia,
        "text-align:center;background:var(--hero);color:var(--hero-fg);font-weight:700;padding:14px;border-radius:999px;text-decoration:none;"
        "box-shadow:0 0 0 3px var(--gold),0 12px 28px -12px #1d3a25}a{color:var(--accent)}a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}")
 
+def ld_json(x):
+    """JSON-LD that cannot end its own <script> tag, even if a client name holds '</script>'."""
+    return json.dumps(x, ensure_ascii=False).replace("<", "\\u003c")
+
 def page(setup, cfg, title, desc, body, url, service=None, area=None):
-    ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld(setup, cfg, url, service, area))
+    ld = "\n".join(f'<script type="application/ld+json">{ld_json(x)}</script>' for x in jsonld(setup, cfg, url, service, area))
     wa = html.escape(f"https://wa.me/{cfg['whatsapp']}?text=" + urllib.parse.quote(("Hi, I'd like to book " + (service or "")).strip()))
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">

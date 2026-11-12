@@ -27,3 +27,5 @@ Tests: `bash 01-botbhai/botbhai/tools/test-all.sh` (includes `test_web_ux.py` fo
 | 20 | Graceful error recovery | ✅ Offline keeps the last data with a toast; failed actions say "Nothing was sent / changed"; a bad key returns to sign-in with a clear message. |
 
 No ❌ left, so no new roadmap items. Also fixed while testing: `tools/test-all.sh` ignored failures inside its `a && b && c` chain of screen tests; each test now runs on its own line.
+
+Glow-up pages (A199): same template and patterns as the client SEO site above; worst-case data tested in `tools/test_glowup.py` (no sideways scroll at 360 px, WhatsApp button never covered, images sized to avoid layout shift, cover photo loads first).

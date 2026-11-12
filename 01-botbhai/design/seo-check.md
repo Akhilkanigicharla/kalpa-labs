@@ -10,3 +10,6 @@ BotBhai has two kinds of web output:
 | 17 | Clean URL slugs | `/` and `/<service>-in-<area>` (only with real local content). |
 | 19 | Search Console | Per client, done during onboarding with the client's own Google account (in `citations.csv` steps). |
 | — | Target words | "<service> near me", "<service> in <area>" (from `keywords.csv`). |
+
+## Glow-up pages (A199, 12 Nov 2026)
+Built by `botbhai/glowup/glowup.py` on the same client-site template as `seo/seo_bot.py`. `tools/test_glowup.py` runs `test_seo.py` (20 checks) and the 390 px tap sweep (light + dark) on a worst-case demo (long name with emoji and `<script>`, Telugu text, 80-letter word, GPS-tagged photos). Found and fixed: JSON-LD could be broken by a `</script>` in a client name (now `<`, fixes every client site), long titles/short descriptions, sideways scroll from long words.

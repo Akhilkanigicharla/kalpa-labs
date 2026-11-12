@@ -158,5 +158,22 @@
   "output": "00-hq/knowledge/K066.md",
   "updated": "2026-11-11T09:36:21Z",
   "tries": 1
+ },
+ {
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 0,
+  "id": "K079",
+  "title": "Goldfish review of the Ledger Peaks X-ray intake form copy (A203 prep)",
+  "details": "You have no other context. Review the intake-form copy in the file for a 3-field form (company, work email, usage export) with DPDP consent: list confusing labels, missing error/success/retry messages, anything missing for DPDP Act 2023 consent (mark 'needs Akhil/lawyer check'), and any unbacked claim. One finding per bullet, then a corrected copy block.",
+  "read": [
+   "00-hq/knowledge/K059.md"
+  ],
+  "status": "todo",
+  "created": "2026-11-12T10:50:00Z",
+  "output": "00-hq/knowledge/K079.md",
+  "min_items": 6
  }
 ]

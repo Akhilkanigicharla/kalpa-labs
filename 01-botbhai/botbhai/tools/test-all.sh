@@ -48,6 +48,7 @@ python3 social/test_sfx.py
 python3 ../../00-hq/marketing/test_marketing.py
 python3 tools/test_sales_kit.py
 python3 tools/test_visit_sheet.py
+python3 tools/test_glowup.py
 python3 voice/test_recorded_tts.py
 if python3 -c "import pipecat" 2>/dev/null; then (cd voice && python3 test_prompt.py && python3 test_turns.py); else echo "(voice prompt test skipped: pip install -r voice/requirements.txt)"; fi
 # One command per line: with set -e, a failure inside an "a && b && c" chain (except the last) was silently ignored.

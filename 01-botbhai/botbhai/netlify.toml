@@ -39,6 +39,10 @@
 
 # Private screens and sales papers (A193): never in search results. A header also covers PDFs, which can't carry a meta tag.
 [[headers]]
+  for = "/404.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
   for = "/sales/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"

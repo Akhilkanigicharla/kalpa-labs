@@ -207,11 +207,12 @@
   ],
   "min_items": 6,
   "context_chars": 20000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-09T00:00:00Z",
   "output": "00-hq/knowledge/K058.md",
-  "updated": "2026-11-08T19:49:10Z",
-  "tries": 1
+  "updated": "2026-11-12T10:50:00Z",
+  "tries": 1,
+  "note": "Used for A199: checked by Claude, invented email and untested claims removed; final in 01-botbhai/docs/glowup-permission.md"
  },
  {
   "id": "K062",
@@ -237,16 +238,16 @@
   "context_chars": 20000,
   "tries": 1,
   "id": "K077",
-  "title": "Website glow-up offer: permission letter + offer copy draft (A199 prep)",
-  "details": "Draft for BotBhai's 'website glow-up' offer (A199): (1) a one-page written-permission letter in plain English that a small Hyderabad business owner signs, saying Kalpa Labs may reuse ONLY the text, photos and logo they own from their current website to build a new page, that they confirm they own those, and that they can withdraw permission; (2) 5 short offer lines for WhatsApp (opt-in customers only), English + Tenglish, no exclamation marks, no price claims. Mark anything legal as 'needs Akhil/lawyer check'.",
+  "title": "Goldfish review of the glow-up permission form + offer lines (A199 egm-review)",
+  "details": "You have no other context. Read the file and review it as a careful outsider: (1) list every sentence a small Hyderabad business owner could misunderstand; (2) list anything missing for India's DPDP Act 2023 consent (purpose, data, retention, withdrawal, grievance contact) and mark each 'needs Akhil/lawyer check'; (3) list any claim about speed, price or results that is not backed up; (4) suggest 2 more WhatsApp offer lines (English + Tenglish), no exclamation marks, no prices. One finding per bullet.",
   "read": [
-   "01-botbhai/README.md"
+   "01-botbhai/docs/glowup-permission.md"
   ],
   "status": "todo",
   "created": "2026-11-12T09:00:00Z",
   "output": "00-hq/knowledge/K077.md",
   "min_items": 6,
-  "updated": "2026-11-12T08:50:51Z",
+  "updated": "2026-11-12T10:50:00Z",
   "vigil_notes": "FIX: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."
  }
 ]

@@ -366,10 +366,46 @@
   "details": "Read 04-extensions/src/entrypoints/popup/index.html and main.ts. List every user-visible English string that has an exclamation mark, an emoji, ALL CAPS words, a plural bug like '1 tabs', or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: file, the current text exactly as in the file, a plain sentence-case rewrite under 12 words. Quote only text that is really in the files. If a check finds nothing, write 'none' for it. Do not invent rows.",
   "read": "['04-extensions/src/entrypoints/popup/index.html', '04-extensions/src/entrypoints/popup/main.ts']",
   "context_chars": "20000",
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T08:00:00Z",
   "output": "00-hq/knowledge/K074.md",
   "tries": "0",
-  "updated": "2026-11-12T06:42:55Z"
+  "updated": "2026-11-12T06:42:55Z",
+  "note": "Checked 12 Nov (A198 part 4): agent said the files were missing, but they exist (04-extensions/src/entrypoints/popup/*). Output unused; audit done from code scan + screenshots."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": "20000",
+  "tries": "0",
+  "id": "K076",
+  "title": "Ledger Peaks landing copy pass for unslop (A198 part 5 prep)",
+  "details": "Read 06-finops/design/landing.html and 06-finops/design/xray.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word, plural bug like '1 files', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: file, exact quote, suggested plain rewrite (max 12 words). Quote only strings that are really in the file; if none, say none.",
+  "read": [
+   "06-finops/design/landing.html",
+   "06-finops/design/xray.html"
+  ],
+  "status": "queued",
+  "created": "2026-11-12T09:00:00Z",
+  "output": "00-hq/knowledge/K076.md",
+  "min_items": 5
+ },
+ {
+  "world": "b1",
+  "priority": "P2",
+  "owner": "Chitti",
+  "context_chars": "20000",
+  "tries": "0",
+  "id": "K077",
+  "title": "Website glow-up offer: permission letter + offer copy draft (A199 prep)",
+  "details": "Draft for BotBhai's 'website glow-up' offer (A199): (1) a one-page written-permission letter in plain English that a small Hyderabad business owner signs, saying Kalpa Labs may reuse ONLY the text, photos and logo they own from their current website to build a new page, that they confirm they own those, and that they can withdraw permission; (2) 5 short offer lines for WhatsApp (opt-in customers only), English + Tenglish, no exclamation marks, no price claims. Mark anything legal as 'needs Akhil/lawyer check'.",
+  "read": [
+   "01-botbhai/README.md"
+  ],
+  "status": "queued",
+  "created": "2026-11-12T09:00:00Z",
+  "output": "00-hq/knowledge/K077.md",
+  "min_items": 6
  }
 ]

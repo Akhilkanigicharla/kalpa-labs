@@ -24,7 +24,7 @@ function draw() {
     const li = document.createElement("li");
     const meta = document.createElement("div"); meta.className = "meta";
     const name = document.createElement("strong"); name.textContent = s.name;
-    const sub = document.createElement("span"); sub.textContent = `${when(s.createdAt)} · ${plural(s.tabs, "tab")} · ${plural(s.groups, "group")}${s.kind === "auto" ? " · auto" : s.kind === "import" ? " · imported" : ""}`;
+    const sub = document.createElement("span"); sub.textContent = `${when(s.createdAt)} · ${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}${s.kind === "auto" ? " · auto" : s.kind === "import" ? " · imported" : ""}`;
     meta.append(name, sub);
     const open = document.createElement("button"); open.type = "button"; open.textContent = "Restore"; open.setAttribute("aria-label", `Restore ${s.name}`);
     open.onclick = async () => { const r = await send<{ tabs: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}` : "Could not open"; };

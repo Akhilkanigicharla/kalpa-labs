@@ -158,7 +158,7 @@
   "priority": "P2",
   "owner": "Kavi",
   "context_chars": 20000,
-  "tries": 0,
+  "tries": 1,
   "id": "K078",
   "title": "Manim explainer storyboards: 3 clips (A201 prep)",
   "details": "Write storyboards for 3 short vertical (9:16) exam-prep explainer clips, each under 45 seconds: (a) one formula explained (e.g. simple interest SI = PRT/100), (b) one graph read step by step (a bar or line chart question), (c) one step-by-step sum (a percentage or ratio word problem). For each clip: 5-7 scenes with on-screen text, what moves, seconds per scene, and caption lines in English and Telugu script. Use only facts you are sure of; mark any doubt 'check'.",
@@ -168,6 +168,8 @@
   "status": "todo",
   "created": "2026-11-12T10:50:00Z",
   "output": "00-hq/knowledge/K078.md",
-  "min_items": 15
+  "min_items": 15,
+  "updated": "2026-11-12T10:48:51Z",
+  "vigil_notes": "FIX: incomplete, 0 of 15 required items. Write all 15, numbered 1 to 15."
  }
 ]

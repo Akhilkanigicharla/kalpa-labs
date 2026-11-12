@@ -136,15 +136,26 @@ function limited(ip, now = Date.now()) {
 
 const json = (status, obj) => new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
+// one JSON line per request for Netlify logs: no message text, no IP (DPDP: we log only what we need)
+const log = (status, t0, extra = {}) => console.log(JSON.stringify({ at: new Date().toISOString(), fn: "chat", status, ms: Date.now() - t0, ...extra }));
+
 export default async (req, context) => {
+  const t0 = Date.now();
+  const res = await handle(req, context);
+  log(res.status, t0);
+  return res;
+};
+
+async function handle(req, context) {
   if (req.method !== "POST") return json(405, { error: "method" });
   const ip = context?.ip || req.headers.get("x-nf-client-connection-ip") || "anon";
   if (limited(ip)) return json(429, { output: "You're sending messages very fast 🙂 Please wait a minute and try again." });
   let body; try { body = await req.json(); } catch { return json(400, { error: "json" }); }
   const text = String(body?.chatInput || "").trim();
   if (!text) return json(400, { error: "empty" });
+  if (text.length > 1000) return json(413, { error: "too long" }); // the box allows 500; anything bigger is not a person typing
   const out = await reply({ chatInput: text, history: body.history });
   return out ? json(200, { output: out }) : json(503, { error: "models unavailable" });
-};
+}
 
 export const config = { path: "/api/chat" };

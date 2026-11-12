@@ -366,9 +366,10 @@
   "details": "Read 04-extensions/src/entrypoints/popup/index.html and main.ts. List every user-visible English string that has an exclamation mark, an emoji, ALL CAPS words, a plural bug like '1 tabs', or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: file, the current text exactly as in the file, a plain sentence-case rewrite under 12 words. Quote only text that is really in the files. If a check finds nothing, write 'none' for it. Do not invent rows.",
   "read": "['04-extensions/src/entrypoints/popup/index.html', '04-extensions/src/entrypoints/popup/main.ts']",
   "context_chars": "20000",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T08:00:00Z",
   "output": "00-hq/knowledge/K074.md",
-  "tries": "0"
+  "tries": "0",
+  "updated": "2026-11-12T06:42:55Z"
  }
 ]

@@ -47,7 +47,10 @@
 
       <section class="card" aria-labelledby="h-import">
         <h2 id="h-import">Move in from OneTab or Session Buddy</h2>
-        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup. You see the count before anything is saved.</p>
+        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup, or open the file. You see the count before anything is saved.</p>
+        <label class="file">Open a OneTab or Session Buddy file
+          <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" />
+        </label>
         <textarea id="importText" rows="4" aria-label="OneTab text or Session Buddy JSON" placeholder="https://example.com | Example"></textarea>
         <p id="preview" class="hint" role="status"></p>
         <button id="doImport" type="button" disabled>Import</button>

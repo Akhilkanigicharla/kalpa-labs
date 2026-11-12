@@ -10,22 +10,43 @@ Tab Lifeboat
 
 ## Short description
 
-Save all tabs and tab groups in one click. Automatic snapshots on your computer, so a crash or update never wipes them.
+Never lose your tabs. Save every tab and group in one click, with automatic snapshots kept on your computer.
 
 ## Description
 
-Lost your tabs to a crash, an update or a "helpful" cleanup? Tab Lifeboat keeps them safe.
+Never lose your tabs again. A crash, an update or a cleanup can wipe a whole day of work. Tab Lifeboat keeps a copy on your computer, all the time.
 
-• Save every window, pinned tab and tab group in one click. Nothing gets closed.
-• Restore brings back tab group names, colours and collapsed state.
-• Automatic snapshots every few minutes, kept on your computer.
-• Move in from OneTab or Session Buddy, with a preview before anything is added.
-• Download one backup file with every session. Restoring it twice never makes doubles.
+• One click saves every window, pinned tab and tab group. Nothing gets closed.
+• Restore brings back group names, colours and collapsed state.
+• Automatic snapshots every few minutes, so even tabs you forgot to save are kept.
+• Move in from OneTab or Session Buddy: paste the text or open the file, and see a preview before anything is added.
+• One backup file holds every session. Restoring it twice never makes doubles.
 
-Privacy: your tabs stay on your computer. No account, no servers, no analytics, no ads. Policy: https://<pages-url>/privacy.html
+Privacy: your tabs stay on your computer. No account, no servers, no analytics, no ads. Policy: https://akhilkanigicharla.github.io/kalpa-labs/privacy.html
 
-Free for ever: saving, restoring, imports, the backup file and the last 3 snapshots.
-Pro is not on sale yet: longer snapshot history and backups that run by themselves will come later, and the price will be shown before it opens. Terms: https://<pages-url>/terms.html
+Free, with no daily limit: saving, restoring, imports, the backup file and the last 3 snapshots. Nothing is for sale yet; if a paid plan ever opens, its price will be shown first. Terms: https://akhilkanigicharla.github.io/kalpa-labs/terms.html
+
+Moving from another tab saver? Step-by-step guides: https://akhilkanigicharla.github.io/kalpa-labs/switch-onetab.html and https://akhilkanigicharla.github.io/kalpa-labs/switch-session-buddy.html
+
+## Headline options (for the promo tile and posts)
+
+1. Never lose your tabs.
+2. Your tabs, saved every few minutes, on your own computer.
+3. One click saves every tab and group. Nothing leaves your PC.
+
+## FAQ (for the site and replies)
+
+- **Does it send my tabs anywhere?** No. Everything is stored in your browser on your computer.
+- **Will saving close my tabs?** No. Saving only copies them.
+- **Can I bring my OneTab or Session Buddy tabs?** Yes. Export there, then paste or open the file in Options. You see the count first.
+- **What if my computer dies?** Download the backup file now and then, and keep it in Drive or email it to yourself.
+
+## Screenshot captions
+
+1. Save every tab and group in one click.
+2. Automatic snapshots: proof your tabs are kept.
+3. Move in from OneTab or Session Buddy with a preview.
+4. Your tabs stay on your computer. No account, no tracking.
 
 ## Category · language
 
@@ -54,6 +75,6 @@ Save and restore the user's browser tabs, windows and tab groups, including auto
 | Certify: not sold to third parties | ✅ |
 | Certify: not used or transferred for purposes unrelated to the single purpose | ✅ |
 | Certify: not used or transferred to determine creditworthiness or for lending | ✅ |
-| Privacy policy URL | `https://<pages-url>/privacy.html` |
+| Privacy policy URL | `https://akhilkanigicharla.github.io/kalpa-labs/privacy.html` |
 
 When Pro opens (E8 licence, E13 Drive), add **Authentication information** (licence key → the payment company Akhil chooses, C54) and update both this form and the policy in the same release.

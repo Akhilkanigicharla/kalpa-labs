@@ -23,12 +23,16 @@ fs.copyFileSync(path.join(here, "site.css"), path.join(dist, "site.css"));
 fs.copyFileSync(path.join(here, "404.html"), path.join(dist, "404.html")); // GitHub Pages serves this for unknown paths
 
 const pages = { index: "Home", privacy: "Privacy", terms: "Terms & refunds" };
+// pages built the same way but not in the top bar (linked from the home page and footer)
+const extra = { "switch-onetab": "From OneTab", "switch-session-buddy": "From Session Buddy" };
 // SEO (00-hq/design/SEO-CHECKS.md). GitHub Pages project URL; override with SITE_URL when a custom domain is set.
 const SITE = (process.env.SITE_URL || "https://akhilkanigicharla.github.io/kalpa-labs").replace(/\/$/, "");
 const urlOf = (p) => (p === "index" ? `${SITE}/` : `${SITE}/${p}`);
 const SEO = {
   index: { title: null, desc: "A Chrome extension that saves all your tabs and groups in one click and keeps automatic snapshots, so a crash or update never wipes them." },
   privacy: { title: "Privacy policy · Tab Lifeboat Chrome extension", desc: "What Tab Lifeboat stores (only on your computer), what it never collects, and how to delete your data. Plain words, India DPDP Act." },
+  "switch-onetab": { title: null, desc: "Move your saved OneTab lists into Tab Lifeboat in two minutes: export from OneTab, paste or choose the file, import. Nothing is uploaded." },
+  "switch-session-buddy": { title: null, desc: "Move your Session Buddy collections into Tab Lifeboat: export as JSON from Session Buddy, choose the file, import. Nothing is uploaded." },
   terms: { title: "Terms and refunds · Tab Lifeboat Chrome extension", desc: "The terms for using Tab Lifeboat, what the free and Pro plans include, and how refunds work. Made by Kalpa Labs, Hyderabad." },
 };
 const esc = (t) => t.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -53,8 +57,8 @@ function seoHead(p, title) {
 }
 const nav = (cur) => `<div class="temple"></div><nav class="top wrap"><a class="brand" href="index.html"><img src="icon/128.png" alt="" width="32" height="32">Tab Lifeboat</a>
 <span class="links">${Object.entries(pages).map(([p, label]) => `<a href="${p}.html"${p === cur ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</span></nav>`;
-const footer = `<footer class="wrap"><p>Tab Lifeboat is made by Kalpa Labs, Hyderabad, India. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms &amp; refunds</a> · <a href="mailto:${email || "{{CONTACT_EMAIL}}"}">Contact</a></p></footer>`;
-for (const p of Object.keys(pages)) {
+const footer = `<footer class="wrap"><p>Tab Lifeboat is made by Kalpa Labs, Hyderabad, India. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms &amp; refunds</a> · <a href="switch-onetab.html">From OneTab</a> · <a href="switch-session-buddy.html">From Session Buddy</a> · <a href="mailto:${email || "{{CONTACT_EMAIL}}"}">Contact</a></p></footer>`;
+for (const p of [...Object.keys(pages), ...Object.keys(extra)]) {
   const html = fs.readFileSync(path.join(here, `${p}.html`), "utf8").replace(/\{\{NAV:(\w+)\}\}/, (_, c) => nav(c)).replace("{{FOOTER}}", footer)
     .replaceAll("{{UPDATED}}", updated).replaceAll("{{CONTACT_EMAIL}}", email || "{{CONTACT_EMAIL}}");
   let out = html;
@@ -67,7 +71,6 @@ for (const p of Object.keys(pages)) {
 fs.copyFileSync(path.join(here, "og.png"), path.join(dist, "og.png"));
 fs.writeFileSync(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 const day = new Date().toISOString().slice(0, 10);
-fs.writeFileSync(path.join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.keys(pages).map((p) => `  <url><loc>${urlOf(p)}</loc><lastmod>${day}</lastmod></url>`).join("\n")}\n</urlset>\n`);
+fs.writeFileSync(path.join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...Object.keys(pages), ...Object.keys(extra)].map((p) => `  <url><loc>${urlOf(p)}</loc><lastmod>${day}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 fs.writeFileSync(path.join(dist, "llms.txt"), `# Tab Lifeboat\n\n> A Chrome extension by Kalpa Labs (Hyderabad, India) that saves all your tabs and tab groups in one click and keeps automatic snapshots on your own computer, so a crash, an update or a reinstall never wipes them. No account; nothing leaves your computer on the free plan.\n\n- Status: not yet on the Chrome Web Store.\n\n## Pages\n\n${Object.entries(pages).map(([p, l]) => `- [${l}](${urlOf(p)})`).join("\n")}\n`);
-fs.writeFileSync(path.join(dist, "404.html"), `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Page not found · Tab Lifeboat</title><link rel="stylesheet" href="${SITE}/vendor/tokens.css"><link rel="stylesheet" href="${SITE}/site.css"></head><body><main class="wrap" style="padding:64px 0;text-align:center"><h1>This page isn't here</h1><p>The link may be old or mistyped.</p><p><a class="btn" href="${SITE}/" style="display:inline-flex;min-height:48px;align-items:center;padding:0 24px">Go to Tab Lifeboat</a></p></main></body></html>\n`);
 console.log(`site built → ${dist}${email ? "" : " (no CONTACT_EMAIL yet: preview only)"}`);

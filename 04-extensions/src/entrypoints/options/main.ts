@@ -94,6 +94,14 @@ $("importText").addEventListener("input", () => {  // wait for a pause before pa
     $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
   }, 250);
 });
+$("importFile").addEventListener("change", async () => {
+  const input = $<HTMLInputElement>("importFile"); const f = input.files?.[0];
+  if (!f) return;
+  if (f.size > 5 * 1024 * 1024) { $("preview").textContent = "That file is over 5 MB, too big to be a OneTab or Session Buddy export."; input.value = ""; return; }
+  const box = $<HTMLTextAreaElement>("importText");
+  box.value = await f.text(); input.value = "";
+  box.dispatchEvent(new Event("input"));
+});
 $("doImport").addEventListener("click", async () => {
   const r = await send<{ nudge: string | null }>({ type: "import", text: $<HTMLTextAreaElement>("importText").value });
   $<HTMLTextAreaElement>("importText").value = ""; $<HTMLButtonElement>("doImport").disabled = true;

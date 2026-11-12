@@ -399,7 +399,7 @@
   "owner": "Ganaka",
   "context_chars": 20000,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T12:30:00Z",
   "id": "K080",
   "title": "CEO Room copy pass for unslop (A198 part 6 prep)",
@@ -409,7 +409,8 @@
   ],
   "output": "00-hq/knowledge/K080.md",
   "min_items": 5,
-  "updated": "2026-11-12T12:53:18Z"
+  "updated": "2026-11-12T14:41:36Z",
+  "review_notes": "Used 1 of 5 (#1 uppercase kicker, fixed in CSS). #2 rejected: \"CEO Room\" is the product name used in LINKS and docs. #3 no change. #4, #5 rejected: the interpunct is the Kalpa separator everywhere."
  },
  {
   "world": "hq",
@@ -429,5 +430,21 @@
   "min_items": 8,
   "updated": "2026-11-12T13:13:48Z",
   "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K083",
+  "tries": "0",
+  "status": "todo",
+  "created": "2026-11-12T14:41:36Z",
+  "updated": "2026-11-12T14:41:36Z",
+  "title": "A205 prep: TruffleHog beside gitleaks, what to check",
+  "details": "Read .github/workflows/quality.yml (hygiene job). Write a numbered list of 8 points for adding TruffleHog OSS as an unmodified CI tool beside gitleaks: which flags make it scan only verified secrets, how to scan only the pushed commits, how to pin the action to a commit SHA, how to keep it from failing on test fixtures, and the AGPL note (CI tool only, never copied into a product). Mark any fact you are not sure of as \"unverified\".",
+  "read": "['.github/workflows/quality.yml']",
+  "output": "00-hq/knowledge/K083.md",
+  "min_items": "8"
  }
 ]

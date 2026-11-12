@@ -170,5 +170,21 @@
   "output": "00-hq/knowledge/K078.md",
   "min_items": 15,
   "updated": "2026-11-12T11:55:18Z"
+ },
+ {
+  "priority": "P2",
+  "owner": "Kavi",
+  "context_chars": 20000,
+  "world": "b3",
+  "id": "K082",
+  "tries": "0",
+  "status": "todo",
+  "created": "2026-11-12T14:41:36Z",
+  "updated": "2026-11-12T14:41:36Z",
+  "title": "A201 prep: 3 Manim explainer clip scripts, English + Telugu captions",
+  "details": "Write 3 short scripts for 9:16 explainer clips under 45 s each, for Telangana/AP competitive-exam students: (1) one formula: simple interest SI = P x R x T / 100 with one worked number; (2) one graph: speed vs time line and what the area means; (3) one step-by-step sum: a percentage profit question solved in 4 steps. For each clip give 5 to 7 caption lines, each in English and in Telugu script, max 8 words per line, plus the on-screen maths for each line. Check every number in the worked examples.",
+  "read": "[]",
+  "output": "00-hq/knowledge/K082.md",
+  "min_items": "3"
  }
 ]

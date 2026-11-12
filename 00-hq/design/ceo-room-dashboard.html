@@ -5,16 +5,14 @@
  --tint:color-mix(in srgb,var(--kx-a) 10%,var(--color-panel));
  font-family:var(--font-anthropic-sans);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-lg);max-width:1240px;margin-inline:auto}
 .kx *{box-sizing:border-box}
-.kx-hero{border-radius:24px;padding:clamp(18px,3vw,28px);background:
- radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--kx-a) 22%,transparent),transparent 55%),
- radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--kx-b) 20%,transparent),transparent 55%),var(--color-panel);
+.kx-hero{border-radius:24px;padding:clamp(16px,3vw,28px);background:var(--color-panel);
  border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:.6rem}
 .kx-hi{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .kx-live{display:inline-flex;align-items:center;gap:.35rem;padding:.15rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--color-ok) 14%,transparent);color:var(--color-ok);font-weight:600}
 .kx-live i{width:7px;height:7px;border-radius:50%;background:var(--color-ok)}
 .kx-h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:clamp(1.7rem,4.5vw,2.6rem);line-height:1.08;margin:0;text-wrap:balance}
 .kx-take{margin:0;max-width:62ch;color:var(--color-fg);opacity:.85;font-size:var(--cds-font-size-body)}
-.kx-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--color-panel) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
+.kx-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
 .kx-nav::-webkit-scrollbar{display:none}
 .kx-tab{flex:1 0 auto;border:0;background:transparent;color:var(--color-fg-muted);font:inherit;font-size:var(--cds-font-size-body);padding:.5rem .8rem;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;white-space:nowrap}
 .kx-tab svg{width:18px;height:18px;flex:none}
@@ -91,9 +89,9 @@
 .kx-table td{padding:.6rem .7rem;border-bottom:1px solid var(--color-border-line);vertical-align:top}
 .kx-table td:first-child{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
 @media (max-width:640px){.kx-table .hide-n{display:none}}
-.kx-game{border-radius:24px;padding:clamp(18px,3vw,28px);background:radial-gradient(100% 120% at 100% 0%,color-mix(in srgb,var(--color-warn) 20%,transparent),transparent 60%),var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.kx-game{border-radius:24px;padding:clamp(16px,3vw,28px);background:var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:var(--cds-gap-md)}
 .kx-xp{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
-.kx-xp>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--color-warn),var(--color-ok));border-radius:999px;transition:width 1.2s var(--cds-ease-out)}
+.kx-xp>span{display:block;height:100%;width:0;background:var(--color-ok);border-radius:999px;transition:width 1.2s var(--cds-ease-out)}
 .kx-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,8.5rem),1fr));gap:var(--cds-gap-sm)}
 .kx-isle{border-radius:16px;border:1px solid var(--color-border-line);padding:var(--cds-pad-md);display:flex;flex-direction:column;gap:.35rem;background:var(--color-bg);min-width:0}
 .kx-sep{display:flex;align-items:center;gap:.5rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
@@ -149,7 +147,7 @@
  @keyframes kx-scr{0%{opacity:.55}50%{opacity:1}100%{opacity:.7}}
 }
 .kx-brand{display:flex;align-items:center;gap:.55rem}.kx-logo{width:34px;height:34px;flex:none}
-.kx-kicker{font-size:var(--cds-font-size-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--kv-bark);font-weight:600}
+.kx-kicker{font-size:var(--cds-font-size-caption);color:var(--kv-bark);font-weight:600}
 .kx-hero{position:relative;overflow:hidden}
 .kx-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:radial-gradient(circle at 7px 5px,var(--kv-gold) 2.2px,transparent 2.6px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--kv-young) 90%,transparent) 0 0/7px 10px}
 </style>
@@ -189,13 +187,13 @@
    </div>
   <div class="kx-grid">
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">agent tasks done of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span></div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span> <span id="w-agent">agent tasks</span> done</div></div></div>
     <div class="kx-bar" style="--c:var(--color-ok)"><span id="bar-agent"></span></div></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=ceo_open">—</div><div class="kx-sub">tasks waiting on you</div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=ceo_open">—</div><div class="kx-sub" id="sub-ceo">tasks waiting on you</div></div></div>
     <p class="kx-note">Accounts, decisions, people. Only you can do these.</p></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 11a4 4 0 0 1-1 7z"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=workers_ok">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=workers_total">—</span> cloud workers ran cleanly last time</div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=workers_ok">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=workers_total">—</span> <span id="w-workers">cloud workers</span> ran cleanly last time</div></div></div>
     <p class="kx-note">They work while your PC is off.</p></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-b)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V5"/><circle cx="9.5" cy="13" r="1"/><circle cx="14.5" cy="13" r="1"/></svg></div>
     <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agents">—</div><div class="kx-sub">AI agents on free models</div></div></div>
@@ -531,9 +529,10 @@
   const h=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',hourCycle:'h23'}).format(now));
   greet.textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', Akhil';}
  const LAUNCH={pilot:'2026-11-16T00:00:00+05:30',launch:'2026-12-13T06:12:00+05:30'}; // dates Akhil fixed on 18 Oct 2026
+ const pl=(n,w)=>n+' '+w+(n==1?'':'s');
  function cd(){const days=t=>Math.max(0,Math.ceil((new Date(t)-Date.now())/864e5));
-  document.getElementById('cd-pilot').textContent='Pilot Day in '+days(LAUNCH.pilot)+' days · Mon 16 Nov';
-  document.getElementById('cd-launch').textContent='Soft launch in '+days(LAUNCH.launch)+' days · Sun 13 Dec';}
+  document.getElementById('cd-pilot').textContent='Pilot Day in '+pl(days(LAUNCH.pilot),'day')+' · Mon 16 Nov';
+  document.getElementById('cd-launch').textContent='Soft launch in '+pl(days(LAUNCH.launch),'day')+' · Sun 13 Dec';}
  tick(); cd(); setInterval(()=>{tick(); cd();},30000);
 
  function drawHome(){
@@ -541,7 +540,9 @@
   document.querySelectorAll('#home [data-source=kpis][data-where],#hero [data-source=kpis][data-where]').forEach(e=>{const x=v(e.getAttribute('data-where').split('=')[1]); e.textContent=x==null?'—':x;});
   const t=document.getElementById('takeaway');
   if(k.status==='ok'){const pct=v('agent_total')?Math.round(v('agent_done')/v('agent_total')*100):0;
-   t.textContent='Your AI team has finished '+pct+'% of its roadmap. '+v('ceo_open')+' tasks are waiting on you, and '+v('workers_ok')+' of '+v('workers_total')+' cloud workers ran cleanly last time.';
+   t.textContent='Your AI team has finished '+pct+'% of its roadmap. '+pl(v('ceo_open'),'task')+(v('ceo_open')==1?' is':' are')+' waiting on you, and '+v('workers_ok')+' of '+pl(v('workers_total'),'cloud worker')+' ran cleanly last time.';
+   const sub=(id,t)=>{const e=document.getElementById(id); if(e) e.textContent=t;};
+   sub('sub-ceo',(v('ceo_open')==1?'task':'tasks')+' waiting on you'); sub('w-agent',v('agent_total')==1?'agent task':'agent tasks'); sub('w-workers',v('workers_total')==1?'cloud worker':'cloud workers');
    requestAnimationFrame(()=>{document.getElementById('bar-agent').style.width=pct+'%';});} else t.textContent='—';
   drawScene();
   const n=dash.data('needs_you'), ol=document.getElementById('needlist');
@@ -553,7 +554,7 @@
     const nm=txt('b',null,NAME[r.world]||r.world); nm.style.fontWeight='550';
     const pc=txt('span','kx-sub',r.pct+'%'); pc.setAttribute('data-source','worlds'); pc.setAttribute('data-field','pct'); pc.setAttribute('data-where','world='+encodeURIComponent(r.world));
     top.append(nm,pc); const bar=txt('div','kx-bar'); bar.style.setProperty('--c',KV[i%8]); const sp=txt('span'); bar.append(sp); requestAnimationFrame(()=>{sp.style.width=r.pct+'%';});
-    row.append(top,bar,txt('span','kx-sub',r.done+' of '+r.total+' tasks')); return row;})); else if(w.status==='error') fail(wl,'roadmap');
+    row.append(top,bar,txt('span','kx-sub',r.done+' of '+pl(r.total,'task'))); return row;})); else if(w.status==='error') fail(wl,'roadmap');
   drawDays();
  }
  function drawDays(){

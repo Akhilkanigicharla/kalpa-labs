@@ -15,6 +15,7 @@ export const SITES = {
   'Tab Lifeboat site + popup': ['04-extensions/site', '04-extensions/src/entrypoints'],
   'Deals & Tools site': ['05-deals/site/src'],
   'Ledger Peaks pages': ['06-finops/design'],
+  'CEO Room dashboard': ['00-hq/design/ceo-room-dashboard.html', '00-hq/design/ceo-room-office.css', '00-hq/design/ceo-room-office.js', '00-hq/design/ceo-room-rooms.js'],
 };
 const EXT = /\.(html|css|astro|mjs|js|jsx|tsx|vue)$/;
 const SKIP = /(node_modules|dist|\.test\.|sw\.template|build\.mjs|check\.py)/;

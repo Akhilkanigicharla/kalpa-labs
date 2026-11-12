@@ -1,9 +1,11 @@
 import "../popup/style.css";
 import "./options.css";
 import { stamp } from "../../lib/capture";
+import { restorable } from "../../lib/model";
+import { backupReminder, daysAgo } from "../../lib/tools";
 
 type Row = { id: string; name: string; kind: string; createdAt: number; tabs: number; groups: number; windows: number };
-type Status = { lastSnapshot: number | null; persisted: boolean; plan: "free" | "pro"; every: number; limits: { freeAutoSnapshots: number; proAutoDays: number } };
+type Status = { lastSnapshot: number | null; lastFileAt: number | null; sessions: number; persisted: boolean; plan: "free" | "pro"; every: number; limits: { freeAutoSnapshots: number; proAutoDays: number } };
 // Never throw: if the background is asleep or busy, callers get { ok: false } and show a plain message (UX pattern 20).
 const send = <T = Record<string, unknown>>(msg: object) =>
   (browser.runtime.sendMessage(msg) as Promise<T & { ok: boolean; error?: string }>).catch(() => ({ ok: false, error: "Tab Lifeboat is busy. Try again." }) as T & { ok: boolean; error?: string });
@@ -27,7 +29,7 @@ function draw() {
     const sub = document.createElement("span"); sub.textContent = `${when(s.createdAt)} · ${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}${s.kind === "auto" ? " · auto" : s.kind === "import" ? " · imported" : ""}`;
     meta.append(name, sub);
     const open = document.createElement("button"); open.type = "button"; open.textContent = "Restore"; open.setAttribute("aria-label", `Restore ${s.name}`);
-    open.onclick = async () => { const r = await send<{ tabs: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}` : "Could not open"; };
+    open.onclick = async () => { const r = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}${r.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
     const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Rename"; ren.setAttribute("aria-label", `Rename ${s.name}`);
     ren.onclick = async () => { const v = prompt("New name for this session", s.name); if (v && v.trim() && v.trim() !== s.name) { await send({ type: "rename", id: s.id, name: v }); await refresh(); } };
     const del = document.createElement("button"); del.type = "button"; del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
@@ -43,6 +45,9 @@ async function refresh() {
   $("st-sessions").textContent = n(rows.length);
   $("st-tabs").textContent = n(rows.reduce((a, r) => a + r.tabs, 0));
   $("st-last").textContent = ago(st.lastSnapshot);
+  const remind = st.ok ? backupReminder({ lastFileAt: st.lastFileAt, sessions: rows.length }) : null;
+  $("backup-age").textContent = remind ?? (st.lastFileAt ? `Last backup file: ${daysAgo(st.lastFileAt)}.` : "");
+  $("backup-age").classList.toggle("warn", !!remind);
   $("st-persist").textContent = st.persisted ? "Chrome has marked this storage as persistent: it won't be cleared when the disk is low." : "Tip: keep a backup file too. Chrome may clear site storage when the disk is nearly full.";
   $("plan").textContent = st.plan === "pro" ? "Pro" : "Free";
   $("pro-tools").hidden = st.plan !== "pro";
@@ -64,6 +69,7 @@ $("download").addEventListener("click", async () => {
   a.href = URL.createObjectURL(new Blob([r.json], { type: "application/json" })); a.download = r.fileName; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
   $("download-msg").textContent = `Saved ${r.fileName} to your Downloads folder.`;
+  $("backup-age").textContent = "Last backup file: today."; $("backup-age").classList.remove("warn");
 });
 
 let pending = "";
@@ -119,7 +125,8 @@ $("find").addEventListener("input", () => {
     if (!hits.length) { const li = document.createElement("li"); li.className = "empty"; li.textContent = "No saved tab matches."; ul.append(li); return; }
     for (const h of hits.slice(0, 50)) {
       const li = document.createElement("li"); const meta = document.createElement("div"); meta.className = "meta";
-      const a = document.createElement("a"); a.href = h.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = h.title || h.url;
+      // only web addresses become links; anything else from an imported file (javascript:, file:, data:) is shown as plain text
+      const a = document.createElement(restorable(h.url) ? "a" : "span"); if (a instanceof HTMLAnchorElement) { a.href = h.url; a.target = "_blank"; a.rel = "noopener"; } a.textContent = h.title || h.url;
       const sub = document.createElement("span"); sub.textContent = `${h.sessionName} · ${when(h.createdAt)}${h.alsoIn ? ` · in ${plural(h.alsoIn, "older session")} too` : ""}`;
       meta.append(a, sub); li.append(meta); ul.append(li);
     }

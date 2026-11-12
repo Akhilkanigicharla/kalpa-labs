@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Session } from "../lib/model";
-import { backupDue, findDuplicates, findStale, normUrl, searchTabs, tabTimeline, upgradeNudge } from "../lib/tools";
+import { backupDue, backupReminder, daysAgo, findDuplicates, findStale, normUrl, searchTabs, tabTimeline, upgradeNudge } from "../lib/tools";
 
 const DAY = 864e5;
 const sess = (id: string, createdAt: number, tabs: [string, string][], kind: Session["kind"] = "auto"): Session => ({
@@ -70,5 +70,20 @@ describe("backupDue / upgradeNudge", () => {
     expect(upgradeNudge({ plan: "free", importedTabs: 20, lastNudge: null, now: 10 * DAY })).toBeNull();
     expect(upgradeNudge({ plan: "pro", importedTabs: 1240, lastNudge: null, now: 10 * DAY })).toBeNull();
     expect(upgradeNudge({ plan: "free", importedTabs: 1240, lastNudge: 8 * DAY, now: 10 * DAY })).toBeNull();
+  });
+});
+
+describe("backupReminder (free nudge to keep a copy outside Chrome)", () => {
+  const day = 86_400_000, now = 100 * day;
+  it("stays quiet with nothing saved or a fresh file", () => {
+    expect(backupReminder({ lastFileAt: null, sessions: 0, now })).toBeNull();
+    expect(backupReminder({ lastFileAt: now - 6 * day, sessions: 3, now })).toBeNull();
+  });
+  it("nudges when there is no file or it is a week old", () => {
+    expect(backupReminder({ lastFileAt: null, sessions: 1, now })).toMatch(/No backup file yet/);
+    expect(backupReminder({ lastFileAt: now - 7 * day, sessions: 1, now })).toBe("Last backup file was 7 days ago.");
+  });
+  it("daysAgo reads naturally, and a clock set backwards says today", () => {
+    expect([daysAgo(now, now), daysAgo(now - day, now), daysAgo(now - 1200 * day, now), daysAgo(now + day, now)]).toEqual(["today", "yesterday", "1,200 days ago", "today"]);
   });
 });

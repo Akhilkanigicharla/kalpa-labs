@@ -1,3 +1,4 @@
+import { backupReminder } from "../../lib/tools";
 import "./style.css";
 
 type Row = { id: string; name: string; kind: string; createdAt: number; tabs: number; groups: number; windows: number };
@@ -18,7 +19,7 @@ async function refresh() {
     const name = document.createElement("strong"); name.textContent = s.name;
     const sub = document.createElement("span"); sub.textContent = `${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}`;
     meta.append(name, sub);
-    const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number }>({ type: "restore", id: s.id }); open.textContent = x.ok ? `Opened ${plural(x.tabs, "tab")}` : "Could not open"; };
+    const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = x.ok ? `Opened ${plural(x.tabs, "tab")}${x.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
     const del = document.createElement("button"); del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
     del.onclick = async () => { if (confirm(`Delete "${s.name}"?`)) { await send({ type: "delete", id: s.id }); await refresh(); } };
     li.append(meta, open, del); ul.append(li);
@@ -47,7 +48,9 @@ $("doImport").addEventListener("click", async () => {
   $<HTMLTextAreaElement>("importText").value = ""; $<HTMLButtonElement>("doImport").disabled = true; $("preview").textContent = "Imported."; await refresh();
 });
 async function status() {
-  const r = await send<{ lastSnapshot: number | null }>({ type: "status" }); if (!r.ok) return;
+  const r = await send<{ lastSnapshot: number | null; lastFileAt: number | null; sessions: number }>({ type: "status" }); if (!r.ok) return;
+  const nudge = backupReminder({ lastFileAt: r.lastFileAt, sessions: r.sessions });
+  $("nudge").hidden = !nudge; $("nudge").textContent = nudge ? `${nudge} Download one in Backups and settings.` : "";
   const mins = r.lastSnapshot ? Math.round((Date.now() - r.lastSnapshot) / 60000) : null;
   $("auto").textContent = mins === null ? "Auto-save every 5 min" : mins < 1 ? "Last snapshot just now" : `Last snapshot ${mins} min ago`;
 }

@@ -56,7 +56,7 @@ export default defineBackground(() => {
       switch (msg.type) {
         case "save": { const s = await captureAll(br, "manual", msg.name); await putSession(s); return { ok: true, session: s, counts: countTabs(s) }; }
         case "snapshot": return { ok: true, session: await snapshot() };
-        case "status": { const { lastSnapshot } = await browser.storage.local.get("lastSnapshot"); return { ok: true, lastSnapshot: lastSnapshot ?? null, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false, plan: await plan(), every: SNAPSHOT_MINUTES, limits: LIMITS }; }
+        case "status": { const { lastSnapshot, lastFileAt, lastBackupAt } = await browser.storage.local.get(["lastSnapshot", "lastFileAt", "lastBackupAt"]); const files = [lastFileAt, lastBackupAt].filter((x): x is number => typeof x === "number"); return { ok: true, lastSnapshot: lastSnapshot ?? null, lastFileAt: files.length ? Math.max(...files) : null, sessions: (await listSessions()).length, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false, plan: await plan(), every: SNAPSHOT_MINUTES, limits: LIMITS }; }
         case "list": return { ok: true, sessions: (await listSessions()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) })) };
         case "restore": { const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" }; return { ok: true, ...(await restore(br, s)) }; }
         case "delete": await deleteSession(msg.id!); return { ok: true };
@@ -80,7 +80,7 @@ export default defineBackground(() => {
         }
         case "timeline": { if ((await plan()) !== "pro") return { ok: false, error: "pro" }; return { ok: true, timeline: tabTimeline(await listSessions(), msg.text ?? "") }; }
         case "daily-backup": { await browser.storage.local.set({ dailyBackupOn: msg.name === "on" }); return { ok: true, made: msg.name === "on" ? await dailyBackup() : null }; }
-        case "export": { const now = Date.now(); return { ok: true, fileName: backupFileName(now), json: JSON.stringify(toBackup(await listSessions(), now)) }; }
+        case "export": { const now = Date.now(); await browser.storage.local.set({ lastFileAt: now }); return { ok: true, fileName: backupFileName(now), json: JSON.stringify(toBackup(await listSessions(), now)) }; }
         case "preview-backup": { const p = parseBackup(msg.text ?? ""); return { ok: true, sessions: p.sessions.length, tabs: p.tabs, groups: p.groups, skipped: p.skipped }; }
         case "restore-backup": { const p = parseBackup(msg.text ?? ""); for (const s of p.sessions) await putSession(s); return { ok: true, sessions: p.sessions.length, tabs: p.tabs }; }
         default: return { ok: false, error: "unknown message" };

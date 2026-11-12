@@ -21,6 +21,8 @@ Never lose your tabs again. A crash, an update or a cleanup can wipe a whole day
 • Automatic snapshots every few minutes, so even tabs you forgot to save are kept.
 • Move in from OneTab or Session Buddy: paste the text or open the file, and see a preview before anything is added.
 • One backup file holds every session. Restoring it twice never makes doubles.
+• Big sessions reopen gently: a few tabs load at a time, and the rest wait asleep until you click them, so Chrome doesn't freeze.
+• A reminder when your last backup file is over a week old.
 
 Privacy: your tabs stay on your computer. No account, no servers, no analytics, no ads. Policy: https://akhilkanigicharla.github.io/kalpa-labs/privacy.html
 

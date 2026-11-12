@@ -25,3 +25,20 @@ Akhil has two extension slots as a test. Slot 1 = Tab Lifeboat (built, in store 
 
 ## Pass 2 (roadmap A217)
 Build a shortlist of 5 candidates. Each row needs: users before removal, rating, date last updated, whether a Manifest V3 successor exists today (searched in the store), the top complaints in its 1-star reviews, how it could charge, and two sources. Only public pages; no logins. Rule out anything that needs heavy permissions, ad blocking (Manifest V3 limits it) or another company's login. Show Akhil the 5 before any code.
+
+## Pass 1b (12 Nov 2026): where extension money actually is
+Akhil, 12 Nov: "next one: solve a real problem people from all over the world will pay for."
+
+| Finding | Source |
+|---|---|
+| 112 revenue-verified extensions: 57.1% earn $0, only 6.3% clear $1,000/month. Top-earning categories: social account management, AI writing/rewriting, marketplace seller automation, academic assistance. Users are 4 to 1 consumer over business. Prices seen: about $9 one-off unlock to about $40 lifetime; subscriptions single to low double digits per month. | bigideasdb.com, snapshot 12 Sep 2026 |
+| Strongest revenue sits "close to expensive work: selling, prospecting, ecommerce research, outreach and professional audience growth". SuperX: $23K MRR with about 10,000 Chrome users. GMass about 400,000 users. | stealwhatworks.com, Sep 2026 |
+| Public revenue reports: GMass (Gmail mail merge) about $130K/month; Closet Tools (Poshmark reseller automation, $30/month) about $42K/month; CSS Scan (developer tool, one-time $69) $100K+ total. Dates 2020 to 2024: historical, not current. | extensionpay.com, chromegoldmine.com (both cite IndieHackers) |
+| Chrome Web Store payments were shut down (2020/2021); every paid extension runs its own billing (licence key or account). ExtensionPay charges 5%. | profitable.app, crxpay.io, konabayev.com |
+| Tab managers typically sit at $4 to $5/month and need about 1,000 paying users to be a business. | crxpay.io (payments vendor) |
+
+**What this means for slot 2:** the money is in tools for people whose time is worth money at work (sellers, recruiters, marketers, freelancers), not in general consumer utilities like Tab Lifeboat. Revenue per user is the deciding number, not installs.
+
+**Kalpa rules that cut the list:** no tool that scrapes LinkedIn, Instagram or Google Maps, sends bulk messages, or automates another site in a way its terms forbid (rule 4, rule 10). Closet Tools-style posting bots and LinkedIn automation are out.
+
+**Pass 2 (A217, updated):** pick 5 concrete candidates inside the 4 earning categories that pass our rules (for example: a helper for marketplace sellers that reads their own listing page; a platform-specific AI writing helper on free models; a study tool that is not a cheating tool). For each: 2+ paying competitors with price and users, their top 1-star complaints, what we would do better, price, and two sources. Show Akhil before any code.

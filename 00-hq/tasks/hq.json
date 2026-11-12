@@ -454,17 +454,17 @@
   "owner": "Ganaka",
   "context_chars": 20000,
   "id": "K084",
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-12T16:45:00Z",
-  "updated": "2026-11-12T17:38:12Z",
+  "updated": "2026-11-12T18:01:04Z",
   "title": "A206 prep: roles in markfulton/ai-employees our registry lacks",
   "details": "Read 00-hq/agents/registry.js (agent names and roles). From the public README of github.com/markfulton/ai-employees (MIT), write a numbered list of 10 roles or routines it has that our registry lacks: role name, one-line job, which Kalpa world it helps, and the source file path in that repo. Mark anything you could not read as \"unverified\".",
   "min_items": 10,
   "read": [
    "00-hq/agents/README.md"
   ],
-  "vigil_notes": "FIX:\n*   List exceeds 5 items (max 5 allowed).\n*   All 10 roles are invented; only 5 can be listed, and they must be marked UNVERIFIED.\n*   Remove items 6-10 to comply with the 5-item limit."
+  "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
  },
  {
   "world": "hq",
@@ -473,15 +473,15 @@
   "context_chars": 20000,
   "id": "K085",
   "tries": 2,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T16:45:00Z",
-  "updated": "2026-11-12T17:39:33Z",
+  "updated": "2026-11-12T18:02:23Z",
   "title": "A206 prep: roles in msitarzewski/agency-agents our registry lacks",
   "details": "Same as K084 for github.com/msitarzewski/agency-agents (MIT): numbered list of 10 roles our 300-agent registry lacks, with one-line job, Kalpa world, source file path. Mark anything you could not read as \"unverified\".",
   "min_items": 10,
   "read": [
    "00-hq/agents/README.md"
   ],
-  "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
+  "output": "00-hq/knowledge/K085.md"
  }
 ]

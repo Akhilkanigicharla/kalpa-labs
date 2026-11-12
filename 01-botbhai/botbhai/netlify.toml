@@ -13,7 +13,29 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "microphone=(self)"
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=()"
+    Strict-Transport-Security = "max-age=31536000"
+    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    # The chat page is embedded on customers' sites by widget.js, so the site as a whole may be framed;
+    # the owner pages below are not. script 'unsafe-inline' stays until the pages' inline scripts move to files (ENGINEERING-CHECKS row 81).
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+
+# owner pages: never inside someone else's frame (clickjacking)
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
+[[headers]]
+  for = "/inbox.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
+[[headers]]
+  for = "/billing.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
 
 # Private screens and sales papers (A193): never in search results. A header also covers PDFs, which can't carry a meta tag.
 [[headers]]

@@ -193,7 +193,7 @@ const checks={name:()=>fieldErr(form.name,'name-err',form.name.value.trim().leng
 form.name.addEventListener('blur',()=>{if(form.name.value)checks.name();});
 form.phone.addEventListener('blur',()=>{if(form.phone.value)checks.phone();});
 form.consent.addEventListener('change',()=>{if(form.consent.checked)checks.consent();});
-function saveDraft(){try{localStorage.setItem(DRAFT,JSON.stringify({name:form.name.value,phone:form.phone.value,interest:form.interest.value}));}catch(e){}}
+function saveDraft(){if(!form.name.value&&!form.phone.value)return;try{localStorage.setItem(DRAFT,JSON.stringify({name:form.name.value,phone:form.phone.value,interest:form.interest.value}));}catch(e){}}
 let draftT; form.addEventListener('input',()=>{clearTimeout(draftT);draftT=setTimeout(saveDraft,250);});
 try{const d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.name)form.name.value=d.name;if(d.phone)form.phone.value=d.phone;if(d.interest)form.interest.value=d.interest;}}catch(e){}
 function say(text,good){msg.style.color=good?'var(--ok)':'var(--madder)';msg.textContent=text;}
@@ -208,7 +208,7 @@ async function sendForm(){
  let ok=false;
  try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fd).toString()});ok=r.ok;}catch(e){}
  fBtn.disabled=false; fBtn.textContent=T('send');
- if(ok){say(T('ok'),true);form.reset();try{localStorage.removeItem(DRAFT);}catch(e){}}
+ if(ok){say(T('ok'),true);clearTimeout(draftT);form.reset();try{localStorage.removeItem(DRAFT);}catch(e){}} /* a pending autosave must not bring the draft back */
  else{say(T('fail'),false);retry.textContent=T('retry');retry.hidden=false;retry.focus();}
 }
 form.addEventListener('submit',e=>{e.preventDefault();sendForm();});

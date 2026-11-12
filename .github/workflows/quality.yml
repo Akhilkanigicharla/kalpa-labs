@@ -30,6 +30,20 @@ jobs:
       - name: Lint workflows
         run: actionlint -color
 
+  engineering:
+    # Kalpa engineering standard (00-hq/design/ENGINEERING-CHECKS.md, 107 items): headers, CSP, clickjacking, 404,
+    # secrets, XSS sinks, rate limits, timeouts, input caps, budgets, across every world. FAIL blocks; WARN is listed.
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Build the Deals site (the check reads its built pages)
+        run: cd 05-deals/site && npm ci && npm run build
+      - name: Engineering checks, all worlds
+        run: python3 00-hq/tools/eng_check.py | tee -a "$GITHUB_STEP_SUMMARY"
+
   design:
     # 20 "vibecoded" tells (gradients, glass, emoji headings, scroll fades, em dashes, off-scale spacing …) across every site
     runs-on: ubuntu-latest
@@ -77,7 +91,7 @@ jobs:
         with: { node-version: "22" }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils postgresql-client
+      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils postgresql-client ffmpeg
       - run: pip install openpyxl==3.1.5 pillow==12.3.0 playwright==1.56.0 opencv-python-headless==5.0.0.93 numpy==2.5.4
       - run: python -m playwright install --with-deps chromium
       - run: bash 01-botbhai/botbhai/tools/test-all.sh

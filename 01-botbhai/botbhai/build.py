@@ -21,7 +21,8 @@ head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="v
 shutil.copy(root / "web" / "widget.js", dist / "widget.js")
 shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
 shutil.copy(root / "web" / "dashboard.html", dist / "dashboard.html")  # owner dashboard (A10); calls /.netlify/functions/leads
-shutil.copy(root / "web" / "billing.html", dist / "billing.html")  # Kalpa billing (A05); calls /.netlify/functions/billing
+shutil.copy(root / "web" / "billing.html", dist / "billing.html")
+shutil.copy(root / "web" / "404.html", dist / "404.html")  # custom 404 (ENGINEERING-CHECKS)  # Kalpa billing (A05); calls /.netlify/functions/billing
 subprocess.check_call(["node", str(root / "tools" / "sample_invoice.js"), str(dist / "invoice-sample.html")])  # sample invoice page
 subprocess.check_call([sys.executable, str(root / "tools" / "cards.py"), "--all-demo", "--out", str(dist / "cards" / "demo")], stdout=subprocess.DEVNULL)
 print("built", ", ".join(setups), "+ smile cards →", dist)

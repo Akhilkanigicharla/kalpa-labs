@@ -20,6 +20,7 @@ fs.cpSync(path.join(here, "..", "src/public/icon"), path.join(dist, "icon"), { r
 fs.mkdirSync(path.join(dist, "shots"));
 for (const f of ["screenshot-2-proof-light.png", "screenshot-2-proof-dark.png"]) fs.copyFileSync(path.join(here, "..", "store", f), path.join(dist, "shots", f));
 fs.copyFileSync(path.join(here, "site.css"), path.join(dist, "site.css"));
+fs.copyFileSync(path.join(here, "404.html"), path.join(dist, "404.html")); // GitHub Pages serves this for unknown paths
 
 const pages = { index: "Home", privacy: "Privacy", terms: "Terms & refunds" };
 // SEO (00-hq/design/SEO-CHECKS.md). GitHub Pages project URL; override with SITE_URL when a custom domain is set.

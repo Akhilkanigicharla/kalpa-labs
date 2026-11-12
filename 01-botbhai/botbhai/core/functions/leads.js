@@ -3,7 +3,18 @@
 // URL (URLs end up in browser history and server logs), and the reply has no CORS header (dashboard is same-site).
 const { db, json, istTodayIso } = require("./_lib.js");
 
+// Brute force protection: tokens are random UUIDs, and each visitor gets at most 30 tries a minute (best effort, per instance).
+const hits = new Map();
+function limited(ip, now = Date.now()) {
+  const arr = (hits.get(ip) || []).filter((t) => now - t < 60_000);
+  arr.push(now); hits.set(ip, arr);
+  if (hits.size > 5000) hits.clear();
+  return arr.length > 30;
+}
+
 exports.handler = async (event) => {
+  const ip = (event.headers && (event.headers["x-nf-client-connection-ip"] || event.headers["x-forwarded-for"])) || "anon";
+  if (limited(String(ip).split(",")[0].trim())) return json(429, { error: "too many requests, wait a minute" }, false);
   const auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || "";
   const token = (auth.match(/^Bearer\s+([a-f0-9-]{36})$/i) || [])[1] || "";
   if (!token) return json(401, { error: "invalid token" }, false);

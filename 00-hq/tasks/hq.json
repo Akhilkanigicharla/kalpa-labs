@@ -315,11 +315,12 @@
   "read": "['README.md']",
   "min_items": "5",
   "context_chars": "20000",
-  "status": "review",
+  "status": "done",
   "created": "2026-11-11T21:00:00Z",
   "output": "00-hq/knowledge/K071.md",
-  "updated": "2026-11-12T02:42:13Z",
-  "tries": "0"
+  "updated": "2026-11-12T04:55:00Z",
+  "tries": "0",
+  "note": "Checked 12 Nov (A198 part 2): BotBhai row named a wrong file and signs not present; audit done from code scan instead."
  },
  {
   "id": "K072",
@@ -338,5 +339,21 @@
   "created": "2026-11-12T00:00:00Z",
   "output": "00-hq/knowledge/K072.md",
   "updated": "2026-11-12T00:48:48Z"
+ },
+ {
+  "id": "K073",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "JobCard copy pass for unslop (A198 part 3 prep)",
+  "details": "Read 02-jobcard/web/i18n.mjs. List every English UI string that has an exclamation mark, an emoji, ALL CAPS words or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: the key, the current text, a plain sentence-case rewrite under 12 words. Keep the meaning; do not add features. If none, say 'none' for that check.",
+  "read": "['02-jobcard/web/i18n.mjs']",
+  "min_items": "5",
+  "context_chars": "20000",
+  "status": "todo",
+  "created": "2026-11-12T04:55:00Z",
+  "output": "00-hq/knowledge/K073.md",
+  "updated": "2026-11-12T04:55:00Z",
+  "tries": "0"
  }
 ]

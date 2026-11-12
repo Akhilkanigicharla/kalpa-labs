@@ -56,37 +56,37 @@ header.hero::before{top:0}header.hero::after{bottom:0;transform:scaleY(-1)}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);line-height:1.1;margin:0}
 h2{font:400 21px/1.15 var(--f-display);margin:0}
 .hero small{color:var(--hero-mute)}
-.demo-flag{display:inline-block;margin-left:6px;background:var(--gold);color:#1E2A1F;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);letter-spacing:.08em;vertical-align:middle}
+.demo-flag{display:inline-block;margin-left:8px;background:var(--gold);color:#1E2A1F;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);vertical-align:middle}
 /* tabs: top on wide screens, bottom bar on phones */
-.tabs{display:flex;gap:6px}
-.tab{min-height:44px;border:1px solid var(--rule);background:var(--panel);color:var(--muted);font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;position:relative}
+.tabs{display:flex;gap:8px}
+.tab{min-height:44px;border:1px solid var(--rule);background:var(--panel);color:var(--muted);font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;position:relative}
 .tab[aria-selected="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
-.badge{min-width:20px;height:20px;border-radius:999px;background:var(--bad);color:#fff;font:600 11.5px/20px var(--f-mono);text-align:center;padding:0 6px}
+.badge{min-width:20px;height:20px;border-radius:999px;background:var(--bad);color:#fff;font:600 11.5px/20px var(--f-mono);text-align:center;padding:0 8px}
 @media (max-width:759px){
-  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--rule);padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px;box-shadow:0 -8px 24px -18px rgba(0,0,0,.4)}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--rule);padding:8px 8px calc(8px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px;box-shadow:0 -8px 24px -18px rgba(0,0,0,.4)}
   .tab{flex:1;flex-direction:column;gap:0;border:0;background:none;border-radius:var(--r-m);padding:4px 2px;font-size:12px;min-height:52px}
-  .tab .ico{font-size:19px;line-height:1.1}
+  .tab .ico{display:block}
   .tab[aria-selected="true"]{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
   .tab .badge{position:absolute;top:2px;right:calc(50% - 22px)}
 }
 @media (min-width:760px){.tab .ico{display:none}}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px;min-width:0}
 .card > * + *{margin-top:12px}
-.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.kpi{position:relative;overflow:hidden;border:1px solid var(--rule);border-radius:var(--r-m);padding:16px 12px 10px;background:var(--panel);text-align:left;cursor:pointer;min-height:92px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kpi{position:relative;overflow:hidden;border:1px solid var(--rule);border-radius:var(--r-m);padding:16px 12px 12px;background:var(--panel);text-align:left;cursor:pointer;min-height:92px}
 .kpi::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(135deg,var(--world) 0 25%,transparent 25% 50%,var(--world) 50% 75%,transparent 75%) 0 0/8px 6px,color-mix(in srgb,var(--world) 30%,transparent)}
 .kpi b{display:block;font:400 30px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
-.kpi span{font:600 10.5px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.kpi span{font:600 10.5px var(--f-mono);color:var(--muted)}
 .kpi.alert b{color:var(--bad)}
 .timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.slot{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+.slot{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)}
 .slot:last-child{border-bottom:0}
 .slot time{font:600 13px var(--f-mono);color:var(--muted)}
 .slot .who{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .slot .what{color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .slot.past{opacity:.6}
-.slot.now{background:color-mix(in srgb,var(--gold) 10%,transparent);border-radius:var(--r-s);padding-inline:6px;margin-inline:-6px}
-.pill{display:inline-block;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.slot.now{background:color-mix(in srgb,var(--gold) 10%,transparent);border-radius:var(--r-s);padding-inline:8px;margin-inline:-8px}
+.pill{display:inline-block;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);white-space:nowrap}
 .pill.booked{background:color-mix(in srgb,var(--l2) 16%,transparent);color:var(--l2)}
 .pill.sure{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
 .pill.came{background:var(--soft);color:var(--muted)}
@@ -94,19 +94,19 @@ h2{font:400 21px/1.15 var(--f-display);margin:0}
 .pill.cancelled{background:var(--soft);color:var(--muted);text-decoration:line-through}
 .pill.warm{background:color-mix(in srgb,var(--flame) 16%,transparent);color:var(--flame)}
 .pill.cold{background:color-mix(in srgb,var(--l2) 14%,transparent);color:var(--l2)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .muted{color:var(--muted)}.small{font-size:13px}
-.empty{padding:24px 6px;text-align:center;color:var(--muted)}
-.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.empty{padding:24px 8px;text-align:center;color:var(--muted)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
 .chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
 .search{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:8px 12px;font-size:15px}
 .leads{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.lead{border:1px solid var(--rule);border-radius:var(--r-m);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.lead{border:1px solid var(--rule);border-radius:var(--r-m);padding:12px 12px;display:flex;flex-direction:column;gap:4px}
 .lead .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
 .lead b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lead a.tel{font:400 13px var(--f-mono);text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (min-width:560px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .bars{display:flex;align-items:flex-end;gap:4px;height:120px;padding-top:8px}
 .bar{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
@@ -115,7 +115,7 @@ h2{font:400 21px/1.15 var(--f-display);margin:0}
 .bar span{font:400 10px var(--f-mono);color:var(--muted)}
 .btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--accent);color:var(--accent-fg);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--rule)}
-.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:10px 0}
+.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:12px 0}
 @keyframes sk{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 .signin{display:flex;flex-direction:column;gap:12px}.signin p{margin:0;color:var(--muted)}
@@ -146,10 +146,10 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   </section>
 
   <nav class="tabs" id="tabs" role="tablist" aria-label="Sections" hidden>
-    <button class="tab" role="tab" data-tab="today" aria-selected="true"><span class="ico" aria-hidden="true">📅</span>Today</button>
-    <button class="tab" role="tab" data-tab="leads" aria-selected="false"><span class="ico" aria-hidden="true">👥</span>Leads</button>
-    <a class="tab" id="inbox-tab" href="inbox.html" aria-selected="false"><span class="ico" aria-hidden="true">💬</span>Inbox<span class="badge" id="waiting" hidden></span></a>
-    <button class="tab" role="tab" data-tab="report" aria-selected="false"><span class="ico" aria-hidden="true">📈</span>Report</button>
+    <button class="tab" role="tab" data-tab="today" aria-selected="true"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Today</button>
+    <button class="tab" role="tab" data-tab="leads" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c2 .7 3.2 2.6 3.5 5.2"/></svg>Leads</button>
+    <a class="tab" id="inbox-tab" href="inbox.html" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10H9l-5 4z"/></svg>Inbox<span class="badge" id="waiting" hidden></span></a>
+    <button class="tab" role="tab" data-tab="report" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></svg>Report</button>
   </nav>
 
   <main id="main" hidden>
@@ -230,7 +230,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   // ---------- render
   function render() {
     var d = S.data, today = d.today || istIso();
-    $("biz").textContent = (d.client && d.client.name) || "Your salon"; if (DEMO) $("biz").appendChild(el("span", { class: "demo-flag", text: "DEMO" }));
+    $("biz").textContent = (d.client && d.client.name) || "Your salon"; if (DEMO) $("biz").appendChild(el("span", { class: "demo-flag", text: "Demo" }));
     $("today-label").textContent = nice(today) + " · updated " + new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" });
     var w = $("waiting"); w.hidden = !d.waiting; w.textContent = d.waiting || "";
     $("inbox-tab").href = "inbox.html" + (DEMO ? "?demo=1" : "");

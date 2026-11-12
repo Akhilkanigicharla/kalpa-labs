@@ -54,40 +54,40 @@ header.hero::before{top:0}header.hero::after{bottom:0;transform:scaleY(-1)}
 .eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 4px}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);line-height:1.1;margin:0}
 h2{font:400 22px/1.15 var(--f-display);margin:0}
-.demo-flag{display:inline-block;margin-left:6px;background:var(--gold);color:#1E2A1F;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);letter-spacing:.08em;vertical-align:middle}
+.demo-flag{display:inline-block;margin-left:8px;background:var(--gold);color:#1E2A1F;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);vertical-align:middle}
 .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.kpi{background:color-mix(in srgb,var(--hero-fg) 10%,transparent);border-radius:var(--r-m);padding:8px 10px;min-width:0}
+.kpi{background:color-mix(in srgb,var(--hero-fg) 10%,transparent);border-radius:var(--r-m);padding:8px 12px;min-width:0}
 .kpi b{display:block;font:400 21px/1.15 var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi span{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--hero-mute)}
+.kpi span{font:600 10.5px var(--f-mono);color:var(--hero-mute)}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px;min-width:0}
 .card > * + *{margin-top:12px}
 .banner{margin:0;padding:8px 12px;border-radius:var(--r-m);font-size:14px;border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);background:color-mix(in srgb,var(--warn) 10%,var(--panel))}
 .field{display:flex;flex-direction:column;gap:4px;min-width:0}
-.field label{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field label{font:600 11px var(--f-mono);color:var(--muted)}
 .field input,.field select{width:100%;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:8px 12px;font-size:15px}
-.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-.presets{display:flex;gap:6px;flex-wrap:wrap}
-.chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:13.5px;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.presets{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;border:1px solid var(--rule);background:none;color:var(--muted);font-weight:600;font-size:13.5px;padding:8px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .chip[aria-pressed="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
-.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
 .chips .chip{min-height:44px;font-size:14px;padding:8px 16px}
 .btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--accent);color:var(--accent-fg);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--rule)}
 .btn.ok{background:var(--ok);color:#fff}
 .btn.danger{background:transparent;color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 45%,transparent)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.total-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.total-line{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .total-line b{font:400 26px var(--f-display)}
-ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .inv{border:1px solid var(--rule);border-radius:var(--r-m);padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
 .inv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--rule)}
 .inv.due::before{background:var(--gold)}.inv.late::before{background:var(--bad)}.inv.paid::before{background:var(--ok)}
-.inv .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.inv .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
 .inv .num{font:600 13px var(--f-mono)}
 .inv .amt{font:400 22px var(--f-display);font-variant-numeric:tabular-nums}
 .inv .who{font-weight:600}
 .inv .meta{color:var(--muted);font-size:13px}
-.pill{display:inline-block;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pill{display:inline-block;border-radius:999px;padding:1px 8px;font:600 11px var(--f-mono);white-space:nowrap}
 .pill.due{background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--warn)}
 .pill.late{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
 .pill.paid{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
@@ -95,7 +95,7 @@ ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .acts{display:flex;gap:8px;flex-wrap:wrap}
 .paybox{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
 .paybox .field{flex:1 1 160px}
-.empty{padding:20px 6px;text-align:center;color:var(--muted)}
+.empty{padding:20px 8px;text-align:center;color:var(--muted)}
 .signin{display:flex;flex-direction:column;gap:12px}
 .signin p{margin:0;color:var(--muted)}
 .inline{display:flex;gap:8px}.inline input{flex:1;min-width:0;min-height:44px;border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-s);padding:8px 12px;font-size:15px}
@@ -103,7 +103,7 @@ ul.invs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 footer{color:var(--muted);font-size:12.5px;text-align:center}
 @media (max-width:420px){.row2{grid-template-columns:minmax(0,1fr)}}
 #key[aria-invalid=true]{border-color:var(--warn);box-shadow:0 0 0 2px var(--warn)}
-.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:10px 0}
+.skeleton{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--soft),var(--rule),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite linear;margin:12px 0}
 @keyframes sk{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 </style>
@@ -218,7 +218,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
   // ---------- render
   function render() {
-    var d = S.data; if (DEMO) { $("title").textContent = "Invoices"; $("title").appendChild(el("span", { class: "demo-flag", text: "DEMO" })); }
+    var d = S.data; if (DEMO) { $("title").textContent = "Invoices"; $("title").appendChild(el("span", { class: "demo-flag", text: "Demo" })); }
     $("upi-warn").hidden = d.seller.upi_ready;
     var due = 0, late = 0, nLate = 0, paidMonth = 0, ym = istNow().toISOString().slice(0, 7);
     d.invoices.forEach(function (i) {
@@ -241,7 +241,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     var rows = S.data.invoices.filter(function (i) {
       var s = state(i); return S.filter === "all" || (S.filter === "open" && (s === "due" || s === "late")) || S.filter === s;
     });
-    if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "late" ? "Nothing overdue. 🙌" : "No invoices here yet." })); return; }
+    if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "late" ? "Nothing overdue." : "No invoices here yet." })); return; }
     rows.forEach(function (i) {
       var s = state(i), label = { due: "Due " + nice(i.due_on), late: i.overdue_days + "d overdue", paid: "Paid " + nice(i.paid_on), void: "Void" }[s];
       var acts = el("div", { class: "acts" });
@@ -262,7 +262,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       if (S.paying === i.number) {
         var ref = el("input", { id: "ref", inputmode: "numeric", maxlength: "35", placeholder: "12-digit UPI ref (optional)", autocomplete: "off" });
         li.appendChild(el("div", { class: "paybox" }, [el("div", { class: "field" }, [el("label", { for: "ref", text: "UPI reference (from your UPI app)" }), ref]),
-          el("button", { class: "btn ok", text: "Save as paid", onclick: function () { act({ action: "paid", number: i.number, ref: ref.value.replace(/\s+/g, "") }, "Marked paid. 💰"); } })]));
+          el("button", { class: "btn ok", text: "Save as paid", onclick: function () { act({ action: "paid", number: i.number, ref: ref.value.replace(/\s+/g, "") }, "Marked paid."); } })]));
       }
       ul.appendChild(li);
     });

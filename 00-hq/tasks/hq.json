@@ -437,7 +437,7 @@
   "owner": "Ganaka",
   "context_chars": 20000,
   "id": "K083",
-  "tries": "0",
+  "tries": 0,
   "status": "todo",
   "created": "2026-11-12T14:41:36Z",
   "updated": "2026-11-12T14:41:36Z",
@@ -445,6 +445,6 @@
   "details": "Read .github/workflows/quality.yml (hygiene job). Write a numbered list of 8 points for adding TruffleHog OSS as an unmodified CI tool beside gitleaks: which flags make it scan only verified secrets, how to scan only the pushed commits, how to pin the action to a commit SHA, how to keep it from failing on test fixtures, and the AGPL note (CI tool only, never copied into a product). Mark any fact you are not sure of as \"unverified\".",
   "read": "['.github/workflows/quality.yml']",
   "output": "00-hq/knowledge/K083.md",
-  "min_items": "8"
+  "min_items": 8
  }
 ]

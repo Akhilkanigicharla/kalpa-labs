@@ -133,6 +133,19 @@ def test_own_synth_end_to_end():
         assert "own synthesised" in (d / "out" / "credits.txt").read_text()
 
 
+def test_te_hi_trigger_words():
+    """K070 (free-model list, checked by Claude): 20 Telugu + Hindi words each fire the right cue."""
+    from types import SimpleNamespace as W
+    want = {"రూపాయలు": "chime", "జాగ్రత్త": "thud", "సమస్యలు": "thud", "మొదట": "whoosh", "తర్వాత": "whoosh",
+            "అయిపోయింది": "click", "బుకింగ్": "click", "రెండు": "pop", "మూడు": "pop", "నాలుగు": "pop",
+            "रुपया": "chime", "रुपये": "chime", "गलती": "thud", "समस्या": "thud", "पहला": "whoosh",
+            "पहले": "whoosh", "अगला": "whoosh", "बुक": "click", "दो": "pop", "तीन": "pop"}
+    for word, kind in want.items():
+        got = sfx.plan_cues([W(start=0.0, end=0.4, text=f" {word}, ")])
+        assert got and got[0]["kind"] == kind, (word, got)
+    assert not sfx.plan_cues([W(start=0.0, end=0.4, text="నమస్తే")])  # a greeting gets no cue
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:

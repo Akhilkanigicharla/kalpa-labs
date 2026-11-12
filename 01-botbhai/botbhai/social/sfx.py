@@ -39,7 +39,7 @@ RULES = [
     ("chime", "mallet/glock", -15, "onset", r"^(₹.*|rs\.?|rupees?|rupay\S*|రూపాయ\S*|रुपय\S*|रुपये|/month|per\s?month)$"),
     ("thud", "knock/wood", -12, "onset", r"^(mistakes?|warning|never|problems?|risk\S*|lose|lost|missed|జాగ్రత్త|సమస్య\S*|गलती|समस्या)$"),
     ("whoosh", "whoosh_fast/crisp", -16, "peak", r"^(first|second|third|step|next|finally|మొదట\S*|తర్వాత|पहला|पहले|अगला)$"),
-    ("click", "knock/snap", -16, "onset", r"^(done|ready|booked|confirmed|saved|free|అయిపోయింది|బుక్\S*|बुक|हो)$"),
+    ("click", "knock/snap", -16, "onset", r"^(done|ready|booked|confirmed|saved|free|అయిపోయింది|బుక్\S*|బుకి\S*|बुक|हो)$"),
     ("pop", "ui_pop/soft", -14, "onset", r"(\d|^(two|three|four|five|six|seven|eight|nine|ten|hundred|thousand|lakh|crore|percent|%|"
      r"రెండు|మూడు|నాలుగు|ఐదు|दो|तीन|चार|पांच|पाँच)$)"),
 ]

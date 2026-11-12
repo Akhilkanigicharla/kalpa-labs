@@ -299,11 +299,12 @@
   ],
   "min_items": 20,
   "context_chars": 12000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-11T21:00:00Z",
   "output": "00-hq/knowledge/K070.md",
-  "updated": "2026-11-11T23:07:50Z",
-  "tries": 1
+  "updated": "2026-11-12T16:45:00Z",
+  "tries": 1,
+  "note": "Claude checked 12 Nov: 19/20 matched; బుకింగ్ did NOT match (బుక్ pattern needs virama) -> regex fixed + test_te_hi_trigger_words (A196)"
  },
  {
   "id": "K071",
@@ -446,5 +447,39 @@
   "read": "['.github/workflows/quality.yml']",
   "output": "00-hq/knowledge/K083.md",
   "min_items": 8
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K084",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-12T16:45:00Z",
+  "updated": "2026-11-12T16:45:00Z",
+  "title": "A206 prep: roles in markfulton/ai-employees our registry lacks",
+  "details": "Read 00-hq/agents/registry.js (agent names and roles). From the public README of github.com/markfulton/ai-employees (MIT), write a numbered list of 10 roles or routines it has that our registry lacks: role name, one-line job, which Kalpa world it helps, and the source file path in that repo. Mark anything you could not read as \"unverified\".",
+  "min_items": 10,
+  "read": [
+   "00-hq/agents/README.md"
+  ]
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K085",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-12T16:45:00Z",
+  "updated": "2026-11-12T16:45:00Z",
+  "title": "A206 prep: roles in msitarzewski/agency-agents our registry lacks",
+  "details": "Same as K084 for github.com/msitarzewski/agency-agents (MIT): numbered list of 10 roles our 300-agent registry lacks, with one-line job, Kalpa world, source file path. Mark anything you could not read as \"unverified\".",
+  "min_items": 10,
+  "read": [
+   "00-hq/agents/README.md"
+  ]
  }
 ]

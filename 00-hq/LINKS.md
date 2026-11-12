@@ -74,3 +74,4 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - Tab Lifeboat Chrome Web Store item id: kkdmhgljkdoclnifiegbiaklgjmnbfcc (submitted 12 Nov 2026, pending review). Public URL once approved: https://chromewebstore.google.com/detail/kkdmhgljkdoclnifiegbiaklgjmnbfcc
 - Chrome Web Store developer dashboard (Akhil only, needs his Google login): https://chrome.google.com/webstore/devconsole/45a157ac-3127-4bd2-b237-f48721de0874
 - Scheduled task "Tab Lifeboat store review check" (trig_01AwN4PXbzM725Zh2JRr6LMr): daily 10:41 IST, checks the public listing, updates the site when live, then switches itself off.
+- Site redesign directions (Design canvas, private): https://claude.ai/artifact/PXrsYQSYscN2bHdnEra5p1

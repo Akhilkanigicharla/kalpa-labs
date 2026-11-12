@@ -40,7 +40,7 @@ WHAT YOU DO:
 
 // Which of the 5 languages the visitor typed. Tenglish/Hinglish get an explicit per-turn hint, because models tend to
 // "upgrade" them to Telugu/Hindi script (live test, 5 Nov 2026).
-const TE_LATN = /\b(undi|unda|undaa|ledu|leda|kavali|kaavali|cheppu|cheppandi|chesta|cheyyi|cheyandi|enti|entha|ela|elaa|repu|ninna|ippudu|ipudu|nenu|meeru|naaku|naku|meeku|gurinchi|bagundi|avunu|kadu|kada|emi|ekkada|eppudu|vasta|vastanu|chudandi|telugu lo)\b/gi;
+const TE_LATN = /\b(undi|unda|undaa|ledu|leda|kavali|kaavali|cheppu|cheppandi|chesta|cheyyi|cheyandi|enti|entha|ela|elaa|repu|ninna|ippudu|ipudu|nenu|meeru|naaku|naku|meeku|gurinchi|bagundi|avunu|kadu|kada|emi|ekkada|eppudu|vasta|vastanu|chudandi|telugu lo|unnaru|unnara|unnai|daggara|mandi|entha mandi|cheyyandi|kaavalante|ivvandi|chepthara|cheptara|ayindi|avutundi)\b/gi;
 const HI_LATN = /\b(hai|hain|kya|kal|shaam|subah|milega|milegi|nahi|nahin|haan|mujhe|aap|aapka|kaise|kitna|kitne|chahiye|karna|karo|batao|bataiye|abhi|kab|kahan|scene|accha|theek|bhai|wala|wali)\b/gi;
 export function detectLang(text) {
   const s = String(text || "");

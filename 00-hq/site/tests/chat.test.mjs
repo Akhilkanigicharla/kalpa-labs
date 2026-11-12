@@ -58,6 +58,7 @@ for (const w of ["revenue", "funding", "customer numbers", "can't share company 
 // 9. Tenglish/Hinglish get a per-turn "English letters only" hint (models drift to script otherwise)
 const { detectLang } = await import("../netlify/functions/chat.mjs");
 assert.strictEqual(detectLang("repu salon pilot gurinchi cheppu, free aa?"), "te-latn");
+assert.strictEqual(detectLang("Mee daggara entha mandi customers unnaru?"), "te-latn", "Tenglish question (live test 12 Nov)");
 assert.strictEqual(detectLang("kal shaam workshop ka kya scene hai?"), "hi-latn");
 assert.strictEqual(detectLang("రేపు స్లాట్ ఉందా?"), "te");
 assert.strictEqual(detectLang("कल स्लॉट है?"), "hi");

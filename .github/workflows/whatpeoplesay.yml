@@ -1,0 +1,30 @@
+# A197: monthly "what people say" research per world -> 00-hq/knowledge/whatpeoplesay/YYYY-MM/<world>.md
+# Our own code (idea: mvanhorn/last30days-skill, MIT). Sources: Hacker News, GitHub, Reddit (public JSON; may be
+# blocked from cloud IPs, then noted), YouTube only if the optional YOUTUBE_API_KEY secret exists. No other sources.
+name: whatpeoplesay
+on:
+  schedule:
+    - cron: "17 3 2 * *"   # 2nd of each month, 08:47 IST
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: whatpeoplesay, cancel-in-progress: false }
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 00-hq/tools/test_whatpeoplesay.py
+      - run: python3 00-hq/tools/whatpeoplesay.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      - name: Commit results
+        run: |
+          git config user.name "Akhilkanigicharla"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/knowledge/whatpeoplesay
+          git diff --cached --quiet && exit 0
+          git commit -q -m "whatpeoplesay: monthly research $(date -u +%Y-%m)"
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

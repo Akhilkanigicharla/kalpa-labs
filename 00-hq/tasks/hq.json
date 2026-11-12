@@ -271,7 +271,7 @@
  },
  {
   "priority": "P2",
-  "status": "review",
+  "status": "done",
   "created": "2026-11-11T10:45:00Z",
   "context_chars": 12000,
   "id": "K069",
@@ -284,7 +284,8 @@
   ],
   "min_items": 7,
   "output": "00-hq/knowledge/K069.md",
-  "updated": "2026-11-11T10:46:38Z"
+  "updated": "2026-11-12T00:00:00Z",
+  "notes": "Used by Claude for A197 topics.json (rewritten as plain topic phrases; OR/quote syntax dropped)."
  },
  {
   "id": "K070",
@@ -323,5 +324,22 @@
   "updated": "2026-11-11T23:10:14Z",
   "tries": 2,
   "vigil_notes": "FIX:\n- Section 3 checklist has 7 items; reduce to 5 or fewer (Kalpa rule: lists of 5 at most).\n- Table lists 14 screens; cut to 5 rows or move the full inventory to a separate linked audit file.\n- Invented UI “tells” (e.g., “inflated hype”, “neon glow borders”) are not in repo files; mark each tell cell UNVERIFIED or replace with “pending audit”.\n- Keep Section 2 clearly labeled as an unsourced draft proposal, not verified Kalpa policy.\n- Only `06-finops/design/landing.html` appears in the repo files; ensure every other path cell carries (UNVERIFIED)."
+ },
+ {
+  "id": "K072",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Scout",
+  "title": "What people say Nov 2026: 3 takeaways per world (A197 follow-up)",
+  "details": "Read the 7 files in 00-hq/knowledge/whatpeoplesay/2026-11/. For each world give exactly 3 numbered takeaways (21 rows total): what people complain about or ask for, the link(s) from the file that show it, and one change it suggests for that world's plan. Only use links that appear in the files; write 'no signal' when a world has under 3 findings. Never name or describe individual people.",
+  "read": [
+   "00-hq/knowledge/whatpeoplesay/2026-11/b1.md",
+   "00-hq/knowledge/whatpeoplesay/2026-11/b6.md"
+  ],
+  "min_items": 21,
+  "context_chars": 20000,
+  "status": "todo",
+  "created": "2026-11-12T00:00:00Z",
+  "output": "00-hq/knowledge/K072.md"
  }
 ]

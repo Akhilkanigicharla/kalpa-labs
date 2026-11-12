@@ -1,0 +1,12 @@
+{
+  "_note": "A197. Topic phrases only (lowercase, no people, no handles). Sources: reddit, hackernews, youtube, github. Seeded from K069 (Scout, checked by Claude 2026-11-12). Idea from mvanhorn/last30days-skill (MIT); engine is our own code until Akhil says 'yes last30days' (C72).",
+  "worlds": {
+    "b1": {"name": "BotBhai", "queries": ["salon whatsapp booking bot", "gym owner missed calls lost members", "small business whatsapp chatbot cost india"]},
+    "b2": {"name": "JobCard", "queries": ["auto repair shop job card app", "mechanic garage customer updates whatsapp", "workshop management software small garage"]},
+    "b3": {"name": "Exam Kits", "queries": ["tgpsc group exam preparation", "appsc exam study plan", "government exam aspirants mock tests india"]},
+    "b4": {"name": "Tab Lifeboat", "queries": ["chrome too many tabs memory", "lost tabs after browser crash", "tab manager extension manifest v3"]},
+    "b5": {"name": "Telugu Deals", "queries": ["fake discounts festive sale india", "price history tracker amazon flipkart", "telugu tech deals"]},
+    "b6": {"name": "Ledger Peaks", "queries": ["llm api bill too high startup", "openai cost optimization founders india", "ai spend tracking finops"]},
+    "b7": {"name": "Trading", "queries": ["algo trading backtest vs live slippage", "sebi retail algo trading rules", "nifty options paper trading python"]}
+  }
+}

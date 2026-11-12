@@ -70,7 +70,9 @@ const ogImage = new URL("/og.png", Astro.site).toString();
   a { color: var(--accent); }
   .muted { color: var(--muted); }
   .card { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-l); padding: 16px; box-shadow: var(--shadow); }
-  .legal { display: flex; flex-wrap: wrap; gap: 4px 16px; } .legal a { min-height: 36px; display: inline-flex; align-items: center; }
+  .legal { display: flex; flex-wrap: wrap; gap: 0 16px; } .legal a { min-height: 44px; display: inline-flex; align-items: center; }
+  /* stand-alone links (a link that is the whole line) get a full 44 px tap height on phones */
+  main p > a:only-child, main li > a:only-child { display: inline-flex; align-items: center; min-height: 44px; }
   .foot { max-width: 760px; margin: 0 auto; padding: 16px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--rule); }
   @media (prefers-reduced-motion: no-preference) { .card { animation: rise .25s ease-out; } @keyframes rise { from { transform: translateY(6px); opacity: .6; } } }
 </style>

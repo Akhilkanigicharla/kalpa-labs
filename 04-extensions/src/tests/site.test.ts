@@ -23,7 +23,7 @@ describe("privacy policy matches the extension", () => {
     for (const s of ["IndexedDB", "drive.file", "Uninstalling", "Digital Personal Data Protection Act, 2023", "{{CONTACT_EMAIL}}", "no analytics"]) expect(policy).toContain(s);
   });
   it("loads nothing from other sites", () => {
-    for (const f of ["index.html", "privacy.html", "terms.html"]) expect(site(f)).not.toMatch(/(src|href)="https?:\/\/(?!wa\.me)/);
+    for (const f of ["index.html", "privacy.html", "terms.html"]) expect(site(f)).not.toMatch(/(src|href)="https?:\/\/(?!wa\.me|chromewebstore\.google\.com\/detail\/)/);
   });
 });
 

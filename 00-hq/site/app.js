@@ -92,10 +92,10 @@ const P=[
   for:['Phone apps for everyday work','రోజువారీ పని కోసం ఫోన్ యాప్‌లు'],
   pts:[['Made for Indian phones and languages','భారతీయ ఫోన్లు, భాషల కోసం తయారు'],['Simple enough to use on day one','మొదటి రోజే వాడేంత సులభం'],['Join the list to hear first','ముందుగా తెలుసుకోవడానికి లిస్ట్‌లో చేరండి']],
   price:['Coming soon','త్వరలో'],cta:'#signup',art:'card'},
- {id:'lifeboat',c:'--l4',name:'Tab Lifeboat',st:['Coming soon to Chrome','త్వరలో Chromeలో'],stc:'--l0',
+ {id:'lifeboat',c:'--l4',name:'Tab Lifeboat',st:['Free on Chrome','Chromeలో ఉచితం'],stc:'--ok',
   for:['For people with 100 browser tabs','100 బ్రౌజర్ ట్యాబ్స్ ఉండేవారి కోసం'],
   pts:[['Save and restore every tab, with groups','గ్రూప్‌లతో సహా ప్రతి ట్యాబ్ సేవ్, రీస్టోర్'],['Auto-saves every 5 minutes','ప్రతి 5 నిమిషాలకు ఆటో-సేవ్'],['Planned: import from OneTab','ప్లాన్: OneTab నుంచి దిగుమతి']],
-  price:['Free','ఉచితం'],cta:'#signup',art:'tabs'},
+  price:['Free','ఉచితం'],cta:'https://chromewebstore.google.com/detail/kkdmhgljkdoclnifiegbiaklgjmnbfcc',art:'tabs'},
  {id:'ledger',c:'--l6',name:'Ledger Peaks',st:['Early access','ముందస్తు ప్రవేశం'],stc:'--l0',
   for:['For software teams using AI','AI వాడే సాఫ్ట్‌వేర్ టీమ్‌ల కోసం'],
   pts:[['Which customer is your AI bill eating?','మీ AI బిల్‌ను ఏ కస్టమర్ తింటున్నారు?'],['Rupee costs by feature and model','ఫీచర్, మోడల్ వారీగా రూపాయి ఖర్చు'],['DPDP readiness score','DPDP సంసిద్ధత స్కోర్']],
@@ -114,7 +114,7 @@ function renderProducts(){const L=lang==='te'?1:0; const tabs=document.getElemen
  v.innerHTML='<div class="txt"><span class="pill" style="--pc:var('+p.stc+')"><i></i><span class="st"></span></span><h3></h3><p class="for"></p><ul>'+p.pts.map(()=>'<li>'+CHK+'<span></span></li>').join('')+'</ul><div class="price"></div><a class="btn btn-acc" style="width:max-content"></a></div><div class="art">'+ART[p.art]+'</div>';
  v.querySelector('.st').textContent=p.st[L]; v.querySelector('h3').textContent=p.name; v.querySelector('.for').textContent=p.for[L];
  v.querySelectorAll('li span').forEach((s,i)=>s.textContent=p.pts[i][L]); v.querySelector('.price').textContent=p.price[L];
- const a=v.querySelector('a'); a.href=p.cta; a.textContent=L?'ఆసక్తి ఉంది':'I\'m interested'; a.addEventListener('click',()=>{const sel=document.getElementById('interest'); sel.value=p.id==='botbhai'?'salon':p.id==='kits'?'kits':'other';});}
+ const a=v.querySelector('a'); a.href=p.cta; const ext=/^https:/.test(p.cta); if(ext){a.target='_blank';a.rel='noopener';} a.textContent=ext?(L?'Chromeకు జోడించండి':'Add to Chrome'):(L?'ఆసక్తి ఉంది':'I\'m interested'); a.addEventListener('click',()=>{const sel=document.getElementById('interest'); sel.value=p.id==='botbhai'?'salon':p.id==='kits'?'kits':'other';});}
 
 /* ---------- live AI chat (Netlify function netlify/functions/chat.mjs, A145; was n8n until the trial ended) ---------- */
 const CHAT_URL='/api/chat'; const HIST=[];
@@ -264,6 +264,7 @@ BR.forEach(([d,w,id,name,col],i)=>{
  if(i!==6)el('path',{d:`M${e.x} ${e.y}L${fx} ${fy-12}`,stroke:'var(--bark)','stroke-width':2.5},f);
  el('circle',{class:'halo',cx:fx,cy:fy,r:24},f);
  const fb=el('g',{class:'fb'},f);
+ el('circle',{cx:fx,cy:fy,r:40,fill:'transparent'},fb); /* bigger finger target than the drawn fruit (44 px on a phone) */
  el('circle',{class:'dots',cx:fx,cy:fy,r:21},fb);
  for(let k=0;k<8;k++)el('ellipse',{class:'petal',cx:fx,cy:fy-17,rx:3.2,ry:5,transform:`rotate(${k*45} ${fx} ${fy})`},fb);
  el('circle',{class:'ring',cx:fx,cy:fy,r:15,fill:'var(--gold)',stroke:'var('+col+')','stroke-width':3.5},fb);

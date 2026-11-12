@@ -27,7 +27,7 @@ function draw() {
     const sub = document.createElement("span"); sub.textContent = `${when(s.createdAt)} · ${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}${s.kind === "auto" ? " · auto" : s.kind === "import" ? " · imported" : ""}`;
     meta.append(name, sub);
     const open = document.createElement("button"); open.type = "button"; open.textContent = "Restore"; open.setAttribute("aria-label", `Restore ${s.name}`);
-    open.onclick = async () => { const r = await send<{ tabs: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}` : "Could not open"; };
+    open.onclick = async () => { const r = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}${r.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
     const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Rename"; ren.setAttribute("aria-label", `Rename ${s.name}`);
     ren.onclick = async () => { const v = prompt("New name for this session", s.name); if (v && v.trim() && v.trim() !== s.name) { await send({ type: "rename", id: s.id, name: v }); await refresh(); } };
     const del = document.createElement("button"); del.type = "button"; del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);

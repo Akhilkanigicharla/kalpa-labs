@@ -72,5 +72,22 @@ try {
   check(l3.sessions.some((s) => s.name === "Before cleanup"), "cleanup saved 'Before cleanup' first (undo)");
   const tl = await popup.evaluate((u) => chrome.runtime.sendMessage({ type: "timeline", text: u }), base + "/b");
   check(tl.ok && tl.timeline && tl.timeline.snapshots >= 1, "timeline finds when /b was open");
+  // Lazy restore (real Chrome): a 20-tab session with a group opens a few tabs at a time; each sleeps after it loads,
+  // keeps its address, and the group survives the new ids that sleeping tabs get.
+  const bigSession = { id: "big-e2e", name: "Big e2e", kind: "manual", createdAt: Date.now(), windows: [{ focused: true,
+    groups: [{ key: "g1", title: "Big group", color: "green", collapsed: false }],
+    tabs: Array.from({ length: 20 }, (_, i) => ({ url: `${base}/big${i}`, title: `Big ${i}`, pinned: false, groupKey: i >= 15 ? "g1" : null })) }] };
+  const rb = await popup.evaluate((text) => chrome.runtime.sendMessage({ type: "restore-backup", text }),
+    JSON.stringify({ format: "tab-lifeboat-backup", version: 1, exportedAt: new Date().toISOString(), sessions: [bigSession] }));
+  check(rb.ok && rb.sessions === 1, "big session added from a backup file");
+  const t0 = Date.now();
+  const big = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "restore", id: "big-e2e" }));
+  check(big.ok && big.tabs === 20 && big.asleep === 19, `big restore: ${big.tabs} tabs, ${big.asleep} asleep, ${Math.round((Date.now() - t0) / 1000)} s`);
+  const bigTabs = await sw.evaluate((b) => chrome.tabs.query({}).then((t) => t.filter((x) => (x.url || "").startsWith(b + "/big")).map((x) => ({ url: x.url, discarded: x.discarded, groupId: x.groupId }))), base);
+  check(bigTabs.length === 20 && Array.from({ length: 20 }, (_, i) => `${base}/big${i}`).every((u) => bigTabs.some((t) => t.url === u)), "every big-session tab kept its address");
+  check(bigTabs.filter((t) => t.discarded).length === 19, `${bigTabs.filter((t) => t.discarded).length} of 20 tabs asleep until clicked`);
+  const bg = await sw.evaluate(() => chrome.tabGroups.query({ title: "Big group" }));
+  const members = bigTabs.filter((t) => bg[0] && t.groupId === bg[0].id).map((t) => t.url.split("/").pop()).sort();
+  check(bg.length === 1 && members.join() === "big15,big16,big17,big18,big19", `group kept after sleep: ${members.join()}`);
 } finally { await ctx.close(); server.close(); }
 console.log(failed ? "E2E FAILED" : "E2E PASSED"); process.exit(failed ? 1 : 0);

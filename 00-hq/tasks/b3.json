@@ -165,11 +165,10 @@
   "read": [
    "03-kits/README.md"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T10:50:00Z",
   "output": "00-hq/knowledge/K078.md",
   "min_items": 15,
-  "updated": "2026-11-12T10:48:51Z",
-  "vigil_notes": "FIX: incomplete, 0 of 15 required items. Write all 15, numbered 1 to 15."
+  "updated": "2026-11-12T11:55:18Z"
  }
 ]

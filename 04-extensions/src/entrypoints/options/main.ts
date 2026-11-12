@@ -51,6 +51,7 @@ async function refresh() {
   $("st-persist").textContent = st.persisted ? "Chrome has marked this storage as persistent: it won't be cleared when the disk is low." : "Tip: keep a backup file too. Chrome may clear site storage when the disk is nearly full.";
   $("plan").textContent = st.plan === "pro" ? "Pro" : "Free";
   $("pro-tools").hidden = st.plan !== "pro";
+  if (st.plan === "pro") void driveRefresh();
   if (st.plan === "pro") {
     const c = await send<{ duplicates: number; stale: number; days: number }>({ type: "cleanup-preview" });
     if (c.ok) $("clean-preview").textContent = `Open now: ${plural(c.duplicates, "duplicate tab")}, ${plural(c.stale, "tab")} not opened for ${c.days} days. Everything is saved as "Before cleanup" first.`;
@@ -154,3 +155,66 @@ $("where").addEventListener("change", async () => {
 });
 
 void refresh();
+
+// ---- Google Drive backup (Pro). Every message is answered with { ok, error } in plain words; nothing here can throw.
+type DriveStatus = { ready: boolean; pro: boolean; on: boolean; lastAt: number | null; error: { message: string; at: number } | null };
+type DriveRow = { id: string; createdTime: string; size: number; sessions: number; tabs: number; device: string };
+const kb = (b: number) => (b < 1024 * 1024 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1)} MB`);
+function driveMsg(text: string, good = false) { $("drive-msg").textContent = text; $("drive-msg").classList.toggle("ok", good); $("drive-msg").classList.toggle("warn", !good && !!text); }
+async function driveRefresh() {
+  const r = await send<DriveStatus>({ type: "drive-status" });
+  if (!r.ok) return;
+  const on = r.on;
+  $("drive-connect").hidden = on; $("drive-now").hidden = !on; $("drive-off").hidden = !on; $("drive-box").hidden = !on;
+  $("drive-state").textContent = !r.ready ? "Google Drive backup is being set up. It arrives in the next update."
+    : !on ? "Off. Your tabs are only on this computer."
+    : r.lastAt ? `On. Last backup ${when(r.lastAt)}. Checks every hour and uploads only when your tabs changed.` : "On. The first backup is on its way.";
+  $<HTMLButtonElement>("drive-connect").disabled = !r.ready;
+  if (on && r.error && (!r.lastAt || r.error.at > r.lastAt)) driveMsg(r.error.message);
+}
+$("drive-connect").addEventListener("click", async () => {
+  const b = $<HTMLButtonElement>("drive-connect");
+  // permissions.request must run inside the click; "identity" is optional and asked only now
+  const granted = await browser.permissions.request({ permissions: ["identity"] }).catch(() => false);
+  if (!granted) { driveMsg("Tab Lifeboat needs your OK to use your Google account for this. Nothing was changed."); return; }
+  b.disabled = true; b.textContent = "Connecting…"; driveMsg("");
+  const r = await send<{ uploaded: boolean }>({ type: "drive-connect" });
+  b.disabled = false; b.textContent = "Connect Google Drive";
+  driveMsg(r.ok ? "Connected. Your first backup is in your Google Drive." : err(r.error), r.ok);
+  await driveRefresh();
+});
+$("drive-now").addEventListener("click", async () => {
+  const b = $<HTMLButtonElement>("drive-now"); b.disabled = true; b.textContent = "Backing up…";
+  const r = await send<{ uploaded: boolean }>({ type: "drive-now" });
+  b.disabled = false; b.textContent = "Back up now";
+  driveMsg(r.ok ? (r.uploaded ? "Backed up to Google Drive just now." : "Nothing to back up yet: save some tabs first.") : err(r.error), r.ok);
+  await driveRefresh(); if ((document.getElementById("drive-box") as HTMLDetailsElement).open) void driveFiles();
+});
+$("drive-off").addEventListener("click", async () => {
+  if (!confirm("Stop backing up to Google Drive? Backups already in your Drive stay there and can be restored if you connect again.")) return;
+  await send({ type: "drive-disconnect" }); driveMsg("Disconnected. Your tabs are only on this computer now.", true); await driveRefresh();
+});
+$("drive-box").addEventListener("toggle", () => { if ((document.getElementById("drive-box") as HTMLDetailsElement).open) void driveFiles(); });
+async function driveFiles() {
+  const ul = $("drive-files"); ul.setAttribute("aria-busy", "true");
+  const loading = document.createElement("li"); loading.className = "empty"; loading.textContent = "Loading your backups…"; ul.replaceChildren(loading);
+  const r = await send<{ files: DriveRow[] }>({ type: "drive-list" }); ul.removeAttribute("aria-busy");
+  const files = r.files ?? [];
+  if (!r.ok || !files.length) { const li = document.createElement("li"); li.className = "empty"; li.textContent = r.ok ? "No backups in your Google Drive yet." : err(r.error); ul.replaceChildren(li); return; }
+  ul.replaceChildren(...files.map((f) => {
+    const li = document.createElement("li"); const meta = document.createElement("div"); meta.className = "meta";
+    const b = document.createElement("b"); b.textContent = when(Date.parse(f.createdTime));
+    const sub = document.createElement("span"); sub.textContent = `${f.device || "Unknown computer"} · ${plural(f.sessions, "session")} · ${plural(f.tabs, "tab")} · ${kb(f.size)}`;
+    meta.append(b, sub);
+    const go = document.createElement("button"); go.type = "button"; go.textContent = "Restore…"; let ready = false;
+    go.onclick = async () => {   // two steps: see what's inside, then add it (UX pattern: destructive-action protection)
+      go.disabled = true;
+      const r2 = await send<{ sessions: number; tabs: number }>({ type: ready ? "drive-restore" : "drive-preview", id: f.id });
+      go.disabled = false;
+      if (!r2.ok) { go.textContent = "Try again"; driveMsg(err(r2.error)); return; }
+      if (!ready) { ready = true; go.textContent = `Add ${plural(r2.sessions, "session")}`; go.classList.add("primary"); return; }
+      go.textContent = "Added ✓"; go.disabled = true; driveMsg(`Added ${plural(r2.sessions, "session")} (${plural(r2.tabs, "tab")}). Sessions you already had were not doubled.`, true); await refresh();
+    };
+    li.append(meta, go); return li;
+  }));
+}

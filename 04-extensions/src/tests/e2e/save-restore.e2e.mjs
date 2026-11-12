@@ -67,6 +67,16 @@ try {
   const locked = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
   check(!locked.ok && locked.error === "pro", "cleanup is Pro-only for free users");
   await sw.evaluate(() => chrome.storage.local.set({ plan: "pro" }));
+  // A234 Google Drive backup card: visible for Pro; until the OAuth client id is in the build it says so and can't be pressed
+  const opt = await ctx.newPage(); await opt.goto(`chrome-extension://${id}/options.html`); await opt.waitForTimeout(500);
+  const dstate = await opt.locator("#drive-state").textContent();
+  check(await opt.locator("#h-drive").isVisible() && /being set up/.test(dstate ?? ""), `Drive card for Pro: "${dstate}"`);
+  check(await opt.locator("#drive-connect").isDisabled(), "Connect is disabled until the Google client id is in the build");
+  const ds = await opt.evaluate(() => chrome.runtime.sendMessage({ type: "drive-connect" }));
+  check(!ds.ok && /being set up/.test(ds.error), "drive-connect refuses politely without a client id");
+  const perms = await sw.evaluate(() => chrome.permissions.getAll());
+  check(!perms.permissions.includes("identity") && !perms.permissions.includes("downloads"), `no Google or Downloads permission until asked: ${perms.permissions.join(",")}`);
+  await opt.close();
   const dup = await ctx.newPage(); await dup.goto(base + "/a#again");
   const prev = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
   check(prev.ok && prev.duplicates === 1, `cleanup preview sees ${prev.duplicates} duplicate`);

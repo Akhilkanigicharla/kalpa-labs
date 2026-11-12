@@ -20,7 +20,7 @@ describe("privacy policy matches the extension", () => {
     expect(policy).toContain("use and transfer of information received from Google APIs to any other app will adhere to the Google API Services User Data Policy, including the Limited Use requirements.");
   });
   it("says where data lives, who gets licence data, how to delete, and a DPDP grievance contact", () => {
-    for (const s of ["IndexedDB", "drive.file", "Uninstalling", "Digital Personal Data Protection Act, 2023", "{{CONTACT_EMAIL}}", "no analytics"]) expect(policy).toContain(s);
+    for (const s of ["IndexedDB", "drive.appdata", "Limited Use requirements", "Delete hidden app data", "Uninstalling", "Digital Personal Data Protection Act, 2023", "{{CONTACT_EMAIL}}", "no analytics"]) expect(policy).toContain(s);
   });
   it("loads nothing from other sites", () => {
     for (const f of ["index.html", "privacy.html", "terms.html"]) expect(site(f)).not.toMatch(/(src|href)="https?:\/\/(?!wa\.me|chromewebstore\.google\.com\/detail\/)/);

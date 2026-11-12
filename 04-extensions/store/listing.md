@@ -79,4 +79,4 @@ Save and restore the user's browser tabs, windows and tab groups, including auto
 | Certify: not used or transferred to determine creditworthiness or for lending | ✅ |
 | Privacy policy URL | `https://akhilkanigicharla.github.io/kalpa-labs/privacy.html` |
 
-When Pro opens (E8 licence, E13 Drive), add **Authentication information** (licence key → the payment company Akhil chooses, C54) and update both this form and the policy in the same release.
+When Google Drive backup ships (A234, needs the OAuth client id), add the **identity** permission justification: "optional; asked only when a Pro user turns on Google Drive backup, to get Google's permission for the drive.appdata scope (Tab Lifeboat's hidden app folder in the user's own Drive)". When Pro opens (E8 licence, E13 Drive), add **Authentication information** (licence key → the payment company Akhil chooses, C54) and update both this form and the policy in the same release.

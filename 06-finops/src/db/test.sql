@@ -128,4 +128,30 @@ do $$ declare c int; begin
 end $$;
 reset role;
 
+-- ---- A203 X-ray intake: service role only, expired rows purged
+insert into xray_intake (company,email,filename,bytes,sha256,export_text,consent_at,delete_after) values
+  ('Old Co','a@old.in','u.csv',1,repeat('a',64),'x',now()-interval '20 days',now()-interval '6 days'),
+  ('New Co','b@new.in','u.csv',1,repeat('b',64),'x',now(),now()+interval '14 days');
+do $$ declare n int; begin
+  n := purge_xray_intake();
+  if n <> 1 or (select count(*) from xray_intake) <> 1 then raise exception 'purge kept an expired intake row'; end if;
+  begin insert into xray_intake (company,email,filename,bytes,sha256,export_text,consent_at,delete_after)
+        values ('X','c@x.in','u.csv',1,repeat('c',64),'x',now(),now()); raise exception 'one-letter company accepted';
+  exception when check_violation then null; end;
+end $$;
+set role anon;
+do $$ begin
+  begin perform count(*) from xray_intake; raise exception 'anon can read X-ray intake';
+  exception when insufficient_privilege then null; end;
+  begin perform purge_xray_intake(); raise exception 'anon can run the purge';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+set role authenticated;
+do $$ begin
+  begin perform count(*) from xray_intake; raise exception 'a user can read X-ray intake';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+
 select 'ALL LEDGER PEAKS SCHEMA TESTS PASSED';

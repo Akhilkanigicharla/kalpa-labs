@@ -21,5 +21,12 @@ export function supabaseStore({ url, serviceKey, fetchFn = fetch, cacheMs = 60_0
         method: 'POST', headers: { ...headers, prefer: 'return=minimal' }, body: JSON.stringify(rows) });
       if (!r.ok) throw new Error(`insert ${r.status}`);
     },
+    // A203 intake.js: one X-ray upload; returns the row id. `text` goes to export_text.
+    async save({ text, ...row }) {
+      const r = await fetchFn(`${base}/xray_intake?select=id`, {
+        method: 'POST', headers: { ...headers, prefer: 'return=representation' }, body: JSON.stringify({ ...row, export_text: text }) });
+      if (!r.ok) throw new Error(`intake ${r.status}`);
+      return (await r.json())[0].id;
+    },
   };
 }

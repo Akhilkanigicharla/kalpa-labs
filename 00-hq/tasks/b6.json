@@ -171,10 +171,28 @@
   "read": [
    "00-hq/knowledge/K059.md"
   ],
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T10:50:00Z",
   "output": "00-hq/knowledge/K079.md",
   "min_items": 6,
-  "updated": "2026-11-12T11:55:28Z"
+  "updated": "2026-11-13T02:30:00+05:30"
+ },
+ {
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 0,
+  "status": "queued",
+  "created": "2026-11-13T00:00:00Z",
+  "id": "K089",
+  "title": "Ledger Peaks X-ray privacy notice draft (A203 follow-up)",
+  "details": "Write a plain-English privacy notice page for the Ledger Peaks free X-ray form under the DPDP Act 2023 and Rules: what we collect (company name, work email, usage export with metadata only), purpose (make and email the X-ray), who processes it (Kalpa Labs; hosting provider as [HOST]), retention (deleted 14 days after the X-ray unless they sign up), rights (access, correction, erasure, withdraw consent by replying to the X-ray email), grievance officer as [NAME, EMAIL] placeholders for Akhil, and how to complain to the Data Protection Board. Number the sections 1 to 8. Mark anything unsure UNVERIFIED. Not legal advice; Akhil gets it checked.",
+  "read": [
+   "06-finops/design/landing.html",
+   "06-finops/src/api/intake.js"
+  ],
+  "output": "00-hq/knowledge/K089.md",
+  "min_items": 8
  }
 ]

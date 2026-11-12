@@ -19,7 +19,7 @@ Tests: `python3 -m pytest -q 06-finops/tests/test_design.py` runs `design/screen
 | 12 | Advanced filtering | ✅ Fixed 9 Nov. Customers chips: All / Losing money / Under 45% margin. The overview "Losing money" card opens Customers already filtered. |
 | 13 | Keyboard shortcuts | ➖ Phone-first; tabs are real buttons, so Tab + Enter works. |
 | 14 | Tier-based UI indicators | ✅ Fixed 9 Nov. "Growth plan" label on margin per customer and the evidence pack, matching the landing pricing; landing shows all 4 tiers with prices. |
-| 15 | Onboarding data capture | ❌ → **A203**. Landing upload button is a disabled mockup. The live intake form (company, email, file; DPDP consent in plain words) is built with the X-ray backend. |
+| 15 | Onboarding data capture | ✅ A203: landing X-ray form (company, work email, export file) with plain DPDP consent, checks on blur, success / failure with Retry, offline message (`design/intake.js`, `tests/test_intake_form.py`). |
 | 16 | Referral / affiliate | ➖ Pre-launch; no referral offer yet. |
 | 17 | Custom 404 | ➖ Not a public site yet; the landing's 404 is part of its SEO checks (A192). |
 | 18 | Mobile-optimised layout | ✅ 390 px light + dark, no sideways scroll. Fixed 9 Nov: logo link and FAQ rows were 28–30 px tall, now 44 px. |

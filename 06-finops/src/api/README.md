@@ -10,6 +10,7 @@ Returns `202 {accepted, rejected: [{index, error}]}`. Counts only: prompt/respon
 | `../db/migrations/0002_api_key.sql` | Per-tenant keys, stored as SHA-256 hashes; members see labels, never hashes. |
 | `price_pass.py` | Prices `source = api` rows with the X-ray engine (client costs are never trusted). |
 | `litellm_callback.py` | LiteLLM proxy callback: batches, hashes end users with the client's salt, never blocks a call. |
+| `intake.js` | A203 free X-ray intake (`POST /api/xray-intake`, multipart: company, email, file, consent). Work email only, CSV/JSON up to 5 MB, refuses prompt/reply columns and raw emails/phones, 5 uploads/h per address, 8 s store timeout → 503. Store: `supabaseStore().save` into `xray_intake` (`../db/migrations/0003_xray_intake.sql`, service role only, `purge_xray_intake()` deletes rows past `delete_after` = 14 days). Form: `../../design/intake.js`. |
 | `bench.js` | 1M synthetic events through the handler. |
 
 Tests: `cd 06-finops/src/api && node --test`, `python3 -m pytest -q 06-finops/tests/test_ingest_api.py`, `bash 06-finops/src/db/test.sh`.

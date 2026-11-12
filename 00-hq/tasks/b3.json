@@ -203,5 +203,23 @@
     "created": "2026-11-12T18:50:00Z",
     "status": "queued",
     "tries": 3
+  },
+  {
+    "world": "b3",
+    "priority": "P2",
+    "owner": "Forge",
+    "context_chars": 30000,
+    "tries": 0,
+    "status": "queued",
+    "created": "2026-11-13T00:00:00Z",
+    "id": "K090",
+    "title": "Exam kit page copy: one payment, no expiry (A212 prep)",
+    "details": "For each exam kit page, write a 3-line pitch that says one payment, no expiry, and lists what the kit sells (planner, tracker and the rest named in the A212 roadmap line and the competitors research). No claims of results or ranks. Plain English, then the same in Telugu script and Hindi script. Number each kit 1 to N.",
+    "read": [
+      "00-hq/ROADMAP.md",
+      "00-hq/research/competitors-2026-11-11.md"
+    ],
+    "output": "00-hq/knowledge/K090.md",
+    "min_items": 3
   }
 ]

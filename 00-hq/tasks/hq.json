@@ -498,7 +498,25 @@
     "output": "00-hq/knowledge/K088.md",
     "min_items": 10,
     "created": "2026-11-12T18:50:00Z",
-    "status": "queued",
+    "status": "todo",
     "tries": 3
+  },
+  {
+    "world": "hq",
+    "priority": "P2",
+    "owner": "Forge",
+    "context_chars": 30000,
+    "tries": 0,
+    "status": "todo",
+    "created": "2026-11-12T17:15:00Z",
+    "id": "K093",
+    "title": "TruffleHog vs gitleaks: what each catches and a CI setup note (for A205)",
+    "read": [
+      "00-hq/AGENT-TOOLS.md",
+      ".github/workflows/quality.yml"
+    ],
+    "details": "Compare TruffleHog (run unmodified as a CI tool only; AGPL) and gitleaks for our GitHub Actions: what each detects, verified vs unverified findings, how to run TruffleHog on a git diff in Actions without secrets, false-positive handling. Any version, licence or flag you cannot quote from the provider's own page is UNVERIFIED.",
+    "output": "00-hq/knowledge/K093.md",
+    "min_items": 5
   }
 ]

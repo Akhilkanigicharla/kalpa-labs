@@ -41,6 +41,8 @@ jobs:
         with: { node-version: "22" }
       - name: Build the Deals site (the check reads its built pages)
         run: cd 05-deals/site && npm ci && npm run build
+      - name: Build the Ledger Peaks site (A192, stdlib only)
+        run: python3 06-finops/site/build.py
       - name: Engineering checks, all worlds
         run: python3 00-hq/tools/eng_check.py | tee -a "$GITHUB_STEP_SUMMARY"
 

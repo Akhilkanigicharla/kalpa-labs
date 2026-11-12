@@ -35,6 +35,7 @@ WORLDS = {
     "kits": ("03-kits", [], [], "03-kits/design"),
     "finops": ("06-finops/src", [], [], "06-finops/design"),
     "trading": ("07-trading/src", [], [], "07-trading/design"),
+    "finops-site": ("06-finops/site/_dist", ["06-finops/site/_dist/_headers"], ["06-finops/src/api"], "06-finops/design"),  # built output: run 06-finops/site/build.py first
     "deals": ("05-deals/site/dist", ["05-deals/site/public/_headers"], ["05-deals/site/functions"], "05-deals/design"),  # built output: run `npm run build` first
 }
 SKIP = re.compile(r"(node_modules|/dist/|/_dist/|/vendor/|\.test\.|/tests?/|/fixtures/)")
@@ -106,7 +107,7 @@ def run(name):
         add("Clickjacking", bool(click), "frame-ancestors / X-Frame-Options" if click else
             ("GitHub Pages can't send this header; needs a host with headers" if not confs else "missing"), warn=not confs)
         strict = csp and "unsafe-inline" not in csp.group(1).split("script-src")[-1].split(";")[0]
-        inline = [p for p in pages if re.search(r"<script(?![^>]*\bsrc=)(?![^>]*(application/ld\+json|type=\"module\" src))[^>]*>\s*\S", p.read_text(encoding="utf-8", errors="ignore"))]
+        inline = [p for p in pages if re.search(r"<script(?![^>]*\bsrc=)(?![^>]*(application/ld\+json|application/json|type=\"module\" src))[^>]*>\s*\S", p.read_text(encoding="utf-8", errors="ignore"))]
         add("Inline JS vs CSP", not inline, (f"{len(inline)} page(s) with inline script: " + ", ".join(p.name for p in inline[:4]) +
             ("; CSP allows it for now, move scripts to files" if not strict else "; strict CSP will BLOCK these")) if inline else "none",
             warn=bool(inline) and bool(csp) and not strict)

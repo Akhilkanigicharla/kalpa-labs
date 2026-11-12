@@ -201,7 +201,7 @@
     "output": "00-hq/knowledge/K087.md",
     "min_items": 3,
     "created": "2026-11-12T18:50:00Z",
-    "status": "queued",
+    "status": "todo",
     "tries": 3
   },
   {
@@ -210,7 +210,7 @@
     "owner": "Forge",
     "context_chars": 30000,
     "tries": 0,
-    "status": "queued",
+    "status": "todo",
     "created": "2026-11-13T00:00:00Z",
     "id": "K090",
     "title": "Exam kit page copy: one payment, no expiry (A212 prep)",
@@ -220,6 +220,23 @@
       "00-hq/research/competitors-2026-11-11.md"
     ],
     "output": "00-hq/knowledge/K090.md",
+    "min_items": 3
+  },
+  {
+    "world": "b3",
+    "priority": "P2",
+    "owner": "Forge",
+    "context_chars": 30000,
+    "tries": 0,
+    "status": "todo",
+    "created": "2026-11-12T17:15:00Z",
+    "id": "K092",
+    "title": "Manim explainer scripts: 3 short 9:16 clips with English + Telugu captions (for A201)",
+    "read": [
+      "03-kits/PLAN.md"
+    ],
+    "details": "Write 3 scripts for under-60-second vertical explainer clips for Telangana/AP exam aspirants: (1) one formula (simple interest), (2) one graph (reading a bar chart of percentages), (3) one step-by-step sum (time and work). For each: scene list with seconds, on-screen text, English caption and Telugu-script caption per scene. Maths must be checked step by step; no claims about exams.",
+    "output": "00-hq/knowledge/K092.md",
     "min_items": 3
   }
 ]

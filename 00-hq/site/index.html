@@ -110,7 +110,13 @@ nav.links a:hover{color:var(--fg)}
 #tree .lf{stroke:var(--ink);stroke-width:.9;stroke-opacity:.75;stroke-linejoin:round}
 #tree .vein{fill:none;stroke:var(--ink);stroke-width:.7;stroke-opacity:.55;stroke-linecap:round;pointer-events:none}
 #tree .blob{stroke:var(--ink);stroke-width:1.6;stroke-opacity:.35}
-#tree .br-ink{fill:none;stroke:var(--ink);stroke-linecap:round;opacity:.8}
+#tree .guide{fill:none;stroke:none}
+:root[data-theme=dark] #tree{--bark:color-mix(in srgb,#C08A5E 72%,#000)} /* deeper wood at night, same token */
+.bub:not(.on){transition-duration:.12s}
+#tree .limb-s{fill:url(#limbG);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+#tree .limb-lit{fill:none;stroke:color-mix(in srgb,var(--gold) 55%,#fff);stroke-width:1.6;stroke-linecap:round;opacity:.35}
+#tree .blos ellipse{fill:#FFF8E7;stroke:var(--ink);stroke-width:.5}#tree .blos .hb{fill:var(--gold)}
+#tree .bead{fill:var(--gold);stroke:var(--ink);stroke-width:.6}#tree .bell{fill:var(--gold);stroke:var(--ink);stroke-width:.8}
 #tree .trunk{stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round}
 #tree .bark-mark{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-opacity:.45;stroke-linecap:round}
 #tree .dots{fill:none;stroke:var(--gold);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:.1 6}
@@ -140,6 +146,8 @@ nav.links a:hover{color:var(--fg)}
  .grow .br{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1s ease-out .2s forwards}
  .grow .blob{animation:leafin .7s cubic-bezier(.2,.8,.3,1.2) both}
  .grow .lf{animation:leafin .5s cubic-bezier(.2,.8,.3,1.4) both}
+ .grow .limbs{animation:ripen .7s ease-out both}
+ .grow .blos{animation:leafin .6s cubic-bezier(.2,.8,.3,1.4) both}.blos{transform-box:fill-box;transform-origin:50% 50%}
  .grow .fruit{animation:ripen .5s ease-out both}
  #tree .halo{animation:halo 2.6s ease-in-out infinite}
  @keyframes draw{to{stroke-dashoffset:0}}
@@ -345,13 +353,15 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
       <linearGradient id="barkG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" style="stop-color:color-mix(in srgb,var(--bark) 72%,var(--gold))"/><stop offset=".45" style="stop-color:var(--bark)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--bark) 62%,#000)"/></linearGradient>
       <radialGradient id="blob1" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,var(--tl3) 70%,var(--gold))"/><stop offset=".6" style="stop-color:var(--tl1)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--tl1) 70%,#000)"/></radialGradient>
       <radialGradient id="blob2" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,var(--tl4) 75%,var(--gold))"/><stop offset=".6" style="stop-color:var(--tl2)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--tl2) 70%,#000)"/></radialGradient>
+      <linearGradient id="limbG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:color-mix(in srgb,var(--bark) 70%,var(--gold))"/><stop offset=".55" style="stop-color:var(--bark)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--bark) 70%,#000)"/></linearGradient>
       <radialGradient id="dropG" cx=".5" cy=".5" r=".5"><stop offset="0" style="stop-color:#000;stop-opacity:.22"/><stop offset="1" style="stop-color:#000;stop-opacity:0"/></radialGradient>
      </defs>
      <ellipse class="ground" cx="300" cy="566" rx="260" ry="22"/>
      <ellipse cx="300" cy="566" rx="150" ry="16" fill="url(#dropG)"/>
      <g id="tback"></g>
      <path class="root" stroke-width="7" d="M282 552C262 560 240 566 214 570"/><path class="root" stroke-width="7" d="M318 552C340 560 364 566 392 572"/><path class="root" stroke-width="5" d="M296 556C292 566 286 572 276 578"/>
-     <path class="trunk" d="M268 560C280 500 284 440 281 382C279 340 284 300 290 262L310 262C316 300 321 340 319 382C316 440 320 500 332 560Z"/>
+     <g id="tlimbs"></g>
+     <path class="trunk" d="M248 563C266 553 276 522 279 482C282 432 279 384 282 342C284 306 288 282 292 256L308 256C312 282 316 306 318 342C321 384 318 432 321 482C324 522 334 553 354 563C332 567 313 561 300 556C287 561 268 567 248 563Z"/>
      <path d="M292 520C294 480 293 430 291 390M306 500C308 460 309 420 307 380" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="3" stroke-linecap="round"/>
      <path class="bark-mark" d="M290 540q6-8 12 0t12 0M288 500q6-8 12 0t12 0M287 460q6-8 12 0t12 0M286 420q6-8 12 0t12 0M287 380q6-8 12 0t12 0M290 340q5-7 10 0t10 0M293 300q4-6 7 0t7 0"/>
      <g id="grass"></g>
@@ -507,6 +517,6 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 </footer>
 <div class="mbar"><a class="btn btn-gold" href="#demo" data-i="mb1">Chat with our AI</a><a class="btn btn-ghost" href="#founding" data-i="mb2">Free salon pilot</a></div>
 
-<script src="app.js?v=c014968d" defer></script>
+<script src="app.js?v=df393393" defer></script>
 </body>
 </html>

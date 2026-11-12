@@ -27,6 +27,9 @@ if "--fix" in sys.argv and m and m.group(1) != ver:
     html = html.replace(m.group(0), f'src="app.js?v={ver}"')
     (SITE / "index.html").write_text(html, encoding="utf-8")
     m = re.search(r'src="app\.js\?v=([0-9a-f]{8})"', html)
+import subprocess  # noqa: E402
+syn = subprocess.run(["node", "--check", str(SITE / "app.js")], capture_output=True, text=True)
+check(syn.returncode == 0, "app.js syntax error: " + syn.stderr.strip()[:200])
 check(m and m.group(1) == ver, f"app.js version is stale: run with --fix (want {ver})")
 
 for page in ("index.html", "404.html"):

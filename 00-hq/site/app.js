@@ -29,6 +29,7 @@ const PROPS={ // small things each bot holds, drawn at its right hand
  chat:(p,x,y)=>{el('rect',{x:x+1,y:y-15,width:15,height:11,rx:3,fill:'#fff',stroke:'var(--ink)','stroke-width':1},p);el('path',{d:`M${x+4} ${y-4}l-1 4 4-4`,fill:'#fff',stroke:'var(--ink)','stroke-width':1,'stroke-linejoin':'round'},p);[4.5,8.5,12.5].forEach(d=>el('circle',{class:'dot',cx:x+d,cy:y-9.5,r:1.2,fill:'#25D366'},p));},
  wrench:(p,x,y)=>el('path',{d:`M${x} ${y}l9-11m-2-2a4 4 0 1 0 5 5l-3-1-1-3z`,fill:'none',stroke:'var(--ink)','stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'},p),
  pen:(p,x,y)=>{el('path',{d:`M${x} ${y+1}l10-14 3 2-10 14-4 1z`,fill:'var(--gold)',stroke:'var(--ink)','stroke-width':1,'stroke-linejoin':'round'},p);},
+ calc:(p,x,y)=>{el('rect',{x:x+1,y:y-16,width:11,height:14,rx:2,fill:'#F7F1E1',stroke:'var(--ink)','stroke-width':1},p);el('rect',{x:x+3,y:y-14,width:7,height:3,fill:'#16201B'},p);[0,1].forEach(r=>[0,1,2].forEach(c=>el('rect',{x:x+3+c*2.6,y:y-9.5+r*3.2,width:1.8,height:2,fill:'var(--ink)'},p)));},
  lens:(p,x,y)=>{el('path',{d:`M${x} ${y}l5-6`,stroke:'var(--ink)','stroke-width':2.2,'stroke-linecap':'round'},p);el('circle',{cx:x+8.5,cy:y-10,r:5.5,fill:'#DDF1F3',stroke:'var(--ink)','stroke-width':1.6},p);}};
 function human(g){
  el('ellipse',{cx:0,cy:2,rx:18,ry:5,fill:'#000',opacity:.12},g);
@@ -235,17 +236,40 @@ function cluster(par,cx,cy,R,n){
  for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
   const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
   const d=(1.1+Math.hypot(x-300,y-560)/600*1.2+rnd()*.3).toFixed(2);
-  leaf(g,{fill:'var(--tl'+(1+Math.floor(rnd()*5))+')',style:'animation-delay:'+d+'s'});}}
+  leaf(g,{fill:'var(--tl'+(1+Math.floor(rnd()*5))+')',style:'animation-delay:'+d+'s'});}
+ for(let k=0;k<Math.round(n/9);k++){const a=rnd()*6.283,rr=R*.85*Math.sqrt(rnd());bloom(par,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8,3+rnd()*1.6,(2+rnd()).toFixed(2));}}
+// wish-tree blossoms: five cream petals around a gold heart
+function bloom(par,x,y,r,delay){const g=el('g',{class:'blos',transform:`translate(${x.toFixed(1)} ${y.toFixed(1)})`,style:'animation-delay:'+delay+'s'},par);
+ for(let k=0;k<5;k++)el('ellipse',{cx:0,cy:-r,rx:r*.62,ry:r,transform:`rotate(${k*72})`},g); el('circle',{class:'hb',r:r*.45},g);}
+// a branch as a filled, tapering shape (thick at the trunk, thin at the tip), with a sunlit upper edge
+function limbShape(par,p,w0,w1,cls){const L=p.getTotalLength(),N=22,lft=[],rgt=[],top=[];
+ for(let k=0;k<=N;k++){const t=k/N,a=p.getPointAtLength(L*t),b=p.getPointAtLength(Math.min(L,L*t+.5)),c=k===N?p.getPointAtLength(L*t-.5):a;
+  let dx=b.x-a.x,dy=b.y-a.y; if(k===N){dx=a.x-c.x;dy=a.y-c.y;} const m=Math.hypot(dx,dy)||1,nx=-dy/m,ny=dx/m,w=(w0+(w1-w0)*Math.pow(t,.8))/2;
+  lft.push([a.x+nx*w,a.y+ny*w]); rgt.push([a.x-nx*w,a.y-ny*w]); top.push(ny<0?[a.x+nx*w*.55,a.y+ny*w*.55]:[a.x-nx*w*.55,a.y-ny*w*.55]);}
+ const P=pts=>pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L'), tip=p.getPointAtLength(L);
+ const d='M'+P(lft)+`Q${tip.x.toFixed(1)} ${tip.y.toFixed(1)} `+P(rgt.reverse())+'Z';
+ el('path',{class:cls||'limb-s',d},par); el('path',{class:'limb-lit',d:'M'+P(top.slice(0,N-2))},par); return d;}
+
 const sway=[]; // groups that move in the wind: [elements, baseX, baseY, amp, phase]
 const crown=el('g',{},tback); cluster(crown,300,190,100,85); cluster(crown,300,275,82,55); sway.push([[crown],300,320,.6,0]);
-const fruits=[], paths=[];
+const fruits=[], paths=[], tlimbs=document.getElementById('tlimbs');
 BR.forEach(([d,w,id,name,col],i)=>{
  const back=el('g',{},tback), front=el('g',{},tfront);
- const ink=el('path',{d,class:'br br-ink','stroke-width':w+3.5},front); const p=el('path',{d,class:'br','stroke-width':w},front); const L=p.getTotalLength();
- [ink,p].forEach(x=>{x.style.setProperty('--len',L.toFixed(0)); x.style.animationDelay=(.75+i*.09)+'s';}); paths.push(p);
+ const limbs=el('g',{class:'limbs',style:'animation-delay:'+(.75+i*.09)+'s'},tlimbs);
+ const p=el('path',{d,class:'guide'},front); const L=p.getTotalLength(); paths.push(p); // invisible: robots, birds and fruit follow it
+ limbShape(limbs,p,w*1.9,w*.42);
  const e=p.getPointAtLength(L), m=p.getPointAtLength(L*.55);
  cluster(back,e.x,e.y-6,i===6?58:i<2?60:54,i<2?52:46); cluster(back,m.x,m.y-14,34,20);
- for(let k=0;k<5;k++){const q=p.getPointAtLength(L*(.45+k*.12));const g=el('g',{transform:`translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${(k%2?-60:-120)+rnd()*30}) scale(.8)`},front);leaf(g,{fill:'var(--tl'+(3+k%3)+')',style:'animation-delay:'+(1.5+i*.1+k*.06).toFixed(2)+'s'});}
+ // twigs fork off the branch, alternating sides, each ending in a small spray of leaves
+ [.42,.64,.84].forEach((t,k)=>{if(i===6&&k===0)return;const a=p.getPointAtLength(L*t),b=p.getPointAtLength(L*t+1),ang=Math.atan2(b.y-a.y,b.x-a.x)+(k%2?.75:-.75)*(i%2?-1:1),len=22+rnd()*14;
+  const ex=a.x+Math.cos(ang)*len,ey=a.y+Math.sin(ang)*len-6,tw=el('path',{d:`M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${((a.x+ex)/2).toFixed(1)} ${((a.y+ey)/2-6).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`},front);
+  tw.setAttribute('class','guide'); limbShape(front,tw,w*.55,1.4,'limb-s twig'); tw.remove();
+  for(let j=0;j<6;j++){const g=el('g',{transform:`translate(${(ex+(rnd()-.5)*10).toFixed(1)} ${(ey+(rnd()-.5)*8).toFixed(1)}) rotate(${(ang*57.3+(j-2.5)*34).toFixed(0)}) scale(${(.6+rnd()*.25).toFixed(2)})`},front);
+   leaf(g,{fill:'var(--tl'+(3+j%3)+')',style:'animation-delay:'+(1.6+i*.1+j*.05).toFixed(2)+'s'});}});
+ // a little foliage in front of the tip, so the branch disappears into the leaves instead of ending like a stick
+ for(let j=0;j<10;j++){const a=rnd()*6.283,rr=(i===6?34:30)*Math.sqrt(rnd()),g=el('g',{transform:`translate(${(e.x+Math.cos(a)*rr).toFixed(1)} ${(e.y-8+Math.sin(a)*rr*.7).toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*60).toFixed(0)}) scale(${(.65+rnd()*.3).toFixed(2)})`},front);
+  leaf(g,{fill:'var(--tl'+(4+j%2)+')',style:'animation-delay:'+(1.9+i*.1).toFixed(2)+'s'});}
+ if(i<2)bloom(front,e.x+(i?-22:22),e.y-24,4.4,'2.2'); 
  const fx=e.x, fy=e.y+(i===6?-6:20);
  const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(2.3+i*.12)+'s'},front);
  if(i!==6)el('path',{d:`M${e.x} ${e.y}L${fx} ${fy-12}`,stroke:'var(--bark)','stroke-width':2.5},f);
@@ -260,7 +284,7 @@ BR.forEach(([d,w,id,name,col],i)=>{
  const t=el('text',{class:'flabel',x:fx,y:fy+(i===6?-26:38)},f); t.textContent=SHORT[id]||name;
  f.addEventListener('click',ev=>{ev.stopPropagation();openTip(i);});
  f.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openTip(i);}});
- fruits.push(f); sway.push([[back,front],+d.split(' ')[0].slice(1),+d.split(' ')[1].split('C')[0],1.1+(i%3)*.3,i*1.3]);
+ fruits.push(f); sway.push([[back,front,limbs],+d.split(' ')[0].slice(1),+d.split(' ')[1].split('C')[0],1.1+(i%3)*.3,i*1.3]);
 });
 // grass tufts along the ground
 const grassEls=[];for(let k=0;k<30;k++){const x=(60+k*16+rnd()*8).toFixed(0),h=(8+rnd()*12).toFixed(0);const g=el('path',{class:'grass','data-x':x,d:`M${x} 568q-3-${h} -6-${+h+3}M${x} 568q1-${+h+2} 4-${+h+4}`},document.getElementById('grass'));grassEls.push(g);}
@@ -321,6 +345,12 @@ function peaFrame(p,t,dt){
  PEA.push(...[[104,1],[496,-1]].map(([x,f],k)=>peacock(pd,x,556,f,k)));
 })();
 
+/* hanging garlands: gold beads and a little bell, swinging with their branch */
+[[0,.62],[0,.8],[1,.6],[1,.78]].forEach(([b,at],k)=>{const p=paths[b],q=p.getPointAtLength(p.getTotalLength()*at),n=4+k%2,g=el('g',{class:'garland','aria-hidden':'true'},tfront.children[b]);
+ el('path',{d:`M${q.x.toFixed(1)} ${(q.y+3).toFixed(1)}v${n*7+4}`,stroke:'var(--gold)','stroke-width':1,opacity:.8},g);
+ for(let j=1;j<=n;j++)el('circle',{cx:q.x.toFixed(1),cy:(q.y+3+j*7).toFixed(1),r:j===n?0:2,class:'bead'},g);
+ el('path',{class:'bell',d:`M${(q.x-4).toFixed(1)} ${(q.y+n*7+12).toFixed(1)}q4-12 8 0z`},g);});
+
 /* product tip */
 const tip=document.getElementById('tip'); let tipFor=-1;
 function closeTip(){if(!tip)return;tip.hidden=true;fruits.forEach(f=>f.classList.remove('on'));tipFor=-1;}
@@ -341,14 +371,16 @@ document.addEventListener('click',e=>{if(!tip.hidden&&!tip.contains(e.target))cl
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!tip.hidden){const i=tipFor;closeTip();fruits[i]&&fruits[i].focus();}});
 
 /* robots walking the branches, each showing what it is doing */
-const WALK=[ // branch, name, colour, tasks [en, te]
- [2,'Chitti','#25D366',[['Replying to a customer in Telugu','కస్టమర్‌కు తెలుగులో జవాబిస్తోంది'],['Booking a 6 PM slot','సాయంత్రం 6 గంటల స్లాట్ బుక్ చేస్తోంది']]],
- [3,'Forge','#2F6F78',[['Running 120 tests before a release','రిలీజ్ ముందు 120 టెస్ట్‌లు నడుపుతోంది'],['Fixing a bug a user reported','యూజర్ చెప్పిన బగ్ సరిచేస్తోంది']]],
- [4,'Kavi','#3B7A3A',[['Writing a Telugu post for Akhil to approve','అఖిల్ ఆమోదం కోసం తెలుగు పోస్ట్ రాస్తోంది'],['Translating a reply into Hindi','జవాబును హిందీలోకి అనువదిస్తోంది']]],
- [5,'Vigil','#A8324F',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Confirming a rule on the official site','అధికారిక సైట్‌లో నియమాన్ని నిర్ధారిస్తోంది']]]];
+const WALK=[ // branch, name, tool, tasks [en, te]; colour comes from the branch's world
+ [0,'Chitti','chat',[['Replying to a customer in Telugu','కస్టమర్‌కు తెలుగులో జవాబిస్తోంది'],['Booking a 6 PM slot','సాయంత్రం 6 గంటల స్లాట్ బుక్ చేస్తోంది']]],
+ [1,'Mistri','wrench',[['Turning a voice note into an invoice','వాయిస్ నోట్‌ను ఇన్‌వాయిస్‌గా మారుస్తోంది'],['Adding parts to a job card','జాబ్ కార్డ్‌కు విడిభాగాలు జోడిస్తోంది']]],
+ [2,'Kavi','pen',[['Writing a GATE practice question','GATE ప్రాక్టీస్ ప్రశ్న రాస్తోంది'],['Checking an answer key twice','జవాబుల కీని రెండుసార్లు సరిచూస్తోంది']]],
+ [3,'Forge','wrench',[['Running 120 tests before a release','రిలీజ్ ముందు 120 టెస్ట్‌లు నడుపుతోంది'],['Fixing a bug a user reported','యూజర్ చెప్పిన బగ్ సరిచేస్తోంది']]],
+ [4,'Vigil','lens',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Confirming a rule on the official site','అధికారిక సైట్‌లో నియమాన్ని నిర్ధారిస్తోంది']]],
+ [5,'Ganaka','calc',[['Adding up a cloud bill','క్లౌడ్ బిల్లును లెక్కిస్తోంది'],['Finding a cheaper server plan','చౌకైన సర్వర్ ప్లాన్ వెతుకుతోంది']]]];
 const bubbles=document.getElementById('bubbles');
 /* birds resting in the tree: tap one (or shake the tree) and they fly off; they come back after a while */
-const PERCH=[[0,.32,1],[1,.3,-1],[6,.62,1]].map(([b,at,face],k)=>{
+const PERCH=[[0,.24,1],[1,.22,-1],[6,.62,1]].map(([b,at,face],k)=>{
  const pt=paths[b].getPointAtLength(paths[b].getTotalLength()*at);
  const g=el('g',{class:'perch','aria-hidden':'true',transform:`translate(${pt.x.toFixed(1)} ${(pt.y-4).toFixed(1)}) scale(${face*1.15} 1.15)`,style:'--pd:'+(k*1.3)+'s'},tfront);
  el('circle',{cx:0,cy:-12,r:30,fill:'transparent'},g); // 44 px tap target on a phone
@@ -363,9 +395,9 @@ function scare(list){list.forEach(p=>{if(p.away)return;p.away=true;p.g.classList
  const r=p.g.getBoundingClientRect(); if(BIRDS.fly)BIRDS.fly(p,r.left+r.width/2,r.top+r.height/2);
  else setTimeout(()=>{p.away=false;p.g.classList.remove('away');},6000);});}
 PERCH.forEach(p=>p.g.addEventListener('pointerdown',e=>{e.stopPropagation();scare([p]);}));
-const walkers=WALK.map(([b,name,col,tasks],k)=>{
+const walkers=WALK.map(([b,name,tool,tasks],k)=>{ const col='var('+BR[b][4]+')';
  const front=tfront.children[b], p=paths[b], L=p.getTotalLength();
- const g=el('g',{class:'walker'},front); const inner=el('g',{},g); bot(inner,col,'working',['chat','wrench','pen','lens'][k]);
+ const g=el('g',{class:'walker'},front); const inner=el('g',{},g); bot(inner,col,'working',tool);
  const bub=document.createElement('div'); bub.className='bub'; bub.style.setProperty('--c',col); bubbles.append(bub);
  return {g,p,L,t:.42+k*.08,v:(k%2?-1:1)*.045,name,tasks,n:k,bub,on:false};});
 function placeBot(w,time){
@@ -379,9 +411,10 @@ function placeBubble(w){
 let bi=-1, beat=0;
 function nextBubble(){
  const single=true; /* one bubble at a time, so two never overlap */ bi=(bi+1)%walkers.length; const w=walkers[bi];
+ const wasOn=walkers.some(o=>o.bub.classList.contains('on'));
  if(single)walkers.forEach(o=>{o.bub.classList.remove('on');o.on=false;});
  const [en,te]=w.tasks[beat++%w.tasks.length===0?0:1]; w.bub.replaceChildren(Object.assign(document.createElement('b'),{textContent:w.name}),document.createTextNode(lang==='te'?te:en));
- w.on=true; placeBubble(w); w.bub.classList.add('on'); clearTimeout(w.to); w.to=setTimeout(()=>{w.bub.classList.remove('on');setTimeout(()=>{if(!w.bub.classList.contains('on'))w.on=false;},400);},single?2900:4800);}
+ w.on=true; placeBubble(w); setTimeout(()=>w.bub.classList.add('on'),wasOn?160:0); /* let the old bubble leave first */ clearTimeout(w.to); w.to=setTimeout(()=>{w.bub.classList.remove('on');setTimeout(()=>{if(!w.bub.classList.contains('on'))w.on=false;},400);},single?2900:4800);}
 
 /* falling leaves (and fireflies at night) */
 const fall=document.getElementById('falling');

@@ -398,7 +398,7 @@
   "priority": "P2",
   "owner": "Ganaka",
   "context_chars": 20000,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-12T12:30:00Z",
   "id": "K080",
@@ -408,14 +408,16 @@
    "00-hq/design/ceo-room-dashboard.html"
   ],
   "output": "00-hq/knowledge/K080.md",
-  "min_items": 5
+  "min_items": 5,
+  "updated": "2026-11-12T12:44:14Z",
+  "vigil_notes": "FIX:\n- List has 7 items; Kalpa rule allows lists of 5 at most. Trim or split.\n- \"Live\" is title case, not ALL CAPS; fix its category.\n- \"16 Nov\" and \"13 Dec\" contain numbers; remove incorrect \"no number behind it\" claim.\n- Quoted strings appear in the repo file, so they are verified; no UNVERIFIED tags needed.\n- Rewrites like \"executive dashboard\" change meaning; keep to copy edits or mark as style only."
  },
  {
   "world": "hq",
   "priority": "P2",
   "owner": "Ganaka",
   "context_chars": 20000,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-12T12:30:00Z",
   "id": "K081",
@@ -425,6 +427,8 @@
    "00-hq/design/ENGINEERING-CHECKS.md"
   ],
   "output": "00-hq/knowledge/K081.md",
-  "min_items": 8
+  "min_items": 8,
+  "updated": "2026-11-12T12:45:11Z",
+  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

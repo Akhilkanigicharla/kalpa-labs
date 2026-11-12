@@ -386,9 +386,10 @@
    "06-finops/design/landing.html",
    "06-finops/design/xray.html"
   ],
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T09:00:00Z",
   "output": "00-hq/knowledge/K076.md",
-  "min_items": 5
+  "min_items": 5,
+  "updated": "2026-11-12T08:51:14Z"
  }
 ]

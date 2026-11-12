@@ -399,7 +399,7 @@
   "owner": "Ganaka",
   "context_chars": 20000,
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T12:30:00Z",
   "id": "K080",
   "title": "CEO Room copy pass for unslop (A198 part 6 prep)",
@@ -409,15 +409,14 @@
   ],
   "output": "00-hq/knowledge/K080.md",
   "min_items": 5,
-  "updated": "2026-11-12T12:44:14Z",
-  "vigil_notes": "FIX:\n- List has 7 items; Kalpa rule allows lists of 5 at most. Trim or split.\n- \"Live\" is title case, not ALL CAPS; fix its category.\n- \"16 Nov\" and \"13 Dec\" contain numbers; remove incorrect \"no number behind it\" claim.\n- Quoted strings appear in the repo file, so they are verified; no UNVERIFIED tags needed.\n- Rewrites like \"executive dashboard\" change meaning; keep to copy edits or mark as style only."
+  "updated": "2026-11-12T12:53:18Z"
  },
  {
   "world": "hq",
   "priority": "P2",
   "owner": "Ganaka",
   "context_chars": 20000,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-12T12:30:00Z",
   "id": "K081",
@@ -428,7 +427,7 @@
   ],
   "output": "00-hq/knowledge/K081.md",
   "min_items": 8,
-  "updated": "2026-11-12T12:45:11Z",
-  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
+  "updated": "2026-11-12T12:54:09Z",
+  "vigil_notes": "FIX:\n*   Item 7: \"30 days\" is not in repo files; mark as UNVERIFIED or remove specific number.\n*   Item 8: \"5 error beacons\" is not in repo files; mark as UNVERIFIED or remove specific number.\n*   Item 8: Conflicts with verified rule (12 msgs/min); clarify if this is a separate limit or align with verified data."
  }
 ]

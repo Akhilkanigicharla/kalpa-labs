@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="lp.css">
 <style>
 body{padding-bottom:80px}
-.bar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px}
+.bar-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
 .bar-top .who{font-size:14px;text-align:right}
-.kpis{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.kpis{display:grid;gap:12px;grid-template-columns:1fr 1fr}
 .kpis .card{padding:16px;text-decoration:none;color:inherit;display:block}
 .kpis .card:first-child{grid-column:1/-1}
 .kpis .big{font-size:30px}
@@ -27,7 +27,7 @@ main{display:grid;gap:16px;padding-bottom:20px}
 .tabs svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75}
 @media (min-width:760px){
   body{padding-bottom:0}
-  .tabs{position:static;display:flex;gap:6px;background:transparent;border:0;padding:0 0 6px}
+  .tabs{position:static;display:flex;gap:8px;background:transparent;border:0;padding:0 0 8px}
   .tabs button{padding:0 16px;display:flex}
   .kpis{grid-template-columns:2fr 1fr 1fr}.kpis .card:first-child{grid-column:auto}
   .view.on.two{grid-template-columns:1fr 1fr}
@@ -62,10 +62,10 @@ main{display:grid;gap:16px;padding-bottom:20px}
         <a class="card" href="#" data-go="customers" data-filter="loss"><p class="eyebrow">Losing money</p><p class="big num" style="color:var(--bad)" id="k-loss"></p><p class="muted" style="margin:0;font-size:14px">customer<span id="k-loss-s"></span></p></a>
         <a class="card" href="#" data-go="savings"><p class="eyebrow">Savings found</p><p class="big num" style="color:var(--ok)" data-lp="savings_month"></p><p class="muted" style="margin:0;font-size:14px">a month, 3 ideas</p></a>
       </div>
-      <div class="card"><h3>Cost per day <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><div id="chart"></div></div>
+      <div class="card"><h3>Cost per day <span class="sub">this week</span></h3><div id="chart"></div></div>
       <div class="card note" id="unpriced" style="box-shadow:none"></div>
-      <div class="card"><h3>By feature <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><ul class="rows" id="feat"></ul></div>
-      <div class="card"><h3>By model <span class="muted" style="font:600 12px var(--f-mono)">THIS WEEK</span></h3><ul class="rows" id="model"></ul></div>
+      <div class="card"><h3>By feature <span class="sub">this week</span></h3><ul class="rows" id="feat"></ul></div>
+      <div class="card"><h3>By model <span class="sub">this week</span></h3><ul class="rows" id="model"></ul></div>
     </section>
 
     <section class="view" id="v-customers" role="tabpanel" aria-label="Customers">

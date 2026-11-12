@@ -386,10 +386,45 @@
    "06-finops/design/landing.html",
    "06-finops/design/xray.html"
   ],
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T09:00:00Z",
   "output": "00-hq/knowledge/K076.md",
   "min_items": 5,
-  "updated": "2026-11-12T08:51:14Z"
+  "updated": "2026-11-12T08:51:14Z",
+  "note": "Claude 12 Nov: 1 of 5 rewrites used (#4); #1-3,#5 dropped trust facts or the FBIL source. See unslop-audit-ledgerpeaks.md"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-12T12:30:00Z",
+  "id": "K080",
+  "title": "CEO Room copy pass for unslop (A198 part 6 prep)",
+  "details": "Read 00-hq/design/ceo-room-dashboard.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word or uppercase CSS label, plural bug like '1 items', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: exact quote, suggested plain rewrite (max 12 words) that keeps every fact. Quote only strings really in the file; if none, say none.",
+  "read": [
+   "00-hq/design/ceo-room-dashboard.html"
+  ],
+  "output": "00-hq/knowledge/K080.md",
+  "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-12T12:30:00Z",
+  "id": "K081",
+  "title": "A219 prep: what a privacy-safe browser error log may keep",
+  "details": "Read 00-hq/design/ENGINEERING-CHECKS.md rows 54, 64, 66 and 107. Write a short checklist (max 12 lines) for a window.onerror logger on a small public site under India's DPDP Act: which fields to keep (message, file, line, page path, user agent family), which to never keep (query strings, form values, IP, emails, phone numbers), how long to keep them, and a per-visitor rate limit. Plain English, no code. Mark anything you are not sure of as 'unverified'.",
+  "read": [
+   "00-hq/design/ENGINEERING-CHECKS.md"
+  ],
+  "output": "00-hq/knowledge/K081.md",
+  "min_items": 8
  }
 ]

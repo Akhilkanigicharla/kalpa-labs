@@ -57,7 +57,7 @@ const LP = (() => {
     svg.style.cssText = 'width:100%;height:auto;display:block';
     days.forEach(([d, v], i) => {
       const h = Math.max(2, (v / max) * H), r = document.createElementNS(ns, 'rect');
-      Object.entries({ x: i * bw + 6, y: H - h, width: bw - 12, height: h, rx: 6, fill: 'var(--world)' }).forEach(([k, x]) => r.setAttribute(k, x));
+      Object.entries({ x: i * bw + 6, y: H - h, width: bw - 12, height: h, rx: 2, fill: v === max ? 'var(--world)' : 'color-mix(in srgb, var(--muted) 55%, transparent)' }).forEach(([k, x]) => r.setAttribute(k, x));
       const t = document.createElementNS(ns, 'text');
       Object.entries({ x: i * bw + bw / 2, y: H + 16, 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 11, 'font-family': 'var(--f-mono)' }).forEach(([k, x]) => t.setAttribute(k, x));
       t.textContent = date(d).split(' ')[0];

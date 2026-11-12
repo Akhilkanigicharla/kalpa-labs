@@ -124,6 +124,9 @@ class Runner(unittest.TestCase):
                 part = json.load(open(p))
                 self.assertTrue(all(t["world"] == w for t in part), w)
                 q += part
+        for t in q:  # numbers must be numbers, or the runner crashes adding to them (K076/K077, 12 Nov)
+            for k in ("tries", "context_chars", "min_items"):
+                self.assertTrue(k not in t or isinstance(t[k], int), f'{t["id"]}.{k} must be a number')
         ids = [t["id"] for t in q]
         self.assertGreater(len(ids), 0)
         self.assertEqual(len(ids), len(set(ids)))

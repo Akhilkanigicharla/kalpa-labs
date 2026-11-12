@@ -318,12 +318,12 @@
   ],
   "min_items": "12",
   "context_chars": "20000",
-  "status": "todo",
+  "status": "rejected",
   "created": "2026-11-11T21:00:00Z",
   "output": "00-hq/knowledge/K071.md",
-  "updated": "2026-11-11T23:10:14Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n- Section 3 checklist has 7 items; reduce to 5 or fewer (Kalpa rule: lists of 5 at most).\n- Table lists 14 screens; cut to 5 rows or move the full inventory to a separate linked audit file.\n- Invented UI “tells” (e.g., “inflated hype”, “neon glow borders”) are not in repo files; mark each tell cell UNVERIFIED or replace with “pending audit”.\n- Keep Section 2 clearly labeled as an unsourced draft proposal, not verified Kalpa policy.\n- Only `06-finops/design/landing.html` appears in the repo files; ensure every other path cell carries (UNVERIFIED)."
+  "updated": "2026-11-12T00:47:48Z",
+  "tries": 3,
+  "vigil_notes": "FIX: incomplete, 5 of 12 required items. Write all 12, numbered 1 to 12."
  },
  {
   "id": "K072",
@@ -338,8 +338,9 @@
   ],
   "min_items": 21,
   "context_chars": 20000,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T00:00:00Z",
-  "output": "00-hq/knowledge/K072.md"
+  "output": "00-hq/knowledge/K072.md",
+  "updated": "2026-11-12T00:48:48Z"
  }
 ]

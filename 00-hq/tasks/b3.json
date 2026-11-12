@@ -147,9 +147,10 @@
   "read": "['03-kits/exam-kits/README.md']",
   "min_items": "3",
   "context_chars": "12000",
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T08:00:00Z",
   "output": "00-hq/knowledge/K075.md",
-  "tries": "0"
+  "tries": "0",
+  "updated": "2026-11-12T07:51:18Z"
  }
 ]

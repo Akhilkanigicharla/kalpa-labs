@@ -44,22 +44,22 @@ document.querySelectorAll('[data-bot]').forEach(g=>bot(g,g.dataset.bot,'waving')
 document.querySelectorAll('[data-human]').forEach(g=>human(g));
 
 /* ---------- i18n ---------- */
-const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'పండును ట్యాప్ చేస్తే ఆ ఉత్పత్తి తెరుచుకుంటుంది. చెట్టును ట్యాప్ చేస్తే ఆకులు రాలుతాయి. మా AI ఏజెంట్లు రోజూ నిజంగా చేసే పనులను ఈ రోబోలు చూపిస్తాయి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా సెటప్ ఎలా జరుగుతుందో అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_prices:'ధరలు',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత 14 రోజుల పైలట్',cta_demo:'AIతో చాట్ చేయండి',
+const TE={nav_live:'లైవ్ AI',tip_go:'వివరాలు చూడండి',tree_note:'ఆ ఉత్పత్తిని చూడటానికి పండును ట్యాప్ చేయండి.',d_h:'ఇప్పుడే మా AIతో మాట్లాడండి',d_p:'Kalpa Bhai నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. సహాయం చేయలేకపోతే, అఖిల్ కాల్ చేయడానికి మీ నంబర్ అడుగుతుంది.',d_l1:'ధరలు, ఉచిత పైలట్ లేదా సెటప్ ఎలా జరుగుతుందో అడగండి',d_l2:'తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి టైప్ చేయండి',d_l3:'"కాల్ చేయండి" అని చెప్పి మీ నంబర్ ఇవ్వండి',nav_products:'ఉత్పత్తులు',nav_how:'ఎలా పనిచేస్తుంది',nav_prices:'ధరలు',nav_faq:'ప్రశ్నలు',cta_salon:'ఉచిత 14 రోజుల పైలట్',cta_demo:'AIతో చాట్ చేయండి',
 h1:'మీ కస్టమర్లకు <em>తెలుగు, హిందీ, ఇంగ్లీష్‌లో</em> రాత్రి 11 గంటలకైనా జవాబు.',
 lead:'BotBhai జిమ్‌లు, సెలూన్లు, రియల్ ఎస్టేట్ ఏజెంట్ల కస్టమర్లకు 5 భాషల్లో జవాబిస్తుంది, స్లాట్ లేదా సైట్ విజిట్ బుక్ చేస్తుంది, గుర్తు చేస్తుంది, అవసరమైనప్పుడు మీకు అప్పగిస్తుంది. 14 రోజుల ఉచిత పైలట్; మీరు అవును అనే వరకు చెల్లింపు లేదు.',
 trust1:'అధికారిక WhatsApp APIపై నిర్మించబడింది',trust2:'యాప్ ఇన్‌స్టాల్ అవసరం లేదు',trust3:'ఉద్యమ్ నమోదిత MSME',online:'AI సహాయకుడు · 5 భాషలు',demo_note:'ఇది నిజమైన AI, BotBhai మీ సెలూన్‌లో పెట్టేది ఇలాంటిదే. ఏదైనా అడగండి, లేదా కాల్ బ్యాక్ అడగండి.',
-st_products:'ఒకే చెట్టుపై పెరుగుతున్న ఉత్పత్తులు',st_try:'BotBhaiని 14 రోజులు ప్రయత్నించడానికి',st_agents:'AI ఏజెంట్ పాత్రలు, ఒక్క వ్యవస్థాపకుడు',st_langs:'భాషలు: ఇంగ్లీష్, తెలుగు, హిందీ, టెంగ్లీష్, హింగ్లీష్',
+st_products:'ఒకే చెట్టుపై పెరుగుతున్న ఉత్పత్తులు',st_try:'BotBhaiని 14 రోజులు ప్రయత్నించడానికి',st_agents:'జవాబులు, మీ షాప్ మూసిన తర్వాత కూడా',st_langs:'భాషలు: ఇంగ్లీష్, తెలుగు, హిందీ, టెంగ్లీష్, హింగ్లీష్',
 p_h:'నిజమైన భారతీయ పనికి చిన్న, నిజాయితీ గల టూల్స్',p_p:'ప్రతి ఉత్పత్తి ఒక పనిని బాగా చేస్తుంది. ధరలు రూపాయల్లో, ఎలాంటి బంధనం లేదు.',
 h_h:'"స్లాట్ ఉందా?" నుంచి కన్ఫర్మ్ బుకింగ్ వరకు',s1h:'కస్టమర్ మెసేజ్',s1p:'WhatsApp లేదా వెబ్‌సైట్‌లో, తెలుగు, హిందీ, ఇంగ్లీష్ లేదా కలిపి. "రేపు" అంటే రేపే అని అర్థం చేసుకుంటుంది.',
 s2h:'BotBhai జవాబు',s2p:'మీ సెలూన్ వివరాల నుంచే ధరలు, సమయాలు, ఖాళీ స్లాట్లు. ధరను ఎప్పుడూ ఊహించదు; సందేహం ఉంటే మీ సిబ్బందికి పంపుతుంది.',s3h:'నియంత్రణ మీదే',s3p:'బుకింగ్ కన్ఫర్మ్, 24 గం, 2 గం ముందు రిమైండర్లు, యజమానికి రోజువారీ జాబితా. ఏ చాట్‌నైనా ఒక్క ట్యాప్‌తో మీరు తీసుకోవచ్చు.',
-t_h:'ఒక వ్యవస్థాపకుడు. AI ఏజెంట్ల బృందం.',t_p:'Kalpa Labs ఉచిత, ఓపెన్ AI మోడల్స్‌పై నడుస్తుంది. ఈ పేజీలో ప్రతి మాట మేము నిజంగా తయారు చేసినదానితో సరిచూసినదే; ఇంకా సిద్ధం కానివి "ప్లాన్" అని గుర్తించాం.',
+
 f_h:'స్టాండర్డ్: 14 రోజుల ఉచిత పైలట్, తర్వాత నెలకు ₹1,499',f_per:' / నెల',f1:'₹2,999 ఒక్కసారి సెటప్, మేమే చేస్తాం',f2:'WhatsApp బాట్, బుకింగ్స్, రిమైండర్లు, యజమాని అలర్ట్స్, డాష్‌బోర్డ్',f3:'తెలుగు, హిందీ, ఇంగ్లీష్',f4:'ఐచ్ఛిక సోషల్ టీమ్ యాడ్-ఆన్: ₹999 / నెల',f_cta:'పైలట్ అడగండి',f_small:'పైలట్ ముగిసి మీరు అవును అనే వరకు చెల్లింపు లేదు.',
 s_h:'నెలవారీ ప్లాన్‌కి ఇంకా సిద్ధంగా లేరా?',s_per:' ఒక్కసారి',s_p:'స్టార్టర్ ప్యాక్: WhatsApp చాట్ లింక్, మీ కౌంటర్ కోసం QR పోస్టర్, సిద్ధంగా ఉన్న త్వరిత జవాబులు, మీ Google Business ప్రొఫైల్ సరిదిద్దడం. నెలవారీ రుసుము లేదు.',s_lite:'లైట్ ప్లాన్: ₹1,999 సెటప్ + నెలకు ₹999; బుకింగ్‌లు, రిమైండర్‌లు, యజమానికి అలర్ట్‌లు, డాష్‌బోర్డ్‌తో WhatsApp బాట్.',s_cta:'స్టార్టర్ లేదా లైట్ గురించి అడగండి',
 g_h:'మీకేం కావాలో చెప్పండి. అఖిల్ స్వయంగా జవాబిస్తారు.',g_p:'మీ నంబర్‌ను ఈ విషయంపై జవాబివ్వడానికి మాత్రమే వాడతాం. స్పామ్ లేదు, ఎవరితోనూ పంచుకోం.',
 l_interest:'నాకు ఆసక్తి ఉన్నది',o_salon:'నా జిమ్/సెలూన్/రియల్ ఎస్టేట్ కోసం BotBhai (ఉచిత పైలట్)',o_kits:'పరీక్ష / డబ్బు కిట్స్',o_other:'ఇంకేదైనా',l_name:'మీ పేరు',l_phone:'WhatsApp నంబర్',l_consent:'ఈ విషయం గురించి Kalpa Labs నన్ను WhatsAppలో సంప్రదించడానికి అంగీకరిస్తున్నాను. నా డేటాను ఎప్పుడైనా తొలగించమని అడగవచ్చు.',l_send:'పంపండి',
-q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్ అవసరం లేదు. సెలూన్‌కు ఒక WhatsApp నంబర్ చాలు; పైలట్‌లో సెటప్ చేయడంలో సహాయం చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ఇంకా కస్టమర్లు లేరు, అందుకే మొదటి సెలూన్లకు ఉచిత పైలట్; ఉపయోగపడకపోతే ఏమీ చెల్లించనక్కర్లేదు. ఎప్పుడైనా ఆపవచ్చు.',
-fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs పేరు కల్పవృక్షం నుంచి వచ్చింది: ఒక చెట్టు, ఏడు కొమ్మలు, ప్రతి కొమ్మ రోజువారీ పనికి ఒక చిన్న టూల్. హైదరాబాద్‌లో AI టీమ్‌తో నడిచే ఏకవ్యక్తి సంస్థ. లాంచ్‌ను ఫాలో అవ్వండి, తర్వాత ఏం తయారు చేయాలో చెప్పండి.',
-ft0:'ఒక చెట్టు, అనేక శాఖలు, అందరికీ పండ్లు',ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'దాచిన ఛార్జీలు లేవు. ఆదాయ హామీలు ఎప్పుడూ ఇవ్వం.',mb1:'AIతో చాట్ చేయండి',mb2:'ఉచిత సెలూన్ పైలట్'};
+q_h:'సూటిగా జవాబులు',q1:'ఇది బాట్ అని కస్టమర్లకు తెలుస్తుందా?',a1:'అవును. చాట్ మొదట్లోనే ఇది ఆటోమేటెడ్ సహాయకుడు అని చెబుతుంది, అడిగినప్పుడల్లా మీ సిబ్బందికి అప్పగిస్తుంది.',q2:'తప్పు జవాబిస్తే?',a2:'మీరు ఇచ్చిన ధరలు, సమయాలే వాడుతుంది. ఖచ్చితంగా తెలియకపోతే లేదా కస్టమర్ కోపంగా ఉంటే, ఊహించకుండా మీకు అప్పగిస్తుంది.',q3:'కంప్యూటర్ లేదా కొత్త నంబర్ కావాలా?',a3:'కంప్యూటర్, కొత్త నంబర్ అవసరం లేదు. ఇప్పుడు మీ వెబ్‌సైట్ చాట్, టెలిగ్రామ్‌లో పనిచేస్తుంది; Meta మీ నంబర్‌ను ఆమోదించగానే WhatsAppలో కూడా. పైలట్‌లో అంతా మీతో కలిసి సెటప్ చేస్తాం.',q4:'నా కస్టమర్ల డేటా సురక్షితమా?',a4:'భారత DPDP చట్టాన్ని పాటిస్తాం: మీ సూచనల మేరకే పనిచేస్తాం, డేటా మేము మీ సెలూన్ కోసం నడిపే సురక్షిత డేటాబేస్‌లో, మీరు అడిగితే తొలగిస్తాం. అనుమతి ఇచ్చిన కస్టమర్లకే మెసేజ్‌లు.',q5:'మీరు కొత్తవారు. ఎందుకు నమ్మాలి?',a5:'న్యాయమైన ప్రశ్న. ప్రతి వ్యాపారం ఉచిత 14 రోజుల పైలట్‌తో మొదలవుతుంది, కాబట్టి ఏమైనా చెల్లించే ముందే ఫలితాలు చూస్తారు. ఎప్పుడైనా ఆపవచ్చు, అడిగితే మీ డేటా తొలగిస్తాం.',
+fo_h:'"మా ఇరుగుపొరుగు దుకాణాలకు ఉండాలనుకున్న టూల్స్ నేను తయారు చేస్తాను."',fo_p:'అఖిల్ కనిగిచర్ల, వ్యవస్థాపకుడు. Kalpa Labs పేరు కల్పవృక్షం నుంచి వచ్చింది: ఒక చెట్టు, ఎన్నో కొమ్మలు, ప్రతి కొమ్మ రోజువారీ వ్యాపారానికి ఒక సులభమైన సాధనం. హైదరాబాద్‌లో ఉన్నాం.',
+ft0:'ఒక చెట్టు, అనేక శాఖలు, అందరికీ పండ్లు',ft1:'హైదరాబాద్, తెలంగాణ · ఉద్యమ్ నమోదిత MSME (ప్రొప్రైటర్‌షిప్)',ft2:'స్పష్టమైన ధరలు. దాచిన ఛార్జీలు లేవు.',mb1:'AIతో చాట్ చేయండి',mb2:'ఉచిత సెలూన్ పైలట్'};
 const EN={}; document.querySelectorAll('[data-i]').forEach(e=>{EN[e.dataset.i]=e.dataset.html?e.innerHTML:e.textContent;});
 let lang='en'; try{lang=localStorage.getItem('kl-lang')||'en';}catch(e){}
 function setLang(l){lang=l;document.documentElement.lang=l==='te'?'te':'en';document.body.className=l;
@@ -76,27 +76,27 @@ document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',
 /* ---------- products ---------- */
 const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 const P=[
- {id:'botbhai',c:'--l1',name:'BotBhai',st:['Being finished · free pilots open soon','పూర్తి చేస్తున్నాం · ఉచిత పైలట్లు త్వరలో'],stc:'--warn',
+ {id:'botbhai',c:'--l1',name:'BotBhai',st:['Free 14-day pilot','ఉచిత 14 రోజుల పైలట్'],stc:'--ok',
   for:['For salons, gyms and coaching centres','సెలూన్లు, జిమ్‌లు, కోచింగ్ సెంటర్ల కోసం'],
-  pts:[['WhatsApp + website chat in 3 languages','3 భాషల్లో WhatsApp + వెబ్‌సైట్ చాట్'],['Bookings, 24 h and 2 h reminders','బుకింగ్స్, 24 గం, 2 గం రిమైండర్లు'],['Owner alerts and a one-tap shared inbox','యజమాని అలర్ట్స్, ఒక ట్యాప్ షేర్డ్ ఇన్‌బాక్స్']],
+  pts:[['WhatsApp + website chat in 5 languages','5 భాషల్లో WhatsApp + వెబ్‌సైట్ చాట్'],['Bookings, 24 h and 2 h reminders','బుకింగ్స్, 24 గం, 2 గం రిమైండర్లు'],['Owner alerts and a one-tap shared inbox','యజమాని అలర్ట్స్, ఒక ట్యాప్ షేర్డ్ ఇన్‌బాక్స్']],
   price:['Free pilot, then ₹1,499/mo','ఉచిత పైలట్, తర్వాత ₹1,499/నెల'],cta:'#founding',art:'chat'},
- {id:'kits',c:'--l3',name:'Exam & Money Kits',st:['Built · on sale after payments are set up','తయారైంది · పేమెంట్ సెటప్ తర్వాత అమ్మకం'],stc:'--ok',
+ {id:'kits',c:'--l3',name:'Exam & Money Kits',st:['Coming soon','త్వరలో'],stc:'--l0',
   for:['For GATE aspirants and salaried savers','GATE అభ్యర్థులు, జీతం పొందేవారి కోసం'],
   pts:[['GATE 2027 120-day tracker in Google Sheets','Google Sheetsలో GATE 2027 120 రోజుల ట్రాకర్'],['Tax regime + SIP goal planner FY 2026-27','పన్ను విధానం + SIP లక్ష్య ప్లానర్ 2026-27'],['GATE Study Coach skill pack for Claude','Claude కోసం GATE స్టడీ కోచ్ స్కిల్ ప్యాక్']],
-  price:['₹199–499 · not on sale yet','₹199–499 · ఇంకా అమ్మకానికి లేదు'],cta:'#signup',art:'sheet'},
- {id:'deals',c:'--l5',name:'Telugu Deals',st:['Calculators built · channel coming','కాలిక్యులేటర్లు తయారు · ఛానల్ త్వరలో'],stc:'--warn',
+  price:['From ₹199','₹199 నుంచి'],cta:'#signup',art:'sheet'},
+ {id:'deals',c:'--l5',name:'Telugu Deals',st:['Coming soon','త్వరలో'],stc:'--l0',
   for:['For smart shoppers who read Telugu','తెలుగు చదివే తెలివైన కొనుగోలుదారుల కోసం'],
   pts:[['Checked deals on Telegram (channel coming soon)','టెలిగ్రామ్‌లో చెక్ చేసిన డీల్స్ (ఛానల్ త్వరలో)'],['Free tax, SIP, EMI calculators in Telugu','తెలుగులో ఉచిత పన్ను, SIP, EMI కాలిక్యులేటర్లు'],['Every affiliate link marked #ad','ప్రతి అఫిలియేట్ లింక్‌కి #ad గుర్తు']],
   price:['Free','ఉచితం'],cta:'#signup',art:'tag'},
- {id:'jobcard',c:'--l2',name:'Mobile App',st:['Idea stage','ఆలోచన దశ'],stc:'--l0',
-  for:['Our own mobile app, coming next','మా సొంత మొబైల్ యాప్, త్వరలో'],
-  pts:[['Akhil is choosing the idea now','అఖిల్ ఇప్పుడు ఆలోచనను ఎంచుకుంటున్నారు'],['Built on the same Kalpa AI team','అదే Kalpa AI టీమ్‌తో తయారు'],['Join the list to hear first','ముందుగా తెలుసుకోవడానికి లిస్ట్‌లో చేరండి']],
-  price:['Not available yet','ఇంకా అందుబాటులో లేదు'],cta:'#signup',art:'card'},
- {id:'lifeboat',c:'--l4',name:'Tab Lifeboat',st:['In development','అభివృద్ధిలో ఉంది'],stc:'--l0',
+ {id:'jobcard',c:'--l2',name:'Mobile App',st:['Coming soon','త్వరలో'],stc:'--l0',
+  for:['Phone apps for everyday work','రోజువారీ పని కోసం ఫోన్ యాప్‌లు'],
+  pts:[['Made for Indian phones and languages','భారతీయ ఫోన్లు, భాషల కోసం తయారు'],['Simple enough to use on day one','మొదటి రోజే వాడేంత సులభం'],['Join the list to hear first','ముందుగా తెలుసుకోవడానికి లిస్ట్‌లో చేరండి']],
+  price:['Coming soon','త్వరలో'],cta:'#signup',art:'card'},
+ {id:'lifeboat',c:'--l4',name:'Tab Lifeboat',st:['Coming soon to Chrome','త్వరలో Chromeలో'],stc:'--l0',
   for:['For people with 100 browser tabs','100 బ్రౌజర్ ట్యాబ్స్ ఉండేవారి కోసం'],
   pts:[['Save and restore every tab, with groups','గ్రూప్‌లతో సహా ప్రతి ట్యాబ్ సేవ్, రీస్టోర్'],['Auto-saves every 5 minutes','ప్రతి 5 నిమిషాలకు ఆటో-సేవ్'],['Planned: import from OneTab','ప్లాన్: OneTab నుంచి దిగుమతి']],
-  price:['Not available yet','ఇంకా అందుబాటులో లేదు'],cta:'#signup',art:'tabs'},
- {id:'ledger',c:'--l6',name:'Ledger Peaks',st:['Engine built · early access list','ఇంజిన్ తయారు · ముందస్తు జాబితా'],stc:'--l0',
+  price:['Free','ఉచితం'],cta:'#signup',art:'tabs'},
+ {id:'ledger',c:'--l6',name:'Ledger Peaks',st:['Early access','ముందస్తు ప్రవేశం'],stc:'--l0',
   for:['For software teams using AI','AI వాడే సాఫ్ట్‌వేర్ టీమ్‌ల కోసం'],
   pts:[['Which customer is your AI bill eating?','మీ AI బిల్‌ను ఏ కస్టమర్ తింటున్నారు?'],['Rupee costs by feature and model','ఫీచర్, మోడల్ వారీగా రూపాయి ఖర్చు'],['DPDP readiness score','DPDP సంసిద్ధత స్కోర్']],
   price:['Early access','ముందస్తు ప్రవేశం'],cta:'#signup',art:'chart'}];
@@ -163,17 +163,6 @@ askf.addEventListener('submit',e=>{e.preventDefault();const v=askin.value;askin.
 function resetChat(){renderChips(); askin.placeholder=lang==='te'?'ఏ భాషలోనైనా టైప్ చేయండి…':'Type in any language…';
  if(!started||!talked){started=true;chat.replaceChildren();const h=typing();setTimeout(()=>{h.remove();bubble(HELLO[lang],'in');},reduce?0:700);}}
 
-/* ---------- team ---------- */
-const TEAM=[['Kalpa','Chief of staff','#2F6A3A',['Plans the day and hands out the work','రోజు ప్లాన్ చేసి పని పంచుతుంది']],['Chitti','WhatsApp helper','#25D366',['Answers customers on WhatsApp','WhatsAppలో కస్టమర్లకు జవాబిస్తుంది']],['Scout','Finds customers','#8A4A28',['Builds lead lists from allowed public sources only','అనుమతి ఉన్న పబ్లిక్ సోర్సుల నుంచే లీడ్ జాబితాలు']],['Kavi','Writer','#3B7A3A',['Writes posts and messages for Akhil to approve','అఖిల్ ఆమోదం కోసం పోస్టులు, మెసేజ్‌లు రాస్తుంది']],['Adi','Ads & copy','#9C700E',['Drafts ads and headlines','యాడ్స్, హెడ్‌లైన్లు డ్రాఫ్ట్ చేస్తుంది']],['Lens','Brand look','#7A3F5E',['Keeps every page on brand','ప్రతి పేజీ బ్రాండ్‌కు తగ్గట్టు ఉండేలా చూస్తుంది']],['Pixel','Designer','#5E9E4C',['Makes images and layouts','ఇమేజ్‌లు, లేఅవుట్లు తయారు చేస్తుంది']],['Forge','Engineer','#2F6F78',['Writes code and runs the tests','కోడ్ రాసి టెస్ట్‌లు నడుపుతుంది']],['Vigil','Fact-checker','#A8324F',['Checks every fact twice','ప్రతి విషయాన్ని రెండుసార్లు సరిచూస్తుంది']],['Guard','Risk checks','#66655A',['Checks privacy and legal rules','ప్రైవసీ, చట్ట నియమాలు చెక్ చేస్తుంది']],['Deal','Deals hunter','#C38E12',['Verifies deals before they are shared','డీల్స్ పంచుకునే ముందు సరిచూస్తుంది']],['Echo','Librarian','#2F6A3A',['Keeps notes so nothing is forgotten','ఏదీ మర్చిపోకుండా నోట్స్ ఉంచుతుంది']]];
-const row=document.getElementById('teamrow');
-function renderTeam(){const L=lang==='te'?1:0;
- row.replaceChildren(...TEAM.map(([n,r,c,say],i)=>{const d=document.createElement('button');d.type='button';d.className='card mate';d.setAttribute('aria-expanded','false');
-  const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','-24 -82 48 86');s.setAttribute('aria-hidden','true');const g=el('g',{style:'animation-delay:'+(i*.13)+'s'},s);bot(g,c,i===0?'waving':'working');
-  const b=document.createElement('b');b.textContent=n;const sp=document.createElement('span');sp.textContent=r;const sy=document.createElement('span');sy.className='say';sy.hidden=true;sy.textContent=say[L];
-  d.append(s,b,sp,sy);
-  d.addEventListener('click',()=>{const open=d.getAttribute('aria-expanded')!=='true';d.setAttribute('aria-expanded',String(open));sy.hidden=!open;const m=s.querySelector('g.working,g.waving');if(m&&i!==0)m.setAttribute('class',open?'waving':'working');});
-  return d;}));}
-
 /* ---------- form (UX-PATTERNS 6 autosave, 8 throttle, 9 smart validation, 20 graceful errors) ---------- */
 document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('interest').value=a.dataset.pick;saveDraft();}));
 const form=document.querySelector('form.signup'), msg=document.getElementById('formmsg'), retry=document.getElementById('formretry');
@@ -215,7 +204,7 @@ form.addEventListener('submit',e=>{e.preventDefault();sendForm();});
 retry.addEventListener('click',sendForm);
 function formLang(){['name','phone','consent'].forEach(k=>{if(!document.getElementById(k+'-err').hidden)checks[k]();});if(!retry.hidden)retry.textContent=T('retry');}
 
-/* ---------- the living Kalpa tree: branches = products, robots = our AI agents at work ---------- */
+/* ---------- the living Kalpa tree: branches = products, robots act out what each product does for a customer ---------- */
 document.documentElement.classList.add('js');
 const tree=document.getElementById('tree'), tback=document.getElementById('tback'), tfront=document.getElementById('tfront'), tbox=document.getElementById('treebox');
 const WIND={v:16,gust:0,shake:0};
@@ -358,7 +347,7 @@ function openTip(i){
  if(tipFor===i){closeTip();return;} closeTip(); tipFor=i; const [, , id, name, col]=BR[i]; const L=lang==='te'?1:0; const p=P.find(x=>x.id===id);
  tip.style.setProperty('--c','var('+col+')'); document.getElementById('tipname').textContent=name;
  const st=document.getElementById('tipst'); st.style.setProperty('--pc','var('+(p?p.stc:'--l0')+')');
- st.querySelector('span').textContent=p?p.st[L]:(L?'పరిశోధన మాత్రమే · పేపర్ ట్రేడింగ్':'Research only · paper trading');
+ st.querySelector('span').textContent=p?p.st[L]:(L?'త్వరలో':'Coming soon');
  document.getElementById('tipfor').textContent=p?p.for[L]:(L?'మా సొంత అభ్యాసం కోసం. టిప్స్ ఇవ్వం, నిజమైన డబ్బుతో ట్రేడ్ చేయం.':'For our own learning. We never give tips or trade real money.');
  const go=document.getElementById('tipgo'); go.hidden=!p; go.onclick=()=>{cur=id;renderProducts();closeTip();};
  fruits[i].classList.add('on'); tip.hidden=false;
@@ -372,12 +361,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!tip.hidden){const 
 
 /* robots walking the branches, each showing what it is doing */
 const WALK=[ // branch, name, tool, tasks [en, te]; colour comes from the branch's world
- [0,'Chitti','chat',[['Replying to a customer in Telugu','కస్టమర్‌కు తెలుగులో జవాబిస్తోంది'],['Booking a 6 PM slot','సాయంత్రం 6 గంటల స్లాట్ బుక్ చేస్తోంది']]],
- [1,'Mistri','wrench',[['Turning a voice note into an invoice','వాయిస్ నోట్‌ను ఇన్‌వాయిస్‌గా మారుస్తోంది'],['Adding parts to a job card','జాబ్ కార్డ్‌కు విడిభాగాలు జోడిస్తోంది']]],
- [2,'Kavi','pen',[['Writing a GATE practice question','GATE ప్రాక్టీస్ ప్రశ్న రాస్తోంది'],['Checking an answer key twice','జవాబుల కీని రెండుసార్లు సరిచూస్తోంది']]],
- [3,'Forge','wrench',[['Running 120 tests before a release','రిలీజ్ ముందు 120 టెస్ట్‌లు నడుపుతోంది'],['Fixing a bug a user reported','యూజర్ చెప్పిన బగ్ సరిచేస్తోంది']]],
- [4,'Vigil','lens',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Confirming a rule on the official site','అధికారిక సైట్‌లో నియమాన్ని నిర్ధారిస్తోంది']]],
- [5,'Ganaka','calc',[['Adding up a cloud bill','క్లౌడ్ బిల్లును లెక్కిస్తోంది'],['Finding a cheaper server plan','చౌకైన సర్వర్ ప్లాన్ వెతుకుతోంది']]]];
+ [0,'Chitti','chat',[['Booking a 6 PM haircut','సాయంత్రం 6 గంటల హెయిర్‌కట్ బుక్ చేస్తోంది'],['Replying to a customer at 11 PM','రాత్రి 11 గంటలకు కస్టమర్‌కు జవాబిస్తోంది']]],
+ [1,'Mistri','wrench',[['Turning a voice note into an invoice','వాయిస్ నోట్‌ను ఇన్‌వాయిస్‌గా మారుస్తోంది'],['Sending a job card to a customer','కస్టమర్‌కు జాబ్ కార్డ్ పంపుతోంది']]],
+ [2,'Kavi','pen',[['Planning a GATE study week','GATE చదువు వారాన్ని ప్లాన్ చేస్తోంది'],['Working out a SIP goal','SIP లక్ష్యాన్ని లెక్కిస్తోంది']]],
+ [3,'Forge','wrench',[['Saving 40 open tabs','40 ఓపెన్ ట్యాబ్‌లను సేవ్ చేస్తోంది'],['Bringing tabs back after a crash','క్రాష్ తర్వాత ట్యాబ్‌లను తిరిగి తెస్తోంది']]],
+ [4,'Vigil','lens',[['Checking a price twice','ధరను రెండుసార్లు సరిచూస్తోంది'],['Checking a deal is real','డీల్ నిజమో కాదో చూస్తోంది']]],
+ [5,'Ganaka','calc',[['Finding savings in a cloud bill','క్లౌడ్ బిల్లులో ఆదా వెతుకుతోంది'],['Finding a cheaper server plan','చౌకైన సర్వర్ ప్లాన్ వెతుకుతోంది']]]];
 const bubbles=document.getElementById('bubbles');
 /* birds resting in the tree: tap one (or shake the tree) and they fly off; they come back after a while */
 const PERCH=[[0,.24,1],[1,.22,-1],[6,.62,1]].map(([b,at,face],k)=>{

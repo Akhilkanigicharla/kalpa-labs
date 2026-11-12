@@ -42,6 +42,17 @@ def sma_cross(close: pd.Series, fast: int = 10, slow: int = 50) -> pd.Series:
     return (f > s).astype(float).where(s.notna(), 0.0)
 
 
+def ema_cross(close: pd.Series, fast: int = 9, slow: int = 21) -> pd.Series:
+    """Long (1) while the fast EMA is above the slow EMA, else cash. Same idea as the LuxAlgo video Akhil
+    shared on 12 Nov 2026 ("An EMA Strategy That Makes $250K A Month?"); its claims are unverified, so it
+    goes through gate.py like every other strategy. EMAs use only past bars (ewm with adjust=False)."""
+    f = close.ewm(span=fast, adjust=False).mean()
+    s = close.ewm(span=slow, adjust=False).mean()
+    w = (f > s).astype(float)
+    w.iloc[:slow] = 0.0  # warm-up: no signal until the slow EMA has `slow` bars
+    return w
+
+
 def vol_target(weight: pd.Series, close: pd.Series, target: float = 0.12,
                window: int = 20, band: float = 0.10) -> pd.Series:
     """Scale `weight` by target / realised vol (capped at 1) with a no-trade band.
@@ -124,6 +135,7 @@ REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
     "ma_filter_vt": (ma_filter_vt, {"window": [150, 200], "target": [0.10, 0.15]}),
     "markov_regime": (markov_regime, {"window": [20, 40], "threshold": [0.03, 0.05]}),
     "sma_cross":    (sma_cross,    {"fast": [5, 10, 20], "slow": [50, 100]}),
+    "ema_cross":    (ema_cross,    {"fast": [9, 12], "slow": [21, 50]}),
 }
 
 

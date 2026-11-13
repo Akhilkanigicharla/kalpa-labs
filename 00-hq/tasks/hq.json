@@ -508,7 +508,7 @@
   "owner": "Forge",
   "context_chars": 30000,
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-12T17:15:00Z",
   "id": "K093",
   "title": "TruffleHog vs gitleaks: what each catches and a CI setup note (for A205)",
@@ -519,15 +519,14 @@
   "details": "Compare TruffleHog (run unmodified as a CI tool only; AGPL) and gitleaks for our GitHub Actions: what each detects, verified vs unverified findings, how to run TruffleHog on a git diff in Actions without secrets, false-positive handling. Any version, licence or flag you cannot quote from the provider's own page is UNVERIFIED.",
   "output": "00-hq/knowledge/K093.md",
   "min_items": 5,
-  "updated": "2026-11-12T22:44:11Z",
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  "updated": "2026-11-13T00:49:10Z"
  },
  {
   "world": "hq",
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 20000,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-13T01:05:00Z",
   "id": "K094",
@@ -539,6 +538,7 @@
   "details": "For each of the 4 tools (claude-mem, ECC, Worktrunk, Agent Reach public no-login channels only): what it claims to do, licence as stated in its repo, one measurable test we can run in a GitHub Actions job with no logins and no secrets, the number to record, and what we already use for the same job (Graft, Superpowers, TEAM.md lanes, Firecrawl). Mark any fact you could not check as unverified.",
   "output": "00-hq/knowledge/K094.md",
   "min_items": 4,
-  "updated": "2026-11-13T01:05:00Z"
+  "updated": "2026-11-13T00:51:03Z",
+  "vigil_notes": "FIX:\n- Mark claude-mem “What it claims to do” as UNVERIFIED (not stated in ROADMAP.md).\n- Mark invented test specifics (3 queries, 10 queue items, 5 feeds, exact timings/metrics) as UNVERIFIED; keep only A207’s required check: green workflow run + one measured keep/drop line per tool in `00-hq/research/reel-trials.md`.\n- Mark `reel-trials.yml` step details as UNVERIFIED (not in repo files).\n- Confirm no prices, customers, results, dates, personal data, or prohibited scraping appear."
  }
 ]

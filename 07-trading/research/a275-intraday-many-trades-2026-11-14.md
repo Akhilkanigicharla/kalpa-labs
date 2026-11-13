@@ -28,3 +28,8 @@ RSI(2) −₹77/day, volume spike −₹154/day, ORB −₹212/day, VWAP snap-ba
 ## Verdict
 No intraday strategy tested makes money after charges at this size, and 10–15 trades a day loses fastest.
 Same finding as `aggressive-5k-2026-11-13.md` (306 stock/strategy combos). Not built as a money bot. Research only.
+
+## Pushing to 25 a day (`a275_25_trades.csv`, all 60 days)
+Targets of 0.10–0.15% are the only way to trade that often (one trade at a time still tops out near 17 a day).
+A 0.10% win on ₹50,000 is ₹50, less than the ₹52 charges, so **no trade is a net win (0% success)**.
+Result: −₹852 to −₹1,202 a day, 0% green days, the ₹10,000 account gone on day 10–14.

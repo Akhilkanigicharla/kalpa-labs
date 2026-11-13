@@ -1,0 +1,7 @@
+strategy,target/stop,trades_per_day,win_rate_%,avg_win_rs,avg_loss_rs,charges_rs,net_per_day_rs,worst_day_rs,green_days_%,Rs10k gone on day
+VWAP snap-back,0.10%/0.10%,16.9,0.0,0.0,-66.9,53035,-1133.7,-1667,0.0,10
+VWAP snap-back,0.15%/0.10%,15.6,40.0,11.6,-110.7,48861,-964.4,-1629,0.0,12
+RSI(2) scalp,0.10%/0.10%,15.5,0.0,0.0,-66.3,48563,-1027.7,-1548,0.0,12
+RSI(2) scalp,0.15%/0.10%,13.8,39.9,11.7,-110.8,43104,-851.9,-1402,0.0,14
+Volume-spike momentum,0.10%/0.10%,16.3,0.0,0.0,-73.7,51013,-1202.2,-1922,0.0,11
+Volume-spike momentum,0.15%/0.10%,15.3,33.8,11.6,-110.6,47890,-1060.2,-1976,0.0,13

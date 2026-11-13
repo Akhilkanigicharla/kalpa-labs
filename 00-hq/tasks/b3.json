@@ -215,7 +215,7 @@
   "owner": "Forge",
   "context_chars": 30000,
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-13T00:00:00Z",
   "id": "K090",
   "title": "Exam kit page copy: one payment, no expiry (A212 prep)",
@@ -225,7 +225,8 @@
    "00-hq/research/competitors-2026-11-11.md"
   ],
   "output": "00-hq/knowledge/K090.md",
-  "min_items": 3
+  "min_items": 3,
+  "updated": "2026-11-13T00:48:23Z"
  },
  {
   "world": "b3",

@@ -27,6 +27,23 @@ jobs:
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
       - name: Secrets scan (whole history)
         run: gitleaks git --redact --verbose --no-banner --exit-code 1 .  # --verbose prints the fingerprint (secret stays redacted) for .gitleaksignore
+      - name: Secrets scan 2 (TruffleHog, new commits only)
+        if: ${{ !cancelled() }}  # runs even when gitleaks already failed, so both scanners report
+        # A205. TruffleHog is AGPL-3.0: run unmodified as a CI tool, never copied into a product (CLAUDE.md rule 3).
+        # Release v3.99.9 checked 2026-11-13 on github.com/trufflesecurity/trufflehog/releases; sha256 from its checksums.txt.
+        # --no-verification: candidate secrets are never sent to any provider. gitleaks above covers the whole history.
+        env:
+          TH_VER: "3.99.9"
+          TH_SHA: "12050095c8063bf4d34f9f6cbce6ba9fa8d0deea9d503d0570364feba093658e"
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          curl -sSfL --retry 3 --max-time 60 -o /tmp/th.tgz \
+            "https://github.com/trufflesecurity/trufflehog/releases/download/v${TH_VER}/trufflehog_${TH_VER}_linux_amd64.tar.gz"
+          echo "${TH_SHA}  /tmp/th.tgz" | sha256sum -c -
+          tar -xzf /tmp/th.tgz -C /tmp trufflehog
+          if [ -z "$BASE" ] || ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then BASE=$(git rev-parse HEAD~1); fi
+          echo "Scanning commits after $BASE"
+          /tmp/trufflehog git file://. --since-commit "$BASE" --branch HEAD --no-verification --fail --no-update
       - name: Lint workflows
         run: actionlint -color
 

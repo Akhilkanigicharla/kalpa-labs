@@ -59,3 +59,6 @@ into a liquid fund. Akhil chooses the rules (CEO queue C66).
 
 ## World-check overlays and multi-asset test (13 Nov 2026, 19:30 IST)
 Akhil asked for a strategy that also weighs pre-market, world news, the Fed, interest rates and elections. Five overlays, fixed before testing, gated as T0015–T0019 (cash 4.7%): none improved tsmom (₹3.47–3.74 vs ₹3.83; no smaller worst fall). Event study: election result days +17.7/+1.1/−0.7/−5.9%. Built `src/worldcheck.py` (alerts only) + `research/events.json` (two sources per date) and added it to the daily workflow. Multi-asset quick test (fixed 12-month rule, not yet gated, hindsight caveat): Nifty+gold+Nasdaq-100 in INR, Sharpe 1.16 vs 0.45 for Nifty only with the same fixed rule; held up in both halves. Full strategy: `07-trading/STRATEGY.md`.
+
+## 5-minute intraday (13 Nov 2026, 19:34 IST request)
+`src/intraday.py` + `paper/intraday/` + paper-trade.yml step. 6 configs on 60 sessions of NIFTYBEES 5-min: all lose after costs (best ORB 2×: +₹118 gross, ₹478 costs). Yahoo 5-min depth is 60 days (1-min: 8 days, 1-hour: back to Nov 2023), so our own 5-min history is stored daily. SEBI intraday study (PR 13/2024, 24 Jul 2024): 71% of individual intraday traders lost money in FY23; 80% for >500 trades/yr; loss-makers paid 57% of losses again as costs.

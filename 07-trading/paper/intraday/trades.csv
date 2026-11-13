@@ -1,0 +1,3 @@
+day,strategy,side,entry_at,entry,exit_at,exit,reason,qty,gross_rs,cost_rs,net_rs
+2026-11-13,orb,long,09:40,287.11,14:20,285.94,stop,17,-19.8,5.17,-24.97
+2026-11-13,rsi_mr,long,09:35,286.79,15:15,286.65,eod,17,-2.29,5.18,-7.47

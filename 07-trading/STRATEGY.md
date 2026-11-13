@@ -67,3 +67,20 @@ It works in both halves, so it is not one lucky period. But be careful: part of 
 - **Stop rule (PLAN.md K4):** if after 12 months live the bot earns less than a Nifty index fund after tax, stop and move the money to the index fund.
 
 Sources: research notes `07-trading/research/nifty-etf-bot-2026-11-13.md`, trial log `07-trading/research/trials.csv` (T0001–T0019); LIQUIDBEES returns (anandrathi.com, 1 Jun 2025); ETF fees (groww.in); MON100 premium (businesstoday.in Apr 2026, business-standard.com Dec 2024); Nasdaq FoF costs (winvesta.in); ETF tax (jainam.in, zerodhafundhouse.com); RBI MPC dates (rbi.org.in + 5paisa.com); FOMC dates (federalreserve.gov + fedratecalc.com); election day 2024 (angelone.in); volatility-managed portfolios (Moreira & Muir 2017; Cederburg et al. at lehigh.edu).
+
+## 7. 5-minute intraday bot (Akhil, 13 Nov 2026)
+Built: `src/intraday.py` (signal on a bar's close, fill at the next bar's open; stop counted first if a bar touches both;
+forced exit 15:15; max 2 trades a day; full Indian intraday costs + slippage; long and short). 7 tests.
+
+Test on all free 5-minute data (NIFTYBEES, 60 sessions, 18 Aug – 13 Nov 2026, ₹5,000):
+
+| Strategy | Trades | Before costs | Costs | Net |
+|---|---|---|---|---|
+| Opening-range breakout (1× / 2× range target) | 102 / 92 | +₹76 / +₹118 | ₹530 / ₹478 | −₹453 / −₹359 |
+| VWAP trend (0.3/0.6% · 0.4/0.8%) | 47 / 45 | −₹32 / +₹8 | ₹244 / ₹233 | −₹276 / −₹226 |
+| RSI bounce (0.4% · 0.6%) | 83 / 72 | −₹374 / −₹384 | ₹431 / ₹374 | −₹805 / −₹758 |
+
+All rejected. Costs (about ₹5 per round trip on ₹5,000) are 4–6× the best edge found. This matches SEBI's July 2024 study:
+71% of individual intraday traders lost money in FY23, 80% of those with more than 500 trades a year.
+60 days is too short to prove anything either way, so the bot runs on paper daily and saves its own 5-minute history
+(Actions cache). Real-money intraday also needs an always-on server with a static IP and a live broker feed.

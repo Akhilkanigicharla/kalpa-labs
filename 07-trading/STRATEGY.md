@@ -97,3 +97,9 @@ Akhil: real money; use pre-market sector volume, news, sentiment, the whole char
 - Data trap found and fixed: Yahoo shows 0 volume on the 09:15 bar for ~85% of days for NSE stocks; ranking uses the 09:20 bar.
 - News reading: a study of a business newspaper's intraday tips in India found no significant returns (Kolte et al. 2024).
 - **Decision: no real money on any intraday strategy until one passes on our own longer history.** All run on paper daily.
+
+## 9. Kronos AI candlestick model (video: David Arias CFA, 13 Nov 2026)
+Open-source foundation model for candlesticks (arXiv 2508.02739, MIT). Tested only on data after its release:
+Nifty +13.4% / +12.8% (two seeds) vs +2.4% holding, worst fall about half; but Bank Nifty, the independent check, failed
+(direction right 47.3% vs 53.7% "always up"; +6.3% vs +9.7% holding). **Mixed: paper only** (`paper/kronos/`, daily 16:15).
+Today's call (13 Nov close): predicted −0.09% -> liquid ETF.

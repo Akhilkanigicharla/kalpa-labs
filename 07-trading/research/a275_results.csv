@@ -1,0 +1,6 @@
+strategy,settings,train_net_per_day,trades,trades_per_day,win_rate_%,gross_win_rate_%,avg_win_rs,avg_loss_rs,gross_rs,charges_rs,net_rs,net_per_day_rs,best_day_rs,worst_day_rs,green_days_%
+EMA 9/21 cross + VWAP,target 1.0% stop 0.5%,-65.8,79,2.6,41.8,46.8,326.1,-260.0,2921,4119,-1198,-39.9,869,-1419,56.7
+VWAP snap-back,{'dev': 0.005} target 0.6% stop 0.3%,-15.0,203,6.8,32.0,33.5,212.9,-200.3,-3193,10613,-13806,-460.2,521,-2279,26.7
+Volume-spike momentum,{'k': 4.0} target 1.0% stop 0.5%,-51.2,70,2.3,37.1,41.4,290.1,-276.3,-957,3657,-4614,-153.8,726,-936,40.0
+Opening-range breakout,target 1.0% stop 0.5%,-258.8,90,3.0,33.3,35.6,349.4,-280.8,-1638,4726,-6364,-212.1,992,-1535,36.7
+RSI(2) scalp,"{'lo': 5, 'hi': 95} target 1.0% stop 0.5%",41.6,66,2.2,42.4,43.9,273.9,-262.2,1166,3461,-2295,-76.5,1004,-1023,40.0

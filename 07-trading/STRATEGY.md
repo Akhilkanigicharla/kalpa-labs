@@ -103,3 +103,11 @@ Open-source foundation model for candlesticks (arXiv 2508.02739, MIT). Tested on
 Nifty +13.4% / +12.8% (two seeds) vs +2.4% holding, worst fall about half; but Bank Nifty, the independent check, failed
 (direction right 47.3% vs 53.7% "always up"; +6.3% vs +9.7% holding). **Mixed: paper only** (`paper/kronos/`, daily 16:15).
 Today's call (13 Nov close): predicted −0.09% -> liquid ETF.
+
+## 10. Order blocks, fair value gaps, Fibonacci, martingale (13 Nov 2026)
+Tested on 51 NSE stocks + Nifty, daily 2012-2026, each against random same-size "placebo" zones:
+- **Fair value gap: a real but small edge** (+0.26% per trade over placebo, holds against momentum-matched twins and in both halves).
+  Still earns less per day than simply holding the stocks (+0.034% vs +0.065%). Next: test it as an entry filter inside the trend bot.
+- **Order block: no edge** over random zones. **Fibonacci: not proven** (inside the luck range).
+- **Martingale: wiped the account (−99.9%)** on the real trades in real order; never beat fixed sizing. Never used.
+Details: `research/smc-fib-martingale-2026-11-13.md`.

@@ -139,13 +139,13 @@
   ],
   "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
   "min_items": 4,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-13T07:30:00Z",
-  "updated": "2026-11-13T07:56:11Z",
+  "updated": "2026-11-13T08:10:25Z",
   "output": "00-hq/knowledge/K100.md",
   "owner": "Lifeboat",
   "priority": "P1",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

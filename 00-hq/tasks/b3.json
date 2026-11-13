@@ -277,10 +277,12 @@
   ],
   "details": "List 60 to 100 APPSC Group 2 syllabus topics, grouped by paper, each as English + Telugu script, in the same shape as the subjects block of tgpsc-group2.yaml. Topics only from the official APPSC syllabus (psc.ap.gov.in); write UNVERIFIED next to any topic you cannot tie to it. No dates, no links you have not seen.",
   "min_items": 60,
-  "tries": 3,
-  "status": "todo",
+  "tries": 4,
+  "status": "rejected",
   "priority": "P1",
   "owner": "Kits",
-  "created": "2026-11-13T20:45:00Z"
+  "created": "2026-11-13T20:45:00Z",
+  "updated": "2026-11-13T20:48:34Z",
+  "vigil_notes": "FIX: incomplete, 0 of 60 required items. Write all 60, numbered 1 to 60."
  }
 ]

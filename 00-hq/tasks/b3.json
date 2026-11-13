@@ -215,7 +215,7 @@
   "owner": "Forge",
   "context_chars": 30000,
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-13T00:00:00Z",
   "id": "K090",
   "title": "Exam kit page copy: one payment, no expiry (A212 prep)",
@@ -266,5 +266,21 @@
   "owner": "Kavi",
   "priority": "P1",
   "vigil_notes": "FIX: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."
+ },
+ {
+  "id": "K106",
+  "world": "b3",
+  "title": "A212 follow-up: APPSC Group 2 syllabus topics in English + Telugu for the kit engine",
+  "read": [
+   "03-kits/engine/exams/tgpsc-group2.yaml",
+   "03-kits/engine/README.md"
+  ],
+  "details": "List 60 to 100 APPSC Group 2 syllabus topics, grouped by paper, each as English + Telugu script, in the same shape as the subjects block of tgpsc-group2.yaml. Topics only from the official APPSC syllabus (psc.ap.gov.in); write UNVERIFIED next to any topic you cannot tie to it. No dates, no links you have not seen.",
+  "min_items": 60,
+  "tries": 3,
+  "status": "todo",
+  "priority": "P1",
+  "owner": "Kits",
+  "created": "2026-11-13T20:45:00Z"
  }
 ]

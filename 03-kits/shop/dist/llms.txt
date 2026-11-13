@@ -1,0 +1,9 @@
+# Kalpa exam kits
+
+One-payment, no-expiry exam planners, trackers and date alerts by Kalpa Labs (Hyderabad).
+
+- [TGPSC Group 2 kit](https://kits.kalpalabs.dpdns.org/tgpsc-group2/)
+- [TGPSC Group 3 kit](https://kits.kalpalabs.dpdns.org/tgpsc-group3/)
+- [GATE 2027 CS kit](https://kits.kalpalabs.dpdns.org/gate-2027-cs/)
+- [RRB NTPC kit](https://kits.kalpalabs.dpdns.org/rrb-ntpc/)
+- [SSC CGL kit](https://kits.kalpalabs.dpdns.org/ssc-cgl/)

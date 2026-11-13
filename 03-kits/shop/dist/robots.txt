@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kits.kalpalabs.dpdns.org/sitemap.xml

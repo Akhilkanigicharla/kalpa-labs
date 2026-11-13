@@ -1,0 +1,14 @@
+{
+  "_note": "A212 kit shop settings. Prices approved by Akhil 11 Nov 2026 ('prices all ok'). Links stay empty until Akhil makes the Razorpay Payment Pages (K-01) and the Telegram channel (K-04); empty = the page says 'opens soon' instead of a dead button. Mock links: checked live 14 Nov 2026 (HTTP 200, page title names the exam and offers free tests). Kalpa is not affiliated with them.",
+  "base": "https://kits.kalpalabs.dpdns.org",
+  "prices": {"kit": 199, "bundle": 499, "institute": 99, "institute_min": 30},
+  "pay_url": {"kit": "", "bundle": "", "institute": ""},
+  "telegram_url": "",
+  "mocks": {
+    "tgpsc-group2": {"title": "Testbook TSPSC Group 2 free mock tests", "url": "https://testbook.com/tspsc-group-2/test-series"},
+    "tgpsc-group3": {"title": "Testbook TSPSC Group 3 free mock tests", "url": "https://testbook.com/tspsc-group-3/test-series"},
+    "ssc-cgl": {"title": "Testbook SSC CGL free mock tests", "url": "https://testbook.com/ssc-cgl/test-series"},
+    "rrb-ntpc": {"title": "Testbook RRB NTPC free mock tests", "url": "https://testbook.com/rrb-ntpc/test-series"},
+    "gate-2027-cs": {"title": "Official GATE 2027 mock test links (IIT Madras)", "url": "https://gate2027.iitm.ac.in"}
+  }
+}

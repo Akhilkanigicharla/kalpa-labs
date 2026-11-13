@@ -140,5 +140,21 @@
   "min_items": 11,
   "output": "00-hq/knowledge/K067.md",
   "updated": "2026-11-11T10:45:04Z"
+ },
+ {
+  "id": "K107",
+  "world": "b5",
+  "title": "A214 prep: Telugu deal-verdict lines (true EMI cost, card offer, price vs history)",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "details": "Read the A214 line. Write 8 short verdict templates for a Telugu deals post, each in Telugu script and English: price vs recent history (only where a lawful source exists), true no-cost-EMI cost, card-offer match, 'skip this one'. Use placeholders like {price}. Every post ends with the #ad disclosure when it carries an affiliate link. No made-up prices.",
+  "min_items": 8,
+  "tries": 3,
+  "status": "todo",
+  "priority": "P1",
+  "owner": "Deals",
+  "created": "2026-11-13T20:45:00Z"
  }
 ]

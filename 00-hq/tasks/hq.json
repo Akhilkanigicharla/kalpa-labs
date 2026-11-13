@@ -598,9 +598,9 @@
  },
  {
   "tries": 2,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-13T08:45:00Z",
-  "updated": "2026-11-13T09:41:28Z",
+  "updated": "2026-11-13T10:05:13Z",
   "priority": "P2",
   "id": "K102",
   "world": "hq",
@@ -611,7 +611,6 @@
   "details": "Read the A209 line in 00-hq/ROADMAP.md. Write exactly 4 numbered items, 1 to 4: 1 LFM2.5, 2 Switch, 3 Openverse API, 4 blueprint.io / Ghidra / BLA together. For each: licence name (or \"unverified\"), runs on a free Hugging Face endpoint or GitHub Actions with no card (yes/no/unverified), one Kalpa use in one line. Keep each item under 60 words.",
   "min_items": 4,
   "output": "00-hq/knowledge/K102.md",
-  "owner": "Forge",
-  "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
+  "owner": "Forge"
  }
 ]

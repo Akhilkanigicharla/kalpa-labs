@@ -42,6 +42,8 @@ New pages and screens: use the `hallmark` skill with our design system as the lo
 ## 5. Security skills
 - Allowed for **defensive** work on **our own** code: diff review, threat modelling, secrets checks.
 - Use what we already have: the vendored `security-audit` skill (Cloudflare, MIT) and Claude Code's built-in `/security-review` command. Run `security-audit` on a product's code before its Depth item is ticked (go-live).
+- Compared 13 Nov 2026 (A205): our `.claude/skills/security-audit` has the same 20 files as upstream `cloudflare/security-audit-skill` (MIT, © Cloudflare); upstream's last change is 14 Sep 2026, before our 18 Oct copy, so no steps are missing. Re-check upstream before each go-live audit.
+- Two secret scanners run in `quality.yml` on every push and PR: gitleaks (MIT, whole history) and TruffleHog v3.99.9 (AGPL-3.0, run unmodified as a CI tool only, never copied into a product; new commits only, `--no-verification` so no candidate key is ever sent anywhere; download checked against its sha256).
 - Never point them at systems we don't own. No offensive tooling, no scanning other people's sites.
 - Anthropic's own `claude-security` plugin is proprietary ("All rights reserved"): never copy it into this repo. The repo called "Anthropic-Cybersecurity-Skills" is a community project, not by Anthropic.
 

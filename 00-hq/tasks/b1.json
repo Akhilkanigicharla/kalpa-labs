@@ -287,5 +287,22 @@
   "output": "00-hq/knowledge/K095.md",
   "min_items": 4,
   "updated": "2026-11-13T00:55:30Z"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "todo",
+  "created": "2026-11-13T02:50:00Z",
+  "id": "K097",
+  "world": "b1",
+  "title": "A208 prep: lawful public lead sources for Hyderabad small businesses",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "CLAUDE.md"
+  ],
+  "details": "List lead sources that allow reuse (open government data, business registries with open licences, sites whose terms permit it). For each: name, URL, fields it gives, licence or terms clause quoted, update frequency. Never include Google Maps, Justdial, Instagram or any source of consumers' personal phone numbers. Mark UNVERIFIED where you could not read the terms.",
+  "min_items": 8
  }
 ]

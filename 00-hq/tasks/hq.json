@@ -439,7 +439,7 @@
   "context_chars": 20000,
   "id": "K083",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T14:41:36Z",
   "updated": "2026-11-12T14:43:09Z",
   "title": "A205 prep: TruffleHog beside gitleaks, what to check",
@@ -498,7 +498,7 @@
   "output": "00-hq/knowledge/K088.md",
   "min_items": 10,
   "created": "2026-11-12T18:50:00Z",
-  "status": "review",
+  "status": "done",
   "tries": 3,
   "updated": "2026-11-12T22:46:59Z"
  },
@@ -508,7 +508,7 @@
   "owner": "Forge",
   "context_chars": 30000,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T17:15:00Z",
   "id": "K093",
   "title": "TruffleHog vs gitleaks: what each catches and a CI setup note (for A205)",
@@ -540,5 +540,22 @@
   "min_items": 4,
   "updated": "2026-11-13T01:55:56Z",
   "vigil_notes": "FIX:\n- Add the required output: write keep/drop with numbers in `00-hq/research/reel-trials.md`, with one measured line per tool.\n- State the trials run only in GitHub Actions and the workflow run must be green (nothing on Akhil's PC, no logins, no secrets).\n- Mark every \"what it claims to do\" and licence for ECC, Worktrunk and Agent Reach as UNVERIFIED (only claude-mem is tagged).\n- Fix claude-mem test: benchmark claude-mem against Graft on indexing time and token cost per build-sprint query.\n- Make the existing-tool comparisons explicit: claude-mem vs Graft, ECC vs Superpowers, Worktrunk vs TEAM.md lanes, Agent Reach vs Firecrawl."
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "todo",
+  "created": "2026-11-13T02:50:00Z",
+  "id": "K096",
+  "world": "hq",
+  "title": "A207 prep v2: one GitHub Actions test per tool (claude-mem, ECC, Worktrunk, Agent Reach)",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/AGENT-TOOLS.md"
+  ],
+  "details": "Short table, one row per tool: repo URL, licence as written in its LICENSE file (quote it), one shell command a GitHub Actions ubuntu job could run with no login and no secret, and the one number to record (time, tokens, pass/fail). Write UNVERIFIED next to any fact you could not see on the repo page. No install steps for a personal PC.",
+  "min_items": 4
  }
 ]

@@ -1,0 +1,9 @@
+line,cagr,max_dd,worst_year,sharpe,trades_per_yr,rs_per_day,end_value
+"Alpha Brain, top 5, monthly",0.1503,-0.3496,0.0741,0.8242,45.4019,6.0109,30066.4367
+"Alpha Brain, top 3, monthly",0.1686,-0.3805,0.0460,0.7707,30.2679,6.7447,34049.8360
+"Alpha Brain, top 5, weekly",-0.2185,-0.8586,-0.3290,-1.3502,167.6182,-8.7410,1438.7383
+"Alpha Brain, top 3, weekly",-0.1400,-0.7439,-0.2982,-0.5549,181.4804,-5.5983,3055.7774
+"Alpha Brain, top 5, monthly + Nifty 200-day risk filter",0.1266,-0.1641,0.0184,0.9218,32.9386,5.0627,25525.2539
+Current bot: Nifty trend + gold (A273 engine),0.1310,-0.1540,-0.0251,1.2853,18.1862,5.2415,26332.8347
+Top 5 Nifty 50 by 12-1 momentum (A273 best stock rule),0.1799,-0.1787,-0.0192,1.0604,41.0779,7.1942,36711.1433
+Buy and hold NIFTYBEES,0.1257,-0.3633,-0.0240,0.8591,0.1272,5.0264,25364.3002

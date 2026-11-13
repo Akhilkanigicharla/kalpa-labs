@@ -127,7 +127,7 @@ jobs:
       - name: b7 Trading Lab
         working-directory: 07-trading
         run: |
-          pip install numpy==2.5.4 pandas==3.0.6 pyarrow==26.0.0 pytest==9.1.1
+          pip install numpy==2.5.4 pandas==3.0.6 pyarrow==26.0.0 pytest==9.1.1 scikit-learn==1.9.1
           python -m pytest -q
       - name: b6 Ledger Peaks
         working-directory: 06-finops

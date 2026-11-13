@@ -44,6 +44,12 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python -m src.quant_brain --paper paper/quant-brain | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Alpha Brain ML stock picker (A281; paper only, rebalances on the last weekday of the month)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: |
+          pip install scikit-learn==1.9.1
+          python3 research/a281_alpha_brain.py --paper paper/alpha-brain | tee -a "$GITHUB_STEP_SUMMARY"
       - name: 5-min bar history (Yahoo keeps 60 days; we keep our own, never in git)
         uses: actions/cache@v4
         with:
@@ -83,7 +89,7 @@ jobs:
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git config user.name "kalpa-paper-bot"
           git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
-          git add 07-trading/paper/track-A 07-trading/paper/track-A-gold 07-trading/paper/intraday 07-trading/paper/stocks-in-play 07-trading/paper/kronos 07-trading/paper/tournament 07-trading/paper/quant-brain
+          git add 07-trading/paper/track-A 07-trading/paper/track-A-gold 07-trading/paper/intraday 07-trading/paper/stocks-in-play 07-trading/paper/kronos 07-trading/paper/tournament 07-trading/paper/quant-brain 07-trading/paper/alpha-brain
           git diff --cached --quiet && exit 0
           git commit -q -m "b7 paper: Track A $(TZ=Asia/Kolkata date +%F)"
           for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

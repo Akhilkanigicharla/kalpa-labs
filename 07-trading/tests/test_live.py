@@ -243,9 +243,11 @@ def test_runner_paper_mode_over_many_days(tmp_path, track):
     assert len(led) >= 120 and "bench_after_tax_inr" in led.columns
     assert set(led["status"]) <= {"filled", "blocked", "no_change", "rejected"}
     assert "filled" in set(led["status"])
-    assert (led.loc[led.side == "buy", "value_pct_capital"] <= 20.01).all()    # max position 20%
+    cap = 100.01 if track == "A" else 20.01         # Track A: Akhil chose "Up to 100%" (13 Nov 2026, C66)
+    assert (led.loc[led.side == "buy", "value_pct_capital"] <= cap).all()
     s = res["summary"]
-    for needle in ("Buy-and-hold", "after costs + tax", "Closed trades", "Paper days: 120/90", "Not advice"):
+    for needle in ("Buy-and-hold", "after costs + tax", "Closed trades", "Paper days: 120/90", "Not advice",
+                   "Fall from peak"):
         assert needle in s
     assert (out / f"summary-{track}.txt").exists()
     if track == "B":
@@ -358,3 +360,29 @@ def test_signal_from_index_fill_at_etf_price(tmp_path):
 
 def test_track_b_gets_no_cash_interest():
     assert runner.CASH_RATE["B"] == 0.0 and 0.03 < runner.CASH_RATE["A"] < 0.07
+
+
+def test_track_a_rules_full_position_and_pause_at_20pct_fall(tmp_path):
+    from src import risk
+    assert risk.TRACK_A_LIMITS["position_size"] == 1.0 and risk.TRACK_A_LIMITS["drawdown_stop"] == 0.20
+    assert risk.LIMITS["position_size"] == 0.20                   # track B / draft rules unchanged
+    b, _ = guard(tmp_path, capital=5_000.0, max_position_pct=1.0)
+    b.book.limits = dict(risk.TRACK_A_LIMITS)
+    ok = b.check(buy(qty=45, stop=80.0))                          # 45 x 100 = 90% of capital
+    assert "max_position" not in ok and "position_size" not in ok and "per_trade_risk" not in ok
+    b.book.mark(MON_10.date() - timedelta(days=3), 5_000.0)
+    b.book.mark(MON_10.date(), 3_900.0)                           # 22% below peak
+    assert "drawdown_stop" in b.check(buy(qty=1, stop=80.0))
+    sell = brk.OrderRequest("NIFTYBEES", "sell", 1)
+    assert "drawdown_stop" not in b.check(sell)                   # selling is never blocked by the pause
+
+
+def test_same_market_day_is_never_processed_twice(tmp_path):
+    b = bars(1100, seed=13)
+    kw = dict(track="A", strategy="tsmom", capital=5_000.0, out=tmp_path / "o", flags=tmp_path / "f")
+    first = runner.run_paper(b, **kw)
+    led1 = (tmp_path / "o" / "ledger-A.csv").read_text(encoding="utf-8")
+    again = runner.run_paper(b, **kw)                       # holiday / re-run: same last bar
+    assert again["skipped"] and again["decisions"] == [] and "already done" in again["summary"]
+    assert (tmp_path / "o" / "ledger-A.csv").read_text(encoding="utf-8") == led1
+    assert len(again["state"]["paper_days"]) == len(first["state"]["paper_days"]) == 1

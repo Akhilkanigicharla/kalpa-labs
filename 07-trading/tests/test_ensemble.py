@@ -85,7 +85,7 @@ def test_paper_run_goes_through_live_guard(tmp_path):
     assert 0.0 <= res["weight"] <= 1.0
     led = pd.read_csv(out / "ledger-A.csv")
     assert set(led["strategy"]) == {"ensemble"} and "filled" in set(led["status"])
-    assert (led.loc[led.side == "buy", "value_pct_capital"] <= 20.01).all()   # Live Guard max position
+    assert (led.loc[led.side == "buy", "value_pct_capital"] <= 100.01).all()  # Live Guard max position (Track A: 100%, C66)
     assert "ensemble" not in strategies.REGISTRY                               # registration is temporary
     with pytest.raises(ValueError):
         E.run_paper_ensemble(b, track="A", members=MEMBERS, verdicts=PASS_ALL, capital=5_000,

@@ -1,0 +1,2 @@
+run_at_ist,asof,track,mode,strategy,symbol,side,qty,value_pct_capital,fee_inr,tds_inr,status,reasons,target_weight,bot_after_tax_inr,bench_after_tax_inr,bot_vs_bench_pct_pts
+2026-11-16T09:15:00+05:30,2026-11-13,A,paper,tsmom,NIFTYBEES,buy,17,97.56,5.79,0.0,filled,,1.0,4968.94,4964.07,0.1

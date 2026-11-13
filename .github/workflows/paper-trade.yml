@@ -1,0 +1,44 @@
+# b7 Track A paper bot (Akhil 13 Nov 2026: "trading track nifty etf bot", rules "Up to 100%", C66).
+# Weekdays 16:15 IST after NSE close: signal from the Nifty 50 index, simulated fill at the next
+# NIFTYBEES open, idle cash earns the liquid-ETF rate. PAPER ONLY: no broker, no keys, no secrets.
+# Stop new buys from the phone: add an empty file 07-trading/paper/track-A/flags/KILL and push
+# (the bot keeps what it holds; selling everything is a separate --flatten run).
+# Starts the 90-day paper clock (PLAN.md Q7.10). Holidays: same bar again = no action, no row.
+name: Paper trading (Track A, Nifty ETF)
+on:
+  schedule:
+    - cron: "45 10 * * 1-5"      # 16:15 IST
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: paper-trade
+  cancel-in-progress: false
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false   # yfinance runs here; the push token is added only in the save step
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install pinned research packages
+        run: pip install numpy==2.5.4 pandas==3.0.6 pyarrow==26.0.0 yfinance==1.7.0
+      - name: Paper decision for today's close
+        working-directory: 07-trading
+        run: |
+          python -m src.live.runner --track A --mode paper --strategy tsmom --signal-symbol ^NSEI \
+            --capital 5000 --out paper/track-A --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Save paper ledger (paper/track-A only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git config user.name "kalpa-paper-bot"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 07-trading/paper/track-A
+          git diff --cached --quiet && exit 0
+          git commit -q -m "b7 paper: Track A $(TZ=Asia/Kolkata date +%F)"
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

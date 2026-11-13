@@ -1,0 +1,39 @@
+{
+ "capital": 5000.0,
+ "broker": {
+  "cash": 116.45499739532261,
+  "positions": {
+   "NIFTYBEES": 17.0
+  },
+  "avg_cost": {
+   "NIFTYBEES": 286.9266546630859
+  },
+  "tds_withheld": 0.0
+ },
+ "stops": {
+  "NIFTYBEES": 229.31201171875
+ },
+ "marks": {
+  "2026-11-16": 5000.0
+ },
+ "traded": {
+  "2026-11-16": [
+   "NIFTYBEES"
+  ]
+ },
+ "paper_days": [
+  "2026-11-13"
+ ],
+ "realised": [],
+ "trade_pnl": [],
+ "bench": {
+  "start": "2026-11-13",
+  "units": 17,
+  "basis": 286.9266546630859,
+  "cash": 116.45499739532242
+ },
+ "interest": 0.0,
+ "params": {
+  "lookback": 63
+ }
+}

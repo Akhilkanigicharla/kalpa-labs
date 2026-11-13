@@ -36,9 +36,11 @@ PAPER_DAYS_MIN = 90
 STCG_RATE = 0.20          # listed equity/ETF held < 12 months (PLAN.md §2 table)
 TRACKS = {
     "A": {"market": "NSE", "symbol": "NIFTYBEES", "fractional": False, "slippage_bps": 10.0,
-          "stop_pct": 0.05, "label": "NSE ETF trend", "broker": "fyers"},
+          "stop_pct": 0.20, "label": "NSE ETF trend", "broker": "fyers",
+          "limits": "TRACK_A_LIMITS", "max_position_pct": 1.0},
     "B": {"market": "CRYPTO", "symbol": "BTCINR", "fractional": True, "slippage_bps": 20.0,
-          "stop_pct": 0.10, "label": "Crypto trend", "broker": "delta"},
+          "stop_pct": 0.10, "label": "Crypto trend", "broker": "delta",
+          "limits": "LIMITS", "max_position_pct": 0.20},
 }
 STRATEGIES = ("tsmom", "tsmom_vt", "ma_filter_vt", "markov_regime")
 # Track A idle money sits in a liquid ETF. LIQUIDBEES: 4.69%/yr since 2003 after its 0.69% fee
@@ -215,6 +217,11 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
     out.mkdir(parents=True, exist_ok=True)
     spath = out / f"state-{track}.json"
     st = load_state(spath, capital)
+    if d.isoformat() in st["paper_days"] and not flatten:
+        # same bar again (re-run, or an NSE holiday with no new bar): never trade or log twice
+        text = f"Kalpa b7 · Track {track} · PAPER · {d.isoformat()} already done (no new market day). No action."
+        return {"weight": w, "decisions": [], "bot": None, "bench": None, "summary": text, "state": st,
+                "rows": [], "params": params, "interest": 0.0, "skipped": True}
     fb = brk.FakeBroker(starting_cash=capital, prices={symbol: px}, slippage_bps=t["slippage_bps"],
                         fee_fn=fee_fn(track), tds_rate=crypto_tax.TDS_RATE if track == "B" else 0.0,
                         fractional=t["fractional"], needs_daily_login=(track == "A"),
@@ -223,9 +230,10 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
         fb.load(st["broker"])
     interest = accrue_cash_interest(fb, st["paper_days"][-1] if st["paper_days"] else None, d, rate)
     st["interest"] = st.get("interest", 0.0) + interest
-    book = risk.RiskBook(pot=capital)
+    book = risk.RiskBook(pot=capital, limits=dict(getattr(risk, t["limits"])))
     book.marks = {date.fromisoformat(k): v for k, v in st["marks"].items()}
-    guard = LiveGuard(fb, book, GuardConfig(market=t["market"], capital=capital, kill_file=flags / "KILL"),
+    guard = LiveGuard(fb, book, GuardConfig(market=t["market"], capital=capital, kill_file=flags / "KILL",
+                                                 max_position_pct=t["max_position_pct"]),
                       clock=lambda: sim[0], sleep=lambda s: sim.__setitem__(0, sim[0] + timedelta(seconds=s)),
                       traded={k: set(v) for k, v in st["traded"].items()})
 
@@ -244,7 +252,7 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
         if abs(diff) * px > 0.01 * capital:
             if diff > 0:
                 stop = px * (1 - stop_pct)
-                cap_risk = risk.LIMITS["per_trade_risk"] * capital / (px * stop_pct)
+                cap_risk = book.limits["per_trade_risk"] * capital / (px * stop_pct)
                 cap_size = guard.config.max_position_pct * capital / px - held
                 qty = min(diff, cap_risk, cap_size)
                 qty = math.floor(qty + 1e-9) if not t["fractional"] else math.floor(qty * 1e6) / 1e6
@@ -340,8 +348,12 @@ def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, 
         order = "no change"
     loss = [k for k in ("day", "week", "month") if guard.book.loss(k, guard.clock().astimezone(IST).date())
             >= guard.book.limits[f"{'daily' if k == 'day' else k + 'ly'}_loss"] - 1e-9]
+    dd = guard.book.drawdown(guard.clock().astimezone(IST).date())
+    paused = dd >= guard.book.limits["drawdown_stop"] - 1e-9
     return "\n".join([
         f"Kalpa b7 · Track {track} ({t['label']}) · PAPER · as of {d.isoformat()}",
+        *([f"ALERT: PAUSED, {dd:.0%} below peak (limit {guard.book.limits['drawdown_stop']:.0%}). No new buys. Akhil decides."]
+          if paused else []),
         f"{symbol} target {w:.0%} of Rs {capital:,.0f} ({strategy} {st.get('params') or ''})".rstrip(),
         f"Idle cash interest so far: Rs {st.get('interest', 0.0):,.2f} (liquid-ETF rate {CASH_RATE[track]:.1%}/yr)",
         f"Order: {order}",
@@ -349,6 +361,7 @@ def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, 
         f"Buy-and-hold {symbol} since {st['bench']['start']}: Rs {bench:,.2f} ({bench / capital - 1:+.2%}) "
         f"-> bot {(bot - bench) / capital * 100:+.2f} pts",
         _stats_line(st["trade_pnl"]),
+        f"Fall from peak: {dd:.1%} (pause at {guard.book.limits['drawdown_stop']:.0%}) · "
         f"Paper days: {len(st['paper_days'])}/{PAPER_DAYS_MIN} · loss caps "
         f"{'HIT: ' + ', '.join(loss) if loss else 'OK'} · kill switch {'ON' if guard.kill_switch_on() else 'off'}",
         "Own money only. Not advice.",
@@ -364,7 +377,7 @@ def _load_bars(a) -> pd.DataFrame:
                                      sigma=0.18 if a.track == "A" else 0.60, regime_days=120,
                                      regime_drift=0.3)
     if a.track == "A":
-        return data.get_daily(a.symbol or TRACKS["A"]["symbol"], strict=False)
+        return data.get_daily(a.symbol or TRACKS["A"]["symbol"], strict=False, refresh=True)
     raise SystemExit("track B needs --bars CSV or --synthetic (crypto data fetcher is a TODO)")
 
 

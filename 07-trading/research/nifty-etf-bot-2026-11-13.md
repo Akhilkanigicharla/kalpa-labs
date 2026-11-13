@@ -49,3 +49,10 @@ into a liquid fund. Akhil chooses the rules (CEO queue C66).
 - Tests: lab 98 green.
 - First real paper decision (13 Nov 2026 close): target 100% NIFTYBEES (lookback 63), but the draft rules allowed 1 unit
   (₹287, 5.7% of ₹5,000). This is exactly the rule conflict above.
+
+## Akhil's decision and what runs now (13 Nov 2026)
+- Akhil chose **"Up to 100%"** (C66). `src/risk.py` `TRACK_A_LIMITS`: 100% max position, 20% protective stop, new buys pause
+  at a 20% fall from peak (alert line in the summary), day/week/month caps off. Track B keeps the draft limits.
+  In the 15-year test the worst fall was −15.7%, so neither the stop nor the pause would have fired.
+- `.github/workflows/paper-trade.yml`: weekdays 16:15 IST, paper only, commits `07-trading/paper/track-A/`.
+- Paper day 1 = 13 Nov 2026 close: BUY 17 NIFTYBEES at the next open (simulated), lookback 63 picked by the gate rule.

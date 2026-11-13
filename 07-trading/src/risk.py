@@ -33,6 +33,21 @@ LIMITS = {
     "monthly_loss": 0.04,
     "drawdown_stop": 0.10,
 }
+
+# Track A (one Nifty ETF, trend rule): Akhil chose "Up to 100%" on 13 Nov 2026 (CEO queue C66),
+# after seeing 15 years of real Nifty data (07-trading/research/nifty-etf-bot-2026-11-13.md).
+# The strategy's own signal is the exit; a wide 20% stop guards each buy; new buys pause at a
+# 20% fall from peak and Akhil is told. Day/week/month caps are off for this track: they were
+# written for several swing trades and would have stopped the tested strategy in 2011.
+TRACK_A_LIMITS = {
+    "per_trade_risk": 0.20,     # 100% position x 20% stop
+    "position_size": 1.00,
+    "max_open_positions": 1,
+    "daily_loss": 1.0,          # off
+    "weekly_loss": 1.0,         # off
+    "monthly_loss": 1.0,        # off
+    "drawdown_stop": 0.20,
+}
 LIMITS_STATUS = "pending CEO sign-off (Q7.8)"
 EPS = 1e-9
 

@@ -1,0 +1,9 @@
+Kalpa b7 · Track A (NSE ETF trend) · PAPER · as of 2026-11-13
+NIFTYBEES target 100% of Rs 5,000 (tsmom {'lookback': 63})
+Idle cash interest so far: Rs 0.00 (liquid-ETF rate 4.7%/yr)
+Order: BUY 17 NIFTYBEES -> filled (fee Rs 5.79)
+Bot after costs + tax: Rs 4,968.94 (-0.62%)
+Buy-and-hold NIFTYBEES since 2026-11-13: Rs 4,964.07 (-0.72%) -> bot +0.10 pts
+Closed trades: 0 (win rate, payoff and expectancy after the first sell)
+Fall from peak: 0.0% (pause at 20%) · Paper days: 1/90 · loss caps OK · kill switch off
+Own money only. Not advice.

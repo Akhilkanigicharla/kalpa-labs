@@ -147,11 +147,12 @@
   "read": "['03-kits/exam-kits/README.md']",
   "min_items": 3,
   "context_chars": 12000,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T08:00:00Z",
   "output": "00-hq/knowledge/K075.md",
   "tries": 0,
-  "updated": "2026-11-12T07:51:18Z"
+  "updated": "2026-11-13T01:05:00Z",
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
  },
  {
   "world": "b3",
@@ -165,11 +166,12 @@
   "read": [
    "03-kits/README.md"
   ],
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T10:50:00Z",
   "output": "00-hq/knowledge/K078.md",
   "min_items": 15,
-  "updated": "2026-11-12T11:55:18Z"
+  "updated": "2026-11-13T01:05:00Z",
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
  },
  {
   "priority": "P2",
@@ -178,14 +180,15 @@
   "world": "b3",
   "id": "K082",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-12T14:41:36Z",
-  "updated": "2026-11-12T14:44:02Z",
+  "updated": "2026-11-13T01:05:00Z",
   "title": "A201 prep: 3 Manim explainer clip scripts, English + Telugu captions",
   "details": "Write 3 short scripts for 9:16 explainer clips under 45 s each, for Telangana/AP competitive-exam students: (1) one formula: simple interest SI = P x R x T / 100 with one worked number; (2) one graph: speed vs time line and what the area means; (3) one step-by-step sum: a percentage profit question solved in 4 steps. For each clip give 5 to 7 caption lines, each in English and in Telugu script, max 8 words per line, plus the on-screen maths for each line. Check every number in the worked examples.",
   "read": "[]",
   "output": "00-hq/knowledge/K082.md",
-  "min_items": 3
+  "min_items": 3,
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
  },
  {
   "world": "b3",
@@ -230,7 +233,7 @@
   "owner": "Forge",
   "context_chars": 30000,
   "tries": 1,
-  "status": "todo",
+  "status": "done",
   "created": "2026-11-12T17:15:00Z",
   "id": "K092",
   "title": "Manim explainer scripts: 3 short 9:16 clips with English + Telugu captions (for A201)",
@@ -240,7 +243,8 @@
   "details": "Write 3 scripts for under-60-second vertical explainer clips for Telangana/AP exam aspirants: (1) one formula (simple interest), (2) one graph (reading a bar chart of percentages), (3) one step-by-step sum (time and work). For each: scene list with seconds, on-screen text, English caption and Telugu-script caption per scene. Maths must be checked step by step; no claims about exams.",
   "output": "00-hq/knowledge/K092.md",
   "min_items": 3,
-  "updated": "2026-11-12T22:44:45Z",
-  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3."
+  "updated": "2026-11-13T01:05:00Z",
+  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3.",
+  "review_note": "Not needed: A201 built 2026-11-13 from K082."
  }
 ]

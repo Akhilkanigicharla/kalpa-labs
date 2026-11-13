@@ -139,6 +139,9 @@ jobs:
         run: python 03-kits/exam-kits/test_build.py
       - name: Kit link checker (offline tests)
         run: python 03-kits/exam-kits/test_check_links.py
+      - name: Explainer clip data + checks (A201, video tests skip without ffmpeg)
+        working-directory: 03-kits/explainers
+        run: python test_clips.py
 
   jobcard:
     runs-on: ubuntu-latest

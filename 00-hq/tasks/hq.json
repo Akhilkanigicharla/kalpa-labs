@@ -521,5 +521,24 @@
   "min_items": 5,
   "updated": "2026-11-12T22:44:11Z",
   "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-13T01:05:00Z",
+  "id": "K094",
+  "title": "A207 prep: trial plan for claude-mem, ECC, Worktrunk, Agent Reach in GitHub Actions",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/AGENT-TOOLS.md"
+  ],
+  "details": "For each of the 4 tools (claude-mem, ECC, Worktrunk, Agent Reach public no-login channels only): what it claims to do, licence as stated in its repo, one measurable test we can run in a GitHub Actions job with no logins and no secrets, the number to record, and what we already use for the same job (Graft, Superpowers, TEAM.md lanes, Firecrawl). Mark any fact you could not check as unverified.",
+  "output": "00-hq/knowledge/K094.md",
+  "min_items": 4,
+  "updated": "2026-11-13T01:05:00Z"
  }
 ]

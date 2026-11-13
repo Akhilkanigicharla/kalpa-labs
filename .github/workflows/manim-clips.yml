@@ -1,0 +1,40 @@
+# A201: Exam Kits explainer clips. Renders 3 vertical (1080x1920) Manim clips from
+# 03-kits/explainers/clips.json, checks each is under 60 s, builds a contact sheet and
+# uploads all of it as a run artifact for review. Nothing is published or posted.
+# Manim CE is MIT; Anek fonts are OFL (00-hq/design/fonts/OFL-anek.txt).
+name: Explainer clips (Manim)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["03-kits/explainers/**", ".github/workflows/manim-clips.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: manim-clips
+  cancel-in-progress: true
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: System libraries (Pango, Cairo, ffmpeg)
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends libpango1.0-dev libcairo2-dev pkg-config ffmpeg
+      - name: Manim + fontTools (pinned)
+        run: pip install manim==0.22.1 fonttools==4.67.0
+      - name: Unit tests (data + video checks)
+        working-directory: 03-kits/explainers
+        run: python test_clips.py
+      - name: Render 3 clips, check under 60 s, contact sheet
+        run: bash 03-kits/explainers/render.sh "$RUNNER_TEMP/clips"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: explainer-clips
+          path: |
+            ${{ runner.temp }}/clips/*.mp4
+            ${{ runner.temp }}/clips/contact-sheet.png
+          retention-days: 14
+          if-no-files-found: error

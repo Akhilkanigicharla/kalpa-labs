@@ -269,5 +269,23 @@
   "tries": 4,
   "updated": "2026-11-12T22:44:18Z",
   "vigil_notes": "FIX:\n* Correct section 3: facts present in the provided repo code (such as the Google review prompt and 14-day pilot) are VERIFIED per instructions, not UNVERIFIED.\n* Ensure proposed Telugu tweaks remain aligned with the 5 languages supported by Kalpa chatbots."
+ },
+ {
+  "world": "b1",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-13T01:05:00Z",
+  "id": "K095",
+  "title": "A208 prep: lawful lead sources for Hyderabad salons and gyms",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "List lawful sources for business leads (salons, gyms) in Hyderabad: OpenStreetMap tags and Overpass query shape, government open data portals, businesses' own websites, official Google Places API terms. For each: what fields it gives, its licence or terms in one line, attribution needed, and whether it can contain personal mobile numbers (we must drop those). No Google Maps page scraping, LinkedIn, Instagram or Justdial. Mark unchecked facts unverified.",
+  "output": "00-hq/knowledge/K095.md",
+  "min_items": 4,
+  "updated": "2026-11-13T01:05:00Z"
  }
 ]

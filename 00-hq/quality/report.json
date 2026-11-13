@@ -52,7 +52,7 @@
    "rule": "TESTS-NOT-IN-CI",
    "file": "00-hq",
    "line": 0,
-   "message": "1 of 22 test files may not run in CI, e.g. 00-hq/site/tests/chat.test.mjs",
+   "message": "1 of 23 test files may not run in CI, e.g. 00-hq/site/tests/chat.test.mjs",
    "fix": "Wire them into .github/workflows/quality.yml or delete dead tests.",
    "waived": ""
   },

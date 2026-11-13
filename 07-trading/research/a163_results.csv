@@ -1,0 +1,5 @@
+bot,from,years,cagr_%,worst_fall_%,worst_year_%,rs10k_per_year,rs_per_trading_day,trades
+Nifty only (Track A),2011-02-01,15.4,8.4,-16.3,-7.9,838,3.4,nifty: 4.4 round trips/yr
+Gold only,2012-01-27,14.3,7.4,-36.9,-17.5,743,3.0,gold: 4.2 round trips/yr
+50/50 Nifty + Gold,2012-01-27,14.3,8.2,-14.0,-10.2,818,3.3,nifty: 4.4 round trips/yr; gold: 4.2 round trips/yr
+Hold 50/50 (no bot),2012-01-27,14.8,11.4,-23.2,-4.8,1143,4.6,none

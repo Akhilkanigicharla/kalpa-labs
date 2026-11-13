@@ -26,6 +26,11 @@ import pandas as pd
 Strategy = Callable[..., pd.Series]
 
 
+def hold(close: pd.Series) -> pd.Series:
+    """Always fully invested (A163 gold leg: buy once, hold; no trades, no DP charges)."""
+    return pd.Series(1.0, index=close.index)
+
+
 def tsmom(close: pd.Series, lookback: int = 252) -> pd.Series:
     """1 when the trailing `lookback`-day return is positive, else 0 (cash)."""
     past = close / close.shift(lookback) - 1
@@ -129,6 +134,7 @@ def markov_regime(close: pd.Series, window: int = 20, threshold: float = 0.05) -
 # Every grid has an even number (>= 4) of configs: with an odd N the median OOS rank
 # gives logit 0 and biases PBO upward (N=3 -> chance PBO of 2/3 instead of 1/2).
 REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
+    "hold":         (hold,         {}),
     "tsmom":        (tsmom,        {"lookback": [63, 126, 189, 252]}),
     "ma_filter":    (ma_filter,    {"window": [50, 100, 150, 200]}),
     "tsmom_vt":     (tsmom_vt,     {"lookback": [126, 252], "target": [0.10, 0.15]}),

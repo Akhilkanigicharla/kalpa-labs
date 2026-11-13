@@ -22,7 +22,7 @@ Waived: 1.
 **INFO** (2)
 
 - `DEPS-BOT` .github: No .github/dependabot.yml (free weekly dependency-update PRs). Fix: Add Dependabot for npm, pip and github-actions.
-- `TESTS-NOT-IN-CI` 00-hq: 1 of 22 test files may not run in CI, e.g. 00-hq/site/tests/chat.test.mjs. Fix: Wire them into .github/workflows/quality.yml or delete dead tests.
+- `TESTS-NOT-IN-CI` 00-hq: 1 of 23 test files may not run in CI, e.g. 00-hq/site/tests/chat.test.mjs. Fix: Wire them into .github/workflows/quality.yml or delete dead tests.
 
 ## b1 01-botbhai
 

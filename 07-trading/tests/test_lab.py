@@ -128,8 +128,17 @@ def test_no_lookahead_signal_ignores_future():
 
 def test_grids_have_even_size_for_unbiased_pbo():
     for name in strategies.REGISTRY:
+        if name == "hold":          # buy-and-hold has no settings to pick, so no PBO to bias
+            continue
         n = len(strategies.param_grid(name))
         assert n >= 4 and n % 2 == 0, name
+
+
+def test_hold_is_always_fully_invested():
+    import pandas as pd
+    c = pd.Series([1.0, 2.0, 1.5], index=pd.date_range("2026-01-01", periods=3))
+    assert strategies.weights("hold", c).tolist() == [1.0, 1.0, 1.0]
+    assert strategies.param_grid("hold") == [{}]
 
 
 def test_backtest_refuses_lookahead_and_zero_cost():

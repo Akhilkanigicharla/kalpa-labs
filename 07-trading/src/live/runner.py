@@ -42,7 +42,7 @@ TRACKS = {
           "stop_pct": 0.10, "label": "Crypto trend", "broker": "delta",
           "limits": "LIMITS", "max_position_pct": 0.20},
 }
-STRATEGIES = ("tsmom", "tsmom_vt", "ma_filter_vt", "markov_regime")
+STRATEGIES = ("tsmom", "tsmom_vt", "ma_filter_vt", "markov_regime", "hold")
 # Track A idle money sits in a liquid ETF. LIQUIDBEES: 4.69%/yr since 2003 after its 0.69% fee
 # (anandrathi.com, 1 Jun 2025). Paper mode credits this on idle cash; liquid-ETF gains are taxed
 # at the slab rate (ignored here, so the paper number is slightly high on the cash leg).

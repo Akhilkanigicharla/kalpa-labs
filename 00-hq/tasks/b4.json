@@ -128,5 +128,21 @@
   "output": "00-hq/knowledge/K064.md",
   "updated": "2026-11-11T09:36:19Z",
   "tries": 1
+ },
+ {
+  "id": "K100",
+  "world": "b4",
+  "title": "A213 prep: Session Buddy and OneTab export file formats + data-loss reports",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
+  "min_items": 4,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-13T07:30:00Z",
+  "updated": "2026-11-13T07:30:00Z",
+  "output": "00-hq/knowledge/K100.md"
  }
 ]

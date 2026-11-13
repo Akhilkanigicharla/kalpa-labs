@@ -83,7 +83,10 @@ async function driveBackup(force = false, interactive = false): Promise<{ upload
     throw e;
   }
 }
-const driveOnce = (force: boolean, interactive = false) => (driveRunning ??= driveBackup(force, interactive).finally(() => { driveRunning = null; })) as Promise<{ uploaded: boolean; at?: number }>;
+const driveOnce = (force: boolean, interactive = false) => {
+  if (!driveRunning) driveRunning = driveBackup(force, interactive).finally(() => { driveRunning = null; });
+  return driveRunning as Promise<{ uploaded: boolean; at?: number }>;
+};
 const driveMsg = (e: unknown) => (e instanceof DriveError ? e.message : "Google Drive isn't reachable right now. Try again in a minute.");
 
 export default defineBackground(() => {

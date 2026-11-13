@@ -183,7 +183,7 @@
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 30000,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-13T00:00:00Z",
   "id": "K089",
@@ -195,15 +195,15 @@
   ],
   "output": "00-hq/knowledge/K089.md",
   "min_items": 8,
-  "updated": "2026-11-12T22:45:21Z",
-  "vigil_notes": "FIX:\n- [HOST] is unfinished/unverified; the repo says hosted data stays in Supabase’s Mumbai region, so write “Supabase” or mark UNVERIFIED.\n- “We never collect … emails” contradicts the form collecting your work email; reword to say usage exports must not contain emails.\n- “Akhil gets all compliance notices checked…” is not in the repo files; remove or mark UNVERIFIED.\n- [NAME] and [EMAIL] grievance-officer placeholders are unfinished; no such details appear in the repo files (mark UNVERIFIED or remove).\n- Resolve all bracketed placeholders before final deployment."
+  "updated": "2026-11-13T00:50:58Z",
+  "vigil_notes": "FIX:\n- Section 6: [NAME, EMAIL] is an unfinished placeholder; insert verified grievance officer contact or mark the section TBD.\n- Section 3: \"securely\" is not in the repo files; remove it or mark UNVERIFIED.\n- Section 5: the right to \"correct\" personal data is not evidenced in the repo files; mark UNVERIFIED or drop it.\n- Eight numbered sections exceed the 5-item list limit; consolidate into at most 5 sections."
  },
  {
   "world": "b6",
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 30000,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-12T17:15:00Z",
   "id": "K091",
@@ -215,7 +215,7 @@
   "details": "You are a zero-context reviewer. Read the PAGES titles/descriptions and the LLMS text in 06-finops/site/build.py and the landing page. For each: does it claim anything the landing page does not show? Is it plain English an Indian founder understands? Suggest at most one better wording each (title 30-60 chars, description 70-160 chars). Mark anything you cannot check as UNVERIFIED.",
   "output": "00-hq/knowledge/K091.md",
   "min_items": 5,
-  "updated": "2026-11-12T22:44:15Z",
+  "updated": "2026-11-13T00:49:18Z",
   "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

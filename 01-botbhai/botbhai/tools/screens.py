@@ -83,7 +83,7 @@ def run(out_dir):
                 if not ok: fails.append((name, theme, m, errors))
                 ctx.close()
         browser.close()
-    (out_dir / "report.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
+    (out_dir / "report.json").write_text(json.dumps(report, indent=1))
     return fails, report
 
 if __name__ == "__main__":

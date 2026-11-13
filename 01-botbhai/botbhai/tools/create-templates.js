@@ -7,8 +7,8 @@ const fs = require("fs"), path = require("path");
 // Meta needs a sample image "handle" for templates with an image header (Resumable Upload API, needs META_APP_ID)
 async function uploadHandle(file) {
   const buf = fs.readFileSync(file); const H = { Authorization: `OAuth ${process.env.WA_ACCESS_TOKEN}` };
-  const sess = await (await fetch(`https://graph.facebook.com/v21.0/${process.env.META_APP_ID}/uploads?file_length=${buf.length}&file_type=image/png`, { method: "POST", headers: H, signal: AbortSignal.timeout(30000) })).json();
-  const up = await (await fetch(`https://graph.facebook.com/v21.0/${sess.id}`, { method: "POST", headers: Object.assign({ file_offset: "0" }, H), body: buf, signal: AbortSignal.timeout(60000) })).json();
+  const sess = await (await fetch(`https://graph.facebook.com/v21.0/${process.env.META_APP_ID}/uploads?file_length=${buf.length}&file_type=image/png`, { method: "POST", headers: H })).json();
+  const up = await (await fetch(`https://graph.facebook.com/v21.0/${sess.id}`, { method: "POST", headers: Object.assign({ file_offset: "0" }, H), body: buf })).json();
   return up.h;
 }
 (async () => {
@@ -20,7 +20,7 @@ async function uploadHandle(file) {
       if (fs.existsSync(file)) components.unshift({ type: "HEADER", format: "IMAGE", example: { header_handle: [await uploadHandle(file)] } });
     }
     if (t.buttons) components.push({ type: "BUTTONS", buttons: t.buttons.map((b) => ({ type: "QUICK_REPLY", text: b })) });
-    const res = await fetch(`https://graph.facebook.com/v21.0/${waba}/message_templates`, { method: "POST", headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify({ name: t.name, category: t.category, language: t.language, components }), signal: AbortSignal.timeout(30000) });
+    const res = await fetch(`https://graph.facebook.com/v21.0/${waba}/message_templates`, { method: "POST", headers: { Authorization: `Bearer ${process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify({ name: t.name, category: t.category, language: t.language, components }) });
     const out = await res.json(); console.log(key.padEnd(14), t.name.padEnd(26), res.ok ? `submitted (${out.status || "PENDING"})` : `error: ${out.error && out.error.message}`);
   }
 })();

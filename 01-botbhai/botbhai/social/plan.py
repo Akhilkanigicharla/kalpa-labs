@@ -28,7 +28,7 @@ DEFAULT_SLOTS = {"reel": (2, "19:30"), "carousel": (4, "19:00"), "post": (6, "11
 
 
 def load_setup(setup: str, overrides: dict | None = None) -> dict:
-    cfg = json.loads((ROOT / "setups" / setup / "bot.config.json").read_text(encoding="utf-8"))
+    cfg = json.loads((ROOT / "setups" / setup / "bot.config.json").read_text())
     cfg.update(overrides or {})
     cfg.setdefault("areas", ["Jubilee Hills", "Banjara Hills", "Madhapur", "Kukatpally", "Gachibowli"])
     cfg.setdefault("whatsapp", re.sub(r"\D", "", cfg.get("phone", "")))

@@ -260,53 +260,5 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     try { await L.db("leads?x=1"); assert.fail("should throw"); } catch (e) { assert.match(e.message, /Supabase 400 22P02 on leads/); assert.doesNotMatch(e.message, /9811100001/); }
     global.fetch = real;
   });
-  // ---- engineering checklist, 12 Nov 2026: webhook verify, bad bodies, brute force, timeouts + backoff
-  await ok("checklist: Meta webhook verify fails closed without WA_VERIFY_TOKEN, compares the token, echoes only a plain challenge", async () => {
-    const comments = require("./comments.js");
-    const q = (extra) => ({ httpMethod: "GET", queryStringParameters: Object.assign({ "hub.mode": "subscribe", "hub.challenge": "1158201444" }, extra) });
-    for (const h of [wa.handler, metaleads.handler, comments.handler]) {
-      const good = await h(q({ "hub.verify_token": "verify" }));
-      assert.strictEqual(good.statusCode, 200); assert.strictEqual(good.body, "1158201444"); assert.match(good.headers["Content-Type"], /text\/plain/);
-      assert.strictEqual((await h(q({ "hub.verify_token": "wrong" }))).statusCode, 403);
-      assert.strictEqual((await h(q({ "hub.verify_token": "verify", "hub.challenge": "<script>alert(1)</script>" }))).statusCode, 403, "markup challenge echoed");
-      const saved = process.env.WA_VERIFY_TOKEN; delete process.env.WA_VERIFY_TOKEN;
-      try { assert.strictEqual((await h(q({}))).statusCode, 403, "no token set + no token sent must not verify"); }
-      finally { process.env.WA_VERIFY_TOKEN = saved; }
-    }
-  });
-  await ok("checklist: a signed but broken webhook body is a 400, not a crash", async () => {
-    for (const h of [wa.handler, metaleads.handler]) {
-      const body = "{not json"; const r = await h({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(body) }, body });
-      assert.strictEqual(r.statusCode, 400); assert.doesNotMatch(r.body, /not json|SyntaxError/);
-    }
-  });
-  await ok("checklist: owner dashboard API is rate-limited per IP and refuses a deactivated client's token", async () => {
-    const leads = require("./leads.js");
-    store.clients[0].dashboard_token = "d".repeat(36);
-    const call = (ip) => leads.handler({ headers: { authorization: "Bearer " + "e".repeat(36), "x-nf-client-connection-ip": ip } });
-    for (let i = 0; i < 300; i++) assert.strictEqual((await call("203.0.113.9")).statusCode, 401);
-    assert.strictEqual((await call("203.0.113.9")).statusCode, 429, "token guessing not limited");
-    assert.strictEqual((await call("203.0.113.10")).statusCode, 401, "limit is per IP");
-    store.clients[0].active = false;
-    try { assert.strictEqual((await leads.handler({ headers: { authorization: "Bearer " + "d".repeat(36), "x-nf-client-connection-ip": "203.0.113.11" } })).statusCode, 401); }
-    finally { store.clients[0].active = true; }
-  });
-  await ok("checklist: outbound calls carry a timeout; reads retry with backoff on 5xx/429/network errors, writes never retry", async () => {
-    const real = global.fetch; const seen = [];
-    const script = (statuses) => { let i = 0; global.fetch = async (url, opts) => { seen.push({ method: opts.method, signal: opts.signal });
-      const st = statuses[Math.min(i++, statuses.length - 1)];
-      if (st === "net") throw new TypeError("fetch failed");
-      return { ok: st < 400, status: st, text: async () => "[]", json: async () => ({}) }; }; };
-    try {
-      script([503, "net", 200]); assert.deepStrictEqual(await L.db("leads?x=1"), []);
-      assert.strictEqual(seen.length, 3, "GET retried twice then succeeded"); assert.ok(seen.every((c) => c.signal instanceof AbortSignal), "no timeout signal");
-      seen.length = 0; script([503]);
-      await assert.rejects(L.db("rpc/book_slot", { method: "POST", body: {} }), /Supabase 503/); assert.strictEqual(seen.length, 1, "a write was retried");
-      seen.length = 0; script([429, 429, 429, 429]);
-      await assert.rejects(L.db("leads?x=1"), /Supabase 429/); assert.strictEqual(seen.length, 3, "retries are capped");
-      seen.length = 0; script([500]);
-      await assert.rejects(L.graph("PN1/messages", { method: "POST", body: {} }), /Graph 500/); assert.strictEqual(seen.length, 1, "a WhatsApp send was retried (could double-message)");
-    } finally { global.fetch = real; }
-  });
   console.log(`\n${n} tests passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

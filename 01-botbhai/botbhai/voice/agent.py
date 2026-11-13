@@ -14,7 +14,7 @@ import asyncio
 import base64
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 
 import aiohttp
 from fastapi import FastAPI, Request, WebSocket
@@ -42,7 +42,7 @@ import turns as T
 
 # A85: model names live in one file (core/models.json, copied next to this file in the Docker image)
 _MODELS = next((p for p in (Path(__file__).with_name("models.json"), Path(__file__).resolve().parent.parent / "core" / "models.json") if p.exists()), None)
-GROQ_CHAT_MODEL = json.loads(_MODELS.read_text(encoding="utf-8"))["groq_chat"] if _MODELS else "openai/gpt-oss-120b"
+GROQ_CHAT_MODEL = json.loads(_MODELS.read_text())["groq_chat"] if _MODELS else "openai/gpt-oss-120b"
 
 SB_URL, SB_KEY = os.getenv("SUPABASE_URL", ""), os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 app = FastAPI(title="BotBhai voice agent")
@@ -80,7 +80,7 @@ async def ws(websocket: WebSocket):
     client_id = websocket.query_params.get("client", "")
     transport_type, call_data = await parse_telephony_websocket(websocket)
     caller = "".join(ch for ch in str(call_data.get("from_number") or call_data.get("body", {}).get("from", "")) if ch.isdigit())
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as http:
+    async with aiohttp.ClientSession() as http:
         rows = await sb(http, f"clients?id=eq.{client_id}&active=eq.true&select=*")
         if not rows:
             await websocket.close()
@@ -122,7 +122,7 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         if date_iso:
             details["date_iso"] = date_iso
             details["date"] = datetime.fromisoformat(date_iso).strftime("%a, %d %b")
-        contact = caller or f"call:{datetime.now(timezone.utc).timestamp():.0f}"
+        contact = caller or f"call:{datetime.now().timestamp():.0f}"
         # same atomic, capacity-checked booking as WhatsApp and the website (no double booking across channels)
         booked = await sb(http, "rpc/book_slot", "POST", {
             "p_client": client["id"], "p_contact": contact, "p_name": a.get("name"), "p_service": details.get("service") or details.get("goal"),
@@ -133,7 +133,7 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         await sb(http, "leads?on_conflict=client_id,contact", "POST", {
             "client_id": client["id"], "contact": contact, "name": a.get("name"),
             "score": "hot", "status": "booked", "source": "voice", "details": dict(details, customer_name=a.get("name")),
-            "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}, prefer="resolution=merge-duplicates")
+            "updated_at": datetime.utcnow().isoformat() + "Z"}, prefer="resolution=merge-duplicates")
         summary = ", ".join(f"{k}: {v}" for k, v in details.items() if k != "date_iso")
         await whatsapp(http, client.get("phone_number_id"), caller, f"✅ Booked with {cfg['business']} — {summary}. Reply here if anything changes.")
         await whatsapp(http, client.get("phone_number_id"), client.get("owner_whatsapp"), f"📞 Voice booking: {a.get('name')} ({caller}) — {summary}")
@@ -143,7 +143,7 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
         await sb(http, "leads?on_conflict=client_id,contact", "POST", {
             "client_id": client["id"], "contact": caller or "call:unknown", "name": params.arguments.get("name"),
             "score": "warm", "status": "callback", "source": "voice", "details": {"reason": params.arguments.get("reason")},
-            "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}, prefer="resolution=merge-duplicates")
+            "updated_at": datetime.utcnow().isoformat() + "Z"}, prefer="resolution=merge-duplicates")
         await whatsapp(http, client.get("phone_number_id"), client.get("owner_whatsapp"), f"🙋 Call back {caller}: {params.arguments.get('reason')}")
         await params.result_callback({"status": "team will call back"})
 
@@ -170,7 +170,7 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
 async def outbound_worker():
     if not os.getenv("PLIVO_AUTH_ID"):
         return
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as http:
+    async with aiohttp.ClientSession() as http:
         while True:
           try:
             hour = datetime.now(P.IST).hour
@@ -208,7 +208,7 @@ async def voicenote(request: Request):
     cfg = P.load_setup(b.get("setup", "salon"))
     vp = P.voice_profile(cfg)
     text = " ".join(line for line in b["text"].replace("*", "").splitlines() if line.strip() and not line.strip().startswith(("http", "🗺")))[:480]
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as http:
+    async with aiohttp.ClientSession() as http:
         if R.provider() == "sarvam":  # paid, optional (A56)
             async with http.post("https://api.sarvam.ai/text-to-speech", headers={"api-subscription-key": os.getenv("SARVAM_API_KEY")},
                                  json={"text": text, "target_language_code": lang, "speaker": vp["voice"], "model": "bulbul:v3", "pace": vp["pace"], "temperature": vp["temperature"]}) as r:

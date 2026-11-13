@@ -78,4 +78,4 @@ jobs:
           git add 07-trading/paper/track-A 07-trading/paper/track-A-gold 07-trading/paper/intraday 07-trading/paper/stocks-in-play 07-trading/paper/kronos
           git diff --cached --quiet && exit 0
           git commit -q -m "b7 paper: Track A $(TZ=Asia/Kolkata date +%F)"
-          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

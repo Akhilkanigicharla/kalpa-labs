@@ -26,10 +26,3 @@ returns void language sql as $$
     description = coalesce(new_description, description), updated_at = now() where id = secret_id $$;
 create or replace view vault.decrypted_secrets as
   select id, name, description, secret, reverse(convert_from(decode(secret, 'base64'), 'UTF8')) as decrypted_secret, created_at, updated_at from vault.secrets;
--- Supabase's real defaults (security hardening, 12 Nov 2026): service_role bypasses RLS, and every new table, sequence and
--- function in public is granted to anon + authenticated too, so the tests see the same exposure a real project has.
-alter role service_role bypassrls;
-grant usage on schema public to anon, authenticated, service_role;
-alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
-alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
-alter default privileges in schema public grant all on functions to anon, authenticated, service_role;

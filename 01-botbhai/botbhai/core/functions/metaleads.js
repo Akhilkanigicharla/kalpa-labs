@@ -4,15 +4,17 @@
  * For each new lead: fetch the form answers, save the lead (source "meta_ads"), send the WhatsApp
  * welcome template with "Book now / Call me" buttons, alert the owner, and queue a voice call if enabled.
  */
-const { db, json, metaSignatureOk, metaVerify, parseBody, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
+const { db, json, metaSignatureOk, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
 const { parseMetaLead } = require("../automations.js");
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "GET") return metaVerify(event); // Meta verifies the webhook once
+  if (event.httpMethod === "GET") {
+    const q = event.queryStringParameters || {};
+    return q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN ? { statusCode: 200, body: q["hub.challenge"] } : { statusCode: 403, body: "forbidden" };
+  }
   if (event.httpMethod !== "POST") return json(405, { error: "method" });
   if (!metaSignatureOk(event)) return json(401, { error: "bad signature" });
-  const body = parseBody(event);
-  if (!body) return json(400, { error: "bad json" });
+  const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
   for (const entry of body.entry || []) for (const ch of entry.changes || []) {
     if (ch.field !== "leadgen") continue;
     try {

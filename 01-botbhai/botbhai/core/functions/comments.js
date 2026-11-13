@@ -43,7 +43,10 @@ async function handleEvent(e, nowMs) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "GET") return L.metaVerify(event); // Meta verifies the webhook once
+  if (event.httpMethod === "GET") {
+    const q = event.queryStringParameters || {};
+    return q["hub.mode"] === "subscribe" && q["hub.verify_token"] === process.env.WA_VERIFY_TOKEN ? { statusCode: 200, body: q["hub.challenge"] } : { statusCode: 403, body: "forbidden" };
+  }
   if (event.httpMethod !== "POST") return L.json(405, { error: "method" });
   if (!L.metaSignatureOk(event)) return L.json(401, { error: "bad signature" });
   let body;

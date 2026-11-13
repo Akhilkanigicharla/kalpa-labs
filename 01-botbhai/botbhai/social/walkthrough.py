@@ -139,7 +139,7 @@ def main(argv=None):
     ap.add_argument("--voice", type=pathlib.Path, help="optional voice-over MP3/WAV")
     ap.add_argument("--out", required=True, type=pathlib.Path)
     a = ap.parse_args(argv)
-    cfg = json.loads((pathlib.Path(__file__).resolve().parents[1] / "setups" / a.setup / "bot.config.json").read_text(encoding="utf-8"))
+    cfg = json.loads((pathlib.Path(__file__).resolve().parents[1] / "setups" / a.setup / "bot.config.json").read_text())
     photos = photos_in(a.photos)
     mp4 = build(photos, captions_for(len(photos), a.rooms.split(","), a.title), cfg, a.out, a.voice)
     print(mp4 or "ffmpeg missing or failed; frames saved next to --out")

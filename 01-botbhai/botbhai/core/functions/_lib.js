@@ -3,25 +3,8 @@ const SUPABASE_URL = () => process.env.SUPABASE_URL;
 const SUPABASE_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY; // server-only secret, never put in a web page
 const enc = encodeURIComponent;
 
-// Every outbound call has a timeout. Only reads (GET) are retried, with exponential backoff + jitter, on a network error,
-// a timeout, 429 or 5xx: a retried write could book, bill or message twice. A Netlify function has ~10 s in all.
-const backoffMs = (attempt) => (process.env.NO_DELAY ? 0 : 250 * 2 ** attempt + Math.floor(Math.random() * 100));
-async function fetchRetry(url, opts = {}, { timeoutMs = 8000, retries } = {}) {
-  const tries = 1 + (retries ?? ((opts.method || "GET") === "GET" ? 2 : 0));
-  for (let attempt = 0; ; attempt++) {
-    try {
-      const res = await fetch(url, Object.assign({}, opts, { signal: AbortSignal.timeout(timeoutMs) }));
-      if (attempt + 1 < tries && (res.status === 429 || res.status >= 500)) { await new Promise((r) => setTimeout(r, backoffMs(attempt))); continue; }
-      return res;
-    } catch (e) {
-      if (attempt + 1 >= tries) throw e;
-      await new Promise((r) => setTimeout(r, backoffMs(attempt)));
-    }
-  }
-}
-
 async function db(path, opts = {}) {
-  const res = await fetchRetry(`${SUPABASE_URL()}/rest/v1/${path}`, {
+  const res = await fetch(`${SUPABASE_URL()}/rest/v1/${path}`, {
     method: opts.method || "GET",
     headers: { apikey: SUPABASE_KEY(), Authorization: `Bearer ${SUPABASE_KEY()}`, "Content-Type": "application/json", Prefer: opts.prefer || "return=representation" },
     body: opts.body ? JSON.stringify(opts.body) : undefined,
@@ -43,8 +26,8 @@ async function rateHit(key, windowS, max) {
 // Fails closed: no secret, no token, a used/forged token, a token for another action or Cloudflare unreachable → not ok.
 // No secret = "turnstile: off": bookings are paused, unless BOTBHAI_DEMO=1 (a private demo/preview deploy only).
 // `siteverify(fields)` is injectable so tests use a fake verifier; it returns Cloudflare's JSON reply.
-const cloudflareSiteverify = async (fields) => (await fetchRetry("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-  method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(fields).toString() }, { timeoutMs: 5000 })).json();
+const cloudflareSiteverify = async (fields) => (await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+  method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(fields).toString() })).json();
 async function turnstileOk(token, ip, siteverify = cloudflareSiteverify) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
@@ -119,7 +102,7 @@ function inboxStatus(state, nowMs = Date.now()) {
 // ---------- WhatsApp senders
 const GRAPH = "https://graph.facebook.com/v21.0";
 async function graph(path, { method = "GET", token, body } = {}) {
-  const res = await fetchRetry(`${GRAPH}/${path}`, { method, headers: { Authorization: `Bearer ${token || process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined }, { timeoutMs: 10000 });
+  const res = await fetch(`${GRAPH}/${path}`, { method, headers: { Authorization: `Bearer ${token || process.env.WA_ACCESS_TOKEN}`, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(`Graph ${res.status}: ${JSON.stringify(data.error || data)}`);
   return data;
@@ -177,23 +160,6 @@ function templatesFor(setupId) {
   const dir = { salon: "salon", realestate: "realestate", gym: "gym", examkits: "examkits" }[setupId];
   return require(`../../setups/${dir}/templates.json`);
 }
-// Meta's one-time webhook check (GET ?hub.mode=subscribe&hub.verify_token=…&hub.challenge=…). Fails closed without
-// WA_VERIFY_TOKEN (an unset token used to match a request that left the field out), compares in constant time and only
-// echoes a plain short challenge, as text, so the endpoint can't reflect markup.
-function metaVerify(event) {
-  const q = (event && event.queryStringParameters) || {};
-  const want = process.env.WA_VERIFY_TOKEN || "";
-  const got = String(q["hub.verify_token"] || "");
-  const h = (s) => require("crypto").createHash("sha256").update(s).digest();
-  const challenge = String(q["hub.challenge"] || "");
-  if (q["hub.mode"] === "subscribe" && want && got && require("crypto").timingSafeEqual(h(got), h(want)) && /^[A-Za-z0-9_-]{1,128}$/.test(challenge))
-    return { statusCode: 200, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" }, body: challenge };
-  return { statusCode: 403, headers: { "Content-Type": "text/plain; charset=utf-8" }, body: "forbidden" };
-}
-// Webhook bodies: a broken body is a 400, never a crash (and never echoed back).
-function parseBody(event) {
-  try { return JSON.parse(event.isBase64Encoded ? Buffer.from(event.body || "", "base64").toString() : event.body || "{}"); } catch (e) { return null; }
-}
 // Meta webhook signature (X-Hub-Signature-256 over the raw body). Fails closed without WA_APP_SECRET.
 function metaSignatureOk(event) {
   const secret = process.env.WA_APP_SECRET;
@@ -204,5 +170,5 @@ function metaSignatureOk(event) {
   return sig.length === expected.length && require("crypto").timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-module.exports = { metaSignatureOk, metaVerify, parseBody, fetchRetry, db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { metaSignatureOk, db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

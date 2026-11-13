@@ -158,13 +158,8 @@ footer{padding:0 22px 20px;font-size:12.5px;color:var(--muted)}
 <tbody>${rows}<tr class="total"><td colspan="2">Total</td><td class="wide" colspan="2"></td><td class="n">${money(total)}</td></tr></tbody></table></div>
 <p class="words">${esc(wordsFor(total))}</p>
 ${pay}
-<div class="actions noprint"><button class="btn ghost" type="button" id="print">Save as PDF / Print</button></div>
-</div><footer>Thank you for choosing BotBhai. This is a computer-generated invoice and needs no signature.</footer></main><script>${PRINT_JS}</script></body></html>`;
+<div class="actions noprint"><button class="btn ghost" type="button" onclick="window.print()">Save as PDF / Print</button></div>
+</div><footer>Thank you for choosing BotBhai. This is a computer-generated invoice and needs no signature.</footer></main></body></html>`;
 }
 
-// The invoice's only script. No inline onclick, so the CSP allows exactly this script by hash (PRINT_HASH),
-// never 'unsafe-inline' (functions/billing.js and the /invoice-sample rule in netlify.toml use it).
-const PRINT_JS = 'document.getElementById("print").addEventListener("click", function () { window.print(); });';
-const PRINT_HASH = "'sha256-" + require("crypto").createHash("sha256").update(PRINT_JS).digest("base64") + "'";
-
-module.exports = { PRINT_JS, PRINT_HASH, fyOf, invoiceNo, computeBill, inWords, wordsFor, money, upiLink, qrSvg, overdueDays, invoiceHTML, nice, esc, VPA };
+module.exports = { fyOf, invoiceNo, computeBill, inWords, wordsFor, money, upiLink, qrSvg, overdueDays, invoiceHTML, nice, esc, VPA };

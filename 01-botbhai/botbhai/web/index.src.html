@@ -334,9 +334,7 @@ const B = window.BotBhai;
 const qs = new URLSearchParams(location.search);
 // Live owner dashboard link: https://<site>/#token=<dashboard_token>. The part after # never reaches the server or its
 // logs; an old ?token= link still works once and is then wiped from the address bar and history.
-// This page may be framed by client sites (widget.js, frame-ancestors in netlify.toml), so the owner view never runs in a frame (clickjacking).
-const FRAMED = (() => { try { return window.top !== window.self; } catch (e) { return true; } })();
-const LIVE_TOKEN = FRAMED ? null : (new URLSearchParams(location.hash.slice(1)).get("token") || qs.get("token"));
+const LIVE_TOKEN = new URLSearchParams(location.hash.slice(1)).get("token") || qs.get("token");
 if (LIVE_TOKEN && history.replaceState) history.replaceState(null, "", location.pathname + location.search.replace(/([?&])token=[^&]*&?/, "$1").replace(/[?&]$/, ""));
 const LIVE_CLIENT = qs.get("client");        // live website chat for one client
 const $ = (s) => document.querySelector(s);

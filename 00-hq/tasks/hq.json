@@ -562,8 +562,8 @@
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  },
  {
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-13T05:00:00Z",
   "id": "K098",
   "world": "hq",
@@ -573,10 +573,10 @@
   ],
   "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
   "min_items": 4,
-  "updated": "2026-11-13T07:56:17Z",
+  "updated": "2026-11-13T08:10:23Z",
   "output": "00-hq/knowledge/K098.md",
   "owner": "Forge",
   "priority": "P2",
-  "vigil_notes": "FIX:\n- Mark \"runs on GitHub Actions\" as UNVERIFIED for all 4 items (not in repo files).\n- Mark \"Kalpa use\" descriptions as UNVERIFIED for all 4 items (not in repo files).\n- Verify \"no card\" claim or mark as UNVERIFIED (not in repo files).\n- Ensure \"fit check notes\" context is clear or mark specific technical details as UNVERIFIED if not in files."
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

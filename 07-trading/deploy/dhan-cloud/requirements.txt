@@ -1,0 +1,5 @@
+# Dhan Cloud installs this during deployment (Dhan FAQ, 14 Nov 2026). Same pins as 07-trading/requirements.txt.
+numpy==2.5.4
+pandas==3.0.6
+scipy==1.18.1
+yfinance==1.7.0

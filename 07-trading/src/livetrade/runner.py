@@ -36,7 +36,7 @@ PAPER_DAYS_MIN = 90
 STCG_RATE = 0.20          # listed equity/ETF held < 12 months (PLAN.md §2 table)
 TRACKS = {
     "A": {"market": "NSE", "symbol": "NIFTYBEES", "fractional": False, "slippage_bps": 10.0,
-          "stop_pct": 0.20, "label": "NSE ETF trend", "broker": "fyers",
+          "stop_pct": 0.20, "label": "NSE ETF trend", "broker": "dhan",
           "limits": "TRACK_A_LIMITS", "max_position_pct": 1.0},
     "B": {"market": "CRYPTO", "symbol": "BTCINR", "fractional": True, "slippage_bps": 20.0,
           "stop_pct": 0.10, "label": "Crypto trend", "broker": "delta",
@@ -186,7 +186,8 @@ def live_blockers(track: str, state: dict, env: Mapping[str, str], flags: Path) 
 def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, out: Path,
               flags: Path, asof=None, flatten: bool = False, stop_pct: float | None = None,
               symbol: str | None = None, params: dict | None = None,
-              signal_bars: pd.DataFrame | None = None, cash_rate: float | None = None) -> dict:
+              signal_bars: pd.DataFrame | None = None, cash_rate: float | None = None,
+              broker: brk.Broker | None = None) -> dict:
     """bars = the traded instrument (fill price). signal_bars (optional) = a cleaner series the
     strategy reads, e.g. the Nifty 50 index for NIFTYBEES (the ETF's Yahoo history has an
     unadjusted 2019 split). params=None -> picked like the gate's walk-forward."""
@@ -204,6 +205,8 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
     if vis_px.empty:
         raise ValueError("no traded-instrument bars at or before the decision time")
     px, bar_ts = float(vis_px["close"].iloc[-1]), vis_px.index[-1]
+    if not math.isfinite(px) or px <= 0 or not math.isfinite(w):
+        raise ValueError(f"refusing to trade: price {px} / target {w} is not a real number")
     if signal_bars is not None and abs((bar_ts - sig_ts).days) > 4:
         raise ValueError(f"signal bar {sig_ts.date()} and price bar {bar_ts.date()} are too far apart")
     d = bar_ts.date()
@@ -212,32 +215,45 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
         at = next_open("NSE", datetime.combine(d, dtime(16, 0), IST))
     else:
         at = datetime.combine(d + timedelta(days=1), dtime(0, 5), IST)
+    live = broker is not None            # live: real orders now (morning run), real clock, separate state file
+    if live:
+        at = datetime.now(IST)
     sim = [at]
 
     out.mkdir(parents=True, exist_ok=True)
-    spath = out / f"state-{track}.json"
+    spath = out / (f"state-{track}-{symbol}-live.json" if live else f"state-{track}.json")
     st = load_state(spath, capital)
     if d.isoformat() in st["paper_days"] and not flatten:
         # same bar again (re-run, or an NSE holiday with no new bar): never trade or log twice
-        text = f"Kalpa b7 · Track {track} · PAPER · {d.isoformat()} already done (no new market day). No action."
+        text = f"Kalpa b7 · Track {track} · {'LIVE' if live else 'PAPER'} · {d.isoformat()} already done (no new market day). No action."
         return {"weight": w, "decisions": [], "bot": None, "bench": None, "summary": text, "state": st,
                 "rows": [], "params": params, "interest": 0.0, "skipped": True}
-    fb = brk.FakeBroker(starting_cash=capital, prices={symbol: px}, slippage_bps=t["slippage_bps"],
-                        fee_fn=fee_fn(track), tds_rate=crypto_tax.TDS_RATE if track == "B" else 0.0,
-                        fractional=t["fractional"], needs_daily_login=(track == "A"),
-                        login_date=at.date(), name="paper")
-    if st["broker"]:
-        fb.load(st["broker"])
-    interest = accrue_cash_interest(fb, st["paper_days"][-1] if st["paper_days"] else None, d, rate)
+    if live:
+        fb = broker
+        if st["broker"]:
+            fb.load(st["broker"])
+        interest = 0.0                    # real idle cash earns what the broker pays, not a model rate
+    else:
+        fb = brk.FakeBroker(starting_cash=capital, prices={symbol: px}, slippage_bps=t["slippage_bps"],
+                            fee_fn=fee_fn(track), tds_rate=crypto_tax.TDS_RATE if track == "B" else 0.0,
+                            fractional=t["fractional"], needs_daily_login=(track == "A"),
+                            login_date=at.date(), name="paper")
+        if st["broker"]:
+            fb.load(st["broker"])
+        interest = accrue_cash_interest(fb, st["paper_days"][-1] if st["paper_days"] else None, d, rate)
     st["interest"] = st.get("interest", 0.0) + interest
     book = risk.RiskBook(pot=capital, limits=dict(getattr(risk, t["limits"])))
     book.marks = {date.fromisoformat(k): v for k, v in st["marks"].items()}
     guard = LiveGuard(fb, book, GuardConfig(market=t["market"], capital=capital, kill_file=flags / "KILL",
                                                  max_position_pct=t["max_position_pct"]),
-                      clock=lambda: sim[0], sleep=lambda s: sim.__setitem__(0, sim[0] + timedelta(seconds=s)),
+                      clock=(lambda: datetime.now(IST)) if live else (lambda: sim[0]),
+                      sleep=__import__("time").sleep if live else (lambda s: sim.__setitem__(0, sim[0] + timedelta(seconds=s))),
                       traded={k: set(v) for k, v in st["traded"].items()})
 
     held = fb.positions().get(symbol, 0.0)
+    if live and held > 0 and symbol not in st["stops"]:
+        # state file lost (fresh cloud run): rebuild the protective stop from the broker's average cost
+        st["stops"][symbol] = (fb.avg_cost.get(symbol) or px) * (1 - stop_pct)
     guard.mark(fb.cash() + fb.tds_withheld + held * px)
     decisions = []
     if flatten:
@@ -263,7 +279,7 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
                 decisions.append(guard.submit(brk.OrderRequest(symbol, "sell", qty)))
 
     # bookkeeping: realised gains, stops
-    basis_before = st["broker"]["avg_cost"].get(symbol, 0.0) if st["broker"] else 0.0
+    basis_before = (st["broker"] or {}).get("avg_cost", {}).get(symbol, 0.0) or fb.avg_cost.get(symbol, 0.0)
     for dec in decisions:
         r = dec.result
         if r is None or r.status != "filled":
@@ -302,7 +318,7 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
 
     rows = _ledger_rows(track, strategy, symbol, capital, d, at, w, decisions, bot, bench)
     _append_ledger(out / f"ledger-{track}.csv", rows)
-    text = summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard)
+    text = summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard, live)
     (out / f"summary-{track}.txt").write_text(text + "\n", encoding="utf-8")
     return {"weight": w, "decisions": decisions, "bot": bot, "bench": bench, "summary": text,
             "state": st, "rows": rows, "params": params, "interest": interest}
@@ -334,7 +350,7 @@ def _append_ledger(path: Path, rows: list[list]) -> None:
         wr.writerows(rows)
 
 
-def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard) -> str:
+def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard, live: bool = False) -> str:
     t = TRACKS[track]
     if decisions:
         parts = []
@@ -351,7 +367,7 @@ def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, 
     dd = guard.book.drawdown(guard.clock().astimezone(IST).date())
     paused = dd >= guard.book.limits["drawdown_stop"] - 1e-9
     return "\n".join([
-        f"Kalpa b7 · Track {track} ({t['label']}) · PAPER · as of {d.isoformat()}",
+        f"Kalpa b7 · Track {track} ({t['label']}) · " + (f"LIVE · {symbol}" if live else "PAPER") + f" · as of {d.isoformat()}",
         *([f"ALERT: PAUSED, {dd:.0%} below peak (limit {guard.book.limits['drawdown_stop']:.0%}). No new buys. Akhil decides."]
           if paused else []),
         f"{symbol} target {w:.0%} of Rs {capital:,.0f} ({strategy} {st.get('params') or ''})".rstrip(),
@@ -398,6 +414,8 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
     p.add_argument("--flags", type=Path, default=brk.LIVE_DIR)
     p.add_argument("--broker", default=None, help="live adapter: fyers|dhan (A), delta|coindcx (B)")
     p.add_argument("--flatten", action="store_true", help="sell everything (only if KILL file exists)")
+    p.add_argument("--paper-state", type=Path, default=None,
+                   help="live: the paper state whose logged days count towards the paper-days rule")
     a = p.parse_args(argv)
     try:
         GuardConfig(capital=a.capital)
@@ -406,8 +424,8 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
         return 2
 
     if a.mode == "live":
-        st = load_state(a.out / f"state-{a.track}.json", a.capital) if (a.out / f"state-{a.track}.json").exists() \
-            else _new_state(a.capital)
+        pst = a.paper_state or (a.out / f"state-{a.track}.json")
+        st = load_state(pst, a.capital) if pst.exists() else _new_state(a.capital)
         blockers = live_blockers(a.track, st, env, a.flags)
         if blockers:
             print("LIVE REFUSED:\n  - " + "\n  - ".join(blockers), file=sys.stderr)
@@ -419,11 +437,21 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
             return 2
         try:
             adapter = cls(env=env, go_file=a.flags / "GO")
-            adapter.cash()
+            adapter.cash()                       # proves the token works before anything else
         except (brk.LiveRefused, NotImplementedError) as e:
             print(f"LIVE REFUSED: {e}", file=sys.stderr)
             return 3
-        return 3   # unreachable while adapters are stubs
+        sym = (a.symbol or TRACKS[a.track]["symbol"]).upper()
+        leg = brk.ScopedBroker(adapter, sym, a.capital, fee_fn(a.track))
+        sig = None
+        if a.signal_symbol:
+            from .. import data
+            sig = data.get_daily(a.signal_symbol, strict=False, refresh=True)
+        res = run_paper(_load_bars(a), track=a.track, strategy=a.strategy, capital=a.capital, out=a.out,
+                        flags=a.flags, flatten=a.flatten, symbol=sym, signal_bars=sig, broker=leg)
+        print(res["summary"])
+        bad = [d for d in res["decisions"] if d.result is not None and d.result.status == "rejected"]
+        return 4 if bad else 0
 
     sig = None
     if a.signal_bars:

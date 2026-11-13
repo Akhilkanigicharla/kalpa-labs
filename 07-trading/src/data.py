@@ -65,7 +65,10 @@ def normalise(df: pd.DataFrame) -> pd.DataFrame:
         idx = idx.tz_localize(None)
     out.index = idx.normalize()
     out.index.name = "date"
-    return out.astype(float)
+    out = out.astype(float)
+    # Yahoo sometimes returns today's row with volume but NaN prices (seen for GOLDBEES on 13 Nov 2026).
+    # A bar without a close is not a bar: drop it so nothing is ever decided or sized on a missing price.
+    return out[out["close"].notna() & (out["close"] > 0)]
 
 
 def validate(df: pd.DataFrame, *, max_gap_days: int = 7, jump: float = 0.40) -> list[str]:

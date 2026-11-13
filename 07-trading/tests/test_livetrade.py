@@ -72,6 +72,8 @@ def test_adapters_refuse_without_flags_and_hide_keys(tmp_path, cls):
     env = {"LIVE_TRADING": "YES", **{k: secret for k in cls.ENV_KEYS}}
     a = cls(env=env, go_file=go)
     assert secret not in repr(a) and secret not in str(a) and secret not in str(e.value)
+    if cls is brk.DhanAdapter:      # real adapter since 14 Nov 2026: see tests/test_dhan.py
+        return
     for call in (lambda: a.place_order(buy()), lambda: a.cash(), lambda: a.quote("X"),
                  lambda: a.positions(), lambda: a.cancel("1")):
         with pytest.raises(NotImplementedError):
@@ -386,3 +388,12 @@ def test_same_market_day_is_never_processed_twice(tmp_path):
     assert again["skipped"] and again["decisions"] == [] and "already done" in again["summary"]
     assert (tmp_path / "o" / "ledger-A.csv").read_text(encoding="utf-8") == led1
     assert len(again["state"]["paper_days"]) == len(first["state"]["paper_days"]) == 1
+
+
+def test_nan_price_rows_are_dropped_and_never_traded():
+    """Yahoo returned GOLDBEES 13 Nov 2026 with volume but NaN prices: that row must vanish, not crash or trade."""
+    idx = pd.to_datetime(["2026-11-11", "2026-11-12", "2026-11-13"])
+    raw = pd.DataFrame({"Open": [115.3, 113.5, np.nan], "High": [115.7, 113.7, np.nan], "Low": [115.0, 112.2, np.nan],
+                        "Close": [115.3, 112.7, np.nan], "Volume": [4e7, 5e7, 4.5e7]}, index=idx)
+    out = data.normalise(raw)
+    assert list(out.index.strftime("%Y-%m-%d")) == ["2026-11-11", "2026-11-12"] and not out["close"].isna().any()

@@ -44,7 +44,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | Input caps: 01-botbhai/botbhai/core/functions/leads.js | PASS | no input length cap |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/chat.js | PASS | no limit |
 | Input caps: 01-botbhai/botbhai/core/functions/chat.js | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 49 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 53 KB |
 
 ## All 107 items (fill: done / not relevant + why / missing + roadmap id)
 

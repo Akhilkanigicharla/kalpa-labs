@@ -276,7 +276,7 @@
   "owner": "Forge",
   "context_chars": 20000,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-13T01:05:00Z",
   "id": "K095",
   "title": "A208 prep: lawful lead sources for Hyderabad salons and gyms",
@@ -286,7 +286,8 @@
   "details": "List lawful sources for business leads (salons, gyms) in Hyderabad: OpenStreetMap tags and Overpass query shape, government open data portals, businesses' own websites, official Google Places API terms. For each: what fields it gives, its licence or terms in one line, attribution needed, and whether it can contain personal mobile numbers (we must drop those). No Google Maps page scraping, LinkedIn, Instagram or Justdial. Mark unchecked facts unverified.",
   "output": "00-hq/knowledge/K095.md",
   "min_items": 4,
-  "updated": "2026-11-13T00:55:30Z"
+  "updated": "2026-11-13T15:55:00Z",
+  "notes": "Used only the OSM ODbL attribution + \"drop personal mobiles\" point (matches leadfinder code); other sources stayed UNVERIFIED and were not wired in (A208)."
  },
  {
   "priority": "P2",
@@ -306,5 +307,24 @@
   "min_items": 8,
   "updated": "2026-11-13T02:49:35Z",
   "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-13T15:55:00Z",
+  "id": "K103",
+  "world": "b1",
+  "title": "A208 part 2: lead-research prompts for leads we already hold",
+  "read": [
+   "01-botbhai/botbhai/leads/README.md",
+   "01-botbhai/botbhai/leadfinder/enrich.py",
+   "CLAUDE.md"
+  ],
+  "details": "Write short prompts (English) a free model can run on ONE lead row (columns: name, category, website, opening_hours, address, online_booking, whatsapp_link, instagram, source) to produce: a 3-line business summary, the one BotBhai feature that fits them best, and a polite walk-in visit opener in English, Telugu script and Tenglish. Use only the row's own fields; never invent phone numbers, never suggest cold calls, SMS or unsolicited WhatsApp (TRAI, WhatsApp policy). Number each prompt and give one worked example on a made-up salon.",
+  "min_items": 5,
+  "updated": "2026-11-13T15:55:00Z"
  }
 ]

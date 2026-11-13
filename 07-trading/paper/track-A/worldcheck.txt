@@ -1,21 +1,21 @@
-WORLD CHECK · 2026-11-13 · alerts only (the bot trades the tested trend rule)
+WORLD CHECK · 2026-11-14 · alerts only (the bot trades the tested trend rule)
 Risk flags on: 0/4 (calm)
-  [ ] Global trend: S&P 500 7,592 vs 200-day avg 7,337
-  [ ] Fear: India VIX 15.5 vs 1-year top-20% line 17.4
-  [ ] Dollar squeeze: US 10Y +0.41 pts and USD/INR -1.5% in 3 months (alert at +0.50 and +2%)
-  [ ] Oil shock: Brent +6.5% in 3 months (alert at +30%)
+  [ ] Global trend: S&P 500 7,557 vs 200-day avg 7,340
+  [ ] Fear: India VIX 16.6 vs 1-year top-20% line 17.4
+  [ ] Dollar squeeze: US 10Y +0.43 pts and USD/INR -1.5% in 3 months (alert at +0.50 and +2%)
+  [ ] Oil shock: Brent +5.7% in 3 months (alert at +30%)
 Markets (last, 1 day, 3 months):
-  Nifty 50       25,144.30   -0.61%    +2.90%
-  India VIX          15.49   -6.77%   +32.55%
-  S&P 500         7,592.40   -0.35%    -2.48%
-  Nasdaq-100     28,289.19   -0.30%    -5.85%
-  Nikkei 225     61,142.35   +0.53%    -8.70%
-  Hang Seng      23,637.60   -1.55%    -5.89%
-  US 10Y yield        5.13%   +0.59%    +8.66%
-  Dollar index      103.22   +0.05%    +3.60%
-  USD/INR            94.22   +0.56%    -1.54%
-  Brent oil          96.82   +1.04%    +6.55%
-  US VIX             17.81   -4.76%   +12.44%
+  Nifty 50       25,299.35   +0.18%    +3.38%
+  India VIX          16.62   -5.35%   +40.13%
+  S&P 500         7,557.22   -0.46%    -2.43%
+  Nasdaq-100     27,959.93   -1.16%    -6.79%
+  Nikkei 225     60,819.36   -0.70%    -7.30%
+  Hang Seng      24,008.55   -1.26%    -5.47%
+  US 10Y yield        5.15%   +1.00%    +9.10%
+  Dollar index      103.42   +0.24%    +3.79%
+  USD/INR            94.23   +0.57%    -1.53%
+  Brent oil          96.02   +0.21%    +5.67%
+  US VIX             19.23   +2.83%   +21.40%
 Coming up (14 days): nothing on the calendar
 Latest Fed news:
   - Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services

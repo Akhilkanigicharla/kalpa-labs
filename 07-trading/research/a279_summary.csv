@@ -1,0 +1,13 @@
+line,period,cagr,max_dd,worst_year,sharpe,end_value,trades_per_year,charges_pct_per_year,avg_invested
+"Master agent (25 agents, weekly, risk brake)",2013-2026 (after warm-up),0.0472,-0.0810,-0.0508,0.9628,19103.6558,34.9525,0.0335,0.3287
+"Master agent (25 agents, weekly, risk brake)",2019-2026,0.0622,-0.0669,-0.0274,1.2216,15927.5778,31.2407,0.0300,0.3321
+Master agent without the risk brake,2013-2026 (after warm-up),0.0469,-0.2259,-0.1364,0.5340,19041.6915,70.2610,0.0690,0.6334
+Master agent without the risk brake,2019-2026,0.0736,-0.1699,-0.0809,0.7640,17292.7646,69.3519,0.0682,0.6636
+Master agent with no trade band (first run),2013-2026 (after warm-up),-0.0747,-0.6798,-0.1647,-1.4273,3360.1917,197.4712,0.1596,0.3370
+Master agent with no trade band (first run),2019-2026,-0.0636,-0.4050,-0.1162,-1.1717,6023.1230,202.3519,0.1607,0.3357
+"All 25 agents, equal money (4% each), same band",2013-2026 (after warm-up),0.0699,-0.1069,-0.0549,1.0803,25833.9790,34.6678,0.0322,0.5797
+"All 25 agents, equal money (4% each), same band",2019-2026,0.0810,-0.1069,-0.0212,1.1682,18236.5497,34.6111,0.0324,0.5977
+Current bot: Nifty trend 50% + gold held 50%,2013-2026 (after warm-up),0.0900,-0.1824,-0.0666,0.9518,33537.4112,3.8441,0.0070,0.9123
+Current bot: Nifty trend 50% + gold held 50%,2019-2026,0.1258,-0.1824,-0.0666,1.1658,24948.0096,5.5741,0.0103,0.9185
+Buy and hold Nifty (NIFTYBEES),2013-2026 (after warm-up),0.1274,-0.3634,-0.0426,0.8928,53912.1311,0.0000,0.0000,1.0000
+Buy and hold Nifty (NIFTYBEES),2019-2026,0.1274,-0.3634,-0.0294,0.8518,25215.7473,0.0000,0.0000,1.0000

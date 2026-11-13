@@ -37,7 +37,7 @@ Kalpa's own test numbers are marked **[Kalpa test]**.
   - Chatwoot: MIT core plus a separate `enterprise` folder, 39.8k stars, omnichannel inbox.
 - **Offer picked in the video:** a commission-free direct-ordering site for restaurants at a flat monthly fee.
 - **India data:** Swiggy/Zomato charge 16–30%; Rapido and ONDC-based apps charge 8–15%.
-- **Not trading.** It is logged for Akhil as C85; no build without his yes.
+- **Not trading.** It is logged for Akhil as C87; no build without his yes.
 
 ## 4. Miles Deutscher: "I Tested The Viral Claude Day Trader Repo (11 Free Skills)" (12 Nov 2026, 14 min)
 - **Repo:** https://github.com/jakeschincariol/day-trader-skill (MIT, ~7.5k stars, last commit 20 Oct 2026). US stocks only.
@@ -60,7 +60,7 @@ Kalpa's own test numbers are marked **[Kalpa test]**.
 - **For Kalpa:**
   - We already have the replay/bootstrap test, risk caps, paper-first and the 90-day rule.
   - Kalpa's own 60-day tests of 5-min opening-range breakout on Nifty 50 stocks lost money after costs (research/aggressive-5k-2026-11-13.md).
-  - New task **A273**, the India "insider tracker": SEBI PIT insider disclosures + NSE bulk/block deals, then a "buy after insider buying" test through the gate (placebo + walk-forward) before any paper run.
+  - New task **A277**, the India "insider tracker": SEBI PIT insider disclosures + NSE bulk/block deals, then a "buy after insider buying" test through the gate (placebo + walk-forward) before any paper run.
   - No third-party code is copied or run without review and Akhil's OK (repo rule).
 
 ## Rules that still apply to anything from these videos

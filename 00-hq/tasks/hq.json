@@ -597,10 +597,10 @@
   "owner": "Forge"
  },
  {
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-13T08:45:00Z",
-  "updated": "2026-11-13T08:41:40Z",
+  "updated": "2026-11-13T09:41:28Z",
   "priority": "P2",
   "id": "K102",
   "world": "hq",
@@ -612,6 +612,6 @@
   "min_items": 4,
   "output": "00-hq/knowledge/K102.md",
   "owner": "Forge",
-  "vigil_notes": "FIX:\n- Remove item 4 (blueprint.io / Ghidra / BLA); it is not in the task scope (LFM2.5, Switch, Openverse API).\n- Mark Openverse API licence as UNVERIFIED; the repo only confirms CC0 usage for assets, not the API's own licence.\n- Mark Openverse API \"Runs on free...\" as UNVERIFIED; repo confirms \"no key, 200/day\" but not specifically Hugging Face or GitHub Actions hosting."
+  "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

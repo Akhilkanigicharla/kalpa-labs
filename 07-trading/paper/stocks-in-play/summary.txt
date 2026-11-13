@@ -1,0 +1,7 @@
+Kalpa b7 · Stocks-in-Play 5-min ORB · PAPER · 2026-11-13 · Rs 5,000
+Busiest sectors by opening volume (x normal): Auto 1.67x, Pharma 1.6x, Infra 1.6x
+  BAJFINANCE Financials long  vol 2.19x in 09:25 @ 1103.72 out 11:35 @ 1100.35 (stop) -0.41%
+  SUNPHARMA  Pharma     long  vol 1.99x in 09:25 @ 1904.58 out 09:25 @ 1899.4 (stop) -0.38%
+  SBIN       Financials short vol 1.71x in 09:25 @ 1077.03 out 09:25 @ 1079.77 (stop) -0.36%
+Running: 3 trades over 1 sessions, win 0%, net -0.38% of capital
+REJECTED on Aug-Nov 2026 data (-3.7% after costs). Paper only. Not advice.

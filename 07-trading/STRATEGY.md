@@ -84,3 +84,16 @@ All rejected. Costs (about ₹5 per round trip on ₹5,000) are 4–6× the best
 71% of individual intraday traders lost money in FY23, 80% of those with more than 500 trades a year.
 60 days is too short to prove anything either way, so the bot runs on paper daily and saves its own 5-minute history
 (Actions cache). Real-money intraday also needs an always-on server with a static IP and a live broker feed.
+
+## 8. "Best strategy out there" for 5-minute trading: Stocks-in-Play breakout (13 Nov 2026)
+Akhil: real money; use pre-market sector volume, news, sentiment, the whole chart, best candle, entry and exit.
+- Picked the best-documented retail 5-minute method: Zarattini, Barbon & Aziz (2024, SSRN 4729284). It uses abnormal
+  opening volume as the news/sentiment signal, trades the first 5-minute candle's breakout, stop 10% of ATR, exit at close.
+  In US stocks 2016–2023 it reported 41.6%/yr vs ~15% for the S&P 500 (cxoadvisory summary).
+- India test (51 Nifty stocks, 60 sessions, Indian intraday costs 0.106% per round trip + slippage):
+  top 3 by volume −3.7%; top 5 −3.7%; top 3 in the busiest sector −2.9%; all 51 −6.0%; 10-minute range worse (−5.6% to
+  −6.6%); Nifty +5.7%. Losing in both halves of the data. Before costs the top-3 broke even: volume filtering helps, but not
+  enough to pay Indian costs over this period.
+- Data trap found and fixed: Yahoo shows 0 volume on the 09:15 bar for ~85% of days for NSE stocks; ranking uses the 09:20 bar.
+- News reading: a study of a business newspaper's intraday tips in India found no significant returns (Kolte et al. 2024).
+- **Decision: no real money on any intraday strategy until one passes on our own longer history.** All run on paper daily.

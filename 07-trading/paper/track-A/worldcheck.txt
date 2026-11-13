@@ -1,0 +1,28 @@
+WORLD CHECK · 2026-11-13 · alerts only (the bot trades the tested trend rule)
+Risk flags on: 0/4 (calm)
+  [ ] Global trend: S&P 500 7,592 vs 200-day avg 7,337
+  [ ] Fear: India VIX 15.5 vs 1-year top-20% line 17.4
+  [ ] Dollar squeeze: US 10Y +0.41 pts and USD/INR -1.5% in 3 months (alert at +0.50 and +2%)
+  [ ] Oil shock: Brent +6.5% in 3 months (alert at +30%)
+Markets (last, 1 day, 3 months):
+  Nifty 50       25,144.30   -0.61%    +2.90%
+  India VIX          15.49   -6.77%   +32.55%
+  S&P 500         7,592.40   -0.35%    -2.48%
+  Nasdaq-100     28,289.19   -0.30%    -5.85%
+  Nikkei 225     61,142.35   +0.53%    -8.70%
+  Hang Seng      23,637.60   -1.55%    -5.89%
+  US 10Y yield        5.13%   +0.59%    +8.66%
+  Dollar index      103.22   +0.05%    +3.60%
+  USD/INR            94.22   +0.56%    -1.54%
+  Brent oil          96.82   +1.04%    +6.55%
+  US VIX             17.81   -4.76%   +12.44%
+Coming up (14 days): nothing on the calendar
+Latest Fed news:
+  - Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services
+  - Federal Reserve announces revised tentative schedule of Federal Open Market Committee meetings in 2027
+  - Federal Reserve Board issues enforcement action with former employee of United Community Bank
+Latest RBI news:
+  - Auction of State Government Securities
+  - Auction of 91-Day, 182-Day and 364-Day Treasury Bills
+  - Developments in India’s Balance of Payments for the Month of September 2026
+Not investment advice.

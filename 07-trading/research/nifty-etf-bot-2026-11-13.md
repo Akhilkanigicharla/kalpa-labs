@@ -56,3 +56,6 @@ into a liquid fund. Akhil chooses the rules (CEO queue C66).
   In the 15-year test the worst fall was −15.7%, so neither the stop nor the pause would have fired.
 - `.github/workflows/paper-trade.yml`: weekdays 16:15 IST, paper only, commits `07-trading/paper/track-A/`.
 - Paper day 1 = 13 Nov 2026 close: BUY 17 NIFTYBEES at the next open (simulated), lookback 63 picked by the gate rule.
+
+## World-check overlays and multi-asset test (13 Nov 2026, 19:30 IST)
+Akhil asked for a strategy that also weighs pre-market, world news, the Fed, interest rates and elections. Five overlays, fixed before testing, gated as T0015–T0019 (cash 4.7%): none improved tsmom (₹3.47–3.74 vs ₹3.83; no smaller worst fall). Event study: election result days +17.7/+1.1/−0.7/−5.9%. Built `src/worldcheck.py` (alerts only) + `research/events.json` (two sources per date) and added it to the daily workflow. Multi-asset quick test (fixed 12-month rule, not yet gated, hindsight caveat): Nifty+gold+Nasdaq-100 in INR, Sharpe 1.16 vs 0.45 for Nifty only with the same fixed rule; held up in both halves. Full strategy: `07-trading/STRATEGY.md`.

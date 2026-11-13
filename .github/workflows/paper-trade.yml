@@ -31,6 +31,10 @@ jobs:
         run: |
           python -m src.live.runner --track A --mode paper --strategy tsmom --signal-symbol ^NSEI \
             --capital 5000 --out paper/track-A --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: World Check (alerts only; a failure never blocks the paper run)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: python -m src.worldcheck --out paper/track-A/worldcheck.txt | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Save paper ledger (paper/track-A only)
         env:
           GH_TOKEN: ${{ github.token }}

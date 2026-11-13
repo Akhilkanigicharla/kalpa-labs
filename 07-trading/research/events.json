@@ -1,0 +1,9 @@
+{
+  "note": "Market-moving dates for the World Check. Every entry has two sources, checked on the 'checked' date. Agents add new dates only with two sources; tentative dates are marked.",
+  "events": [
+    {"date": "2026-12-04", "name": "RBI MPC policy decision (meeting Dec 2-4)", "sources": ["rbi.org.in/scripts/annualpolicy.aspx", "5paisa.com/blog/rbi-mpc-meeting-schedule"], "checked": "2026-11-13"},
+    {"date": "2026-12-10", "name": "US Fed (FOMC) decision, out after India close on Dec 9 US time; India reacts Dec 10", "sources": ["federalreserve.gov/newsevents/2026-december.htm", "fedratecalc.com/fomc-meeting-schedule/december-2026"], "checked": "2026-11-13"},
+    {"date": "2027-02-01", "name": "Union Budget (customary date; NOT yet officially announced)", "sources": ["custom since 2017 (budget dates 2017-2025 in Nifty data)", "to confirm when Finance Ministry announces"], "checked": "2026-11-13", "tentative": true},
+    {"date": "2027-02-05", "name": "RBI MPC policy decision (meeting Feb 3-5)", "sources": ["rbi.org.in/scripts/annualpolicy.aspx", "5paisa.com/blog/rbi-mpc-meeting-schedule"], "checked": "2026-11-13"}
+  ]
+}

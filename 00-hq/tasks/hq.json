@@ -574,6 +574,8 @@
   "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
   "min_items": 4,
   "updated": "2026-11-13T05:00:00Z",
-  "output": "00-hq/knowledge/K098.md"
+  "output": "00-hq/knowledge/K098.md",
+  "owner": "Forge",
+  "priority": "P2"
  }
 ]

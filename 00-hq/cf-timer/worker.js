@@ -11,6 +11,7 @@ export const REPO = "Akhilkanigicharla/kalpa-labs";
 // UTC cron → workflows to start. Keep in sync with wrangler.toml [triggers].
 export const DISPATCH = {
   "30 15 * * *": ["daily-brief.yml"],   // 21:00 IST daily brief
+  "20,50 * * * *": ["agents.yml"],       // A237: free agents every 30 min, on time
 };
 
 export function inN8nWindow(date) {          // 05:30–00:29 IST = 00:00–18:59 UTC

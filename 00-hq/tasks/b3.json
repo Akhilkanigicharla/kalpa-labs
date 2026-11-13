@@ -262,6 +262,8 @@
   "status": "todo",
   "created": "2026-11-13T07:30:00Z",
   "updated": "2026-11-13T07:30:00Z",
-  "output": "00-hq/knowledge/K099.md"
+  "output": "00-hq/knowledge/K099.md",
+  "owner": "Kavi",
+  "priority": "P1"
  }
 ]

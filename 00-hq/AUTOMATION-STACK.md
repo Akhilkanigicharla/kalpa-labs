@@ -1,4 +1,4 @@
-# Kalpa automation stack: who does what (6 Nov 2026)
+# Kalpa automation stack: who does what (6 Nov 2026; always-on update 13 Nov: see `research/always-on-agents-2026-11-13.md`)
 
 Akhil asked to split the work across n8n, GitHub Actions and similar free tools. Rule: each tool does the part it is best at, so no single free tier carries everything. Free = recurring and no card (CLAUDE.md rule 8).
 

@@ -1,6 +1,6 @@
 name = "kalpa-cf-timer"
 main = "worker.js"
 compatibility_date = "2026-11-01"
-# 2 of the 5 free cron triggers. All times are UTC.
+# 3 of the 5 free cron triggers. All times are UTC.
 [triggers]
-crons = ["*/5 * * * *", "30 15 * * *"]
+crons = ["*/5 * * * *", "30 15 * * *", "20,50 * * * *"]

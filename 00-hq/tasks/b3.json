@@ -258,13 +258,13 @@
   ],
   "details": "Read the A212 line in 00-hq/ROADMAP.md and the exam-kit part of competitors-2026-11-11.md. Draft kit page copy for AP and Telangana exam kits: headline, 3 benefit lines (planner, tracker, exam-date alerts), the line 'one payment, no expiry', a line linking free mock tests as a companion, and the free mini-kit for a Telegram follow. Give English and Telugu script. Use only the prices written in the A212 line. No claims about pass rates or results.",
   "min_items": 6,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-13T07:30:00Z",
-  "updated": "2026-11-13T07:56:18Z",
+  "updated": "2026-11-13T08:10:41Z",
   "output": "00-hq/knowledge/K099.md",
   "owner": "Kavi",
   "priority": "P1",
-  "vigil_notes": "FIX:\n- Reduce the list to at most 5 items (currently 6)."
+  "vigil_notes": "FIX: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."
  }
 ]

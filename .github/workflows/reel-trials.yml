@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           # shellcheck disable=SC2129
-          set -u
+          set +e +o pipefail -u  # measure everything; one failing probe must not stop the others
           out="$PWD/00-hq/research/reel-trials-raw.md"
           tok() { echo $(( $(wc -c < "$1") / 4 )); }
           now() { date +%s.%N; }
@@ -73,8 +73,8 @@ jobs:
           echo "- Superpowers (in use): $(sk 00-hq/vendor/superpowers)" >> "$out"
 
           echo; echo "## 3. Worktrunk $WT_TAG vs plain git worktree (TEAM.md lanes use separate cloud sessions)" >> "$out"
-          cd /tmp || exit 1; curl -sSLf -o wt.tar.xz "https://github.com/max-sixty/worktrunk/releases/download/$WT_TAG/worktrunk-x86_64-unknown-linux-musl.tar.xz" && tar xf wt.tar.xz; cd "$GITHUB_WORKSPACE" || exit 1
-          WT=$(find /tmp -maxdepth 2 -name wt -type f | head -1)
+          mkdir -p /tmp/wtbin; cd /tmp/wtbin || exit 1; curl -sSLf -o wt.tar.xz "https://github.com/max-sixty/worktrunk/releases/download/$WT_TAG/worktrunk-x86_64-unknown-linux-musl.tar.xz" && tar xf wt.tar.xz; cd "$GITHUB_WORKSPACE" || exit 1
+          WT=$(find /tmp/wtbin -maxdepth 2 -name wt -type f | head -1)
           echo "- binary: ${WT:-missing}, $( [ -n "$WT" ] && "$WT" --version 2>&1 | head -1)" >> "$out"
           git -C /tmp/repo config user.email t@t; git -C /tmp/repo config user.name t
           s=$(now); for i in 1 2 3; do git -C /tmp/repo worktree add -q "/tmp/g$i" -b "g$i" > /dev/null 2>&1; done; e=$(now)

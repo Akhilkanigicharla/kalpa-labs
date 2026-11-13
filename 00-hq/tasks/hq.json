@@ -581,7 +581,7 @@
  },
  {
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-13T08:45:00Z",
   "updated": "2026-11-13T08:40:36Z",
   "priority": "P2",

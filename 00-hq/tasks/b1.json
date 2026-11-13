@@ -312,8 +312,8 @@
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 20000,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-13T15:55:00Z",
   "id": "K103",
   "world": "b1",
@@ -325,7 +325,7 @@
   ],
   "details": "Write short prompts (English) a free model can run on ONE lead row (columns: name, category, website, opening_hours, address, online_booking, whatsapp_link, instagram, source) to produce: a 3-line business summary, the one BotBhai feature that fits them best, and a polite walk-in visit opener in English, Telugu script and Tenglish. Use only the row's own fields; never invent phone numbers, never suggest cold calls, SMS or unsolicited WhatsApp (TRAI, WhatsApp policy). Number each prompt and give one worked example on a made-up salon.",
   "min_items": 5,
-  "updated": "2026-11-13T15:53:52Z",
+  "updated": "2026-11-13T16:51:06Z",
   "vigil_notes": "FIX: incomplete, 3 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

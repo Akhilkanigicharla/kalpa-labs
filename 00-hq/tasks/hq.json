@@ -473,16 +473,17 @@
   "context_chars": 20000,
   "id": "K085",
   "tries": 2,
-  "status": "review",
+  "status": "rejected",
   "created": "2026-11-12T16:45:00Z",
-  "updated": "2026-11-12T18:02:23Z",
+  "updated": "2026-11-13T05:00:00Z",
   "title": "A206 prep: roles in msitarzewski/agency-agents our registry lacks",
   "details": "Same as K084 for github.com/msitarzewski/agency-agents (MIT): numbered list of 10 roles our 300-agent registry lacks, with one-line job, Kalpa world, source file path. Mark anything you could not read as \"unverified\".",
   "min_items": 10,
   "read": [
    "00-hq/agents/README.md"
   ],
-  "output": "00-hq/knowledge/K085.md"
+  "output": "00-hq/knowledge/K085.md",
+  "note": "A206 review: every source pointed at our own README, not the repo; roles read from the repo clone instead (registry.js hq.reality…hq.churn)."
  },
  {
   "world": "hq",
@@ -559,5 +560,20 @@
   "min_items": 4,
   "updated": "2026-11-13T02:49:36Z",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-13T05:00:00Z",
+  "id": "K098",
+  "world": "hq",
+  "title": "A209 prep: fit check notes for LFM2.5 and the other reel repos",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
+  "min_items": 4,
+  "updated": "2026-11-13T05:00:00Z",
+  "output": "00-hq/knowledge/K098.md"
  }
 ]

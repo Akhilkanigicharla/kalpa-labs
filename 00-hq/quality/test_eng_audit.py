@@ -264,3 +264,22 @@ def test_login_safety_py(tmp_path):
         "c = jwt.encode(p, 'secret')\n")})
     assert sorted((f.rule, f.line) for f in fs if f.rule.startswith("JWT")) == [
         ("JWT-LITERAL-SECRET", 4), ("JWT-NO-VERIFY", 2)]
+
+
+def test_user_enum_and_weak_codes(tmp_path):
+    fs = run(tmp_path, {
+        "02-jobcard/functions/reset.js": (
+            "if (!u) return res.status(404).json({ error: 'Email not found' });\n"
+            "return res.json({ msg: 'If this email is registered, we sent a link' });\n"),
+        "02-jobcard/web/app.js": "toast('User not found');\n",          # browser copy: not flagged
+        "07-trading/src/login.py": (
+            "from fastapi import FastAPI\nimport random, secrets\n"
+            "otp = random.randint(100000, 999999)\n"
+            "otp2 = secrets.randbelow(10**6)\n"
+            "pick = random.choice(colours)\n"
+            "raise HTTPException(404, 'This phone number is not registered')\n"),
+    })
+    assert sorted((f.file, f.rule, f.line) for f in fs if f.rule in ("USER-ENUM", "WEAK-RANDOM")) == [
+        ("02-jobcard/functions/reset.js", "USER-ENUM", 1),
+        ("07-trading/src/login.py", "USER-ENUM", 6),
+        ("07-trading/src/login.py", "WEAK-RANDOM", 3)]

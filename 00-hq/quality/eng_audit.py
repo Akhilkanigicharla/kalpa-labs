@@ -245,6 +245,11 @@ def _interpolations(s: str):
         i = j
 
 
+# reel item 04: "Email not found" tells an attacker which accounts exist
+_USER_ENUM = re.compile(r"(?i)[`'\"][^`'\"]*\b(email|user|account|phone|number|mobile)\b[^`'\"]{0,20}"
+                        r"\b(not found|does ?n[o']t exist|not registered|no such)\b[^`'\"]*[`'\"]")
+
+
 def check_js(ctx: Ctx, rel: str, text: str, lines: list):
     if rel.endswith(".min.js") or is_test(rel):
         return
@@ -324,6 +329,9 @@ def check_js(ctx: Ctx, rel: str, text: str, lines: list):
                     "Send it only by SMS/email; the response says just 'sent'.", lines)
         if re.search(r"(?i)\b(password|passwd|pwd)\b\s*[:=]\s*[`'\"](admin|admin123|password|123456|changeme|letmein)[`'\"]", ln):
             ctx.add(rel, i, "CRITICAL", "DEFAULT-CREDS", "Default admin password in code", "Remove it; create admins once by hand with a strong password + 2FA.", lines)
+        if not browser and _USER_ENUM.search(ln):
+            ctx.add(rel, i, "MEDIUM", "USER-ENUM", "Login/reset reply says whether an account exists",
+                    "Give the same reply either way: 'If this number/email is registered, we sent a code.'", lines)
 
 
 # ---------------------------------------------------------------- Python (AST)
@@ -360,6 +368,16 @@ def check_py(ctx: Ctx, rel: str, text: str, lines: list):
     req_names = {"request", "req", "filename", "file_name", "fname", "user_path"}
     req_sessions = {_dotted(t) for n in ast.walk(tree) if isinstance(n, ast.Assign) and isinstance(n.value, ast.Call)
                     and _dotted(n.value.func) == "requests.Session" for t in n.targets} - {""}
+    # login safety (reel items 04 and 14): account-exists replies, guessable codes
+    if not test:
+        for i, ln in enumerate(lines, 1):
+            if server and _USER_ENUM.search(ln):
+                ctx.add(rel, i, "MEDIUM", "USER-ENUM", "Login/reset reply says whether an account exists",
+                        "Give the same reply either way: 'If this number/email is registered, we sent a code.'", lines)
+            if re.search(r"(?i)\b\w*(otp|token|reset|verif\w*_?code|secret|password|nonce)\w*\s*=.*\brandom\."
+                         r"(randint|choice|choices|random|randrange|sample|getrandbits)\(", ln):
+                ctx.add(rel, i, "MEDIUM", "WEAK-RANDOM", "random module used for a login code/token (guessable)",
+                        "Use secrets.randbelow / secrets.token_urlsafe.", lines)
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
             continue

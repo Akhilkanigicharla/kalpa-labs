@@ -1,0 +1,156 @@
+{
+ "name": "n8n Activity Dashboard",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "binaryMode": "separate"
+ },
+ "nodes": [
+  {
+   "parameters": {
+    "path": "n8n-dashboard",
+    "responseMode": "responseNode",
+    "options": {}
+   },
+   "id": "f007281b-d9eb-4280-b393-5e0ccd18dbb0",
+   "name": "Open Dashboard",
+   "type": "n8n-nodes-base.webhook",
+   "typeVersion": 2.2,
+   "position": [
+    0,
+    0
+   ]
+  },
+  {
+   "parameters": {
+    "filters": {
+     "activeWorkflows": true,
+     "excludePinnedData": true
+    },
+    "requestOptions": {}
+   },
+   "id": "7453fafa-a1af-4fbe-a0be-25498301b467",
+   "name": "Get Workflows",
+   "type": "n8n-nodes-base.n8n",
+   "typeVersion": 1,
+   "position": [
+    224,
+    0
+   ],
+   "credentials": {
+    "n8nApi": {
+     "id": "",
+     "name": "n8n account"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "resource": "execution",
+    "limit": 50,
+    "filters": {},
+    "options": {},
+    "requestOptions": {}
+   },
+   "id": "b93abc39-8fe4-4be6-8735-fe0880fd9aca",
+   "name": "Get Recent Executions",
+   "type": "n8n-nodes-base.n8n",
+   "typeVersion": 1,
+   "position": [
+    448,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "credentials": {
+    "n8nApi": {
+     "id": "",
+     "name": "n8n account"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "jsCode": "const base = 'https://kalpalabs.app.n8n.cloud';\nconst esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst fmt = (d) => d ? new Date(d).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '';\nconst hasData = (i) => i.json && Object.keys(i.json).length > 0;\n\nconst workflows = $('Get Workflows').all().filter(hasData).map(i => i.json);\nconst executions = $input.all().filter(hasData).map(i => i.json);\nconst wfName = {};\nworkflows.forEach(w => { wfName[w.id] = w.name; });\n\nworkflows.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));\nexecutions.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));\n\nconst dayAgo = Date.now() - 24 * 3600 * 1000;\nconst changed24h = workflows.filter(w => new Date(w.updatedAt).getTime() > dayAgo).length;\nconst published = workflows.filter(w => w.active).length;\nconst errors = executions.filter(e => e.status === 'error' || e.status === 'crashed').length;\n\nconst badge = (txt, cls) => '<span class=\"badge ' + cls + '\">' + esc(txt) + '</span>';\n\nlet wfRows = '';\nworkflows.forEach(w => {\n  const isNew = new Date(w.createdAt).getTime() > dayAgo;\n  wfRows += '<tr><td><a href=\"' + base + '/workflow/' + esc(w.id) + '\" target=\"_blank\">' + esc(w.name) + '</a>' + (isNew ? ' ' + badge('new', 'new') : '') + '</td>'\n    + '<td>' + (w.active ? badge('published', 'ok') : badge('draft', 'muted')) + '</td>'\n    + '<td>' + (Array.isArray(w.nodes) ? w.nodes.length : '') + '</td>'\n    + '<td>' + fmt(w.updatedAt) + '</td>'\n    + '<td>' + fmt(w.createdAt) + '</td></tr>';\n});\n\nlet exRows = '';\nexecutions.forEach(e => {\n  const cls = e.status === 'success' ? 'ok' : (e.status === 'error' || e.status === 'crashed') ? 'err' : 'muted';\n  const dur = e.startedAt && e.stoppedAt ? ((new Date(e.stoppedAt) - new Date(e.startedAt)) / 1000).toFixed(1) + 's' : '';\n  exRows += '<tr><td><a href=\"' + base + '/workflow/' + esc(e.workflowId) + '/executions/' + esc(e.id) + '\" target=\"_blank\">#' + esc(e.id) + '</a></td>'\n    + '<td>' + esc(wfName[e.workflowId] || e.workflowId) + '</td>'\n    + '<td>' + badge(e.status || (e.finished ? 'success' : 'unknown'), cls) + '</td>'\n    + '<td>' + esc(e.mode) + '</td>'\n    + '<td>' + fmt(e.startedAt) + '</td>'\n    + '<td>' + dur + '</td></tr>';\n});\n\nconst html = '<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">'\n  + '<meta http-equiv=\"refresh\" content=\"60\"><title>n8n Activity Dashboard</title><style>'\n  + 'body{font-family:system-ui,-apple-system,sans-serif;background:#0f1117;color:#e6e6e6;margin:0;padding:24px}'\n  + 'h1{margin:0 0 4px;font-size:22px}h2{font-size:16px;margin:28px 0 10px}.sub{color:#8a8f98;font-size:13px}'\n  + '.cards{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.card{background:#1a1d27;border:1px solid #2a2e3a;border-radius:10px;padding:14px 18px;min-width:150px}'\n  + '.card .n{font-size:26px;font-weight:600}.card .l{color:#8a8f98;font-size:12px}'\n  + 'input{background:#1a1d27;border:1px solid #2a2e3a;color:#e6e6e6;border-radius:8px;padding:8px 10px;width:280px}'\n  + 'table{width:100%;border-collapse:collapse;background:#1a1d27;border-radius:10px;overflow:hidden;font-size:13px}'\n  + 'th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #2a2e3a}th{color:#8a8f98;font-weight:500;background:#151821}'\n  + 'a{color:#ff8a65;text-decoration:none}a:hover{text-decoration:underline}'\n  + '.badge{padding:2px 8px;border-radius:999px;font-size:11px}.ok{background:#1e4620;color:#7ee787}.err{background:#4a1d1d;color:#ff7b72}'\n  + '.muted{background:#2a2e3a;color:#aab}.new{background:#3b2a5c;color:#d2a8ff}'\n  + '</style></head><body>'\n  + '<h1>n8n Activity Dashboard</h1><div class=\"sub\">Workflows built or edited (including by Claude via MCP) and recent runs. Auto-refreshes every 60s. Generated ' + fmt(new Date()) + '</div>'\n  + '<div class=\"cards\">'\n  + '<div class=\"card\"><div class=\"n\">' + workflows.length + '</div><div class=\"l\">Workflows</div></div>'\n  + '<div class=\"card\"><div class=\"n\">' + changed24h + '</div><div class=\"l\">Changed in last 24h</div></div>'\n  + '<div class=\"card\"><div class=\"n\">' + published + '</div><div class=\"l\">Published</div></div>'\n  + '<div class=\"card\"><div class=\"n\">' + executions.length + '</div><div class=\"l\">Recent runs</div></div>'\n  + '<div class=\"card\"><div class=\"n\">' + errors + '</div><div class=\"l\">Failed runs</div></div>'\n  + '</div>'\n  + '<h2>Workflows (most recently changed first)</h2><input id=\"q\" placeholder=\"Filter workflows...\" oninput=\"f()\">'\n  + '<table id=\"wf\" style=\"margin-top:10px\"><thead><tr><th>Name</th><th>Status</th><th>Nodes</th><th>Last updated</th><th>Created</th></tr></thead><tbody>' + (wfRows || '<tr><td colspan=\"5\">No workflows</td></tr>') + '</tbody></table>'\n  + '<h2>Recent executions</h2>'\n  + '<table><thead><tr><th>Run</th><th>Workflow</th><th>Status</th><th>Mode</th><th>Started</th><th>Duration</th></tr></thead><tbody>' + (exRows || '<tr><td colspan=\"6\">No executions</td></tr>') + '</tbody></table>'\n  + '<script>function f(){var q=document.getElementById(\"q\").value.toLowerCase();document.querySelectorAll(\"#wf tbody tr\").forEach(function(r){r.style.display=r.textContent.toLowerCase().indexOf(q)>-1?\"\":\"none\";});}</script>'\n  + '</body></html>';\n\nreturn [{ json: { html } }];"
+   },
+   "id": "97a32286-5875-4efd-943e-ae954b5880ef",
+   "name": "Build Dashboard HTML",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    672,
+    0
+   ]
+  },
+  {
+   "parameters": {
+    "respondWith": "text",
+    "responseBody": "={{ $json.html }}",
+    "options": {
+     "responseHeaders": {
+      "entries": [
+       {
+        "name": "Content-Type",
+        "value": "text/html; charset=utf-8"
+       }
+      ]
+     }
+    }
+   },
+   "id": "ffbca6e3-67ab-4409-a374-918a085b287f",
+   "name": "Serve Dashboard",
+   "type": "n8n-nodes-base.respondToWebhook",
+   "typeVersion": 1.5,
+   "position": [
+    896,
+    0
+   ]
+  }
+ ],
+ "connections": {
+  "Open Dashboard": {
+   "main": [
+    [
+     {
+      "node": "Get Workflows",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Get Workflows": {
+   "main": [
+    [
+     {
+      "node": "Get Recent Executions",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Get Recent Executions": {
+   "main": [
+    [
+     {
+      "node": "Build Dashboard HTML",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build Dashboard HTML": {
+   "main": [
+    [
+     {
+      "node": "Serve Dashboard",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

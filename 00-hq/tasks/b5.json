@@ -66,5 +66,79 @@
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:31:01Z",
   "output": "00-hq/knowledge/K029.md"
+ },
+ {
+  "id": "K041",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 05-deals/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "05-deals/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T18:55:58Z",
+  "output": "00-hq/knowledge/K041.md"
+ },
+ {
+  "id": "K053",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Telugu Deals site SEO audit (for A194)",
+  "details": "Audit this site against the 20 Kalpa SEO checks in 00-hq/design/SEO-CHECKS.md. Output a table with all 20 rows numbered 1 to 20: check, pass / fail / not relevant (why), file and a short quote as evidence. Anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 fixes in order, 1-2 lines each. Plain short English. No code longer than 10 lines. Also flag every affiliate link that lacks an ASCI '#ad' or 'Ad' label.",
+  "read": [
+   "00-hq/design/SEO-CHECKS.md",
+   "05-deals/site/src/layouts/Base.astro",
+   "05-deals/site/src/pages/index.astro"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K053.md",
+  "updated": "2026-11-08T19:24:42Z"
+ },
+ {
+  "id": "K065",
+  "world": "b5",
+  "priority": "P1",
+  "owner": "Deals",
+  "title": "Telugu Deals post format: is this deal real?",
+  "details": "Design the post format for a Telugu deals channel that checks deals before posting. Give 10 numbered items: 1 post template with fields (product, price, verdict, why, link, #ad), 6 example verdict lines in Telugu script with English meaning (good deal, average, wait, EMI costs more, card offer maths, price was lower before), 1 channel description in Telugu + English, 1 pinned 'how we check deals' message, 1 list of 5 rules for what we never post. No real prices or product claims; use [PRICE] and [PRODUCT]. Mark Telugu 'needs native check'.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 10,
+  "context_chars": 14000,
+  "status": "rejected",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K065.md",
+  "updated": "2026-11-11T09:38:28Z",
+  "tries": 3,
+  "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
+ },
+ {
+  "priority": "P2",
+  "status": "review",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K067",
+  "world": "b5",
+  "owner": "Scout",
+  "title": "Target search words for the free money calculators site (English + Telugu)",
+  "details": "For each of the 11 calculators in 05-deals/site/src/lib/calcs.ts (income tax 2026-27 new vs old, salary in hand, GST, gratuity, SIP, EMI, FD, RD, PPF, HRA, and the home page) give the 3 search phrases an Indian person would type, in English and in Telugu script, as a numbered list of 11 items (one per page). Plain phrases only, no search-volume numbers (we cannot verify them). Mark Telugu 'needs native check'.",
+  "read": [
+   "05-deals/site/src/lib/calcs.ts",
+   "00-hq/design/SEO-CHECKS.md"
+  ],
+  "min_items": 11,
+  "output": "00-hq/knowledge/K067.md",
+  "updated": "2026-11-11T10:45:04Z"
  }
 ]

@@ -1,0 +1,14 @@
+{
+  "name": "Kalpa Keep Awake",
+  "active": true,
+  "settings": {"executionOrder": "v1", "timezone": "Asia/Kolkata", "saveDataSuccessExecution": "none", "saveManualExecutions": false},
+  "nodes": [
+    {"id": "k1", "name": "Every 5 min 06:00-00:30 IST", "type": "n8n-nodes-base.scheduleTrigger", "typeVersion": 1.2, "position": [0, 0],
+     "parameters": {"rule": {"interval": [
+       {"field": "cronExpression", "expression": "*/5 6-23 * * *"},
+       {"field": "cronExpression", "expression": "0-30/5 0 * * *"}]}}},
+    {"id": "k2", "name": "Ping own public URL", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [240, 0],
+     "parameters": {"url": "https://kalpa-n8n.onrender.com/healthz", "options": {"timeout": 30000}}}
+  ],
+  "connections": {"Every 5 min 06:00-00:30 IST": {"main": [[{"node": "Ping own public URL", "type": "main", "index": 0}]]}}
+}

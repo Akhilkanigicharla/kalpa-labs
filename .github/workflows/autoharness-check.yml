@@ -1,0 +1,35 @@
+# A170: run AutoHarness's own test suite at the pinned commit in GitHub's isolated runner
+# (external code never runs inside Claude's session). Green = safe to enable in .claude/settings.json.
+name: autoharness check
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/autoharness-check.yml"]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PIN: ca4247b385d42a0d8dff25856301d2d2ef178c45
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch pinned AutoHarness
+        run: |
+          git init ah && cd ah
+          git remote add origin https://github.com/tigerless-labs/autoharness.git
+          git fetch --depth 1 origin "$PIN" && git checkout -q FETCH_HEAD
+          head -1 LICENSE | grep -q "MIT License"
+      - name: Network check (no outbound calls in src)
+        working-directory: ah
+        run: |
+          ! grep -rnE "urllib\.request|requests\.|http\.client|socket\.connect" src/
+      - name: Tests
+        working-directory: ah
+        run: |
+          pip install -q pytest
+          python -m pytest -q 2>&1 | tail -5

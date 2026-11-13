@@ -30,3 +30,8 @@ graphify-out/
 # Paid kit files are built locally or in Actions, never committed (repo is public)
 03-kits/products/
 .netlify
+03-kits/exam-kits/link-report.json
+
+# Graft code map (A200): local cache
+graft/
+06-finops/site/_dist/

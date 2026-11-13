@@ -1,0 +1,29 @@
+# A160/A180: open every link in the exam kits weekly (and on demand) so buyers never get a dead link.
+# YouTube links are checked through YouTube's public oEmbed endpoint. Report: 03-kits/exam-kits/link-report.json (artifact).
+name: kit links
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 2 * * 1"   # Monday 07:47 IST
+  push:
+    branches: [main]
+    paths: ["03-kits/exam-kits/exams/**", "03-kits/exam-kits/check_links.py"]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q openpyxl
+      - name: Check every kit link
+        run: python3 03-kits/exam-kits/check_links.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kit-link-report
+          path: 03-kits/exam-kits/link-report.json

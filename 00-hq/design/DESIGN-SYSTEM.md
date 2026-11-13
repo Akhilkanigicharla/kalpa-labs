@@ -38,6 +38,7 @@ All four are OFL on Google Fonts. Load them with one `<link>` (see the Kingdom h
 - **Pills:** fully rounded buttons and tabs; cards use 12/18 px radii, applied by role, not everywhere.
 
 ## Rules
+- Every page and UI follows the 20 UX patterns in `UX-PATTERNS.md` (loading/empty states, error recovery, destructive-action protection, mobile layout and the rest); fill the per-UI check in the world's `design/ux-check.md`.
 1. Phone first: 390 px wide with no sideways scroll, 44 px touch targets, a bottom tab bar under 760 px.
 2. Both themes are designed; check every screen in light and dark.
 3. Motion: one rise-in on view change, confetti only on quest complete; honour `prefers-reduced-motion`.

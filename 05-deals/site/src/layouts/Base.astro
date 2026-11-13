@@ -1,9 +1,14 @@
 ---
 import "../styles/tokens.css";
-interface Props { title: string; description: string; lang: "en" | "te"; path: string; jsonld?: object[]; noAlt?: boolean } // noAlt: English-only page (kits, policies)
-const { title, description, lang, path, jsonld = [], noAlt = false } = Astro.props;
+import { fitTitle, fitDescription } from "../lib/seo";
+interface Props { title: string; description: string; lang: "en" | "te"; path: string; jsonld?: object[]; noAlt?: boolean; noindex?: boolean } // noindex: private pages (kits/thanks), kept out of the sitemap // noAlt: English-only page (kits, policies)
+const { lang, path, jsonld = [], noAlt = false, noindex = false } = Astro.props;
+const title = fitTitle(Astro.props.title, lang);
+const description = fitDescription(Astro.props.description, lang);
 const other = lang === "en" ? `/te${path}` : path.replace(/^\/te/, "") || "/";
 const canonical = new URL(path, Astro.site).toString();
+const ld = jsonld.length ? jsonld : [{ "@context": "https://schema.org", "@type": "WebPage", name: title, description, url: canonical, inLanguage: lang === "te" ? "te" : "en-IN", publisher: { "@type": "Organization", name: "Kalpa Labs" } }];
+const ogImage = new URL("/og.png", Astro.site).toString();
 ---
 <!doctype html>
 <html lang={lang === "te" ? "te" : "en-IN"}>
@@ -13,12 +18,23 @@ const canonical = new URL(path, Astro.site).toString();
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Kalpa Labs" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content={lang === "te" ? "te_IN" : "en_IN"} />
+  <meta name="twitter:card" content="summary_large_image" />
   {!noAlt && <link rel="alternate" hreflang={lang === "en" ? "te" : "en-IN"} href={new URL(other, Astro.site).toString()} />}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@400;600&family=Anek+Telugu:wght@400;600&family=JetBrains+Mono:wght@500&family=Rozha+One&display=swap" rel="stylesheet" />
-  {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  {ld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
 </head>
 <body>
   <div class="temple" aria-hidden="true"></div>
@@ -54,7 +70,9 @@ const canonical = new URL(path, Astro.site).toString();
   a { color: var(--accent); }
   .muted { color: var(--muted); }
   .card { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-l); padding: 16px; box-shadow: var(--shadow); }
-  .legal { display: flex; flex-wrap: wrap; gap: 4px 16px; } .legal a { min-height: 36px; display: inline-flex; align-items: center; }
+  .legal { display: flex; flex-wrap: wrap; gap: 0 16px; } .legal a { min-height: 44px; display: inline-flex; align-items: center; }
+  /* stand-alone links (a link that is the whole line) get a full 44 px tap height on phones */
+  main p > a:only-child, main li > a:only-child { display: inline-flex; align-items: center; min-height: 44px; }
   .foot { max-width: 760px; margin: 0 auto; padding: 16px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--rule); }
   @media (prefers-reduced-motion: no-preference) { .card { animation: rise .25s ease-out; } @keyframes rise { from { transform: translateY(6px); opacity: .6; } } }
 </style>

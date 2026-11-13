@@ -69,5 +69,83 @@
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:32:21Z",
   "output": "00-hq/knowledge/K028.md"
+ },
+ {
+  "id": "K040",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 04-extensions/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "04-extensions/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T18:55:04Z",
+  "output": "00-hq/knowledge/K040.md"
+ },
+ {
+  "id": "K051",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Tab Lifeboat popup + store site UX pattern audit",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "04-extensions/src/entrypoints/popup/index.html",
+   "04-extensions/src/entrypoints/popup/main.ts",
+   "04-extensions/src/entrypoints/popup/style.css",
+   "04-extensions/site/index.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "rejected",
+  "created": "2026-11-08T12:45:00Z",
+  "output": "00-hq/knowledge/K051.md",
+  "updated": "2026-11-08T19:31:20Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Row 13: `Alt+Shift+L` is not in any repo file; remove it or mark it UNVERIFIED.\n- Row 8: The save button disables on click to prevent double-fire, so throttling is relevant; change ➖ Not relevant to ✅.\n- Row 17: `➖ UNVERIFIED` mixes symbols; use plain `UNVERIFIED` for the missing custom 404 page."
+ },
+ {
+  "id": "K064",
+  "world": "b4",
+  "priority": "P1",
+  "owner": "Lifeboat",
+  "title": "Tab Lifeboat store listing: never lose your tabs",
+  "details": "Write a Chrome Web Store listing for Tab Lifeboat. Angle: never lose your tabs: free saving and restoring with no daily limit, import from other tab savers' export files, automatic local backups and an export file; paid plan only for cloud backup and sync. Give 8 numbered blocks: short description (under 132 characters), 3 headline options (one block), long description, 5 feature bullets (one block), privacy paragraph (data stays on the device unless sync is on), free vs paid table in text, 4 FAQ, 5 screenshot captions. No rival names, no user counts, no claims about other products' bugs.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "review",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K064.md",
+  "updated": "2026-11-11T09:36:19Z",
+  "tries": 1
+ },
+ {
+  "id": "K100",
+  "world": "b4",
+  "title": "A213 prep: Session Buddy and OneTab export file formats + data-loss reports",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
+  "min_items": 4,
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-13T07:30:00Z",
+  "updated": "2026-11-13T08:10:25Z",
+  "output": "00-hq/knowledge/K100.md",
+  "owner": "Lifeboat",
+  "priority": "P1",
+  "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

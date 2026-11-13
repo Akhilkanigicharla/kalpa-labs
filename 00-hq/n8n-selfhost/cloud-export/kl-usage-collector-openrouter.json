@@ -1,0 +1,194 @@
+{
+ "name": "KL Usage Collector (OpenRouter)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "ba37fff4-36d7-486f-8ff2-504470a41f73",
+   "name": "Every 3 hours",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "hours",
+       "hoursInterval": 3
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "b36ba357-7db0-4268-956d-5942c9d839da",
+   "name": "OpenRouter key usage",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.3,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "method": "GET",
+    "url": "https://openrouter.ai/api/v1/key",
+    "authentication": "predefinedCredentialType",
+    "nodeCredentialType": "openRouterApi",
+    "options": {}
+   },
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "id": "c3147569-983e-4cca-aaea-8d4558fce971",
+   "name": "Save to KL Model Usage",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "insert",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "I7q9LKT7ZNnGtpt8",
+     "cachedResultName": "KL Model Usage"
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "provider",
+       "id": "provider",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "usage_usd",
+       "id": "usage_usd",
+       "required": false,
+       "type": "number"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "limit_usd",
+       "id": "limit_usd",
+       "required": false,
+       "type": "number"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "limit_remaining",
+       "id": "limit_remaining",
+       "required": false,
+       "type": "number"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "is_free_tier",
+       "id": "is_free_tier",
+       "required": false,
+       "type": "boolean"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "usage_daily_usd",
+       "id": "usage_daily_usd",
+       "required": false,
+       "type": "number"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "checked_at",
+       "id": "checked_at",
+       "required": false,
+       "type": "dateTime"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "free_requests_used",
+       "id": "free_requests_used",
+       "required": false,
+       "type": "number"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "free_requests_limit",
+       "id": "free_requests_limit",
+       "required": false,
+       "type": "number"
+      }
+     ],
+     "value": {
+      "checked_at": "={{ $now.toISO() }}",
+      "free_requests_limit": "={{ $json.data.free_model_daily_requests?.limit ?? 50 }}",
+      "free_requests_used": "={{ $json.data.free_model_daily_requests?.used ?? 0 }}",
+      "is_free_tier": "={{ $json.data.is_free_tier === true }}",
+      "limit_remaining": "={{ $json.data.limit_remaining ?? 0 }}",
+      "limit_usd": "={{ $json.data.limit ?? 0 }}",
+      "provider": "OpenRouter",
+      "usage_daily_usd": "={{ $json.data.usage_daily ?? 0 }}",
+      "usage_usd": "={{ $json.data.usage ?? 0 }}"
+     }
+    }
+   }
+  }
+ ],
+ "connections": {
+  "OpenRouter key usage": {
+   "main": [
+    [
+     {
+      "node": "Save to KL Model Usage",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Every 3 hours": {
+   "main": [
+    [
+     {
+      "node": "OpenRouter key usage",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

@@ -10,7 +10,7 @@ on:
       near:   { description: "Optional walking cluster centre 'lat,lon' (Ameerpet metro: 17.4375,78.4482)", default: "" }
       radius: { description: "Cluster radius in metres (with near)", default: "1200" }
   push:
-    paths: [".github/workflows/leadfinder.yml", "01-botbhai/botbhai/leadfinder/leadfinder.py"]
+    paths: [".github/workflows/leadfinder.yml", "01-botbhai/botbhai/leadfinder/*.py"]
 permissions:
   contents: read
 jobs:
@@ -42,5 +42,8 @@ jobs:
           for f in 01-botbhai/botbhai/leads/*-leads.csv; do
             python 01-botbhai/botbhai/leadfinder/enrich.py "$f" --out "${f%.csv}-enriched.csv" --max 300 || true
           done
+      - name: A208 check (50+ salon/gym leads, source filled, zero mobile numbers; counts only)
+        run: python 01-botbhai/botbhai/leadfinder/check_leads.py
       - uses: actions/upload-artifact@v4
+        if: always()
         with: { name: leads, path: 01-botbhai/botbhai/leads/, retention-days: 7 }

@@ -90,9 +90,12 @@ def test_design_rules_in_source(name):
 def test_screens_390_light_dark(tmp_path):
     pytest.importorskip("playwright.sync_api")
     import screens
-    try:
-        fails = screens.run(tmp_path)
-    except Exception as e:  # Chromium missing on this machine
+    from playwright.sync_api import sync_playwright
+    try:  # skip only when Chromium itself is missing; a failing check must fail, not skip
+        with sync_playwright() as p:
+            p.chromium.launch().close()
+    except Exception as e:
         pytest.skip(f"Playwright browser not available: {e}")
+    fails = screens.run(tmp_path)
     assert fails == []
     assert len(list(tmp_path.glob("*.png"))) == len(screens.SHOTS) * 2

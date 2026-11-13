@@ -1,0 +1,140 @@
+{
+ "name": "APPSC Group 2",
+ "name_te": "ఏపీపీఎస్సీ గ్రూప్ 2",
+ "family": "State PSC · Andhra Pradesh",
+ "body": "Andhra Pradesh Public Service Commission",
+ "official_url": "https://psc.ap.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Screening test 150 marks (General Studies & Mental Ability), then Mains: 2 papers × 150 marks, 150 minutes each, then a computer proficiency test (revised syllabus, 27 Apr 2023).",
+ "papers": [
+  {
+   "name": "Screening Test: General Studies & Mental Ability",
+   "sections": [
+    {
+     "name": "Indian history",
+     "questions": null,
+     "marks": 30,
+     "topics": [
+      "Ancient India: Indus Valley, Vedic age, Buddhism, Jainism",
+      "Mauryas, Guptas, South Indian dynasties",
+      "Medieval India: Sultanate, Mughals, Vijayanagara",
+      "Modern India: British rule, reform movements, freedom struggle"
+     ]
+    },
+    {
+     "name": "Geography",
+     "questions": null,
+     "marks": 30,
+     "topics": [
+      "Physical geography of the world",
+      "Physical and economic geography of India",
+      "Geography of Andhra Pradesh"
+     ]
+    },
+    {
+     "name": "Indian society",
+     "questions": null,
+     "marks": 30,
+     "topics": [
+      "Structure of Indian society: caste, tribe, family, religion",
+      "Social issues and welfare mechanisms",
+      "Social movements"
+     ]
+    },
+    {
+     "name": "Current affairs",
+     "questions": null,
+     "marks": 30,
+     "topics": [
+      "Regional (Andhra Pradesh) events",
+      "National events and schemes",
+      "International events"
+     ]
+    },
+    {
+     "name": "Mental ability",
+     "questions": null,
+     "marks": 30,
+     "topics": [
+      "Logical reasoning",
+      "Number series, analogies, coding",
+      "Data interpretation and simple arithmetic"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains Paper I",
+   "sections": [
+    {
+     "name": "Social and cultural history of Andhra Pradesh",
+     "questions": null,
+     "marks": 75,
+     "topics": [
+      "Pre-history; Satavahanas and their culture",
+      "Ikshvakus, Vishnukundins, Eastern Chalukyas",
+      "Kakatiyas and Vijayanagara in Andhra",
+      "Qutb Shahis, Asaf Jahis and European presence",
+      "Social reform and literary movements; Andhra movement",
+      "Formation of Andhra State (1953) and Andhra Pradesh"
+     ]
+    },
+    {
+     "name": "General overview of the Indian Constitution",
+     "questions": null,
+     "marks": 75,
+     "topics": [
+      "Preamble and salient features",
+      "Fundamental rights, directive principles, duties",
+      "Union and State governments",
+      "Centre–State relations",
+      "Local government",
+      "Judiciary",
+      "Constitutional and statutory bodies",
+      "Amendment of the Constitution"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains Paper II",
+   "sections": [
+    {
+     "name": "Indian and Andhra Pradesh economy",
+     "questions": null,
+     "marks": 75,
+     "topics": [
+      "Structure of the Indian economy; planning and NITI Aayog",
+      "Money, banking, public finance and taxation",
+      "Agriculture and industry in India",
+      "AP economy: agriculture, industry, services",
+      "AP Reorganisation Act 2014: economic issues",
+      "AP budget and welfare schemes"
+     ]
+    },
+    {
+     "name": "Science and technology",
+     "questions": null,
+     "marks": 75,
+     "topics": [
+      "Space and defence technology",
+      "Information and communication technology",
+      "Biotechnology and health",
+      "Energy: conventional and renewable",
+      "Environment, climate change and disaster management"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://psc.ap.gov.in",
+  "https://apteachers.in/2023/04/appsc-group-ii-syllabus-2023-latest-gr.html",
+  "https://www.oliveboard.in/blog/?p=151419"
+ ],
+ "id": "appsc-group-2",
+ "checked": "2026-11-06"
+}

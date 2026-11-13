@@ -69,19 +69,202 @@
   "akhil_note": "6 Nov: no workshop"
  },
  {
-  "id": "K036",
+  "id": "K039",
   "world": "b3",
   "priority": "P1",
-  "owner": "Forge",
-  "playbook": "engineering-backend-architect",
-  "title": "Plan: exam-kit tracker as a free Google Sheets template + Workspace Marketplace add-on (store listing = free distribution)",
-  "details": "From Starter Story micro-apps video: builder shipped Google Workspace add-ons (SheetAI) and Chrome extensions so the store brings users. Write a short plan: what the add-on does (reminders, progress %, exam alerts from 03-kits/engine data), Google's add-on publishing steps and review rules (cite developers.google.com pages), cost (must be free), what Akhil must do (desktop login). No code yet.",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 03-kits/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
   "read": [
-   "03-kits/engine/README.md"
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "03-kits/PLAN.md"
   ],
-  "status": "todo",
-  "created": "2026-11-12T06:36:37Z",
-  "updated": "2026-11-12T06:36:37Z",
-  "tries": 0
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T18:56:06Z",
+  "output": "00-hq/knowledge/K039.md"
+ },
+ {
+  "id": "K045",
+  "world": "b3",
+  "priority": "P0",
+  "owner": "Kavi",
+  "title": "Write the Telugu + English product blurb (under 80 words each) for the TGPSC Group 2 exam-prep Google Sheets kit at Rs 99",
+  "details": "Plain, honest, no 'guaranteed selection'. Mention what is inside: syllabus tracker, daily log, mock tracker, revision dates. Mark anything unsure UNVERIFIED.",
+  "read": [
+   "03-kits/exam-kits/README.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T23:40:00Z",
+  "updated": "2026-11-06T23:24:32Z",
+  "output": "00-hq/knowledge/K045.md"
+ },
+ {
+  "id": "K046",
+  "world": "b3",
+  "priority": "P0",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 03-kits/research/kit-v2-design.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts. Judge it as a first-time Indian government-exam aspirant paying Rs 99-199: what would make you feel it was worth the money, what is missing, what is confusing on a phone, what is legally risky (piracy, minors, false promises). Up to 8 findings (severity, exact line, one-line fix) + unstated assumptions + questions only Akhil can answer.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "03-kits/research/kit-v2-design.md"
+  ],
+  "context_chars": 20000,
+  "status": "review",
+  "created": "2026-11-07T10:20:00Z",
+  "updated": "2026-11-07T10:24:37Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K046.md"
+ },
+ {
+  "id": "K063",
+  "world": "b3",
+  "priority": "P1",
+  "owner": "Echo",
+  "title": "Exam kit page copy: one payment, no expiry, in Telugu and English",
+  "details": "Write page copy for a Kalpa exam kit (planner + tracker + exam-date alerts for Andhra Pradesh and Telangana state exams). Angle: one payment, yours forever; a plan, not another mock-test subscription; works alongside free mock tests. Give 8 numbered blocks, each in English and then Telugu script: headline, sub-headline, 3 benefits (one block each), what is inside, who it is for, FAQ of 4 questions. No invented pass rates, student counts or testimonials. Mark every Telugu block 'needs native check'.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "review",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K063.md",
+  "updated": "2026-11-11T09:27:46Z"
+ },
+ {
+  "id": "K075",
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Exam Kits explainer clip scripts (A201 prep)",
+  "details": "Write 3 scripts for 20-30 second vertical (9:16) explainer clips for Indian exam students: (1) one formula explained (e.g. compound interest), (2) one graph read step by step (e.g. a simple line graph of marks over months), (3) one step-by-step sum. For each clip: title, 5-7 numbered on-screen steps (what appears, under 10 words each), the English caption for each step and the same caption in Telugu script. Use only correct maths; show the worked numbers. No brand claims, no prices, no exclamation marks.",
+  "read": "['03-kits/exam-kits/README.md']",
+  "min_items": 3,
+  "context_chars": 12000,
+  "status": "done",
+  "created": "2026-11-12T08:00:00Z",
+  "output": "00-hq/knowledge/K075.md",
+  "tries": 0,
+  "updated": "2026-11-13T01:05:00Z",
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
+ },
+ {
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Kavi",
+  "context_chars": 20000,
+  "tries": 1,
+  "id": "K078",
+  "title": "Manim explainer storyboards: 3 clips (A201 prep)",
+  "details": "Write storyboards for 3 short vertical (9:16) exam-prep explainer clips, each under 45 seconds: (a) one formula explained (e.g. simple interest SI = PRT/100), (b) one graph read step by step (a bar or line chart question), (c) one step-by-step sum (a percentage or ratio word problem). For each clip: 5-7 scenes with on-screen text, what moves, seconds per scene, and caption lines in English and Telugu script. Use only facts you are sure of; mark any doubt 'check'.",
+  "read": [
+   "03-kits/README.md"
+  ],
+  "status": "done",
+  "created": "2026-11-12T10:50:00Z",
+  "output": "00-hq/knowledge/K078.md",
+  "min_items": 15,
+  "updated": "2026-11-13T01:05:00Z",
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
+ },
+ {
+  "priority": "P2",
+  "owner": "Kavi",
+  "context_chars": 20000,
+  "world": "b3",
+  "id": "K082",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-12T14:41:36Z",
+  "updated": "2026-11-13T01:05:00Z",
+  "title": "A201 prep: 3 Manim explainer clip scripts, English + Telugu captions",
+  "details": "Write 3 short scripts for 9:16 explainer clips under 45 s each, for Telangana/AP competitive-exam students: (1) one formula: simple interest SI = P x R x T / 100 with one worked number; (2) one graph: speed vs time line and what the area means; (3) one step-by-step sum: a percentage profit question solved in 4 steps. For each clip give 5 to 7 caption lines, each in English and in Telugu script, max 8 words per line, plus the on-screen maths for each line. Check every number in the worked examples.",
+  "read": "[]",
+  "output": "00-hq/knowledge/K082.md",
+  "min_items": 3,
+  "review_note": "A201 built 2026-11-13: K082 scripts used in 03-kits/explainers/clips.json (Telugu fixed: principal=అసలు, rectangle=దీర్ఘచతురస్రం); K075/K078 read, storyboard ideas folded in."
+ },
+ {
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Kavi",
+  "context_chars": 12000,
+  "id": "K087",
+  "title": "Scripts for 3 Manim explainer clips (A201): formula, graph, step-by-step sum",
+  "details": "Write 3 scripts for 9:16 explainer clips under 45 seconds each for Telangana/AP competitive-exam students: (1) one formula (compound interest), (2) one graph (speed-time graph area = distance), (3) one step-by-step percentage sum. For each: 5 to 7 numbered beats, what appears on screen, one caption line per beat in English and in Telugu script. Correct maths only; show the worked numbers. No exam-success promises.",
+  "read": [
+   "03-kits/README.md"
+  ],
+  "output": "00-hq/knowledge/K087.md",
+  "min_items": 3,
+  "created": "2026-11-12T18:50:00Z",
+  "status": "rejected",
+  "tries": 4,
+  "updated": "2026-11-12T22:46:03Z",
+  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3."
+ },
+ {
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-13T00:00:00Z",
+  "id": "K090",
+  "title": "Exam kit page copy: one payment, no expiry (A212 prep)",
+  "details": "For each exam kit page, write a 3-line pitch that says one payment, no expiry, and lists what the kit sells (planner, tracker and the rest named in the A212 roadmap line and the competitors research). No claims of results or ranks. Plain English, then the same in Telugu script and Hindi script. Number each kit 1 to N.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "output": "00-hq/knowledge/K090.md",
+  "min_items": 3,
+  "updated": "2026-11-13T00:48:23Z"
+ },
+ {
+  "world": "b3",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-12T17:15:00Z",
+  "id": "K092",
+  "title": "Manim explainer scripts: 3 short 9:16 clips with English + Telugu captions (for A201)",
+  "read": [
+   "03-kits/PLAN.md"
+  ],
+  "details": "Write 3 scripts for under-60-second vertical explainer clips for Telangana/AP exam aspirants: (1) one formula (simple interest), (2) one graph (reading a bar chart of percentages), (3) one step-by-step sum (time and work). For each: scene list with seconds, on-screen text, English caption and Telugu-script caption per scene. Maths must be checked step by step; no claims about exams.",
+  "output": "00-hq/knowledge/K092.md",
+  "min_items": 3,
+  "updated": "2026-11-13T01:05:00Z",
+  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3.",
+  "review_note": "Not needed: A201 built 2026-11-13 from K082."
+ },
+ {
+  "id": "K099",
+  "world": "b3",
+  "title": "A212 prep: kit page copy in English + Telugu, 'one payment, no expiry'",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "details": "Read the A212 line in 00-hq/ROADMAP.md and the exam-kit part of competitors-2026-11-11.md. Draft kit page copy for AP and Telangana exam kits: headline, 3 benefit lines (planner, tracker, exam-date alerts), the line 'one payment, no expiry', a line linking free mock tests as a companion, and the free mini-kit for a Telegram follow. Give English and Telugu script. Use only the prices written in the A212 line. No claims about pass rates or results.",
+  "min_items": 6,
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-13T07:30:00Z",
+  "updated": "2026-11-13T08:10:41Z",
+  "output": "00-hq/knowledge/K099.md",
+  "owner": "Kavi",
+  "priority": "P1",
+  "vigil_notes": "FIX: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."
  }
 ]

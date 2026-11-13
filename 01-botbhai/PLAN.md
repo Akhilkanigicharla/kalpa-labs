@@ -35,13 +35,13 @@ Each figure is MRR plus that month's setup fees. "Likely" at month 12 means abou
 
 ### Salon price ladder
 
-This is a recommended change to `setups/salon/setup.meta.json`. A ₹9,999 setup fee is a hard first ask when DINGG starts at ₹999/month, so ₹9,999 moves to the Pro tier.
+Approved by Akhil on 11 Nov 2026 ("prices ok"; evidence in `00-hq/research/competitors-2026-11-11.md`). The entry sits clearly under the salon suites: a one-time Starter pack and Lite at ₹999/month, with Standard at ₹1,499/month as the upgrade (the old founding price is now the normal Standard price). The old ₹4,999 + ₹2,999/month tier is paused. No per-staff fee on any tier.
 
 | Tier | Setup | Monthly | Includes |
 |---|---|---|---|
-| **Founding** (first 3 salons, 12-month lock) | ₹2,999 | ₹1,499 for months 1–3, then ₹1,999 | Standard features. In return: a baseline from the salon's register, a testimonial, and use of anonymised numbers |
+| **Starter** (one-time) | ₹999 | ₹0 (no monthly) | WhatsApp chat link + QR poster for the counter, ready-made quick replies, Google Business Profile tidy-up |
 | **Lite** | ₹1,999 | ₹999 | WhatsApp bot (prices, FAQ, booking, reschedule/cancel), 24 h + 2 h reminders, owner alerts, dashboard + Excel |
-| **Standard** | ₹4,999 | ₹2,999 | Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site (`seo/seo_bot.py`), web voice, monthly ROI report |
+| **Standard** | ₹2,999 | ₹1,499 | Lite plus review asks, opt-in win-back/offers, bridal enquiry flow, 9:30 AM daily list, SEO mini-site (`seo/seo_bot.py`), web voice, monthly ROI report |
 | **Pro** | ₹9,999 | ₹4,999 | Standard plus Meta ads management (`core/functions/adsbot.js`; the salon pays ad spend) and a phone voice receptionist (300 min included, then ₹3/min) |
 
 Terms for every tier:
@@ -77,17 +77,17 @@ India rates from 1 Oct 2026 (all + 18% GST):
 
 | Category | Rate | Note |
 |---|---|---|
-| Service (free-form replies inside the 24 h window) | 1,000 free per number per month, then ~₹0.115 | |
-| Utility templates (reminders, alerts) | ~₹0.115 | Now charged even inside the window |
+| Service (free-form replies inside the 24 h window) | 1,000 free per number per month (no roll-over), then ~₹0.115 | Free tier verified (Meta pricing page, updated 30 Sep 2026, fetched 13 Nov 2026: developers.facebook.com/documentation/business-messaging/whatsapp/pricing); ₹ rate: confirm at onboarding |
+| Utility templates (reminders, alerts) | ~₹0.115 | Charged outside a window. Inside a normal 24 h window: unverified (Meta's page fetched 13 Nov doesn't say), confirm at onboarding. Free inside an open FEP window |
 | Marketing | ~₹0.863 | Unchanged |
-| Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days (FEP window; Meta pricing page, checked 25 Oct 2026) | |
+| Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days, all categories (FEP window) | Verified: Meta pricing page fetched 13 Nov 2026 |
 | Incoming messages | Free | |
 
 - **A payment method is now mandatory.** Without one, even service replies stop delivering.
 - BSP figures of ₹0.14–0.145 and ₹0.95–1.09 include their markup.
 - Meta's developer page didn't list India among the October changes. Confirm the INR rate card in WhatsApp Manager at every onboarding.
 
-**Typical salon bill (300 bookings a month):**
+**Typical salon bill (300 bookings a month; ₹ rates confirm at onboarding in WhatsApp Manager):**
 
 | Message | Count | ₹ |
 |---|---|---|
@@ -111,7 +111,7 @@ The proposal shows the estimate, and the monthly report shows actual spend (P1-M
 | Netlify Functions | 300 credits/mo, **hard stop: all sites pause** | ~3–5 credits | Each prod deploy costs 15 credits, so cap deploys at 8/mo. Buy Personal ($9 ≈ ₹800) at ~10 clients |
 | Supabase | 500 MB, no backups, pauses after 7 idle days | ~3–5 MB/mo | Size lasts to ~40 salons, but there are **no backups**. Nightly dump via Actions (P1-M2-07); Pro ($25 ≈ ₹2,200) at MRR ≥ ₹6,000 |
 | Groq | free | ₹0 | Rate limits at ~50 busy clients |
-| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min; STT ₹0.49/min; TTS ₹3 per 1,000 characters (Sarvam Bulbul v3, sarvam.ai/api-pricing checked 25 Oct 2026). TTS assumption: the bot speaks about half of each call minute at ~800 characters per spoken minute, so ~400 chars ≈ ₹1.2/min. About ₹2.1/min (Plivo figures unverified this check), budget ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
+| Voice (Pro only) | Sarvam gives ₹100 credit | Plivo ₹200/mo number + ₹0.38/min (single source, plivo.com only; recheck before P1-M3-07, EGM K037.1); STT ₹0.49/min; TTS ₹3 per 1,000 characters (Sarvam Bulbul v3, sarvam.ai/api-pricing checked 25 Oct 2026). TTS assumption: the bot speaks about half of each call minute at ~800 characters per spoken minute, so ~400 chars ≈ ₹1.2/min. About ₹2.1/min (Plivo figures unverified this check), budget ₹2.5/min, so 300 min ≈ ₹900 | Priced into Pro |
 
 **Gross margin:**
 - Lite and Standard: ~95% on free tiers, ~85% once ₹3,000/mo of paid infrastructure is shared across 10 clients.

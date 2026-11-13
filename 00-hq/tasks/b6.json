@@ -30,5 +30,191 @@
   "created": "2026-11-06T13:20:00Z",
   "updated": "2026-11-06T12:31:50Z",
   "output": "00-hq/knowledge/K030.md"
+ },
+ {
+  "id": "K034",
+  "world": "b6",
+  "priority": "P0",
+  "owner": "Ledger",
+  "playbook": "research-synthesist",
+  "title": "Pilot test plan for lead A1 (startup parsing ~20,000 job descriptions/day with Claude Opus at about Rs 2.20 each): a cheap-model -> schema check -> stronger model -> Opus fallback cascade test on 500 sample JDs",
+  "details": "Write: 1) what we ask the startup for (500 JDs with their Opus outputs as the answer key, field list; never API keys, never LinkedIn scraping help), 2) test steps using only free models first, 3) how to score field-by-field accuracy against Opus, 4) the cost-per-1,000-JDs table we fill in, 5) a 1-page report template. Mark any price you are not sure of as UNVERIFIED.",
+  "read": [
+   "06-finops/docs/pilot-leads.md",
+   "06-finops/docs/offer-pack.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T18:40:00Z",
+  "updated": "2026-11-06T18:38:38Z",
+  "output": "00-hq/knowledge/K034.md"
+ },
+ {
+  "id": "K035",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "playbook": "research-synthesist",
+  "title": "3 short, honest public reply templates for Indian founders asking about high AI/LLM API bills on Reddit, Hacker News and LinkedIn",
+  "details": "Each under 90 words, gives one useful tip first, then offers the free 3-slot cost pilot. No 'certified', no fake results, no pressure, no DM asks. Follow the opt-in rules in the offer pack.",
+  "read": [
+   "06-finops/docs/offer-pack.md",
+   "06-finops/docs/pilot-leads.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T18:40:00Z",
+  "updated": "2026-11-06T18:39:36Z",
+  "output": "00-hq/knowledge/K035.md"
+ },
+ {
+  "id": "K042",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 06-finops/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "06-finops/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T19:01:27Z",
+  "output": "00-hq/knowledge/K042.md"
+ },
+ {
+  "id": "K052",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Ledger Peaks dashboard + landing UX pattern audit",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "06-finops/design/dashboard.html",
+   "06-finops/design/landing.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "done",
+  "created": "2026-11-08T12:45:00Z",
+  "output": "00-hq/knowledge/K052.md",
+  "updated": "2026-11-09T00:00:00Z"
+ },
+ {
+  "id": "K054",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Ledger Peaks landing SEO audit (for A192)",
+  "details": "Audit this site against the 20 Kalpa SEO checks in 00-hq/design/SEO-CHECKS.md. Output a table with all 20 rows numbered 1 to 20: check, pass / fail / not relevant (why), file and a short quote as evidence. Anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 fixes in order, 1-2 lines each. Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/SEO-CHECKS.md",
+   "06-finops/design/landing.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "done",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K054.md",
+  "updated": "2026-11-12T17:15:00Z",
+  "tries": 2,
+  "note": "used in A192: all 5 FAILs fixed by 06-finops/site/build.py, test_seo PASS"
+ },
+ {
+  "id": "K059",
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Ledger Peaks free X-ray intake form copy (for A203)",
+  "details": "Write the copy for a 3-field intake form on the Ledger Peaks landing (company name, work email, usage export file). Give: form heading, field labels, helper text for each field (tell them to strip prompt and reply columns and hash customer ids), plain-language error messages for each field, the DPDP consent line (what we collect, why, how long we keep it, how to withdraw; reads like a person, not a lawyer), the success message and the failure message with Retry. English first, then the same in Hindi script and Telugu script. Short sentences. No promises about results.",
+  "read": [
+   "06-finops/design/landing.html",
+   "00-hq/design/UX-PATTERNS.md"
+  ],
+  "min_items": 8,
+  "context_chars": 30000,
+  "status": "rejected",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K059.md",
+  "updated": "2026-11-09T04:53:40Z",
+  "tries": 3,
+  "vigil_notes": "FIX: incomplete, 7 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "id": "K066",
+  "world": "b6",
+  "priority": "P1",
+  "owner": "Ledger",
+  "title": "AI cost consulting offer page: we install, find savings, hand over the paperwork",
+  "details": "Write the offer page for Kalpa's AI cost and guardrails service for Indian startups. Angle: we install an open-source LLM cost tracker for you, find where the bill can drop, and hand over India paperwork (DPDP privacy notice, AI usage policy, model register). Fee options: fixed audit or a share of proven savings: leave amounts as [PRICE]. Give 8 numbered blocks: headline, sub-headline, what you get (5 bullets, one block), how it works in 4 steps, who it is for, fee options, what we do not claim (no certification, no guaranteed savings), FAQ of 5. No invented client names, savings percentages or certificates.",
+  "read": [
+   "00-hq/research/competitors-2026-11-11.md"
+  ],
+  "min_items": 8,
+  "context_chars": 14000,
+  "status": "review",
+  "created": "2026-11-11T09:30:00Z",
+  "output": "00-hq/knowledge/K066.md",
+  "updated": "2026-11-11T09:36:21Z",
+  "tries": 1
+ },
+ {
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 1,
+  "id": "K079",
+  "title": "Goldfish review of the Ledger Peaks X-ray intake form copy (A203 prep)",
+  "details": "You have no other context. Review the intake-form copy in the file for a 3-field form (company, work email, usage export) with DPDP consent: list confusing labels, missing error/success/retry messages, anything missing for DPDP Act 2023 consent (mark 'needs Akhil/lawyer check'), and any unbacked claim. One finding per bullet, then a corrected copy block.",
+  "read": [
+   "00-hq/knowledge/K059.md"
+  ],
+  "status": "done",
+  "created": "2026-11-12T10:50:00Z",
+  "output": "00-hq/knowledge/K079.md",
+  "min_items": 6,
+  "updated": "2026-11-13T02:30:00+05:30"
+ },
+ {
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-13T00:00:00Z",
+  "id": "K089",
+  "title": "Ledger Peaks X-ray privacy notice draft (A203 follow-up)",
+  "details": "Write a plain-English privacy notice page for the Ledger Peaks free X-ray form under the DPDP Act 2023 and Rules: what we collect (company name, work email, usage export with metadata only), purpose (make and email the X-ray), who processes it (Kalpa Labs; hosting provider as [HOST]), retention (deleted 14 days after the X-ray unless they sign up), rights (access, correction, erasure, withdraw consent by replying to the X-ray email), grievance officer as [NAME, EMAIL] placeholders for Akhil, and how to complain to the Data Protection Board. Number the sections 1 to 8. Mark anything unsure UNVERIFIED. Not legal advice; Akhil gets it checked.",
+  "read": [
+   "06-finops/design/landing.html",
+   "06-finops/src/api/intake.js"
+  ],
+  "output": "00-hq/knowledge/K089.md",
+  "min_items": 8,
+  "updated": "2026-11-13T00:57:53Z",
+  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "world": "b6",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 2,
+  "status": "review",
+  "created": "2026-11-12T17:15:00Z",
+  "id": "K091",
+  "title": "Goldfish review of the Ledger Peaks site titles, descriptions and llms.txt (A192 follow-up)",
+  "read": [
+   "06-finops/site/build.py",
+   "06-finops/design/landing.html"
+  ],
+  "details": "You are a zero-context reviewer. Read the PAGES titles/descriptions and the LLMS text in 06-finops/site/build.py and the landing page. For each: does it claim anything the landing page does not show? Is it plain English an Indian founder understands? Suggest at most one better wording each (title 30-60 chars, description 70-160 chars). Mark anything you cannot check as UNVERIFIED.",
+  "output": "00-hq/knowledge/K091.md",
+  "min_items": 5,
+  "updated": "2026-11-13T00:56:23Z"
  }
 ]

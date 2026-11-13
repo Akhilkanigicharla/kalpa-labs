@@ -1,0 +1,4 @@
+# Two Claude sessions often append to the same log at once: keep both sides instead of a conflict
+# (idea from the "Collision Guard" mod, Nate Herk short, 8 Nov 2026). Append-only files only.
+00-hq/log/*.md merge=union
+00-hq/log/tokens.csv merge=union

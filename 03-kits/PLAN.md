@@ -17,6 +17,7 @@ b3 earns money by selling copy-to-your-Drive Google Sheets kits for ₹199–499
 ## 2. Customer & offer
 
 **Who pays:**
+- Under-18 buyers (JEE/NEET-age students) are possible: checkout needs an 18+ or parent-consent step and no child tracking (DPDP; EGM K037.2, item A175).
 - Aspirants aged 20–30 who already live in Google Sheets on their phones: engineering grads for GATE, graduates for UPSC.
 - Salaried 25–40-year-olds choosing between the old and new tax regimes and setting SIP goals.
 - Later, coaching institutes that buy kits in bulk (through the BotBhai bundle).

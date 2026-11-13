@@ -38,7 +38,7 @@ def check_prices():
     meta = json.loads((ROOT / "setups" / "salon" / "setup.meta.json").read_text())["price"]
     std = next(t for t in P["tiers"] if t["id"] == "standard")
     assert meta["setup"] == f"₹{std['setup']:,}" and meta["monthly"] == f"₹{std['monthly']:,}", f"setup.meta.json price {meta} ≠ Standard tier"
-    print("  ✓ prices.json matches PLAN.md §2 (4 tiers, founding step-up, terms) and setup.meta.json")
+    print("  ✓ prices.json matches PLAN.md §2 (Starter, Lite, Standard, Pro + terms) and setup.meta.json")
     return P
 
 

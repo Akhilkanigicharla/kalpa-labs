@@ -1,0 +1,44 @@
+{
+  "_note": "A201 explainer clips. Scripts drafted by free agent K082 (Kavi), checked and corrected by Claude 2026-11-13. Telugu lines need a native read before any public use.",
+  "clips": [
+    {
+      "id": "simple-interest",
+      "kind": "steps",
+      "title_en": "Simple interest in 4 steps",
+      "title_te": "సాధారణ వడ్డీ, 4 దశల్లో",
+      "steps": [
+        {"en": "P = principal, R = rate, T = time", "te": "P = అసలు, R = వడ్డీ రేటు, T = కాలం", "math": "SI = P × R × T ÷ 100"},
+        {"en": "Example: ₹2,000 at 5% for 3 years", "te": "ఉదాహరణ: ₹2,000, 5% రేటు, 3 సంవత్సరాలు", "math": "P = 2000, R = 5, T = 3"},
+        {"en": "Multiply 2,000 by 5, then by 3", "te": "2,000ను 5తో, తర్వాత 3తో గుణించండి", "math": "2000 × 5 × 3 = 30000", "check": ["2000*5*3", 30000]},
+        {"en": "Divide by 100. Interest is ₹300", "te": "100తో భాగించండి. వడ్డీ ₹300", "math": "30000 ÷ 100 = ₹300", "check": ["30000/100", 300]}
+      ]
+    },
+    {
+      "id": "speed-time-graph",
+      "kind": "graph",
+      "title_en": "Distance from a speed-time graph",
+      "title_te": "వేగం-కాలం గ్రాఫ్ నుండి దూరం",
+      "graph": {"speed": 40, "hours": 2, "y_max": 50, "x_max": 3},
+      "steps": [
+        {"en": "Speed goes up, time goes across", "te": "పైకి వేగం, అడ్డంగా కాలం", "math": "y = speed, x = time"},
+        {"en": "A flat line at 40 km/h", "te": "గంటకు 40 కి.మీ. వద్ద సమతల రేఖ", "math": "speed = 40 km/h"},
+        {"en": "From 0 to 2 hours", "te": "0 నుండి 2 గంటల వరకు", "math": "time = 2 h"},
+        {"en": "The area under the line is a rectangle", "te": "రేఖ కింది వైశాల్యం ఒక దీర్ఘచతురస్రం", "math": "area = speed × time"},
+        {"en": "40 × 2 = 80 km travelled", "te": "40 × 2 = 80 కి.మీ. ప్రయాణం", "math": "distance = 80 km", "check": ["40*2", 80]}
+      ]
+    },
+    {
+      "id": "profit-percent",
+      "kind": "steps",
+      "title_en": "Profit % in 4 steps",
+      "title_te": "లాభ శాతం, 4 దశల్లో",
+      "steps": [
+        {"en": "Cost ₹500, selling price ₹600", "te": "కొన్న ధర ₹500, అమ్మిన ధర ₹600", "math": "CP = 500, SP = 600"},
+        {"en": "Step 1: profit = SP − CP", "te": "దశ 1: లాభం = అమ్మిన ధర − కొన్న ధర", "math": "600 − 500 = 100", "check": ["600-500", 100]},
+        {"en": "Step 2: divide profit by cost", "te": "దశ 2: లాభాన్ని కొన్న ధరతో భాగించండి", "math": "100 ÷ 500 = 0.2", "check": ["100/500", 0.2]},
+        {"en": "Step 3: multiply by 100", "te": "దశ 3: 100తో గుణించండి", "math": "0.2 × 100 = 20", "check": ["0.2*100", 20]},
+        {"en": "Step 4: profit is 20%", "te": "దశ 4: లాభం 20%", "math": "Profit % = 20%"}
+      ]
+    }
+  ]
+}

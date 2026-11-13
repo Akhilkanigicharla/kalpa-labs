@@ -99,7 +99,21 @@ def sync_workflows(cred_ids):
     return bad
 
 
+def show_runs(limit=15):
+    """Print the latest executions (workflow, status, start) so a sprint can prove a scheduled run happened."""
+    st, wfs = api("GET", "/workflows?limit=250")
+    st2, ex = api("GET", f"/executions?limit={limit}")
+    if st != 200 or st2 != 200:
+        print(f"cannot read runs: HTTP {st}/{st2}"); return 1
+    names = {w["id"]: w["name"] for w in wfs.get("data", [])}
+    for e in ex.get("data", []):
+        print(f"run {names.get(e.get('workflowId'), e.get('workflowId'))} | {e.get('status')} | {e.get('startedAt')}")
+    return 0
+
+
 if __name__ == "__main__":
     if not (BASE.startswith("http") and KEY):
         print("N8N_SELF_URL / N8N_SELF_API_KEY not set"); sys.exit(1)
+    if "--runs" in sys.argv:
+        sys.exit(show_runs())
     sys.exit(1 if sync_workflows(sync_credentials()) else 0)

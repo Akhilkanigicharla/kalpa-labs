@@ -3,8 +3,8 @@
   var s = document.currentScript, client = s.getAttribute("data-client"), niche = s.getAttribute("data-niche") || "";
   var base = s.src.replace(/widget\.js.*$/, "");
   var btn = document.createElement("button");
-  btn.setAttribute("aria-label", "Chat with us"); btn.innerHTML = "💬";
-  btn.style.cssText = "position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:50%;border:0;background:#1D3A25;color:#F4EEDC;font-size:28px;box-shadow:0 0 0 3px #C38E12,0 6px 20px rgba(28,36,99,.35);cursor:pointer;z-index:2147483646";
+  btn.setAttribute("aria-label", "Chat with us"); btn.innerHTML = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10H9l-5 4z"/></svg>';
+  btn.style.cssText = "position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:50%;border:0;background:#1D3A25;color:#F4EEDC;font-size:28px;box-shadow:0 0 0 3px #C38E12,0 6px 20px rgba(0,0,0,.25);cursor:pointer;z-index:2147483646";
   var frame = document.createElement("iframe");
   frame.title = "Chat"; frame.allow = "microphone";
   frame.src = base + "index.html?embed=1&client=" + encodeURIComponent(client) + "&niche=" + encodeURIComponent(niche);

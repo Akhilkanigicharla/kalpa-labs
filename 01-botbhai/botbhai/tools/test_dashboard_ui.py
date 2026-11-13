@@ -22,9 +22,9 @@ def main():
         pg.click(".tab[data-tab=leads]"); assert pg.is_visible("#pane-leads") and not pg.is_visible("#pane-today")
         hot = pg.locator(".lead").count(); pg.click(".chip[data-f=all]"); alln = pg.locator(".lead").count()
         assert 0 < hot < alln == 10, (hot, alln)
-        pg.fill("#q", "sravani"); assert pg.locator(".lead").count() == 1
+        pg.fill("#q", "sravani"); pg.wait_for_function("document.querySelectorAll('.lead').length === 1")  # search waits 250 ms (debounce)
         assert "booked" not in pg.inner_text("#leads").split("·")[-1] and "meta_ads" not in pg.inner_text("#leads")
-        pg.fill("#q", "zzz"); assert "No lead matches" in pg.inner_text("#leads"); pg.fill("#q", "")
+        pg.fill("#q", "zzz"); pg.wait_for_selector("#leads >> text=No lead matches"); pg.fill("#q", ""); pg.wait_for_timeout(300)
         print("  ✓ Leads: hot filter, all, search, owner-side words (no raw status codes)")
         pg.click(".tab[data-tab=report]"); assert pg.locator("#bars .bar").count() == 14 and pg.locator("#stats .kpi").count() == 4
         with pg.expect_download() as d:

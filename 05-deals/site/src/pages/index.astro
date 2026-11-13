@@ -2,8 +2,13 @@
 import Base from "../layouts/Base.astro";
 import { CALCS } from "../lib/calcs";
 const lang = "en";
+const site = Astro.site!.toString();
+const ld = [{ "@context": "https://schema.org", "@graph": [
+  { "@type": "Organization", "@id": `${site}#org`, name: "Kalpa Labs", url: site, logo: new URL("/favicon.svg", site).toString() },
+  { "@type": "WebSite", name: lang === "en" ? "Money calculators" : "డబ్బు కాలిక్యులేటర్లు", url: new URL(lang === "en" ? "/" : "/te/", site).toString(), inLanguage: lang === "en" ? "en-IN" : "te", publisher: { "@id": `${site}#org` } },
+] }];
 ---
-<Base title="Free money calculators for India: tax 2026-27, GST, SIP, EMI, gratuity" description="Income tax (new vs old regime, 2026-27), salary in hand, GST, gratuity, SIP, EMI, FD, RD, PPF and HRA calculators in English and Telugu." lang={lang} path="/">
+<Base title="Free money calculators for India: tax 2026-27, SIP, EMI" description="Income tax (new vs old regime, 2026-27), salary in hand, GST, gratuity, SIP, EMI, FD, RD, PPF and HRA calculators in English and Telugu." lang={lang} path="/" jsonld={ld}>
   <h1>Money calculators for India</h1>
   <p class="muted">Tax year 2026-27 rules. English and Telugu. No sign-up.</p>
   <ul class="grid">{CALCS.map((c) => <li><a class="card tile" href={`/${c.slug}/`}><strong>{c.title[lang]}</strong><span class="muted">{c.blurb[lang]}</span></a></li>)}</ul>

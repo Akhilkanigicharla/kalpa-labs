@@ -1,0 +1,119 @@
+{
+ "name": "TGPSC Group 1",
+ "name_te": "టీజీపీఎస్సీ గ్రూప్ 1",
+ "family": "State PSC · Telangana",
+ "body": "Telangana Public Service Commission",
+ "official_url": "https://www.tgpsc.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "Prelims: General Studies & Mental Ability, 150 questions, 150 marks, 2½ hours (screening). Mains: General English (qualifying) + 6 descriptive papers × 150 marks, 3 hours each. In English, Telugu and Urdu.",
+ "papers": [
+  {
+   "name": "Prelims: General Studies & Mental Ability",
+   "sections": [
+    {
+     "name": "General studies & mental ability",
+     "questions": 150,
+     "marks": 150,
+     "topics": [
+      "Current affairs: regional, national and international",
+      "International relations and events",
+      "General science; India's achievements in science and technology",
+      "Environmental issues; disaster management: prevention and mitigation",
+      "World geography, Indian geography and geography of Telangana",
+      "History and cultural heritage of India",
+      "Society, culture, heritage, arts and literature of Telangana",
+      "Policies of Telangana State",
+      "Social exclusion; rights issues (gender, caste, tribe, disability) and inclusive policies",
+      "Logical reasoning, analytical ability and data interpretation",
+      "Logical reasoning, mental ability and data interpretation"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains (descriptive)",
+   "sections": [
+    {
+     "name": "General English (qualifying)",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Grammar, comprehension, précis, letter writing (10th class standard)"
+     ]
+    },
+    {
+     "name": "Paper I: General Essay",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Contemporary social issues",
+      "Economic growth and justice",
+      "Dynamics of Indian polity",
+      "Historical and cultural heritage of India",
+      "Science, technology and education"
+     ]
+    },
+    {
+     "name": "Paper II: History, Culture & Geography",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Indian history and culture",
+      "History and culture of Telangana",
+      "Geography of India and Telangana"
+     ]
+    },
+    {
+     "name": "Paper III: Indian Society, Constitution & Governance",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Indian society, structure, issues",
+      "Constitution of India",
+      "Governance, public policy, welfare"
+     ]
+    },
+    {
+     "name": "Paper IV: Economy & Development",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Indian economy and development",
+      "Economy and development of Telangana",
+      "Issues of development and environment"
+     ]
+    },
+    {
+     "name": "Paper V: Science & Technology and Data Interpretation",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "Role and impact of science and technology",
+      "Modern trends in S&T",
+      "Data interpretation and problem solving"
+     ]
+    },
+    {
+     "name": "Paper VI: Telangana Movement & State Formation",
+     "questions": null,
+     "marks": 150,
+     "topics": [
+      "The idea of Telangana (1948–1970)",
+      "Mobilisational phase (1971–1990)",
+      "Towards formation of Telangana State (1991–2014)"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.tgpsc.gov.in",
+  "https://www.adda247.com/upsc-exam/tspsc-group-1-syllabus",
+  "https://teachersbadi.in/tspsc-group-1-exam-pattern/"
+ ],
+ "id": "tgpsc-group-1",
+ "checked": "2026-11-06"
+}

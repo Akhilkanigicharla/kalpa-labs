@@ -2,7 +2,7 @@
   "name": "tab-lifeboat",
   "description": "Save all tabs and tab groups in one click, with automatic snapshots so a crash, update or reinstall never wipes them.",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "wxt",

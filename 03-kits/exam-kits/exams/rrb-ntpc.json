@@ -1,0 +1,88 @@
+{
+ "name": "RRB NTPC",
+ "name_te": "ఆర్ఆర్బీ ఎన్టీపీసీ",
+ "family": "Central Government",
+ "body": "Railway Recruitment Boards",
+ "official_url": "https://indianrailways.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "CBT 1: 100 questions (General Awareness 40, Maths 30, Reasoning 30), 90 minutes, −1/3 per wrong answer. CBT 2: 120 questions (50 + 35 + 35), 90 minutes. Then typing test / CBAT for some posts.",
+ "papers": [
+  {
+   "name": "CBT 1",
+   "sections": [
+    {
+     "name": "General awareness",
+     "questions": 40,
+     "marks": 40,
+     "topics": [
+      "Current affairs",
+      "Indian history, polity, geography, economy",
+      "General science",
+      "Railways, sports, culture, awards"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Number system, LCM-HCF, fractions, decimals",
+      "Ratio, percentage, average, profit-loss, interest",
+      "Time-work, speed-distance, mensuration",
+      "Algebra, geometry, trigonometry, statistics"
+     ]
+    },
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Analogy, series, coding-decoding",
+      "Puzzles, syllogism, Venn diagrams",
+      "Statement-conclusion, data sufficiency"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "CBT 2",
+   "sections": [
+    {
+     "name": "General awareness",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Deeper current affairs and static GK"
+     ]
+    },
+    {
+     "name": "Mathematics",
+     "questions": 35,
+     "marks": 35,
+     "topics": [
+      "Advanced arithmetic and DI"
+     ]
+    },
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 35,
+     "marks": 35,
+     "topics": [
+      "Advanced puzzles and analytical reasoning"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://indianrailways.gov.in",
+  "https://www.oliveboard.in/rrb-ntpc-exam-pattern/",
+  "https://www.careerpower.in/rrb-ntpc-syllabus.html"
+ ],
+ "id": "rrb-ntpc",
+ "checked": "2026-11-06"
+}

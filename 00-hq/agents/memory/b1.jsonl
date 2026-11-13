@@ -1,0 +1,14 @@
+{"at": "2026-11-06T23:23Z", "task": "K003", "lesson": "Vigil asked: Draft is truncated (ends mid-sentence at \"Can I book a facial for 11am\"); complete the JSON lines.; Ensure exactly 200 lines are present; current draft appears to have fewer than 200 entries.; Verify all `expected_intent` values match the defined set (book, greeting, timing, location, price, other, human, complaint, cancel, reschedule).; Check for duplicate messages; remove any exact "}
+{"at": "2026-11-08T19:29Z", "task": "K057", "lesson": "Vigil asked: Shorten the feature gap comparison list to at most 5 items to follow the rule."}
+{"at": "2026-11-08T19:33Z", "task": "K057", "lesson": "Vigil asked: incomplete, 5 of 15 required items. Write all 15, numbered 1 to 15."}
+{"at": "2026-11-08T19:34Z", "task": "K058", "lesson": "Vigil asked: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."}
+{"at": "2026-11-08T19:48Z", "task": "K057", "lesson": "Vigil asked: Shorten the main comparison list to at most 5 items to comply with the rules."}
+{"at": "2026-11-12T08:50Z", "task": "K077", "lesson": "Vigil asked: incomplete, 5 of 6 required items. Write all 6, numbered 1 to 6."}
+{"at": "2026-11-12T10:48Z", "task": "K077", "lesson": "Vigil asked: Reduce the draft's list to 5 items at most.; Add Hindi and Hinglish offer lines to meet the 5-languages rule.; Remove unverified complaints against the repo's approved offer text."}
+{"at": "2026-11-12T11:54Z", "task": "K077", "lesson": "Vigil asked: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."}
+{"at": "2026-11-12T22:44Z", "task": "K086", "lesson": "Vigil asked: Correct section 3: facts present in the provided repo code (such as the Google review prompt and 14-day pilot) are VERIFIED per instructions, not UNVERIFIED.; Ensure proposed Telugu tweaks remain aligned with the 5 languages supported by Kalpa chatbots."}
+{"at": "2026-11-13T00:47Z", "task": "K095", "lesson": "Vigil asked: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."}
+{"at": "2026-11-13T02:49Z", "task": "K097", "lesson": "Vigil asked: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."}
+{"at": "2026-11-13T15:48Z", "task": "K103", "lesson": "Vigil asked: incomplete, 3 of 5 required items. Write all 5, numbered 1 to 5."}
+{"at": "2026-11-13T15:53Z", "task": "K103", "lesson": "Vigil asked: incomplete, 3 of 5 required items. Write all 5, numbered 1 to 5."}
+{"at": "2026-11-13T16:51Z", "task": "K103", "lesson": "Vigil asked: incomplete, 3 of 5 required items. Write all 5, numbered 1 to 5."}

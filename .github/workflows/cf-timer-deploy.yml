@@ -1,0 +1,40 @@
+# A167: deploys 00-hq/cf-timer (precise 5-min n8n ping + daily-brief dispatch) to Cloudflare Workers free tier.
+# Needs 2 repo secrets that Akhil sets himself: CLOUDFLARE_API_TOKEN ("Edit Cloudflare Workers" template)
+# and CLOUDFLARE_ACCOUNT_ID. Optional: CF_GH_TOKEN (fine-grained, Actions: write on this repo) for workflow dispatch.
+name: cf-timer deploy
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["00-hq/cf-timer/**", ".github/workflows/cf-timer-deploy.yml"]
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CF_GH_TOKEN: ${{ secrets.CF_GH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Test worker
+        run: node 00-hq/cf-timer/test.mjs
+      - name: Skip if Cloudflare secrets are missing
+        id: gate
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "Cloudflare secrets not set yet (CEO queue C65). Skipping deploy."; echo "go=no" >> "$GITHUB_OUTPUT"
+          else echo "go=yes" >> "$GITHUB_OUTPUT"; fi
+      - name: Deploy
+        if: steps.gate.outputs.go == 'yes'
+        working-directory: 00-hq/cf-timer
+        run: npx --yes wrangler@4 deploy
+      - name: Set GH_TOKEN secret on the worker
+        if: steps.gate.outputs.go == 'yes' && env.CF_GH_TOKEN != ''
+        working-directory: 00-hq/cf-timer
+        run: printf '%s' "$CF_GH_TOKEN" | npx --yes wrangler@4 secret put GH_TOKEN

@@ -1,0 +1,12 @@
+# Kalpa Labs
+
+> Kalpa Labs (Hyderabad, India; Udyam-registered MSME) builds small, honest AI tools for Indian small businesses. Our first product, BotBhai, answers a business's customers on WhatsApp and on its website in Telugu, Hindi and English (and Tenglish/Hinglish mixes), books slots and site visits, and sends reminders.
+
+- Who it is for: gyms, salons and real estate agents in Telangana and Andhra Pradesh first.
+- How it works: built on the official WhatsApp Business API; customers opt in; BotBhai answers from the business's own prices and timings, never invents a price, and hands unsure questions to the staff. The owner can take over any chat.
+- Getting started: every business starts with a free 14-day pilot; the plan is chosen after it.
+- Talk to us: the "Chat with our AI" box on the home page; leave your number and the founder, Akhil, calls back.
+
+## Pages
+
+- [Home](https://kalpalabs.dpdns.org/): what BotBhai does, the live AI demo, products, how it works, FAQ and the free pilot form.

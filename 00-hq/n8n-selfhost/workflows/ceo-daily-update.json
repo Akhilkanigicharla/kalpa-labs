@@ -1,0 +1,213 @@
+{
+ "name": "Kalpa CEO Daily Update (Telegram)",
+ "active": true,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "n1",
+   "name": "Every day 21:00",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "0 21 * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "n2",
+   "name": "Worlds",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    220,
+    0
+   ],
+   "parameters": {
+    "jsCode": "return ['b1','b2','b3','b4','b5','b6','b7','hq'].map((id)=>({json:{id,url:'https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/'+id+'.json'}}));"
+   }
+  },
+  {
+   "id": "n3",
+   "name": "Read task queues (public repo)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    440,
+    0
+   ],
+   "parameters": {
+    "url": "={{ $json.url }}",
+    "options": {
+     "response": {
+      "response": {
+       "responseFormat": "json"
+      }
+     },
+     "timeout": 15000
+    }
+   },
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "n4",
+   "name": "GitHub commits (24 h)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "url": "=https://api.github.com/repos/Akhilkanigicharla/kalpa-labs/commits?per_page=50&since={{ $now.minus({ hours: 24 }).toUTC().toISO() }}",
+    "options": {
+     "timeout": 15000
+    }
+   },
+   "executeOnce": true,
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "n5",
+   "name": "Site check",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    880,
+    0
+   ],
+   "parameters": {
+    "url": "https://kalpalabs.dpdns.org/",
+    "options": {
+     "response": {
+      "response": {
+       "fullResponse": true,
+       "responseFormat": "text"
+      }
+     },
+     "timeout": 15000
+    }
+   },
+   "executeOnce": true,
+   "onError": "continueRegularOutput"
+  },
+  {
+   "id": "n6",
+   "name": "Build update",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1100,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst rows = [];\nfor (const it of $('Read task queues (public repo)').all()) {\n  const j = it.json;\n  try {\n    if (Array.isArray(j)) rows.push(...j);\n    else if (j && typeof j.data === 'string') rows.push(...JSON.parse(j.data));\n    else if (j && j.id && j.status) rows.push(j);\n  } catch (e) {}\n}\nconst now = $now.toMillis(), DAY = 864e5;\nconst today = rows.filter((r) => r.updated && now - new Date(r.updated).getTime() < DAY && r.status !== 'todo');\nconst passed = today.filter((r) => r.status === 'review' || r.status === 'done');\nconst back = today.filter((r) => r.status === 'rejected');\nconst count = (s) => rows.filter((r) => r.status === s).length;\nconst todo = count('todo'), review = count('review'), done = count('done');\nconst by = {};\nfor (const r of today) { const a = r.owner || 'Kalpa'; by[a] = by[a] || { ok: 0, redo: 0 }; if (r.status === 'rejected') by[a].redo++; else by[a].ok++; }\nconst team = Object.entries(by).sort((a, b) => (b[1].ok + b[1].redo) - (a[1].ok + a[1].redo));\nlet commits = [];\ntry { commits = $('GitHub commits (24 h)').all().map((i) => i.json).filter((c) => c && c.commit).map((c) => c.commit.message.split('\\n')[0].slice(0, 70)); } catch (e) {}\nlet site = false;\ntry { site = ($('Site check').first().json.statusCode || 0) === 200; } catch (e) {}\nconst L = [];\nL.push('<b>Kalpa Labs, ' + esc($now.setZone('Asia/Kolkata').toFormat('dd LLL')) + ' at 9 PM</b>');\nL.push('Website: ' + (site ? 'up' : 'NOT answering'));\nL.push('');\nL.push('<b>Free-model agents, last 24 h</b>: ' + passed.length + ' jobs finished, ' + back.length + ' sent back');\nfor (const [a, c] of team.slice(0, 5)) L.push('  ' + esc(a) + ': ' + c.ok + ' done' + (c.redo ? ', ' + c.redo + ' sent back' : ''));\nL.push('');\nL.push('<b>Queue now</b>: ' + todo + ' waiting for agents, ' + review + ' waiting for Claude to check, ' + done + ' fully done');\nif (todo === 0) L.push('The agent queue is empty, so agents are idle until the next build sprint adds jobs.');\nL.push('');\nL.push('<b>Code changes, last 24 h</b>: ' + commits.length);\nfor (const c of commits.slice(0, 3)) L.push('  ' + esc(c));\nL.push('');\nL.push(rows.length ? 'Nothing here needs you tonight.' : 'Could not read the task queues from GitHub. Claude checks this in the next sprint.');\nreturn [{ json: { text: L.join('\\n').slice(0, 3900) } }];"
+   }
+  },
+  {
+   "id": "n7",
+   "name": "Send to Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1320,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 21:00": {
+   "main": [
+    [
+     {
+      "node": "Worlds",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Worlds": {
+   "main": [
+    [
+     {
+      "node": "Read task queues (public repo)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read task queues (public repo)": {
+   "main": [
+    [
+     {
+      "node": "GitHub commits (24 h)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "GitHub commits (24 h)": {
+   "main": [
+    [
+     {
+      "node": "Site check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Site check": {
+   "main": [
+    [
+     {
+      "node": "Build update",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build update": {
+   "main": [
+    [
+     {
+      "node": "Send to Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

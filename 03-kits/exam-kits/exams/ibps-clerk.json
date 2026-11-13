@@ -1,0 +1,102 @@
+{
+ "name": "IBPS Clerk",
+ "name_te": "ఐబీపీఎస్ క్లర్క్",
+ "family": "Banks",
+ "body": "Institute of Banking Personnel Selection",
+ "official_url": "https://www.ibps.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Prelims: English 30 + Numerical Ability 35 + Reasoning 35 = 100 marks, 20 minutes each, −0.25 per wrong answer. Mains: 4 sections, 200 marks. No interview; a local language test where applicable.",
+ "papers": [
+  {
+   "name": "Prelims",
+   "sections": [
+    {
+     "name": "English language",
+     "questions": 30,
+     "marks": 30,
+     "topics": [
+      "Reading comprehension",
+      "Cloze test and fillers",
+      "Error spotting and para jumbles"
+     ]
+    },
+    {
+     "name": "Numerical ability",
+     "questions": 35,
+     "marks": 35,
+     "topics": [
+      "Simplification and approximation",
+      "Number series and quadratic equations",
+      "Data interpretation",
+      "Arithmetic: percentage, profit-loss, SI-CI, time-work, speed-distance"
+     ]
+    },
+    {
+     "name": "Reasoning ability",
+     "questions": 35,
+     "marks": 35,
+     "topics": [
+      "Puzzles and seating arrangement",
+      "Syllogism and inequality",
+      "Blood relations, direction, coding-decoding, order and ranking"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mains",
+   "sections": [
+    {
+     "name": "General / financial awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Current affairs",
+      "Banking and financial awareness",
+      "Static GK"
+     ]
+    },
+    {
+     "name": "General English",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Reading comprehension",
+      "Grammar and vocabulary"
+     ]
+    },
+    {
+     "name": "Reasoning ability & computer aptitude",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Puzzles and arrangements",
+      "Logical reasoning",
+      "Computer basics"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Data interpretation",
+      "Arithmetic",
+      "Number series and quadratic equations"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.ibps.in",
+  "https://www.pw.live/exams/bank-jobs/ibps-clerk-syllabus/",
+  "https://www.sreedharscce.com/blogs/ibps-clerk-syllabus-and-exam-pattern/"
+ ],
+ "id": "ibps-clerk",
+ "checked": "2026-11-06"
+}

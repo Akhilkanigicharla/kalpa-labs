@@ -85,3 +85,19 @@ export function upgradeNudge(o: { plan: "free" | "pro"; importedTabs: number; la
   if (o.lastNudge !== null && o.now - o.lastNudge < 7 * 864e5) return null;
   return `You just moved ${o.importedTabs.toLocaleString("en-US")} tabs. Pro keeps a snapshot every 5 minutes for 90 days and a daily backup file, so they're never lost again.`;
 }
+
+/** Free reminder to download the backup file. Local data can be wiped when Chrome "repairs" or removes an extension
+ *  (Session Buddy's own data-loss page describes this), so the file is the only copy outside the browser.
+ *  Returns null when no reminder is needed. Daily Pro backups count as backups too. */
+export function backupReminder(o: { lastFileAt: number | null; sessions: number; now?: number }): string | null {
+  if (o.sessions < 1) return null;
+  if (!o.lastFileAt) return "No backup file yet. It keeps a copy of your tabs outside Chrome.";
+  const days = Math.floor(((o.now ?? Date.now()) - o.lastFileAt) / 86_400_000);
+  return days >= 7 ? `Last backup file was ${days} days ago.` : null;
+}
+
+/** "today", "yesterday", "5 days ago": for the backup card. */
+export function daysAgo(at: number, now = Date.now()): string {
+  const d = Math.floor((now - at) / 86_400_000);
+  return d <= 0 ? "today" : d === 1 ? "yesterday" : `${d.toLocaleString("en-US")} days ago`;
+}

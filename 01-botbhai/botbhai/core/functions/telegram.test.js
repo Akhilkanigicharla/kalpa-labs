@@ -48,7 +48,7 @@ const last = () => toCustomer().slice(-1)[0].body;
   await say("book");
   for (let i = 0; i < 12 && !store.bookings.length; i++) {
     const kb = last().reply_markup; 
-    if (kb) await tap(kb.inline_keyboard[0][0].callback_data.slice(2)); else { const q = last().text; await say(/day/i.test(q) ? "tomorrow" : /name/i.test(q) ? "Ravi" : /time|slot/i.test(q) ? "11am" : "yes"); }
+    if (kb) await tap(kb.inline_keyboard[0][0].callback_data.slice(2)); else { const q = last().text; await say(/day/i.test(q) ? "next monday" : /name/i.test(q) ? "Ravi" : /time|slot/i.test(q) ? "11am" : "yes"); }
   }
   assert.strictEqual(store.bookings.length, 1, "booking saved");
   assert.strictEqual(store.bookings[0].contact, "tg:777");

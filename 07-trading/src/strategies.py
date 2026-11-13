@@ -58,6 +58,18 @@ def ema_cross(close: pd.Series, fast: int = 9, slow: int = 21) -> pd.Series:
     return w
 
 
+def regime_filter(close: pd.Series, trend: int = 200, vol_window: int = 20,
+                  vol_cap: float | None = None) -> pd.Series:
+    """A168 regime: 1 in an uptrend (close above its `trend`-day average) and, if `vol_cap`
+    is set, calm (annualised realised volatility below it); otherwise 0. Past data only."""
+    sma = close.rolling(trend).mean()
+    up = close > sma
+    if vol_cap is not None:
+        rv = close.pct_change().rolling(vol_window).std() * np.sqrt(252)
+        up &= rv < vol_cap
+    return up.astype(float).where(sma.notna(), 0.0)
+
+
 def vol_target(weight: pd.Series, close: pd.Series, target: float = 0.12,
                window: int = 20, band: float = 0.10) -> pd.Series:
     """Scale `weight` by target / realised vol (capped at 1) with a no-trade band.
@@ -142,6 +154,7 @@ REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
     "markov_regime": (markov_regime, {"window": [20, 40], "threshold": [0.03, 0.05]}),
     "sma_cross":    (sma_cross,    {"fast": [5, 10, 20], "slow": [50, 100]}),
     "ema_cross":    (ema_cross,    {"fast": [9, 12], "slow": [21, 50]}),
+    "regime_filter": (regime_filter, {"trend": [100, 200], "vol_cap": [None, 0.20]}),
 }
 
 

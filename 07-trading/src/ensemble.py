@@ -156,10 +156,10 @@ def run_paper_ensemble(bars: pd.DataFrame, *, track: str, members, verdicts: Map
                        capital: float, out: Path, flags: Path, asof=None,
                        params: Mapping[str, dict] | None = None, window: int = DEFAULT_WINDOW,
                        update_every: int = 1, **kw) -> dict:
-    """Paper-only: combined target -> live.runner.run_paper (risk sizing -> Live Guard -> FakeBroker)."""
+    """Paper-only: combined target -> livetrade.runner.run_paper (risk sizing -> Live Guard -> FakeBroker)."""
     if str(kw.pop("mode", "paper")).lower() != "paper":
         raise ValueError("ensemble is paper only")
-    from .live import runner
+    from .livetrade import runner
     p = {"members": tuple(members), "verdicts": dict(verdicts), "params": dict(params or {}),
          "window": window, "update_every": update_every}
     with _registered():

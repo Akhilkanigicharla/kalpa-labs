@@ -1,0 +1,132 @@
+{
+ "name": "TGPSC Group 3",
+ "name_te": "టీజీపీఎస్సీ గ్రూప్ 3",
+ "family": "State PSC · Telangana",
+ "body": "Telangana Public Service Commission",
+ "official_url": "https://www.tgpsc.gov.in",
+ "languages": [
+  "en",
+  "te"
+ ],
+ "pattern": "3 objective papers × 150 questions × 150 marks, 150 minutes each (450 marks): GS & General Abilities; History, Polity & Society; Economy & Development.",
+ "papers": [
+  {
+   "name": "Paper I: General Studies & General Abilities",
+   "sections": [
+    {
+     "name": "General Studies & Abilities",
+     "questions": 150,
+     "marks": 150,
+     "topics": [
+      "Current affairs: regional, national and international",
+      "International relations and events",
+      "General science; India's achievements in science and technology",
+      "Environmental issues; disaster management: prevention and mitigation",
+      "World geography, Indian geography and geography of Telangana",
+      "History and cultural heritage of India",
+      "Society, culture, heritage, arts and literature of Telangana",
+      "Policies of Telangana State",
+      "Social exclusion; rights issues (gender, caste, tribe, disability) and inclusive policies",
+      "Logical reasoning, analytical ability and data interpretation",
+      "Basic English (10th class standard)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper II: History, Polity & Society",
+   "sections": [
+    {
+     "name": "Socio-cultural history of India and Telangana",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Indus Valley civilisation; Vedic age",
+      "Buddhism and Jainism",
+      "Mauryas, Guptas and South Indian dynasties",
+      "Delhi Sultanate, Mughals, Bhakti and Sufi movements",
+      "British rule, socio-religious reform movements, national movement",
+      "Satavahanas, Ikshvakus, Vishnukundins in Telangana",
+      "Kakatiyas and Qutb Shahis",
+      "Asaf Jahis and Hyderabad State; social and cultural movements in Telangana"
+     ]
+    },
+    {
+     "name": "Overview of the Indian Constitution and politics",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Making of the Constitution, Preamble, salient features",
+      "Fundamental rights, directive principles, fundamental duties",
+      "Union and State executive and legislature",
+      "Centre–State relations; federalism",
+      "Local government: 73rd and 74th amendments",
+      "Judiciary and judicial review",
+      "Election Commission and other constitutional bodies",
+      "Welfare and protection mechanisms for SC, ST, BC, minorities and women"
+     ]
+    },
+    {
+     "name": "Social structure, issues and public policies",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Indian social structure: caste, family, tribe, religion",
+      "Social issues: inequality, gender, child labour, regionalism",
+      "Social movements",
+      "Telangana-specific social issues",
+      "Welfare policies and programmes of India and Telangana"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Paper III: Economy & Development",
+   "sections": [
+    {
+     "name": "Indian economy: issues and challenges",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Growth and development; national income",
+      "Demography, poverty and unemployment",
+      "Planning and NITI Aayog",
+      "Agriculture, industry and services",
+      "Money, banking, inflation and fiscal policy"
+     ]
+    },
+    {
+     "name": "Economy and development of Telangana",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Economy of Hyderabad State and Telangana (to 2014)",
+      "Land reforms and agriculture in Telangana",
+      "Irrigation and allied sectors",
+      "Industry and services in Telangana",
+      "Telangana budget and welfare schemes"
+     ]
+    },
+    {
+     "name": "Issues of development and change",
+     "questions": 50,
+     "marks": 50,
+     "topics": [
+      "Development dynamics and regional inequality",
+      "Economic reforms since 1991",
+      "Sustainable development and environment",
+      "Displacement and rehabilitation",
+      "Social and economic change"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.tgpsc.gov.in",
+  "https://education.sakshi.com/en/tspsc/education-news/download-telangana-group-3-exam-pattern-and-syllabus-pdf-166263",
+  "https://telanganatoday.com/here-is-all-about-tspsc-group-iii-exams"
+ ],
+ "id": "tgpsc-group-3",
+ "checked": "2026-11-06"
+}

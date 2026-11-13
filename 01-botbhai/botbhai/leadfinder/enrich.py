@@ -14,7 +14,9 @@ and a client's customers come in through ads, SEO, Google Business Profile and r
 
 Usage: python enrich.py leads.csv --out leads-enriched.csv [--max 300]
 """
-import argparse, csv, json, re, sys, time, urllib.parse, urllib.request, urllib.robotparser
+import argparse, csv, json, os, re, sys, time, urllib.parse, urllib.request, urllib.robotparser
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from phones import business_phone, scrub_mobiles, has_mobile
 
 UA = "KalpaLabs-BotBhai-Enricher/1.0 (+https://github.com/Akhilkanigicharla)"
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
@@ -125,6 +127,10 @@ def enrich(rows, max_sites=300, delay=1.0, fetcher=fetch):
             try:
                 if allowed(url, cache):
                     info = extract(fetcher(url))
+                    info["phone"] = business_phone(info.get("phone", ""))[0]           # A208: mobiles withheld
+                    info["whatsapp_link"] = "yes" if info.get("whatsapp_link") else ""  # flag only, never the number
+                    info = {k: ("" if k != "phone" and has_mobile(str(v)) else v) for k, v in info.items()}  # e.g. 98480xxxxx@gmail.com
+                    r["source"] = "; ".join(x for x in [r.get("source", ""), f"own website {url}"] if x)
                     for k, v in info.items():
                         if v and not r.get(k): r[k] = v
                     r["enriched"] = "yes"

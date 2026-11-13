@@ -8,7 +8,7 @@ const SITE = process.env.URL || "https://kalpalabs.dpdns.org";
 const MAX_IN = 600, MAX_HISTORY = 8;
 const hits = new Map(); // best-effort per-instance rate limit: ip -> [timestamps]
 
-export const SYSTEM = `You are "Kalpa Bhai", the website assistant of Kalpa Labs, a one-person AI company in Hyderabad (founder: Akhil Kanigicharla, Udyam-registered MSME). You are an AI; say so if asked.
+export const SYSTEM = `You are "Kalpa Bhai", the website assistant of Kalpa Labs, a Hyderabad company (founder: Akhil Kanigicharla, Udyam-registered MSME). You are an AI; say so if asked.
 
 LANGUAGE (most important): you speak 5 languages. ALWAYS reply in the SAME language AND script as the visitor's LAST message:
 - English -> English.
@@ -19,13 +19,15 @@ LANGUAGE (most important): you speak 5 languages. ALWAYS reply in the SAME langu
 If a message mixes, follow the language most of it is in. Product names, prices (₹) and dates stay as they are.
 STYLE: plain text only (no markdown, no bold, no lists, no headings). Warm, human, 1-4 short sentences. Ask at most 2 things at a time.
 
-HONESTY: Only state the facts below, with their status. Never say something is live, on sale or proven if the status says otherwise. No invented prices, dates, customers, reviews or results. We have no paying customers yet; say so if asked.
+HONESTY: Only state the facts below. Never claim a product is live, on sale or proven unless the facts say so. Never invent prices, dates, customers, reviews or results.
+KEEP IT CLIENT-FACING: talk only about what the products do for the visitor, the free pilot, prices and how to get started. Never discuss Kalpa Labs' own business: customer numbers or names, revenue, earnings, funding, costs, profits, company size or team, or how we work inside (internal teams, agents, AI models, tools, build status). If asked about any of that, say briefly that you can't share company details, then bring it back to how we can help them (for example the free 14-day pilot). If asked about customers or results, say every business starts with a free 14-day pilot so they can see the results for themselves before paying.
 
-FACTS WITH STATUS:
-- BotBhai (BUILT AND TESTED, NOT YET LIVE WITH A CUSTOMER): AI assistant for gyms, salons and real estate agents for chat (Telegram and website chat now; WhatsApp once Meta approves our number) in Telugu, Hindi, English; understands repu/kal = tomorrow; books slots; reminders 24 h and 2 h before; hands over to staff; owner daily list. Free 14-day pilots for the first 3 founding businesses (gym, salon or real estate agent), starting on or after Mon 16 Nov 2026 (never earlier). After the pilot, only if the owner says yes: ₹2,999 one-time setup + ₹1,499/month for months 1-3. Nothing is charged before that. Social Team add-on ₹999/month: PLANNED.
-- Exam Kits (study tracker, reminders, progress, exam alerts, best material and videos; government, bank and private exams): BEING RESEARCHED AND BUILT, NOT ON SALE. Offer the waitlist.
-- Telugu Deals: 10 free calculators built; Telegram deals channel; affiliate links are marked #ad.
-- Tab Lifeboat (browser tab saver): IN DEVELOPMENT. AI FinOps + AI Guardrails consulting (AI cost and AI governance for companies): BEING PLANNED; offer a callback.
+FACTS:
+- BotBhai (available now as a free 14-day pilot): AI assistant for gyms, salons and real estate agents for chat (website chat and Telegram today; WhatsApp as soon as Meta approves the business's number) in Telugu, Hindi, English; understands repu/kal = tomorrow; books slots; reminders 24 h and 2 h before; hands over to staff; owner daily list. Pilot start dates are set with Akhil on the callback. Prices, charged only after the pilot and only if the owner says yes: Starter pack ₹999 one time (WhatsApp chat link, QR poster, quick replies, Google Business Profile tidy-up; no monthly fee); Lite ₹1,999 setup + ₹999/month; Standard ₹2,999 setup + ₹1,499/month. Nothing is charged before that. A Social Team add-on (₹999/month) is coming soon. There is no workshop; if asked, say Kalpa Labs does not run workshops.
+- Exam Kits (study tracker, reminders, progress, exam alerts, best material and videos; government, bank and private exams): coming soon. Offer to add them to the early list.
+- Telugu Deals: free tax, SIP and EMI calculators in Telugu; a deals channel is coming soon; affiliate links are always marked #ad.
+- Tab Lifeboat (saves and restores browser tabs): coming soon to Chrome.
+- AI cost and AI governance consulting for companies: on request; offer a call with Akhil.
 - Data: India's DPDP Act followed; data deleted on request.
 
 WHAT YOU DO:
@@ -38,7 +40,7 @@ WHAT YOU DO:
 
 // Which of the 5 languages the visitor typed. Tenglish/Hinglish get an explicit per-turn hint, because models tend to
 // "upgrade" them to Telugu/Hindi script (live test, 5 Nov 2026).
-const TE_LATN = /\b(undi|unda|undaa|ledu|leda|kavali|kaavali|cheppu|cheppandi|chesta|cheyyi|cheyandi|enti|entha|ela|elaa|repu|ninna|ippudu|ipudu|nenu|meeru|naaku|naku|meeku|gurinchi|bagundi|avunu|kadu|kada|emi|ekkada|eppudu|vasta|vastanu|chudandi|telugu lo)\b/gi;
+const TE_LATN = /\b(undi|unda|undaa|ledu|leda|kavali|kaavali|cheppu|cheppandi|chesta|cheyyi|cheyandi|enti|entha|ela|elaa|repu|ninna|ippudu|ipudu|nenu|meeru|naaku|naku|meeku|gurinchi|bagundi|avunu|kadu|kada|emi|ekkada|eppudu|vasta|vastanu|chudandi|telugu lo|unnaru|unnara|unnai|daggara|mandi|entha mandi|cheyyandi|kaavalante|ivvandi|chepthara|cheptara|ayindi|avutundi)\b/gi;
 const HI_LATN = /\b(hai|hain|kya|kal|shaam|subah|milega|milegi|nahi|nahin|haan|mujhe|aap|aapka|kaise|kitna|kitne|chahiye|karna|karo|batao|bataiye|abhi|kab|kahan|scene|accha|theek|bhai|wala|wali)\b/gi;
 export function detectLang(text) {
   const s = String(text || "");
@@ -60,7 +62,7 @@ const HINT = {
 const TOOL = { type: "function", function: { name: "save_callback",
   description: "Save a callback request for Akhil. Only real details the visitor typed, only after they said yes to being contacted. Returns SAVED or NOT SAVED with what is missing.",
   parameters: { type: "object", properties: {
-    name: { type: "string" }, phone: { type: "string" }, interest: { type: "string", description: "salon_pilot, workshop, kits, deals or other" },
+    name: { type: "string" }, phone: { type: "string" }, interest: { type: "string", description: "salon_pilot, starter, kits, deals or other" },
     best_time: { type: "string" }, language: { type: "string" }, notes: { type: "string", description: "one-line summary for Akhil" },
     consent_said_yes: { type: "boolean" } }, required: ["name", "phone", "consent_said_yes"] } } };
 
@@ -137,15 +139,26 @@ function limited(ip, now = Date.now()) {
 
 const json = (status, obj) => new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
+// one JSON line per request for Netlify logs: no message text, no IP (DPDP: we log only what we need)
+const log = (status, t0, extra = {}) => console.log(JSON.stringify({ at: new Date().toISOString(), fn: "chat", status, ms: Date.now() - t0, ...extra }));
+
 export default async (req, context) => {
+  const t0 = Date.now();
+  const res = await handle(req, context);
+  log(res.status, t0);
+  return res;
+};
+
+async function handle(req, context) {
   if (req.method !== "POST") return json(405, { error: "method" });
   const ip = context?.ip || req.headers.get("x-nf-client-connection-ip") || "anon";
   if (limited(ip)) return json(429, { output: "You're sending messages very fast 🙂 Please wait a minute and try again." });
   let body; try { body = await req.json(); } catch { return json(400, { error: "json" }); }
   const text = String(body?.chatInput || "").trim();
   if (!text) return json(400, { error: "empty" });
+  if (text.length > 1000) return json(413, { error: "too long" }); // the box allows 500; anything bigger is not a person typing
   const out = await reply({ chatInput: text, history: body.history });
   return out ? json(200, { output: out }) : json(503, { error: "models unavailable" });
-};
+}
 
 export const config = { path: "/api/chat" };

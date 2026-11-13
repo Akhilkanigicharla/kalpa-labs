@@ -20,16 +20,19 @@ describe("privacy policy matches the extension", () => {
     expect(policy).toContain("use and transfer of information received from Google APIs to any other app will adhere to the Google API Services User Data Policy, including the Limited Use requirements.");
   });
   it("says where data lives, who gets licence data, how to delete, and a DPDP grievance contact", () => {
-    for (const s of ["IndexedDB", "Dodo Payments", "drive.file", "Uninstalling", "Digital Personal Data Protection Act, 2023", "{{CONTACT_EMAIL}}", "no analytics"]) expect(policy).toContain(s);
+    for (const s of ["IndexedDB", "drive.appdata", "Limited Use requirements", "Delete hidden app data", "Uninstalling", "Digital Personal Data Protection Act, 2023", "{{CONTACT_EMAIL}}", "no analytics"]) expect(policy).toContain(s);
   });
   it("loads nothing from other sites", () => {
-    for (const f of ["index.html", "privacy.html", "terms.html"]) expect(site(f)).not.toMatch(/(src|href)="https?:\/\/(?!wa\.me)/);
+    for (const f of ["index.html", "privacy.html", "terms.html"]) expect(site(f)).not.toMatch(/(src|href)="https?:\/\/(?!wa\.me|chromewebstore\.google\.com\/detail\/)/);
   });
 });
 
 describe("landing page and terms", () => {
-  it("prices match the options page", () => {
-    for (const price of options.match(/\$\d+ \/ ₹[\d,]+/g)!) { expect(site("index.html")).toContain(price); expect(site("terms.html")).toContain(price); }
+  it("shows no price and names no payment company until a paid plan really opens (11 Nov 2026)", () => {
+    for (const text of [site("index.html"), site("terms.html"), site("privacy.html"), options]) {
+      expect(text).not.toMatch(/[$₹]\s?[1-9]/);
+      expect(text).not.toMatch(/Dodo|Razorpay|Stripe|merchant of record/i);
+    }
   });
   it("has exactly 3 FAQ and a refund window", () => {
     expect(site("index.html").match(/<details>/g)).toHaveLength(3);

@@ -147,7 +147,7 @@ Code lives in `06-finops/src/`. The ADOPT picks from a7 are `@pydantic/genai-pri
 | F-12 | Dashboard | Netlify static dashboard over Supabase: cost by customer/feature, margin with an uploaded revenue CSV | Click through (15 min) | Numbers equal SQL totals |
 | F-13 | Framework catalogue | `dpdp-2023.json` (Act + Rules duties, dated), ISO 42001 IDs from Probo, our own Art. 50 checklist (Q-B6-04) | — | Every DPDP item cites a section or rule |
 | F-14 | Evidence pack v0 | Monthly HTML/PDF: cost table, model and region inventory, PII-exposure counts, control map (Q-B6-05) | Review the first real one (30 min) | Validator checklist passes |
-| F-15 | PII scan Action | Presidio with an allow-list + Indian mobile/UPI/IFSC recognizers, run in the **customer's** repo, outputs counts and hashes only (Q-B6-03) | — | Synthetic fixtures only. Raw values never leave |
+| F-15 | PII scan Action | Presidio with an allow-list + Indian mobile/UPI/IFSC recognizers, run in the **customer's** repo, outputs counts and hashes only (Q-B6-03) | — | Synthetic fixtures only. Raw values never leave Note (EGM K042.3): the workflow draft is `06-finops/.github-workflow-drafts/pii-scan.yml`; move it to `.github/workflows/` when this ships. |
 | F-16 | First payments | Razorpay payment links for the audit and the pilot | Complete Razorpay KYC with Udyam (45 min, once) | ₹1 test link works |
 
 ### Month 3

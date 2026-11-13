@@ -1,0 +1,109 @@
+# A207 (Akhil, 11 Nov 2026): reel repos part 3, trialled in GitHub's cloud only.
+# claude-mem (Apache-2.0), ECC (MIT), Worktrunk (MIT/Apache-2.0), Agent Reach (MIT, public no-login channels only).
+# Each tool is measured against what we already use (Graft, Superpowers, TEAM.md lanes, plain fetch / Firecrawl).
+# Pinned commits/versions. No logins, no secrets, nothing on Akhil's PC. Writes 00-hq/research/reel-trials-raw.md;
+# Claude reads it and writes the keep/drop note 00-hq/research/reel-trials.md.
+name: reel-trials
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/reel-trials.yml"]
+permissions:
+  contents: write
+concurrency: { group: reel-trials, cancel-in-progress: false }
+env:
+  CM_SHA: 0c488b54e761d7f6f4091b3a6e1958712f13b19d
+  CM_NPM: "15.18.3"
+  ECC_SHA: d2ef2680594f9a17526a6e1a2e18b3d242c5d17b
+  WT_TAG: v0.81.0
+  AR_SHA: c70ae6da5d39bc90e09ad2ae0575ccc89f31e284
+jobs:
+  trial:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Run trial
+        shell: bash
+        run: |
+          # shellcheck disable=SC2129
+          set +e +o pipefail -u  # measure everything; one failing probe must not stop the others
+          out="$PWD/00-hq/research/reel-trials-raw.md"
+          tok() { echo $(( $(wc -c < "$1") / 4 )); }
+          now() { date +%s.%N; }
+          secs() { printf '%.2f' "$(echo "$2 - $1" | bc)"; }
+          get() { mkdir -p "$2" && git -C "$2" init -q && git -C "$2" fetch -q --depth 1 "https://github.com/$1" "$3" && git -C "$2" checkout -q FETCH_HEAD; }
+          lic() { head -c 200 "$1"/LICENSE* 2>/dev/null | tr -s ' \n' ' ' | cut -c1-60; }
+          logs=(00-hq/log/20*.md)
+          rsync -a --exclude node_modules ./ /tmp/repo/
+          {
+            echo "# Reel trials (raw) · $(date -u +%FT%TZ) · commit ${GITHUB_SHA::7}"
+            echo; echo "Tokens ≈ characters ÷ 4. Times are wall-clock seconds on one GitHub runner."
+          } > "$out"
+
+          echo; echo "## 1. claude-mem ${CM_SHA::7} / npm $CM_NPM vs Graft 0.10.1" >> "$out"
+          if get thedotmack/claude-mem /tmp/cm-src "$CM_SHA"; then
+            keys=$(grep -rlE "ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN|GEMINI_API_KEY|OPENROUTER_API_KEY" /tmp/cm-src/src | wc -l)
+            echo "- licence: $(lic /tmp/cm-src); src files reading a model key: $keys" >> "$out"
+          else echo "- clone failed" >> "$out"; fi
+          for p in "claude-mem@$CM_NPM" "@nanonets/graft@0.10.1"; do
+            d=/tmp/np-${p//[@\/.]/_}; mkdir -p "$d"; cd "$d" || exit 1; npm init -y > /dev/null
+            s=$(now); npm install --ignore-scripts --no-audit --no-fund "$p" > install.log 2>&1; rc=$?; e=$(now)
+            pk=$(find node_modules -name package.json -not -path '*/node_modules/*/node_modules/*/node_modules/*' | wc -l)
+            echo "- $p install exit $rc, $(secs "$s" "$e") s, node_modules $(du -sm node_modules 2>/dev/null | cut -f1) MB, ~$pk packages" >> "$out"
+            cd "$GITHUB_WORKSPACE" || exit 1
+          done
+          cd /tmp/np-claude-mem_15_18_3 || exit 1; timeout 60 npx --no-install claude-mem --help > /tmp/cm-help.txt 2>&1; echo "- claude-mem --help exit $?: $(head -c 300 /tmp/cm-help.txt | tr '\n' ' ')" >> "$out"; cd "$GITHUB_WORKSPACE" || exit 1
+          echo "- what a session reads today as memory: HANDOFF.md $(tok 00-hq/HANDOFF.md) tokens, newest log $(tok "${logs[-1]}") tokens" >> "$out"
+
+          echo; echo "## 2. ECC ${ECC_SHA::7} vs Superpowers (vendored)" >> "$out"
+          sk() { # $1 dir: count, total tokens, tokens of description lines (loaded into every session's skill list)
+            n=$(find "$1" -name SKILL.md | wc -l); t=$(find "$1" -name SKILL.md -exec cat {} + | wc -c)
+            dsc=$(find "$1" -name SKILL.md -exec grep -h '^description:' {} + | wc -c)
+            echo "$n skills, all SKILL.md $((t/4)) tokens, description lines $((dsc/4)) tokens"; }
+          if get affaan-m/ECC /tmp/ecc "$ECC_SHA"; then
+            echo "- licence: $(lic /tmp/ecc); full ECC: $(sk /tmp/ecc); agents $(find /tmp/ecc/agents -name '*.md' 2>/dev/null | wc -l), commands $(find /tmp/ecc/commands -name '*.md' 2>/dev/null | wc -l), hooks files $(find /tmp/ecc/hooks -type f 2>/dev/null | wc -l)" >> "$out"
+          else echo "- clone failed" >> "$out"; fi
+          echo "- our vendored ECC subset: $(sk 00-hq/vendor/ecc)" >> "$out"
+          echo "- Superpowers (in use): $(sk 00-hq/vendor/superpowers)" >> "$out"
+
+          echo; echo "## 3. Worktrunk $WT_TAG vs plain git worktree (TEAM.md lanes use separate cloud sessions)" >> "$out"
+          mkdir -p /tmp/wtbin; cd /tmp/wtbin || exit 1; curl -sSLf -o wt.tar.xz "https://github.com/max-sixty/worktrunk/releases/download/$WT_TAG/worktrunk-x86_64-unknown-linux-musl.tar.xz" && tar xf wt.tar.xz; cd "$GITHUB_WORKSPACE" || exit 1
+          WT=$(find /tmp/wtbin -maxdepth 2 -name wt -type f | head -1)
+          echo "- binary: ${WT:-missing}, $( [ -n "$WT" ] && "$WT" --version 2>&1 | head -1)" >> "$out"
+          git -C /tmp/repo config user.email t@t; git -C /tmp/repo config user.name t
+          s=$(now); for i in 1 2 3; do git -C /tmp/repo worktree add -q "/tmp/g$i" -b "g$i" > /dev/null 2>&1; done; e=$(now)
+          echo "- git worktree add x3: $(secs "$s" "$e") s, $(git -C /tmp/repo worktree list | wc -l) worktrees" >> "$out"
+          if [ -n "$WT" ]; then
+            cd /tmp/repo || exit 1; ok=0; s=$(now)
+            for i in 1 2 3; do "$WT" switch --create "w$i" --no-cd < /dev/null > "/tmp/wt$i.txt" 2>&1 && ok=$((ok+1)); done; e=$(now)
+            echo "- wt switch --create x3: $ok/3 ok, $(secs "$s" "$e") s; wt list lines $("$WT" list 2>/dev/null | wc -l); first output: $(head -c 200 /tmp/wt1.txt | tr '\n' ' ')" >> "$out"
+            cd "$GITHUB_WORKSPACE" || exit 1
+          fi
+
+          echo; echo "## 4. Agent Reach ${AR_SHA::7} (public no-login channels) vs plain fetch" >> "$out"
+          if get Panniantong/Agent-Reach /tmp/ar-src "$AR_SHA"; then
+            login=$(grep -lE 'session = "[a-z]|login_' /tmp/ar-src/agent_reach/channels/*.py | wc -l)
+            all=$(grep -lE '^class .*Channel' /tmp/ar-src/agent_reach/channels/*.py | wc -l)
+            echo "- licence: $(lic /tmp/ar-src); channel files $all, of which need a login/session $login" >> "$out"
+            python -m venv /tmp/ar; s=$(now); /tmp/ar/bin/pip install -q /tmp/ar-src > /tmp/ar-install.log 2>&1; rc=$?; e=$(now)
+            echo "- pip install exit $rc, $(secs "$s" "$e") s, venv $(du -sm /tmp/ar | cut -f1) MB" >> "$out"
+            timeout 60 /tmp/ar/bin/agent-reach doctor > /tmp/ar-doc.txt 2>&1; echo "- doctor exit $?, $(wc -l < /tmp/ar-doc.txt) lines" >> "$out"
+            for u in https://example.com https://www.rfc-editor.org/rfc/rfc2606.html; do
+              s=$(now); timeout 60 /tmp/ar/bin/agent-reach read "$u" > /tmp/ar-r.txt 2>&1; rc=$?; e=$(now)
+              s2=$(now); curl -sSL --max-time 30 "$u" | sed -e 's/<[^>]*>//g' | tr -s ' \n' > /tmp/cu.txt; e2=$(now)
+              echo "- read $u: agent-reach exit $rc, $(secs "$s" "$e") s, $(tok /tmp/ar-r.txt) tokens (goes via r.jina.ai) · curl+strip $(secs "$s2" "$e2") s, $(tok /tmp/cu.txt) tokens" >> "$out"
+            done
+          else echo "- clone failed" >> "$out"; fi
+          cat "$out"
+      - name: Save the result
+        run: |
+          git config user.name "Akhilkanigicharla"; git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 00-hq/research/reel-trials-raw.md
+          git commit -qm "A207: reel trials raw numbers" || exit 0
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep 7; done; exit 1

@@ -30,8 +30,9 @@ assert.strictEqual(appr.worlds.find((w) => w.world === "b1").budget, 400000 * PR
 console.log("  ✓ today's plan flags the pending proposal and switches budgets once approved");
 const byId = Object.fromEntries(AGENTS.map((a) => [a.id, a]));
 for (const u of ["b2", "b4", "b5", "b6", "b7"]) assert.notStrictEqual(byId[`${u}.builder`].runs_as, "planned", u);
-assert.strictEqual(byId["b3.builder"].runs_as, "planned");
-console.log("  ✓ worlds with built code have live builders; b3 (no code yet) stays planned");
+assert.notStrictEqual(byId["b3.builder"].runs_as, "planned"); // b3 has code since A206 (03-kits/exam-kits/build.py)
+const planned = AGENTS.filter((a) => a.runs_as === "planned"); assert.ok(planned.length < 5, planned.map((a) => a.id).join()); for (const a of planned) assert.ok(a.spec || /off/i.test(a.mission), a.id + " needs a spec"); console.log("  ✓ fewer than 5 planned, each with a spec (A206)");
+console.log("  ✓ worlds with built code have live builders; b3 builder live too");
 for (const id of ["hq.marketing", "hq.tasks", "hq.sprint", "hq.quality", "b1.salon.social", "b2.invoice", "b4.lifeboat", "b5.calculators", "b6.ingest", "b7.gate"])
   assert.ok(byId[id] && byId[id].runs_as !== "planned", id);
 console.log("  ✓ agents exist for every built roadmap item (marketing, task engine, sprints, quality, social, world engines)");

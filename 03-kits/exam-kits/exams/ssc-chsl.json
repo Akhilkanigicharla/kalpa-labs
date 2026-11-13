@@ -1,0 +1,99 @@
+{
+ "name": "SSC CHSL",
+ "name_te": "ఎస్ఎస్సీ సీహెచ్ఎస్ఎల్",
+ "family": "Central Government",
+ "body": "Staff Selection Commission",
+ "official_url": "https://ssc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Tier 1: 4 sections × 25 questions × 50 marks = 200 marks, 60 minutes, −0.50 per wrong answer. Tier 2: module-wise test (−1 per wrong answer) plus skill/typing test.",
+ "papers": [
+  {
+   "name": "Tier 1",
+   "sections": [
+    {
+     "name": "General intelligence",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Analogy, classification, series",
+      "Coding-decoding, blood relations, directions",
+      "Venn diagrams, non-verbal reasoning"
+     ]
+    },
+    {
+     "name": "General awareness",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "History, polity, geography, economy",
+      "General science",
+      "Current affairs"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude (basic arithmetic)",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Number system, percentage, ratio, average",
+      "Profit-loss, interest, time-work, speed-distance",
+      "Algebra, geometry, mensuration, trigonometry, DI"
+     ]
+    },
+    {
+     "name": "English language",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Comprehension and cloze",
+      "Error spotting, fill-ups, vocabulary",
+      "Voice, narration, sentence improvement"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tier 2",
+   "sections": [
+    {
+     "name": "Mathematical abilities & reasoning",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Arithmetic and advanced maths",
+      "Reasoning and general intelligence"
+     ]
+    },
+    {
+     "name": "English & general awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Grammar, vocabulary, comprehension",
+      "Static GK and current affairs"
+     ]
+    },
+    {
+     "name": "Computer knowledge & skill/typing test",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Computer basics, MS Office, internet",
+      "Typing / data entry skill test"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ssc.gov.in",
+  "https://www.pw.live/ssc/exams/ssc-chsl-syllabus",
+  "https://www.adda247.com/jobs/ssc-chsl-exam-syllabus/"
+ ],
+ "id": "ssc-chsl",
+ "checked": "2026-11-06"
+}

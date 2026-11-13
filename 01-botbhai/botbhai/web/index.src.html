@@ -47,11 +47,11 @@ body{margin:0;background-color:var(--bg);background-image:radial-gradient(color-
 header{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;gap:16px 24px;align-items:end;justify-content:space-between;background:radial-gradient(circle at 100% 0,transparent 0 70px,color-mix(in srgb,var(--gold) 45%,var(--hero)) 71px 72px,transparent 73px 84px,color-mix(in srgb,var(--gold) 30%,var(--hero)) 85px 86px,transparent 87px),var(--hero);color:var(--hero-fg);border-radius:var(--r-l);padding:24px 20px 28px;box-shadow:0 18px 40px -22px #1D3A25}
 header::before,header::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--temple);opacity:.9}
 header::before{top:0}header::after{bottom:0;transform:scaleY(-1)}
-.eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+.eyebrow{font:600 11.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,4.4vw,40px);line-height:1.08;margin:0;letter-spacing:.005em;text-wrap:balance}
 h1 span{color:var(--gold)}
 header .sub{color:var(--hero-mute)}
-.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.sub{color:var(--muted);margin:8px 0 0;max-width:62ch}
 .niches{display:flex;flex-wrap:wrap;gap:8px}
 .niche{min-height:44px;border:1.5px solid color-mix(in srgb,var(--hero-fg) 35%,transparent);background:transparent;color:var(--hero-fg);border-radius:999px;padding:8px 16px;font:600 14px var(--f-body);cursor:pointer}
 .niche[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1E2A1F}
@@ -65,14 +65,14 @@ header .sub{color:var(--hero-mute)}
 .avatar{width:40px;height:40px;border-radius:50%;background:var(--hero);box-shadow:0 0 0 2px var(--gold);display:grid;place-items:center;font:400 16px var(--f-display);color:var(--gold);flex:none}
 .who{min-width:0}
 .wa-top b{display:block;font-size:16px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.wa-top small{display:flex;align-items:center;gap:6px;color:var(--hero-mute);font-size:12px}
+.wa-top small{display:flex;align-items:center;gap:8px;color:var(--hero-mute);font-size:12px}
 .dot{width:8px;height:8px;border-radius:50%;background:#6FD08F;flex:none}
 .mode{margin-left:auto;display:flex;gap:4px;padding:4px;border-radius:999px;background:color-mix(in srgb,var(--hero-fg) 12%,transparent)}
-.mode button{width:40px;height:40px;display:grid;place-items:center;background:transparent;color:var(--hero-fg);border:0;border-radius:999px;cursor:pointer}
+.mode button{width:44px;height:44px;display:grid;place-items:center;background:transparent;color:var(--hero-fg);border:0;border-radius:999px;cursor:pointer}
 .mode button[aria-pressed="true"]{background:var(--gold);color:#1E2A1F}
 .mode svg,.round svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .langs{display:flex;gap:4px;padding:8px 12px 0;background:var(--chat-bg)}
-.langs button{min-height:32px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:600 13px var(--f-body);cursor:pointer}
+.langs button{min-height:44px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:600 13px var(--f-body);cursor:pointer}
 .langs button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
 .msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
 .b{max-width:86%;padding:8px 12px 4px;border-radius:var(--r-m);color:var(--chat-ink);font-size:15px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px 0 color-mix(in srgb,var(--fg) 10%,transparent)}
@@ -91,9 +91,9 @@ header .sub{color:var(--hero-mute)}
 .quick{display:flex;gap:8px;overflow-x:auto;padding:8px 12px 0;scrollbar-width:none;background:var(--chat-bg)}
 .quick:empty{display:none}
 .quick::-webkit-scrollbar{display:none}
-.quick button{flex:none;background:var(--panel);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;min-height:40px;padding:8px 16px;font:600 14px var(--f-body);cursor:pointer;white-space:nowrap}
+.quick button{flex:none;background:var(--panel);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;min-height:44px;padding:8px 16px;font:600 14px var(--f-body);cursor:pointer;white-space:nowrap}
 .compose{display:flex;gap:8px;padding:8px 12px 12px;background:var(--chat-bg)}
-.compose input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font:16px var(--f-body);background:var(--panel);color:var(--chat-ink)}
+.compose input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:12px 16px;font:16px var(--f-body);background:var(--panel);color:var(--chat-ink)}
 .round{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:0;background:var(--accent);color:var(--accent-fg);cursor:pointer;flex:none}
 .round.ghost{background:var(--panel);color:var(--accent);border:1px solid var(--line)}
 .round.live{background:var(--madder);color:#fff;border-color:var(--madder)}
@@ -114,37 +114,37 @@ header .sub{color:var(--hero-mute)}
 .voice p{margin:0;max-width:32ch;font-size:13px;color:var(--muted)}
 /* console */
 .console{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column}
-.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);padding:10px;overflow-x:auto;scrollbar-width:thin}
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);padding:12px;overflow-x:auto;scrollbar-width:thin}
 .tab{min-height:44px;border:1px solid transparent;background:none;color:var(--muted);font:600 14px var(--f-body);padding:8px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .tab[aria-selected="true"]{color:var(--hero-fg);background:var(--hero);border-color:var(--hero)}
 .pane{padding:16px;display:flex;flex-direction:column;gap:16px;min-width:0}
 .pane[hidden]{display:none}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 @media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.kpi{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r-m);padding:16px 12px 10px;background:var(--panel)}
+.kpi{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r-m);padding:16px 12px 12px;background:var(--panel)}
 .kpi::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(135deg,var(--world) 0 25%,transparent 25% 50%,var(--world) 50% 75%,transparent 75%) 0 0/8px 6px,color-mix(in srgb,var(--world) 30%,transparent)}
 .kpi b{display:block;font:400 28px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
-.kpi span{font:600 11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.kpi span{font:600 11px var(--f-mono);color:var(--muted)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.toolbar select,.toolbar input{min-height:44px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--r-s);padding:8px 10px;font:15px var(--f-body);min-width:0}
+.toolbar select,.toolbar input{min-height:44px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--r-s);padding:8px 12px;font:15px var(--f-body);min-width:0}
 .btn{min-height:44px;border:0;border-radius:999px;padding:8px 16px;font:600 14px var(--f-body);cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .spacer{flex:1}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m)}
 table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);background:var(--soft)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--f-mono);color:var(--muted);background:var(--soft)}
 td.mono{font-family:var(--f-mono);font-size:12.5px}
 .pill{display:inline-block;padding:2px 8px;border-radius:999px;font:600 12px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--fg);border:1.5px solid currentColor}
 /* state pills: text = state colour 80% + 20% ink, so AA holds in both themes */
 .pill.hot{color:color-mix(in srgb,var(--hot) 80%,var(--fg));background:color-mix(in srgb,var(--hot) 10%,var(--panel))}.pill.warm{color:color-mix(in srgb,var(--warm) 80%,var(--fg));background:color-mix(in srgb,var(--warm) 10%,var(--panel))}.pill.cold{color:color-mix(in srgb,var(--cold) 80%,var(--fg));background:color-mix(in srgb,var(--cold) 10%,var(--panel))}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:1px 6px;font-size:12px;color:var(--muted);margin:1px 2px 1px 0}
-.sample{font-size:11px;color:var(--muted);font-style:italic}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:1px 8px;font-size:12px;color:var(--muted);margin:1px 2px 1px 0}
+.sample{font-size:11px;color:var(--muted)}
 .note{font-size:13px;color:var(--muted);margin:0}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--hero);color:var(--hero-fg);border:1px solid var(--gold);padding:10px 16px;border-radius:999px;max-width:calc(100vw - 32px);font-weight:600;font-size:14px;z-index:9}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--hero);color:var(--hero-fg);border:1px solid var(--gold);padding:12px 16px;border-radius:999px;max-width:calc(100vw - 32px);font-weight:600;font-size:14px;z-index:9}
 pre{background:var(--soft);border:1px solid var(--line);border-radius:var(--r-m);padding:12px;overflow-x:auto;font:12.5px/1.55 var(--f-mono);margin:0}
-.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
-.steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start}
+.steps{display:grid;gap:12px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start}
 .steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--hero);color:var(--gold);display:grid;place-items:center;font:600 13px var(--f-mono);box-shadow:0 0 0 2px var(--gold)}
 .steps b{display:block}
 h2{font:400 21px/1.2 var(--f-display);margin:0}
@@ -155,18 +155,31 @@ h2{font:400 21px/1.2 var(--f-display);margin:0}
 .arch b{display:block;font-size:14.5px;color:var(--fg)}
 footer{color:var(--muted);font-size:12.5px}
 .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
-.cardgrid figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.cardgrid figure{margin:0;display:flex;flex-direction:column;gap:8px}
 .cardgrid img{width:100%;height:auto;aspect-ratio:1;border-radius:var(--r-m);border:1px solid var(--line);background:var(--bg)}
 .cardgrid figcaption{font-size:12.5px;color:var(--muted)}
-body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
+.offer{margin-top:28px;display:flex;flex-direction:column;gap:12px}.offer h2{margin:0}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.tier{border:1px solid var(--line);border-radius:var(--r-m);padding:16px;background:var(--panel);display:flex;flex-direction:column;gap:6px}
+.tier.up{border-color:var(--world);box-shadow:inset 0 3px 0 var(--world)}.tier h3{margin:0;font-size:17px}
+.tier .price{font:600 22px/1.2 var(--f-body);color:var(--fg);margin:0}.tier .price small{font-size:13px;color:var(--muted);font-weight:400}
+.tier p{margin:0;font-size:13.5px;color:var(--muted)}
+.offer .btn{display:inline-flex;align-items:center;text-decoration:none}
+.compare{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;font-size:14px}
+.crow{display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid var(--line)}.crow:first-child{border-top:0}
+.crow>span{padding:10px 12px;overflow-wrap:anywhere}.crow>span:last-child{color:var(--fg);font-weight:600}.crow [role=rowheader]{color:var(--muted)}
+.chead{background:var(--soft,var(--bg));font-weight:600}
+@media (max-width:520px){.crow{grid-template-columns:1fr 1fr}.crow [role=rowheader]{grid-column:1/-1;padding-bottom:0;font-size:12.5px}.chead [role=columnheader]:first-child{display:none}}
+body.embed{padding:0}body.embed header,body.embed .console,body.embed footer,body.embed .offer{display:none}body.embed .grid{grid-template-columns:minmax(0,1fr)}body.embed .phone{height:100vh;max-height:none;border:0;border-radius:0}
 </style>
 
 <div class="wrap">
   <header>
     <div>
-      <h1>Bot<span>Bhai</span>: your business, booking customers while you sleep</h1>
+      <h1>Bot<span>Bhai</span>: your front desk that answers and books, in 5 languages, set up and run by us</h1>
       <p class="eyebrow">Kalpa Labs · b1 · live demo</p>
-      <p class="sub">Pick a business, chat as a customer on the phone, and watch the lead appear in the owner's console. Same engine runs on real WhatsApp, the website chat and the voice agent.</p>
+      <p class="sub">Replies on WhatsApp in English, Telugu, Hindi, Tenglish or Hinglish, books real slots and reminds customers. We set it up with your prices and keep it running: no software to learn, no per-staff fee. <a href="#offer">See prices</a>.</p>
+      <p class="sub">Try it now: pick a business, chat as a customer on the phone, and watch the lead appear in the owner's console. Same engine runs on real WhatsApp, the website chat and the voice agent.</p>
     </div>
     <div class="niches" id="niches" role="group" aria-label="Business type"></div>
   </header>
@@ -292,6 +305,22 @@ body.embed{padding:0}body.embed header,body.embed .console,body.embed footer{dis
       </div>
     </section>
   </div>
+  <section class="offer" id="offer" aria-labelledby="offer-h">
+    <h2 id="offer-h">Start small. Upgrade when it pays.</h2>
+    <p class="eyebrow">Prices · no per-staff fee</p>
+    <div class="tiers"><!--LADDER--></div>
+    <p class="note">Lite and Standard: free 14-day pilot first, then stop any month (no lock-in). Setup fee is paid half on signing, half at go-live. WhatsApp's own message fees (about <!--FEES-->) go from you to Meta on your own account; we add no markup. No per-staff fee: same price whether you have 2 staff or 12.</p>
+    <div class="compare" id="compare" role="table" aria-label="Software you must learn vs BotBhai">
+      <div class="crow chead" role="row"><span role="columnheader"></span><span role="columnheader">Software you must learn</span><span role="columnheader">BotBhai</span></div>
+      <div class="crow" role="row"><span role="rowheader">Who sets it up</span><span role="cell">You and your staff</span><span role="cell">We do, with your price list</span></div>
+      <div class="crow" role="row"><span role="rowheader">Who answers at 11 PM</span><span role="cell">Nobody, until morning</span><span role="cell">BotBhai, and it books the slot</span></div>
+      <div class="crow" role="row"><span role="rowheader">Languages</span><span role="cell">Usually English menus</span><span role="cell">English, Telugu, Hindi, Tenglish, Hinglish</span></div>
+      <div class="crow" role="row"><span role="rowheader">Staff training</span><span role="cell">Needed</span><span role="cell">None: it works inside WhatsApp</span></div>
+      <div class="crow" role="row"><span role="rowheader">Price grows with staff</span><span role="cell">Often per staff or per seat</span><span role="cell">No per-staff fee</span></div>
+      <div class="crow" role="row"><span role="rowheader">Your billing software</span><span role="cell">Move everything into it</span><span role="cell">Keep it; BotBhai sits in front</span></div>
+    </div>
+    <p><a class="btn" href="https://kalpalabs.dpdns.org/#signup">Ask for the free 14-day pilot</a></p>
+  </section>
   <footer>BotBhai by Kalpa Labs · demo data is fictional; business names are examples.</footer>
 </div>
 

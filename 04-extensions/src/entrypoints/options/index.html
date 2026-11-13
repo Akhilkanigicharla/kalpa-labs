@@ -36,6 +36,7 @@
       <section class="card" aria-labelledby="h-file">
         <h2 id="h-file">Backup file</h2>
         <p>One file with every saved session. Keep it in Drive, email it to yourself, or copy it to a new computer.</p>
+        <p id="backup-age" class="hint" role="status"></p>
         <button id="download" type="button" class="primary">Download backup file</button>
         <p id="download-msg" class="hint" role="status"></p>
         <label class="file">Restore from a backup file
@@ -47,7 +48,10 @@
 
       <section class="card" aria-labelledby="h-import">
         <h2 id="h-import">Move in from OneTab or Session Buddy</h2>
-        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup. You see the count before anything is saved.</p>
+        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup, or open the file. You see the count before anything is saved.</p>
+        <label class="file">Open a OneTab or Session Buddy file
+          <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" />
+        </label>
         <textarea id="importText" rows="4" aria-label="OneTab text or Session Buddy JSON" placeholder="https://example.com | Example"></textarea>
         <p id="preview" class="hint" role="status"></p>
         <button id="doImport" type="button" disabled>Import</button>
@@ -56,7 +60,7 @@
       <section class="card" aria-labelledby="h-list">
         <div class="row"><h2 id="h-list">Saved sessions</h2>
           <input id="q" type="search" placeholder="Search names" aria-label="Search saved sessions" /></div>
-        <ul id="list" class="sessions" aria-live="polite"></ul>
+        <ul id="list" class="sessions" aria-live="polite"><li class="empty">Loading…</li></ul>
       </section>
       <section class="card" aria-labelledby="h-find">
         <h2 id="h-find">Find a tab</h2>
@@ -70,11 +74,28 @@
         <span class="eyebrow">Pro · opens soon</span>
         <ul class="ticks">
           <li>90 days of snapshot history: go back to any day</li>
+          <li>Backup to your own Google Drive every hour, and restore on any computer</li>
           <li>A backup file every day, saved by itself to Downloads/Tab Lifeboat</li>
           <li>Close duplicate tabs and tabs you haven't opened for a week, with an undo</li>
           <li>"Where did this tab go?": when a page was last open, and when it vanished</li>
         </ul>
         <div id="pro-tools" hidden>
+          <section class="drive" aria-labelledby="h-drive">
+            <h3 id="h-drive">Google Drive backup</h3>
+            <p id="drive-state" class="hint" role="status">Off. Your tabs are only on this computer.</p>
+            <div class="row">
+              <button id="drive-connect" type="button" class="primary">Connect Google Drive</button>
+              <button id="drive-now" type="button" hidden>Back up now</button>
+              <button id="drive-off" type="button" class="ghost" hidden>Disconnect</button>
+            </div>
+            <p id="drive-msg" class="hint" role="status" aria-live="polite"></p>
+            <details id="drive-box" hidden>
+              <summary>Restore from Google Drive</summary>
+              <p class="hint">Every backup from the last 2 days, then one a day for 30 days. Restoring adds sessions; it never doubles or deletes any.</p>
+              <ul id="drive-files" class="sessions" aria-live="polite"></ul>
+            </details>
+            <p class="hint">Saved in a hidden Tab Lifeboat folder in your own Google Drive. Only Tab Lifeboat can open it. Kalpa Labs never sees your tabs.</p>
+          </section>
           <label class="check"><input id="daily" type="checkbox" /> Save a backup file every day</label>
           <p id="daily-msg" class="hint" role="status"></p>
           <p id="clean-preview" class="hint" role="status"></p>
@@ -82,13 +103,12 @@
           <input id="where" type="url" placeholder="Paste a page address" aria-label="Where did this tab go" />
           <p id="where-msg" class="hint" role="status"></p>
         </div>
-        <p class="prices"><span>Founding lifetime <b>$19 / ₹899</b> (first 50)</span><span>Yearly <b>$12 / ₹499</b></span><span>Lifetime <b>$29 / ₹1,199</b></span></p>
-        <p class="hint">A licence key, not a subscription: nothing renews by itself.</p>
+        <p class="hint">Not on sale yet. The price will be shown here before Pro opens.</p>
       </section>
 
       <section class="card" aria-labelledby="h-priv">
         <h2 id="h-priv">Privacy</h2>
-        <p>Your tabs stay on this computer. No account, no analytics, no servers. Tab Lifeboat only uses the tabs, tab groups, alarms and storage permissions. Pro's daily backup file also asks for Downloads permission, only when you turn it on.</p>
+        <p>Your tabs stay on this computer. No account, no analytics, no servers. Tab Lifeboat only uses the tabs, tab groups, alarms and storage permissions. Pro's daily backup file also asks for Downloads permission, and Google Drive backup asks to use your Google account, each only when you turn it on. Drive backups go to a hidden folder in your own Google Drive; Kalpa Labs never receives them.</p>
       </section>
     </main>
     <script type="module" src="./main.ts"></script>

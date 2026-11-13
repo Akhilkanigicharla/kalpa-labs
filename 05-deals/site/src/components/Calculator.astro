@@ -40,7 +40,7 @@ const rows = c.compute(defaults(c));
       }));
     };
     form.addEventListener("input", run);
-    form.addEventListener("submit", (e) => e.preventDefault()); // no inline onsubmit: the CSP allows no inline script
+    form.addEventListener("submit", (e) => e.preventDefault()); // Enter key must not reload the page
   }
 </script>
 <style>

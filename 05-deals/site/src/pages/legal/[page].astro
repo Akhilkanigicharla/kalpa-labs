@@ -4,7 +4,7 @@ import { LEGAL } from "../../lib/kits";
 export function getStaticPaths() { return Object.keys(LEGAL).map((page) => ({ params: { page } })); }
 const p = LEGAL[Astro.params.page!];
 ---
-<Base title={`${p.title} | Kalpa Labs`} description={`${p.title} for Kalpa Labs calculators and kits.`} lang="en" path={`/legal/${Astro.params.page}/`} noAlt>
+<Base title={`${p.title} | Kalpa Labs calculators and kits`} description={`${p.title} for Kalpa Labs calculators and kits.`} lang="en" path={`/legal/${Astro.params.page}/`} noAlt>
   <h1>{p.title}</h1>
   <div class="card">{p.body.map((b) => <p>{b}</p>)}</div>
   <p class="muted small">Last updated 16 Oct 2026.</p>

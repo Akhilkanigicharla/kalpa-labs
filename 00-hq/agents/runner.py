@@ -5,44 +5,36 @@ Queues: 00-hq/tasks/<world>.json; the Action runs one job per world in parallel.
 the owner agent drafts the deliverable with free models (Groq → OpenRouter → Hugging Face router), reading the repo
 files named in the task and its agency-agents playbook. Vigil (a second free model) checks it against Kalpa rules.
 PASS → 00-hq/knowledge/<id>.md + status "review"; FIX → status "todo" with Vigil's notes (max 2 retries, then "rejected").
-The Action commits the changes. No web search (YouTube/Reddit/GitHub links named in a task are read through reach.py, no login): agents must mark any fact they cannot see in the repo as UNVERIFIED.
+The Action commits the changes. No web search: agents must mark any fact they cannot see in the repo as UNVERIFIED.
 Standard library only. Run: python3 00-hq/agents/runner.py --world b1 [--max N] [--dry-run]
 """
 import json, os, re, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
-
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import reach  # YouTube/Reddit/GitHub links in a task are read through Agent-Reach (no login), see reach.py
+import memory  # noqa: E402  A171 lesson memory
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b8.json, hq.json
-WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "hq"]
+TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b7.json, hq.json
+WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "hq"]
 KNOW = os.path.join(ROOT, "00-hq/knowledge")
 MAX_TASKS = 3
+MAX_CONTEXT_CAP = 40000  # a task may ask for more ("context_chars"), e.g. EGM goldfish reviews of a whole PLAN.md; Groq 413s then fall back to Gemini
 MAX_CONTEXT = 7000  # Groq free tier rejects bigger requests (HTTP 413)  # characters of repo files given to the worker
 
 MODELS = [  # all free; first one with a key that answers wins
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b"),
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-20b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
-    # Extra free OpenRouter backups (listed free in openrouter.ai/api/v1/models on 7 Nov 2026); "openrouter/free" routes to any free model.
-    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "google/gemma-4-31b-it:free"),
-    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "openrouter/free"),
     # Google Gemini API free tier (no card; about 10-15 requests/min, 1,500/day; free-tier text may be used by Google to
     # train, so agents never get customer personal data). Half the worlds start here (Akhil, 6 Nov 2026: 50-50 with Google).
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash-lite"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-flash-lite-latest"),
-    # Cloudflare Workers AI free: 10,000 neurons/day shared, resets 00:00 UTC (cloudflare.com/plans + developersdigest, checked
-    # 12 Nov 2026). Needs secrets CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID; skipped until both exist. Last-resort backup.
-    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-120b"),
-    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-20b"),
 ]
 VIGIL_MODELS = [
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "qwen/qwen3.8-27b"),
     ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "nvidia/nemotron-3.5-super-vl:free"),
     ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "gemini-3.5-flash-lite"),
-    ("CLOUDFLARE_API_TOKEN", "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions", "@cf/openai/gpt-oss-20b"),
 ]
 
 RULES = """KALPA RULES (never break): free tools only; never invent prices, customers, results or dates; any fact you cannot see in the
@@ -69,13 +61,11 @@ def call(models, messages, env, post):
     for key, url, model in models:
         if not env.get(key):
             continue
-        if "{CLOUDFLARE_ACCOUNT_ID}" in url:  # account id is part of the Cloudflare URL
-            if not env.get("CLOUDFLARE_ACCOUNT_ID"):
-                continue
-            url = url.replace("{CLOUDFLARE_ACCOUNT_ID}", env["CLOUDFLARE_ACCOUNT_ID"])
         try:
             hdr = {"Authorization": f"Bearer {env[key]}", "Content-Type": "application/json"}
-            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 4000}
+            pay = {"model": model, "messages": messages, "temperature": 0.3, "max_tokens": 8000}
+            if "generativelanguage" in url:  # Gemini thinks inside max_tokens: keep thinking short so the answer fits
+                pay["reasoning_effort"] = "low"
             try:
                 body = post(url, hdr, pay)
             except urllib.error.HTTPError as e:
@@ -83,8 +73,16 @@ def call(models, messages, env, post):
                     raise
                 time.sleep(float(env.get("KL_RETRY_WAIT", 30)))  # free per-minute limit: wait once, retry
                 body = post(url, hdr, pay)
-            text = (body.get("choices") or [{}])[0].get("message", {}).get("content") or ""
-            text = re.sub(r"<think>[\s\S]*?</think>", "", text).strip()
+            choice = (body.get("choices") or [{}])[0]
+            text = choice.get("message", {}).get("content") or ""
+            if choice.get("finish_reason") == "length":  # ran out of room mid-answer: never accept half a draft
+                print(f"  model {model} cut off (finish_reason=length), trying the next model", file=sys.stderr)
+                continue
+            text = re.sub(r"<think>[\s\S]*?</think>", "", text)
+            if "<think>" in text:  # opened thinking that never closed: the answer is missing
+                print(f"  model {model} returned unclosed <think>, trying the next model", file=sys.stderr)
+                continue
+            text = text.strip()
             if text:
                 return text, model
         except Exception as e:  # next model; never print keys
@@ -98,8 +96,11 @@ def http_post(url, headers, payload):
         return json.load(r)
 
 
-def read_context(paths, root=ROOT, limit=None):
-    limit = MAX_CONTEXT if limit is None else limit
+def context_limit(task):
+    return min(int(task.get("context_chars", MAX_CONTEXT)), MAX_CONTEXT_CAP)
+
+
+def read_context(paths, root=ROOT, limit=MAX_CONTEXT):
     out, used = [], 0
     for p in paths or []:
         full = os.path.normpath(os.path.join(root, p))
@@ -132,6 +133,12 @@ def pick(queue, n):
     return todo[:n]
 
 
+def count_items(text):
+    """Distinct numbered items: '1.', '2)', '**3.**', '| 4 |' at the start of a line."""
+    nums = re.findall(r"^\s*(?:[-*]\s*)?(?:\*\*)?\|?\s*(\d{1,3})\s*(?:[.)|]|\*\*)", text, re.M)
+    return len({int(n) for n in nums})
+
+
 def vigil_ok(verdict):
     return bool(re.match(r"\s*PASS\b", verdict or "", re.I))
 
@@ -140,28 +147,29 @@ def work(task, env, post=http_post, root=ROOT):
     sys_msg = (f"You are {task.get('owner', 'a Kalpa Labs agent')}, an agent of Kalpa Labs (Hyderabad, one founder, Akhil). "
                f"Write the finished deliverable, ready to use, not a plan to make it.\n{RULES}\n{style_rules(root)}\n"
                + (f"\nYOUR PLAYBOOK:\n{playbook(task.get('playbook'), root)}" if task.get("playbook") else ""))
-    try:  # Autoresearch ON (Akhil, 11 Nov 2026): kept + pending playbook lines from autoresearch-ledger.json. Add-only;
-        import autoresearch  # compose() refuses output that lost a KALPA RULES line. Lazy import (autoresearch imports runner).
-        sys_msg = autoresearch.compose(sys_msg, task.get("owner", ""), autoresearch.load_ledger())
-    except Exception as e:  # a bad ledger never stops an agent
-        print(f"autoresearch overlay skipped: {e}", file=sys.stderr)
     user = f"TASK {task['id']} ({task.get('world', 'hq')}): {task['title']}\n\n{task.get('details', '')}"
     if task.get("vigil_notes"):
         user += f"\n\nYour last draft was sent back by Vigil. Fix exactly this:\n{task['vigil_notes']}"
-    web = reach.context_for(f"{task['title']}\n{task.get('details', '')}", MAX_CONTEXT // 2)  # '' when no links
-    ctx = read_context(task.get("read"), root, MAX_CONTEXT - len(web))
+    lessons = memory.recall(task.get("world", "hq"), f"{task['title']} {task.get('details', '')}", root=root)
+    print(f"{task['id']}: {len(lessons)} lessons recalled")
+    if lessons:
+        user += "\n\nLESSONS FROM PAST TASKS (Vigil's earlier fixes; follow them):\n" + "\n".join(f"- {l}" for l in lessons)
+    ctx = read_context(task.get("read"), root, context_limit(task))
     if ctx:
         user += f"\n\nREPO FILES (the truth about what is built):\n{ctx}"
-    if web:
-        user += f"\n\n{web}"
     draft, model = call(MODELS, [{"role": "system", "content": sys_msg}, {"role": "user", "content": user}], env, post)
     if not draft:
         return None
+    need = int(task.get("min_items") or 0)
+    if need:  # e.g. a 20-row audit: a short draft goes back as a fix without spending a Vigil call
+        got = count_items(draft)
+        if got < need:
+            return {"draft": draft, "model": model, "verdict": f"FIX: incomplete, {got} of {need} required items. Write all {need}, numbered 1 to {need}.", "vmodel": "runner"}
     check = (f"You are Vigil, Kalpa Labs' fact and rules checker. {RULES}\nCheck the DRAFT for: invented facts not marked "
              "UNVERIFIED (facts that appear in the REPO FILES are verified), broken rules, personal data, unfinished parts, wrong language. Minor style issues are NOT a reason to fail. "
              "Answer 'PASS' or 'FIX:' followed by at most 5 short bullet fixes.")
     verdict, vmodel = call(VIGIL_MODELS, [{"role": "system", "content": check},
-                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:5000]}\n\n{web[:2000]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
+                                          {"role": "user", "content": f"TASK: {task['title']}\n\nREPO FILES (facts found here are VERIFIED, do not flag them):\n{ctx[:max(5000, context_limit(task))]}\n\nDRAFT:\n{draft[:9000]}"}], env, post)
     return {"draft": draft, "model": model, "verdict": verdict, "vmodel": vmodel}
 
 
@@ -185,6 +193,7 @@ def apply(task, result, root=ROOT):
         return "review"
     task["tries"] = task.get("tries", 0) + 1
     task["vigil_notes"] = result["verdict"][:1500]
+    memory.store(task.get("world", "hq"), task["id"], memory.lesson_from_verdict(result["verdict"]), root)
     task["status"] = "rejected" if task["tries"] >= 3 else "todo"
     return task["status"]
 

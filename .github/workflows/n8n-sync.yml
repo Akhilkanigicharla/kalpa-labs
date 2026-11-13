@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       create_credentials: { description: "create n8n credentials from GitHub secrets (yes/no)", default: "no" }
+      runs_only: { description: "only list the latest n8n runs, change nothing (yes/no)", default: "no" }
   push:
     branches: [main]
     paths: ["00-hq/n8n-selfhost/workflows/**", "00-hq/n8n-selfhost/sync.py"]
@@ -23,7 +24,8 @@ jobs:
             c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 "${{ vars.N8N_SELF_URL }}/api/v1/workflows" || true)
             echo "try $i: api $c"; [ "$c" = "401" ] || [ "$c" = "200" ] && exit 0; sleep 10
           done; echo "n8n API not ready after 4 min"; exit 1
-      - run: python3 00-hq/n8n-selfhost/sync.py
+      - run: node 00-hq/n8n-selfhost/test_ceo_update.js
+      - run: python3 00-hq/n8n-selfhost/sync.py ${{ github.event.inputs.runs_only == 'yes' && '--runs' || '' }}
         env:
           N8N_SELF_URL: ${{ vars.N8N_SELF_URL }}
           N8N_SELF_API_KEY: ${{ secrets.N8N_SELF_API_KEY }}

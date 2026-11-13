@@ -42,6 +42,8 @@ New pages and screens: use the `hallmark` skill with our design system as the lo
 ## 5. Security skills
 - Allowed for **defensive** work on **our own** code: diff review, threat modelling, secrets checks.
 - Use what we already have: the vendored `security-audit` skill (Cloudflare, MIT) and Claude Code's built-in `/security-review` command. Run `security-audit` on a product's code before its Depth item is ticked (go-live).
+- Compared 13 Nov 2026 (A205): our `.claude/skills/security-audit` has the same 20 files as upstream `cloudflare/security-audit-skill` (MIT, © Cloudflare); upstream's last change is 14 Sep 2026, before our 18 Oct copy, so no steps are missing. Re-check upstream before each go-live audit.
+- Two secret scanners run in `quality.yml` on every push and PR: gitleaks (MIT, whole history) and TruffleHog v3.99.9 (AGPL-3.0, run unmodified as a CI tool only, never copied into a product; new commits only, `--no-verification` so no candidate key is ever sent anywhere; download checked against its sha256).
 - Never point them at systems we don't own. No offensive tooling, no scanning other people's sites.
 - Anthropic's own `claude-security` plugin is proprietary ("All rights reserved"): never copy it into this repo. The repo called "Anthropic-Cybersecurity-Skills" is a community project, not by Anthropic.
 
@@ -50,6 +52,12 @@ Read the list, don't install anything from it without its own verdict here. Ten 
 
 ## 7. OpenViking
 Skipped. Its good idea (read a short summary before the full file) we already do with each world's `README.md` label card, `PLAN.md` and the roadmap.
+
+## 8. Scrapling (D4Vinci/Scrapling, BSD-3, checked 8 Nov 2026)
+Our standard scraper when a job truly needs one (adopted in `docs/toolkit/TOOLKIT.md`, not yet needed in code: today's fetchers are a few lines of urllib, and Ponytail says no dependency for that).
+- Only public pages whose terms and robots.txt allow it: price and plan pages, government data, our own sites. Never Google Maps, Justdial, Instagram, LinkedIn or anyone's personal numbers (CLAUDE.md rule 4).
+- Use its plain `Fetcher` / parser only. **Never its stealth or anti-bot / Cloudflare-bypass modes**: if a site blocks bots (e.g. adda247, prepp for the kit link checker), we record "bot-blocked" and link it as is; we never get around the block.
+- Run it in GitHub Actions (`pip install scrapling`), never on Akhil's PC; identify ourselves in the User-Agent and keep to one request every few seconds.
 
 ## Enforcement
 `.claude/settings.json` deny list (browser profile folders, Claude in Chrome), `enableAllProjectMcpServers: false`, and the test `node 00-hq/agents/tooling.test.mjs`. A rule written only in prose is a wish; a deny rule or a test is a lock.

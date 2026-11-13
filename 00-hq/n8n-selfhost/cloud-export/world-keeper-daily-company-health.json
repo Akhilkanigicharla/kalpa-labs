@@ -1,0 +1,268 @@
+{
+ "name": "World Keeper (daily company health)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true,
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "12a58ae9-1a98-45a5-902a-b9bccbf884ea",
+   "name": "Daily 8:20 IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "20 8 * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "7df64880-b441-43a8-bf85-1d08d8068ba8",
+   "name": "GitHub CI Runs",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/Akhilkanigicharla/kalpa-labs/actions/runs?per_page=40&branch=main",
+    "authentication": "predefinedCredentialType",
+    "nodeCredentialType": "githubOAuth2Api",
+    "options": {
+     "response": {
+      "response": {
+       "neverError": true
+      }
+     }
+    }
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "id": "",
+     "name": "GitHub account"
+    }
+   },
+   "executeOnce": true
+  },
+  {
+   "id": "6e861a36-1c58-48a0-bd4a-399fcf61f279",
+   "name": "Company Site Up?",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "method": "GET",
+    "url": "https://inquisitive-llama-a4a459.netlify.app/",
+    "options": {
+     "response": {
+      "response": {
+       "neverError": true,
+       "fullResponse": true,
+       "responseFormat": "text"
+      }
+     },
+     "timeout": 15000
+    }
+   },
+   "executeOnce": true
+  },
+  {
+   "id": "706543d2-96e9-4fa7-a97b-0af1daa93225",
+   "name": "Site Leads",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    672,
+    0
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "EywHFcZami3U9fTO",
+     "cachedResultName": "Site Leads"
+    },
+    "returnAll": true
+   },
+   "executeOnce": true,
+   "alwaysOutputData": true
+  },
+  {
+   "id": "5be114ee-1481-4b60-91de-cfdbde1f621e",
+   "name": "Build World Report",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    896,
+    0
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "const runs = (($('GitHub CI Runs').first().json.workflow_runs) || []).filter(r => !/ai-gateway/i.test(String(r.path || '')));\nconst siteRes = $('Company Site Up?').first().json;\nconst siteOk = Number(siteRes.statusCode) === 200;\nconst rows = $input.all().map(i => i.json).filter(r => r && r.id);\nconst realNew = rows.filter(r => r.status === 'new' && !/test|\\[/i.test(String(r.name)));\nconst latest = {};\nfor (const r of runs) { if (!latest[r.name]) latest[r.name] = r; }\nconst MAP = [[/botbhai|leadfinder|salon/i,'b1 BotBhai'],[/jobcard/i,'b2 JobCard'],[/kits|gate/i,'b3 Kits'],[/lifeboat|extension/i,'b4 Tab Lifeboat'],[/deals|calculator/i,'b5 Deals'],[/finops|ledger/i,'b6 Ledger Peaks'],[/trading|backtest/i,'b7 Trading Lab']];\nconst worldOf = (n, p) => { const s = n + ' ' + (p || ''); const m = MAP.find(([re]) => re.test(s)); return m ? m[1] : 'HQ'; };\nconst lines = []; let red = 0;\nfor (const [name, r] of Object.entries(latest)) {\n  const ok = r.conclusion === 'success'; const pending = !r.conclusion;\n  if (!ok && !pending) red++;\n  lines.push((ok ? 'OK ' : pending ? '.. ' : 'RED ') + worldOf(name, r.path) + ': ' + name + (ok || pending ? '' : ' -> ' + r.conclusion + ' ' + r.html_url));\n}\nlines.sort();\nconst today = new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });\nconst summary = [\n  'World Keeper ' + today + ': ' + (red ? red + ' red check(s)' : 'all checks green') + '; site ' + (siteOk ? 'UP' : 'DOWN (' + siteRes.statusCode + ')') + '; new callback leads: ' + realNew.length + '.',\n  ...realNew.slice(0, 5).map(l => 'CALL: ' + l.name + ' ' + l.phone + ' (' + l.interest + ', ' + l.best_time + ')'),\n  ...lines\n].join('\\n');\nreturn [{ json: { title: 'World Keeper ' + today, category: 'Health', stream: 'HQ', summary, source: 'n8n World Keeper', red, siteOk, newLeads: realNew.length } }];"
+   }
+  },
+  {
+   "id": "2481cf7b-2a4c-40a9-9fb3-c44b01d2fd4a",
+   "name": "Save to KL Knowledge",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    1120,
+    0
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "insert",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "iOJMuvV1AOu8ywr6",
+     "cachedResultName": "KL Knowledge"
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "title": "={{ $json.title }}",
+      "category": "={{ $json.category }}",
+      "stream": "={{ $json.stream }}",
+      "date_given": "={{ $now.toISO() }}",
+      "summary": "={{ $json.summary }}",
+      "source": "={{ $json.source }}"
+     },
+     "schema": [
+      {
+       "id": "title",
+       "displayName": "title",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "category",
+       "displayName": "category",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "stream",
+       "displayName": "stream",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "date_given",
+       "displayName": "date_given",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "dateTime",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "summary",
+       "displayName": "summary",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "source",
+       "displayName": "source",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Daily 8:20 IST": {
+   "main": [
+    [
+     {
+      "node": "GitHub CI Runs",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "GitHub CI Runs": {
+   "main": [
+    [
+     {
+      "node": "Company Site Up?",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Company Site Up?": {
+   "main": [
+    [
+     {
+      "node": "Site Leads",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Site Leads": {
+   "main": [
+    [
+     {
+      "node": "Build World Report",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build World Report": {
+   "main": [
+    [
+     {
+      "node": "Save to KL Knowledge",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

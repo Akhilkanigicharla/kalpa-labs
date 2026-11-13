@@ -18,7 +18,7 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned 13 Nov 2026: ubuntu-latest is 26.04, Playwright 1.56 has no Chromium for it
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
   find:
     if: github.event_name == 'workflow_dispatch'
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned 13 Nov 2026: ubuntu-latest is 26.04, Playwright 1.56 has no Chromium for it
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4

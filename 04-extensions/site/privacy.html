@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1D3A25">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#17301F">
@@ -29,12 +31,12 @@
       <tr><td>Settings and snapshot times</td><td>To run automatic snapshots</td><td>In your browser on your computer</td></tr>
     </tbody>
   </table></div>
-  <p>Permissions it asks Chrome for: <b>tabs</b> and <b>tabGroups</b> (read and reopen your tabs and groups), <b>alarms</b> (timed snapshots), <b>storage</b> and <b>unlimitedStorage</b> (keep large sessions safely). If you turn on Pro's daily backup file, it also asks for <b>downloads</b>, only to save that file to your own Downloads folder. The free extension makes no network requests.</p>
+  <p>Permissions it asks Chrome for: <b>tabs</b> and <b>tabGroups</b> (read and reopen your tabs and groups), <b>alarms</b> (timed snapshots), <b>storage</b> and <b>unlimitedStorage</b> (keep large sessions safely). If you turn on Pro's daily backup file, it also asks for <b>downloads</b>, only to save that file to your own Downloads folder. If you turn on Google Drive backup, it asks for <b>identity</b>, only to get Google's permission to write to Tab Lifeboat's hidden folder in your Drive. The free extension makes no network requests.</p>
 
   <h2 id="pro">When Pro opens</h2>
   <ul>
-    <li><b>Licence check:</b> your licence key and a device label are sent to Dodo Payments to confirm the key. Your purchase details (name, email, payment) are collected and processed by Dodo Payments as merchant of record under its own privacy policy; we receive the order record.</li>
-    <li><b>Google Drive backup (optional):</b> if you switch it on, a backup file is saved to <i>your</i> Google Drive using the <code>drive.file</code> permission, which only reaches files Tab Lifeboat created. We cannot see the rest of your Drive, and the file never passes through us.</li>
+    <li><b>Licence check:</b> not in use. Nothing is on sale yet, so there is no licence key and no purchase data. Before a paid plan opens, this policy will be updated to name the payment company and exactly what it receives.</li>
+    <li><b>Google Drive backup (optional, Pro):</b> if you switch it on, Chrome asks to use your Google account. Tab Lifeboat then saves a compressed copy of your saved sessions (page titles, addresses, tab groups) every hour, only when something changed, into a hidden Tab Lifeboat folder in <i>your</i> Google Drive. It uses Google's <code>drive.appdata</code> permission, which reaches only that hidden folder: not your files, not the rest of your Drive. The backups travel directly between your browser and Google; they never pass through Kalpa Labs, and we have no server that could receive them. It keeps every backup from the last 2 days, then one a day for 30 days. The files are small (about 100 KB for 5,000 tabs, measured) but do count towards your Google storage. Disconnect any time in Backups and settings.</li>
   </ul>
 
   <h2 id="limited-use">Limited Use</h2>
@@ -43,7 +45,7 @@
   <p>We do not sell user data, do not use or transfer it for advertising, credit checks or any purpose unrelated to saving and restoring your tabs, and no person reads it.</p>
 
   <h2 id="delete">Deleting your data</h2>
-  <p>Delete any session inside the extension. Uninstalling Tab Lifeboat deletes all of its data from your browser. Backup files you downloaded or saved to Google Drive are yours: delete them like any other file.</p>
+  <p>Delete any session inside the extension. Uninstalling Tab Lifeboat deletes all of its data from your browser. Backup files you downloaded are yours: delete them like any other file. To delete Drive backups, open Google Drive → Settings → Manage apps → Tab Lifeboat → Options → Delete hidden app data.</p>
 
   <h2 id="contact">Contact and grievances</h2>
   <p>Questions, or a grievance under India's Digital Personal Data Protection Act, 2023: write to <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>. We reply within 7 days.</p>

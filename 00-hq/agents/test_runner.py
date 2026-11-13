@@ -10,6 +10,8 @@ def fake_post(script):
         item = script.pop(0)
         if isinstance(item, Exception):
             raise item
+        if isinstance(item, tuple):  # (content, finish_reason)
+            return {"choices": [{"message": {"content": item[0]}, "finish_reason": item[1]}]}
         return {"choices": [{"message": {"content": item}}]}
     post.calls = calls
     return post
@@ -58,6 +60,31 @@ class Runner(unittest.TestCase):
         self.assertEqual(R.apply(self.task, None, self.root), "skipped")
         self.assertEqual(self.task["status"], "todo")
 
+    def test_cut_off_or_unclosed_think_tries_next_model(self):
+        post = fake_post([("half a dra", "length"), "<think>still thinking", "full draft", "PASS"])
+        res = R.work(self.task, self.env, post, self.root)
+        self.assertEqual(res["draft"], "full draft")
+        self.assertEqual(len(post.calls), 4)
+
+    def test_gemini_gets_low_reasoning_and_more_room(self):
+        env = {"GEMINI_API_KEY": "x"}
+        post = fake_post(["draft", "PASS"])
+        R.work(self.task, env, post, self.root)
+        url, pay = post.calls[0]
+        self.assertIn("generativelanguage", url)
+        self.assertEqual((pay["max_tokens"], pay.get("reasoning_effort")), (8000, "low"))
+
+    def test_min_items_sends_short_drafts_back(self):
+        self.task["min_items"] = 20
+        short = "\n".join(f"{i}. row" for i in range(1, 13))
+        res = R.work(self.task, self.env, fake_post([short]), self.root)
+        self.assertTrue(res["verdict"].startswith("FIX: incomplete, 12 of 20"))
+        self.assertEqual(R.apply(self.task, res, self.root), "todo")
+        full = "\n".join(f"| {i} | Pattern | done |" for i in range(1, 21))
+        res = R.work(self.task, self.env, fake_post([full, "PASS"]), self.root)
+        self.assertEqual(res["verdict"], "PASS")
+        self.assertEqual(R.count_items("**1.** a\n2) b\n- 3. c\n| 4 | d |\n10. e"), 5)
+
     def test_vigil_unavailable_never_passes(self):
         n = len(R.VIGIL_MODELS)
         post = fake_post(["draft"] + [RuntimeError("down")] * n)
@@ -97,12 +124,31 @@ class Runner(unittest.TestCase):
                 part = json.load(open(p))
                 self.assertTrue(all(t["world"] == w for t in part), w)
                 q += part
+        for t in q:  # numbers must be numbers, or the runner crashes adding to them (K076/K077, 12 Nov)
+            for k in ("tries", "context_chars", "min_items"):
+                self.assertTrue(k not in t or isinstance(t[k], int), f'{t["id"]}.{k} must be a number')
         ids = [t["id"] for t in q]
         self.assertGreater(len(ids), 0)
         self.assertEqual(len(ids), len(set(ids)))
         for t in q:
             self.assertIn(t["status"], ("todo", "review", "rejected", "done"))
             self.assertIn(t["priority"], ("P0", "P1", "P2"))
+
+    def test_context_limit_per_task(self):
+        big = os.path.join(self.root, "big.md")
+        open(big, "w").write("x" * 30000)
+        self.assertLess(len(R.read_context(["big.md"], self.root)), R.MAX_CONTEXT + 50)
+        self.assertGreater(len(R.read_context(["big.md"], self.root, 25000)), 24000)
+        self.assertEqual(R.context_limit({"context_chars": 999999}), R.MAX_CONTEXT_CAP)
+        self.assertEqual(R.context_limit({}), R.MAX_CONTEXT)
+    def test_lessons_are_stored_and_recalled(self):
+        R.apply(self.task, {"draft": "d", "model": "m", "verdict": "FIX:\n- mark the pilot price UNVERIFIED", "vmodel": "v"}, self.root)
+        self.task.pop("vigil_notes", None)
+        post = fake_post(["draft", "PASS"])
+        R.work(self.task, self.env, post, self.root)
+        prompt = post.calls[0][1]["messages"][1]["content"]
+        self.assertIn("LESSONS FROM PAST TASKS", prompt)
+        self.assertIn("pilot price UNVERIFIED", prompt)
 
 
 class CloudflareBackupTest(unittest.TestCase):

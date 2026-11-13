@@ -1,0 +1,66 @@
+{
+ "name": "SSC GD Constable",
+ "name_te": "ఎస్ఎస్సీ జీడీ కానిస్టేబుల్",
+ "family": "Central Government",
+ "body": "Staff Selection Commission",
+ "official_url": "https://ssc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "CBT: 4 parts × 20 questions × 40 marks = 80 questions, 160 marks, 60 minutes, −0.25 per wrong answer. Then PET/PST and a medical exam.",
+ "papers": [
+  {
+   "name": "CBT",
+   "sections": [
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 20,
+     "marks": 40,
+     "topics": [
+      "Analogy, classification, series",
+      "Coding-decoding, directions, blood relations",
+      "Non-verbal reasoning"
+     ]
+    },
+    {
+     "name": "General knowledge & general awareness",
+     "questions": 20,
+     "marks": 40,
+     "topics": [
+      "History, geography, polity, economy",
+      "Sports, culture, current affairs",
+      "General science"
+     ]
+    },
+    {
+     "name": "Elementary mathematics",
+     "questions": 20,
+     "marks": 40,
+     "topics": [
+      "Number system, percentage, ratio, average",
+      "Profit-loss, interest, time-work, speed-distance",
+      "Mensuration"
+     ]
+    },
+    {
+     "name": "English / Hindi",
+     "questions": 20,
+     "marks": 40,
+     "topics": [
+      "Grammar and vocabulary",
+      "Comprehension"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ssc.gov.in",
+  "https://store.pw.live/blogs/ssc-exams/ssc-gd-exam-pattern",
+  "https://www.mahendras.org/blogs/ssc-gd-exam-pattern"
+ ],
+ "id": "ssc-gd",
+ "checked": "2026-11-06"
+}

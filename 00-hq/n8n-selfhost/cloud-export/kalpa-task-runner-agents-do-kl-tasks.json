@@ -1,0 +1,817 @@
+{
+ "name": "Kalpa Task Runner (agents do KL Tasks)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true,
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "660e090a-8011-4192-abe5-d69cde13634f",
+   "name": "Every 3 hours",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    112
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "*/15 * * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "bdc40267-928a-48a0-875d-0dedd89c0a1b",
+   "name": "Todo Tasks",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    224,
+    112
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "09BI56dVYOs1I8FV",
+     "cachedResultName": "KL Tasks"
+    },
+    "matchType": "anyCondition",
+    "filters": {
+     "conditions": [
+      {
+       "condition": "eq",
+       "keyName": "status",
+       "keyValue": "todo"
+      },
+      {
+       "condition": "eq",
+       "keyName": "status",
+       "keyValue": "running"
+      }
+     ]
+    },
+    "returnAll": true
+   }
+  },
+  {
+   "id": "e43a6bd8-75e8-4c77-ab4e-ecb2fc0cf623",
+   "name": "Pick Next Task",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    448,
+    112
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "const rank = p => ({ P0: 0, P1: 1, P2: 2 }[p] ?? 3);\nconst CODE = /\\b(fix|build|re-?run|e2e|ci\\b|refactor|deploy|migrat)/i;\nconst now = Date.now();\nconst free = r => r.status === 'todo' || (r.status === 'running' && (!r.lease_until || new Date(r.lease_until).getTime() < now));\n// Role playbooks (MIT msitarzewski/agency-agents, vendored unmodified)\nconst V = '00-hq/vendor/agency-agents/';\nconst PB = { Scout: 'product/product-trend-researcher.md', Kavi: 'marketing/marketing-content-creator.md', Adi: 'sales/sales-offer-lead-gen-strategist.md', Lens: 'design/design-brand-guardian.md', Forge: 'engineering/engineering-backend-architect.md', Vigil: 'testing/testing-reality-checker.md', Guard: 'support/support-legal-compliance-checker.md', Deal: 'marketing/marketing-growth-hacker.md', Echo: 'research/research-synthesist.md', Kalpa: 'specialized/specialized-chief-of-staff.md', Customer: 'product/product-feedback-synthesizer.md', 'Competitor Watch': 'specialized/business-strategist.md' };\nconst rows = $input.all().map(i => i.json).filter(r => r && r.id && free(r) && !(/^(forge|probe)$/i.test(String(r.owner_agent)) && CODE.test(String(r.title))));\nif (!rows.length) return [];\nrows.sort((a, b) => rank(a.priority) - rank(b.priority) || String(a.due_on || '9').localeCompare(String(b.due_on || '9')) || a.id - b.id);\nconst t = rows[0];\nconst agent = t.owner_agent || 'Kalpa';\nconst retry = t.status === 'running' ? 'RETRY after an interrupted run. ' : '';\nreturn [{ json: { id: t.id, title: t.title, owner_agent: agent, stream: t.stream || 'HQ', priority: t.priority, needs_ceo: !!t.needs_ceo, notes: retry + (t.output_summary || ''), playbook: PB[agent] ? V + PB[agent] : '' } }];"
+   }
+  },
+  {
+   "id": "3a17e4b3-ebc2-49c7-9a49-1a4f65e869cb",
+   "name": "Agent Worker",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 3.1,
+   "position": [
+    960,
+    112
+   ],
+   "parameters": {
+    "promptType": "define",
+    "text": "=You are {{ $('Pick Next Task').item.json.owner_agent }}, an AI teammate at Kalpa Labs (a one-person company in Hyderabad run by Akhil, 1 hour a day, free tools only).\nTASK ({{ $('Pick Next Task').item.json.priority }}, world {{ $('Pick Next Task').item.json.stream }}): {{ $('Pick Next Task').item.json.title }}\nNotes: {{ $('Pick Next Task').item.json.notes }}\nToday: {{ $now.setZone('Asia/Kolkata').toFormat('dd LLL yyyy') }}\nSTEPS: 0) {{ $('Pick Next Task').item.json.playbook ? \"Call read_kalpa_file('\" + $('Pick Next Task').item.json.playbook + \"') once: it is your role playbook (how a top professional in your role works). Follow its methods, but Kalpa's rules below always win.\" : 'No role playbook for you; skip this step.' }} 1) ALWAYS call read_kalpa_file('00-hq/SERVICE-DESK.md') and, if relevant, that world's README, so you know what Kalpa has really built. Never use web_search to learn about Kalpa itself (another company called Kalpa Labs exists online; ignore it). 2) Use web_search (max 3) only for external facts: competitors, prices, laws, tools. 3) Then STOP calling tools and write the final answer in the required format. If something is blocked, still deliver everything that can be prepared now and list the blocker under NEEDS AKHIL.",
+    "needsFallback": true,
+    "options": {
+     "maxIterations": 7,
+     "enableStreaming": false,
+     "systemMessage": "Produce a production-grade deliverable for the task, not a plan to make a plan.\n\nKALPA FACTS (the only true facts about Kalpa; never invent products, features, support, customers or prices):\n- Kalpa Labs: 1 founder (Akhil, Hyderabad, 1 hour a day) + free AI agents in n8n. No paying customers yet. Prices in INR.\n- BotBhai: WhatsApp/web chat bot for salons (Telugu/Hindi/English), bookings, reminders, staff handover. Built + tested, not live with a customer. Free 14-day pilot from 16 Nov 2026, then ₹2,999 setup + ₹1,499/month.\n- Workshop \"Claude Code with me\": ONE live 90-minute beginner class in Telugu on Google Meet, Sun 29 Nov 2026, planned ₹299 ONE-TIME per person (not a subscription, not software). Build 3 small AI tools together, recording + prompt sheet, 7-day refund. Material not ready; free waitlist only.\n- Kits (GATE 2027 tracker, Tax+SIP planner, Google Sheets, ₹199-499 one-time): built, not on sale. Telugu Deals: free calculators + Telegram channel coming. JobCard: planned 2027. Tab Lifeboat (Chrome extension): in development. Ledger Peaks (AI cost tracking for software teams): engine built, early access. Trading Lab: paper trading research only, never sold.\n\nRESEARCH: use web_search (at most 4 searches). Every external fact that matters (price, limit, law, date, competitor) needs 2 independent sources; if you only have 1, mark it UNVERIFIED. Prefer official docs, government sites, GitHub READMEs. Compare like with like (e.g. a ₹299 class vs other Indian beginner AI classes or free YouTube courses, not vs software).\nHARD RULES: free tools only (recurring free tier, no card). Never scrape or collect data from Google Maps, Justdial, Instagram or anyone's personal phone numbers. No stock tips or trading signals. WhatsApp: opt-in + approved templates. ASCI: affiliate links #ad. DPDP: minimum data with consent. Licences: MIT/Apache/BSD only for anything we sell.\nOUTPUT (plain text, no markdown tables, max 450 words):\nDELIVERABLE: the actual work.\nSOURCES: numbered URLs.\nNEEDS AKHIL: only actions only he can do, each with minutes; or \"none\".\nNEXT: one next step for the agent team.\nBe honest: if something cannot be done with free tools or needs data you do not have, say so."
+    }
+   },
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000
+  },
+  {
+   "id": "e12c66e3-2b13-4d1a-bcad-1690682f7b91",
+   "name": "Save Output",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    1360,
+    112
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "insert",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "iOJMuvV1AOu8ywr6",
+     "cachedResultName": "KL Knowledge"
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "title": "={{ 'Task #' + $('Pick Next Task').item.json.id + ': ' + $('Pick Next Task').item.json.title }}",
+      "category": "={{ String($json.text).trim().toUpperCase().startsWith('PASS') ? 'Task output' : 'Rejected output' }}",
+      "stream": "={{ $('Pick Next Task').item.json.stream }}",
+      "date_given": "={{ $now.toISO() }}",
+      "summary": "={{ $('Agent Worker').item.json.output + '\\n\\nVIGIL: ' + $json.text }}",
+      "source": "={{ 'Task Runner · ' + $('Pick Next Task').item.json.owner_agent }}"
+     },
+     "schema": [
+      {
+       "id": "title",
+       "displayName": "title",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "category",
+       "displayName": "category",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "stream",
+       "displayName": "stream",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "date_given",
+       "displayName": "date_given",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "dateTime",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "summary",
+       "displayName": "summary",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "source",
+       "displayName": "source",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "828f56bf-7280-473b-9a56-d4958d5c6abf",
+   "name": "Mark Review",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    1584,
+    112
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "update",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "09BI56dVYOs1I8FV",
+     "cachedResultName": "KL Tasks"
+    },
+    "matchType": "allConditions",
+    "filters": {
+     "conditions": [
+      {
+       "keyName": "id",
+       "condition": "eq",
+       "keyValue": "={{ $('Pick Next Task').item.json.id }}"
+      }
+     ]
+    },
+    "columns": {
+     "mappingMode": "defineBelow",
+     "value": {
+      "status": "={{ !String($('Agent Worker').item.json.output || '').trim() ? (String($('Pick Next Task').item.json.notes || '').startsWith('RETRY') ? 'rejected' : 'todo') : (String($('Vigil Check').item.json.text).trim().toUpperCase().startsWith('PASS') ? 'review' : 'rejected') }}",
+      "output_summary": "={{ !String($('Agent Worker').item.json.output || '').trim() ? (String($('Pick Next Task').item.json.notes || '').startsWith('RETRY') ? 'EMPTY TWICE: too big for the free model; split it into smaller tasks.' : 'RETRY: model returned an empty draft at ' + $now.setZone('Asia/Kolkata').toFormat('dd LLL HH:mm') + ' IST; will run again.') : ('VIGIL: ' + $('Vigil Check').item.json.text + '\\n' + ($('Agent Worker').item.json.output || '')).slice(0, 900) }}"
+     },
+     "schema": [
+      {
+       "id": "status",
+       "displayName": "status",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      },
+      {
+       "id": "output_summary",
+       "displayName": "output_summary",
+       "required": false,
+       "defaultMatch": false,
+       "display": true,
+       "type": "string",
+       "canBeUsedToMatch": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "fa6cd015-67c6-4c49-aec6-61b02f0626a5",
+   "name": "web_search",
+   "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+   "typeVersion": 2.2,
+   "position": [
+    1100,
+    340
+   ],
+   "parameters": {
+    "description": "Search the public web. Returns 5 results: title | URL | short snippet. Use specific queries; prefer official sources.",
+    "source": "database",
+    "workflowId": {
+     "__rl": true,
+     "cachedResultName": "Web Search (compact, for agents)",
+     "mode": "id",
+     "value": "qdg06puzxyABqV6z"
+    },
+    "workflowInputs": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "query",
+       "id": "query",
+       "required": false,
+       "type": "string"
+      }
+     ],
+     "value": {
+      "query": "={{ $fromAI('query', 'Search query, max 50 words', 'string') }}"
+     }
+    }
+   }
+  },
+  {
+   "id": "41a46bbd-59ae-4564-b3f2-52757be0738d",
+   "name": "Groq verifier",
+   "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+   "typeVersion": 1,
+   "position": [
+    1300,
+    340
+   ],
+   "parameters": {
+    "model": "qwen/qwen3.8-27b",
+    "options": {
+     "maxTokensToSample": 1500,
+     "temperature": 0
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  },
+  {
+   "id": "c4d03b98-9354-400c-8d41-61f7d9fca2b0",
+   "name": "Vigil Check",
+   "type": "@n8n/n8n-nodes-langchain.chainLlm",
+   "typeVersion": 1.9,
+   "position": [
+    1300,
+    112
+   ],
+   "parameters": {
+    "messages": {
+     "messageValues": [
+      {
+       "message": "You are Vigil, the strict fact-checker of Kalpa Labs. Default to FAIL only for real errors; built assets listed below are TRUE.\nTRUE facts about Kalpa: one founder Akhil + free AI agents; no paying customers; BotBhai salon bot IS built and tested (WhatsApp + website chat engine in Telugu/Hindi/English, slot booking with calendar lock, 24 h/2 h reminders, shared inbox for staff takeover, owner dashboard with Excel export, invoices with UPI QR) on Netlify functions + Supabase + WhatsApp Cloud API, but NOT live with a salon yet (needs WhatsApp test number C02); free pilot from 16 Nov 2026 then ₹2,999 + ₹1,499/mo; workshop = ONE 90-min Telugu beginner class on Google Meet, 29 Nov 2026, ₹299 one-time, 3 small tools, recording + prompt sheet, 7-day refund, material not ready, waitlist only; kits ₹199-499 built, not on sale; JobCard app scaffold built, beta 2027; Tab Lifeboat extension: save/restore, OneTab/Session Buddy import, auto-snapshots, privacy + terms pages AND store screenshots/promo images in 04-extensions/store/ ARE built (A38-A40), site CI is red, not in Chrome Web Store yet (one-time US$5 developer fee is a CEO decision); Ledger Peaks engine built, early access; Trading Lab paper only. A different company also named Kalpa Labs (US speech AI, kalpalabs.ai) is NOT us.\nKNOWN FALSE (FAIL if the draft says or relies on these): Claude/Anthropic API is free; OpenAI API is free; GLM-5.3 Flash is free on OpenRouter; Hugging Face Inference gives free monthly credit to free accounts; Sarvam has a recurring free tier (one-time ₹100 trial credit only); Vercel AI Gateway free tier covers DeepSeek/Kimi; Mistral free plan; BotBhai has no booking flow/reminders/dashboard (it has them); anything 'already submitted/live/sold' by Kalpa that is not in the TRUE list.\nAlso FAIL if the draft: is empty; invents Kalpa customers, testimonials, support promises or prices; confuses rupees with dollars; gives trading tips; suggests scraping Google Maps/Justdial/Instagram/personal numbers; presents paid tools as free; or makes key external claims without a source URL.\nReply with exactly one line: 'PASS: <reason, max 25 words>' or 'FAIL: <main problems, max 40 words>'.",
+       "type": "SystemMessagePromptTemplate"
+      }
+     ]
+    },
+    "promptType": "define",
+    "text": "={{ 'TASK: ' + $('Pick Next Task').item.json.title + '\\n\\nDRAFT TO CHECK:\\n' + ($json.output || '').slice(0, 4000) }}",
+    "needsFallback": true
+   },
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000
+  },
+  {
+   "id": "fa71f169-29b4-4a2b-aefe-695715de5047",
+   "name": "read_kalpa_file",
+   "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+   "typeVersion": 2.2,
+   "position": [
+    1100,
+    480
+   ],
+   "parameters": {
+    "description": "Read a file from Kalpa's own GitHub repo to learn what is really built (max 6000 chars). Start with 00-hq/SERVICE-DESK.md. Other useful paths: README.md, 00-hq/ROADMAP.md, 00-hq/audit/facts.md, 01-botbhai/botbhai/README.md, 02-jobcard/README.md, 03-kits/README.md, 04-extensions/README.md, 05-deals/README.md, 06-finops/README.md, 07-trading/README.md.",
+    "source": "database",
+    "workflowId": {
+     "__rl": true,
+     "cachedResultName": "Read Kalpa Repo File (for agents)",
+     "mode": "id",
+     "value": "lieND9d1YMozBIJD"
+    },
+    "workflowInputs": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "path",
+       "id": "path",
+       "required": false,
+       "type": "string"
+      }
+     ],
+     "value": {
+      "path": "={{ $fromAI('path', 'Repo file path, e.g. 00-hq/SERVICE-DESK.md', 'string') }}"
+     }
+    }
+   }
+  },
+  {
+   "id": "1c3aac57-4c91-4b99-9c7c-684b22073ea1",
+   "name": "NVIDIA Nemotron worker",
+   "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+   "typeVersion": 1,
+   "position": [
+    700,
+    340
+   ],
+   "parameters": {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "options": {
+     "maxRetries": 1,
+     "maxTokens": 8000,
+     "temperature": 0.3,
+     "timeout": 180000
+    }
+   },
+   "credentials": {
+    "nvidiaApi": {
+     "id": "",
+     "name": "NVIDIA Nemotron account"
+    }
+   }
+  },
+  {
+   "id": "7d78b6b7-e733-4ae3-8606-bdb8b7c34d8e",
+   "name": "Nemotron 3.5 Super (OR free)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+   "typeVersion": 1,
+   "position": [
+    580,
+    340
+   ],
+   "parameters": {
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "options": {
+     "maxRetries": 1,
+     "maxTokens": 8000,
+     "temperature": 0.3,
+     "timeout": 180000
+    }
+   },
+   "credentials": {
+    "openRouterApi": {
+     "id": "",
+     "name": "OpenRouter account"
+    }
+   }
+  },
+  {
+   "id": "daede9eb-73a8-43a6-924a-e890182303e2",
+   "name": "Kalpa Router (fallback)",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+   "typeVersion": 1.2,
+   "position": [
+    1440,
+    340
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "mode": "id",
+     "value": "auto:reliable"
+    },
+    "options": {
+     "maxRetries": 1,
+     "maxTokens": 1500,
+     "temperature": 0,
+     "timeout": 120000
+    }
+   },
+   "credentials": {
+    "openAiApi": {
+     "id": "",
+     "name": "OpenAI account"
+    }
+   }
+  },
+  {
+   "id": "625f150b-ef6c-4d9a-b5b8-541b3f9b1844",
+   "name": "Daily 06:00 Council",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    560
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "expression": "0 6 * * *",
+       "field": "cronExpression"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e8a817dc-325b-4d90-8dcc-288743cac3df",
+   "name": "Council Rows",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    224,
+    560
+   ],
+   "parameters": {
+    "jsCode": "const W = [['HQ','Kalpa HQ (the company)'],['b5','Telugu Deals (money sprint track 1)'],['b4','Tab Lifeboat (money sprint track 2)'],['b1','BotBhai (money sprint track 3)']];\nconst day = $now.setZone('Asia/Kolkata').toFormat('dd LLL yyyy');\nconst due = $now.setZone('Asia/Kolkata').toISODate();\nconst rows = W.map(([s, n]) => ({ json: { title: `(Council ${day}) ROAST ROOM for ${n}: first read_kalpa_file('00-hq/agents/council/ROAST-ROOM.md') and follow it exactly, then read_kalpa_file('00-hq/ROADMAP.md') only for the 'Money sprint' block, then that world's README. Today's decision: what is the ONE action this week that brings the first real rupee closest (Deals: first Rs 1,000 commission; Tab Lifeboat: listed with Pro on sale; BotBhai: 1 signed pilot), and what should we STOP doing? Use the output shape in the file, under 400 words.`, owner_agent: 'Council', stream: s, status: 'todo', priority: 'P0', due_on: due, needs_ceo: false, created_by: 'Council Daily' } }));\nif ($now.setZone('Asia/Kolkata').weekday === 1) {\n  const C = [['b1','BotBhai: WhatsApp/website booking assistant for salons, gyms, coaching (India)','P0'],['b4','Tab Lifeboat: browser tab saver extension with a Pro plan','P0'],['b5','Telugu Deals: affiliate deals channel + money tools for Telugu speakers','P0'],['b3','Exam & Money Kits: Google Sheets kits for GATE/tax','P2'],['b2','JobCard: job-card + invoice app for AC technicians','P2'],['b6','Ledger Peaks: AI/LLM cost tracking in rupees for software teams','P2'],['b7','Trading Lab: paper-trading research only, never sold','P2'],['HQ','Kalpa Labs: one-founder AI company','P1']];\n  for (const [s, n, p] of C) rows.push({ json: { title: `(Max 450 words) COMPETITOR WATCH ${day} for ${n}. BUSINESS ONLY: do not study or describe competitors' app screens, UI or login flows (Kalpa designs its own warm Kalpavruksha look). Find the 5 best companies in the world doing this today (real paying customers), using their own websites, pricing pages, public reviews and open-source repos only. For each: what customers actually pay for (plan, price, the outcome that sells), how they find and keep customers, their top 3 customer complaints. Then: 3 concrete things Kalpa should build or offer next to solve those complaints better, each with an MIT/Apache open-source repo or free tool that helps (licence checked). Read the world's README first with read_kalpa_file. Cite every claim.`, owner_agent: 'Competitor Watch', stream: s, status: 'todo', priority: p, due_on: due, needs_ceo: false, created_by: 'Council Daily' } });\n}\nreturn rows;",
+    "language": "javaScript",
+    "mode": "runOnceForAllItems"
+   }
+  },
+  {
+   "id": "4fbfeb64-5f9d-4730-8c47-cb0f96e8cb78",
+   "name": "Queue Council Tasks",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    448,
+    560
+   ],
+   "parameters": {
+    "columns": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "title",
+       "id": "title",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "owner_agent",
+       "id": "owner_agent",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "stream",
+       "id": "stream",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "status",
+       "id": "status",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "priority",
+       "id": "priority",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "due_on",
+       "id": "due_on",
+       "required": false,
+       "type": "dateTime"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "needs_ceo",
+       "id": "needs_ceo",
+       "required": false,
+       "type": "boolean"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "created_by",
+       "id": "created_by",
+       "required": false,
+       "type": "string"
+      }
+     ],
+     "value": {
+      "created_by": "={{ $json.created_by }}",
+      "due_on": "={{ $json.due_on }}",
+      "needs_ceo": "={{ $json.needs_ceo }}",
+      "owner_agent": "={{ $json.owner_agent }}",
+      "priority": "={{ $json.priority }}",
+      "status": "={{ $json.status }}",
+      "stream": "={{ $json.stream }}",
+      "title": "={{ $json.title }}"
+     }
+    },
+    "dataTableId": {
+     "__rl": true,
+     "cachedResultName": "KL Tasks",
+     "mode": "id",
+     "value": "09BI56dVYOs1I8FV"
+    },
+    "operation": "insert",
+    "resource": "row"
+   }
+  },
+  {
+   "id": "d836ed92-560b-4e18-b3b0-3be8b30aa4b1",
+   "name": "Lease Task",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    700,
+    112
+   ],
+   "parameters": {
+    "columns": {
+     "mappingMode": "defineBelow",
+     "schema": [
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "status",
+       "id": "status",
+       "required": false,
+       "type": "string"
+      },
+      {
+       "canBeUsedToMatch": true,
+       "defaultMatch": false,
+       "display": true,
+       "displayName": "lease_until",
+       "id": "lease_until",
+       "required": false,
+       "type": "dateTime"
+      }
+     ],
+     "value": {
+      "lease_until": "={{ $now.plus({ minutes: 25 }).toISO() }}",
+      "status": "running"
+     }
+    },
+    "dataTableId": {
+     "__rl": true,
+     "cachedResultName": "KL Tasks",
+     "mode": "id",
+     "value": "09BI56dVYOs1I8FV"
+    },
+    "filters": {
+     "conditions": [
+      {
+       "condition": "eq",
+       "keyName": "id",
+       "keyValue": "={{ $json.id }}"
+      }
+     ]
+    },
+    "matchType": "allConditions",
+    "operation": "update",
+    "resource": "row"
+   }
+  }
+ ],
+ "connections": {
+  "Every 3 hours": {
+   "main": [
+    [
+     {
+      "node": "Todo Tasks",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Todo Tasks": {
+   "main": [
+    [
+     {
+      "node": "Pick Next Task",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Save Output": {
+   "main": [
+    [
+     {
+      "node": "Mark Review",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "web_search": {
+   "ai_tool": [
+    [
+     {
+      "node": "Agent Worker",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Agent Worker": {
+   "main": [
+    [
+     {
+      "node": "Vigil Check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Vigil Check": {
+   "main": [
+    [
+     {
+      "node": "Save Output",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "read_kalpa_file": {
+   "ai_tool": [
+    [
+     {
+      "node": "Agent Worker",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Nemotron 3.5 Super (OR free)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Agent Worker",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "NVIDIA Nemotron worker": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Agent Worker",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Groq verifier": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Vigil Check",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Kalpa Router (fallback)": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Vigil Check",
+      "type": "ai_languageModel",
+      "index": 1
+     }
+    ]
+   ]
+  },
+  "Daily 06:00 Council": {
+   "main": [
+    [
+     {
+      "node": "Council Rows",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Council Rows": {
+   "main": [
+    [
+     {
+      "node": "Queue Council Tasks",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Pick Next Task": {
+   "main": [
+    [
+     {
+      "node": "Lease Task",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Lease Task": {
+   "main": [
+    [
+     {
+      "node": "Agent Worker",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

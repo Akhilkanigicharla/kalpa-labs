@@ -1,0 +1,119 @@
+{
+ "name": "BotBhai AI fallback (private test, A74)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "2803dded-e81d-47fe-812e-94e7ae7061b1",
+   "name": "Run eval",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "de5d3891-efef-434f-b5b9-55bb87a96d80",
+   "name": "30 test messages",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const system = \"You read one WhatsApp message sent to Glow Studio Unisex Salon. It may be English, Telugu, Hindi or a mix, with typos.\\nReply with JSON only: {\\\"intent\\\": one of [\\\"book\\\",\\\"reschedule\\\",\\\"cancel\\\",\\\"prices\\\",\\\"hours\\\",\\\"offers\\\",\\\"human\\\",\\\"faq\\\",\\\"other\\\"], \\\"service\\\": one name from the list or null, \\\"faq\\\": number or null, \\\"reply\\\": string or null}.\\nFAQ topics (number: keywords): 0: offer, offers, discount, deal, combo, package; 1: bridal, wedding, party makeup, engagement; 2: home service, at home, home visit, come home, come to my home, come to my house; 3: pay, upi, gpay, card, cash; 4: product, products, brand, loreal, l'oreal.\\nServices: [\\\"Haircut (men)\\\",\\\"Haircut & styling (women)\\\",\\\"Beard trim\\\",\\\"Hair spa\\\",\\\"Facial (fruit / gold)\\\",\\\"Bridal makeup\\\"].\\nbook = wants an appointment; reschedule = move an existing one; cancel = cancel one; prices = asks cost; hours = timings, location or directions; offers = discounts or deals; human = complaint or wants a person; faq = the question matches one FAQ topic (give its number); other = anything else.\\n\\\"reply\\\" only for intent other: one short polite line in the customer's language saying the team will check and reply. Never state a fact, price, number, date or time. Never promise anything.\";\nreturn [\"helo haircut karvaku avasaram bahut urgent time ledu pls\",\"can i cum 2mrw evening for threding pls\",\"face cleanup cheyali ee weekend free ho na?\",\"hair colour karna hai kal subah possible na?\",\"mani pedi combo karwana hai aaj shaam\",\"beard set cheyinchukovali eppudu raavachu\",\"bridal makeup trial kab ho sakta pls batayiye\",\"my daughter needs a trim before school function, can u fit her in\",\"kal wala appointment shift kar do pls aa nahi paunga\",\"tmrw morning busy evening ki marchandi na booking\",\"can we push my thing to sunday instead\",\"naa slot ni inko roju ki maarchagalara\",\"not coming today sorry pls remove my name\",\"appointment vaddu andi plans change ayyayi\",\"mujhe nahi aana ab, booking hata do\",\"hair spa ki entha avtundi roughly\",\"gents cutting ka kya lete ho bhai\",\"whats the damage for a facial these days\",\"sunday kuda tereche untara meeru\",\"salon jubilee hills lo exact ga ekkada untadi landmark cheppandi\",\"raat ko kitne baje tak khula rehta hai\",\"any festive deals going on for diwali\",\"first time customer ki emaina discount unda\",\"koi combo offer chal raha hai kya abhi\",\"last time cut chala bad ga chesaru very disappointed\",\"ek baar owner se baat karwa do please\",\"staff was rude to my mother yesterday not ok\",\"parking facility unda bike ki\",\"do u guys use organic products for kids skin\",\"kya card se payment ho jayega ya sirf cash\"].map((user, i) => ({ json: { i, user, body: { model: \"llama-3.3-70b-versatile\", temperature: 0, response_format: { type: \"json_object\" }, messages: [{ role: \"system\", content: system }, { role: \"user\", content: user }] } } }));"
+   }
+  },
+  {
+   "id": "c6af0c4f-ff50-4c93-a3b3-63ad69f4c8cc",
+   "name": "Groq free model",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "authentication": "predefinedCredentialType",
+    "nodeCredentialType": "groqApi",
+    "sendBody": true,
+    "specifyBody": "json",
+    "jsonBody": "={{ JSON.stringify(Object.assign({}, $json.body, { model: 'qwen/qwen3.8-27b', reasoning_format: 'hidden', max_tokens: 60 })) }}",
+    "options": {
+     "batching": {
+      "batch": {
+       "batchSize": 1,
+       "batchInterval": 4500
+      }
+     }
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   },
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000
+  },
+  {
+   "id": "2b60f944-ddd6-48bf-bcf1-0316a173feb9",
+   "name": "Model replies",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    672,
+    0
+   ],
+   "parameters": {
+    "jsCode": "return $input.all().map((x, i) => ({ json: { i, raw: x.json.choices ? x.json.choices[0].message.content : null } }));"
+   }
+  }
+ ],
+ "connections": {
+  "Run eval": {
+   "main": [
+    [
+     {
+      "node": "30 test messages",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "30 test messages": {
+   "main": [
+    [
+     {
+      "node": "Groq free model",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Groq free model": {
+   "main": [
+    [
+     {
+      "node": "Model replies",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

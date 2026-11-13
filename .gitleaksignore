@@ -1,3 +1,7 @@
 # False positive: an actions/cache key name ("hf-indic-parler-tts-v1"), not a secret. Checked 20 Oct 2026.
 08b9505a91fbfee1aa94ed6a5dcef9905bf74296:.github/workflows/telugu-voice.yml:generic-api-key:43
 # 28 Oct 2026: same finding, new commit id after the history rewrite (kits purge).
+# 7 Nov 2026 (A177): same false positive, the actions/cache key name "hf-indic-…" in social-voiceover.yml (not a secret; checked with the token masked).
+5c0e09e852c0f1f54bf77e1db5fb80d640e80a51:.github/workflows/social-voiceover.yml:generic-api-key:62
+# 13 Nov 2026 (A205): K088.md example text "MIIFAKE..." written by a free model, not a real key.
+d2fe0019dc749621da3d4ad912589cb6b88924ab:00-hq/knowledge/K088.md:private-key:19

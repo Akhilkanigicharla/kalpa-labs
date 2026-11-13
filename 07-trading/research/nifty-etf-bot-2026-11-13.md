@@ -43,7 +43,7 @@ into a liquid fund. Akhil chooses the rules (CEO queue C66).
 
 ## Built today
 - `src/backtest.py` + `src/gate.py`: `cash_rate` (default 0, old numbers unchanged; track A uses 0.047).
-- `src/live/runner.py`: `tsmom` in the runner; `--signal-symbol ^NSEI` (signal from the index, fill at the ETF price, refuses
+- `src/livetrade/runner.py`: `tsmom` in the runner; `--signal-symbol ^NSEI` (signal from the index, fill at the ETF price, refuses
   if the two dates are > 4 days apart); settings picked each day by the same rule as the gate; idle-cash interest in paper mode.
 - `src/data.py` bug fix: with no start date Yahoo returned only the last month (a cached file held 21 bars). Now from 2008.
 - Tests: lab 98 green.

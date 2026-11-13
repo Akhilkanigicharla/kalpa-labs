@@ -52,9 +52,13 @@ assert.strictEqual(last.status, 429);
 // 8. the assistant is told to speak all 5 languages (Akhil, 5 Nov 2026)
 const { SYSTEM } = await import("../netlify/functions/chat.mjs");
 for (const w of ["English", "Telugu script", "Hindi script", "Tenglish", "Hinglish"]) assert.ok(SYSTEM.includes(w), w);
+// client-facing only (Akhil, 12 Nov 2026): no company internals or "no customers" in what the bot is told to say
+for (const w of ["no paying customers", "one-person", "NOT YET LIVE", "BEING PLANNED", "IN DEVELOPMENT", "NOT ON SALE"]) assert.ok(!SYSTEM.includes(w), "brief must not carry: " + w);
+for (const w of ["revenue", "funding", "customer numbers", "can't share company details"]) assert.ok(SYSTEM.includes(w), "brief must forbid: " + w);
 // 9. Tenglish/Hinglish get a per-turn "English letters only" hint (models drift to script otherwise)
 const { detectLang } = await import("../netlify/functions/chat.mjs");
 assert.strictEqual(detectLang("repu salon pilot gurinchi cheppu, free aa?"), "te-latn");
+assert.strictEqual(detectLang("Mee daggara entha mandi customers unnaru?"), "te-latn", "Tenglish question (live test 12 Nov)");
 assert.strictEqual(detectLang("kal shaam workshop ka kya scene hai?"), "hi-latn");
 assert.strictEqual(detectLang("రేపు స్లాట్ ఉందా?"), "te");
 assert.strictEqual(detectLang("कल स्लॉट है?"), "hi");

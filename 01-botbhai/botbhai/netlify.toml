@@ -8,107 +8,76 @@
   node_bundler = "esbuild"
   included_files = ["core/**", "setups/**"]
 
-# Security headers (engineering checklist). Checked by 00-hq/site/test_headers.py (every page in web/dist must
-# match exactly one CSP rule) and in Chromium by 00-hq/site/tests/csp_browser.py (zero CSP violations).
-# Rules never overlap for the same header, so Netlify never has to merge two CSPs.
-# - Every path: HSTS, nosniff, referrer policy.
-# - The chat page (/ and /index.html) is FRAMED ON PURPOSE: widget.js on client websites opens it in an iframe, and
-#   client domains are not known in advance, so frame-ancestors allows any https: site and there is no
-#   X-Frame-Options. The page refuses its owner (token) view when framed, so framing exposes only the public chat.
-#   Microphone is allowed for voice chat (widget iframe has allow="microphone").
-# - Owner pages (inbox, dashboard, billing, invoice sample, artifact copy): frame-ancestors 'none' + X-Frame-Options DENY.
-# Scripts: none inline (build.py writes app.js; inbox/dashboard/billing.js). The invoice's Print button script is
-# allowed by its sha256 (core/billing.js PRINT_HASH; test_headers.py checks it). style-src keeps 'unsafe-inline' because
-# the pages and their scripts write style="" attributes; CSS cannot run script. Fonts: Google Fonts.
-# Off-site scripts on the chat page only: SheetJS from cdnjs (pinned, with SRI) and Cloudflare Turnstile (+ its frame).
 [[headers]]
   for = "/*"
   [headers.values]
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=()"
+    Strict-Transport-Security = "max-age=31536000"
+    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    # The chat page is embedded on customers' sites by widget.js, so the site as a whole may be framed;
+    # the owner pages below are not. script 'unsafe-inline' stays until the pages' inline scripts move to files (ENGINEERING-CHECKS row 81).
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'"
 
-[[headers]]
-  for = "/"
-  [headers.values]
-    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'self' https:; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-
-[[headers]]
-  for = "/index.html"
-  [headers.values]
-    Permissions-Policy = "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'self' https:; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-
-[[headers]]
-  for = "/inbox"
-  [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
-[[headers]]
-  for = "/inbox.html"
-  [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
-[[headers]]
-  for = "/dashboard"
-  [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
+# owner pages: never inside someone else's frame (clickjacking)
 [[headers]]
   for = "/dashboard.html"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
-
+    Content-Security-Policy = "frame-ancestors 'none'"
 [[headers]]
-  for = "/billing"
+  for = "/inbox.html"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
-
+    Content-Security-Policy = "frame-ancestors 'none'"
 [[headers]]
   for = "/billing.html"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
 
+# Private screens and sales papers (A193): never in search results. A header also covers PDFs, which can't carry a meta tag.
 [[headers]]
-  for = "/invoice-sample"
+  for = "/404.html"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-xEUKt/XIr4d0R1e2pIGLr9mhXXPSRJww6PGe77cDblE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
+    X-Robots-Tag = "noindex, nofollow"
 [[headers]]
-  for = "/invoice-sample.html"
+  for = "/sales/*"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-xEUKt/XIr4d0R1e2pIGLr9mhXXPSRJww6PGe77cDblE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
+    X-Robots-Tag = "noindex, nofollow"
 [[headers]]
-  for = "/artifact"
+  for = "/cards/*"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
-
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/screens/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/*.pdf"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/inbox.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/billing.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
 [[headers]]
   for = "/artifact.html"
   [headers.values]
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests"
-    X-Frame-Options = "DENY"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/invoice-sample.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
 
 [functions."reminders"]
   schedule = "@hourly"

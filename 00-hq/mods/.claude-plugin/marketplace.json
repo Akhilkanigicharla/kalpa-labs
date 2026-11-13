@@ -1,0 +1,11 @@
+{
+  "name": "kalpa",
+  "owner": { "name": "Kalpa Labs" },
+  "plugins": [
+    {
+      "name": "kalpa-mods",
+      "source": "./kalpa-mods",
+      "description": "Cache Keeper, Goal Meter and Collision Guard: our own Claude Code mods (no network, no secrets read)."
+    }
+  ]
+}

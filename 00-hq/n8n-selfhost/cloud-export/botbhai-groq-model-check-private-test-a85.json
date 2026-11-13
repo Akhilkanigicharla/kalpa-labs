@@ -1,0 +1,66 @@
+{
+ "name": "BotBhai Groq model check (private test, A85)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "4ba5e359-d72c-449e-8621-45818d3a00c6",
+   "name": "Run check",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "cbab5cb6-9f00-4a73-9be2-e037d3712e88",
+   "name": "Groq gpt-oss-120b",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "authentication": "predefinedCredentialType",
+    "nodeCredentialType": "groqApi",
+    "sendBody": true,
+    "specifyBody": "json",
+    "jsonBody": "{\"model\":\"openai/gpt-oss-120b\",\"reasoning_effort\":\"low\",\"include_reasoning\":false,\"temperature\":0.3,\"max_tokens\":200,\"messages\":[{\"role\":\"system\",\"content\":\"Translate the WhatsApp message into Telugu (Telugu script). Keep every number, price and time exactly as written. Output only the translated message.\"},{\"role\":\"user\",\"content\":\"Your Hair spa is booked for 5:30 PM. Price ₹800.\"}]}",
+    "options": {
+     "response": {
+      "response": {
+       "fullResponse": true
+      }
+     }
+    }
+   },
+   "credentials": {
+    "groqApi": {
+     "id": "",
+     "name": "Groq account"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Run check": {
+   "main": [
+    [
+     {
+      "node": "Groq gpt-oss-120b",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

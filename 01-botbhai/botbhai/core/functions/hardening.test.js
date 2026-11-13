@@ -1,5 +1,9 @@
 // Server-side regression tests for the review agent's findings. Run: NO_DELAY=1 node core/functions/hardening.test.js
 process.env.NO_DELAY = "1"; process.env.SITE_URL = "https://botbhai.example";
+// A218: fixed clock (Friday 13 Nov 2026, 10:00 IST, still ticking) so "next monday" never lands on the
+// day the A50 tests book (today + 4 / + 5 days). Before this, every Thursday run failed.
+{ const RealDate = Date, t0 = RealDate.now(), base = RealDate.parse("2026-11-13T04:30:00Z");
+  global.Date = class extends RealDate { constructor(...a) { if (a.length) super(...a); else super(base + RealDate.now() - t0); } static now() { return base + RealDate.now() - t0; } }; }
 const assert = require("assert");
 const crypto = require("crypto");
 const { store, graph } = require("./_fake.js")({
@@ -24,14 +28,14 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
 (async () => {
   console.log("BotBhai hardening tests (server)");
   await ok("#2 Meta retries the same message: handled once, one booking, one confirmation", async () => {
-    for (const t of ["book", "facial", "tomorrow", "4 pm"]) await say("919811100001", t);
+    for (const t of ["book", "facial", "next monday", "4 pm"]) await say("919811100001", t);
     const id = "wamid.DUP";
     await Promise.all([say("919811100001", "Asha", id), say("919811100001", "Asha", id)]);
     assert.strictEqual(store.bookings.filter((b) => b.contact === "919811100001").length, 1);
     assert.strictEqual(toCustomer("919811100001").filter((m) => m.text && /Booking confirmed/.test(m.text.body)).length, 1);
   });
   await ok("#2 two customers race for the last chair: one wins, the other is offered other slots", async () => {
-    for (const c of ["912222222222", "913333333333"]) for (const t of ["book", "facial", "tomorrow", "7 pm"]) await say(c, t);
+    for (const c of ["912222222222", "913333333333"]) for (const t of ["book", "facial", "next monday", "7 pm"]) await say(c, t);
     await Promise.all([say("912222222222", "Ravi"), say("913333333333", "Kiran")]);
     const at7 = store.bookings.filter((b) => b.date_iso && b.slot === "7:00 PM" && b.status === "confirmed");
     assert.strictEqual(at7.length, 1);
@@ -56,10 +60,10 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
   await ok("#3 website-chat bookings reach the same calendar and respect capacity", async () => {
     const c = "11111111-2222-3333-4444-555555555555";
     const web = (visitor, text) => chat.handler({ httpMethod: "POST", body: JSON.stringify({ client: c, visitor, text, turnstile: pass() }) }).then((r) => JSON.parse(r.body));
-    for (const t of ["book", "facial", "tomorrow", "4 pm"]) await web("visitor-aaa", t);
+    for (const t of ["book", "facial", "next monday", "4 pm"]) await web("visitor-aaa", t);
     await web("visitor-aaa", "Meena");
     assert.strictEqual(store.bookings.filter((b) => b.client_id === c && b.source === "web").length, 1);
-    for (const t of ["book", "facial", "tomorrow"]) var r = await web("visitor-bbb", t);
+    for (const t of ["book", "facial", "next monday"]) var r = await web("visitor-bbb", t);
     assert.ok(!r.replies.at(-1).options.includes("4:00 PM"));
   });
   await ok("#9 a Meta lead form from a booked customer keeps their booking", async () => {
@@ -125,7 +129,7 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     const c = "11111111-2222-3333-4444-555555555555";
     const web = (text) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.7" }, body: JSON.stringify({ client: c, visitor: "two-bookings", text, turnstile: pass() }) }).then((r) => JSON.parse(r.body));
     const pick = async (service) => { // book the first free slot tomorrow, whatever earlier tests left
-      await web("book"); await web(service); const r = await web("tomorrow");
+      await web("book"); await web(service); const r = await web("next monday");
       await web(r.replies.at(-1).options[0]); await web("Rani");
     };
     await pick("facial"); await pick("hair spa");
@@ -138,7 +142,7 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     const call = (visitor, text, turnstile) => chat.handler({ httpMethod: "POST", headers: { "x-nf-client-connection-ip": "198.51.100.50" }, body: JSON.stringify({ client: c, visitor, text, turnstile }) });
     const web = (visitor, text, turnstile) => call(visitor, text, turnstile).then((r) => JSON.parse(r.body));
     const before = graph.turnstile.length;
-    await web("ts-visitor", "book"); await web("ts-visitor", "facial"); const r = await web("ts-visitor", "tomorrow");
+    await web("ts-visitor", "book"); await web("ts-visitor", "facial"); const r = await web("ts-visitor", "next monday");
     assert.strictEqual(graph.turnstile.length, before, "chatting without booking never calls Cloudflare");
     const slot = r.replies.at(-1).options[0];
     await web("ts-visitor", slot);

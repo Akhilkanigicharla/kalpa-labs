@@ -5,16 +5,14 @@
  --tint:color-mix(in srgb,var(--kx-a) 10%,var(--color-panel));
  font-family:var(--font-anthropic-sans);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-lg);max-width:1240px;margin-inline:auto}
 .kx *{box-sizing:border-box}
-.kx-hero{border-radius:24px;padding:clamp(18px,3vw,28px);background:
- radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--kx-a) 22%,transparent),transparent 55%),
- radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--kx-b) 20%,transparent),transparent 55%),var(--color-panel);
+.kx-hero{border-radius:24px;padding:clamp(16px,3vw,28px);background:var(--color-panel);
  border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:.6rem}
 .kx-hi{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .kx-live{display:inline-flex;align-items:center;gap:.35rem;padding:.15rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--color-ok) 14%,transparent);color:var(--color-ok);font-weight:600}
 .kx-live i{width:7px;height:7px;border-radius:50%;background:var(--color-ok)}
 .kx-h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:clamp(1.7rem,4.5vw,2.6rem);line-height:1.08;margin:0;text-wrap:balance}
 .kx-take{margin:0;max-width:62ch;color:var(--color-fg);opacity:.85;font-size:var(--cds-font-size-body)}
-.kx-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--color-panel) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
+.kx-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
 .kx-nav::-webkit-scrollbar{display:none}
 .kx-tab{flex:1 0 auto;border:0;background:transparent;color:var(--color-fg-muted);font:inherit;font-size:var(--cds-font-size-body);padding:.5rem .8rem;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;white-space:nowrap}
 .kx-tab svg{width:18px;height:18px;flex:none}
@@ -72,9 +70,9 @@
 .kx-mate b{font-weight:600}
 .kx-mate .r{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
 .kx-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.kx-btn{border:1px solid var(--color-border-line);background:var(--color-panel);color:var(--color-fg);border-radius:999px;padding:.38rem .8rem;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer}
+.kx-btn{border:1px solid var(--color-border-line);background:var(--color-panel);color:var(--color-fg);border-radius:999px;padding:.38rem .8rem;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer;min-height:44px}
 .kx-btn[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
-.kx-search{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:.5rem .9rem;font:inherit;font-size:16px;min-width:0;flex:1 1 12rem}
+.kx-search{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:.5rem .9rem;font:inherit;font-size:16px;min-width:0;flex:1 1 12rem;min-height:44px}
 .kx-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr));gap:var(--cds-gap-sm)}
 .kx-fact{border-radius:14px;padding:var(--cds-pad-sm) var(--cds-pad-md);background:var(--tint);min-width:0}
 .kx-fact .k{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
@@ -91,9 +89,9 @@
 .kx-table td{padding:.6rem .7rem;border-bottom:1px solid var(--color-border-line);vertical-align:top}
 .kx-table td:first-child{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
 @media (max-width:640px){.kx-table .hide-n{display:none}}
-.kx-game{border-radius:24px;padding:clamp(18px,3vw,28px);background:radial-gradient(100% 120% at 100% 0%,color-mix(in srgb,var(--color-warn) 20%,transparent),transparent 60%),var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.kx-game{border-radius:24px;padding:clamp(16px,3vw,28px);background:var(--color-panel);border:1px solid var(--color-border-line);box-shadow:var(--sh);display:flex;flex-direction:column;gap:var(--cds-gap-md)}
 .kx-xp{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
-.kx-xp>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--color-warn),var(--color-ok));border-radius:999px;transition:width 1.2s var(--cds-ease-out)}
+.kx-xp>span{display:block;height:100%;width:0;background:var(--color-ok);border-radius:999px;transition:width 1.2s var(--cds-ease-out)}
 .kx-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,8.5rem),1fr));gap:var(--cds-gap-sm)}
 .kx-isle{border-radius:16px;border:1px solid var(--color-border-line);padding:var(--cds-pad-md);display:flex;flex-direction:column;gap:.35rem;background:var(--color-bg);min-width:0}
 .kx-sep{display:flex;align-items:center;gap:.5rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
@@ -101,6 +99,10 @@
 .kx-fail{display:flex;align-items:center;justify-content:center;gap:.4rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);min-height:3rem}
 .kx-fail::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)}
 [data-dash-source-state=empty]{color:transparent}
+.kx-empty{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);padding:.6rem .2rem}
+[data-dash-source-state=loading]:empty{min-height:3rem;border-radius:14px;background:linear-gradient(90deg,var(--tint,#8881) 25%,color-mix(in srgb,var(--color-fg) 8%,transparent) 50%,var(--tint,#8881) 75%);background-size:200% 100%;animation:kx-skel 1.2s linear infinite}
+@keyframes kx-skel{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){[data-dash-source-state=loading]:empty{animation:none}}
 [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
 
 .kx-meter{height:14px;border-radius:999px;background:var(--cds-chart-grid);overflow:hidden}
@@ -145,7 +147,7 @@
  @keyframes kx-scr{0%{opacity:.55}50%{opacity:1}100%{opacity:.7}}
 }
 .kx-brand{display:flex;align-items:center;gap:.55rem}.kx-logo{width:34px;height:34px;flex:none}
-.kx-kicker{font-size:var(--cds-font-size-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--kv-bark);font-weight:600}
+.kx-kicker{font-size:var(--cds-font-size-caption);color:var(--kv-bark);font-weight:600}
 .kx-hero{position:relative;overflow:hidden}
 .kx-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:radial-gradient(circle at 7px 5px,var(--kv-gold) 2.2px,transparent 2.6px) 0 0/14px 10px,radial-gradient(ellipse 3.2px 2px at 3.5px 5px,var(--kv-young) 90%,transparent) 0 0/7px 10px}
 </style>
@@ -175,15 +177,23 @@
     <p class="kx-note">Your first open tasks, in order. Full list: Work tab → Akhil (CEO).</p>
     <div class="kx-todo"><ol id="needlist" data-source="needs_you"></ol></div>
    </div>
+   <div class="kx-card" id="rooms" data-fetchpriority="high">
+    <div class="lr-head"><h3>Live robot rooms</h3><span class="kx-note" id="lr-updated" data-source="live_meta">—</span></div>
+    <p class="kx-note">Every AI agent, room by room: who is working, waiting, done or sent back. Tap a robot to see its job. Pills under a room are its GitHub machines.</p>
+    <div class="lr-sum" id="lr-sum" data-source="live_agents"></div>
+    <button class="kx-btn" id="lr-refresh" type="button" style="min-height:44px;margin:.3rem 0 .6rem">Refresh now</button>
+    <div class="lr-grid" id="lr-grid" data-source="live_agents live_runs live_meta"></div>
+    <div class="lr-card" id="lr-card" hidden></div>
+   </div>
   <div class="kx-grid">
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">agent tasks done of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span></div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agent_done">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=agent_total">—</span> <span id="w-agent">agent tasks</span> done</div></div></div>
     <div class="kx-bar" style="--c:var(--color-ok)"><span id="bar-agent"></span></div></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--color-warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=ceo_open">—</div><div class="kx-sub">tasks waiting on you</div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=ceo_open">—</div><div class="kx-sub" id="sub-ceo">tasks waiting on you</div></div></div>
     <p class="kx-note">Accounts, decisions, people. Only you can do these.</p></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 11a4 4 0 0 1-1 7z"/></svg></div>
-    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=workers_ok">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=workers_total">—</span> cloud workers ran cleanly last time</div></div></div>
+    <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=workers_ok">—</div><div class="kx-sub">of <span data-source="kpis" data-field="value" data-where="metric=workers_total">—</span> <span id="w-workers">cloud workers</span> ran cleanly last time</div></div></div>
     <p class="kx-note">They work while your PC is off.</p></div>
    <div class="kx-card"><div class="kx-stat"><div class="kx-ico" style="--c:var(--kx-b)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V5"/><circle cx="9.5" cy="13" r="1"/><circle cx="14.5" cy="13" r="1"/></svg></div>
     <div><div class="kx-big" data-source="kpis" data-field="value" data-where="metric=agents">—</div><div class="kx-sub">AI agents on free models</div></div></div>
@@ -377,7 +387,11 @@
  const hostColor=h=>h==='NVIDIA'?KV[1]:h==='Groq'?KV[0]:KV[2];
  const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.append(e); return e;};
  const txt=(tag,cls,t)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(t!=null) e.textContent=t; return e;};
- const fail=e=>{e.replaceChildren(txt('div','kx-fail','Failed to load'));};
+ // UX 20: say what failed and offer Retry (re-asks the raw datasets behind this box)
+ const fail=(e,...ids)=>{const box=txt('div','kx-fail',"Couldn't load this."); if(ids.length){const b=txt('button','kx-btn','Retry'); b.type='button';
+  b.addEventListener('click',()=>{b.disabled=true; b.textContent='Loading…'; ids.forEach(id=>{try{dash.refresh(id);}catch(_){}});}); box.append(b);} e.replaceChildren(box);};
+ // UX 5: an empty list says so in plain words instead of showing a blank box
+ const empty=(e,msg)=>{e.replaceChildren(txt('p','kx-empty',msg));};
 
  // humanoid mini robot (white shell, black visor); feet at (0,0), ~78px tall
  function bot(g,color,opts={}){
@@ -444,7 +458,7 @@
  let pickedBot=null;
  function drawScene(){
   const host=document.getElementById('scene'), b=dash.data('agent_board'), w=dash.data('worlds');
-  if(b.status!=='ok'){ if(b.status==='error') fail(host); return; }
+  if(b.status!=='ok'){ if(b.status==='error') fail(host,'roster','agents'); return; }
   const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 -20 1320 760'); svg.setAttribute('class','kx-scene'); svg.setAttribute('role','img'); svg.setAttribute('aria-label','Isometric office: Akhil in the CEO cabin and the AI agents at team desks');
   const L={floor:el('g',{},svg),tiles:el('g',{},svg),things:el('g',{},svg),labels:el('g',{},svg)};
   const c0=iso(0,0),c1=iso(4,0),c2=iso(4,3),c3=iso(0,3);
@@ -515,9 +529,10 @@
   const h=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',hourCycle:'h23'}).format(now));
   greet.textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', Akhil';}
  const LAUNCH={pilot:'2026-11-16T00:00:00+05:30',launch:'2026-12-13T06:12:00+05:30'}; // dates Akhil fixed on 18 Oct 2026
+ const pl=(n,w)=>n+' '+w+(n==1?'':'s');
  function cd(){const days=t=>Math.max(0,Math.ceil((new Date(t)-Date.now())/864e5));
-  document.getElementById('cd-pilot').textContent='Pilot Day in '+days(LAUNCH.pilot)+' days · Mon 16 Nov';
-  document.getElementById('cd-launch').textContent='Soft launch in '+days(LAUNCH.launch)+' days · Sun 13 Dec';}
+  document.getElementById('cd-pilot').textContent='Pilot Day in '+pl(days(LAUNCH.pilot),'day')+' · Mon 16 Nov';
+  document.getElementById('cd-launch').textContent='Soft launch in '+pl(days(LAUNCH.launch),'day')+' · Sun 13 Dec';}
  tick(); cd(); setInterval(()=>{tick(); cd();},30000);
 
  function drawHome(){
@@ -525,11 +540,13 @@
   document.querySelectorAll('#home [data-source=kpis][data-where],#hero [data-source=kpis][data-where]').forEach(e=>{const x=v(e.getAttribute('data-where').split('=')[1]); e.textContent=x==null?'—':x;});
   const t=document.getElementById('takeaway');
   if(k.status==='ok'){const pct=v('agent_total')?Math.round(v('agent_done')/v('agent_total')*100):0;
-   t.textContent='Your AI team has finished '+pct+'% of its roadmap. '+v('ceo_open')+' tasks are waiting on you, and '+v('workers_ok')+' of '+v('workers_total')+' cloud workers ran cleanly last time.';
+   t.textContent='Your AI team has finished '+pct+'% of its roadmap. '+pl(v('ceo_open'),'task')+(v('ceo_open')==1?' is':' are')+' waiting on you, and '+v('workers_ok')+' of '+pl(v('workers_total'),'cloud worker')+' ran cleanly last time.';
+   const sub=(id,t)=>{const e=document.getElementById(id); if(e) e.textContent=t;};
+   sub('sub-ceo',(v('ceo_open')==1?'task':'tasks')+' waiting on you'); sub('w-agent',v('agent_total')==1?'agent task':'agent tasks'); sub('w-workers',v('workers_total')==1?'cloud worker':'cloud workers');
    requestAnimationFrame(()=>{document.getElementById('bar-agent').style.width=pct+'%';});} else t.textContent='—';
   drawScene();
   const n=dash.data('needs_you'), ol=document.getElementById('needlist');
-  if(n.status==='ok') ol.replaceChildren(...n.data.map(r=>{const li=document.createElement('li'); li.dataset.key=r.id; li.append(txt('span','id',r.id),txt('span','tx',r.title)); return li;})); else if(n.status==='error') fail(ol);
+  if(n.status==='ok'&&!n.data.length) empty(ol,'Nothing is waiting for you right now. The agents are working.'); else if(n.status==='ok') ol.replaceChildren(...n.data.map(r=>{const li=document.createElement('li'); li.dataset.key=r.id; li.append(txt('span','id',r.id),txt('span','tx',r.title)); return li;})); else if(n.status==='error') fail(ol,'roadmap');
   const w=dash.data('worlds'), wl=document.getElementById('worldlist');
   const NAME={HQ:'HQ',b1:'BotBhai',b2:'JobCard',b3:'Kits',b4:'Tab Lifeboat',b5:'Deals & Tools',b6:'Ledger Peaks',b7:'Trading Lab',design:'Design',growth:'Growth'};
   if(w.status==='ok') wl.replaceChildren(...w.data.map((r,i)=>{const row=txt('div'); row.style.cssText='display:flex;flex-direction:column;gap:.35rem;min-width:0';
@@ -537,12 +554,12 @@
     const nm=txt('b',null,NAME[r.world]||r.world); nm.style.fontWeight='550';
     const pc=txt('span','kx-sub',r.pct+'%'); pc.setAttribute('data-source','worlds'); pc.setAttribute('data-field','pct'); pc.setAttribute('data-where','world='+encodeURIComponent(r.world));
     top.append(nm,pc); const bar=txt('div','kx-bar'); bar.style.setProperty('--c',KV[i%8]); const sp=txt('span'); bar.append(sp); requestAnimationFrame(()=>{sp.style.width=r.pct+'%';});
-    row.append(top,bar,txt('span','kx-sub',r.done+' of '+r.total+' tasks')); return row;})); else if(w.status==='error') fail(wl);
+    row.append(top,bar,txt('span','kx-sub',r.done+' of '+pl(r.total,'task'))); return row;})); else if(w.status==='error') fail(wl,'roadmap');
   drawDays();
  }
  function drawDays(){
   const box=document.getElementById('daychart'), d=dash.data('done_by_day');
-  if(d.status!=='ok'){ if(d.status==='error') fail(box); return; }
+  if(d.status!=='ok'){ if(d.status==='error') fail(box,'roadmap'); return; }
   const W=Math.max(260,box.clientWidth||300), H=190, m={t:18,r:8,b:26,l:28};
   const data=d.data.map(r=>({day:new Date(r.day+'T00:00:00Z'),n:r.n,key:r.day}));
   const x=d3.scaleBand(data.map(r=>r.key),[m.l,W-m.r]).padding(.35);
@@ -566,7 +583,8 @@
  let pickedWorker=0;
  function drawWorkers(){
   const w=dash.data('workers'), list=document.getElementById('workerlist');
-  if(w.status!=='ok'){ if(w.status==='error') fail(list); return; }
+  if(w.status!=='ok'){ if(w.status==='error') fail(list,'workers'); return; }
+  if(!w.data.length){ empty(list,'No cloud workers listed yet. The next Build sprint fills this list.'); return; }
   const rows=w.data; if(pickedWorker>=rows.length) pickedWorker=0;
   list.replaceChildren(...rows.map((r,i)=>{const b=document.createElement('button'); b.type='button'; b.className='kx-w'; b.setAttribute('aria-pressed',String(i===pickedWorker)); b.dataset.key=r.name;
    const [cls,label]=stateOf(r);
@@ -593,7 +611,7 @@
   b.addEventListener('click',()=>{pickedBot=r.agent; if(current==='mkt') show('team'); else drawTeam(); document.getElementById('botdetail').scrollIntoView({block:'nearest'});}); return b;}
  function drawTeam(){
   const d=dash.data('agent_board'), grid=document.getElementById('teamgrid'), mk=document.getElementById('mktteam');
-  if(d.status!=='ok'){ if(d.status==='error'){fail(grid);fail(mk);} return; }
+  if(d.status!=='ok'){ if(d.status==='error'){fail(grid,'roster','agents');fail(mk,'roster','agents');} return; }
   const hosts=['All',...new Set(d.data.map(r=>r.host))];
   document.getElementById('hostfilter').replaceChildren(...hosts.map(h=>{const b=txt('button','kx-btn',h==='All'?'Everyone':h); b.type='button'; b.setAttribute('aria-pressed',String(h===hostSel)); b.addEventListener('click',()=>{hostSel=h; drawTeam();}); return b;}));
   grid.replaceChildren(...d.data.filter(r=>hostSel==='All'||r.host===hostSel).map(mate));
@@ -606,7 +624,10 @@
    v.textContent=typeof val==='boolean'?(val?'Yes':'Not yet (draft)'):f==='updated'?(val?fmtDT(val)+' IST':'—'):val; if(mark){v.setAttribute('data-source','agent_board'); v.setAttribute('data-field',f); v.setAttribute('data-row',String(idx));} box.append(v); return box;}));
  }
 
- const qSel={queue:'All',status:'All'};
+ // UX 12: filters + search are kept in this browser (try/catch: storage can be blocked) and clear with one tap
+ const QK='kx-roadmap-filters', qSel={queue:'All',status:'All'};
+ try{const sv=JSON.parse(localStorage.getItem(QK)||'{}'); if(sv.queue) qSel.queue=sv.queue; if(sv.status) qSel.status=sv.status; if(sv.q) document.getElementById('q').value=sv.q;}catch(_){}
+ const saveQ=()=>{try{localStorage.setItem(QK,JSON.stringify({...qSel,q:document.getElementById('q').value||''}));}catch(_){}};
  function rowEl(r,vals,hide){const tr=document.createElement('tr'); tr.dataset.key=r.id; vals.forEach((v,i)=>{const td=document.createElement('td');
    if(i===1){const p=txt('span','kx-pill '+(v==='done'?'p-ok':v==='blocked'?'p-bad':v==='in progress'?'p-warn':'')); p.append(document.createElement('i'),document.createTextNode(v)); td.append(p);} else td.textContent=v;
    if(i===hide) td.className='hide-n'; tr.append(td);}); return tr;}
@@ -614,13 +635,20 @@
   const st=dash.data('stages');
   document.querySelectorAll('#pipeline [data-where]').forEach(e=>{const s=e.getAttribute('data-where').split('=')[1]; e.textContent=st.status==='ok'?((st.data.find(r=>r.stage===s)||{}).n??'—'):'—';});
   const d=dash.data('roadmap'), tb=document.querySelector('#roadtable tbody');
-  if(d.status!=='ok'){ if(d.status==='error') fail(tb.closest('.kx-tablebox')); return; }
-  const mk=(key,opts)=>opts.map(o=>{const b=txt('button','kx-btn',o==='All'?(key==='queue'?'Everyone':'Any stage'):o); b.type='button'; b.setAttribute('aria-pressed',String(qSel[key]===o)); b.addEventListener('click',()=>{qSel[key]=o; drawWork();}); return b;});
+  if(d.status!=='ok'){ if(d.status==='error'){const tr=document.createElement('tr'),td=document.createElement('td'); td.colSpan=4; tr.append(td); tb.replaceChildren(tr); fail(td,'roadmap');} return; }
+  const mk=(key,opts)=>opts.map(o=>{const b=txt('button','kx-btn',o==='All'?(key==='queue'?'Everyone':'Any stage'):o); b.type='button'; b.setAttribute('aria-pressed',String(qSel[key]===o)); b.addEventListener('click',()=>{qSel[key]=o; saveQ(); drawWork();}); return b;});
   document.getElementById('qfilters').replaceChildren(...mk('queue',['All','Agents','Akhil (CEO)']),...mk('status',['All','to do','in progress','blocked','done']));
   const q=(document.getElementById('q').value||'').toLowerCase();
-  tb.replaceChildren(...d.data.filter(r=>(qSel.queue==='All'||r.queue===qSel.queue)&&(qSel.status==='All'||r.status===qSel.status)&&(!q||(r.id+' '+r.title+' '+r.world).toLowerCase().includes(q))).map(r=>rowEl(r,[r.id,r.status,r.world,r.title],2)));
+  const on=qSel.queue!=='All'||qSel.status!=='All'||!!q;
+  if(on){const c=txt('button','kx-btn','Clear filters'); c.type='button'; c.id='qclear'; c.addEventListener('click',()=>{qSel.queue='All'; qSel.status='All'; document.getElementById('q').value=''; saveQ(); drawWork();}); document.getElementById('qfilters').append(c);}
+  const rows=d.data.filter(r=>(qSel.queue==='All'||r.queue===qSel.queue)&&(qSel.status==='All'||r.status===qSel.status)&&(!q||(r.id+' '+r.title+' '+r.world).toLowerCase().includes(q)));
+  if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td'); td.colSpan=4; td.className='kx-empty'; td.textContent=on?'No tasks match these filters. Tap Clear filters.':'No roadmap tasks yet.'; tr.append(td); tb.replaceChildren(tr); return;}
+  tb.replaceChildren(...rows.map(r=>rowEl(r,[r.id,r.status,r.world,r.title],2)));
  }
- document.getElementById('q').addEventListener('input',drawWork);
+ // UX 7: search waits 200 ms after the last key; UX 13: '/' jumps to search, Esc clears it
+ let qT=0; document.getElementById('q').addEventListener('input',()=>{clearTimeout(qT); qT=setTimeout(()=>{saveQ(); drawWork();},200);});
+ document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value=''; saveQ(); drawWork();}});
+ document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||''))&&!e.target.isContentEditable){e.preventDefault(); show('work'); document.getElementById('q').focus();}});
  function drawMkt(){ drawTeam(); const d=dash.data('marketing'), tb=document.querySelector('#mkttable tbody'); if(d.status!=='ok') return; tb.replaceChildren(...d.data.map(r=>rowEl(r,[r.id,r.status,r.title],-1))); }
 
  function drawGame(){
@@ -628,7 +656,7 @@
   document.querySelectorAll('#game [data-source=game_stats]').forEach(e=>{const m=e.getAttribute('data-where').split('=')[1]; const r=s.status==='ok'?s.data.find(x=>x.metric===m):null; e.textContent=r?r.value:'—';});
   if(s.status==='ok'){const p=(s.data.find(x=>x.metric==='overall_pct')||{}).value; requestAnimationFrame(()=>{document.getElementById('xpbar').style.width=Math.max(2,Number(p)||0)+'%';});}
   const g=dash.data('game_worlds'), map=document.getElementById('gmap');
-  if(g.status!=='ok'){ if(g.status==='error') fail(map); return; }
+  if(g.status!=='ok'){ if(g.status==='error') fail(map,'game_worlds'); return; }
   map.replaceChildren(...g.data.map((r,i)=>{const d=txt('div','kx-isle'); const ring=document.createElementNS(NS,'svg'); ring.setAttribute('viewBox','0 0 64 64'); ring.setAttribute('width','60'); ring.setAttribute('height','60');
    const C=2*Math.PI*26, pct=Number(r.pct)||0;
    el('circle',{cx:32,cy:32,r:26,fill:'none',stroke:'var(--cds-chart-grid)','stroke-width':8},ring);
@@ -659,3 +687,4 @@
 })();
 </script>
 <script src="office.js"></script>
+<script src="rooms.js"></script>

@@ -2,7 +2,7 @@
    python3 build.py            → all four setups (sales demo)
    python3 build.py salon      → one industry site (what a salon client gets)
 Also refreshes setups/*/bot.config.json for the Python voice agent."""
-import json, os, pathlib, re, shutil, subprocess, sys
+import json, os, pathlib, shutil, subprocess, sys
 root = pathlib.Path(__file__).parent
 only = (sys.argv[1] if len(sys.argv) > 1 else os.getenv("SETUP", "")).strip()
 setups = [only] if only else ["salon", "realestate", "gym", "examkits"]
@@ -11,24 +11,26 @@ const { SETUPS } = require('./setups/index.js');
 process.stdout.write(JSON.stringify(SETUPS));"""], cwd=root))
 for k, c in cfgs.items():
     c2 = {x: y for x, y in c.items() if x != "quizBank"}
-    (root / "setups" / k / "bot.config.json").write_text(json.dumps(c2, indent=2, ensure_ascii=False), encoding="utf-8")
+    (root / "setups" / k / "bot.config.json").write_text(json.dumps(c2, indent=2, ensure_ascii=False))
 register = "\n".join(f"BotBhai.register({json.dumps(cfgs[s], ensure_ascii=False)});" for s in setups)
-page = (root / "web" / "index.src.html").read_text(encoding="utf-8").replace("/*ENGINE*/", (root / "core" / "engine.js").read_text(encoding="utf-8") + "\n" + register)
+page = (root / "web" / "index.src.html").read_text().replace("/*ENGINE*/", (root / "core" / "engine.js").read_text() + "\n" + register)
+# A211 price ladder: rendered from the one price file, so the page can never drift from PLAN.md §2
+P = json.loads((root.parent / "docs" / "sales" / "prices.json").read_text()); T = {x["id"]: x for x in P["tiers"]}
+inr = lambda n: "₹" + format(n, ",")  # all prices are under ₹1 lakh, so Western grouping equals Indian grouping
+def tier(x, up=False):
+    price = f'{inr(x["setup"])} <small>once, no monthly</small>' if x.get("one_time") else f'{inr(x["monthly"])}<small>/month + {inr(x["setup"])} setup</small>'
+    return f'<div class="tier{" up" if up else ""}"><h3>{x["name"]}</h3><p class="price">{price}</p><p>{x["gives"]}.</p></div>'
+page = page.replace("<!--LADDER-->", tier(T["starter"]) + tier(T["lite"]) + tier(T["standard"], up=True)).replace(
+    "<!--FEES-->", f'{inr(P["whatsapp_fees"]["lite_no_marketing"])}–{inr(P["whatsapp_fees"]["typical"])} a month')
 dist = root / "web" / "dist"; dist.mkdir(parents=True, exist_ok=True)
 head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>'
-# Served page: the engine + page script go to app.js so the CSP needs no 'unsafe-inline' for scripts (netlify.toml).
-# artifact.html (pasted into a Claude artifact, never linked from the site) keeps them inline.
-scripts = re.findall(r"<script>(.*?)</script>", page, re.S)
-assert len(scripts) == 2, "index.src.html: expected the engine script and the page script"
-(dist / "app.js").write_text("\n;\n".join(x.strip("\n") for x in scripts) + "\n", encoding="utf-8")
-served = page.replace("<script>" + scripts[0] + "</script>", "").replace("<script>" + scripts[1] + "</script>", '<script src="app.js"></script>')
-(dist / "index.html").write_text(head + served + "</body></html>", encoding="utf-8")
-(dist / "artifact.html").write_text(page, encoding="utf-8")
+(dist / "index.html").write_text(head + page + "</body></html>")
+(dist / "artifact.html").write_text(page)
 shutil.copy(root / "web" / "widget.js", dist / "widget.js")
-for js in ("inbox.js", "dashboard.js", "billing.js"): shutil.copy(root / "web" / js, dist / js)  # page scripts (no inline JS: CSP)
 shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
 shutil.copy(root / "web" / "dashboard.html", dist / "dashboard.html")  # owner dashboard (A10); calls /.netlify/functions/leads
-shutil.copy(root / "web" / "billing.html", dist / "billing.html")  # Kalpa billing (A05); calls /.netlify/functions/billing
+shutil.copy(root / "web" / "billing.html", dist / "billing.html")
+shutil.copy(root / "web" / "404.html", dist / "404.html")  # custom 404 (ENGINEERING-CHECKS)  # Kalpa billing (A05); calls /.netlify/functions/billing
 subprocess.check_call(["node", str(root / "tools" / "sample_invoice.js"), str(dist / "invoice-sample.html")])  # sample invoice page
 subprocess.check_call([sys.executable, str(root / "tools" / "cards.py"), "--all-demo", "--out", str(dist / "cards" / "demo")], stdout=subprocess.DEVNULL)
 print("built", ", ".join(setups), "+ smile cards →", dist)

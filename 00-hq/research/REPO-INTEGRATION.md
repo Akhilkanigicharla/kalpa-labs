@@ -43,3 +43,9 @@ Akhil, 31 Oct: "stop other work; the main task is to add every repo, AI agent or
 | Panniantong/Agent-Reach | reads platforms through logged-in cookies | ❌ can't (rule 4, 12) |
 | stablyai/orca, makecindy/cindy, OpenWhispr | apps on Akhil's PC (OpenWhispr installed by Akhil himself) | ❌ for us (rule 2) |
 | gosom/google-maps-scraper | scrapes Google Maps; breaks Google's terms and our rule 4. Salon lead lists already come from OpenStreetMap (ODbL, free) in `leadfinder.yml` | ❌ can't (rule 4) |
+| every-app/open-seo (MIT) | SEO tool; needs a paid DataForSEO key, so we keep our free claude-seo skills (A126) and borrow its audit checklist ideas | 📚 reference (7 Nov) |
+| chatwoot/chatwoot (MIT core; `enterprise/` excluded) | open-source team inbox for WhatsApp/Telegram/web chat. Feature model for BotBhai's owner inbox + app (A134/A155); self-hosting needs ~2 GB RAM, more than free hosts give, so we copy ideas, not the app | 📚 design reference for BotBhai |
+| OpenWhispr/openwhispr (MIT) | voice-to-text dictation (desktop). Input for the worldwide mobile app search (A152): voice typing for Telugu/Indian languages | 📚 idea input A152 |
+| CapSoftware/Cap (mostly AGPLv3) | Loom-style screen recorder; AGPL, so never copied into a product. Akhil can use it as a tool for demo videos | 📚 tool only |
+| VoiceStudio (repo not identified from the reel) | AI video dubbing in many languages. Idea input for A152 (mobile app) and Exam Kits video help (A151) | 📚 idea input |
+| YouTube Short "AI Marketing Team That Replaces a $5,000/Month Agency" (ReStructure AI, 7 Nov) | concept, no repo shown: role-based marketing agents. Built as K034 (Kalpa AI Marketing Team, also sold to BotBhai clients via A155) on our skills: social-media-skills, marketing superpowers, agency-agents playbooks | 🔧 agent task K034 |

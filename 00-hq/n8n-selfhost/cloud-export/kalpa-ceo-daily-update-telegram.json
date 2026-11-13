@@ -1,0 +1,197 @@
+{
+ "name": "Kalpa CEO Daily Update (Telegram)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "availableInMCP": true
+ },
+ "nodes": [
+  {
+   "id": "95ed278a-2f2b-4617-9a6e-58cc0c3928b7",
+   "name": "Daily 9 PM IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.3,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "0 21 * * *"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "7099d956-f484-40c4-a4d5-c316cc988248",
+   "name": "KL Tasks",
+   "type": "n8n-nodes-base.dataTable",
+   "typeVersion": 1.1,
+   "position": [
+    224,
+    0
+   ],
+   "parameters": {
+    "resource": "row",
+    "operation": "get",
+    "dataTableId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "09BI56dVYOs1I8FV"
+    },
+    "returnAll": true
+   },
+   "executeOnce": true,
+   "alwaysOutputData": true
+  },
+  {
+   "id": "7b3b336f-ebf4-4a52-9243-86769fb1c264",
+   "name": "GitHub Commits",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.3,
+   "position": [
+    448,
+    0
+   ],
+   "parameters": {
+    "method": "GET",
+    "url": "=https://api.github.com/repos/Akhilkanigicharla/kalpa-labs/commits?per_page=50&since={{ $now.minus({ hours: 24 }).toUTC().toISO() }}",
+    "options": {
+     "timeout": 15000
+    }
+   },
+   "executeOnce": true,
+   "onError": "continueRegularOutput",
+   "alwaysOutputData": true
+  },
+  {
+   "id": "cf537865-ff0b-4f58-b17e-c22bef96bf59",
+   "name": "Site Check",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.3,
+   "position": [
+    672,
+    0
+   ],
+   "parameters": {
+    "method": "GET",
+    "url": "https://kalpalabs.dpdns.org/",
+    "options": {
+     "response": {
+      "response": {
+       "fullResponse": true,
+       "responseFormat": "text"
+      }
+     },
+     "timeout": 15000
+    }
+   },
+   "executeOnce": true,
+   "onError": "continueRegularOutput",
+   "alwaysOutputData": true
+  },
+  {
+   "id": "c099c819-e69b-4416-aeec-185446a67327",
+   "name": "Build Update",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    896,
+    0
+   ],
+   "parameters": {
+    "mode": "runOnceForAllItems",
+    "language": "javaScript",
+    "jsCode": "const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst rows = $('KL Tasks').all().map((i) => i.json);\nconst now = Date.now(), H = 864e5;\nconst recent = rows.filter((r) => r.updatedAt && now - new Date(r.updatedAt).getTime() < H && r.status !== 'todo' && r.status !== 'running');\nconst passed = recent.filter((r) => r.status === 'review' || r.status === 'done');\nconst failed = recent.filter((r) => r.status === 'rejected');\nconst todo = rows.filter((r) => r.status === 'todo').length;\nconst running = rows.filter((r) => r.status === 'running').length;\nconst doneAll = rows.filter((r) => r.status === 'review' || r.status === 'done').length;\nconst short = (t) => String(t).replace(/^\\(Max[^)]*\\)\\s*/, '').replace(/^\\(Council[^)]*\\)\\s*ROAST ROOM for /, 'Council: ').slice(0, 80);\nconst verdict = (r) => { const m = /VERDICT:\\s*([^\\n]+)/.exec(r.output_summary || ''); return m ? ' -> ' + m[1].slice(0, 70) : ''; };\nlet commits = []; try { commits = $('GitHub Commits').all().map((i) => i.json).filter((c) => c && c.commit).map((c) => c.commit.message.split('\\n')[0].slice(0, 70)); } catch (e) { commits = []; }\nlet siteOk = false; try { const s = $('Site Check').first().json; siteOk = (s.statusCode || 0) === 200; } catch (e) { siteOk = false; }\nconst time = $now.setZone('Asia/Kolkata').toFormat('dd LLL');\nconst by = {};\nfor (const r of recent) { const a = r.owner_agent || 'Kalpa'; by[a] = by[a] || { ok: 0, redo: 0 }; if (r.status === 'rejected') by[a].redo++; else by[a].ok++; }\nconst team = Object.entries(by).sort((a, b) => (b[1].ok + b[1].redo) - (a[1].ok + a[1].redo));\nconst L = [];\nL.push('<b>Kalpa Labs daily update, ' + esc(time) + '</b>');\nL.push('Revenue so far: Rs 0 (no paying customers yet)');\nL.push('Website: ' + (siteOk ? 'up' : 'NOT answering'));\nL.push('');\nL.push('<b>Team</b>: 300 agents (72 on n8n free models: 64 council advisors + 8 competitor watchers; 101 automatic code; 112 Claude build agents). Models: Nemotron Super (OpenRouter), Nemotron (NVIDIA), Qwen + gpt-oss (Groq), Kalpa Router backup.');\nL.push('<b>Agents who worked today</b>: ' + team.length + (running ? ' (' + running + ' working right now)' : ''));\nfor (const [a, c] of team.slice(0, 12)) L.push('  ' + esc(a) + ': ' + c.ok + ' done' + (c.redo ? ', ' + c.redo + ' sent back' : ''));\nL.push('');\nL.push('<b>Jobs today</b>: ' + passed.length + ' done, ' + failed.length + ' sent back, ' + todo + ' in queue, ' + doneAll + ' done in total');\nconst councils = passed.filter((r) => r.owner_agent === 'Council');\nfor (const r of councils.slice(0, 8)) L.push('* ' + esc(short(r.title).slice(0, 40)) + esc(verdict(r)));\nfor (const r of passed.filter((r) => r.owner_agent !== 'Council').slice(0, 8)) L.push('+ ' + esc(short(r.title)));\nL.push('');\nL.push('<b>Code today</b>: ' + commits.length + ' change' + (commits.length === 1 ? '' : 's'));\nfor (const c of commits.slice(0, 6)) L.push('- ' + esc(c));\nreturn [{ json: { text: L.join('\\n').slice(0, 3900) } }];"
+   }
+  },
+  {
+   "id": "663cc106-bebe-4e80-bae7-6795fd056cc2",
+   "name": "Send to Akhil",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1120,
+    0
+   ],
+   "parameters": {
+    "resource": "message",
+    "operation": "sendMessage",
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Telegram account"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "KL Tasks": {
+   "main": [
+    [
+     {
+      "node": "GitHub Commits",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "GitHub Commits": {
+   "main": [
+    [
+     {
+      "node": "Site Check",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Site Check": {
+   "main": [
+    [
+     {
+      "node": "Build Update",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build Update": {
+   "main": [
+    [
+     {
+      "node": "Send to Akhil",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Daily 9 PM IST": {
+   "main": [
+    [
+     {
+      "node": "KL Tasks",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

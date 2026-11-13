@@ -17,7 +17,7 @@ rows = [{"name": "Glow", "website": base + "/", "score": "70"}, {"name": "Hidden
         {"name": "Booked", "website": base + "/booked", "score": "70"}, {"name": "No site", "website": "", "score": "85"}]
 out = {r["name"]: r for r in E.enrich(rows, delay=0)}
 g = out["Glow"]
-assert g["email"] == "hello@glowstudio.in" and g["whatsapp_link"] == "919876543210" and g["instagram"] == "glowstudio.hyd" and g["online_booking"] == "no", g
+assert g["email"] == "hello@glowstudio.in" and g["whatsapp_link"] == "yes" and g["instagram"] == "glowstudio.hyd" and g["online_booking"] == "no", g
 assert out["Hidden"]["enriched"] == "blocked by robots.txt" and not out["Hidden"].get("email")
 assert out["Booked"]["online_booking"] == "yes" and int(out["Booked"]["score"]) < 70
 assert int(g["score"]) == 90, g["score"]  # 70 +10 no booking +5 email +5 instagram, already has WhatsApp
@@ -48,4 +48,19 @@ if importlib.util.find_spec("extruct"):
     print("  ✓ microdata read with extruct (stdlib reader skips it)")
 else:
     print("  (extruct not installed: microdata test skipped; pip install extruct==0.18.0)")
+E.allowed = lambda url, cache: True
+# A208: no mobile numbers from websites either; WhatsApp button kept as a yes/no flag only; source column grows
+page = '<a href="https://wa.me/919848000000">chat</a> <script type="application/ld+json">{"@type":"BeautySalon","telephone":"+91 98480 11111"}</script>'
+rows = E.enrich([{"name": "S", "website": "https://s.test", "score": "50", "source": "OpenStreetMap (ODbL) x"}], delay=0, fetcher=lambda u: page)
+r = rows[0]
+assert r["whatsapp_link"] == "yes" and r["phone"] == "" and "98480" not in str(r), r
+assert r["source"] == "OpenStreetMap (ODbL) x; own website https://s.test", r
+page2 = '<script type="application/ld+json">{"@type":"HealthClub","telephone":"040 2345 6789"}</script>'
+r2 = E.enrich([{"name": "G", "website": "g.test", "score": "50", "source": ""}], delay=0, fetcher=lambda u: page2)[0]
+assert r2["phone"] == "+914023456789" and r2["source"] == "own website http://g.test", r2
+print("  ✓ A208: website mobiles withheld, landline kept, source column filled")
 print("enrich tests passed")
+page3 = '<a href="mailto:9848012345@gmail.com">mail</a> <a href="mailto:hello@salon.test">x</a>'
+r3 = E.enrich([{"name": "H", "website": "h.test", "score": "50", "source": ""}], delay=0, fetcher=lambda u: page3)[0]
+assert "9848012345" not in str(r3), r3
+print("  ✓ A208: an email made of a mobile number is dropped")

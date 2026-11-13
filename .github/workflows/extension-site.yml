@@ -9,7 +9,7 @@ permissions: { contents: read, pages: write, id-token: write }
 concurrency: { group: extension-site, cancel-in-progress: true }
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned 13 Nov 2026: ubuntu-latest is 26.04, Playwright 1.56 has no Chromium for it
     timeout-minutes: 5
     environment: { name: github-pages, url: "${{ steps.pages.outputs.page_url }}" }
     steps:
@@ -17,7 +17,14 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: node 04-extensions/site/build.mjs --release
-        env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL }}" }
+        env: { CONTACT_EMAIL: "${{ vars.CONTACT_EMAIL || secrets.CONTACT_EMAIL }}" }   # Akhil saved it under Secrets (11 Nov); either place works
+      - name: SEO checks (00-hq/design/SEO-CHECKS.md)
+        run: python3 00-hq/site/tests/test_seo.py 04-extensions/site/_dist https://akhilkanigicharla.github.io/kalpa-labs
+      - name: Phone tap sweep, 390 px light + dark (CLAUDE.md rule 5)
+        run: |
+          pip install playwright==1.56.0 && python -m playwright install --with-deps chromium
+          (cd 04-extensions/site/_dist && python3 -m http.server 8767 >/dev/null 2>&1 &) && sleep 1
+          for p in "" privacy.html terms.html 404.html; do python3 00-hq/site/tests/test_tap_sweep.py "http://127.0.0.1:8767/$p"; done
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: 04-extensions/site/_dist }

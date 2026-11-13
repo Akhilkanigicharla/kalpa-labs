@@ -8,11 +8,12 @@
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--f-body)}
 a{color:var(--world);text-underline-offset:3px}
+a.tap{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
 a,button{touch-action:manipulation}
 .temple{height:8px;background:radial-gradient(circle at 4px 3px,var(--gold) 1.6px,transparent 2px) 0 0/8px 8px,var(--hero)}
 .wrap{max-width:880px;margin:0 auto;padding:0 20px}
 nav.top{display:flex;align-items:center;justify-content:space-between;gap:4px 12px;padding-block:16px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;font:400 22px var(--f-display);color:var(--fg);text-decoration:none}
+.brand{display:flex;align-items:center;gap:10px;font:400 22px var(--f-display);color:var(--fg);text-decoration:none;min-height:44px}
 .brand img{width:32px;height:32px}
 nav.top .links{display:flex;gap:16px;font-size:15px;font-weight:600}
 nav.top .links a{color:var(--muted);text-decoration:none;padding:10px 0}
@@ -43,6 +44,7 @@ table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{text-align:left;vertical-align:top;padding:8px 6px;border-bottom:1px solid var(--rule)}
 .tablewrap{overflow-x:auto}
 footer{margin-top:48px;padding-block:20px 40px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
-footer a{color:var(--muted)}
+footer a{color:var(--muted);display:inline-block;min-height:44px;line-height:44px;white-space:nowrap}
+.card p a{display:inline-block;min-height:44px;line-height:44px;white-space:nowrap}
 @media (hover:hover) and (pointer:fine){.btn:hover{filter:brightness(1.08)}nav.top .links a:hover{color:var(--fg)}}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:active{transform:none}}

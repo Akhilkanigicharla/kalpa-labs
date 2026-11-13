@@ -12,6 +12,8 @@ Outputs: leads.csv and leads.xlsx (one sheet per niche + a summary), scored for 
 Runs free in the cloud via GitHub Actions (.github/workflows/leadfinder.yml) — nothing on your PC.
 """
 import argparse, csv, json, sys, time, urllib.parse, urllib.request
+import os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from phones import business_phone, scrub_mobiles, has_mobile
 
 ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 NICHE_TAGS = {
@@ -65,9 +67,8 @@ def is_late(hours):
     return False
 
 def phone_of(t):
-    for k in ("contact:phone", "phone", "contact:mobile", "mobile", "contact:whatsapp"):
-        if t.get(k): return t[k].split(";")[0].strip()
-    return ""
+    """(business landline or toll-free number, how many mobile/unreadable numbers were withheld). A208: no mobiles."""
+    return business_phone(*(t.get(k, "") for k in ("contact:phone", "phone", "contact:mobile", "mobile", "contact:whatsapp")))
 
 def score(row):
     """Higher = better BotBhai prospect. Has a phone (we can reach them) but weak online presence (we can help)."""
@@ -91,15 +92,18 @@ def collect(city, niche, near=None, radius=1000):
         if key in seen: continue
         seen.add(key)
         addr = ", ".join(x for x in [t.get("addr:housenumber"), t.get("addr:street"), t.get("addr:suburb") or t.get("addr:neighbourhood"), t.get("addr:city")] if x)
+        name, n1 = scrub_mobiles(name); addr, n2 = scrub_mobiles(addr)          # A208: mobiles inside free text
+        email = t.get("email") or t.get("contact:email", ""); n3 = int(has_mobile(email)); email = "" if n3 else email
         row = {
             "niche": niche, "name": name,
             "category": t.get("amenity") or t.get("shop") or t.get("leisure") or t.get("office") or t.get("healthcare") or "",
-            "phone": phone_of(t), "email": t.get("email") or t.get("contact:email", ""),
+            "phone": phone_of(t)[0], "phone_withheld": phone_of(t)[1] + n1 + n2 + n3, "email": email,
             "website": t.get("website") or t.get("contact:website", ""),
-            "opening_hours": t.get("opening_hours", ""), "address": addr,
+            "opening_hours": scrub_mobiles(t.get("opening_hours", ""))[0], "address": addr,
             "lat": lat, "lon": lon,
             "maps_link": f"https://www.openstreetmap.org/{el['type']}/{el['id']}",
             "osm_id": f"{el['type']}/{el['id']}",
+            "source": f"OpenStreetMap (ODbL) https://www.openstreetmap.org/{el['type']}/{el['id']}",
             "kind": t.get("hairdresser") or t.get("beauty") or t.get("female") and "ladies" or "",
             "late": is_late(t.get("opening_hours", "")),
         }
@@ -110,7 +114,7 @@ def collect(city, niche, near=None, radius=1000):
     rows.sort(key=lambda r: -r["score"])
     return rows
 
-COLS = ["score", "name", "category", "phone", "email", "website", "opening_hours", "address", "maps_link", "why_botbhai", "status", "notes", "lat", "lon", "osm_id", "niche", "kind", "late"]  # new columns go last: the sheet formulas use fixed letters
+COLS = ["score", "name", "category", "phone", "email", "website", "opening_hours", "address", "maps_link", "why_botbhai", "status", "notes", "lat", "lon", "osm_id", "niche", "kind", "late", "source", "phone_withheld"]  # new columns go last: the sheet formulas use fixed letters
 
 def write_csv(path, rows):
     with open(path, "w", newline="", encoding="utf-8-sig") as f:  # utf-8-sig opens cleanly in Excel

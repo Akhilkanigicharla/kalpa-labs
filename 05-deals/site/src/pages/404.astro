@@ -1,0 +1,18 @@
+---
+// Custom 404 (ENGINEERING-CHECKS + UX pattern "custom 404"): plain words, a way back, popular calculators. Not indexed.
+import Base from "../layouts/Base.astro";
+---
+<Base title="Page not found | Kalpa calculators" description="This page does not exist. Pick a calculator below." lang="en" path="/404/" noAlt noindex>
+  <h1>This page isn't here</h1>
+  <p>The link may be old or mistyped. Nothing is broken on your side.</p>
+  <div class="card">
+    <p><a class="btn" href="/">See all calculators</a></p>
+    <ul>
+      <li><a href="/income-tax/">Income tax</a></li>
+      <li><a href="/emi/">EMI</a></li>
+      <li><a href="/gst/">GST</a></li>
+      <li><a href="/fd/">FD</a></li>
+    </ul>
+    <p lang="te" class="muted">ఈ పేజీ దొరకలేదు. పై లింక్‌లలో ఒకదాన్ని ఎంచుకోండి.</p>
+  </div>
+</Base>

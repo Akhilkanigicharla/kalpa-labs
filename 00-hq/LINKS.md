@@ -39,6 +39,7 @@ All artifacts are listed at https://claude.ai/code/artifacts
 |---|---|---|---|
 | 🌅 Kalpa Labs · Morning CEO brief | 07:47 daily | Reads the Kingdom, assigns today's quests, push + email | trig_01HgocViToFGTBHpiBoXHSj1 |
 | 🌙 Kalpa Labs · Evening check-in | 20:44 daily | Checks today's quests, one next step, push | trig_01CxGpV6Y4rK9nubmXaAV6Cv |
+| 🤖 Kalpa Labs · Live robot rooms refresh | every 2 h, 08:41–22:41 | Refreshes the CEO Room robot rooms (Cloudflare D1 kalpa-live) from live_status.py | trig_01WfwjaBCsyg5je2gwquKvdp |
 | 🔨 Kalpa Labs · Build sprint | 11:07 and 23:07 daily | Takes the next items from the Agent queue in `ROADMAP.md`, builds, tests, commits, ticks them off, logs to `00-hq/log/` | see `00-hq/log/` |
 
 ## Code and cloud accounts (free tiers)
@@ -73,3 +74,11 @@ All artifacts are listed at https://claude.ai/code/artifacts
 - **X** (C53): https://x.com/kalpalabs_in · **Reddit** (C53): https://www.reddit.com/user/KalpaLabs/ · **Product Hunt** (C53, personal name): https://www.producthunt.com/@akhilkanigicharla. Made by Akhil 29 Oct 2026. No posts until Akhil says go.
 
 - **Kalpa LLM router** (A120, Render free, sleeps after 15 min idle): https://kalpa-llm-router.onrender.com (dashboard needs the admin login; /v1 needs the unified key). Live 29 Oct 2026; outside test: / 200, /v1/models 401 without key.
+
+- Tab Lifeboat site (live 11 Nov 2026): https://akhilkanigicharla.github.io/kalpa-labs/
+
+- Tab Lifeboat Chrome Web Store item id: kkdmhgljkdoclnifiegbiaklgjmnbfcc (submitted 12 Nov 2026, pending review). Public URL once approved: https://chromewebstore.google.com/detail/kkdmhgljkdoclnifiegbiaklgjmnbfcc
+- Chrome Web Store developer dashboard (Akhil only, needs his Google login): https://chrome.google.com/webstore/devconsole/45a157ac-3127-4bd2-b237-f48721de0874
+- Scheduled task "Tab Lifeboat store review check" (trig_01AwN4PXbzM725Zh2JRr6LMr): daily 10:41 IST, checks the public listing, updates the site when live, then switches itself off.
+- Site redesign directions (Design canvas, private): https://claude.ai/artifact/PXrsYQSYscN2bHdnEra5p1
+- Full scan report 12 Nov 2026 (doc): https://claude.ai/artifact/HfGpZPd9EAiC9iGZtRZMZZ

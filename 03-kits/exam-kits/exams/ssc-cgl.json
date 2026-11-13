@@ -1,0 +1,328 @@
+{
+ "name": "SSC CGL",
+ "name_te": "ఎస్ఎస్సీ సీజీఎల్",
+ "family": "Central Government",
+ "body": "Staff Selection Commission",
+ "official_url": "https://ssc.gov.in",
+ "languages": [
+  "en",
+  "hi",
+  "te"
+ ],
+ "pattern": "Tier 1 (qualifying): 4 sections × 25 questions × 50 marks = 200 marks, −0.50 per wrong answer, sectional timing. Tier 2 Paper 1 decides merit (all posts); Paper 2 only for statistics posts.",
+ "papers": [
+  {
+   "name": "Tier 1",
+   "sections": [
+    {
+     "name": "General intelligence & reasoning",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Analogy, classification, series",
+      "Coding-decoding, blood relations, directions",
+      "Venn diagrams, syllogism",
+      "Non-verbal: mirror, paper folding, embedded figures"
+     ]
+    },
+    {
+     "name": "General awareness",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "History, culture, polity",
+      "Geography and economy",
+      "General science",
+      "Current affairs, schemes, sports, awards"
+     ]
+    },
+    {
+     "name": "Quantitative aptitude",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Number system, simplification",
+      "Percentage, ratio, average, profit-loss, interest",
+      "Time-work, speed-distance",
+      "Algebra, geometry, mensuration, trigonometry",
+      "Data interpretation"
+     ]
+    },
+    {
+     "name": "English comprehension",
+     "questions": 25,
+     "marks": 50,
+     "topics": [
+      "Reading comprehension and cloze",
+      "Error spotting, fill-ups",
+      "Vocabulary: synonyms, antonyms, idioms, one-word",
+      "Voice, narration, sentence improvement"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tier 2 Paper 1",
+   "sections": [
+    {
+     "name": "Mathematical abilities",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Arithmetic",
+      "Algebra and geometry",
+      "Mensuration and trigonometry",
+      "Statistics and probability basics"
+     ]
+    },
+    {
+     "name": "Reasoning & general intelligence",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Verbal and non-verbal reasoning",
+      "Puzzles and critical thinking"
+     ]
+    },
+    {
+     "name": "English language & comprehension",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Grammar and vocabulary",
+      "Comprehension"
+     ]
+    },
+    {
+     "name": "General awareness",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Static GK",
+      "Current affairs"
+     ]
+    },
+    {
+     "name": "Computer knowledge & DEST (qualifying)",
+     "questions": null,
+     "marks": null,
+     "topics": [
+      "Computer basics, MS Office, internet",
+      "Data entry speed test"
+     ]
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://ssc.gov.in",
+  "https://www.mahendras.org/blogs/ssc-cgl-syllabus-and-exam-pattern-tier-1-and-tier-2",
+  "https://onlineresult.in/article/ssc-cgl-exam-pattern"
+ ],
+ "id": "ssc-cgl",
+ "checked": "2026-11-06",
+ "resources": {
+  "checked": "2026-11-07",
+  "official": [
+   {
+    "title": "SSC CGL 2026 notice (eligibility, posts, dates)",
+    "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2026.pdf"
+   },
+   {
+    "title": "Official CGL syllabus (PDF)",
+    "url": "https://ssc.gov.in/api/attachment/uploads/masterData/Syllabus/CGL-syllabus-169635-.pdf"
+   },
+   {
+    "title": "Scheme of examination (all SSC exams)",
+    "url": "https://ssc.gov.in/for-candidates/scheme-of-examination"
+   },
+   {
+    "title": "SSC official website (admit cards, answer keys, results)",
+    "url": "https://ssc.gov.in/"
+   }
+  ],
+  "mocks": [
+   {
+    "title": "Adda247: free SSC CGL Tier 1 mock tests",
+    "url": "https://www.adda247.com/ssc-cgl-kerala/mock-tests-kit",
+    "note": "Free tier; sign-up needed",
+    "bot_blocked": "2026-11-07"
+   },
+   {
+    "title": "PracticeMock: 1 free full Tier 1 + 1 free Tier 2 mock, 300+ free topic quizzes",
+    "url": "https://www.practicemock.com/ssc-cgl-test-series/",
+    "note": "Free tier; Hindi + English"
+   },
+   {
+    "title": "Prepp: free full SSC CGL Tier 1 tests",
+    "url": "https://prepp.in/ssc-cgl-exam/mock-test",
+    "note": "Free tier; sign-up needed",
+    "bot_blocked": "2026-11-07"
+   }
+  ],
+  "channels": [
+   {
+    "subject": "Maths",
+    "name": "Abhinay Maths",
+    "url": "https://www.youtube.com/@ABHINAYMATHS",
+    "lang": "Hindi"
+   },
+   {
+    "subject": "Maths (DI, advanced)",
+    "name": "Vidyagram (Aditya Ranjan)",
+    "url": "https://www.youtube.com/@VIDYAGRAM_AR",
+    "lang": "Hindi"
+   },
+   {
+    "subject": "English",
+    "name": "English With Rani Mam",
+    "url": "https://www.youtube.com/@EnglishWithRaniMam",
+    "lang": "Hindi + English"
+   },
+   {
+    "subject": "Reasoning",
+    "name": "Reasoning By Piyush Varshney",
+    "url": "https://www.youtube.com/@reasoningbypiyushvarshney",
+    "lang": "Hindi"
+   },
+   {
+    "subject": "GK / GS",
+    "name": "PARMAR SSC",
+    "url": "https://www.youtube.com/@parmarssc",
+    "lang": "Hindi + English"
+   },
+   {
+    "subject": "All subjects",
+    "name": "Adda247 SSC CGL",
+    "url": "https://www.youtube.com/@SSCCGLAdda247",
+    "lang": "Hindi + English"
+   },
+   {
+    "subject": "All subjects",
+    "name": "SSC Testbook",
+    "url": "https://www.youtube.com/@SSCTestbook",
+    "lang": "Hindi + English"
+   },
+   {
+    "subject": "Current affairs",
+    "name": "StudyIQ",
+    "url": "https://www.youtube.com/@StudyIQEducationLtd",
+    "lang": "Hindi + English"
+   }
+  ]
+ },
+ "topic_videos": {
+  "Analogy, classification, series": {
+   "url": "https://www.youtube.com/watch?v=R8LRbeFFw5o",
+   "channel": "Adda247 SSC CGL"
+  },
+  "Coding-decoding, blood relations, directions": {
+   "url": "https://www.youtube.com/watch?v=2SdsGoV9e8Q",
+   "channel": "Adda247 SSC CGL"
+  },
+  "Venn diagrams, syllogism": {
+   "url": "https://www.youtube.com/watch?v=SG7tkRjaCac",
+   "channel": "Adda247 SSC CGL"
+  },
+  "Non-verbal: mirror, paper folding, embedded figures": {
+   "url": "https://www.youtube.com/watch?v=Lw7OPUWicQ8",
+   "channel": "Adda247 SSC CGL"
+  },
+  "History, culture, polity": {
+   "url": "https://www.youtube.com/watch?v=LPuWoqQNUuM",
+   "channel": "PARMAR SSC"
+  },
+  "Geography and economy": {
+   "url": "https://www.youtube.com/watch?v=2hQPfIfCaxU",
+   "channel": "Parcham Classes"
+  },
+  "General science": {
+   "url": "https://www.youtube.com/watch?v=__NMMy6CBLk",
+   "channel": "Abhinay Maths (science marathon)"
+  },
+  "Current affairs, schemes, sports, awards": {
+   "url": "https://www.youtube.com/watch?v=zEw2EL6pcNU",
+   "channel": "Parcham Classes (watch the latest month)"
+  },
+  "Number system, simplification": {
+   "url": "https://www.youtube.com/watch?v=5rZBdmYZdpo",
+   "channel": "Feel Free to Learn"
+  },
+  "Percentage, ratio, average, profit-loss, interest": {
+   "url": "https://www.youtube.com/watch?v=6zejYctLMzM",
+   "channel": "Viral Maths (zero to advanced)"
+  },
+  "Time-work, speed-distance": {
+   "url": "https://www.youtube.com/watch?v=ZMBRPmtPWXs",
+   "channel": "Rakesh Yadav"
+  },
+  "Algebra, geometry, mensuration, trigonometry": {
+   "url": "https://www.youtube.com/watch?v=2mVySszNijg",
+   "channel": "Abhishek Ojha"
+  },
+  "Data interpretation": {
+   "url": "https://www.youtube.com/watch?v=CxuYpoEyK5M",
+   "channel": "Vidyagram (Aditya Ranjan)"
+  },
+  "Reading comprehension and cloze": {
+   "url": "https://www.youtube.com/watch?v=iEPjTlDfjME",
+   "channel": "English Neetu Singh"
+  },
+  "Error spotting, fill-ups": {
+   "url": "https://www.youtube.com/watch?v=3MLPpnWwwxQ",
+   "channel": "SSC Wallah (zero to hero)"
+  },
+  "Vocabulary: synonyms, antonyms, idioms, one-word": {
+   "url": "https://www.youtube.com/watch?v=itqTHe1Qsjo",
+   "channel": "SSC Wallah (series)"
+  },
+  "Voice, narration, sentence improvement": {
+   "url": "https://www.youtube.com/watch?v=ebGnEqRmu0M",
+   "channel": "Aman Sir English"
+  },
+  "Arithmetic": {
+   "url": "https://www.youtube.com/watch?v=6zejYctLMzM",
+   "channel": "Viral Maths"
+  },
+  "Algebra and geometry": {
+   "url": "https://www.youtube.com/watch?v=2mVySszNijg",
+   "channel": "Abhishek Ojha"
+  },
+  "Mensuration and trigonometry": {
+   "url": "https://www.youtube.com/watch?v=YPpPOKf5p8g",
+   "channel": "Adda247 SSC CGL"
+  },
+  "Statistics and probability basics": {
+   "url": "https://www.youtube.com/watch?v=dAAUe1BntHc",
+   "channel": "Gagan Pratap Maths"
+  },
+  "Verbal and non-verbal reasoning": {
+   "url": "https://www.youtube.com/watch?v=R8LRbeFFw5o",
+   "channel": "Adda247 SSC CGL"
+  },
+  "Puzzles and critical thinking": {
+   "url": "https://www.youtube.com/watch?v=0C8hPiXs1bI",
+   "channel": "PARMAR SSC"
+  },
+  "Grammar and vocabulary": {
+   "url": "https://www.youtube.com/watch?v=3MLPpnWwwxQ",
+   "channel": "SSC Wallah"
+  },
+  "Comprehension": {
+   "url": "https://www.youtube.com/watch?v=iEPjTlDfjME",
+   "channel": "English Neetu Singh"
+  },
+  "Static GK": {
+   "url": "https://www.youtube.com/watch?v=LPuWoqQNUuM",
+   "channel": "PARMAR SSC"
+  },
+  "Current affairs": {
+   "url": "https://www.youtube.com/watch?v=zEw2EL6pcNU",
+   "channel": "Parcham Classes (watch the latest month)"
+  },
+  "Computer basics, MS Office, internet": {
+   "url": "https://www.youtube.com/watch?v=6fBWo9XKApY",
+   "channel": "Simplicrack (free full course)"
+  }
+ }
+}

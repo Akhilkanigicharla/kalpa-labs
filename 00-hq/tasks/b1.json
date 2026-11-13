@@ -292,8 +292,8 @@
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 20000,
-  "tries": 3,
-  "status": "todo",
+  "tries": 4,
+  "status": "rejected",
   "created": "2026-11-13T02:50:00Z",
   "id": "K097",
   "world": "b1",
@@ -303,6 +303,8 @@
    "CLAUDE.md"
   ],
   "details": "List lead sources that allow reuse (open government data, business registries with open licences, sites whose terms permit it). For each: name, URL, fields it gives, licence or terms clause quoted, update frequency. Never include Google Maps, Justdial, Instagram or any source of consumers' personal phone numbers. Mark UNVERIFIED where you could not read the terms.",
-  "min_items": 8
+  "min_items": 8,
+  "updated": "2026-11-13T02:49:35Z",
+  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

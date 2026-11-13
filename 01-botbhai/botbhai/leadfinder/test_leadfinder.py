@@ -50,3 +50,20 @@ import check_leads
 lf.write_csv(out+"-a208.csv", rows3)
 assert check_leads.check([out+"-a208.csv"], need=2) and not check_leads.check([out+"-a208.csv"], need=50)
 print("leadfinder A208 check script test passed")
+# --- A208 part 2: mobiles written inside free text (address, name, email) are scrubbed; house numbers + pincodes are not phones
+assert phones.has_mobile("9848012345, opp. fruit market") and phones.has_mobile("call +91 98480-12345 now") and phones.has_mobile("098480 12345")
+assert not phones.has_mobile("Shop No-1-2-3/4, Raitu Bazar complex, 500072") and not phones.has_mobile("040 2345 6789") and not phones.has_mobile("")
+assert phones.scrub_mobiles("9848012345, opp. fruit market") == ("[number withheld], opp. fruit market", 1)
+assert phones.scrub_mobiles("Plot 12, 500081") == ("Plot 12, 500081", 0)
+fake["elements"].append({"type":"node","id":7,"lat":17.44,"lon":78.45,"tags":{"leisure":"fitness_centre","name":"Iron Gym 9848012345","addr:housenumber":"9848012345","addr:street":"opp. fruit market","email":"9848012345@gmail.com"}})
+rows4 = lf.collect("Hyderabad", "gym")
+g = next(r for r in rows4 if r["name"].startswith("Iron Gym"))
+assert g["name"] == "Iron Gym [number withheld]" and g["address"].startswith("[number withheld]") and g["email"] == "", g
+assert g["phone_withheld"] == 3, g
+lf.write_csv(out+"-a208b.csv", rows4)
+assert check_leads.check([out+"-a208b.csv"], need=1)
+open(out+"-bad.csv","w").write("niche,name,address,source\nsalon,X,\"9848012345, opp market\",osm\nsalon,Y,\"Shop No-1-2-3/4, 500072\",osm\n")
+assert not check_leads.check([out+"-bad.csv"], need=1)
+open(out+"-ok.csv","w").write("niche,name,address,source\nsalon,Y,\"Shop No-1-2-3/4, 500072\",osm\n")
+assert check_leads.check([out+"-ok.csv"], need=1)
+print("leadfinder A208 free-text scrub test passed")

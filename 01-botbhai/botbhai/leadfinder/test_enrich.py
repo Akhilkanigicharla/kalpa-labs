@@ -60,3 +60,7 @@ r2 = E.enrich([{"name": "G", "website": "g.test", "score": "50", "source": ""}],
 assert r2["phone"] == "+914023456789" and r2["source"] == "own website http://g.test", r2
 print("  ✓ A208: website mobiles withheld, landline kept, source column filled")
 print("enrich tests passed")
+page3 = '<a href="mailto:9848012345@gmail.com">mail</a> <a href="mailto:hello@salon.test">x</a>'
+r3 = E.enrich([{"name": "H", "website": "h.test", "score": "50", "source": ""}], delay=0, fetcher=lambda u: page3)[0]
+assert "9848012345" not in str(r3), r3
+print("  ✓ A208: an email made of a mobile number is dropped")

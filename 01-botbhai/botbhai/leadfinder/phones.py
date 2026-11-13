@@ -24,3 +24,15 @@ def business_phone(*values):
             if kind in ("landline", "tollfree"): return num, withheld
             withheld += 1
     return "", withheld
+
+# A208 part 2: a mobile written inside free text (address, name, email). Only a run of 10 digits that starts 6-9,
+# with at most single spaces/hyphens between digits and an optional +91/91/0 prefix, counts. House numbers like
+# "1-2-3/4" and pincodes like 500072 never form such a run, so they stay.
+MOBILE_RUN = re.compile(r"(?<![\d])(?:(?:\+?91|0)[\s-]?)?[6-9](?:[\s-]?\d){9}(?![\d])")
+
+def has_mobile(text):
+    return bool(MOBILE_RUN.search(text or ""))
+
+def scrub_mobiles(text):
+    """(text with each mobile replaced by '[number withheld]', how many were replaced)."""
+    return MOBILE_RUN.subn("[number withheld]", text or "")

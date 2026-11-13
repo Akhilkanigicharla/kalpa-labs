@@ -13,7 +13,7 @@ Runs free in the cloud via GitHub Actions (.github/workflows/leadfinder.yml) —
 """
 import argparse, csv, json, sys, time, urllib.parse, urllib.request
 import os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from phones import business_phone
+from phones import business_phone, scrub_mobiles, has_mobile
 
 ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 NICHE_TAGS = {
@@ -92,12 +92,14 @@ def collect(city, niche, near=None, radius=1000):
         if key in seen: continue
         seen.add(key)
         addr = ", ".join(x for x in [t.get("addr:housenumber"), t.get("addr:street"), t.get("addr:suburb") or t.get("addr:neighbourhood"), t.get("addr:city")] if x)
+        name, n1 = scrub_mobiles(name); addr, n2 = scrub_mobiles(addr)          # A208: mobiles inside free text
+        email = t.get("email") or t.get("contact:email", ""); n3 = int(has_mobile(email)); email = "" if n3 else email
         row = {
             "niche": niche, "name": name,
             "category": t.get("amenity") or t.get("shop") or t.get("leisure") or t.get("office") or t.get("healthcare") or "",
-            "phone": phone_of(t)[0], "phone_withheld": phone_of(t)[1], "email": t.get("email") or t.get("contact:email", ""),
+            "phone": phone_of(t)[0], "phone_withheld": phone_of(t)[1] + n1 + n2 + n3, "email": email,
             "website": t.get("website") or t.get("contact:website", ""),
-            "opening_hours": t.get("opening_hours", ""), "address": addr,
+            "opening_hours": scrub_mobiles(t.get("opening_hours", ""))[0], "address": addr,
             "lat": lat, "lon": lon,
             "maps_link": f"https://www.openstreetmap.org/{el['type']}/{el['id']}",
             "osm_id": f"{el['type']}/{el['id']}",

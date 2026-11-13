@@ -1,6 +1,6 @@
 # Tab Lifeboat Pro: Google Drive backup (A234, 12 Nov 2026)
 
-**Why (data, checked 12 Nov 2026):** cross-device cloud backup/sync is the one feature people pay for in this category (Workona Pro $7/mo, OneTab sync $7/yr, Toby $6/member). Local saving is free everywhere. Rivals' own users lose data after updates and "repairs"; a copy outside Chrome fixes that.
+**Why (data, checked 12 Nov 2026):** cross-device cloud backup/sync is the one feature people pay for in this category (Workona Pro $7/mo, OneTab sync $39.99/yr, corrected 13 Nov from $7/yr, Toby $6/member). Local saving is free everywhere. Rivals' own users lose data after updates and "repairs"; a copy outside Chrome fixes that.
 
 **What it does**
 - Pro users switch on "Back up to Google Drive". Tab Lifeboat copies every saved session to a hidden app folder in *their own* Drive, gzipped.

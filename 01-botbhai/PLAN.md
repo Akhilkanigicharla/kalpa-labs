@@ -77,17 +77,17 @@ India rates from 1 Oct 2026 (all + 18% GST):
 
 | Category | Rate | Note |
 |---|---|---|
-| Service (free-form replies inside the 24 h window) | 1,000 free per number per month, then ~₹0.115 | |
-| Utility templates (reminders, alerts) | ~₹0.115 | Now charged even inside the window |
+| Service (free-form replies inside the 24 h window) | 1,000 free per number per month (no roll-over), then ~₹0.115 | Free tier verified (Meta pricing page, updated 30 Sep 2026, fetched 13 Nov 2026: developers.facebook.com/documentation/business-messaging/whatsapp/pricing); ₹ rate: confirm at onboarding |
+| Utility templates (reminders, alerts) | ~₹0.115 | Charged outside a window. Inside a normal 24 h window: unverified (Meta's page fetched 13 Nov doesn't say), confirm at onboarding. Free inside an open FEP window |
 | Marketing | ~₹0.863 | Unchanged |
-| Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days (FEP window; Meta pricing page, checked 25 Oct 2026) | |
+| Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days, all categories (FEP window) | Verified: Meta pricing page fetched 13 Nov 2026 |
 | Incoming messages | Free | |
 
 - **A payment method is now mandatory.** Without one, even service replies stop delivering.
 - BSP figures of ₹0.14–0.145 and ₹0.95–1.09 include their markup.
 - Meta's developer page didn't list India among the October changes. Confirm the INR rate card in WhatsApp Manager at every onboarding.
 
-**Typical salon bill (300 bookings a month):**
+**Typical salon bill (300 bookings a month; ₹ rates confirm at onboarding in WhatsApp Manager):**
 
 | Message | Count | ₹ |
 |---|---|---|

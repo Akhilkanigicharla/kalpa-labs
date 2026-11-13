@@ -30,7 +30,11 @@ class Result:
 
 
 def run(close: pd.Series, weight: pd.Series, *, delay: int = 1, cost_mult: float = 1.0,
-        capital: float = 100_000.0) -> Result:
+        capital: float = 100_000.0, cash_rate: float = 0.0) -> Result:
+    """cash_rate: yearly return earned on the part NOT in the market (e.g. a liquid ETF such as
+    LIQUIDBEES, 4.69%/yr since 2003 after its 0.69% fee, anandrathi.com 1 Jun 2025). Default 0
+    keeps the gate's numbers unchanged; switching between equity and liquid ETF costs are
+    charged on the equity leg only (liquid ETF brokerage is ignored: tiny, flagged in notes)."""
     if delay < 1:
         raise ValueError("delay must be >= 1 (delay 0 would look ahead)")
     if cost_mult <= 0:
@@ -38,7 +42,9 @@ def run(close: pd.Series, weight: pd.Series, *, delay: int = 1, cost_mult: float
     w = weight.reindex(close.index).fillna(0.0).clip(0.0, 1.0)
     held = w.shift(delay).fillna(0.0)
     r = close.pct_change().fillna(0.0)
-    gross = held * r
+    if not 0.0 <= cash_rate < 0.25:
+        raise ValueError("cash_rate must be a yearly fraction between 0 and 0.25")
+    gross = held * r + (1.0 - held) * ((1.0 + cash_rate) ** (1 / 252) - 1.0)
     # The position actually changes on the day before it first earns a return.
     change = held.shift(-1).fillna(held.iloc[-1]) - held
     buy, sell = change.clip(lower=0), (-change).clip(lower=0)
@@ -55,14 +61,14 @@ def buy_and_hold(close: pd.Series, capital: float = 100_000.0) -> Result:
     return run(close, w, capital=capital)
 
 
-def config_matrix(close: pd.Series, strategy: str, *, delay: int = 1,
+def config_matrix(close: pd.Series, strategy: str, *, delay: int = 1, cash_rate: float = 0.0,
                   cost_mult: float = 1.0) -> tuple[pd.DataFrame, list[dict]]:
     """Net daily returns for every config in the strategy's grid (columns = configs)."""
     from .strategies import param_grid, weights
     grid = param_grid(strategy)
     cols = {}
     for i, p in enumerate(grid):
-        cols[i] = run(close, weights(strategy, close, **p), delay=delay, cost_mult=cost_mult).returns
+        cols[i] = run(close, weights(strategy, close, **p), delay=delay, cost_mult=cost_mult, cash_rate=cash_rate).returns
     return pd.DataFrame(cols), grid
 
 

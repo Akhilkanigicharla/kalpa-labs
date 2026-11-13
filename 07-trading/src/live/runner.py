@@ -40,7 +40,11 @@ TRACKS = {
     "B": {"market": "CRYPTO", "symbol": "BTCINR", "fractional": True, "slippage_bps": 20.0,
           "stop_pct": 0.10, "label": "Crypto trend", "broker": "delta"},
 }
-STRATEGIES = ("tsmom_vt", "ma_filter_vt", "markov_regime")
+STRATEGIES = ("tsmom", "tsmom_vt", "ma_filter_vt", "markov_regime")
+# Track A idle money sits in a liquid ETF. LIQUIDBEES: 4.69%/yr since 2003 after its 0.69% fee
+# (anandrathi.com, 1 Jun 2025). Paper mode credits this on idle cash; liquid-ETF gains are taxed
+# at the slab rate (ignored here, so the paper number is slightly high on the cash leg).
+CASH_RATE = {"A": 0.047, "B": 0.0}
 LEDGER_COLUMNS = ["run_at_ist", "asof", "track", "mode", "strategy", "symbol", "side", "qty",
                   "value_pct_capital", "fee_inr", "tds_inr", "status", "reasons", "target_weight",
                   "bot_after_tax_inr", "bench_after_tax_inr", "bot_vs_bench_pct_pts"]
@@ -66,6 +70,39 @@ def decide(bars: pd.DataFrame, decision_time, strategy: str, **params) -> tuple[
     if w.index.max() > pd.Timestamp(decision_time):
         raise LookAheadError("strategy produced a weight after the decision time")
     return float(min(max(w.iloc[-1], 0.0), 1.0)), float(vis["close"].iloc[-1]), vis.index[-1]
+
+
+def pick_params(close: pd.Series, strategy: str, decision_time, *, cash_rate: float = 0.0) -> dict:
+    """Same rule as gate.walk_forward: the config with the best Sharpe over the last
+    train_days visible bars. Uses only bars at or before the decision time."""
+    from .. import backtest, metrics
+    from ..gate import THRESHOLDS
+    from ..strategies import param_grid
+    vis = close.loc[close.index <= pd.Timestamp(decision_time)]
+    grid = param_grid(strategy)
+    if len(grid) == 1:
+        return dict(grid[0])
+    train = THRESHOLDS["train_days"]
+    if len(vis) < train + 2:
+        raise ValueError(f"need {train + 2} visible bars to pick params, got {len(vis)}")
+    scores = []
+    for p in grid:
+        r = backtest.run(vis, weights(strategy, vis, **p), cash_rate=cash_rate).returns.iloc[-train:]
+        scores.append(metrics.sharpe(r))
+    best = max(range(len(grid)), key=lambda i: (scores[i], -i))
+    return dict(grid[best])
+
+
+def accrue_cash_interest(fb, last_day: str | None, today: date, rate: float) -> float:
+    """Credit idle-cash interest for the calendar days since the last paper run."""
+    if not rate or not last_day:
+        return 0.0
+    days = (today - date.fromisoformat(last_day)).days
+    if days <= 0 or fb.cash() <= 0:
+        return 0.0
+    amt = fb.cash() * ((1 + rate) ** (days / 365) - 1)
+    fb._cash += amt
+    return amt
 
 
 # ---------------------------------------------------------------- costs and tax
@@ -146,13 +183,27 @@ def live_blockers(track: str, state: dict, env: Mapping[str, str], flags: Path) 
 # ---------------------------------------------------------------- main run
 def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, out: Path,
               flags: Path, asof=None, flatten: bool = False, stop_pct: float | None = None,
-              symbol: str | None = None, params: dict | None = None) -> dict:
+              symbol: str | None = None, params: dict | None = None,
+              signal_bars: pd.DataFrame | None = None, cash_rate: float | None = None) -> dict:
+    """bars = the traded instrument (fill price). signal_bars (optional) = a cleaner series the
+    strategy reads, e.g. the Nifty 50 index for NIFTYBEES (the ETF's Yahoo history has an
+    unadjusted 2019 split). params=None -> picked like the gate's walk-forward."""
     t = TRACKS[track]
     symbol = symbol or t["symbol"]
     stop_pct = stop_pct or t["stop_pct"]
+    rate = CASH_RATE[track] if cash_rate is None else cash_rate
     bars = bars.sort_index()
     asof = pd.Timestamp(asof) if asof is not None else bars.index[-1]
-    w, px, bar_ts = decide(bars, asof, strategy, **(params or {}))
+    sig = signal_bars.sort_index() if signal_bars is not None else bars
+    if params is None:
+        params = pick_params(visible_bars(sig, asof)["close"], strategy, asof, cash_rate=rate)
+    w, _, sig_ts = decide(sig, asof, strategy, **params)
+    vis_px = visible_bars(bars, asof)
+    if vis_px.empty:
+        raise ValueError("no traded-instrument bars at or before the decision time")
+    px, bar_ts = float(vis_px["close"].iloc[-1]), vis_px.index[-1]
+    if signal_bars is not None and abs((bar_ts - sig_ts).days) > 4:
+        raise ValueError(f"signal bar {sig_ts.date()} and price bar {bar_ts.date()} are too far apart")
     d = bar_ts.date()
     # simulated fill time: next NSE open after the close, or just after midnight for crypto
     if t["market"] == "NSE":
@@ -170,6 +221,8 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
                         login_date=at.date(), name="paper")
     if st["broker"]:
         fb.load(st["broker"])
+    interest = accrue_cash_interest(fb, st["paper_days"][-1] if st["paper_days"] else None, d, rate)
+    st["interest"] = st.get("interest", 0.0) + interest
     book = risk.RiskBook(pot=capital)
     book.marks = {date.fromisoformat(k): v for k, v in st["marks"].items()}
     guard = LiveGuard(fb, book, GuardConfig(market=t["market"], capital=capital, kill_file=flags / "KILL"),
@@ -230,6 +283,7 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
         st["bench"] = {"start": d.isoformat(), "units": bu, "basis": bpx, "cash": bcash}
     b = st["bench"]
     bench = liquidation_after_tax(track, b["cash"], b["units"], b["basis"], px * (1 - t["slippage_bps"] / 1e4), [])
+    st["params"] = params
 
     st["broker"] = fb.to_dict()
     st["marks"] = {k.isoformat(): v for k, v in book.marks.items()}
@@ -243,7 +297,7 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
     text = summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, st, guard)
     (out / f"summary-{track}.txt").write_text(text + "\n", encoding="utf-8")
     return {"weight": w, "decisions": decisions, "bot": bot, "bench": bench, "summary": text,
-            "state": st, "rows": rows}
+            "state": st, "rows": rows, "params": params, "interest": interest}
 
 
 def _ledger_rows(track, strategy, symbol, capital, d, at, w, decisions, bot, bench) -> list[list]:
@@ -288,7 +342,8 @@ def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, 
             >= guard.book.limits[f"{'daily' if k == 'day' else k + 'ly'}_loss"] - 1e-9]
     return "\n".join([
         f"Kalpa b7 · Track {track} ({t['label']}) · PAPER · as of {d.isoformat()}",
-        f"{symbol} target {w:.0%} of Rs {capital:,.0f} ({strategy})",
+        f"{symbol} target {w:.0%} of Rs {capital:,.0f} ({strategy} {st.get('params') or ''})".rstrip(),
+        f"Idle cash interest so far: Rs {st.get('interest', 0.0):,.2f} (liquid-ETF rate {CASH_RATE[track]:.1%}/yr)",
         f"Order: {order}",
         f"Bot after costs + tax: Rs {bot:,.2f} ({bot / capital - 1:+.2%})",
         f"Buy-and-hold {symbol} since {st['bench']['start']}: Rs {bench:,.2f} ({bench / capital - 1:+.2%}) "
@@ -324,6 +379,8 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
     p.add_argument("--asof", default=None, help="decision date; later bars are invisible")
     p.add_argument("--bars", type=Path, default=None)
     p.add_argument("--synthetic", action="store_true")
+    p.add_argument("--signal-symbol", default=None, help="read the signal from this series (e.g. ^NSEI)")
+    p.add_argument("--signal-bars", type=Path, default=None, help="CSV for the signal series")
     p.add_argument("--out", type=Path, default=brk.LIVE_DIR / "out")
     p.add_argument("--flags", type=Path, default=brk.LIVE_DIR)
     p.add_argument("--broker", default=None, help="live adapter: fyers|dhan (A), delta|coindcx (B)")
@@ -355,8 +412,15 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
             return 3
         return 3   # unreachable while adapters are stubs
 
+    sig = None
+    if a.signal_bars:
+        from .. import data
+        sig = data.normalise(pd.read_csv(a.signal_bars, index_col=0, parse_dates=True))
+    elif a.signal_symbol:
+        from .. import data
+        sig = data.get_daily(a.signal_symbol, strict=False, refresh=True)
     res = run_paper(_load_bars(a), track=a.track, strategy=a.strategy, capital=a.capital, out=a.out,
-                    flags=a.flags, asof=a.asof, flatten=a.flatten, symbol=a.symbol)
+                    flags=a.flags, asof=a.asof, flatten=a.flatten, symbol=a.symbol, signal_bars=sig)
     print(res["summary"])
     return 0
 

@@ -317,3 +317,44 @@ def test_markov_regime_is_registered_and_goes_through_the_gate(tmp_path):
                            "synthetic random walk seed 1", 4, path=reg)
     v = gate.evaluate(close, "markov_regime", tid, registry=reg)
     assert v.verdict == "rejected", v.summary()
+
+
+# ---------------------------------------------------------------- Nifty ETF track (13 Nov 2026)
+def test_pick_params_matches_gate_rule_and_ignores_future_bars():
+    b = bars(1100, seed=11)
+    cut = b.index[900]
+    p1 = runner.pick_params(b["close"], "tsmom", cut)
+    p2 = runner.pick_params(b["close"].loc[:cut], "tsmom", cut)
+    assert p1 == p2 and p1 in strategies.param_grid("tsmom")
+    with pytest.raises(ValueError):
+        runner.pick_params(b["close"].iloc[:300], "tsmom", b.index[299])
+
+
+def test_cash_interest_accrues_only_on_idle_cash_between_runs():
+    fb = fake(starting_cash=10_000.0)
+    assert runner.accrue_cash_interest(fb, None, date(2026, 1, 31), 0.047) == 0.0
+    got = runner.accrue_cash_interest(fb, "2025-01-31", date(2026, 1, 31), 0.047)
+    assert abs(got - 470.0) < 0.01 and abs(fb.cash() - 10_470.0) < 0.01
+    assert runner.accrue_cash_interest(fb, "2026-01-31", date(2026, 1, 31), 0.047) == 0.0
+
+
+def test_signal_from_index_fill_at_etf_price(tmp_path):
+    idx = bars(1100, seed=12)
+    etf = idx.copy()
+    for c in ("open", "high", "low", "close"):
+        etf[c] = idx[c] / 100.0            # ETF ~ 1/100 of the index, same shape
+    out = runner.run_paper(etf, track="A", strategy="tsmom", capital=5_000.0, out=tmp_path / "o",
+                           flags=tmp_path / "f", signal_bars=idx)
+    assert out["params"] in strategies.param_grid("tsmom")
+    for dec in out["decisions"]:
+        if dec.result is not None and dec.result.status == "filled":
+            assert dec.result.avg_price < etf["close"].iloc[-1] * 1.01      # filled at ETF price, not index
+    assert "Idle cash interest" in out["summary"]
+    far = idx.copy(); far.index = far.index - pd.Timedelta(days=30)
+    with pytest.raises(ValueError):
+        runner.run_paper(etf, track="A", strategy="tsmom", capital=5_000.0, out=tmp_path / "o2",
+                         flags=tmp_path / "f", signal_bars=far, asof=etf.index[-1])
+
+
+def test_track_b_gets_no_cash_interest():
+    assert runner.CASH_RATE["B"] == 0.0 and 0.03 < runner.CASH_RATE["A"] < 0.07

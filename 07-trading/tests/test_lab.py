@@ -242,3 +242,18 @@ def test_dsr_counts_every_config_ever_logged(tmp_path):
     trials.log_trial("H2", "tsmom", {}, "b", 4, path=reg)
     trials.log_trial("H3", "tsmom", {}, "c", 4, path=reg)
     assert trials.configs_tried("H2", path=reg) == 8
+
+
+def test_cash_rate_pays_only_on_idle_money():
+    import pandas as pd
+    import pytest
+    from src import backtest
+    idx = pd.bdate_range("2024-01-01", periods=253)
+    close = pd.Series(100.0, index=idx)           # flat market: only cash interest moves money
+    out = backtest.run(close, pd.Series(0.0, index=idx), cash_rate=0.05)
+    assert abs((1 + out.returns).prod() - 1 - 0.05) < 0.002
+    half = backtest.run(close, pd.Series(0.5, index=idx), cash_rate=0.05)
+    assert 0.02 < (1 + half.returns.iloc[2:]).prod() - 1 < 0.03
+    assert backtest.run(close, pd.Series(0.0, index=idx)).returns.sum() == 0
+    with pytest.raises(ValueError):
+        backtest.run(close, pd.Series(0.0, index=idx), cash_rate=0.5)

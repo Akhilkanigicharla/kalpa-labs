@@ -33,6 +33,10 @@ THRESHOLDS = {
     "dsr_min": 0.95,
     "train_days": 756,       # 3 years in-sample per fold
     "test_days": 252,        # 1 year out-of-sample per fold
+    # Yearly return on money the bot keeps out of the market. 0 = old behaviour. A real track-A
+    # bot parks idle money in a liquid ETF: LIQUIDBEES 4.69%/yr since 2003 after its 0.69% fee
+    # (anandrathi.com, 1 Jun 2025). Use 0.047 for track A; crypto (track B) has no such ETF: 0.
+    "cash_rate": 0.0,
 }
 THRESHOLDS_STATUS = "pending CEO approval"
 
@@ -58,21 +62,22 @@ class Verdict:
 
 
 def walk_forward(close: pd.Series, strategy: str, *, delay: int = 1, cost_mult: float = 1.0,
-                 train: int | None = None, test: int | None = None):
+                 train: int | None = None, test: int | None = None, cash_rate: float | None = None):
     """Rolling walk-forward: pick the best-IS-Sharpe config per fold, trade it OOS.
 
     Returns (oos_returns, oos_trades, chosen_params_per_fold, full_config_matrix).
     """
     train = train or THRESHOLDS["train_days"]
     test = test or THRESHOLDS["test_days"]
-    mat, grid = backtest.config_matrix(close, strategy, delay=delay, cost_mult=cost_mult)
+    cr = THRESHOLDS["cash_rate"] if cash_rate is None else cash_rate
+    mat, grid = backtest.config_matrix(close, strategy, delay=delay, cost_mult=cost_mult, cash_rate=cr)
     from .strategies import weights
     pieces, chosen, n_changes = [], [], 0
     start = train
     while start + test <= len(close):
         is_slice = mat.iloc[start - train:start]
         best = int(np.argmax([metrics.sharpe(is_slice[c]) for c in is_slice.columns]))
-        res = backtest.run(close, weights(strategy, close, **grid[best]), delay=delay, cost_mult=cost_mult)
+        res = backtest.run(close, weights(strategy, close, **grid[best]), delay=delay, cost_mult=cost_mult, cash_rate=cr)
         oos = slice(start, start + test)
         pieces.append(res.returns.iloc[oos])
         held = res.held.iloc[start - 1:start + test]
@@ -86,7 +91,7 @@ def walk_forward(close: pd.Series, strategy: str, *, delay: int = 1, cost_mult: 
 
 
 def evaluate(close: pd.Series, strategy: str, trial_id: str | None, *,
-             registry: Path | None = None, record: bool = True) -> Verdict:
+             registry: Path | None = None, record: bool = True, cash_rate: float | None = None) -> Verdict:
     """Run the gate. Refuses to run unless `trial_id` was logged first."""
     t = trials.get_trial(trial_id, path=registry)  # raises TrialError if not logged
     if t["strategy"] != strategy:
@@ -94,13 +99,13 @@ def evaluate(close: pd.Series, strategy: str, trial_id: str | None, *,
     if int(t["n_configs"]) != len(param_grid(strategy)):
         raise GateError("logged n_configs does not match the grid being run; log a new trial")
 
-    oos, n_trades, chosen, mat = walk_forward(close, strategy)
+    oos, n_trades, chosen, mat = walk_forward(close, strategy, cash_rate=cash_rate)
     bh = backtest.buy_and_hold(close).returns.loc[oos.index]
     s_oos, s_bh = metrics.sharpe(oos), metrics.sharpe(bh)
     is_sharpe = float(max(metrics.sharpe(mat[c]) for c in mat.columns))
 
     stress, _, _, _ = walk_forward(close, strategy, delay=THRESHOLDS["stress_delay"],
-                                   cost_mult=THRESHOLDS["stress_cost_mult"])
+                                   cost_mult=THRESHOLDS["stress_cost_mult"], cash_rate=cash_rate)
     bh_stress = backtest.run(close, pd.Series(1.0, index=close.index),
                              cost_mult=THRESHOLDS["stress_cost_mult"]).returns.loc[stress.index]
     s_stress = metrics.sharpe(stress)

@@ -28,9 +28,14 @@ def nse_symbol(symbol: str) -> str:
     return s if s.startswith("^") or "." in s else f"{s}.NS"
 
 
+DEFAULT_START = "2008-01-01"
+
+
 def _yf_fetch(symbol: str, start: str | None, end: str | None) -> pd.DataFrame:
     import yfinance as yf  # imported lazily so tests need no network
-    df = yf.Ticker(symbol).history(start=start, end=end, auto_adjust=True, actions=False)
+    # With no start, Yahoo returns only the last month: the walk-forward and the paper
+    # runner need years (found 13 Nov 2026: a cached file held 21 bars).
+    df = yf.Ticker(symbol).history(start=start or DEFAULT_START, end=end, auto_adjust=True, actions=False)
     return df
 
 

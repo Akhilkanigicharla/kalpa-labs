@@ -1,0 +1,9 @@
+test,days,avg_per_day,total,days_ge_200_pct,worst_day,best_day,min_equity,wiped_out
+A orb {'r': 1.0} avg of 51 stocks,60,-39.2,-2353,0.0,-131,182,2647,False
+A orb {'r': 2.0} avg of 51 stocks,60,-31.6,-1894,1.7,-132,210,3106,False
+"A vwap {'stop': 0.003, 'target': 0.006} avg of 51 stocks",60,-41.7,-2499,0.0,-68,0,2501,False
+"A vwap {'stop': 0.004, 'target': 0.008} avg of 51 stocks",60,-37.4,-2244,0.0,-78,19,2756,False
+"A rsi_mr {'stop': 0.004, 'target': 0.004} avg of 51 stocks",60,-56.6,-3397,0.0,-129,27,1603,False
+"A rsi_mr {'stop': 0.006, 'target': 0.006} avg of 51 stocks",60,-53.8,-3229,0.0,-185,67,1771,False
+"B stocks-in-play top pick, 5x",40,-17.6,-705,7.5,-114,885,4105,False
+"C Nifty option buying (modelled), Rs 5,000",60,-235.2,-14114,30.0,-2504,4685,-17767,True

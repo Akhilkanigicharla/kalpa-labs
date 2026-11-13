@@ -42,6 +42,23 @@ def ma_filter(close: pd.Series, window: int = 200) -> pd.Series:
     return (close > sma).astype(float).where(sma.notna(), 0.0)
 
 
+def turtle(close: pd.Series, entry: int = 20, exit: int = 10) -> pd.Series:
+    """Turtle breakout, long only (Richard Dennis' public rules; Revelio Trading video Akhil shared 14 Nov 2026):
+    buy when the close beats the highest close of the last `entry` days, sell when it breaks the lowest close of
+    the last `exit` days. Closes only, past bars only (rolling windows are shifted one bar)."""
+    hi = close.rolling(entry).max().shift(1)
+    lo = close.rolling(exit).min().shift(1)
+    w = np.zeros(len(close))
+    on = 0.0
+    for i, (c, h, l) in enumerate(zip(close.values, hi.values, lo.values)):
+        if on == 0.0 and not np.isnan(h) and c > h:
+            on = 1.0
+        elif on == 1.0 and not np.isnan(l) and c < l:
+            on = 0.0
+        w[i] = on
+    return pd.Series(w, index=close.index)
+
+
 def sma_cross(close: pd.Series, fast: int = 10, slow: int = 50) -> pd.Series:
     f, s = close.rolling(fast).mean(), close.rolling(slow).mean()
     return (f > s).astype(float).where(s.notna(), 0.0)
@@ -152,6 +169,7 @@ REGISTRY: dict[str, tuple[Strategy, dict[str, list]]] = {
     "tsmom_vt":     (tsmom_vt,     {"lookback": [126, 252], "target": [0.10, 0.15]}),
     "ma_filter_vt": (ma_filter_vt, {"window": [150, 200], "target": [0.10, 0.15]}),
     "markov_regime": (markov_regime, {"window": [20, 40], "threshold": [0.03, 0.05]}),
+    "turtle":       (turtle,       {"entry": [20, 55], "exit": [10, 20]}),
     "sma_cross":    (sma_cross,    {"fast": [5, 10, 20], "slow": [50, 100]}),
     "ema_cross":    (ema_cross,    {"fast": [9, 12], "slow": [21, 50]}),
     "regime_filter": (regime_filter, {"trend": [100, 200], "vol_cap": [None, 0.20]}),

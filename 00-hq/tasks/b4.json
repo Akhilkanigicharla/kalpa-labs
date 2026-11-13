@@ -139,12 +139,13 @@
   ],
   "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
   "min_items": 4,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-13T07:30:00Z",
-  "updated": "2026-11-13T07:30:00Z",
+  "updated": "2026-11-13T07:28:00Z",
   "output": "00-hq/knowledge/K100.md",
   "owner": "Lifeboat",
-  "priority": "P1"
+  "priority": "P1",
+  "vigil_notes": "FIX:\n- Remove invented Reddit/Chrome Store/Google Groups URLs and dates; mark all specific incident details as UNVERIFIED or remove if not in repo.\n- Do not state \"widespread reports\" or specific version 4 schema changes as fact without repo evidence; mark as UNVERIFIED.\n- Ensure no personal data or real user quotes are implied in the \"Details\" sections.\n- Verify that \"Session Buddy\" and \"OneTab\" export formats are not presented as verified facts if not in repo files; mark as UNVERIFIED.\n- Keep language plain and short; avoid complex sentence structures in the report sections."
  }
 ]

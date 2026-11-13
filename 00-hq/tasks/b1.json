@@ -275,7 +275,7 @@
   "priority": "P2",
   "owner": "Forge",
   "context_chars": 20000,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-13T01:05:00Z",
   "id": "K095",
@@ -286,6 +286,7 @@
   "details": "List lawful sources for business leads (salons, gyms) in Hyderabad: OpenStreetMap tags and Overpass query shape, government open data portals, businesses' own websites, official Google Places API terms. For each: what fields it gives, its licence or terms in one line, attribution needed, and whether it can contain personal mobile numbers (we must drop those). No Google Maps page scraping, LinkedIn, Instagram or Justdial. Mark unchecked facts unverified.",
   "output": "00-hq/knowledge/K095.md",
   "min_items": 4,
-  "updated": "2026-11-13T01:05:00Z"
+  "updated": "2026-11-13T00:47:28Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

@@ -19,4 +19,4 @@ Frames/transcript: **not watched**. YouTube blocked the cloud download ("confirm
 - Worth testing, not trusting: add Kronos-small as one **signal candidate** in the existing backtest → paper-trade ladder, never straight to live money.
 - Fits free infra: 24.7M params runs on CPU in GitHub Actions/Codespaces; nothing installed on Akhil's PC.
 - Pass bar before any paper run: beats a naive baseline (random walk / buy-and-hold) on Nifty/Bank Nifty daily and 15-min data, out of sample, after costs and slippage, over 2+ years; Brier/log-loss reported, not just returns.
-- Roadmap: A235 (lane A, trading).
+- Roadmap: A250 (lane A, trading).

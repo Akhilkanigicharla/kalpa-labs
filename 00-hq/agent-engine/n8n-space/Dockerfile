@@ -4,6 +4,7 @@ FROM n8nio/n8n:2.46.4
 # HF Spaces run the container as uid 1000; the n8n image's "node" user is uid 1000.
 USER node
 ENV N8N_PORT=7860 \
+    N8N_LISTEN_ADDRESS=0.0.0.0 \
     N8N_PROTOCOL=https \
     N8N_PROXY_HOPS=1 \
     DB_TYPE=postgresdb \

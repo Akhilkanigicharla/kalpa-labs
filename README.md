@@ -16,6 +16,7 @@ A one-person company in Hyderabad (Udyam UDYAM-TS-02-0382711), run by Akhil with
 | b5 | [05-deals](05-deals/) | 🛍️ Deals & Tools | Bazaar Bay | Telugu + English calculators, deals channel | Planned (agents start now) |
 | b6 | [06-finops](06-finops/) | 🛡️ AI FinOps + Guardrails | Ledger Peaks | Consulting: AI cost (FinOps) + AI guardrails/governance (AIGP, ISO 42001); tools are one piece | Planned (agents start now, selling 16 Nov) |
 | b7 | [07-trading](07-trading/) | 🔮 Trading | The Market Maze | Real-money algo trading for Akhil (research → backtest → paper → small live) | Planned (paper only) |
+| b8 | [08-microapps](08-microapps/) | 🌱 Micro-apps | Seedling Grove | Many small one-problem apps picked from real revenue data; first: Kalpa QR (codes never stop working) | Building (Kalpa QR v1) |
 
 ## Every world folder looks the same
 

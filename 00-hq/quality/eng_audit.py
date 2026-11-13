@@ -29,7 +29,7 @@ WORLDS = {
     "00-hq": "00-hq", ".github": "00-hq", "docs": "00-hq",
     "01-botbhai": "b1 01-botbhai", "02-jobcard": "b2 02-jobcard", "03-kits": "b3 03-kits",
     "04-extensions": "b4 04-extensions", "05-deals": "b5 05-deals", "06-finops": "b6 06-finops",
-    "07-trading": "b7 07-trading",
+    "07-trading": "b7 07-trading", "08-microapps": "b8 08-microapps",
 }
 SKIP_DIRS = {"node_modules", "vendor", "dist", ".git", "generated", "archive", ".pytest_cache",
              "__pycache__", ".claude", ".expo", ".astro", "coverage", "build", ".venv", "venv"}
@@ -307,6 +307,23 @@ def check_js(ctx: Ctx, rel: str, text: str, lines: list):
             ctx.add(rel, i, "MEDIUM", "WEAK-RANDOM", "Math.random used for a security value", "Use crypto.randomUUID() / crypto.getRandomValues().", lines)
         if not browser and re.search(r"[\"']Location[\"']\s*:\s*[^,}]*(query|searchParams|queryStringParameters|req\.|event\.)", ln):
             ctx.add(rel, i, "MEDIUM", "OPEN-REDIRECT", "Redirect target comes from the request", "Allow-list redirect targets (same site only).", lines)
+        # login safety (design_with_vinod "20 vibe-coded login mistakes", 13 Nov 2026)
+        if re.search(r"(?i)(local|session)Storage\.setItem\(\s*[`'\"][^`'\"]*(token|jwt|session|auth|refresh|secret|key)", ln):
+            ctx.add(rel, i, "HIGH", "AUTH-TOKEN-STORAGE", "Login token kept in localStorage/sessionStorage (any XSS can steal it)",
+                    "Keep it in an HttpOnly cookie, or let the Supabase client manage the session.", lines)
+        if not browser and re.search(r"\bjwt\.decode\(", ln) and not re.search(r"\bjwt\.verify\(", text):
+            ctx.add(rel, i, "HIGH", "JWT-NO-VERIFY", "JWT decoded but never verified", "Use jwt.verify(token, key) (or Supabase auth.getUser).", lines)
+        if re.search(r"\bjwt\.(sign|verify)\([^,]+,\s*[`'\"][^`'\"]{0,40}[`'\"]", ln):
+            ctx.add(rel, i, "CRITICAL", "JWT-LITERAL-SECRET", "JWT signed/verified with a secret written in the code",
+                    "Read a long random secret from an env var.", lines)
+        if not browser and re.search(r"(?i)\b(body|params|query|payload|data)\s*(\.|\[\s*['\"])\s*(is_?admin|role|is_?staff|is_?owner)\b", ln):
+            ctx.add(rel, i, "HIGH", "CLIENT-ROLE-TRUST", "Role/admin flag read from the request",
+                    "Take the role from the verified session or the database, never from the browser.", lines)
+        if not browser and re.search(r"(?i)(json\(|JSON\.stringify\(|body\s*:).*\b(otp|otp_?code|verification_?code|reset_?token)\b", ln):
+            ctx.add(rel, i, "HIGH", "SECRET-IN-RESPONSE", "OTP / reset code returned in an API response",
+                    "Send it only by SMS/email; the response says just 'sent'.", lines)
+        if re.search(r"(?i)\b(password|passwd|pwd)\b\s*[:=]\s*[`'\"](admin|admin123|password|123456|changeme|letmein)[`'\"]", ln):
+            ctx.add(rel, i, "CRITICAL", "DEFAULT-CREDS", "Default admin password in code", "Remove it; create admins once by hand with a strong password + 2FA.", lines)
 
 
 # ---------------------------------------------------------------- Python (AST)
@@ -382,6 +399,19 @@ def check_py(ctx: Ctx, rel: str, text: str, lines: list):
             add("HIGH", "UNSAFE-LOAD", f"{name}() can run code from the data", "Use json for data you did not create.")
         if name == "yaml.load" and not _kw(node, "Loader"):
             add("HIGH", "UNSAFE-LOAD", "yaml.load without a safe Loader", "Use yaml.safe_load().")
+        # JWT: signature check switched off / secret written in code
+        if name == "jwt.decode" and not test:
+            opts = _kw(node, "options")
+            off = (_kw(node, "verify") is not None and isinstance(_kw(node, "verify").value, ast.Constant)
+                   and _kw(node, "verify").value.value is False)
+            if opts is not None and isinstance(opts.value, ast.Dict):
+                for k, val in zip(opts.value.keys, opts.value.values):
+                    if isinstance(k, ast.Constant) and k.value == "verify_signature" and isinstance(val, ast.Constant) and val.value is False:
+                        off = True
+            if off:
+                add("HIGH", "JWT-NO-VERIFY", "jwt.decode with signature check off", "Verify with the real key and algorithms=[...].")
+        if name in ("jwt.encode", "jwt.decode") and len(node.args) > 1 and _is_const(node.args[1]) and not test:
+            add("CRITICAL", "JWT-LITERAL-SECRET", "JWT key written in the code", "Read a long random key from an env var.")
         # time zones
         if not test and tail in ("now", "utcnow") and name.split(".")[-2:-1] in (["datetime"], ["dt"]) :
             if tail == "utcnow" or (not node.args and not _kw(node, "tz")):

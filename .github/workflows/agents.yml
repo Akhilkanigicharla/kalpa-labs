@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 9
       matrix:
         include:
           # 50-50 (Akhil, 6 Nov 2026): 4 worlds start on Google Gemini (free tier), 4 on our Groq/OpenRouter setup.
@@ -35,6 +35,7 @@ jobs:
           - { world: b5, prefer: groq }
           - { world: b6, prefer: gemini }
           - { world: b7, prefer: openrouter }
+          - { world: b8, prefer: groq }
           - { world: hq, prefer: gemini }
     steps:
       - uses: actions/checkout@v4

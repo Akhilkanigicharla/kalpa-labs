@@ -1,104 +1,120 @@
 [
- {
-  "id": "K016",
-  "world": "hq",
-  "priority": "P1",
-  "owner": "Kalpa",
-  "playbook": "specialized-chief-of-staff",
-  "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
-  "details": "Use the readiness board and roadmap.",
-  "read": [
-   "00-hq/SOFT-LAUNCH.md",
-   "00-hq/launch/readiness.json"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T08:07:24Z",
-  "output": "00-hq/knowledge/K016.md"
- },
- {
-  "id": "K017",
-  "world": "hq",
-  "priority": "P2",
-  "owner": "Kalpa",
-  "playbook": "design-brand-guardian",
-  "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
-  "details": "Kalpavruksha theme.",
-  "read": [
-   "00-hq/SOFT-LAUNCH.md"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T16:25:29Z",
-  "tries": 1,
-  "output": "00-hq/knowledge/K017.md"
- },
- {
-  "id": "K018",
-  "world": "hq",
-  "priority": "P2",
-  "owner": "Kalpa",
-  "playbook": "product-feedback-synthesizer",
-  "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
-  "details": "Short, kind, DPDP consent line.",
-  "read": [
-   "00-hq/SOFT-LAUNCH.md"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T16:26:48Z",
-  "output": "00-hq/knowledge/K018.md"
- },
- {
-  "id": "K022",
-  "world": "hq",
-  "priority": "P0",
-  "owner": "Scout",
-  "playbook": "sales-offer-lead-gen-strategist",
-  "title": "First customers shortlist using the first-customer-finder method: 10 Indian AI startups (Ledger Peaks X-ray), 15 Hyderabad salons types/areas to approach (BotBhai), 5 places AC technicians gather online (JobCard)",
-  "details": "Follow .claude/skills/first-customer-finder/SKILL.md and references/research-framework.md: public demand signals only, evidence for each pick, no personal phone numbers, no private groups, no scraping of Google Maps/Justdial/Instagram/LinkedIn. For salons give areas and salon TYPES, not personal data. Mark anything you cannot see in the files as UNVERIFIED. Draft 1 short outreach message per group for Akhil to send himself.",
-  "read": [
-   ".claude/skills/first-customer-finder/SKILL.md",
-   ".claude/skills/first-customer-finder/references/research-framework.md",
-   "01-botbhai/docs/OFFER.md"
-  ],
-  "status": "rejected",
-  "created": "2026-11-06T12:00:00Z",
-  "updated": "2026-11-06T12:24:49Z",
-  "tries": 2,
-  "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data.",
-  "akhil_note": "replaced by K023 (agents cannot search the web; Vigil caught invented names)"
- },
- {
-  "id": "K023",
-  "world": "hq",
-  "priority": "P0",
-  "owner": "Scout",
-  "playbook": "sales-offer-lead-gen-strategist",
-  "title": "First-customer search plan (replaces K022's invented names): for Ledger Peaks, BotBhai and JobCard give the exact public places and search queries Akhil should use to find real prospects (e.g. Product Hunt India makers, YC/Inc42 lists, OpenStreetMap salon areas, technician Facebook groups by name of platform), with what proof to look for. NO company or person names unless they appear in the repo files.",
-  "details": "Agents have no web search; never invent names. Follow first-customer-finder method.",
-  "read": [
-   ".claude/skills/first-customer-finder/references/research-framework.md",
-   "01-botbhai/docs/OFFER.md"
-  ],
-  "status": "review",
-  "created": "2026-11-06T13:20:00Z",
-  "updated": "2026-11-06T12:31:12Z",
-  "output": "00-hq/knowledge/K023.md"
- },
- {
-  "id": "K024",
-  "world": "hq",
-  "priority": "P1",
-  "owner": "Kalpa",
-  "playbook": "specialized-chief-of-staff",
-  "title": "13 Dec soft-launch day run-sheet: hour-by-hour plan (IST) for Akhil (1 hour) + agents, what goes live in which order, checks before each, rollback if broken",
-  "details": "Use readiness board and soft-launch plan.",
-  "read": [
-   "00-hq/SOFT-LAUNCH.md",
-   "00-hq/launch/readiness.json"
-  ],
-  "status": "todo",
-  "created": "2026-11-06T13:20:00Z"
- }
+  {
+    "id": "K016",
+    "world": "hq",
+    "priority": "P1",
+    "owner": "Kalpa",
+    "playbook": "specialized-chief-of-staff",
+    "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
+    "details": "Use the readiness board and roadmap.",
+    "read": [
+      "00-hq/SOFT-LAUNCH.md",
+      "00-hq/launch/readiness.json"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-04T08:07:24Z",
+    "output": "00-hq/knowledge/K016.md"
+  },
+  {
+    "id": "K017",
+    "world": "hq",
+    "priority": "P2",
+    "owner": "Kalpa",
+    "playbook": "design-brand-guardian",
+    "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
+    "details": "Kalpavruksha theme.",
+    "read": [
+      "00-hq/SOFT-LAUNCH.md"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-04T16:25:29Z",
+    "tries": 1,
+    "output": "00-hq/knowledge/K017.md"
+  },
+  {
+    "id": "K018",
+    "world": "hq",
+    "priority": "P2",
+    "owner": "Kalpa",
+    "playbook": "product-feedback-synthesizer",
+    "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
+    "details": "Short, kind, DPDP consent line.",
+    "read": [
+      "00-hq/SOFT-LAUNCH.md"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-04T16:26:48Z",
+    "output": "00-hq/knowledge/K018.md"
+  },
+  {
+    "id": "K022",
+    "world": "hq",
+    "priority": "P0",
+    "owner": "Scout",
+    "playbook": "sales-offer-lead-gen-strategist",
+    "title": "First customers shortlist using the first-customer-finder method: 10 Indian AI startups (Ledger Peaks X-ray), 15 Hyderabad salons types/areas to approach (BotBhai), 5 places AC technicians gather online (JobCard)",
+    "details": "Follow .claude/skills/first-customer-finder/SKILL.md and references/research-framework.md: public demand signals only, evidence for each pick, no personal phone numbers, no private groups, no scraping of Google Maps/Justdial/Instagram/LinkedIn. For salons give areas and salon TYPES, not personal data. Mark anything you cannot see in the files as UNVERIFIED. Draft 1 short outreach message per group for Akhil to send himself.",
+    "read": [
+      ".claude/skills/first-customer-finder/SKILL.md",
+      ".claude/skills/first-customer-finder/references/research-framework.md",
+      "01-botbhai/docs/OFFER.md"
+    ],
+    "status": "rejected",
+    "created": "2026-11-06T12:00:00Z",
+    "updated": "2026-11-06T12:24:49Z",
+    "tries": 2,
+    "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data.",
+    "akhil_note": "replaced by K023 (agents cannot search the web; Vigil caught invented names)"
+  },
+  {
+    "id": "K023",
+    "world": "hq",
+    "priority": "P0",
+    "owner": "Scout",
+    "playbook": "sales-offer-lead-gen-strategist",
+    "title": "First-customer search plan (replaces K022's invented names): for Ledger Peaks, BotBhai and JobCard give the exact public places and search queries Akhil should use to find real prospects (e.g. Product Hunt India makers, YC/Inc42 lists, OpenStreetMap salon areas, technician Facebook groups by name of platform), with what proof to look for. NO company or person names unless they appear in the repo files.",
+    "details": "Agents have no web search; never invent names. Follow first-customer-finder method.",
+    "read": [
+      ".claude/skills/first-customer-finder/references/research-framework.md",
+      "01-botbhai/docs/OFFER.md"
+    ],
+    "status": "review",
+    "created": "2026-11-06T13:20:00Z",
+    "updated": "2026-11-06T12:31:12Z",
+    "output": "00-hq/knowledge/K023.md"
+  },
+  {
+    "id": "K024",
+    "world": "hq",
+    "priority": "P1",
+    "owner": "Kalpa",
+    "playbook": "specialized-chief-of-staff",
+    "title": "13 Dec soft-launch day run-sheet: hour-by-hour plan (IST) for Akhil (1 hour) + agents, what goes live in which order, checks before each, rollback if broken",
+    "details": "Use readiness board and soft-launch plan.",
+    "read": [
+      "00-hq/SOFT-LAUNCH.md",
+      "00-hq/launch/readiness.json"
+    ],
+    "status": "todo",
+    "created": "2026-11-06T13:20:00Z"
+  },
+  {
+    "id": "K037",
+    "world": "hq",
+    "priority": "P1",
+    "owner": "Kalpa",
+    "playbook": "specialized-chief-of-staff",
+    "title": "Content desk for all streams: Chief of Staff + Analyst (trend scout, competitor watch, transcript reader) + Strategist (idea picker, lane balance, film list) + Copywriter (hook, script, voice check) + Art Director (remix, captions, cutter)",
+    "details": "From seanpurvis.ai + skilltree reels (13 Nov). Map each role to an existing agency-agents playbook and to our free models; write who does what, weekly rhythm, and the first 2-week film list for Kalpa QR (b8) and BotBhai (b1). Data only: every trend claim needs a link. No posting: drafts go to Akhil.",
+    "read": [
+      "00-hq/research/reels-2026-11-13.md",
+      "00-hq/VISION.md",
+      "08-microapps/README.md"
+    ],
+    "status": "todo",
+    "created": "2026-11-13T13:00:00Z"
+  }
 ]

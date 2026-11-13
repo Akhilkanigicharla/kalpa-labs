@@ -15,8 +15,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import reach  # YouTube/Reddit/GitHub links in a task are read through Agent-Reach (no login), see reach.py
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b7.json, hq.json
-WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "hq"]
+TASKS = os.path.join(ROOT, "00-hq/tasks")  # one queue file per world: b1.json … b8.json, hq.json
+WORLDS = ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "hq"]
 KNOW = os.path.join(ROOT, "00-hq/knowledge")
 MAX_TASKS = 3
 MAX_CONTEXT = 7000  # Groq free tier rejects bigger requests (HTTP 413)  # characters of repo files given to the worker

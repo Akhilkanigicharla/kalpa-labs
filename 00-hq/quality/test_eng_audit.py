@@ -210,7 +210,7 @@ def test_world_level_checks_and_skips(tmp_path):
         "03-kits/node_modules/pkg/index.js": "eval(x); fetch(u);\n",
     })
     assert [f.world for f in rules(fs, "TESTS-MISSING") if f.world.startswith("b")] == [
-        "b1 01-botbhai", "b2 02-jobcard", "b4 04-extensions", "b5 05-deals", "b6 06-finops", "b7 07-trading"]
+        "b1 01-botbhai", "b2 02-jobcard", "b4 04-extensions", "b5 05-deals", "b6 06-finops", "b7 07-trading", "b8 08-microapps"]
     env = rules(fs, "ENV-EXAMPLE")
     assert [f.world for f in env] == ["b4 04-extensions"] and "STORE_KEY" in env[0].message
     assert not [f for f in fs if "node_modules" in f.file]
@@ -228,3 +228,39 @@ def test_report_and_strict_exit(tmp_path):
     assert json.loads(js.read_text(encoding="utf-8"))["counts"]["b6 06-finops"]["CRITICAL"] == 1
     (root / "06-finops/db/s.sql").write_text("create table x (id int);\nalter table x enable row level security;\n", encoding="utf-8")
     assert E.main(args + ["--strict"]) == 0
+
+
+# ------------------------------------------------------------- login safety (13 Nov 2026)
+def test_login_safety_js(tmp_path):
+    fs = run(tmp_path, {
+        "02-jobcard/web/app.js": (
+            "localStorage.setItem('access_token', t);\n"
+            "localStorage.setItem('theme', 'dark');\n"
+            "const admin = { password: 'admin123' };\n"),
+        "02-jobcard/functions/login.js": (
+            "const u = jwt.decode(token);\n"
+            "const s = jwt.sign(p, 'secret');\n"
+            "if (body.isAdmin) grant();\n"
+            "return res.json({ sent: true, otp });\n"
+            "return res.json({ sent: true });\n"),
+    })
+    got = sorted((f.rule, f.line) for f in fs if f.rule in (
+        "AUTH-TOKEN-STORAGE", "JWT-NO-VERIFY", "JWT-LITERAL-SECRET", "CLIENT-ROLE-TRUST", "SECRET-IN-RESPONSE", "DEFAULT-CREDS"))
+    assert got == [("AUTH-TOKEN-STORAGE", 1), ("CLIENT-ROLE-TRUST", 3), ("DEFAULT-CREDS", 3),
+                   ("JWT-LITERAL-SECRET", 2), ("JWT-NO-VERIFY", 1), ("SECRET-IN-RESPONSE", 4)]
+
+
+def test_jwt_verified_elsewhere_is_fine(tmp_path):
+    fs = run(tmp_path, {"02-jobcard/functions/me.js": (
+        "const claims = jwt.verify(token, process.env.JWT_KEY);\nconst h = jwt.decode(token, {complete: true});\n")})
+    assert rules(fs, "JWT-NO-VERIFY") == [] and rules(fs, "JWT-LITERAL-SECRET") == []
+
+
+def test_login_safety_py(tmp_path):
+    fs = run(tmp_path, {"07-trading/src/auth.py": (
+        "import jwt, os\n"
+        "a = jwt.decode(t, options={'verify_signature': False})\n"
+        "b = jwt.decode(t, os.environ['K'], algorithms=['HS256'])\n"
+        "c = jwt.encode(p, 'secret')\n")})
+    assert sorted((f.rule, f.line) for f in fs if f.rule.startswith("JWT")) == [
+        ("JWT-LITERAL-SECRET", 4), ("JWT-NO-VERIFY", 2)]

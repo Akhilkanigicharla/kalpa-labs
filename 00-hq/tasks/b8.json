@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K034",
+    "world": "b8",
+    "priority": "P1",
+    "owner": "Scout",
+    "playbook": "product-trend-researcher",
+    "title": "Micro-app idea scan from TrustMRR: 10 small apps with verified revenue that solve ONE problem and get users from a platform store (Chrome Web Store, Google Workspace Marketplace, Play Store)",
+    "details": "Method from Starter Story 'How I Made $1M Building 30 Micro-Apps' (Sanskar Tiwari: 30+ products, 8 earning, ideas from TrustMRR revenue signals). Use ONLY TrustMRR's public AI endpoints (its llms.txt says: do not scrape the website): https://trustmrr.com/api/ai/discovery (25 fastest-growing + 25 newest) and https://trustmrr.com/startup/{slug}.md pages. For each: name, link, verified MRR, one-line problem, store it lives on, could Kalpa build a v1 in under 2 weeks (yes/no + why). Facts only from those pages; mark anything else UNVERIFIED. Don't copy anyone's product or brand.",
+    "read": [
+      "08-microapps/README.md",
+      "02-jobcard/research/a152-app-ideas.md"
+    ],
+    "status": "todo",
+    "created": "2026-11-12T06:36:37Z",
+    "updated": "2026-11-12T06:36:37Z",
+    "tries": 0
+  },
+  {
+    "id": "K039",
+    "world": "b8",
+    "priority": "P2",
+    "owner": "Scout",
+    "playbook": "marketing-content-creator",
+    "title": "Name check for Kalpa QR: are 3 candidate handles free on Instagram, YouTube, X, Facebook, LinkedIn, Threads + .com/.in domains?",
+    "details": "Use only public profile pages (sherlock-style check of OUR OWN brand names, never people). Report a table with links. Akhil picks the name.",
+    "read": [
+      "00-hq/research/reels-2026-11-13.md",
+      "08-microapps/README.md"
+    ],
+    "status": "todo",
+    "created": "2026-11-13T13:00:00Z"
+  }
+]

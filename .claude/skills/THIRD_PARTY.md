@@ -12,13 +12,16 @@ Copied unmodified on 18 Oct 2026 with `npx skills add … --copy` (telemetry off
 | line-art-animation | https://github.com/JDhruv14/line-art-animation (commit `c43d698`, 10 Nov 2026; copied unmodified 11 Nov 2026 without `media/` demo files, 7 MB) | MIT, (c) 2026 JDhruv14 |
 | video-watch (skill name `watch`) | https://github.com/bradautomates/claude-video (commit `03ceb42`, skills/watch copied 6 Nov 2026; one Kalpa section added to SKILL.md on 11 Nov 2026, "Agent-Reach first", rest unmodified) | MIT, (c) 2026 Bradley Bonanno |
 | Agent-Reach CLI (not copied; used by `00-hq/agents/reach.py` and video-watch) | https://github.com/Panniantong/Agent-Reach release `v1.6.1`, `agent-reach.zip` sha256 `51443d733bcb26064262442083a8f8abf6ba5e3e7df54beebafe98c88be04a60`; repo main last commit 2026-11-08 (reviewed 11 Nov 2026). Installed only in CI, in its own venv with `--no-deps` + pinned requests/loguru/PyYAML/yt-dlp (Unlicense)/yt-dlp-ejs, so yt-dlp's GPL extra `mutagen` is never installed. The PyPI package named `agent-reach` is a different project: never install it by name. | MIT, (c) 2025 Agent Eyes |
+| make-interfaces-feel-better | https://github.com/jakubkrehel/make-interfaces-feel-better (commit `35545ea`, skills folder copied unmodified 13 Nov 2026 without `agents/openai.yaml`) | MIT, (c) 2026 Jakub Krehel |
 | animate, animate-expo, break-ui, emil-design-eng, mobile-native, pick-ui-library, prototype, review-animations | https://github.com/emilkowalski/skills | MIT, (c) 2026 Emil Kowalski |
 
 Plugin (not copied, loaded by Claude Code): HyperFrames `hyperframes@hyperframes`, https://github.com/heygen-com/hyperframes, Apache-2.0, pinned to tag `v0.8.169` in `.claude/settings.json`. Skills only, no hooks or MCP servers. When a skill says `npx hyperframes@latest`, use `npx hyperframes@0.8.169` instead.
 
 Our own skills (not third-party): `short-answers` (adapted, see its header) and `diagrams` (A77, written 22 Oct 2026). No Anthropic security skill was vendored on 22 Oct 2026: the only one, `claude-security`, is proprietary; see `00-hq/research/agent-tooling-2026-10-22.md`.
 
-Kalpa rules still win: line-art-animation must use Kalpavruksha paper/ink colours from `00-hq/design/tokens.css` instead of its own palette, and its `references/matching.md` X-video download tip is not used (no scraping). Design skills must use the Kalpavruksha system in `00-hq/design/` (CLAUDE.md rule 6); security-audit runs only on our own code.
+humanizer stays on commit `0ef9fe5` on purpose: its 4.0.0 (`b48c832`, 9 Nov 2026) lets the skill add details it "knows to be true", which breaks Kalpa's rule that every claim needs a checked source. Recheck on the next release.
+
+Kalpa rules still win: make-interfaces-feel-better is applied inside the Kalpavruksha system (`00-hq/design/`), never as a second styling system. line-art-animation must use Kalpavruksha paper/ink colours from `00-hq/design/tokens.css` instead of its own palette, and its `references/matching.md` X-video download tip is not used (no scraping). Design skills must use the Kalpavruksha system in `00-hq/design/` (CLAUDE.md rule 6); security-audit runs only on our own code.
 
 ---
 
@@ -137,3 +140,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 Agent-Reach (11 Nov 2026): **no-login channels only.** Allow-list in `00-hq/agents/reach.py`: YouTube captions (`yt-dlp`), GitHub public API (`github-api`, no token), Reddit and web pages/RSS through Jina Reader (`public-web`, `jina`). Every call names its backend so Agent-Reach never falls back to its browser tools. Never enable Twitter/X, XiaoHongShu, LinkedIn, Instagram, Facebook, Bilibili, Boss or Xueqiu, never run `agent-reach login`, and never let it copy Chrome cookies. Its CLI gets no secrets (minimal environment). YouTube: captions only, never the video file.
+
+---
+
+## LICENSE: jakubkrehel/make-interfaces-feel-better
+
+```
+MIT License
+
+Copyright (c) 2026 Jakub Krehel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

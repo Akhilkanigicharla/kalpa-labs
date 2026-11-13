@@ -1,35 +1,66 @@
 [
- {
-  "id": "K021",
-  "world": "b7",
-  "priority": "P2",
-  "owner": "Oracle",
-  "playbook": "research-synthesist",
-  "title": "Trading Lab paper-trading journal template and weekly review checklist (paper only, no tips, SEBI-safe)",
-  "details": "Never recommend trades. Education and process only.",
-  "read": [
-   "07-trading/PLAN.md"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:30:00Z",
-  "updated": "2026-11-04T16:24:58Z",
-  "last_error": "no model answered",
-  "output": "00-hq/knowledge/K021.md"
- },
- {
-  "id": "K031",
-  "world": "b7",
-  "priority": "P2",
-  "owner": "Oracle",
-  "playbook": "research-synthesist",
-  "title": "Trading Lab education series: 10 short Telugu + English lessons on risk, position size and journaling (paper trading only, no tips, SEBI disclaimer on each)",
-  "details": "Education only.",
-  "read": [
-   "07-trading/PLAN.md"
-  ],
-  "status": "review",
-  "created": "2026-11-06T13:20:00Z",
-  "updated": "2026-11-06T12:32:05Z",
-  "output": "00-hq/knowledge/K031.md"
- }
+  {
+    "id": "K021",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Oracle",
+    "playbook": "research-synthesist",
+    "title": "Trading Lab paper-trading journal template and weekly review checklist (paper only, no tips, SEBI-safe)",
+    "details": "Never recommend trades. Education and process only.",
+    "read": [
+      "07-trading/PLAN.md"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:30:00Z",
+    "updated": "2026-11-04T16:24:58Z",
+    "last_error": "no model answered",
+    "output": "00-hq/knowledge/K021.md"
+  },
+  {
+    "id": "K031",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Oracle",
+    "playbook": "research-synthesist",
+    "title": "Trading Lab education series: 10 short Telugu + English lessons on risk, position size and journaling (paper trading only, no tips, SEBI disclaimer on each)",
+    "details": "Education only.",
+    "read": [
+      "07-trading/PLAN.md"
+    ],
+    "status": "review",
+    "created": "2026-11-06T13:20:00Z",
+    "updated": "2026-11-06T12:32:05Z",
+    "output": "00-hq/knowledge/K031.md"
+  },
+  {
+    "id": "K040",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Oracle",
+    "playbook": "research-synthesist",
+    "title": "Plan: Google TimesFM (Apache-2.0) as one more strategy candidate through gate.py (NIFTY daily), run only in GitHub Actions",
+    "details": "Read the TimesFM README + paper. Write: model size, CPU run time, how a forecast becomes a 0/1 weight, how many trials it adds (log in trials.py), what PSR/PBO/DSR it must beat. Paper only. Cite every number.",
+    "read": [
+      "00-hq/research/reels-2026-11-13.md",
+      "07-trading/src/gate.py",
+      "07-trading/src/strategies.py"
+    ],
+    "status": "todo",
+    "created": "2026-11-13T13:00:00Z"
+  },
+  {
+    "id": "K041",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Oracle",
+    "playbook": "research-synthesist",
+    "title": "Plan: daily watchlist report on GitHub Actions using 07-trading/src/fundamentals.py (ideas from ZhuLinsen/daily_stock_analysis MIT, langalpha Apache-2.0)",
+    "details": "Inputs from company annual reports / NSE filings typed into a CSV (no scraping). Output: Markdown scorecard per stock + red flags, sent to Akhil only. Education/screening, 'not investment advice' on every report. List the legal line: no buy/sell tips to the public without SEBI RA registration.",
+    "read": [
+      "00-hq/research/reels-2026-11-13.md",
+      "07-trading/src/fundamentals.py"
+    ],
+    "status": "todo",
+    "created": "2026-11-13T13:00:00Z"
+  }
 ]

@@ -17,6 +17,12 @@
    "HIGH": 0,
    "MEDIUM": 0,
    "INFO": 1
+  },
+  "b8 08-microapps": {
+   "CRITICAL": 0,
+   "HIGH": 0,
+   "MEDIUM": 0,
+   "INFO": 1
   }
  },
  "findings": [
@@ -77,6 +83,16 @@
    "file": "06-finops",
    "line": 0,
    "message": "1 of 10 test files may not run in CI, e.g. 06-finops/src/api/ingest.test.js",
+   "fix": "Wire them into .github/workflows/quality.yml or delete dead tests.",
+   "waived": ""
+  },
+  {
+   "world": "b8 08-microapps",
+   "severity": "INFO",
+   "rule": "TESTS-NOT-IN-CI",
+   "file": "08-microapps",
+   "line": 0,
+   "message": "4 of 4 test files may not run in CI, e.g. 08-microapps/qr/test/app.test.mjs, 08-microapps/qr/test/db.test.mjs, 08-microapps/qr/test/pg.test.mjs",
    "fix": "Wire them into .github/workflows/quality.yml or delete dead tests.",
    "waived": ""
   }

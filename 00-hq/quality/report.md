@@ -12,7 +12,8 @@ Static scan by `00-hq/quality/eng_audit.py` against `ENGINEERING-CHECKLIST.md`. 
 | b5 05-deals | 0 | 0 | 0 | 0 |
 | b6 06-finops | 0 | 0 | 0 | 1 |
 | b7 07-trading | 0 | 0 | 0 | 0 |
-| **All** | **0** | **0** | **0** | **5** |
+| b8 08-microapps | 0 | 0 | 0 | 1 |
+| **All** | **0** | **0** | **0** | **6** |
 
 Waived: 1.
 
@@ -35,6 +36,12 @@ Waived: 1.
 **INFO** (1)
 
 - `TESTS-NOT-IN-CI` 06-finops: 1 of 10 test files may not run in CI, e.g. 06-finops/src/api/ingest.test.js. Fix: Wire them into .github/workflows/quality.yml or delete dead tests.
+
+## b8 08-microapps
+
+**INFO** (1)
+
+- `TESTS-NOT-IN-CI` 08-microapps: 4 of 4 test files may not run in CI, e.g. 08-microapps/qr/test/app.test.mjs, 08-microapps/qr/test/db.test.mjs, 08-microapps/qr/test/pg.test.mjs. Fix: Wire them into .github/workflows/quality.yml or delete dead tests.
 
 ## Waived
 

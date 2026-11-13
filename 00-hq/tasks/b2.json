@@ -53,23 +53,6 @@
   "akhil_note": "6 Nov: JobCard parked, not in Akhil's plan"
  },
  {
-  "id": "K034",
-  "world": "b2",
-  "priority": "P1",
-  "owner": "Scout",
-  "playbook": "product-trend-researcher",
-  "title": "Micro-app idea scan from TrustMRR: 10 small apps with verified revenue that solve ONE problem and get users from a platform store (Chrome Web Store, Google Workspace Marketplace, Play Store)",
-  "details": "Method from Starter Story 'How I Made $1M Building 30 Micro-Apps' (Sanskar Tiwari: 30+ products, 8 earning, ideas from TrustMRR revenue signals). Read https://trustmrr.com/llms.txt and https://trustmrr.com/startups (public, AI-readable .md pages: https://trustmrr.com/startup/{slug}.md). For each: name, link, verified MRR, one-line problem, store it lives on, could Kalpa build a v1 in under 2 weeks (yes/no + why). Facts only from those pages; mark anything else UNVERIFIED. Don't copy anyone's product or brand.",
-  "read": [
-   "02-jobcard/research/a152-app-ideas.md",
-   "00-hq/research/reels-2026-11-12.md"
-  ],
-  "status": "todo",
-  "created": "2026-11-12T06:36:37Z",
-  "updated": "2026-11-12T06:36:37Z",
-  "tries": 0
- },
- {
   "id": "K035",
   "world": "b2",
   "priority": "P1",

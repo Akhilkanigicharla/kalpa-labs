@@ -14,7 +14,10 @@ exports.handler = async (event) => {
   }
   if (event.httpMethod !== "POST") return json(405, { error: "method" });
   if (!metaSignatureOk(event)) return json(401, { error: "bad signature" });
-  const body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}");
+  const raw = event.isBase64Encoded ? Buffer.from(event.body || "", "base64").toString() : event.body || "{}";
+  if (raw.length > 256_000) return json(413, { error: "too large" });  // Meta leadgen pings are a few KB
+  let body;
+  try { body = JSON.parse(raw); } catch { return json(400, { error: "bad json" }); }
   for (const entry of body.entry || []) for (const ch of entry.changes || []) {
     if (ch.field !== "leadgen") continue;
     try {

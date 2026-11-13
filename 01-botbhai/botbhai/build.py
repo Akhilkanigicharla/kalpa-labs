@@ -30,7 +30,15 @@ shutil.copy(root / "web" / "widget.js", dist / "widget.js")
 shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
 shutil.copy(root / "web" / "dashboard.html", dist / "dashboard.html")  # owner dashboard (A10); calls /.netlify/functions/leads
 shutil.copy(root / "web" / "billing.html", dist / "billing.html")
+for _js in ("inbox.js", "dashboard.js", "billing.js"):  # page scripts live in files (strict CSP on owner screens)
+    shutil.copy(root / "web" / _js, dist / _js)
 shutil.copy(root / "web" / "404.html", dist / "404.html")  # custom 404 (ENGINEERING-CHECKS)  # Kalpa billing (A05); calls /.netlify/functions/billing
+# robots.txt + sitemap.xml (SEO checks; live check 14 Nov found both 404). Owner screens are noindex and kept out.
+SITE = os.environ.get("SITE_URL", "https://kalpa-botbhai.netlify.app").rstrip("/")
+(dist / "robots.txt").write_text("User-agent: *\nAllow: /\nDisallow: /dashboard.html\nDisallow: /inbox.html\n"
+                                 f"Disallow: /billing.html\nDisallow: /.netlify/\n\nSitemap: {SITE}/sitemap.xml\n")
+(dist / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                                  f"  <url><loc>{SITE}/</loc></url>\n</urlset>\n")
 subprocess.check_call(["node", str(root / "tools" / "sample_invoice.js"), str(dist / "invoice-sample.html")])  # sample invoice page
 subprocess.check_call([sys.executable, str(root / "tools" / "cards.py"), "--all-demo", "--out", str(dist / "cards" / "demo")], stdout=subprocess.DEVNULL)
 print("built", ", ".join(setups), "+ smile cards →", dist)

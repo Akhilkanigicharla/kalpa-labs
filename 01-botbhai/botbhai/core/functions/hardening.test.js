@@ -108,6 +108,12 @@ let n = 0; const ok = async (name, fn) => { await fn(); n++; console.log("  ✓"
     process.env.WA_APP_SECRET = saved;
     assert.strictEqual((await metaleads.handler({ httpMethod: "PUT", headers: {}, body })).statusCode, 405);
   });
+  await ok("live check 14 Nov: Meta Lead Ads webhook refuses an oversize body (413) and signed broken JSON (400), before any database call", async () => {
+    const big = JSON.stringify({ object: "page", entry: [], pad: "x".repeat(300_000) });
+    assert.strictEqual((await metaleads.handler({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(big) }, body: big })).statusCode, 413);
+    const broken = "{not json";
+    assert.strictEqual((await metaleads.handler({ httpMethod: "POST", headers: { "x-hub-signature-256": sign(broken) }, body: broken })).statusCode, 400);
+  });
   await ok("audit: forged non-numeric page ids never reach the database query", async () => {
     const before = store.leads.length;
     await post(metaleads.handler, { object: "page", entry: [{ changes: [{ field: "leadgen", value: { leadgen_id: "1", page_id: "1&active=eq.false" } }] }] });

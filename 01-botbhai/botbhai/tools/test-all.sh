@@ -54,6 +54,6 @@ python3 voice/test_recorded_tts.py
 if python3 -c "import pipecat" 2>/dev/null; then (cd voice && python3 test_prompt.py && python3 test_turns.py); else echo "(voice prompt test skipped: pip install -r voice/requirements.txt)"; fi
 # One command per line: with set -e, a failure inside an "a && b && c" chain (except the last) was silently ignored.
 if python3 -c "import playwright" 2>/dev/null; then
-  for t in screens test_inbox_ui test_billing_ui test_dashboard_ui test_turnstile_ui test_chat_ui test_web_ux test_taps; do python3 tools/$t.py; done
+  for t in screens test_inbox_ui test_billing_ui test_dashboard_ui test_turnstile_ui test_chat_ui test_web_ux test_taps csp_owner_pages; do python3 tools/$t.py; done
 else echo "(390 px screen check skipped: needs Python Playwright + Chromium)"; fi
 echo "ALL BOTBHAI TESTS PASSED"

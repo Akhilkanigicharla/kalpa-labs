@@ -151,10 +151,12 @@
   ],
   "details": "Read the A214 line. Write 8 short verdict templates for a Telugu deals post, each in Telugu script and English: price vs recent history (only where a lawful source exists), true no-cost-EMI cost, card-offer match, 'skip this one'. Use placeholders like {price}. Every post ends with the #ad disclosure when it carries an affiliate link. No made-up prices.",
   "min_items": 8,
-  "tries": 3,
-  "status": "todo",
+  "tries": 4,
+  "status": "rejected",
   "priority": "P1",
   "owner": "Deals",
-  "created": "2026-11-13T20:45:00Z"
+  "created": "2026-11-13T20:45:00Z",
+  "updated": "2026-11-13T20:45:40Z",
+  "vigil_notes": "FIX:\n- Split the templates list into two lists of at most 5 items each to comply with the list length rule.\n- Add the `#ad` marker to the Telugu version of template 6 for ASCI compliance."
  }
 ]

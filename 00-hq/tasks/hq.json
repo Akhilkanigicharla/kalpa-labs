@@ -562,7 +562,7 @@
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  },
  {
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-13T05:00:00Z",
   "id": "K098",
@@ -573,9 +573,10 @@
   ],
   "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
   "min_items": 4,
-  "updated": "2026-11-13T05:00:00Z",
+  "updated": "2026-11-13T07:27:11Z",
   "output": "00-hq/knowledge/K098.md",
   "owner": "Forge",
-  "priority": "P2"
+  "priority": "P2",
+  "vigil_notes": "FIX: incomplete, 2 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

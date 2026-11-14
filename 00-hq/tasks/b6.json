@@ -248,11 +248,11 @@
   "details": "Read the A215 line. Write 3 numbered drafts for a small Indian company using AI APIs: (1) a DPDP Act 2023 privacy notice outline (headings + one plain line each), (2) a one-page AI usage policy for staff (10 rules), (3) a model register table with 8 columns and 2 example rows. Put 'Draft: lawyer review needed' at the top of each. Cite the official source (meity.gov.in or indiacode.nic.in) for any law you name; write 'unverified' where you have none. No 'certified' claims.",
   "min_items": 3,
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P1",
   "owner": "FinOps",
   "created": "2026-11-14T03:00:00Z",
-  "updated": "2026-11-14T03:00:00Z",
+  "updated": "2026-11-14T02:43:17Z",
   "output": "00-hq/knowledge/K110.md"
  }
 ]

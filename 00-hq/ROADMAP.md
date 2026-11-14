@@ -237,7 +237,7 @@ Scorecard every Sunday (in the 9 PM update): rupees earned, Chrome installs, sal
 
 ### Depth sprint · every product in full detail before go-live (Akhil, 23 Oct 2026: "all products together")
 Build sprints rotate: one world per run in this order, then repeat. Each item has two stages: (1) **gap map**: list every feature in that world's `PLAN.md` and `README.md` as built / partial / missing, with file and test evidence, in `<world>/docs/DEPTH.md`; every partial or missing line becomes its own A-item under this heading; (2) the item is `[x]` only when every line in DEPTH.md is built with a passing test, 390 px light + dark screens, privacy/terms, honest prices and a support path.
-- [ ] **A87** b1 · Depth: BotBhai end to end: AI fallback (A74) wired into web chat + WhatsApp behind an off switch, all 4 setups (salon, gym, real estate, coaching), 200+ real-style test messages incl. Telugu/Hindi script and multi-turn, owner sees every AI answer in the inbox. Check: DEPTH.md all built; `test-all.sh` green.
+- [~] **A87** (claimed: lane B, 2026-11-14) b1 · Depth: BotBhai end to end: AI fallback (A74) wired into web chat + WhatsApp behind an off switch, all 4 setups (salon, gym, real estate, coaching), 200+ real-style test messages incl. Telugu/Hindi script and multi-turn, owner sees every AI answer in the inbox. Check: DEPTH.md all built; `test-all.sh` green.
 - [ ] **A88** b3 · Depth: Kits + Skill pack. Check: DEPTH.md all built; kits tests green.
 - [ ] **A89** b5 · Depth: Telugu Deals (calculators + channel). Check: DEPTH.md all built; deals tests green.
 - [ ] **A90** b4 · Depth: Tab Lifeboat extension. Check: DEPTH.md all built; extension tests green.

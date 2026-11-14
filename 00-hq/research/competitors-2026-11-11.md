@@ -33,7 +33,7 @@ Akhil asked: "evaluate our ideas with competitors and tweak every world to beat 
 | Tab Session Manager | not found | free, open source | supasidebar.com |
 | Workona | 500,000 | paid, $8 to $12 a month | chrome-tips.pages.dev, nexasphere.io |
 **What this means:** charging for plain session saving will not work; three free tools do it.
-**Opening:** Session Buddy's v4 rewrite lost users' saved sessions and people are looking for alternatives (northlabapps.com, July 2026; one source, vendor blog).
+**Opening:** Session Buddy's v4 rewrite lost users' saved sessions and people are looking for alternatives (northlabapps.com, July 2026; one source, vendor blog). **Checked 14 Nov 2026 (A213): VERIFIED with a nuance.** Session Buddy's own v4 FAQ (sessionbuddy.com/v4-faq) says users who upgrade after Chrome 124 do not get their v3 data moved automatically and must restore it by hand; supasidebar.com (2026) and northlabapps.com describe sessions disappearing after the v4 migration. So: "sessions went missing after the update for some users", not "deleted for good". Use that wording.
 **Tweaks:** (1) Lead with "never lose your tabs" and prove it: automatic local backups + export file. (2) One-click import from Session Buddy and OneTab. (3) Keep saving and restoring free without the 5-a-day limit; charge only for cloud backup and sync across devices. (4) Lifetime licence option.
 
 ## b5 Telugu Deals: we cannot win on speed or size

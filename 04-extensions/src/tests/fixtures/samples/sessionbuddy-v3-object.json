@@ -1,0 +1,1 @@
+{"sessions":[{"name":"Work","title":"ignored because name wins","created":1700000000000,"windows":[{"name":"Mail","tabs":[{"url":"https://mail.example.com/","title":"Inbox","pinned":true},{"url":"chrome://settings/","title":"Settings"}]},{"tabs":[{"url":"https://docs.example.com/a","title":"Doc A"}]}]}]}

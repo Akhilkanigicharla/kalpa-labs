@@ -162,3 +162,5 @@
 | RevenueCat SOSA 2026: hard paywall RPI $2.32 vs $0.27 (D14); Photo & Video 21.4% of new apps reach $1k MRR; AI apps churn ~30% faster | VERIFIED (2+ sources) | 2026-11-06 | SaaStr; 9to5mac; TechCrunch; ppc.land |
 | Astrotalk FY25 revenue from operations ₹1,176 cr, ~20% international | VERIFIED (2 sources) | 2026-11-06 | outlookbusiness; startuppedia (RoC) |
 | Shoonya Kids $5.99–7.99/month, $57.99/year | VERIFIED (store listing + review site) | 2026-11-06 | apps.apple.com; educationalappstore |
+| Session Buddy v4 update: some users' saved sessions went missing (no automatic v3→v4 move after Chrome 124; manual restore) | VERIFIED (vendor page + 2nd source) | 2026-11-14 | sessionbuddy.com/v4-faq; supasidebar.com/blog/session-buddy-alternatives-2026 |
+| Session Buddy export formats: v4 JSON `collections→folders→links`, v3 `sessions→windows→tabs`, CSV with URL column, title/URL pairs | VERIFIED (vendor docs, used in import tests) | 2026-11-14 | sessionbuddy.com/formats |

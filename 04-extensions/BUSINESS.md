@@ -60,3 +60,6 @@ These are goals, not forecasts. The dashboard shows the real numbers from store 
 - `04-extensions/src/` holds Tab Lifeboat. Each new extension gets `04-extensions/<slug>/`, with the same WXT setup and the same test bar.
 - Research is in `04-extensions/research/`. Scout results arrive in the KL Tasks table (stream b4) and are summarised in `research/scout-<date>.md`.
 - Roadmap items are A105–A113 and C52–C54.
+
+## Prices approved by Akhil (11 Nov 2026, A213)
+Core free for ever: save and restore with no daily limit, imports (OneTab, Session Buddy JSON/CSV/text), local snapshots, backup file. Pro (Drive backup + cross-device restore): $2.99/month or $24 lifetime. Not shown in the product or site until Pro can really be bought (guard test in `src/tests/site.test.ts`).

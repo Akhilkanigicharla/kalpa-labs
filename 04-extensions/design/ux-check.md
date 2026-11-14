@@ -13,7 +13,7 @@ Tests (all PASS): `npm test` (34), `npm run test:screens` (real built extension,
 | 6 | Autosave | ✅ The product itself: snapshots every 5 minutes; pasted import text is kept if an import fails (fixed 9 Nov). |
 | 7 | Debouncing | ✅ Saved-tab search waits 200 ms; fixed 9 Nov: import preview waits 250 ms after a paste (popup + options). |
 | 8 | Throttling | ✅ Save button disabled while saving; Import stays off until the preview is valid. |
-| 9 | Smart form validation | ✅ Import preview tells how many tabs/groups and what was skipped before importing; backup files over 50 MB refused with a reason. |
+| 9 | Smart form validation | ✅ Import preview tells how many tabs/groups and what was skipped before importing; 14 Nov (A213): Session Buddy CSV and title/URL lists import too, and a CSV without a URL column is refused with a plain reason; backup files over 50 MB refused with a reason. |
 | 10 | Bulk actions | ✅ Cleanup closes all duplicates / unused tabs in one step (Pro), after saving them first. |
 | 11 | Reusable data table | ➖ Session lists are short cards; a table would not fit a 360 px popup. |
 | 12 | Advanced filtering | ✅ Search by session name; search across every saved tab; "where did this tab go" timeline. |

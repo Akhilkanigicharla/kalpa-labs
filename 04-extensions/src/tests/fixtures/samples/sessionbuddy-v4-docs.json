@@ -1,0 +1,30 @@
+{
+  "collections": [
+    {
+      "title": "Furry friends",
+      "folders": [
+        { "title": "Dogs", "links": [
+          { "title": "German Shepherd - Wikipedia", "url": "https://en.wikipedia.org/wiki/German_Shepherd", "favIconUrl": "https://en.wikipedia.org/static/favicon/wikipedia.ico" },
+          { "title": "Labrador Retriever - Google Search", "url": "https://www.google.com/search?q=Labrador+Retriever", "favIconUrl": "https://www.google.com/favicon.ico" }
+        ] },
+        { "title": "Cats", "state": "normal", "links": [
+          { "title": "Ragdoll kitten - YouTube", "url": "https://www.youtube.com/results?search_query=Ragdoll+kitten" }
+        ] }
+      ]
+    },
+    {
+      "title": "Reptiles",
+      "folders": [
+        { "title": "Snakes", "state": "maximized", "incognito": true, "links": [
+          { "title": "Boa constrictor - Wikipedia", "url": "https://en.wikipedia.org/wiki/Boa_constrictor", "pinned": true },
+          { "title": "Ball python - Wikipedia", "url": "https://en.wikipedia.org/wiki/Ball_python", "favIconUrl": "https://en.wikipedia.org/static/favicon/wikipedia.ico" },
+          { "title": "Garter Snake - YouTube", "url": "https://www.youtube.com/results?search_query=Garter+Snake", "favIconUrl": "https://www.youtube.com/s/desktop/ee47b5e0/img/logos/favicon_32x32.png" }
+        ] },
+        { "title": "Lizards", "top": 25, "left": 50, "width": 1034, "height": 560, "links": [
+          { "title": "Bearded Dragon - YouTube", "url": "https://www.youtube.com/results?search_query=Bearded+Dragon", "favIconUrl": "https://www.youtube.com/s/desktop/ee47b5e0/img/logos/favicon_32x32.png" },
+          { "title": "Gecko - Wikipedia", "url": "https://en.wikipedia.org/wiki/Gecko" }
+        ] }
+      ]
+    }
+  ]
+}

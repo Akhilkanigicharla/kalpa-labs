@@ -216,5 +216,24 @@
   "output": "00-hq/knowledge/K091.md",
   "min_items": 5,
   "updated": "2026-11-13T00:56:23Z"
+ },
+ {
+  "id": "K108",
+  "world": "b6",
+  "title": "A215 prep: AI cost consulting offer page copy (we install Langfuse/Helicone, find the savings)",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/research/competitors-2026-11-11.md",
+   "06-finops/PLAN.md"
+  ],
+  "details": "Read the A215 line in 00-hq/ROADMAP.md. Write (1) a one-screen offer page draft in plain English: who it is for, what we do (install open-source Langfuse or Helicone for them, find the savings, hand over), what they get in week 1 and week 4; (2) a 10-row audit template table (check, how we measure it, typical saving); (3) 5 FAQ with honest answers; (4) a list of every price, licence or limit you mention with the public page you read it from, marked 'unverified' if you could not open it. No invented customer quotes or results. Do not recommend signing up or paying.",
+  "min_items": 4,
+  "tries": 3,
+  "status": "todo",
+  "created": "2026-11-14T08:00:00Z",
+  "updated": "2026-11-14T08:00:00Z",
+  "output": "00-hq/knowledge/K108.md",
+  "owner": "FinOps",
+  "priority": "P1"
  }
 ]

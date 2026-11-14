@@ -10,7 +10,7 @@
     <div class="temple" aria-hidden="true"></div>
     <main class="wrap">
       <header class="top">
-        <div><h1>Backups and settings</h1><span class="eyebrow">Tab Lifeboat</span></div>
+        <div><h1>Backups and settings</h1><span class="eyebrow">Tab Lifeboat · never lose your tabs</span></div>
         <span id="plan" class="pill">Free</span>
       </header>
 
@@ -48,9 +48,9 @@
 
       <section class="card" aria-labelledby="h-import">
         <h2 id="h-import">Move in from OneTab or Session Buddy</h2>
-        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup, or open the file. You see the count before anything is saved.</p>
+        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup (JSON, CSV or title/URL list), or open the file. You see the count before anything is saved.</p>
         <label class="file">Open a OneTab or Session Buddy file
-          <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" />
+          <input id="importFile" type="file" accept=".json,.txt,.csv,application/json,text/plain,text/csv" />
         </label>
         <textarea id="importText" rows="4" aria-label="OneTab text or Session Buddy JSON" placeholder="https://example.com | Example"></textarea>
         <p id="preview" class="hint" role="status"></p>
@@ -103,7 +103,7 @@
           <input id="where" type="url" placeholder="Paste a page address" aria-label="Where did this tab go" />
           <p id="where-msg" class="hint" role="status"></p>
         </div>
-        <p class="hint">Not on sale yet. The price will be shown here before Pro opens.</p>
+        <p class="hint">Not on sale yet. Pro will be monthly or a one-time lifetime licence; the price shows here before it opens. Saving, restoring, imports, snapshots and the backup file stay free.</p>
       </section>
 
       <section class="card" aria-labelledby="h-priv">

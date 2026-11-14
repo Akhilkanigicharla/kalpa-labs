@@ -340,10 +340,12 @@
    "CLAUDE.md"
   ],
   "context_chars": 20000,
-  "tries": 3,
-  "status": "todo",
+  "tries": 4,
+  "status": "rejected",
   "created": "2026-11-14T04:50:00Z",
-  "output": "00-hq/knowledge/K111.md"
+  "output": "00-hq/knowledge/K111.md",
+  "updated": "2026-11-14T04:44:20Z",
+  "vigil_notes": "FIX:\n- Shorten the step list to at most 5 items per the rule.\n- Mark configuration steps not seen in the repo files as UNVERIFIED."
  },
  {
   "id": "K112",
@@ -356,10 +358,12 @@
    "00-hq/agent-engine/DESIGN.md"
   ],
   "context_chars": 20000,
-  "tries": 3,
-  "status": "todo",
+  "tries": 4,
+  "status": "rejected",
   "created": "2026-11-14T04:50:00Z",
   "output": "00-hq/knowledge/K112.md",
-  "min_items": 4
+  "min_items": 4,
+  "updated": "2026-11-14T04:45:09Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

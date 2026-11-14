@@ -22,6 +22,7 @@
 const crypto = require("crypto");
 const { BotBhai } = require("../../setups/index.js");
 const L = require("./_lib.js");
+const AI = require("../aiask.js");
 const { parseDayClose } = require("../automations.js");
 const { humanize, detectLanguage, typingDelayMs, mirrorLanguage } = require("../humanize.js");
 const sleep = (ms) => new Promise((r) => setTimeout(r, process.env.NO_DELAY ? 0 : ms));
@@ -99,6 +100,7 @@ async function handleMessage(client, v, msg) {
   const known = prev && prev.details && prev.details.customer_name ? { name: prev.details.customer_name, lastService: prev.details.service || prev.details.goal } : null;
   const bot = BotBhai.createBot(client.niche, client.config);
   let out = bot.handle(state0, text, { contact, profileName, source: "whatsapp", busy, known });
+  out = await AI.aiRescue(bot, out, { contact, profileName, source: "whatsapp", busy, known }, client, { ask: exports.ask }); // A87
 
   // Calendar first: if someone grabbed the slot a millisecond ago, offer the rest instead of a false confirmation
   if (!(await L.applyCalendarEvents(client, contact, out.events, "whatsapp"))) {
@@ -135,7 +137,7 @@ async function handleMessage(client, v, msg) {
     L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: Object.assign(
       { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString(), last_inbound_at: new Date().toISOString() }, L.inboxStatus(out.state)) }),
     L.saveLead(client, contact, out.lead, prev),
-    L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", author: "bot", body: r.text }))] }),
+    L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text }, ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", author: AI.authorOf(out), body: r.text }))] }),
   ]);
 }
 
@@ -163,4 +165,5 @@ exports.handler = async (event) => {
   return L.json(200, { ok: true }); // always 200 fast, or Meta retries
 };
 exports._textOf = textOf;
+exports.ask = null; // tests inject a fake model here
 exports._inboxHint = inboxHint;

@@ -34,6 +34,7 @@ begin
   begin update sessions set status = 'snoozed'; raise exception 'bad session status accepted';
   exception when check_violation then null; end;
   insert into messages (client_id, contact, direction, body, author) values (c, '919812345678', 'out', 'hi', 'staff');
+  insert into messages (client_id, contact, direction, body, author) values (c, '919812345678', 'out', 'AI-chosen reply', 'ai'); -- A87
   begin insert into messages (client_id, contact, direction, body, author) values (c, '919812345678', 'out', 'hi', 'robot'); raise exception 'bad author accepted';
   exception when check_violation then null; end;
 

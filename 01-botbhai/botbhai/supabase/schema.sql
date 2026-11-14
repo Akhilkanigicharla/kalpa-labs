@@ -72,9 +72,9 @@ update sessions set status = 'human', human_until = (state->>'humanUntil')::time
   where state->>'humanUntil' is not null and (state->>'humanUntil')::timestamptz > now() and status = 'bot';
 create index if not exists sessions_inbox on sessions (client_id, status, updated_at desc);
 alter table messages add column if not exists author text not null default 'bot';
-do $$ begin
-  alter table messages add constraint messages_author_check check (author in ('customer','bot','staff'));
-exception when duplicate_object then null; end $$;
+-- A87: 'ai' = a bot reply whose intent the free AI fallback chose, shown to the owner as "AI" in the inbox.
+alter table messages drop constraint if exists messages_author_check;
+alter table messages add constraint messages_author_check check (author in ('customer','bot','staff','ai'));
 update messages set author = 'customer' where direction = 'in' and author = 'bot'; -- rows logged before this column existed
 
 -- Meta tokens live in Supabase Vault (encrypted at rest), never in a plain table (REA audit #8, A51).

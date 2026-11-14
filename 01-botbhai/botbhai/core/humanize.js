@@ -49,7 +49,7 @@ const VARIANTS = [
   [/^No problem, cancelled\./, () => ["No worries, stopped it 👍", "Okay, cancelled. All good 🙂"]],
 ];
 
-const FRUSTRATION = /\b(worst|angry|bad service|waiting since|still waiting|no response|no one picking|cheating|fraud|useless|bakwas|chetha|chettha|late again|disappointed|complaint|refund|pathetic|horrible|ghatiya)\b/i;
+const FRUSTRATION = /\b(worst|angry|bad service|waiting since|still waiting|no response|no one picking|cheating|fraud|useless|bakwas|chetha|chettha|late again|disappointed|complaint|refund|pathetic|horrible|ghatiya|bad experience|nobody called|no one called|not happy|very rude|so rude)\b/i;
 const URGENT = /\b(urgent|asap|right now|immediately|emergency|jaldi|twaraga)\b/i;
 
 /**
@@ -121,4 +121,4 @@ async function mirrorLanguage(replies, lang, { apiKey, fetchImpl = fetch, model 
   return out;
 }
 
-module.exports = { humanize, detectLanguage, typingDelayMs, mirrorLanguage, translationIsSafe, timeGreeting, PERSONAS };
+module.exports = { humanize, detectLanguage, typingDelayMs, mirrorLanguage, translationIsSafe, timeGreeting, PERSONAS, chat, MODELS };

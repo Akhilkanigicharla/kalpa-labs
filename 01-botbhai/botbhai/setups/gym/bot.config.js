@@ -97,6 +97,7 @@ module.exports = {
       "k": [
         "trainer",
         "personal training",
+        "personal trainer",
         "pt",
         "coach"
       ],

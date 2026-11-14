@@ -1,0 +1,34 @@
+# A283: run BotBhai's 224-message depth corpus through the real free model (Groq, GROQ_API_KEY secret set by Akhil)
+# and save the answers. Manual only. The key never leaves GitHub's secret store; only the model's JSON answers are saved.
+name: BotBhai depth live
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: botbhai-depth-live, cancel-in-progress: false }
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Ask the model about every message
+        working-directory: 01-botbhai/botbhai
+        env: { GROQ_API_KEY: "${{ secrets.GROQ_API_KEY }}" }
+        run: node qa/depth.live.js
+      - name: Score it offline (right intent, no invented price)
+        working-directory: 01-botbhai/botbhai
+        run: node qa/depth.test.js | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Save the answers and the report
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git config user.name "kalpa-botbhai-qa"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 01-botbhai/botbhai/qa/depth.live.json 01-botbhai/botbhai/qa/depth-report.md
+          git diff --cached --quiet && exit 0
+          git commit -q -m "A283: BotBhai depth corpus, real model answers"
+          for _ in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done; exit 1

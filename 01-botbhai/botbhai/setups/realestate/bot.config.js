@@ -140,7 +140,12 @@ module.exports = {
         "possession",
         "ready to move",
         "handover",
-        "completion"
+        "completion",
+        "పొసెషన్",
+        "అప్పగిస్తారు",
+        "पज़ेशन",
+        "पजेशन",
+        "कब्ज़ा"
       ],
       "a": "Skyline Meadows is ready to move. Skyline Crest possession is planned for Dec 2027 (as per RERA)."
     },

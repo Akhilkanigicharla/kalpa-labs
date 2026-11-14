@@ -25,6 +25,8 @@ NO_DELAY=1 node core/functions/hardening.test.js
 NO_DELAY=1 node core/functions/billing.test.js
 NO_DELAY=1 node core/functions/telegram.test.js
 NO_DELAY=1 node core/functions/chat-lang.test.js
+NO_DELAY=1 node core/functions/aifallback.test.js
+node qa/depth.test.js
 node core/comments.test.js
 NO_DELAY=1 node core/functions/comments.test.js
 node qa/swarm.test.js

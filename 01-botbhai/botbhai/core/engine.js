@@ -868,7 +868,8 @@
         replies = handleStep(state, raw, events, meta);
       } else if (!t) {
         replies = [menuReply()];
-      } else if (GREET.test(t) || /^(start|bot)$/.test(t) || picked) {
+      } else if ((GREET.test(t) && !(t.split(" ").length > 3 && (INTENT.book.test(t) || INTENT.prices.test(t) || INTENT.human.test(t) || catalogHit(raw, state)))) || /^(start|bot)$/.test(t) || picked) {
+        // A87: "hi anna, tomorrow 5pm ki facial book cheyyi" is a request, not just a hello
         if (state.step >= 0) abandonFlow(state);
         if (state.bridal) state.bridal.asking = null;
         state.optedOut = false; delete state.humanUntil;
@@ -888,6 +889,9 @@
           else if (INTENT.human.test(t)) key = "human";
           else if (INTENT.haggle.test(t)) key = "haggle";
           else if (INTENT.book.test(t) || /\b(visit)\b/.test(t)) key = "book";
+          // A87 depth test: a specific FAQ word beats the generic price/timings words
+          // ("freeze my membership" → freeze FAQ, not the price list; "possession eppudu" → possession, not timings)
+          else if ((faq = cfg.faqs.find((q) => q.k.some((k) => hasWord(t, k))))) key = null;
           else if (INTENT.prices.test(t)) key = "prices";
           else if (INTENT.hours.test(t)) key = "hours";
         }

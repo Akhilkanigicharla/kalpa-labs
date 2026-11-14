@@ -5,6 +5,7 @@
 const { BotBhai } = require("../../setups/index.js");
 const L = require("./_lib.js");
 const { humanize, detectLanguage, mirrorLanguage } = require("../humanize.js");
+const AI = require("../aiask.js");
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type" } };
@@ -37,6 +38,7 @@ exports.handler = async (event) => {
   const engLang = lang || (["te", "hi"].includes(detected) ? detected : undefined);
   const bot = BotBhai.createBot(client.niche, client.config);
   let out = bot.handle(state0, text, { contact, source: src, busy, lang: engLang });
+  out = await AI.aiRescue(bot, out, { contact, source: src, busy, lang: engLang }, client, { ask: exports.ask }); // A87
   out.state.lang = mirror || engLang || detected;
   // A booking is only saved after a Cloudflare Turnstile check (A50). Nothing is written otherwise, so when the page
   // resends the same message with a token, the engine replays the same booking from the same state.
@@ -65,5 +67,9 @@ exports.handler = async (event) => {
     L.saveLead(client, contact, out.lead, prev),
   ]);
   const replies = mirror ? await mirrorLanguage(h.replies, mirror, { apiKey: process.env.GROQ_API_KEY, router: { url: process.env.LLM_ROUTER_URL, key: process.env.LLM_ROUTER_KEY } }) : h.replies;
+  // A87: website chats are logged like WhatsApp, so the owner sees them (and every AI answer) in the inbox.
+  await L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text },
+    ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", author: AI.authorOf(out), body: r.text }))] }).catch(() => {});
   return L.json(200, { replies });
 };
+exports.ask = null; // tests inject a fake model here

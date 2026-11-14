@@ -87,7 +87,7 @@
     var rows = S.list.filter(function (c) { return S.filter === "all" || c.status === S.filter; });
     if (!rows.length) { ul.appendChild(el("li", { class: "empty", text: S.filter === "human" ? "Nobody is waiting for you. The bot has it." : "No chats here yet." })); return; }
     rows.forEach(function (c) {
-      var prev = c.last ? (c.last.author === "staff" ? "You: " : c.last.author === "bot" ? "Bot: " : "") + c.last.body : "";
+      var prev = c.last ? (c.last.author === "staff" ? "You: " : c.last.author === "ai" ? "AI: " : c.last.author === "bot" ? "Bot: " : "") + c.last.body : "";
       ul.appendChild(el("li", null, [el("button", { class: "convo", "aria-current": String(S.open === c.contact), onclick: function () { openChat(c.contact); } }, [
         el("span", { class: "av", "aria-hidden": "true", text: initial(c) }),
         el("span", { style: "min-width:0" }, [el("span", { class: "who" }, [el("b", { text: label(c) }), c.assigned_to ? el("span", { class: "tag", text: "· " + c.assigned_to }) : null]), el("span", { class: "prev", text: prev })]),
@@ -122,7 +122,7 @@
 
     var msgs = el("div", { class: "msgs", id: "msgs", role: "log", "aria-label": "Messages" });
     (t.messages || []).forEach(function (m) {
-      var who = m.author === "staff" ? "You" : m.author === "bot" ? "Bot" : null;
+      var who = m.author === "staff" ? "You" : m.author === "ai" ? "AI (check)" : m.author === "bot" ? "Bot" : null;
       msgs.appendChild(el("div", { class: "b " + m.author }, [who ? el("span", { class: "by", text: who }) : null, m.body || "", el("time", { text: clock(m.created_at) })]));
     });
     if (!(t.messages || []).length) msgs.appendChild(el("p", { class: "empty", text: "No messages yet." }));
@@ -202,6 +202,9 @@
         ["in", "customer", "book facial tomorrow 4pm", 26], ["out", "bot", "Booking confirmed ✅ Facial · Sat, 17 Oct · 4:00 PM. See you!", 25] ] },
       { contact: "web:visitor8842", name: null, status: "bot", last_inbound_at: m(60), msgs: [
         ["in", "customer", "do you do keratin?", 61], ["out", "bot", "Yes! Keratin is ₹3,500 and takes about 90 minutes. Want me to book it?", 60] ] },
+      { contact: "919500000006", name: "Kiran", status: "bot", last_inbound_at: m(8), msgs: [
+        ["in", "customer", "naaku jutthu chala dry ga undi emaina treatment unda", 9],
+        ["out", "ai", "Here are our services: Hair spa ₹1,200 · Keratin ₹3,500 … Reply *1* to book.", 8] ] },
       { contact: "919600000005", name: "Anil", status: "resolved", last_inbound_at: m(60 * 30), msgs: [
         ["in", "customer", "parking undha?", 60 * 30], ["out", "staff", "Yes Anil, 2 bike spots in front and car parking at the mall basement.", 60 * 30 - 5] ] },
     ];

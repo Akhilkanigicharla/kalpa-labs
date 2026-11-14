@@ -1,0 +1,6 @@
+line,cagr,max_dd,worst_year,sharpe,trades_per_yr,rs_per_day,end_rs
+"Combo (learned on 2011-18, applied 2019-26)",0.0192,-0.4079,-0.1408,0.1998,55.0481,0.7674,11612.3754
+Alpha Brain v2 (Nifty 50 version),0.1551,-0.2790,-0.0922,0.8358,36.4869,6.2043,31086.7754
+Current bot: Nifty trend + gold,0.1343,-0.1527,-0.0244,1.3151,17.6713,5.3730,26949.9346
+Buy and hold Nifty,0.1259,-0.3621,-0.0239,0.8613,0.1271,5.0367,25418.1255
+Hindsight combo (learned on ALL years; NOT usable),0.2442,-0.1489,0.1033,1.7958,26.9520,9.7681,55769.5126

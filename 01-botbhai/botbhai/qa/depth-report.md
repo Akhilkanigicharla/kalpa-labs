@@ -73,4 +73,4 @@ Wrong picks:
   "reply": null
 }
 
-Note: 'Rescued by AI' uses a stand-in model that answers correctly; the real free model's accuracy is measured in core/fallback.test.js (live run) and must be re-run with a key before going live.
+Note: the tables above use a stand-in model that answers correctly (to test the wiring); the real model's own accuracy is the section above, refreshed by the "BotBhai depth live" workflow.

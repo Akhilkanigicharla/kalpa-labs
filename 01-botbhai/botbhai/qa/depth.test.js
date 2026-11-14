@@ -168,7 +168,7 @@ const HOSTILE = [
     ...(live ? ["## Real free model (" + live.model + ", " + live.at.slice(0, 10) + ")", "",
       `Right intent on all ${live.n} messages: **${live.right}/${live.n - live.failed} (${Math.round(100 * live.right / Math.max(1, live.n - live.failed))}%)**; on the ${live.missedN} the rules miss (the only ones sent to the model in production): **${live.missedRight}/${live.missedN}**. Failed calls: ${live.failed}. Invented prices: 0 (checked).`, "",
       "Wrong picks:", "", ...live.wrong.map((w) => "- " + w), ""] : ["Real free model: not run yet (GitHub Actions → \"BotBhai depth live\").", ""]),
-    "Note: 'Rescued by AI' uses a stand-in model that answers correctly; the real free model's accuracy is measured in core/fallback.test.js (live run) and must be re-run with a key before going live."];
+    "Note: the tables above use a stand-in model that answers correctly (to test the wiring); the real model's own accuracy is the section above, refreshed by the \"BotBhai depth live\" workflow."];
   fs.writeFileSync(path.join(__dirname, "depth-report.md"), md.join("\n") + "\n");
   console.log(`  ✓ ${tot.n} messages, ${checks} checks: rules ${tot.rules}, AI ${tot.rescued}, menu ${tot.menu}; ${multi.length} multi-turn bookings`);
   console.log("depth tests passed");

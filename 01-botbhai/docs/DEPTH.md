@@ -16,7 +16,7 @@ Test suite: `bash 01-botbhai/botbhai/tools/test-all.sh` (all green on 14 Nov 202
 | Owner sees every AI answer in the inbox (marked "AI (check)") | built (A87) | `messages.author = 'ai'` (`supabase/schema.sql`, `supabase/test.sql`), `web/inbox.js` |
 | Website chats logged for the owner's inbox | built (A87) | `core/functions/chat.js`; `aifallback.test.js` |
 | 200+ real-style test messages incl. Telugu/Hindi script + multi-turn | built (A87) | 224 messages, 5,078 checks; report `botbhai/qa/depth-report.md` |
-| AI accuracy measured with the **real** free model on the 224 messages | missing | A283 (needs a Groq key as a GitHub secret, or n8n back) |
+| AI accuracy measured with the **real** free model on the 224 messages | built (A283) | Groq gpt-oss-120b: 93% right intent, 91% on rules misses, 0 invented prices; `qa/depth.live.json`, workflow "BotBhai depth live" |
 | Rules answer the right thing (5 of 154 rules answers still off-topic) | partial | listed in `qa/depth-report.md`; A284 |
 | Bridal enquiry flow (salon) | built | `core/bridal.test.js` |
 | Human hand-off on complaints, owner alert | built | `core/humanize.js` FRUSTRATION (widened in A87), `webhook.test.js` |
@@ -47,4 +47,4 @@ Test suite: `bash 01-botbhai/botbhai/tools/test-all.sh` (all green on 14 Nov 202
 | Starter tier: chat link + QR poster + quick replies | partial | QR in `core/billing.js`, counter poster not built; A286 |
 | BotBhai's own lead finder | built | `leadfinder/`, `leadfinder.yml` |
 
-**Status: 5 rows missing, 2 partial → A87 stays `[~]` until A283–A288 are done.**
+**Status: 4 rows missing, 2 partial → A87 stays `[~]` until A284–A288 are done.**

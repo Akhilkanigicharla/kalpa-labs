@@ -13,6 +13,7 @@ python3 tools/test_receipt_ui.py
 node core/bridal.test.js
 node core/automations.test.js
 node core/nudges.test.js
+node webhook-door/test.mjs
 node core/lang.test.js
 node core/models.test.js
 node core/humanize.test.js

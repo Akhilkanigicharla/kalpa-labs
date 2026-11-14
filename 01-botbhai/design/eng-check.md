@@ -13,7 +13,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | Security Headers: Permissions-Policy | PASS | in 01-botbhai/botbhai/netlify.toml |
 | Content Security Policy | PASS | default-src 'self'; script-src 'self' 'unsafe-inline' https: |
 | Clickjacking | PASS | frame-ancestors / X-Frame-Options |
-| Inline JS vs CSP | WARN | 4 page(s) with inline script: inbox.html, index.src.html, dashboard.html, billing.html; CSP allows it for now, move scripts to files |
+| Inline JS vs CSP | WARN | 1 page(s) with inline script: index.src.html; CSP allows it for now, move scripts to files |
 | Inline on*= handlers | PASS |  |
 | Custom 404 page | PASS |  |
 | target=_blank has rel=noopener | PASS |  |
@@ -39,12 +39,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | Rate Limiting: 01-botbhai/botbhai/core/functions/inbox.js | PASS | webhook: platform-signed, rate set by sender |
 | Input caps: 01-botbhai/botbhai/core/functions/inbox.js | PASS | no input length cap |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/metaleads.js | WARN | webhook: platform-signed, rate set by sender |
-| Input caps: 01-botbhai/botbhai/core/functions/metaleads.js | WARN | no input length cap |
+| Input caps: 01-botbhai/botbhai/core/functions/metaleads.js | PASS | no input length cap |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/leads.js | PASS | no limit |
 | Input caps: 01-botbhai/botbhai/core/functions/leads.js | PASS | no input length cap |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/chat.js | PASS | no limit |
 | Input caps: 01-botbhai/botbhai/core/functions/chat.js | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 53 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 100 KB |
 
 ## All 107 items (fill: done / not relevant + why / missing + roadmap id)
 
@@ -157,3 +157,18 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## Webhook door (A245, `botbhai/webhook-door/`, 14 Nov 2026)
+Test: `node 01-botbhai/botbhai/webhook-door/test.mjs` (37 checks, also in `test-all.sh`).
+| Item | Status |
+|---|---|
+| Webhook signature check | done: HMAC-SHA256 `X-Hub-Signature-256` on raw body, Telegram secret token, constant-time compare; forged/tampered/missing → 401 |
+| Rate limiting | done: per-IP per-route window (Workers rate-limit binding when bound) → 429 before any work |
+| Input validation / size cap | done: 256 KB cap → 413; handshake challenge only `[0-9A-Za-z_-]`; https-only forward URL |
+| Timeouts / retries | done: 10 s forward timeout; upstream failure → 502 so Meta/Telegram retry |
+| Secrets | done: Cloudflare secrets only; missing → 500 "not configured", nothing leaked |
+| Logging | done: JSON event lines, no bodies, tokens or phone numbers |
+| Kill switch / go gate | done: `DOOR_OPEN` must be "true" (default "false") → else 503 |
+| Security headers | done: nosniff, no-store; no HTML served (not relevant: CSP/clickjacking) |
+| 404 / 405 | done |
+| Auth to the Space | done: `Authorization: Bearer HF_TOKEN` to the private Space |

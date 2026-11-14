@@ -612,5 +612,40 @@
   "min_items": 4,
   "output": "00-hq/knowledge/K102.md",
   "owner": "Forge"
+ },
+ {
+  "id": "K113",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A243 prep: Hugging Face terms for commercial use of free Spaces and keep-awake pings",
+  "details": "Find the Hugging Face Terms of Service, Content Policy and Spaces docs sections that cover: commercial use of a free CPU Basic Space, running a business backend on it, private Spaces, sleep after inactivity, and whether pinging a Space to keep it awake is allowed. Quote the exact sentence and give the official URL for each point. Say 'not stated' if the docs are silent. Claude will verify each quote.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md",
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "todo",
+  "created": "2026-11-14T04:50:00Z",
+  "output": "00-hq/knowledge/K113.md",
+  "min_items": 5
+ },
+ {
+  "id": "K114",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A244 prep: do Groq, OpenRouter free, Gemini free and Cloudflare Workers AI train on API inputs?",
+  "details": "For each provider (Groq, OpenRouter free models, Google Gemini API free tier, Cloudflare Workers AI) find the official policy page that says whether API prompts/outputs are used to train or improve models, and whether that differs on the free tier. Quote the sentence, give the URL, and note any per-model exception (OpenRouter free models may log). One row per provider, 4 rows minimum. Claude verifies each quote.",
+  "read": [
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "todo",
+  "created": "2026-11-14T04:50:00Z",
+  "output": "00-hq/knowledge/K114.md",
+  "min_items": 4
  }
 ]

@@ -1,0 +1,10 @@
+# BotBhai webhook door (A245). Not deployed: goes live only after Akhil's "go".
+# Secrets via `wrangler secret put` / dashboard only: META_APP_SECRET, META_VERIFY_TOKEN, TELEGRAM_SECRET, HF_TOKEN.
+name = "botbhai-webhook-door"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+DOOR_OPEN = "false"
+FORWARD_URL = ""
+RATE_PER_MIN = "120"

@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: python -m unittest -v test_post.py test_channel.py
+      - run: python -m unittest -v test_post.py test_channel.py test_verdict.py
       - name: Dry run of the sample Sunday
         run: python channel.py --day 2026-10-25
   post:
@@ -57,6 +57,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           DEALS_LIVE: ${{ vars.DEALS_LIVE }}
+          DEALS_CALC_URL: ${{ vars.DEALS_CALC_URL }}
         run: python channel.py --live
       - name: Save duplicate-guard state
         if: always() && github.event.inputs.day == ''

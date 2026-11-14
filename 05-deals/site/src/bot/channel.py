@@ -43,6 +43,7 @@ from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
 import post
+import verdict
 
 HERE = Path(__file__).resolve().parent
 IST = post.IST
@@ -50,6 +51,8 @@ SLOTS = ["09:00", "12:30", "17:30", "20:00", "21:30"]  # IST; the workflow cron 
 TIP_SLOT = "10:30"  # IST, Sundays only
 GRACE = timedelta(hours=2)  # a slot missed by more than this is not posted late
 MIN_PER_DAY = 3
+MAX_PER_DAY = 3  # A214: few deals a day, each checked
+RATES = verdict.load_rates()
 MAX_CARDS_PER_DAY = 1
 REPOST_AFTER = timedelta(days=30)
 SECRET_NAMES = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "TELEGRAM_CHANNEL_ID"]
@@ -231,6 +234,8 @@ def build(d: dict, now: datetime) -> str:
                      price=str(d.get("price", "")).strip() if kind == "product" else "",
                      price_as_of=post.parse_ist(d["price_as_of"]) if kind == "product" and d.get("price_as_of") else None)
     message = post.compose(deal)
+    if kind == "product":
+        fee_block = verdict.lines(d, now.date())
     if fee_block:
         body, last = message.rsplit("\n", 1)
         message = "\n".join([body, *fee_block, last])
@@ -287,7 +292,8 @@ def _eligible(d: dict, state: dict, now: datetime, live: bool, taken: set) -> bo
 
 def _ranked(deals: list, day: date) -> list:
     order = {id(d): i for i, d in enumerate(deals)}
-    return sorted(deals, key=lambda d: (d.get("date") != day.isoformat(), -int(d.get("priority", 0)), order[id(d)]))
+    return sorted(deals, key=lambda d: (d.get("date") != day.isoformat(), -int(d.get("priority", 0)),
+                                        -verdict.rate_for(d, RATES), order[id(d)]))
 
 
 def _cards_today(state: dict, day: date) -> int:
@@ -304,6 +310,8 @@ def _pass(deals, tips, state, now, send, check_link, out, live) -> dict:
         start = _at(day, hhmm)
         if slot in done_slots or not start <= now <= start + GRACE:
             continue
+        if sum(1 for p in state["posted"] if p["slot"].startswith(day.isoformat())) + len(taken) >= MAX_PER_DAY:
+            break
         cards = _cards_today(state, day) + sum(1 for d in deals if d["id"] in taken and d["kind"] == "credit_card")
         for d in _ranked(deals, day):
             if d["id"] in refused or not _eligible(d, state, now, live, taken):

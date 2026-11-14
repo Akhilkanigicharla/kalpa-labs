@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import channel  # noqa: E402
 import post  # noqa: E402
+import verdict  # noqa: E402
 
 DAY = "2026-10-25"  # a Sunday, so the weekly tip slot exists
 MONDAY = "2026-10-26"
@@ -20,7 +21,9 @@ MONDAY = "2026-10-26"
 def product(i, **kw):
     d = {"id": f"p{i}", "kind": "product", "title_te": f"ఇయర్‌బడ్స్ మోడల్ {i}", "store": "Amazon",
          "link": f"https://www.amazon.in/dp/X{i}", "price": "1299", "price_as_of": f"{DAY} 08:30",
-         "discount_pct": 40}
+         "discount_pct": 40, "history_source": "own-log",
+         "history": [{"date": "2026-10-01", "price": 1499}, {"date": "2026-10-10", "price": 1399},
+                     {"date": "2026-10-20", "price": 1599}]}
     d.update(kw)
     return d
 
@@ -58,10 +61,11 @@ class Base(unittest.TestCase):
 
 
 class TestPlanning(Base):
-    def test_full_day_posts_five_deals_in_ist_slots(self):
+    def test_full_day_posts_at_most_three_checked_deals(self):
         r = self.day([product(i) for i in range(1, 8)])
-        self.assertEqual([p["slot"] for p in r["deals"]], [f"{DAY} {s}" for s in channel.SLOTS])
-        self.assertEqual(len(r["deals"]), 5)
+        self.assertEqual([p["slot"] for p in r["deals"]], [f"{DAY} {s}" for s in channel.SLOTS[:3]])
+        self.assertEqual(len(r["deals"]), channel.MAX_PER_DAY)
+        self.assertTrue(all(verdict.HEAD in p["message"] for p in r["deals"]))
 
     def test_three_deals_is_enough_and_fewer_warns(self):
         r = self.day([product(1), product(2)])

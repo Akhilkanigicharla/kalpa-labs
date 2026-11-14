@@ -137,7 +137,7 @@ jobs:
           python -m pytest -q -rs tests/
       - name: b5 Deal Poster Bot (A18, stdlib only)
         working-directory: 05-deals/site/src/bot
-        run: python -m unittest -v test_post.py test_channel.py
+        run: python -m unittest -v test_post.py test_channel.py test_verdict.py
 
   kits:
     runs-on: ubuntu-24.04  # pinned 13 Nov 2026: ubuntu-latest is 26.04, Playwright 1.56 has no Chromium for it

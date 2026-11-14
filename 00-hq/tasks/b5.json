@@ -158,5 +158,22 @@
   "created": "2026-11-13T20:45:00Z",
   "updated": "2026-11-13T20:45:40Z",
   "vigil_notes": "FIX:\n- Split the templates list into two lists of at most 5 items each to comply with the list length rule.\n- Add the `#ad` marker to the Telugu version of template 6 for ASCI compliance."
+ },
+ {
+  "id": "K109",
+  "world": "b5",
+  "title": "A214 check: natural Telugu for the deal verdict lines",
+  "read": [
+   "05-deals/site/src/bot/verdict.py"
+  ],
+  "details": "Read the Telugu strings in verdict.py (history_line, emi_line, card_line, HEAD). For each of the 8 strings: (1) quote it, (2) say if it reads naturally to a Hyderabad shopper, (3) give a better Telugu-script version keeping every {placeholder} and number exactly, (4) give a Tenglish version. Never add 'no cost', 'free', loan or investment words. Number them 1 to 8.",
+  "min_items": 8,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "owner": "Deals",
+  "created": "2026-11-14T03:00:00Z",
+  "updated": "2026-11-14T03:00:00Z",
+  "output": "00-hq/knowledge/K109.md"
  }
 ]

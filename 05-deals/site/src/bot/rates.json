@@ -1,0 +1,19 @@
+{
+ "_how": "Commission % used only to rank deals of equal priority (A214). Amazon rates read on 14 Nov 2026 from Amazon's own fee pages: https://affiliate-program.amazon.in/help/operating/advertisingfees/ and https://affiliate-program.amazon.in/help/node/topic/GRXPHT8U84RAYDXZ (table 'Oct-Nov 2026'). Akhil's dashboard (C68) wins if it differs. EarnKaro/Flipkart rates are not listed: unverified, so they rank as 0. Deal 'category' must match a key below; unknown = 'other'.",
+ "checked": "2026-11-14",
+ "stores": {
+  "amazon": {
+   "beauty": 8, "luxury beauty": 8,
+   "apparel": 7.5, "fashion": 7.5, "luggage": 7.5, "bags": 7.5, "watches": 7.5,
+   "jewelry": 7, "shoes": 7, "handbags": 7,
+   "automotive": 4.72, "baby": 4.72, "books": 4.72, "personal care appliances": 4.72, "sports": 4.72,
+   "home": 4.25, "home improvement": 4.25, "office": 4.25,
+   "furniture": 4, "health": 4, "household": 4, "kitchen": 4, "pet": 4,
+   "wireless accessories": 3.4, "musical instruments": 3.2, "business supplies": 2.98,
+   "electronics": 2.8, "garden": 2.8, "video games": 2.8, "camera": 2.63,
+   "grocery": 2.5, "computers": 2.45, "home entertainment": 2.45, "large appliances": 2.45,
+   "mobile phones": 1,
+   "other": 5
+  }
+ }
+}

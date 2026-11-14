@@ -169,11 +169,11 @@
   "details": "Read the Telugu strings in verdict.py (history_line, emi_line, card_line, HEAD). For each of the 8 strings: (1) quote it, (2) say if it reads naturally to a Hyderabad shopper, (3) give a better Telugu-script version keeping every {placeholder} and number exactly, (4) give a Tenglish version. Never add 'no cost', 'free', loan or investment words. Number them 1 to 8.",
   "min_items": 8,
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "owner": "Deals",
   "created": "2026-11-14T03:00:00Z",
-  "updated": "2026-11-14T03:00:00Z",
+  "updated": "2026-11-14T02:42:43Z",
   "output": "00-hq/knowledge/K109.md"
  }
 ]

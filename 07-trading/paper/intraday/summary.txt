@@ -1,9 +1,11 @@
-Kalpa b7 · 5-min intraday · PAPER · 2026-11-13 · Rs 5,000 per strategy
-Today: 2 trades
-  orb     long  in 09:40 @ 287.11 out 14:20 @ 285.94 (stop) net Rs -24.97
-  rsi_mr  long  in 09:35 @ 286.79 out 15:15 @ 286.65 (eod) net Rs -7.47
-Running total since 2026-11-13 (1 sessions):
-  orb       1 trades, win 0%, before costs Rs -20, costs Rs 5, NET Rs -25
-  vwap    no trades yet
-  rsi_mr    1 trades, win 0%, before costs Rs -2, costs Rs 5, NET Rs -7
+Kalpa b7 · 5-min intraday · PAPER · 2026-11-16 · Rs 5,000 per strategy
+Today: 4 trades
+  orb     long  in 09:50 @ 288.55 out 10:45 @ 287.29 (stop) net Rs -26.54
+  orb     short in 10:55 @ 287.27 out 12:10 @ 288.41 (stop) net Rs -24.50
+  vwap    long  in 12:35 @ 288.04 out 15:15 @ 287.44 (eod) net Rs -15.31
+  rsi_mr  long  in 09:35 @ 288.15 out 15:15 @ 287.44 (eod) net Rs -17.19
+Running total since 2026-11-13 (2 sessions):
+  orb       3 trades, win 0%, before costs Rs -60, costs Rs 16, NET Rs -76
+  vwap      1 trades, win 0%, before costs Rs -10, costs Rs 5, NET Rs -15
+  rsi_mr    2 trades, win 0%, before costs Rs -14, costs Rs 10, NET Rs -25
 All 3 were REJECTED on Aug-Nov 2026 data (they lose after costs). Paper only, to collect evidence. Not advice.

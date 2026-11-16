@@ -1,0 +1,55 @@
+{
+ "date": "2026-11-13",
+ "paper_only": true,
+ "rebalance_day": false,
+ "run_ist": "2026-11-17 02:11",
+ "picks": {
+  "GOLDBEES": 2000,
+  "SHRIRAMFIN": 2000,
+  "MON100": 2000,
+  "NESTLEIND": 2000,
+  "INDUSINDBK": 2000
+ },
+ "top10": [
+  [
+   "ADANIENT",
+   0.971
+  ],
+  [
+   "GOLDBEES",
+   0.942
+  ],
+  [
+   "BAJAJ-AUTO",
+   0.933
+  ],
+  [
+   "SHRIRAMFIN",
+   0.923
+  ],
+  [
+   "MON100",
+   0.923
+  ],
+  [
+   "NESTLEIND",
+   0.894
+  ],
+  [
+   "INDUSINDBK",
+   0.894
+  ],
+  [
+   "HINDALCO",
+   0.875
+  ],
+  [
+   "GRASIM",
+   0.865
+  ],
+  [
+   "ASIANPAINT",
+   0.808
+  ]
+ ]
+}

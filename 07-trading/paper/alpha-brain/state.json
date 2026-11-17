@@ -1,14 +1,14 @@
 {
- "date": "2026-11-13",
+ "date": "2026-11-16",
  "paper_only": true,
  "rebalance_day": false,
- "run_ist": "2026-11-17 02:11",
+ "run_ist": "2026-11-18 00:53",
  "picks": {
   "GOLDBEES": 2000,
+  "INDUSINDBK": 2000,
   "SHRIRAMFIN": 2000,
-  "MON100": 2000,
-  "NESTLEIND": 2000,
-  "INDUSINDBK": 2000
+  "HINDALCO": 2000,
+  "NESTLEIND": 2000
  },
  "top10": [
   [
@@ -17,39 +17,39 @@
   ],
   [
    "GOLDBEES",
+   0.952
+  ],
+  [
+   "INDUSINDBK",
    0.942
   ],
   [
    "BAJAJ-AUTO",
-   0.933
+   0.913
   ],
   [
    "SHRIRAMFIN",
-   0.923
-  ],
-  [
-   "MON100",
-   0.923
-  ],
-  [
-   "NESTLEIND",
-   0.894
-  ],
-  [
-   "INDUSINDBK",
-   0.894
+   0.913
   ],
   [
    "HINDALCO",
-   0.875
+   0.894
   ],
   [
-   "GRASIM",
+   "NESTLEIND",
    0.865
   ],
   [
-   "ASIANPAINT",
-   0.808
+   "MON100",
+   0.846
+  ],
+  [
+   "COALINDIA",
+   0.817
+  ],
+  [
+   "BAJAJFINSV",
+   0.788
   ]
  ]
 }

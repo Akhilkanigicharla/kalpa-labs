@@ -1,28 +1,28 @@
-WORLD CHECK · 2026-11-17 · alerts only (the bot trades the tested trend rule)
-Risk flags on: 0/4 (calm)
-  [ ] Global trend: S&P 500 7,408 vs 200-day avg 7,343
-  [ ] Fear: India VIX 15.5 vs 1-year top-20% line 17.4
-  [ ] Dollar squeeze: US 10Y +0.41 pts and USD/INR -2.0% in 3 months (alert at +0.50 and +2%)
-  [ ] Oil shock: Brent +1.5% in 3 months (alert at +30%)
+WORLD CHECK · 2026-11-18 · alerts only (the bot trades the tested trend rule)
+Risk flags on: 1/4 (Global trend)
+  [!] Global trend: S&P 500 7,332 vs 200-day avg 7,344
+  [ ] Fear: India VIX 15.7 vs 1-year top-20% line 17.4
+  [ ] Dollar squeeze: US 10Y +0.45 pts and USD/INR -2.1% in 3 months (alert at +0.50 and +2%)
+  [ ] Oil shock: Brent +2.0% in 3 months (alert at +30%)
 Markets (last, 1 day, 3 months):
-  Nifty 50       25,144.30   -0.61%    +2.90%
-  India VIX          15.50   -6.74%   +32.59%
-  S&P 500         7,408.14   -2.03%    -3.69%
-  Nasdaq-100     27,185.84   -2.71%    -7.82%
-  Nikkei 225     61,142.35   +0.53%    -8.70%
-  Hang Seng      23,637.60   -1.55%    -5.89%
-  US 10Y yield        5.12%   -0.64%    +8.82%
-  Dollar index      103.56   +0.15%    +3.92%
-  USD/INR            93.91   -0.13%    -1.99%
-  Brent oil          92.40   -3.59%    +1.52%
-  US VIX             23.78  +23.21%   +59.70%
+  Nifty 50       25,291.10   +0.58%    +3.67%
+  India VIX          15.68   +1.16%   +37.30%
+  S&P 500         7,331.83   -1.14%    -4.88%
+  Nasdaq-100     26,907.13   -1.07%    -8.56%
+  Nikkei 225     59,662.02   -2.42%   -11.64%
+  Hang Seng      23,753.84   +0.49%    -6.68%
+  US 10Y yield        5.11%   -0.27%    +9.76%
+  Dollar index      103.47   -0.08%    +4.69%
+  USD/INR            93.46   -0.83%    -2.13%
+  Brent oil          93.42   +1.06%    +1.96%
+  US VIX             26.11  +13.97%   +63.09%
 Coming up (14 days): nothing on the calendar
 Latest Fed news:
   - Agencies extend comment period for proposed third-party risk management guidance
   - Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services
   - Federal Reserve announces revised tentative schedule of Federal Open Market Committee meetings in 2027
 Latest RBI news:
-  - RBI to conduct 2-day Variable Rate Reverse Repo (VRRR) auction under LAF on November 17, 2026
-  - Auction of Government of India Dated Securities
-  - Result: Conversion/Switch Auction of Government of India Securities
+  - RBI to conduct Overnight Variable Rate Reverse Repo (VRRR) auction under LAF on November 18, 2026
+  - Premature redemption under Sovereign Gold Bond (SGB) Scheme - Redemption Price for premature redemption of SGB 2020-21 Series VIII due on November 18, 2026
+  - State Government Securities - Full Auction Result
 Not investment advice.

@@ -1,9 +1,9 @@
-Kalpa b7 · Track A (NSE ETF trend) · PAPER · as of 2026-11-13
+Kalpa b7 · Track A (NSE ETF trend) · PAPER · as of 2026-11-16
 GOLDBEES target 100% of Rs 5,000 (hold )
-Idle cash interest so far: Rs 0.00 (liquid-ETF rate 4.7%/yr)
-Order: BUY 44 GOLDBEES -> filled (fee Rs 5.85)
-Bot after costs + tax: Rs 4,968.78 (-0.62%)
-Buy-and-hold GOLDBEES since 2026-11-13: Rs 4,963.86 (-0.72%) -> bot +0.10 pts
+Idle cash interest so far: Rs 0.02 (liquid-ETF rate 4.7%/yr)
+Order: no change
+Bot after costs + tax: Rs 4,887.48 (-2.25%)
+Buy-and-hold GOLDBEES since 2026-11-13: Rs 4,882.62 (-2.35%) -> bot +0.10 pts
 Closed trades: 0 (win rate, payoff and expectancy after the first sell)
-Fall from peak: 0.0% (pause at 20%) · Paper days: 1/90 · loss caps OK · kill switch off
+Fall from peak: 1.8% (pause at 20%) · Paper days: 2/90 · loss caps OK · kill switch off
 Own money only. Not advice.

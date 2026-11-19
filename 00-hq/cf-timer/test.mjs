@@ -1,6 +1,6 @@
 // node 00-hq/cf-timer/test.mjs : checks the window and dispatch logic with a fake fetch (no network).
 import assert from "node:assert/strict";
-import { run, inN8nWindow } from "./worker.js";
+import { run, inN8nWindow } from "./lib.js";
 const calls = []; const fake = async (url, opt) => { calls.push([url, opt.method]); return { status: url.includes("dispatches") ? 204 : 200 }; };
 assert.equal(inN8nWindow(new Date("2026-11-06T00:00:00Z")), true);   // 05:30 IST
 assert.equal(inN8nWindow(new Date("2026-11-06T18:55:00Z")), true);   // 00:25 IST

@@ -365,5 +365,21 @@
   "min_items": 4,
   "updated": "2026-11-14T04:45:09Z",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "id": "K117",
+  "world": "b1",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "A246 prep: WhatsApp BSP feature table (shared inbox, broadcasts, CTWA ads, SLA)",
+  "details": "For Wati, AiSensy, Interakt and Gallabox list which features they advertise: shared team inbox, broadcasts, click-to-WhatsApp ads, support SLA, Meta Tech Provider status. Every cell is UNVERIFIED unless the repo file shows it; give the vendor page URL to check. Numbered 1 to 4, one per vendor.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "context_chars": 12000,
+  "min_items": 4,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T10:50:00Z"
  }
 ]

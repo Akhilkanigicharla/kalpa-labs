@@ -1,0 +1,9 @@
+name = "kalpa-cf-runner"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+# 1 of the 5 free cron triggers (cf-timer uses 3). Between cf-timer's :20/:50 dispatches. UTC.
+[triggers]
+crons = ["5,35 * * * *"]
+[vars]
+ENABLED = "1"     # "0" = kill switch
+STALE_MIN = "90"  # only rows GitHub Actions missed for 90+ min

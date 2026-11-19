@@ -651,5 +651,36 @@
   "min_items": 4,
   "updated": "2026-11-14T04:45:09Z",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "id": "K115",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A239 goldfish review: cf-runner design",
+  "details": "You are a zero-context goldfish reviewer. Review ONLY the design in the repo file for hidden assumptions, failure modes, races with the GitHub Actions runner, Cloudflare Workers Free limits and security gaps. Numbered list, at most 8 findings, each labelled BLOCKER/MAJOR/MINOR with a concrete fix.",
+  "read": [
+   "00-hq/cf-runner/DESIGN.md"
+  ],
+  "context_chars": 12000,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T10:50:00Z"
+ },
+ {
+  "id": "K116",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "A242 prep: one engine flow per world, test cases",
+  "details": "From DESIGN section 5, write for each of the 8 flows (b1 front desk, b2 review watcher, b3 exam alerts + doubt bot, b4 review-reply drafts, b5 deal poster with #ad, b6 X-ray intake + 14-day purge, b7 paper-trade monitor + loss-cap guard, HQ brief/runner): trigger, inputs, output, 3 test cases incl. one hostile input, and which law rule applies. Numbered 1 to 8.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "context_chars": 20000,
+  "min_items": 8,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T10:50:00Z"
  }
 ]

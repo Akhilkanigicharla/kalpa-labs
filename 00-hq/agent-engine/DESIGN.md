@@ -51,6 +51,7 @@ Plus what exists: GitHub Actions for heavy batch jobs (allowed; no 24×7 loops, 
 
 ### Known risk (must tell Akhil)
 - Hugging Face free CPU Spaces are shared hardware without an uptime promise; fine for our internal flows and the first pilot customers, not for 50+ paying customers. Exit path: same Docker image moves to any host in 10 minutes. Whether HF's terms allow production SaaS on free Spaces, and keep-awake pings, is **UNVERIFIED** → A243 checks before the first pilot.
+- **A243 result (19 Nov 2026, `00-hq/audit/facts.md`):** HF now requires a paid plan (PRO) to *create* Gradio or Docker Spaces; free accounts can only create Static Spaces. So the n8n and Activepieces Spaces in this design cannot be created free any more. Terms allow commercial use but give no uptime and allow suspension without notice; keep-awake pings risk the content policy's "excessive bulk activity" rule, so no customer flow may depend on them. Host choice for the engine goes back to Akhil (C89).
 
 ## 5. Every world uses the engine
 | World | Agent / workflow |

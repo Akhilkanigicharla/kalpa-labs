@@ -686,5 +686,42 @@
   "created": "2026-11-19T10:50:00Z",
   "updated": "2026-11-19T10:48:19Z",
   "output": "00-hq/knowledge/K116.md"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T13:30:00Z",
+  "updated": "2026-11-19T13:30:00Z",
+  "output": "",
+  "id": "K118",
+  "title": "A244 prep: messages per salon per day vs free model caps",
+  "details": "For a typical Hyderabad salon using a WhatsApp front-desk bot (bookings, reminders, FAQs in 5 languages), estimate messages per day (low/typical/busy) and tokens per message. Then a table: for 1, 10 and 50 salons, daily tokens and requests. Mark every number as an estimate with its reasoning. Do not state any provider's limits; Claude will fill those from official pages.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "context_chars": 12000,
+  "min_items": 3
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T13:30:00Z",
+  "updated": "2026-11-19T13:30:00Z",
+  "output": "",
+  "id": "K119",
+  "title": "C89 prep: free always-on hosts for a Docker n8n (no card)",
+  "details": "List up to 8 hosts that might run a Docker container (n8n, 512 MB+) free with no card in Nov 2026 (e.g. Render free, Koyeb, Fly, Railway, Northflank, Back4app, Zeabur). For each: the official pricing page URL to check, claimed RAM, sleep rules, card needed? Mark everything UNVERIFIED; Claude verifies before Akhil sees it.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md",
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 15000,
+  "min_items": 5
  }
 ]

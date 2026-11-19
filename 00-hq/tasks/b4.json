@@ -151,10 +151,10 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T13:20:00Z",
-  "output": "",
+  "updated": "2026-11-19T20:42:05Z",
+  "output": "00-hq/knowledge/K124.md",
   "context_chars": 8000,
   "world": "b4",
   "owner": "Quill",

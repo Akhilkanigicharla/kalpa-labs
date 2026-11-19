@@ -379,9 +379,9 @@
   "context_chars": 12000,
   "min_items": 4,
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-19T10:50:00Z",
-  "updated": "2026-11-19T10:46:59Z",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "updated": "2026-11-19T12:14:06Z",
+  "output": "00-hq/knowledge/K117.md"
  }
 ]

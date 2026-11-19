@@ -767,10 +767,10 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-19T15:35:00Z",
-  "updated": "2026-11-19T16:46:20Z",
-  "output": "",
+  "updated": "2026-11-19T20:42:56Z",
+  "output": "00-hq/knowledge/K122.md",
   "id": "K122",
   "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
   "details": "From the note, for each of the 5 repos write: what a Hyderabad small business gets, a one-line assessment offer and a setup + monthly offer in INR marked ESTIMATE, and the licence as LICENCE: CHECK FILE (Claude reads each LICENSE file). Numbered 1 to 5.",
@@ -778,15 +778,14 @@
    "00-hq/research/videos-2026-11-14.md"
   ],
   "context_chars": 8000,
-  "min_items": 5,
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  "min_items": 5
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T13:20:00Z",
+  "updated": "2026-11-19T20:41:43Z",
   "output": "",
   "context_chars": 8000,
   "world": "hq",
@@ -797,7 +796,8 @@
   "read": [
    "00-hq/agent-engine/DESIGN.md"
   ],
-  "min_items": 12
+  "min_items": 12,
+  "vigil_notes": "FIX: incomplete, 0 of 12 required items. Write all 12, numbered 1 to 12."
  },
  {
   "priority": "P2",

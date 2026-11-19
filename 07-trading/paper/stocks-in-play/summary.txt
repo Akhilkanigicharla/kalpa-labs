@@ -1,5 +1,5 @@
-Kalpa b7 · Stocks-in-Play 5-min ORB · PAPER · 2026-11-18 · Rs 5,000
-Busiest sectors by opening volume (x normal): Auto 2.03x, Financials 1.9x, Pharma 1.79x
+Kalpa b7 · Stocks-in-Play 5-min ORB · PAPER · 2026-11-19 · Rs 5,000
+Busiest sectors by opening volume (x normal): Financials 2.52x, Auto 2.35x, Pharma 2.14x
   no breakout today
-Running: 3 trades over 4 sessions, win 0%, net -0.38% of capital
+Running: 3 trades over 5 sessions, win 0%, net -0.38% of capital
 REJECTED on Aug-Nov 2026 data (-3.7% after costs). Paper only. Not advice.

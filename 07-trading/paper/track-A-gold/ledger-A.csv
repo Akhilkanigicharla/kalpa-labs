@@ -2,3 +2,4 @@ run_at_ist,asof,track,mode,strategy,symbol,side,qty,value_pct_capital,fee_inr,td
 2026-11-16T09:15:00+05:30,2026-11-13,A,paper,hold,GOLDBEES,buy,44,98.58,5.85,0.0,filled,,1.0,4968.78,4963.86,0.1
 2026-11-17T09:15:00+05:30,2026-11-16,A,paper,hold,GOLDBEES,hold,0,0.0,0.0,0.0,no_change,,1.0,4887.48,4882.62,0.1
 2026-11-18T09:15:00+05:30,2026-11-17,A,paper,hold,GOLDBEES,hold,0,0.0,0.0,0.0,no_change,,1.0,4881.34,4876.47,0.1
+2026-11-19T09:15:00+05:30,2026-11-18,A,paper,hold,GOLDBEES,hold,0,0.0,0.0,0.0,no_change,,1.0,4790.36,4785.58,0.1

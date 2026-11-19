@@ -65,15 +65,19 @@ Plus what exists: GitHub Actions for heavy batch jobs (allowed; no 24×7 loops, 
 | b7 Trading Lab | data pulls, paper-trade monitor, daily loss-cap guard (no tips to others, SEBI) |
 | HQ | daily brief, task runner, audit, keep-alive |
 
-## 6. Beat the competitors (prices from vendor pages via jeedesigns.com, 14 Oct 2026; myoperator.com 2026)
-| | Wati | AiSensy | Interakt | **Kalpa (BotBhai Lite)** |
-|---|---|---|---|---|
-| Entry price/month | ₹2,999 | ₹1,500 | ₹2,799 (Growth) | **₹999** |
-| AI agent add-on | credits; 2,000 = ₹1,600 | ₹1,350 per 1,000 AI msgs | ₹3,000 + ₹0.50/AI msg | **included** (free open models) |
-| Markup on Meta fees | +15–30% | +26% | +11–30% | **0%** (salon pays Meta directly) |
-| Telugu / Tenglish | not listed | not listed | not listed | **yes, 5 languages** |
-| Setup | DIY | DIY | DIY | **done for you** |
-Caveats (review): prices are a third-party read of vendor pages (14 Oct), not re-fetched today (vendor pages blocked this run) → UNVERIFIED for advice; competitors include BSP status, shared inbox, broadcasts, CTWA ads and support SLAs we must match; "salon pays Meta directly" needs each salon's own Meta setup and possibly Tech Provider status for us (UNVERIFIED). Free-model capacity per salon and "no training on API data" must be proven before "AI included" is promised; PII goes only to providers whose terms say no training.
+## 6. Beat the competitors (vendor pricing pages fetched live 19 Nov 2026, India view, A246)
+| | Wati | AiSensy | Interakt | Gallabox | **Kalpa (BotBhai Lite)** |
+|---|---|---|---|---|---|
+| Entry plan | Growth ₹2,699/mo, billed quarterly | Basic ₹1,500/mo, monthly (Free Forever ₹0) | Starter ₹3,499 per quarter | Basic ₹2,999/mo quarterly (₹2,399/mo yearly) | **₹999/mo** |
+| AI agent add-on | AI credits ₹1,600/mo | ₹1,350/mo for 1,000 AI msgs | ₹3,000 (Growth/Advanced only) | ₹1,000 per 5,000 credits + ₹41,500 one-time setup | **included** (free open models) |
+| Markup on Meta fees | not stated on page | lists ₹1.09 marketing, ₹0.145 utility/auth/service per msg | not stated ("No Markup" only on Enterprise) | not stated | **0%**: salon adds its own card to its WhatsApp account (Tech Provider route) |
+| Shared team inbox | yes | yes | yes | yes | yes (BotBhai inbox) |
+| Broadcasts | yes (15K on Growth) | yes | yes (campaigns) | yes | opt-in templates only (WhatsApp policy) |
+| Click-to-WhatsApp ads | yes | yes | yes (CTWA launcher) | yes (CTWA tracking) | not yet (gap) |
+| Support SLA | basic SLA 24x5 (email) | SLA only on Enterprise | not stated | response SLA | WhatsApp reply same day, IST (to write in agreement) |
+| Telugu / Tenglish | not on pricing page | not on pricing page | not on pricing page | not on pricing page | **yes, 5 languages** |
+| Setup | DIY | DIY | DIY | DIY (paid setup engineer) | **done for you** |
+Sources (facts.md, 19 Nov): wati.io/pricing, aisensy.com/pricing, interakt.shop/pricing, gallabox.com/pricing, all fetched live from India; omnifox.io's 2026 comparison cites the same four pages. Meta route: developers.facebook.com "Become a Tech Provider" (fetched 19 Nov): Kalpa needs Meta business verification + App Review for advanced `whatsapp_business_messaging` and `whatsapp_business_management`; "Your onboarded clients must add a credit card" → the salon pays Meta itself, no BSP markup. VERIFIED as a route; Kalpa is not a Tech Provider yet (CEO queue). Gaps to close before selling against them: CTWA ads, written SLA.
 
 ## 7. Implementation (order)
 1. A240: build both Space packages + config tests (this session).

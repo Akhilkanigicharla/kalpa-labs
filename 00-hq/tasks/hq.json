@@ -761,5 +761,23 @@
   ],
   "context_chars": 8000,
   "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T15:35:00Z",
+  "updated": "2026-11-19T15:35:00Z",
+  "output": "",
+  "id": "K122",
+  "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
+  "details": "From the note, for each of the 5 repos write: what a Hyderabad small business gets, a one-line assessment offer and a setup + monthly offer in INR marked ESTIMATE, and the licence as LICENCE: CHECK FILE (Claude reads each LICENSE file). Numbered 1 to 5.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md"
+  ],
+  "context_chars": 8000,
+  "min_items": 5
  }
 ]

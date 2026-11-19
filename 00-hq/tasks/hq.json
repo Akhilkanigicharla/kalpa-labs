@@ -783,10 +783,10 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T20:41:43Z",
-  "output": "",
+  "updated": "2026-11-19T21:01:09Z",
+  "output": "00-hq/knowledge/K123.md",
   "context_chars": 8000,
   "world": "hq",
   "owner": "Quill",
@@ -796,15 +796,14 @@
   "read": [
    "00-hq/agent-engine/DESIGN.md"
   ],
-  "min_items": 12,
-  "vigil_notes": "FIX: incomplete, 0 of 12 required items. Write all 12, numbered 1 to 12."
+  "min_items": 12
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-19T20:45:00Z",
-  "updated": "2026-11-19T20:45:00Z",
+  "updated": "2026-11-19T21:02:41Z",
   "output": "",
   "context_chars": 8000,
   "owner": "Quill",
@@ -815,7 +814,8 @@
   "read": [
    "00-hq/agent-engine/DESIGN.md"
   ],
-  "min_items": 10
+  "min_items": 10,
+  "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
  },
  {
   "priority": "P2",

@@ -172,3 +172,16 @@ Test: `node 01-botbhai/botbhai/webhook-door/test.mjs` (37 checks, also in `test-
 | Security headers | done: nosniff, no-store; no HTML served (not relevant: CSP/clickjacking) |
 | 404 / 405 | done |
 | Auth to the Space | done: `Authorization: Bearer HF_TOKEN` to the private Space |
+
+## A242 engine flow: front-desk watchdog (`00-hq/agent-engine/flows/b1-frontdesk-watchdog.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Input validation | done: rows with bad ids, contacts, dates or future clocks skipped (`test_b1_frontdesk_watchdog.js`) |
+| Output escaping | done: business names HTML-escaped, bidi/control chars stripped, 60 chars max |
+| Personal data (DPDP) | done: never reads message text or bot state; phones masked to last 4; alerts only to Akhil's private chat |
+| Timeouts / retries | done: 10 s timeout, 3 tries, 5 s apart on each GET |
+| Outage handling | done: Supabase error → one warning per 6 h, no crash |
+| Spam control | done: one alert per chat per customer message per level; 10 lines max; dedupe keys pruned after 3 days |
+| Secrets | done: none in the file (test checks); key lives in the n8n credential Akhil sets |
+| Public surface | done: schedule trigger only, `active: false`, GET only, no webhook |
+| Go gate | waits A241 / C79 (engine up) and Akhil's "go" |

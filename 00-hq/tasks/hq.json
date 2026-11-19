@@ -803,18 +803,36 @@
   "priority": "P2",
   "tries": 0,
   "status": "todo",
-  "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T13:20:00Z",
+  "created": "2026-11-19T20:45:00Z",
+  "updated": "2026-11-19T20:45:00Z",
   "output": "",
   "context_chars": 8000,
-  "world": "b4",
   "owner": "Quill",
-  "id": "K124",
-  "title": "A231 prep: UI copy for Tab Lifeboat 'Recently deleted' (undo delete session)",
-  "details": "Write plain, short English UI text for: the undo toast after deleting a session, the 'Recently deleted' list title, its empty state, the 'Restore' and 'Delete forever' buttons, the confirm text for 'Delete forever', and the note that items go after 7 days. Max 60 characters each. Numbered 1 to 7.",
+  "world": "hq",
+  "id": "K125",
+  "title": "A242 next flow (b3 exam-date alerts): 10 test cases for an exam-alert message checker",
+  "details": "List 10 test cases (input + expected result) for a checker that sends Telangana/AP exam-date alerts to students who opted in: normal date change, date in the past, missing source link, two exams same day, Telugu script text, Hindi script text, Tenglish, very long exam name, a source that is not an official board site, an alert already sent. Plain JSON lines {case, input, expect}. No real people. Numbered 1 to 10.",
   "read": [
-   "04-extensions/README.md"
+   "00-hq/agent-engine/DESIGN.md"
   ],
-  "min_items": 7
+  "min_items": 10
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T20:45:00Z",
+  "updated": "2026-11-19T20:45:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K126",
+  "title": "A242 b1 watchdog: owner alert text in Telugu, Hindi, Tenglish, Hinglish",
+  "details": "Translate these 3 short owner alerts into Telugu script, Hindi script, Tenglish and Hinglish, keeping the {placeholders} exactly: 1) '{biz} · {who} · waited {mins} after the bot handed over.' 2) 'Reply in the next {left} or the WhatsApp window closes.' 3) 'WhatsApp 24 h window is closed: only an approved template can reach them now.' Output 12 lines: language | number | text.",
+  "read": [
+   "00-hq/agent-engine/flows/README.md"
+  ],
+  "min_items": 12
  }
 ]

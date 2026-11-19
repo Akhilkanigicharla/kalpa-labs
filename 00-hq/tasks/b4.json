@@ -147,5 +147,23 @@
   "owner": "Lifeboat",
   "priority": "P1",
   "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T13:20:00Z",
+  "updated": "2026-11-19T13:20:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "world": "b4",
+  "owner": "Quill",
+  "id": "K124",
+  "title": "A231 prep: UI copy for Tab Lifeboat 'Recently deleted' (undo delete session)",
+  "details": "Write plain, short English UI text for: the undo toast after deleting a session, the 'Recently deleted' list title, its empty state, the 'Restore' and 'Delete forever' buttons, the confirm text for 'Delete forever', and the note that items go after 7 days. Max 60 characters each. Numbered 1 to 7.",
+  "read": [
+   "04-extensions/README.md"
+  ],
+  "min_items": 7
  }
 ]

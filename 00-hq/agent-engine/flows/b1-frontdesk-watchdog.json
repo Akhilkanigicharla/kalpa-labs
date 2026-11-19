@@ -1,0 +1,240 @@
+{
+ "name": "b1 · BotBhai front-desk watchdog (A242)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "w1",
+   "name": "Every 15 min",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "minutes",
+       "minutesInterval": 15
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "w2",
+   "name": "Settings",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    200,
+    0
+   ],
+   "parameters": {
+    "jsCode": "// Akhil edits only these two lines after import. No keys here: the Supabase service key lives in the n8n credential.\nreturn [{ json: { supabase: 'https://YOUR-PROJECT.supabase.co', waitMin: 20 } }];"
+   }
+  },
+  {
+   "id": "w3",
+   "name": "Read handed-over chats",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    400,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/sessions?status=eq.human&select=client_id,contact,status,human_until,last_inbound_at&limit=500",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    }
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "BotBhai Supabase (read only)"
+    }
+   }
+  },
+  {
+   "id": "w4",
+   "name": "Read staff replies",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    600,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/messages?direction=eq.out&author=eq.staff&created_at=gte.{{ new Date(Date.now() - 26 * 3600e3).toISOString() }}&select=client_id,contact,created_at&limit=2000",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    }
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "BotBhai Supabase (read only)"
+    }
+   }
+  },
+  {
+   "id": "w5",
+   "name": "Read businesses",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    800,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/clients?active=eq.true&select=id,name&limit=500",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    }
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "BotBhai Supabase (read only)"
+    }
+   }
+  },
+  {
+   "id": "w6",
+   "name": "Find waiting chats",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1000,
+    0
+   ],
+   "executeOnce": true,
+   "parameters": {
+    "jsCode": "// A242 b1 front-desk watchdog: a chat was handed to a person (status=human) but nobody has answered the customer.\n// Reads only ids, timestamps and the business name. Never reads or sends customer message text; phone numbers are masked.\nconst MIN = 60000, HOUR = 60 * MIN, DAY = 24 * HOUR, now = Date.now();\nconst store = $getWorkflowStaticData('global');\nstore.seen = store.seen && typeof store.seen === 'object' ? store.seen : {};\nfor (const [k, t] of Object.entries(store.seen)) if (!(now - t < 3 * DAY)) delete store.seen[k];\nconst cfg = ($('Settings').first() || {}).json || {};\nconst waitMin = Math.min(240, Math.max(5, Number(cfg.waitMin) || 20));\nconst esc = (s) => String(s == null ? '' : s).replace(/[\\u0000-\\u001f\\u007f‎‏‪-‮⁦-⁩]/g, '')\n  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').slice(0, 60);\nconst t = (v) => { const n = Date.parse(v); return Number.isFinite(n) ? n : NaN; };\nconst rows = (name) => { try { return $(name).all().map((i) => i.json); } catch (e) { return [{ error: 'missing' }]; } };\nconst once = (key) => { if (store.seen[key]) return false; store.seen[key] = now; return true; };\nconst out = (text) => [{ json: { text } }];\n\nif (!/^https:\\/\\/[a-z0-9-]+\\.supabase\\.co$/.test(String(cfg.supabase || '')))\n  return once('cfg:' + Math.floor(now / (6 * HOUR))) ? out('⚙️ <b>Front-desk watchdog</b>: set the Supabase project URL in the Settings node.') : [];\nconst sessions = rows('Read handed-over chats'), replies = rows('Read staff replies'), clients = rows('Read businesses');\nconst broken = [sessions, replies, clients].some((r) => r.some((x) => x && x.error));\nif (broken) return once('err:' + Math.floor(now / (6 * HOUR))) ? out('⚠️ <b>Front-desk watchdog</b> could not read Supabase (key, URL or network). Will try again in 15 min; next warning in 6 h.') : [];\n\nconst names = {};\nfor (const c of clients) if (c && typeof c.id === 'string') names[c.id] = c.name;\nconst lastStaff = {};\nfor (const r of replies) {\n  if (!r || typeof r.contact !== 'string' || typeof r.client_id !== 'string') continue;\n  const k = r.client_id + '|' + r.contact, at = t(r.created_at);\n  if (at > (lastStaff[k] || 0)) lastStaff[k] = at;\n}\nconst late = [];\nfor (const s of sessions) {\n  if (!s || s.status !== 'human' || typeof s.client_id !== 'string' || typeof s.contact !== 'string') continue;\n  if (!/^[A-Za-z0-9_:-]{3,64}$/.test(s.contact)) continue;\n  const inbound = t(s.last_inbound_at), until = t(s.human_until);\n  if (!(inbound <= now)) continue;                       // no customer message yet, or a clock from the future\n  if (until < now) continue;                             // pause is over: the bot answers again\n  if ((lastStaff[s.client_id + '|' + s.contact] || 0) >= inbound) continue; // a person already replied\n  const waited = now - inbound;\n  if (waited < waitMin * MIN) continue;\n  const wa = /^\\d{8,15}$/.test(s.contact), left = DAY - waited;\n  const level = wa && left <= 0 ? 'closed' : wa && left < 2 * HOUR ? 'closing' : 'late';\n  if (!once([s.client_id, s.contact, s.last_inbound_at, level].join('|'))) continue;\n  late.push({ waited, left, level, wa, who: '••••' + s.contact.slice(-4), biz: esc(names[s.client_id] || 'a client') });\n}\nif (!late.length) return [];\nlate.sort((a, b) => b.waited - a.waited);\nconst ago = (ms) => ms < 90 * MIN ? Math.round(ms / MIN) + ' min' : (ms / HOUR).toFixed(1) + ' h';\nconst line = (x) => x.level === 'closed'\n  ? `🔴 ${x.biz} · ${x.who} · waited ${ago(x.waited)}. WhatsApp 24 h window is closed: only an approved template can reach them now.`\n  : x.level === 'closing'\n    ? `🟠 ${x.biz} · ${x.who} · waited ${ago(x.waited)}. Reply in the next ${ago(x.left)} or the WhatsApp window closes.`\n    : `🟡 ${x.biz} · ${x.who}${x.wa ? '' : ' (web chat)'} · waited ${ago(x.waited)} after the bot handed over.`;\nconst shown = late.slice(0, 10);\nconst more = late.length > shown.length ? `\\n…and ${late.length - shown.length} more in the BotBhai inbox.` : '';\nreturn out(`🛎️ <b>Front desk: ${late.length} customer${late.length > 1 ? 's' : ''} waiting for a person</b>\\n` +\n  shown.map(line).join('\\n') + more + '\\nOpen the BotBhai inbox to reply.');"
+   }
+  },
+  {
+   "id": "w7",
+   "name": "Tell Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1200,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every 15 min": {
+   "main": [
+    [
+     {
+      "node": "Settings",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Settings": {
+   "main": [
+    [
+     {
+      "node": "Read handed-over chats",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read handed-over chats": {
+   "main": [
+    [
+     {
+      "node": "Read staff replies",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read staff replies": {
+   "main": [
+    [
+     {
+      "node": "Read businesses",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read businesses": {
+   "main": [
+    [
+     {
+      "node": "Find waiting chats",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Find waiting chats": {
+   "main": [
+    [
+     {
+      "node": "Tell Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

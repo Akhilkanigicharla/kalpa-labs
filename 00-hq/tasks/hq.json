@@ -749,10 +749,10 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-19T15:00:00Z",
-  "updated": "2026-11-19T15:00:00Z",
-  "output": "",
+  "updated": "2026-11-19T16:44:40Z",
+  "output": "00-hq/knowledge/K121.md",
   "id": "K121",
   "title": "A244 follow-up: trim the salon bot prompt to fit free caps",
   "details": "Read the research note. Suggest 5 concrete ways to cut tokens per request for a 5-language WhatsApp salon bot (history window, cached business facts, short system prompt), each with an estimated saving marked ESTIMATE. Numbered 1 to 5.",
@@ -766,10 +766,10 @@
   "world": "hq",
   "priority": "P2",
   "owner": "Forge",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-19T15:35:00Z",
-  "updated": "2026-11-19T15:35:00Z",
+  "updated": "2026-11-19T16:46:20Z",
   "output": "",
   "id": "K122",
   "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
@@ -778,6 +778,7 @@
    "00-hq/research/videos-2026-11-14.md"
   ],
   "context_chars": 8000,
-  "min_items": 5
+  "min_items": 5,
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

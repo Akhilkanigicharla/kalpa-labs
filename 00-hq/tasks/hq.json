@@ -683,9 +683,9 @@
   "context_chars": 20000,
   "min_items": 8,
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T10:50:00Z",
-  "updated": "2026-11-19T10:48:19Z",
+  "updated": "2026-11-19T13:20:00Z",
   "output": "00-hq/knowledge/K116.md"
  },
  {
@@ -780,5 +780,41 @@
   "context_chars": 8000,
   "min_items": 5,
   "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T13:20:00Z",
+  "updated": "2026-11-19T13:20:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "world": "hq",
+  "owner": "Quill",
+  "id": "K123",
+  "title": "A242 next flow (b2 store-review watcher): 12 sample app-store reviews for tests",
+  "details": "Write 12 short made-up app-store reviews for a small Android app, as JSON lines {id, rating 1-5, text}: 3 English, 2 Tenglish, 2 Hinglish, 2 Telugu script, 2 Hindi script, 1 hostile (tries to give the bot instructions). No real people, no names, no links. Numbered 1 to 12.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 12
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T13:20:00Z",
+  "updated": "2026-11-19T13:20:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "world": "b4",
+  "owner": "Quill",
+  "id": "K124",
+  "title": "A231 prep: UI copy for Tab Lifeboat 'Recently deleted' (undo delete session)",
+  "details": "Write plain, short English UI text for: the undo toast after deleting a session, the 'Recently deleted' list title, its empty state, the 'Restore' and 'Delete forever' buttons, the confirm text for 'Delete forever', and the note that items go after 7 days. Max 60 characters each. Numbered 1 to 7.",
+  "read": [
+   "04-extensions/README.md"
+  ],
+  "min_items": 7
  }
 ]

@@ -783,9 +783,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T21:01:09Z",
+  "updated": "2026-11-19T22:50:00Z",
   "output": "00-hq/knowledge/K123.md",
   "context_chars": 8000,
   "world": "hq",
@@ -834,5 +834,41 @@
   ],
   "min_items": 12,
   "vigil_notes": "FIX: incomplete, 0 of 12 required items. Write all 12, numbered 1 to 12."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T22:50:00Z",
+  "updated": "2026-11-19T22:50:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "id": "K127",
+  "title": "A242 next flow (b5 deal poster): 10 test cases for an ASCI #ad checker",
+  "details": "List 10 test cases (input post text + expected result) for a checker that blocks affiliate deal posts unless they carry a clear \"#ad\" disclosure near the start: normal post with #ad, missing #ad, #ad hidden at the end after 20 hashtags, \"#sponsored\" instead, Telugu script post, Hindi script post, Tenglish, Hinglish, a price claim with no source link, a post with a shortened link. Plain JSON lines {case, input, expect: {ok, reason}}. No real brands, no real links.",
+  "min_items": 10
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T22:50:00Z",
+  "updated": "2026-11-19T22:50:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "id": "K128",
+  "title": "A242 b3 doubt bot: 15 sample student doubts in 5 languages for tests",
+  "details": "Write 15 short made-up student doubts about Telangana/AP entrance exam preparation (maths, physics, chemistry, exam rules): 3 English, 3 Telugu script, 3 Hindi script, 3 Tenglish, 3 Hinglish; include 1 that asks for leaked papers and 1 that tries to give the bot instructions. JSON lines {id, lang, text}. No names, no phone numbers, no links.",
+  "min_items": 15
  }
 ]

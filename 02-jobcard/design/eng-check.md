@@ -21,12 +21,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | Secrets Management (no keys in browser code) | PASS |  |
 | XSS sinks (innerHTML/eval with variables) | PASS | reviewed: app.mjs: every value goes through esc() |
 | Timeouts: 02-jobcard/bot/functions/jobcard.js | PASS | fetch without timeout |
-| Rate Limiting: 02-jobcard/bot/functions/jobcard.js | WARN | webhook: platform-signed, rate set by sender |
+| Rate Limiting: 02-jobcard/bot/functions/jobcard.js | PASS | webhook: platform-signed, rate set by sender |
 | Input caps: 02-jobcard/bot/functions/jobcard.js | PASS | no input length cap |
 | Timeouts: 02-jobcard/bot/functions/reminders.js | PASS | fetch without timeout |
 | Rate Limiting: 02-jobcard/bot/functions/reminders.js | PASS | scheduled job, no public caller |
 | Input caps: 02-jobcard/bot/functions/reminders.js | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 33 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 32 KB |
 
 ## All 107 items (fill: done / not relevant + why / missing + roadmap id)
 
@@ -139,3 +139,17 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: store-review watcher (`00-hq/agent-engine/flows/b2-review-watcher.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Input validation | done: only known apps, integer ratings 1–5, safe ids, text 1–5000 chars; duplicates and broken rows skipped; 200 new per run (`test_b2_review_watcher.js`) |
+| Prompt injection | done: no model call at all; instruction-like reviews flagged and their text not shown |
+| Output escaping | done: HTML-escaped, control/bidi chars stripped, 80 characters cut on whole characters |
+| Personal data (DPDP) | done: file holds app, id, rating, text only (no reviewer names); digest goes only to Akhil's private chat |
+| Timeouts / retries | done: 10 s timeout, 3 tries, 5 s apart |
+| Outage / bad file | done: missing, non-JSON, non-list or >600 KB file → one warning a day, no crash |
+| Spam control | done: one digest a day, new reviews only, 8 review lines max, seen list capped at 5000 |
+| Secrets | done: none in the file (test checks); Telegram credential set by Akhil in n8n |
+| Public surface | done: schedule trigger only, `active: false`, one GET of a public repo file, no webhook |
+| Go gate | waits A241 / C79 (engine up) and Akhil's "go" |

@@ -645,12 +645,13 @@
   ],
   "context_chars": 20000,
   "tries": 4,
-  "status": "rejected",
+  "status": "done",
   "created": "2026-11-14T04:50:00Z",
   "output": "00-hq/knowledge/K114.md",
   "min_items": 4,
-  "updated": "2026-11-14T04:45:09Z",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "updated": "2026-11-19T15:00:00Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4.",
+  "used_by": "A244: Claude fetched the official pages instead (facts 2026-11-19)"
  },
  {
   "id": "K115",
@@ -692,9 +693,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T13:30:00Z",
-  "updated": "2026-11-19T12:41:34Z",
+  "updated": "2026-11-19T15:00:00Z",
   "output": "00-hq/knowledge/K118.md",
   "id": "K118",
   "title": "A244 prep: messages per salon per day vs free model caps",
@@ -703,7 +704,8 @@
    "00-hq/agent-engine/DESIGN.md"
   ],
   "context_chars": 12000,
-  "min_items": 3
+  "min_items": 3,
+  "used_by": "A244 (volume used; 400 tokens/msg raised to ~1,500 estimate)"
  },
  {
   "world": "hq",
@@ -724,5 +726,41 @@
   "context_chars": 15000,
   "min_items": 5,
   "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T15:00:00Z",
+  "updated": "2026-11-19T15:00:00Z",
+  "output": "",
+  "id": "K120",
+  "title": "A276 prep: licence + fit of presenton, openshorts, open-seo, dify, paperless-ngx",
+  "details": "For each of the 5 repos: GitHub URL, the licence name as you believe it is (mark UNVERIFIED; Claude reads each LICENSE file), what a small Hyderabad business would pay us for (setup + monthly), one-line risk. Numbered 1 to 5. No prices of third-party services.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md"
+  ],
+  "context_chars": 12000,
+  "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-19T15:00:00Z",
+  "updated": "2026-11-19T15:00:00Z",
+  "output": "",
+  "id": "K121",
+  "title": "A244 follow-up: trim the salon bot prompt to fit free caps",
+  "details": "Read the research note. Suggest 5 concrete ways to cut tokens per request for a 5-language WhatsApp salon bot (history window, cached business facts, short system prompt), each with an estimated saving marked ESTIMATE. Numbered 1 to 5.",
+  "read": [
+   "00-hq/research/free-model-pii.md"
+  ],
+  "context_chars": 8000,
+  "min_items": 5
  }
 ]

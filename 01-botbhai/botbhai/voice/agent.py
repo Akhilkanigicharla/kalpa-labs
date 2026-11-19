@@ -98,9 +98,9 @@ async def run_call(websocket, transport_type, call_data, http, client, cfg, call
     vp = P.voice_profile(cfg)
     specs = P.tools(cfg)
     schemas = [FunctionSchema(name=t["name"], description=t["description"], properties=t["properties"], required=t["required"]) for t in specs]
-    gemini = os.getenv("VOICE_ENGINE") == "gemini_live"
+    gemini = P.voice_engine() == "gemini_live"
     if gemini:
-        # Speech-to-speech: the most natural turn-taking and interruptions. Free tier trains on data → demos only.
+        # Speech-to-speech: the most natural turn-taking. Only with GEMINI_PAID_TIER=1: the free tier trains on calls (A244).
         from pipecat.services.google.gemini_live.llm import GeminiLiveLLMService
         llm = GeminiLiveLLMService(api_key=os.getenv("GOOGLE_API_KEY"), voice_id=os.getenv("GEMINI_VOICE", "Aoede"),
                                    system_instruction=P.system_prompt(cfg), tools=ToolsSchema(standard_tools=schemas))

@@ -16,4 +16,8 @@ sp = P.system_prompt(cfg); assert "I'm Meera, Glow Studio Unisex Salon's assista
 assert P.opening(cfg, datetime(2026, 10, 12, 19, 0, tzinfo=P.IST)).startswith("Good evening! Glow Studio Unisex Salon, this is Meera")
 assert P.voice_profile(P.load_setup("realestate"))["voice"] == "rahul"
 print("  ✓ personas, human speaking rules, time-aware opening")
+assert P.voice_engine({"VOICE_ENGINE": "gemini_live"}) == "groq", "free Gemini trains on calls: never for customers"
+assert P.voice_engine({"VOICE_ENGINE": "gemini_live", "GEMINI_PAID_TIER": "1"}) == "gemini_live"
+assert P.voice_engine({}) == "groq" and P.voice_engine({"GEMINI_PAID_TIER": "1"}) == "groq"
+print("  ✓ A244: Gemini Live only on a paid key (free tier trains on prompts)")
 print("voice prompt tests passed")

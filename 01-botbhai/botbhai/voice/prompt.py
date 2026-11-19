@@ -9,6 +9,14 @@ IST = timezone(timedelta(hours=5, minutes=30))
 SETUP_DIRS = {"salon": "salon", "realestate": "realestate", "gym": "gym", "examkits": "examkits"}
 
 
+def voice_engine(env=os.environ) -> str:
+    """A244: Gemini's unpaid quota trains on prompts and lets human reviewers read them
+    (ai.google.dev/gemini-api/terms, checked 2026-11-19), so customer calls use it only on a paid key."""
+    if env.get("VOICE_ENGINE") == "gemini_live" and env.get("GEMINI_PAID_TIER") == "1":
+        return "gemini_live"
+    return "groq"
+
+
 def load_setup(setup_id: str, overrides: dict | None = None) -> dict:
     d = SETUPS_DIR / SETUP_DIRS[setup_id]
     cfg = json.loads((d / "bot.config.json").read_text())

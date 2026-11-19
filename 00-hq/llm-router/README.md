@@ -15,6 +15,8 @@ One OpenAI-compatible address (`/v1`) in front of many **official** free LLM tie
 
 Left out (reason + source in `allowed.json` → `excluded`): Hugging Face (no free credit), Cohere (evaluation keys), Cerebras (one-time $5 trial credit, card needed), NVIDIA (trial for prototyping), Google Gemini (free tier trains on content, so no customer chats), Mistral (unverified).
 
+**Customer data (A244, checked 2026-11-19):** the router is PII-safe by default: only providers that do not train on API data get a key (Groq: trust.groq.com/faq, console.groq.com/docs/your-data). OpenRouter `:free` is left out unless `ROUTER_ALLOW_TRAINING_PROVIDERS=1`, which is only for an agents-only copy that never sees customer chats. Free Gemini trains on prompts (ai.google.dev/gemini-api/terms) and is never used. Details: `00-hq/research/free-model-pii.md`.
+
 | Secret (HF Space → Settings → Variables and secrets) | What |
 |---|---|
 | `ENCRYPTION_KEY` | 64 hex characters; stores keys encrypted (required) |

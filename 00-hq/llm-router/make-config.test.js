@@ -19,6 +19,19 @@ for (const p of A.providers) {
   assert.ok(/^https:\/\//.test(p.terms) && /^\d{4}-\d{2}-\d{2}$/.test(p.checked), `${p.platform} has a terms link + date`);
   assert.ok(readme.includes(p.terms), `README links ${p.platform}'s terms page`);
 }
+// A244: PII-safe by default: only no-training providers, each with a dated official source
+const both = { GROQ_API_KEY: "gsk_x", OPENROUTER_API_KEY: "sk-or-x" };
+c = build(both);
+assert.strictEqual(c.pii_safe, true);
+assert.deepStrictEqual(c.keys.map((k) => k.platform), ["groq"], "OpenRouter free may train: no customer PII");
+assert.deepStrictEqual(build({ ...both, ROUTER_ALLOW_TRAINING_PROVIDERS: "yes" }).keys.map((k) => k.platform), ["groq"], "only exact 1 opts out");
+c = build({ ...both, ROUTER_ALLOW_TRAINING_PROVIDERS: "1" });
+assert.strictEqual(c.pii_safe, false); assert.deepStrictEqual(c.keys.map((k) => k.platform), ["groq", "openrouter"]);
+for (const p of A.providers) {
+  assert.strictEqual(typeof p.pii, "boolean", `${p.platform} has a pii verdict`);
+  assert.match(p.pii_source, /^https:\/\/.*\(checked \d{4}-\d{2}-\d{2}\)/, `${p.platform} pii verdict has a dated source`);
+}
+assert.ok(A.excluded.some((e) => e.platform === "google" && /human reviewers/.test(e.reason)), "free Gemini excluded for training");
 console.log("llm-router config tests passed");
 // CLI: rejects a short key; prints JSON (stdout) with a 64-hex key
 const { spawnSync } = require("child_process");

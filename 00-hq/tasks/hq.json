@@ -984,10 +984,10 @@
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T16:45:17Z",
-  "updated": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T16:46:40Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -998,14 +998,15 @@
    "00-hq/site/netlify/functions/chat.mjs"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K142.md"
+  "output": "00-hq/knowledge/K142.md",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  },
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T16:45:17Z",
-  "updated": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T16:48:24Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",

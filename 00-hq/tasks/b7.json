@@ -104,9 +104,9 @@
   "min_items": 10,
   "status": "todo",
   "created": "2026-11-20T11:20:00Z",
-  "updated": "2026-11-20T10:44:23Z",
+  "updated": "2026-11-20T12:07:07Z",
   "output": "00-hq/knowledge/K137.md",
-  "tries": 1,
-  "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
+  "tries": 2,
+  "vigil_notes": "FIX:\n- Reduce the list to at most 5 items (rule: lists of 5 at most).\n- Ensure all URLs and facts remain marked UNVERIFIED as they are not in the repo files."
  }
 ]

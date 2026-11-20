@@ -967,9 +967,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T12:39:36Z",
-  "updated": "2026-11-20T12:39:36Z",
+  "updated": "2026-11-20T12:40:45Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -979,6 +979,7 @@
   "read": [
    "00-hq/research/a276-repo-fit.md"
   ],
-  "min_items": 8
+  "min_items": 8,
+  "output": "00-hq/knowledge/K138.md"
  }
 ]

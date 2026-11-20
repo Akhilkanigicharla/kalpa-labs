@@ -912,9 +912,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T03:10:00Z",
-  "updated": "2026-11-20T06:41:53Z",
+  "updated": "2026-11-20T08:42:55Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -925,14 +925,14 @@
   "id": "K131",
   "title": "A242 b6 flow (X-ray intake): 10 test cases for intake checks + 14-day purge",
   "details": "List 10 test cases (input + expected) for a flow that checks uploaded document metadata (file type, size, page count, upload date) and deletes files older than 14 days: normal PDF, 0-byte file, 30 MB file, .exe renamed .pdf, file exactly 14 days old, 15 days old, future upload date, missing date, Telugu filename, filename with ../ path. Metadata only, never file contents. Plain JSON lines {case, input, expect}.",
-  "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
+  "output": "00-hq/knowledge/K131.md"
  },
  {
   "priority": "P2",
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T05:40:00Z",
-  "updated": "2026-11-20T06:43:14Z",
+  "updated": "2026-11-20T08:44:41Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -944,7 +944,7 @@
    "00-hq/research/BRIEF.md"
   ],
   "min_items": 5,
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  "output": "00-hq/knowledge/K132.md"
  },
  {
   "priority": "P2",

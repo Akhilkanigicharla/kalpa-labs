@@ -1077,9 +1077,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:49:01Z",
   "context_chars": 8000,
   "owner": "Quill",
   "id": "K149",
@@ -1095,9 +1095,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:49:51Z",
   "context_chars": 8000,
   "owner": "Quill",
   "id": "K150",

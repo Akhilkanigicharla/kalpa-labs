@@ -35,4 +35,12 @@ Checked 18 Oct 2026 (IST). Source video: AI Pathways, "MIT Researchers Built An 
 2. GitHub → Actions → "b7 TradingAgents research (manual)" → Run workflow → ticker (default `NIFTYBEES.NS`).
 3. Download the `tradingagents-…` artifact: `complete_report.html` + logs. Give the report to Quant's `bull-bear-debate` as input data.
 
-Workflow: `.github/workflows/tradingagents.yml` (pinned to commit `e8f5503e`, v0.7.0).
+Workflow: `.github/workflows/tradingagents.yml` (pinned to commit `c4544913`, v0.7.1, since 21 Nov 2026; was `e8f5503e`, v0.7.0).
+
+## Update 21 Nov 2026 (Akhil's reel, @kaamchor_ai, showing v0.7.1)
+- Pin moved v0.7.0 → **v0.7.1** (tag `c4544913`, released 27 Oct 2026, Apache-2.0, checked with `git ls-remote` + the CHANGELOG).
+- Why it matters for us:
+  - **#1488:** a model's date like `2024-7-5` could compare as later than a filing made after the run date, so SEC EDGAR served future filings. That is look-ahead bias, now fixed.
+  - **#1548:** decisions are scored only on final closes, and they settle across long market holidays (Diwali, Holi).
+- Checked here: installs clean in Python, `import tradingagents` = 0.7.1, the CLI still has `--ticker --date --analysts --save --no-show`. No workflow change was needed beyond the pin.
+- **Verdict unchanged:** a research input, never a signal; paper only; at most one run a week on free models; LLM look-ahead bias still applies (arXiv 2504.14765). The reel's "har agent = 1 kaam" idea is already our n8n Trading Desk (Pulse, Quant, Guard).

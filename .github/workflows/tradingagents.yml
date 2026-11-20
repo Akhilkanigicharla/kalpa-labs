@@ -69,10 +69,10 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install TradingAgents v0.7.0 (pinned commit)
+      - name: Install TradingAgents v0.7.1 (pinned commit; 0.7.1 fixes a look-ahead leak, #1488)
         run: |
           python -m pip install --upgrade pip
-          pip install "git+https://github.com/TauricResearch/TradingAgents@e8f5503e9b86d5c2710b0c76b1f686703968c9df"
+          pip install "git+https://github.com/TauricResearch/TradingAgents@c4544913a14ed3df5f1ed7b9e8483270ce20682a"
 
       - name: Run the research desk
         env:

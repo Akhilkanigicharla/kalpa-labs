@@ -53,113 +53,113 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Load Balancing | manual |
+| 1 | Load Balancing | not relevant: Netlify CDN + serverless functions, no own servers to balance |
 | 2 | Rate Limiting | auto: PASS |
-| 3 | Environment Variables | manual |
+| 3 | Environment Variables | done: server secrets only from process.env (SUPABASE_*, WA_*, TURNSTILE_SECRET_KEY, BILLING_ADMIN_KEY), set by Akhil in Netlify; gitleaks in CI |
 | 4 | Secrets Management | auto: PASS |
-| 5 | Authentication | manual |
-| 6 | Authorization | manual |
-| 7 | Input Validation | manual |
-| 8 | HTTP Status Codes | manual |
-| 9 | Error Handling | manual |
-| 10 | Automated Testing | manual |
-| 11 | Database Indexing | manual |
-| 12 | Database Migrations | manual |
-| 13 | Backups | manual |
-| 14 | Caching | manual |
-| 15 | CDNs | manual |
-| 16 | Logging | manual |
-| 17 | Monitoring | manual |
+| 5 | Authentication | done: owner = 36-hex dashboard key sent as `Authorization: Bearer` (leads.js, inbox.js; never in the URL, test in hardening.test.js); admin = BILLING_ADMIN_KEY compared with timingSafeEqual; customers need no login |
+| 6 | Authorization | done: every read/write is filtered by the client found from the key; admin routes need the admin key |
+| 7 | Input Validation | done: chat/webhook inputs typed and length-capped (automatic input-cap rows, hardening.test.js) |
+| 8 | HTTP Status Codes | done: 400 bad JSON/contact, 401 bad key, 404 other client's chat, 429 rate limit (webhook.test.js) |
+| 9 | Error Handling | done: try/catch in every function; customer gets a fixed reply (core/fallback.js); DB errors never carry customer text into logs (hardening.test.js) |
+| 10 | Automated Testing | done: `bash 01-botbhai/botbhai/tools/test-all.sh` (engine, functions, schema, screens) in quality.yml |
+| 11 | Database Indexing | done: indexes on leads, messages, sessions inbox, bookings slot, rate_hits, invoices, audit_log (schema.sql) |
+| 12 | Database Migrations | done: schema.sql is idempotent (applied twice in supabase/test.sh) and carries its own migrations (migrate_client_secrets) |
+| 13 | Backups | missing: no backup we control yet; nightly dump + restore drill is A310 |
+| 14 | Caching | not relevant: replies are per person and live; static files cached by the Netlify CDN |
+| 15 | CDNs | done: Netlify CDN serves every static page |
+| 16 | Logging | done: console.error with a short tag on every failure path → Netlify function log |
+| 17 | Monitoring | missing (alerts): logs exist, alerting is A312; answer quality checked by botbhai-depth-live.yml |
 | 18 | Timeouts | auto: PASS |
-| 19 | Exponential Backoff | manual |
-| 20 | Idempotency | manual |
-| 21 | Circuit Breakers | manual |
-| 22 | Reverse Proxies | manual |
-| 23 | API Gateways | manual |
-| 24 | Docker | manual |
-| 25 | CI/CD | manual |
-| 26 | Message Queues | manual |
-| 27 | HTTPS / TLS | manual |
-| 28 | Session Management | manual |
-| 29 | Two-Factor Authentication | manual |
-| 30 | SQL Injection | manual |
-| 31 | XSS (Cross-Site Scripting) | manual |
-| 32 | CSRF | manual |
-| 33 | Dependency Vulnerabilities | manual |
-| 34 | Principle of Least Privilege | manual |
-| 35 | Race Conditions | manual |
-| 36 | Connection Pooling | manual |
-| 37 | Database Normalization | manual |
-| 38 | Soft Deletes | manual |
-| 39 | Data Validation on the Server | manual |
-| 40 | File Upload Security | manual |
-| 41 | Webhooks | manual |
-| 42 | Background Jobs | manual |
-| 43 | Cron Jobs | manual |
-| 44 | Cache Invalidation | manual |
-| 45 | Read Replicas | manual |
-| 46 | Horizontal vs Vertical Scaling | manual |
-| 47 | Stateless Services | manual |
-| 48 | Health Checks | manual |
-| 49 | Graceful Shutdown | manual |
-| 50 | Alerting | manual |
-| 51 | Distributed Tracing | manual |
-| 52 | Structured Logging | manual |
-| 53 | Error Tracking | manual |
-| 54 | Uptime Monitoring | manual |
-| 55 | Feature Flags | manual |
-| 56 | Staging Environments | manual |
-| 57 | Infrastructure as Code | manual |
-| 58 | Code Review | manual |
-| 59 | Branching Strategies | manual |
-| 60 | Semantic Versioning | manual |
-| 61 | API Versioning | manual |
-| 62 | API Documentation | manual |
-| 63 | Unit vs Integration vs End-to-End Tests | manual |
-| 64 | Load Testing | manual |
-| 65 | Debugging | manual |
-| 66 | Profiling | manual |
-| 67 | Time Zones | manual |
-| 68 | Character Encoding | manual |
-| 69 | Concurrency | manual |
-| 70 | Async / Await | manual |
-| 71 | Memory Leaks | manual |
-| 72 | Cost Monitoring | manual |
-| 73 | Disaster Recovery | manual |
-| 74 | Data Privacy (GDPR) | manual |
-| 75 | Accessibility | manual |
-| 76 | Mobile Responsiveness | manual |
+| 19 | Exponential Backoff | not relevant: Meta retries webhooks itself and the processed table dedupes; DB calls have 10 s timeouts and fail to the fixed reply |
+| 20 | Idempotency | done: processed(wamid) handles each WhatsApp message once (_lib.js); invoice number + row in one transaction |
+| 21 | Circuit Breakers | done: AI model chain skips a failed model and ends in a fixed reply (core/fallback.js, models.json) |
+| 22 | Reverse Proxies | not relevant: Netlify's edge is the reverse proxy |
+| 23 | API Gateways | not relevant: a few functions behind Netlify; each checks its own key/signature and rate |
+| 24 | Docker | not relevant: serverless functions, no containers |
+| 25 | CI/CD | done: `.github/workflows/quality.yml` runs gitleaks, actionlint and this world's tests on every push; deploys only after Akhil's go (rule 9) |
+| 26 | Message Queues | not relevant: small volumes; scheduled functions do the background work |
+| 27 | HTTPS / TLS | done: Netlify HTTPS + HSTS header (automatic rows) |
+| 28 | Session Management | done: no server sessions; the owner key stays on that phone (inbox page wipes it from the address bar); rotate_dashboard_token() ends a leaked link (A221) |
+| 29 | Two-Factor Authentication | not relevant: no passwords; owner access is a revocable secret link |
+| 30 | SQL Injection | done: no SQL strings in functions; PostgREST values URL-encoded (L.enc); SQL functions take parameters |
+| 31 | XSS (Cross-Site Scripting) | done: automatic XSS rows PASS + strict CSP on owner pages (A220) |
+| 32 | CSRF | not relevant: no cookies; private APIs need a Bearer header and send no CORS header to other sites |
+| 33 | Dependency Vulnerabilities | missing: no dependency audit step yet, A311 |
+| 34 | Principle of Least Privilege | done: anon/authenticated get nothing (RLS on, no policies, execute revoked); Meta tokens readable only through client_token() by service_role |
+| 35 | Race Conditions | done: book_slot() books in one locked statement; invoice numbers via counter upsert (40 parallel invoices test in supabase/test.sh) |
+| 36 | Connection Pooling | not relevant: functions talk to Supabase over HTTP (PostgREST pools the connections) |
+| 37 | Database Normalization | done: clients, sessions, leads, messages, bookings, invoices in their own tables keyed by client_id |
+| 38 | Soft Deletes | done: a client is switched off (active=false), invoices are voided never deleted (on delete restrict); every delete/switch-off lands in audit_log (A221) |
+| 39 | Data Validation on the Server | done: DB checks (niche list, invoice number pattern, total > 0, unique numbers) on top of function checks |
+| 40 | File Upload Security | not relevant: customers send no files to our storage |
+| 41 | Webhooks | done: Meta webhooks checked with x-hub-signature-256 + timingSafeEqual, verify token on subscribe, deduped (webhook.test.js) |
+| 42 | Background Jobs | done: scheduled Netlify functions (netlify.toml) |
+| 43 | Cron Jobs | done: schedules in netlify.toml, times in UTC with the IST time noted |
+| 44 | Cache Invalidation | not relevant: no server cache; static files change with each deploy |
+| 45 | Read Replicas | not relevant: one small Supabase database |
+| 46 | Horizontal vs Vertical Scaling | not relevant: serverless, scales per request |
+| 47 | Stateless Services | done: functions keep no state between calls; state lives in Supabase tables |
+| 48 | Health Checks | missing: post-deploy smoke of the live URL is A227 |
+| 49 | Graceful Shutdown | not relevant: serverless; the platform ends each call |
+| 50 | Alerting | missing: function errors only reach the Netlify log; Telegram alert to Akhil is A312 |
+| 51 | Distributed Tracing | not relevant: one hop (function → Supabase / Meta) |
+| 52 | Structured Logging | not relevant at this size: one tagged console.error line per failure |
+| 53 | Error Tracking | missing: same as 50, A312 |
+| 54 | Uptime Monitoring | missing: live uptime check is A227 |
+| 55 | Feature Flags | done: per-client config switches (ads_autopilot, inbox_hold_hours) and BOTBHAI_DEMO |
+| 56 | Staging Environments | done: Netlify deploy previews + tests on fakes; nothing live without Akhil's go (rule 9) |
+| 57 | Infrastructure as Code | done: netlify.toml (headers, schedules) and the SQL schema are in git |
+| 58 | Code Review | done: egm-review / ponytail-review before ticks (CLAUDE.md) + CI |
+| 59 | Branching Strategies | done: small commits to main, CI on every push (two-lane rules in 00-hq/TEAM.md) |
+| 60 | Semantic Versioning | not relevant: no published package or outside API users |
+| 61 | API Versioning | not relevant: our own pages are the only callers |
+| 62 | API Documentation | done: each function file starts with its API contract (leads.js, inbox.js, billing.js) |
+| 63 | Unit vs Integration vs End-to-End Tests | done: unit (engine, slots), function tests on fakes (webhook/hardening), schema tests on Postgres, 390 px screens |
+| 64 | Load Testing | missing: load test on a preview deploy is A313 |
+| 65 | Debugging | done: fakes reproduce Meta and Supabase replies; systematic-debugging skill on failures |
+| 66 | Profiling | not relevant: small short-lived functions, nothing measured slow |
+| 67 | Time Zones | done: bookings and invoice dates in IST (Asia/Kolkata defaults in schema.sql) |
+| 68 | Character Encoding | done: UTF-8 end to end; 5 languages incl. Telugu and Hindi script tested (lang.test.js, chat-lang.test.js) |
+| 69 | Concurrency | done: same as 35 (locked slot booking, single-statement counters) |
+| 70 | Async / Await | done: async/await throughout; fire-and-forget calls end in .catch |
+| 71 | Memory Leaks | not relevant: short-lived functions |
+| 72 | Cost Monitoring | done: free tiers only; Netlify deploys counted by 00-hq/tools/deploy_budget.py |
+| 73 | Disaster Recovery | missing: restore drill is part of A310 |
+| 74 | Data Privacy (GDPR) | done: marketing only with marketing_opt_in (DPDP + WhatsApp policy); Meta tokens in Vault; 180-day message retention is a manual monthly SQL (schema.sql note) |
+| 75 | Accessibility | done: 390 px light/dark tap tests + design/ux-check.md |
+| 76 | Mobile Responsiveness | done: 390 px tap sweep before ticks (rule 5) |
 | 77 | Performance Budgets | auto: PASS |
-| 78 | Technical Debt | manual |
-| 79 | Reading Documentation | manual |
-| 80 | Reading Error Messages | manual |
+| 78 | Technical Debt | done: open gaps are roadmap items (this table points to them) |
+| 79 | Reading Documentation | done: rule 8: provider page + second source before advice |
+| 80 | Reading Error Messages | done: errors carry a short tag; tests assert on messages |
 | 81 | Content Security Policy | auto: PASS |
 | 82 | Security Headers | auto: PASS |
 | 83 | Clickjacking | auto: PASS |
-| 84 | SSRF | manual |
-| 85 | Open Redirects | manual |
-| 86 | Path Traversal | manual |
-| 87 | Command Injection | manual |
-| 88 | Mass Assignment | manual |
-| 89 | IDOR | manual |
-| 90 | Brute Force Protection | manual |
-| 91 | Account Lockout | manual |
-| 92 | Password Reset Flows | manual |
-| 93 | Magic Links | manual |
-| 94 | Passkeys | manual |
-| 95 | Single Sign-On (SSO) | manual |
-| 96 | Role-Based Access Control | manual |
-| 97 | Row-Level Security | manual |
-| 98 | API Keys | manual |
-| 99 | Token Expiration and Refresh | manual |
-| 100 | Cookie Flags (HttpOnly, Secure, SameSite) | manual |
-| 101 | Secret Rotation | manual |
-| 102 | Audit Logs | manual |
-| 103 | Encryption at Rest | manual |
+| 84 | SSRF | not relevant: the server fetches only fixed hosts (Supabase, graph.facebook.com, Meta's media URL from the Graph reply); never a user-typed URL |
+| 85 | Open Redirects | not relevant: no endpoint redirects to a URL from the request |
+| 86 | Path Traversal | not relevant: no file paths taken from input |
+| 87 | Command Injection | not relevant: no shell commands run |
+| 88 | Mass Assignment | done: functions build each DB row field by field; no request body is spread into a row |
+| 89 | IDOR | done: inbox/leads read only the key's client_id; another salon's key gets 404 for this chat (webhook.test.js, A221) |
+| 90 | Brute Force Protection | done: rate_hit() per IP on inbox, leads, billing and chat; Cloudflare Turnstile on website bookings |
+| 91 | Account Lockout | not relevant: no passwords; a 144-bit key can't be guessed and guesses are rate-limited |
+| 92 | Password Reset Flows | not relevant: no passwords; a lost or leaked link is replaced with rotate_dashboard_token() |
+| 93 | Magic Links | not relevant: no email logins |
+| 94 | Passkeys | not relevant: no passwords to replace |
+| 95 | Single Sign-On (SSO) | not relevant: single-owner small-business accounts |
+| 96 | Role-Based Access Control | done: two roles: salon owner (dashboard key) and Akhil (BILLING_ADMIN_KEY); customers are anonymous |
+| 97 | Row-Level Security | done: RLS on every table with no policies, so the public key reads nothing (schema.sql) |
+| 98 | API Keys | done: one dashboard key per client, one admin key, Meta tokens per client in Vault |
+| 99 | Token Expiration and Refresh | done: keys don't expire by time (owners would lose the inbox); they rotate on demand with rotate_dashboard_token() (A221) |
+| 100 | Cookie Flags (HttpOnly, Secure, SameSite) | not relevant: no cookies |
+| 101 | Secret Rotation | done: rotate_dashboard_token() (A221, tested); Meta tokens replaced with set_client_token in the SQL editor; Netlify env keys replaced by Akhil |
+| 102 | Audit Logs | done: append-only audit_log for client create/delete, key rotation, on/off, number changes and invoice changes; never stores a token (A221, supabase/test.sql) |
+| 103 | Encryption at Rest | done: Meta tokens in Supabase Vault (encrypted); Supabase disk encryption not checked today (unverified) |
 | 104 | Encryption in Transit | auto: PASS |
-| 105 | Hashing vs Encryption | manual |
-| 106 | Salting | manual |
-| 107 | Penetration Testing | manual |
+| 105 | Hashing vs Encryption | done: tokens Vault-encrypted (must be sent to Meta, so not hashed); keys compared with timingSafeEqual |
+| 106 | Salting | not relevant: no passwords stored by us |
+| 107 | Penetration Testing | missing: OWASP ZAP baseline scan on a preview deploy is A313 |
 | 108 | Multiple Servers / Redundancy | partly: web + functions on Netlify CDN/serverless; Supabase free tier is one region with no replica (paid only); covered by backups (check 13); voice agent is one process |
 | 109 | Auto Scaling | platform: Netlify functions scale per request; Supabase free has a fixed size |
 | 110 | Sharding | not relevant at this size: one shared schema keyed by client_id; revisit above ~10 lakh rows |

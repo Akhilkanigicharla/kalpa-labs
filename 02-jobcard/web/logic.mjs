@@ -56,7 +56,11 @@ export function createApi({ url, anonKey, fetchFn = fetch, store, now = () => Da
     signedIn: () => !!session,
     sendOtp: (phone10) => auth("otp", { phone: `+91${phone10}` }),
     verifyOtp: async (phone10, code) => keep(await auth("verify", { type: "sms", phone: `+91${phone10}`, token: String(code).trim() })),
-    signOut: () => { session = null; write(null); },
+    // Sign out also ends the session on the server (refresh token revoked), so a copied token stops working (check 99).
+    signOut: () => {
+      const t = session && session.access; session = null; write(null);
+      if (t) Promise.resolve().then(() => fetchFn(`${url}/auth/v1/logout`, { method: "POST", headers: { apikey: anonKey, Authorization: `Bearer ${t}` } })).catch(() => {});
+    },
     rest,
     async load(today) {
       const since = addDays(today, -400);

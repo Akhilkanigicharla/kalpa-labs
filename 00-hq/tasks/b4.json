@@ -239,5 +239,23 @@
   "min_items": 5,
   "output": "00-hq/knowledge/K141.md",
   "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:48:06Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "b4",
+  "id": "K148",
+  "title": "A217 retry: 5 Chrome extensions with many users and many 'stopped working' reviews",
+  "details": "Public pages only (Chrome Web Store listing pages, the developer's site, news articles). List 5 extensions that either Google disabled for Manifest V2 or that have 100k+ users and many recent 1-star 'does not work' reviews. Per extension, one numbered item with: name, users (from the store page), rating, last updated date, is there a working replacement today (name it), top 3 one-star complaints in your own words (no reviewer names), one way to charge, and two source URLs. UNVERIFIED for anything without a URL. Write all 5 items.",
+  "read": [
+   "04-extensions/research/extension-2-review-mining.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K148.md"
  }
 ]

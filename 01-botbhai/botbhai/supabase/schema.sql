@@ -236,6 +236,65 @@ begin
 end $$;
 revoke execute on function create_invoice from public, anon, authenticated;
 
+-- Audit log (Kalpa checks 101/102, A221): append-only record of who changed a client's keys, numbers, on/off state and
+-- every invoice change. Never holds a token itself. Only the SQL editor (postgres) and service_role can read it.
+create table if not exists audit_log (
+  id        bigserial primary key,
+  at        timestamptz not null default now(),
+  client_id uuid,                                  -- kept after a client is deleted (no foreign key on purpose)
+  action    text not null check (length(action) <= 40),
+  detail    jsonb not null default '{}'::jsonb,
+  by_role   text not null default current_user
+);
+create index if not exists audit_log_client_at on audit_log (client_id, at desc);
+create or replace function audit_append_only() returns trigger language plpgsql set search_path = public, pg_temp as $$
+begin raise exception 'audit_log is append-only' using errcode = 'insufficient_privilege'; end $$;
+drop trigger if exists audit_log_no_change on audit_log;
+create trigger audit_log_no_change before update or delete on audit_log for each row execute function audit_append_only();
+create or replace function audit_clients() returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+begin
+  if tg_op = 'DELETE' then
+    insert into audit_log (client_id, action, detail) values (old.id, 'client_deleted', jsonb_build_object('name', old.name));
+    return old;
+  end if;
+  if tg_op = 'INSERT' then
+    insert into audit_log (client_id, action) values (new.id, 'client_created');
+  else
+    if new.dashboard_token is distinct from old.dashboard_token then insert into audit_log (client_id, action) values (new.id, 'dashboard_key_rotated'); end if;
+    if new.active is distinct from old.active then insert into audit_log (client_id, action, detail) values (new.id, 'active_changed', jsonb_build_object('active', new.active)); end if;
+    if new.owner_whatsapp is distinct from old.owner_whatsapp or new.phone_number_id is distinct from old.phone_number_id then
+      insert into audit_log (client_id, action) values (new.id, 'numbers_changed');
+    end if;
+  end if;
+  return new;
+end $$;
+drop trigger if exists clients_audit on clients;
+create trigger clients_audit after insert or update or delete on clients for each row execute function audit_clients();
+create or replace function audit_invoices() returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into audit_log (client_id, action, detail) values (new.client_id, 'invoice_created', jsonb_build_object('number', new.number, 'total_paise', new.total_paise));
+  elsif new.status is distinct from old.status or new.total_paise is distinct from old.total_paise then
+    insert into audit_log (client_id, action, detail) values (new.client_id, 'invoice_' || new.status,
+      jsonb_build_object('number', new.number, 'from', old.status, 'total_paise', new.total_paise));
+  end if;
+  return new;
+end $$;
+drop trigger if exists invoices_audit on invoices;
+create trigger invoices_audit after insert or update on invoices for each row execute function audit_invoices();
+-- Secret rotation (check 101): a leaked dashboard/inbox link stops working at once. Run in the SQL editor:
+--   select rotate_dashboard_token('<client id>');   → new key; send the owner the new link.
+create or replace function rotate_dashboard_token(p_client uuid) returns text language plpgsql security definer set search_path = public, pg_temp as $$
+declare v text := encode(gen_random_bytes(18), 'hex');
+begin
+  update clients set dashboard_token = v where id = p_client;
+  if not found then raise exception 'no such client'; end if;
+  return v;
+end $$;
+revoke execute on function rotate_dashboard_token(uuid) from public, anon, authenticated;
+revoke execute on function audit_clients() from public, anon, authenticated;
+revoke execute on function audit_invoices() from public, anon, authenticated;
+
 -- Lock everything down: no public access. The anon key can read nothing.
 alter table clients  enable row level security;
 alter table sessions enable row level security;
@@ -249,6 +308,8 @@ alter table processed enable row level security;
 alter table rate_hits enable row level security;
 alter table invoice_counters enable row level security;
 alter table invoices enable row level security;
+alter table audit_log enable row level security;
+revoke all on audit_log from anon, authenticated;
 -- housekeeping (daily): delete from rate_hits where at < now() - interval '1 day';
 -- housekeeping (monthly): delete from processed where at < now() - interval '30 days';
 

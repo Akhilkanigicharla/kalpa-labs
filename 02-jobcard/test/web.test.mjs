@@ -34,6 +34,11 @@ test("phone OTP sign-in, token refresh, RLS reads with the user's token, sign-ou
   clock += 3_600_000; await api.rest("customers?select=id");
   assert.ok(calls.some((c) => c.url.includes("refresh_token"))); assert.equal(calls.at(-1).init.headers.Authorization, "Bearer A2");
   status = 401; await assert.rejects(api.rest("customers"), (e) => e.signedOut === true); assert.equal(api.signedIn(), false);
+  // sign-out revokes the session on the server too; offline sign-out still signs out locally
+  await api.verifyOtp("9000022222", "123456"); const n = calls.length; api.signOut(); await new Promise((r) => setTimeout(r, 0));
+  assert.equal(api.signedIn(), false); assert.ok(calls.slice(n).some((c) => c.url.endsWith("/auth/v1/logout") && c.init.headers.Authorization === "Bearer A1"));
+  const offline = createApi({ url: "https://p.supabase.co", anonKey: "anon", store, fetchFn: async (u) => { if (u.endsWith("/logout")) throw new Error("offline"); return fetchFn(u, arguments[1]); } });
+  offline.signOut(); assert.equal(offline.signedIn(), false);
 });
 
 test("tabs: due list with wa.me reminders, opt-in respected, AMC, customers, bills", () => {

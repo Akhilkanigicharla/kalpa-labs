@@ -72,6 +72,13 @@ const inbound = (msg, from = "919812345678") => {
   const toCustomer = () => sent.list.filter((m) => m.to === C).length;
 
   assert.strictEqual((await api("GET", null, {}, "b".repeat(36))).statusCode, 401); console.log("  ✓ inbox rejects a wrong token");
+  // A221 IDOR: another salon's valid key can't list, open or act on this salon's chat
+  store.clients.push({ id: "c9", name: "Other Salon", niche: "salon", dashboard_token: "d".repeat(36), active: true, config: {} });
+  const other = await api("GET", null, {}, "d".repeat(36));
+  assert.strictEqual(other.statusCode, 200); assert.ok(!other.data.conversations.some((c) => c.contact === C), "other salon sees this chat");
+  assert.strictEqual((await api("GET", null, { contact: C }, "d".repeat(36))).statusCode, 404);
+  assert.strictEqual((await api("POST", { contact: C, action: "pause" }, null, "d".repeat(36))).statusCode, 404);
+  store.clients.pop(); console.log("  ✓ inbox: another salon's key gets 404 for this chat (IDOR)");
   assert.strictEqual(sess(C).status, "bot"); assert.ok(sess(C).last_inbound_at); console.log("  ✓ session row carries status=bot and last_inbound_at");
   assert.ok(store.messages.some((m) => m.direction === "in" && m.author === "customer") && store.messages.some((m) => m.direction === "out" && m.author === "bot")); console.log("  ✓ messages logged with author customer/bot");
 

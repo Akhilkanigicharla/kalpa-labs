@@ -90,5 +90,33 @@ begin
   -- deleting a client deletes its secrets
   delete from clients where id = c2;
   if exists (select 1 from vault.secrets where name like 'client:' || c2 || ':%') then raise exception 'orphan secrets after client delete'; end if;
+
+  -- A221: audit log + key rotation. Old key stops, the log never holds a token, the log can't be edited.
+  declare c3 uuid; k_old text; k_new text; ok2 boolean;
+  begin
+    insert into clients (name, niche) values ('Audit Salon', 'salon') returning id, dashboard_token into c3, k_old;
+    k_new := rotate_dashboard_token(c3);
+    if k_new = k_old or length(k_new) <> 36 then raise exception 'rotation gave %', k_new; end if;
+    if exists (select 1 from clients where dashboard_token = k_old) then raise exception 'old key still works'; end if;
+    update clients set active = false where id = c3;
+    if (select count(*) from audit_log where client_id = c3 and action in ('client_created','dashboard_key_rotated','active_changed')) <> 3 then
+      raise exception 'audit rows: %', (select string_agg(action, ',') from audit_log where client_id = c3); end if;
+    if exists (select 1 from audit_log where detail::text like '%' || k_old || '%' or detail::text like '%' || k_new || '%') then raise exception 'token in audit log'; end if;
+    if not exists (select 1 from audit_log where action = 'invoice_created' and detail->>'number' = 'KL/26-27/001') then raise exception 'invoice not audited'; end if;
+    ok2 := false; begin delete from audit_log where client_id = c3; exception when insufficient_privilege then ok2 := true; end;
+    if not ok2 then raise exception 'audit log deletable'; end if;
+    ok2 := false; begin perform rotate_dashboard_token(gen_random_uuid()); exception when others then ok2 := true; end;
+    if not ok2 then raise exception 'rotated a missing client'; end if;
+    delete from clients where id = c3;
+    if not exists (select 1 from audit_log where client_id = c3 and action = 'client_deleted') then raise exception 'delete not audited'; end if;
+    set local role anon; ok2 := false;
+    begin perform 1 from audit_log; exception when insufficient_privilege then ok2 := true; end;
+    reset role;
+    if not ok2 then raise exception 'anon can read the audit log'; end if;
+    ok2 := false; set local role authenticated;
+    begin perform rotate_dashboard_token(c); exception when insufficient_privilege then ok2 := true; end;
+    reset role;
+    if not ok2 then raise exception 'app role can rotate keys'; end if;
+  end;
 end $$;
 select 'schema checks passed';

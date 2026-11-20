@@ -1004,9 +1004,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T16:45:17Z",
-  "updated": "2026-11-20T16:48:24Z",
+  "updated": "2026-11-20T22:48:06Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -1017,7 +1017,8 @@
    "01-botbhai/design/eng-check.md"
   ],
   "min_items": 8,
-  "output": "00-hq/knowledge/K143.md"
+  "output": "00-hq/knowledge/K143.md",
+  "used_in": "A221 (rows 13, 89, 97 checked against the repo; generic, no repo-specific facts used)"
  },
  {
   "priority": "P2",
@@ -1072,5 +1073,41 @@
   ],
   "min_items": 5,
   "output": "00-hq/knowledge/K147.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:48:06Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "id": "K149",
+  "world": "hq",
+  "title": "A310 prep: Supabase free plan backups and pg_dump from GitHub Actions",
+  "details": "From Supabase's own docs pages only: (1) does the Free plan include automatic backups, how many days, can a free user download them; (2) the documented way to take a logical dump (supabase db dump or pg_dump) with which connection string (direct vs pooler, IPv4/IPv6 note); (3) how to restore into a plain Postgres 16. Give the docs URL for each fact; mark anything not on a supabase.com page UNVERIFIED. 5 numbered items.",
+  "read": [
+   "01-botbhai/botbhai/supabase/test.sh"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K149.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:48:06Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "id": "K150",
+  "world": "hq",
+  "title": "A311 prep: npm audit vs osv-scanner for CI",
+  "details": "Compare `npm audit --omit=dev` and Google's osv-scanner for a GitHub Actions step on folders with package-lock.json: licence of the tool, install line, exit codes for high/critical, how to ignore one advisory with a reason, needs network or not. Official docs URL per fact; UNVERIFIED otherwise. 5 numbered items.",
+  "read": [
+   ".github/workflows/quality.yml"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K150.md"
  }
 ]

@@ -242,10 +242,10 @@
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:49:08Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "b4",
@@ -256,6 +256,7 @@
    "04-extensions/research/extension-2-review-mining.md"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K148.md"
+  "output": "00-hq/knowledge/K148.md",
+  "vigil_notes": "FIX:\n*   **Rule Violation (Ad Blocking):** Item 1 (uBlock Origin) violates the rule against ad blocking due to Manifest V3 limits; remove it.\n*   **Rule Violation (Third-Party Login):** Item 5 (Save to Pocket) requires another company's login, which is explicitly ruled out in the repo files; remove it.\n*   **Invented Facts:** The specific \"Top 3 one-star complaints\" for all 5 items are not present in the provided repo files and are not marked UNVERIFIED; they must be marked UNVERIFIED or removed.\n*   **Invented Facts:** The \"Working replacement today\" claims (e.g., \"uBlock Origin Lite\", \"Tab Lifeboat\" as a direct replacement) are not verified in the repo files; mark as UNVERIFIED.\n*   **Invented Facts:** The specific \"Last updated date\" and \"Rating\" figures are not in the repo files; ensure they are marked UNVERIFIED (they are, but the complaints are the main issue)."
  }
 ]

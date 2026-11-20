@@ -40,6 +40,10 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python -m src.tournament --paper paper/tournament --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: MSNR setups from Akhil's playlist (20 Nov; only setups that PASS research, same KILL switch)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: python -m src.msnr --paper paper/msnr --flags paper/track-A/flags --out reports | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Quant Brain intraday master over 25 agents (A280; paper only, replays today after the close)
         working-directory: 07-trading
         continue-on-error: true

@@ -1,0 +1,11 @@
+MSNR paper bot 2026-11-20 (started 2026-11-20; setups: fresh_v, qm)
+closed trades 0, total R +0.00, P&L Rs +0.00; open 0
+limit orders waiting: fresh_v 139, qm 26
+  JUNIORBEES qm: buy at 738.48, stop 701.76 (zone from 2026-11-04)
+  JUNIORBEES qm: buy at 743.18, stop 701.76 (zone from 2026-11-04)
+  NIFTYBEES qm: buy at 262.63, stop 252.91 (zone from 2026-11-05)
+  BANKBEES qm: buy at 587.67, stop 555.0 (zone from 2026-11-06)
+  BANKBEES qm: buy at 586.72, stop 555.0 (zone from 2026-11-06)
+  BANKBEES qm: buy at 587.54, stop 555.0 (zone from 2026-11-06)
+  BANKBEES qm: buy at 594.87, stop 555.0 (zone from 2026-11-06)
+  JUNIORBEES qm: buy at 762.71, stop 701.77 (zone from 2026-11-09)

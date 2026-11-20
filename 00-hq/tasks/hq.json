@@ -948,10 +948,10 @@
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T05:40:00Z",
-  "updated": "2026-11-20T05:40:00Z",
+  "updated": "2026-11-20T10:36:57Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -961,6 +961,7 @@
   "read": [
    "00-hq/design/ENGINEERING-CHECKS.md"
   ],
-  "min_items": 8
+  "min_items": 8,
+  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

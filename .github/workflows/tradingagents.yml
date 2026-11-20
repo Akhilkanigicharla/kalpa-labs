@@ -1,8 +1,9 @@
 # b7 Trading Lab: TradingAgents research desk (paper research only, never trades).
-# Source: TauricResearch/TradingAgents (Apache-2.0), pinned to the v0.7.0 merge commit.
+# Source: TauricResearch/TradingAgents (Apache-2.0), pinned to the v0.7.1 release commit.
 # See 07-trading/research/tradingagents.md for the vetting notes and rules.
-# Needs ONE repo secret that Akhil sets himself: OPENROUTER_API_KEY (Settings → Secrets → Actions).
-# Free OpenRouter models allow ~50 requests/day; one run uses many of them, so run at most once a week.
+# Needs the free key of the chosen provider as a repo secret that Akhil sets himself (Settings → Secrets → Actions):
+#   google → GEMINI_API_KEY (default since 21 Nov 2026), openrouter → OPENROUTER_API_KEY.
+# OpenRouter free = ~50 requests/day shared with the n8n agents (it ran out on 21 Nov), so Gemini is the default.
 name: b7 TradingAgents research (manual)
 
 on:
@@ -20,6 +21,12 @@ on:
         description: "market,news,fundamentals,sentiment (fewer = fewer model calls)"
         required: false
         default: "market,news,fundamentals"
+      provider:
+        description: "Free model provider: google (Gemini key) or openrouter"
+        required: false
+        default: "google"
+        type: choice
+        options: [google, openrouter]
 
 permissions:
   contents: read
@@ -33,9 +40,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
-      TRADINGAGENTS_LLM_PROVIDER: openrouter
-      TRADINGAGENTS_QUICK_THINK_LLM: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
-      TRADINGAGENTS_DEEP_THINK_LLM: nvidia/nemotron-3-super-120b-a12b:free
+      TRADINGAGENTS_LLM_PROVIDER: ${{ inputs.provider || 'google' }}
+      # google: Flash-Lite for the analysts/debaters (most calls), 2.5 Flash for the managers (free tier; 3.5 Flash is
+      # blocked on free keys per the Gemini forum, 21 Nov 2026). openrouter: the free Nemotron pair used before.
+      TRADINGAGENTS_QUICK_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.5-flash-lite' || 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free' }}
+      TRADINGAGENTS_DEEP_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-2.5-flash' || 'nvidia/nemotron-3-super-120b-a12b:free' }}
       TRADINGAGENTS_OUTPUT_LANGUAGE: English
       TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
       TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
@@ -50,9 +59,11 @@ jobs:
       - name: Check the secret is set
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          if [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "::error::Add the OPENROUTER_API_KEY repo secret first (Settings → Secrets and variables → Actions)."
+          if [ "$TRADINGAGENTS_LLM_PROVIDER" = google ]; then need=GEMINI_API_KEY; have="$GOOGLE_API_KEY"; else need=OPENROUTER_API_KEY; have="$OPENROUTER_API_KEY"; fi
+          if [ -z "$have" ]; then
+            echo "::error::Add the $need repo secret first (Settings → Secrets and variables → Actions)."
             exit 1
           fi
 
@@ -77,10 +88,12 @@ jobs:
       - name: Run the research desk
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TICKER: ${{ inputs.ticker }}
           ANALYSTS: ${{ inputs.analysts }}
           RUN_DATE: ${{ inputs.date }}
         run: |
+          set -o pipefail   # without this, tee hid a failed run as "success" (21 Nov 2026)
           mkdir -p ta-out
           D="${RUN_DATE:-$(TZ=Asia/Kolkata date +%F)}"
           tradingagents --ticker "$TICKER" --date "$D" --analysts "$ANALYSTS" --save --no-show 2>&1 | tee ta-out/run.log

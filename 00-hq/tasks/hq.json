@@ -949,9 +949,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T05:40:00Z",
-  "updated": "2026-11-20T10:36:57Z",
+  "updated": "2026-11-20T10:42:34Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -962,6 +962,6 @@
    "00-hq/design/ENGINEERING-CHECKS.md"
   ],
   "min_items": 8,
-  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+  "output": "00-hq/knowledge/K133.md"
  }
 ]

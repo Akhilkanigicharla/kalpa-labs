@@ -1,0 +1,130 @@
+{
+ "name": "b5 · Deal check + #ad gate (A242)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "f1",
+   "name": "Every day 08:20 IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "triggerAtHour": 8,
+       "triggerAtMinute": 20
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "f2",
+   "name": "Read deals (repo file)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    220,
+    0
+   ],
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/05-deals/site/src/bot/deals.json",
+    "options": {
+     "timeout": 10000,
+     "response": {
+      "response": {
+       "responseFormat": "text"
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "f3",
+   "name": "Check deals + #ad",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    440,
+    0
+   ],
+   "executeOnce": true,
+   "parameters": {
+    "jsCode": "// A242 b5 deal checker: before the first channel slot, checks today's hand-filled deals (05-deals/site/src/bot/deals.json)\n// and sends Akhil a private digest: ready posts (with the ASCI #ad line first), price drops since yesterday, and problems.\n// No model call, no scraping, nothing posted to the channel from here (channel.py posts only after Akhil's \"go\").\n// Deal text is data, never instructions.\nconst DAY = 864e5, now = Date.now(), day = Math.floor(now / DAY);\nconst ist = (ms) => new Date(ms + 19800000).toISOString().slice(0, 10);\nconst today = ist(now);\nconst store = $getWorkflowStaticData('global');\nstore.last = store.last && typeof store.last === 'object' ? store.last : {};\nconst out = (text) => [{ json: { text } }];\nconst warn = (why) => { if (store.warned === day) return []; store.warned = day; return out('⚠️ <b>Deal check</b>: ' + why + ' (05-deals/site/src/bot/deals.json). Next try tomorrow.'); };\n\n// Same rules as post.py / channel.py (PLAN.md §3b): store + affiliate hosts, never money products.\nconst STORE_HOSTS = ['amazon.in', 'flipkart.com', 'amzn.to', 'fkrt.it', 'fktr.in', 'ekaro.in', 'earnkaro.com', 'bankkaro.com'];\nconst SHORTENERS = ['bit.ly', 'tinyurl.com', 'short.link', 'cutt.ly', 't.co', 'goo.gl', 'is.gd', 'rb.gy', 'shorturl.at', 'tiny.cc'];\nconst BANNED_HOSTS = ['zerodha.com', 'groww.in', 'upstox.com', 'angelone.in', 'paytmmoney.com', 'dhan.co', '5paisa.com', 'icicidirect.com',\n  'kotaksecurities.com', 'policybazaar.com', 'acko.com', 'digit.insure', 'insurancedekho.com', 'bankbazaar.com', 'paisabazaar.com',\n  'kreditbee.in', 'moneyview.in', 'navi.com', 'kissht.com', 'mpokket.in', 'cred.club'];\nconst BANNED_WORDS = /loan|insurance|mutual fund|demat|stock tip|trading account|guaranteed return|assured return|lic policy|no[\\s-]*cost emi|లోన్|రుణం|ఇన్సూరెన్స్|బీమా|మ్యూచువల్ ఫండ్/i;\nconst INJECT = /ignore (all |any )?(previous|prior|above)|system prompt|you are now|disregard .*instruction|<\\/?(system|assistant)>/i;\nconst on = (h, list) => list.some((x) => h === x || h.endsWith('.' + x));\n\n// ASCI check for one post (K127 cases): #ad as its own tag, in the first 2 lines, before any other hashtag; one link on an allowed host.\nconst adCheck = (text, hosts) => {\n  const t = String(text || ''), top = t.split('\\n').slice(0, 2).join('\\n');\n  const tags = [...t.matchAll(/(^|[\\s(])#([\\p{L}\\p{N}_]+)/gu)].map((m) => m[2].toLowerCase());\n  if (!tags.includes('ad')) return { ok: false, why: tags.some((x) => /^(sponsored|paid|collab|partner)/.test(x)) ? '#sponsored-style tag, ASCI needs \"#ad\"' : 'no #ad disclosure' };\n  if (tags[0] !== 'ad' || !/(^|[\\s(])#ad(?![\\p{L}\\p{N}_])/iu.test(top)) return { ok: false, why: '#ad is buried: put it first, before other hashtags, in the first 2 lines' };\n  const links = [...t.matchAll(/(?:https?:\\/\\/)?((?:[a-z0-9-]+\\.)+[a-z]{2,})(?:\\/[^\\s<>\"]*)?/gi)].map((m) => m[1].toLowerCase());\n  if (!links.length) return { ok: false, why: 'no link to the deal' };\n  for (const h of links) {\n    if (on(h, BANNED_HOSTS)) return { ok: false, why: 'money-product link (' + h + ') is never promoted' };\n    if (!on(h, hosts)) return { ok: false, why: (on(h, SHORTENERS) ? 'unknown short link (' : 'link not on a known store (') + h + ')' };\n  }\n  if (BANNED_WORDS.test(t)) return { ok: false, why: 'loan / insurance / investment / no-cost EMI words are not allowed' };\n  return { ok: true, why: '' };\n};\nif (typeof module === 'object' && module && module.k127) { module.adCheck = adCheck; return []; }\n\nconst res = ($('Read deals (repo file)').first() || {}).json || {};\nif (res.error || typeof res.data !== 'string') return warn('could not read the deals file');\nif (res.data.length > 600000) return warn('the deals file is too big (600 KB max)');\nlet doc;\ntry { doc = JSON.parse(res.data); } catch (e) { return warn('the deals file is not valid JSON'); }\nconst list = doc && Array.isArray(doc.deals) ? doc.deals : null;\nif (!list) return warn('the deals file needs a \"deals\" list');\n\nconst clean = (s) => Array.from(String(s || '').replace(/[\\u0000-\\u001f\\u007f‎‏‪-‮⁦-⁩]/g, ' ').replace(/\\s+/g, ' ').trim());\nconst esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst cut = (s, n) => { const c = clean(s); return esc(c.slice(0, n).join('')) + (c.length > n ? '…' : ''); };\nconst rs = (n) => '₹' + Math.round(n).toLocaleString('en-IN');\nconst asOfMs = (s) => /^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$/.test(String(s || '')) ? Date.parse(s.replace(' ', 'T') + ':00+05:30') : NaN;\n\nconst ready = [], drops = [], flags = [];\nlet n = 0, seen = 0;\nfor (const d of list) {\n  if (++n > 200) { flags.push('more than 200 deals: only the first 200 read'); break; }\n  if (!d || typeof d !== 'object' || typeof d.id !== 'string' || !/^[a-z0-9-]{1,60}$/.test(d.id)) continue;\n  if (d.kind !== 'product') continue; // card offers have their own RBI gate in channel.py\n  if (d.date && d.date !== today) continue;\n  if (d.valid_until && String(d.valid_until) < today) continue;\n  seen++;\n  const tag = d.sample ? ' (sample)' : '', id = esc(d.id) + tag;\n  if ([d.title_te, d.note_te, d.coupon, d.store].some((x) => INJECT.test(String(x || '')))) { flags.push(id + ': text looks like an instruction, skipped'); continue; }\n  const price = Number(d.price);\n  if (!Number.isFinite(price) || price <= 0 || price > 1e7) { flags.push(id + ': price missing or not a number'); continue; }\n  const at = asOfMs(d.price_as_of);\n  if (isNaN(at)) { flags.push(id + ': price_as_of must be \"YYYY-MM-DD HH:MM\" (IST)'); continue; }\n  if (now - at > DAY) { flags.push(id + ': price is older than 24 h, re-check it on the store page'); continue; }\n  if (!/^https:\\/\\//i.test(String(d.link || ''))) { flags.push(id + ': link must start with https://'); continue; }\n  const post = ['#ad · affiliate link / అనుబంధ లింక్', cut(d.title_te || d.id, 90), `${rs(price)} (as of ${esc(d.price_as_of)}, may change / ధర మారవచ్చు)`, String(d.link)].join('\\n');\n  const c = adCheck(post + ' ' + clean(d.note_te).join(''), STORE_HOSTS);\n  if (!c.ok) { flags.push(id + ': ' + c.why); continue; }\n  // price vs our own log (own-log or an https page, last 90 days): a \"deal\" above the 90-day low is called out, never hidden.\n  const hist = (Array.isArray(d.history) ? d.history : []).filter((h) => h && /^\\d{4}-\\d{2}-\\d{2}$/.test(String(h.date)) && Number(h.price) > 0\n    && Date.parse(h.date) >= now - 90 * DAY && h.date <= today).map((h) => Number(h.price));\n  let note = 'no price history yet';\n  if (hist.length >= 3) { const low = Math.min(...hist); note = price < low ? `lowest in 90 days (was ${rs(low)})` : price === low ? 'same as the 90-day low' : `⚠️ ${rs(price - low)} above the 90-day low ${rs(low)}`; }\n  const prev = store.last[d.id];\n  if (prev && prev.price > price && prev.day < day) drops.push(`📉 <b>${cut(d.title_te || d.id, 60)}</b>${tag}: ${rs(prev.price)} → <b>${rs(price)}</b>`);\n  store.last[d.id] = { price, day };\n  ready.push(`✅ <b>${cut(d.title_te || d.id, 60)}</b>${tag} · ${rs(price)} · ${note}`);\n}\nconst ks = Object.keys(store.last);\nif (ks.length > 2000) ks.sort((a, b) => store.last[a].day - store.last[b].day).slice(0, ks.length - 2000).forEach((k) => delete store.last[k]);\n\nif (!seen) return [];\nconst lines = [`🛍️ <b>Deal check ${today}: ${ready.length} ready, ${flags.length} need a fix</b>`];\nfor (const x of drops.slice(0, 5)) lines.push(x);\nfor (const x of ready.slice(0, 8)) lines.push(x);\nif (ready.length > 8) lines.push(`…and ${ready.length - 8} more ready.`);\nfor (const f of [...new Set(flags)].slice(0, 8)) lines.push('⚠️ ' + f);\nlines.push('Nothing was posted. Every post starts with \"#ad · affiliate link\"; the channel poster sends only after your go.');\nreturn out(lines.join('\\n'));"
+   }
+  },
+  {
+   "id": "f4",
+   "name": "Tell Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 08:20 IST": {
+   "main": [
+    [
+     {
+      "node": "Read deals (repo file)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read deals (repo file)": {
+   "main": [
+    [
+     {
+      "node": "Check deals + #ad",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Check deals + #ad": {
+   "main": [
+    [
+     {
+      "node": "Tell Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

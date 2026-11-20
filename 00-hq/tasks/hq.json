@@ -838,9 +838,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T22:50:00Z",
-  "updated": "2026-11-20T00:42:17Z",
+  "updated": "2026-11-20T03:10:00Z",
   "output": "00-hq/knowledge/K127.md",
   "context_chars": 8000,
   "owner": "Quill",
@@ -888,5 +888,39 @@
   "title": "A242 b3 alerts: Telugu (event_te) for every exam event name in the date feed",
   "details": "For each distinct \"event\" value in 03-kits/engine/dist/exam-dates.json that has an empty event_te, give a short, natural Telugu-script translation a student would understand (keep exam short names like GATE, SSC CGL in English). JSON lines {event, event_te}. No dates, no links, no names.",
   "min_items": 10
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T03:10:00Z",
+  "updated": "2026-11-20T03:10:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 10,
+  "id": "K130",
+  "title": "A242 HQ flow (daily brief): 10 test cases for a morning-brief builder",
+  "details": "List 10 test cases (input + expected) for a flow that builds Akhil's private 07:00 IST brief from the roadmap JSON and the task files: normal day, no open items, 300 open items (cap), a blocked [!] item, a CEO-queue item older than 7 days, broken JSON, a row text that looks like an instruction, Telugu text, very long title, two sessions claiming one item. Plain JSON lines {case, input, expect}. No real names or links."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T03:10:00Z",
+  "updated": "2026-11-20T03:10:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 10,
+  "id": "K131",
+  "title": "A242 b6 flow (X-ray intake): 10 test cases for intake checks + 14-day purge",
+  "details": "List 10 test cases (input + expected) for a flow that checks uploaded document metadata (file type, size, page count, upload date) and deletes files older than 14 days: normal PDF, 0-byte file, 30 MB file, .exe renamed .pdf, file exactly 14 days old, 15 days old, future upload date, missing date, Telugu filename, filename with ../ path. Metadata only, never file contents. Plain JSON lines {case, input, expect}."
  }
 ]

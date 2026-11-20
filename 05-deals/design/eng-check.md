@@ -133,3 +133,18 @@ Machine rows come from `python3 00-hq/tools/eng_check.py deals --md`; the rest a
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: deal check + #ad gate (`00-hq/agent-engine/flows/b5-deal-checker.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Input validation | done: safe deal ids, price a number (1 to 1 crore), price_as_of "YYYY-MM-DD HH:MM" IST and under 24 h old, https links only, 200 deals max, card offers left to channel.py's RBI gate (`test_b5_deal_checker.js`) |
+| ASCI #ad | done: every ready post starts "#ad · affiliate link"; checker needs #ad as its own tag, first 2 lines, before other hashtags (K127 10 cases incl. Telugu, Hindi, Tenglish, Hinglish) |
+| Banned products | done: loan / insurance / investment / no-cost EMI words and the post.py money hosts refused; unknown shorteners and non-store hosts flagged |
+| Honest prices | done: price vs own 90-day log (3+ points): "lowest", "same as low" or "₹X above the 90-day low" shown, never hidden; price drops since yesterday listed |
+| Prompt injection | done: no model call; instruction-like deal text skipped |
+| Output escaping | done: HTML-escaped, control/bidi chars stripped, titles cut at 60 whole characters (emoji test) |
+| Timeouts / retries | done: 10 s timeout, 3 tries, 5 s apart |
+| Outage / bad file | done: missing, non-JSON, no "deals" list or >600 KB → one warning a day |
+| Spam control | done: one message a day max, silent when no deal is due, price store capped at 2000 |
+| Scraping | not relevant: reads only the team's hand-filled repo file, no store pages fetched |
+| Posting to the channel | not relevant here: the flow never posts; channel.py posts only with DEALS_LIVE=go (Akhil's "go") |

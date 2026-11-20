@@ -81,6 +81,7 @@ jobs:
       - run: node 00-hq/agent-engine/flows/test_b1_frontdesk_watchdog.js
       - run: node 00-hq/agent-engine/flows/test_b2_review_watcher.js
       - run: node 00-hq/agent-engine/flows/test_b3_exam_alerts.js
+      - run: node 00-hq/agent-engine/flows/test_b5_deal_checker.js
       - run: python3 00-hq/agents/test_council.py && python3 00-hq/agents/test_live_status.py
 
   site-taps:

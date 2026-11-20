@@ -13,7 +13,11 @@ for k, c in cfgs.items():
     c2 = {x: y for x, y in c.items() if x != "quizBank"}
     (root / "setups" / k / "bot.config.json").write_text(json.dumps(c2, indent=2, ensure_ascii=False))
 register = "\n".join(f"BotBhai.register({json.dumps(cfgs[s], ensure_ascii=False)});" for s in setups)
-page = (root / "web" / "index.src.html").read_text().replace("/*ENGINE*/", (root / "core" / "engine.js").read_text() + "\n" + register)
+page = (root / "web" / "index.src.html").read_text()
+# A220 strict CSP: the page has no inline script; engine + setups + page script ship as one file, app.js
+app = (root / "core" / "engine.js").read_text() + "\n" + register + "\n" + (root / "web" / "page.js").read_text()
+APP_TAG = '<script src="app.js"></script>'
+assert page.count(APP_TAG) == 1 and "<script>" not in page, "index.src.html must load app.js and carry no inline script"
 # A211 price ladder: rendered from the one price file, so the page can never drift from PLAN.md §2
 P = json.loads((root.parent / "docs" / "sales" / "prices.json").read_text()); T = {x["id"]: x for x in P["tiers"]}
 inr = lambda n: "₹" + format(n, ",")  # all prices are under ₹1 lakh, so Western grouping equals Indian grouping
@@ -25,12 +29,15 @@ page = page.replace("<!--LADDER-->", tier(T["starter"]) + tier(T["lite"]) + tier
 dist = root / "web" / "dist"; dist.mkdir(parents=True, exist_ok=True)
 head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>'
 (dist / "index.html").write_text(head + page + "</body></html>")
-(dist / "artifact.html").write_text(page)
+(dist / "app.js").write_text(app)
+# Single-file copy for Claude artifacts (inline script). Kept outside dist so the live site never serves an inline-script page.
+(root / "dist-artifact").mkdir(exist_ok=True); (root / "dist-artifact" / "artifact.html").write_text(page.replace(APP_TAG, "<script>\n" + app.replace("</script", "<\\/script") + "\n</script>"))
+(dist / "artifact.html").unlink(missing_ok=True)
 shutil.copy(root / "web" / "widget.js", dist / "widget.js")
 shutil.copy(root / "web" / "inbox.html", dist / "inbox.html")  # shared inbox (A04); calls /.netlify/functions/inbox
 shutil.copy(root / "web" / "dashboard.html", dist / "dashboard.html")  # owner dashboard (A10); calls /.netlify/functions/leads
 shutil.copy(root / "web" / "billing.html", dist / "billing.html")
-for _js in ("inbox.js", "dashboard.js", "billing.js"):  # page scripts live in files (strict CSP on owner screens)
+for _js in ("inbox.js", "dashboard.js", "billing.js", "invoice-print.js"):  # page scripts live in files (strict CSP on owner screens)
     shutil.copy(root / "web" / _js, dist / _js)
 shutil.copy(root / "web" / "404.html", dist / "404.html")  # custom 404 (ENGINEERING-CHECKS)  # Kalpa billing (A05); calls /.netlify/functions/billing
 # robots.txt + sitemap.xml (SEO checks; live check 14 Nov found both 404). Owner screens are noindex and kept out.

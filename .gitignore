@@ -38,3 +38,4 @@ graft/
 07-trading/deploy/dhan-cloud/dist/
 .wrangler/
 00-hq/site/.lighthouseci/
+01-botbhai/botbhai/dist-artifact/

@@ -383,5 +383,22 @@
   "created": "2026-11-19T10:50:00Z",
   "updated": "2026-11-19T15:30:00Z",
   "output": "00-hq/knowledge/K117.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T18:50:00Z",
+  "updated": "2026-11-20T18:50:00Z",
+  "context_chars": 12000,
+  "id": "K144",
+  "world": "b1",
+  "title": "A223 prep: WhatsApp per-message India rates from Meta's own rate card",
+  "details": "List the India rates per message for marketing, utility and authentication templates and the service-reply rule (free up to 1,000 per number a month from 1 Oct 2026?). For each give the exact Meta page URL to check and mark UNVERIFIED unless a repo file shows it. Then work out the monthly WhatsApp cost for one salon sending 300 reminders and 100 marketing messages at each rate. Numbered 1 to 5.",
+  "read": [
+   "01-botbhai/PLAN.md"
+  ],
+  "min_items": 5
  }
 ]

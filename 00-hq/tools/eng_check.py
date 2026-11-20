@@ -45,7 +45,7 @@ SKIP = re.compile(r"(node_modules|/dist/|/_dist/|/vendor/|\.test\.|/tests?/|/fix
 # innerHTML uses read line by line by a person; re-review when these files change a lot (12 Nov 2026)
 REVIEWED = {"app.js": "i18n text from our own dictionary + constant markup",
             "app.mjs": "every value goes through esc()",
-            "index.src.html": "fmt() escapes first; tables use esc()",
+            "page.js": "BotBhai demo page script (moved verbatim from index.src.html, A220): fmt() escapes first; tables use esc()",
             "widget.js": "constant SVG markup"}
 KEY = re.compile(r"(sk-[A-Za-z0-9]{20,}|gsk_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{30,}|ghp_[A-Za-z0-9]{30,}|xox[bp]-[A-Za-z0-9-]{20,}|-----BEGIN (RSA )?PRIVATE KEY)")
 

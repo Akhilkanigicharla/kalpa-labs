@@ -11,15 +11,15 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | Security Headers: X-Content-Type-Options | PASS | in 01-botbhai/botbhai/netlify.toml |
 | Security Headers: Referrer-Policy | PASS | in 01-botbhai/botbhai/netlify.toml |
 | Security Headers: Permissions-Policy | PASS | in 01-botbhai/botbhai/netlify.toml |
-| Content Security Policy | PASS | default-src 'self'; script-src 'self' 'unsafe-inline' https: |
+| Content Security Policy | PASS | default-src 'self'; script-src 'self' https://challenges.clo |
 | Clickjacking | PASS | frame-ancestors / X-Frame-Options |
-| Inline JS vs CSP | WARN | 1 page(s) with inline script: index.src.html; CSP allows it for now, move scripts to files |
+| Inline JS vs CSP | PASS | none |
 | Inline on*= handlers | PASS |  |
 | Custom 404 page | PASS |  |
 | target=_blank has rel=noopener | PASS |  |
 | Encryption in Transit (no http:// links) | PASS |  |
 | Secrets Management (no keys in browser code) | PASS |  |
-| XSS sinks (innerHTML/eval with variables) | PASS | reviewed: index.src.html: fmt() escapes first; tables use esc(); widget.js: constant SVG markup |
+| XSS sinks (innerHTML/eval with variables) | PASS | reviewed: page.js: BotBhai demo page script (moved verbatim from index.src.html, A220): fmt() escapes first; tables use esc(); widget.js: constant SVG markup |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/adsbot.js | PASS | scheduled job, no public caller |
 | Input caps: 01-botbhai/botbhai/core/functions/adsbot.js | PASS | no input length cap |
 | Timeouts: 01-botbhai/botbhai/core/functions/telegram.js | PASS | fetch without timeout |

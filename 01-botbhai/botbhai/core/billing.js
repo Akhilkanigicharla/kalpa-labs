@@ -158,7 +158,8 @@ footer{padding:0 22px 20px;font-size:12.5px;color:var(--muted)}
 <tbody>${rows}<tr class="total"><td colspan="2">Total</td><td class="wide" colspan="2"></td><td class="n">${money(total)}</td></tr></tbody></table></div>
 <p class="words">${esc(wordsFor(total))}</p>
 ${pay}
-<div class="actions noprint"><button class="btn ghost" type="button" onclick="window.print()">Save as PDF / Print</button></div>
+<div class="actions noprint"><button class="btn ghost" type="button" id="print-btn">Save as PDF / Print</button></div>
+<script src="/invoice-print.js" defer></script>
 </div><footer>Thank you for choosing BotBhai. This is a computer-generated invoice and needs no signature.</footer></main></body></html>`;
 }
 

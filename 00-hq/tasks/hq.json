@@ -1018,5 +1018,22 @@
   ],
   "min_items": 8,
   "output": "00-hq/knowledge/K143.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T18:50:00Z",
+  "updated": "2026-11-20T18:50:00Z",
+  "context_chars": 12000,
+  "id": "K145",
+  "world": "hq",
+  "title": "A222 prep: Netlify credit plan vs Cloudflare Pages free for our static sites",
+  "details": "Compare Netlify's credit-based Free plan (credits per month, credits per production deploy, bandwidth) with Cloudflare Pages free (builds per month, bandwidth, custom headers via _headers, functions) for 5 static sites. Every number UNVERIFIED unless a repo file shows it; give each provider page URL to check. End with a plain one-line rule for how many deploys a day we can afford. Numbered 1 to 6.",
+  "read": [
+   "00-hq/log/deploys.csv"
+  ],
+  "min_items": 6
  }
 ]

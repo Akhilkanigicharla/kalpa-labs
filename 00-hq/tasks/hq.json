@@ -856,10 +856,10 @@
  {
   "priority": "P2",
   "tries": 3,
-  "status": "rejected",
+  "status": "done",
   "created": "2026-11-19T22:50:00Z",
-  "updated": "2026-11-20T04:41:33Z",
-  "output": "",
+  "updated": "2026-11-20T08:10:00Z",
+  "output": "Not needed: the build team wrote the 15 sample doubts into 00-hq/agent-engine/flows/test_b3_doubt_bot.js (20 Nov).",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",

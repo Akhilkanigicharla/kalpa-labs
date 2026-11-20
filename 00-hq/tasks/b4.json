@@ -165,5 +165,22 @@
    "04-extensions/README.md"
   ],
   "min_items": 7
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T08:10:00Z",
+  "updated": "2026-11-20T08:10:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "b4",
+  "id": "K134",
+  "title": "A231 Tab Lifeboat undo delete: UI copy for the Recently deleted list",
+  "details": "Write 8 short UI strings for a Chrome extension that keeps deleted tab sessions for 7 days: list title, empty state, 'deleted N days ago' label, restore button, delete-forever button, confirm text for delete forever, undo toast after delete, toast after restore. Plain English, each under 50 characters, no emoji. JSON lines {key, text}.",
+  "read": [
+   "04-extensions/README.md"
+  ],
+  "min_items": 8
  }
 ]

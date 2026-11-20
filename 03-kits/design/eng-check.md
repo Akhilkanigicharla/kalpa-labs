@@ -137,3 +137,19 @@ Machine rows come from `python3 00-hq/tools/eng_check.py kits --md`; the rest ar
 | Messages to students | not relevant here: the flow never messages students; sending needs opt-in WhatsApp templates + Akhil's "go" |
 | Public surface | done: schedule trigger only, `active: false`, one GET of a public repo file |
 | Go gate | waits A241 / C79 (engine up) and Akhil's "go" |
+
+## A242 engine flow: 5-language doubt bot (`00-hq/agent-engine/flows/b3-doubt-bot.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Auth | done: webhook needs a header key (credential "b3 doubt bot key", Akhil sets); ships `active: false` |
+| Input validation | done: text must be a string, 3–1000 chars after cleaning; user id `[\w.:@+-]{1,64}` or 400 (`test_b3_doubt_bot.js`) |
+| Rate limits | done: 20 doubts per user per IST day, 300 per day overall, 429 after that; free-model quota protected |
+| Prompt injection | done: instruction-like doubts never reach the model (fixed reply); doubt sent as quoted data; answers mentioning prompts/instructions replaced |
+| Cheating / leaks | done: leaked-paper, proxy, hacking, bribe requests answered with a fixed refusal in the student's language; answers offering papers/groups replaced |
+| Output checks | done: no links, emails, phone numbers; ≤1500 chars; Telugu/Hindi script must match, Tenglish/Hinglish must stay in English letters; `<think>` stripped |
+| 5 languages | done: English, Telugu script, Hindi script, Tenglish, Hinglish detected (15 sample doubts); every fixed reply exists in all 5 |
+| Personal data (DPDP) | done: doubt text never stored; emails/numbers masked before the model; user id kept only as a hash for the daily count; n8n execution saving off |
+| Timeouts / retries | done: 25 s model timeout, 2 tries; model error → polite retry message, never a crash |
+| Response headers | done: JSON only, `Cache-Control: no-store`, `nosniff`; internal reason never sent to the student |
+| Exam facts | done: prompt sends dates, fees and rules to the official notification; model never invents them |
+| Go gate | waits A241 / C79 (engine up), the OpenRouter key and Akhil's "go" before any student uses it |

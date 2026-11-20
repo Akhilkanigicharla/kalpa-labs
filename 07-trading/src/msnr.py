@@ -215,6 +215,13 @@ def eq_sweep(df: pd.DataFrame, k: int = 2, storyline_on: bool = True, tol: float
 SETUPS = {"fresh_v": fresh_v, "qm": qm, "eq_sweep": eq_sweep}
 
 
+def mirror(df: pd.DataFrame) -> pd.DataFrame:
+    """Price turned upside down (1/price) so the long-only setups test the SHORT side in research.
+    A long trade on the mirror is a short on the original (returns match to first order)."""
+    d = _ohlc(df)
+    return pd.DataFrame({"open": 1 / d.open, "high": 1 / d.low, "low": 1 / d.high, "close": 1 / d.close}, index=d.index)
+
+
 def configs() -> list[dict]:
     return [{"k": k, "storyline_on": s} for k in GRID["k"] for s in GRID["storyline"]]
 
@@ -228,8 +235,8 @@ def _zones(df: pd.DataFrame, setup: str, cfg: dict, cache: dict | None = None, k
     return z
 
 
-def _trades(df: pd.DataFrame, zones: list[Zone]) -> pd.DataFrame:
-    t = simulate(df, zones, wait=20, hold=20, rr=2.0)
+def _trades(df: pd.DataFrame, zones: list[Zone], cost: float = 0.0025) -> pd.DataFrame:
+    t = simulate(df, zones, wait=20, hold=20, rr=2.0, cost=cost)
     if not t.empty:
         t["date"] = _ohlc(df).index[t.entry_bar.values]
     return t
@@ -240,7 +247,8 @@ def _pool(parts: list[pd.DataFrame]) -> pd.DataFrame:
     return pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=["ret", "r", "date"])
 
 
-def research(frames: dict[str, pd.DataFrame], split: str = SPLIT, placebo_seeds: int = 5) -> dict:
+def research(frames: dict[str, pd.DataFrame], split: str = SPLIT, placebo_seeds: int = 5,
+             cost: float = 0.0025) -> dict:
     """Pick each setup's config on the in-sample years only, then report the test years once,
     pooled over all markets, next to a same-shape placebo."""
     cut = pd.Timestamp(split)
@@ -249,12 +257,12 @@ def research(frames: dict[str, pd.DataFrame], split: str = SPLIT, placebo_seeds:
     for setup in SETUPS:
         rows = []
         for cfg in configs():
-            per = {m: _trades(df, _zones(df, setup, cfg, cache, m)) for m, df in frames.items()}
+            per = {m: _trades(df, _zones(df, setup, cfg, cache, m), cost) for m, df in frames.items()}
             t = _pool(list(per.values()))
             rows.append((cfg, per, t, summarize(t[t.date < cut])))
         best_cfg, best_per, best_t, best_is = max(rows, key=lambda r: (r[3]["trades"] >= 20, r[3]["avg_r"]))
         test = best_t[best_t.date >= cut]
-        pl = _pool([_trades(df, placebo(df, _zones(df, setup, best_cfg, cache, m), seed=s))
+        pl = _pool([_trades(df, placebo(df, _zones(df, setup, best_cfg, cache, m), seed=s), cost)
                     for m, df in frames.items() for s in range(placebo_seeds)])
         ts, ps = summarize(test), summarize(pl[pl.date >= cut])
         rng = np.random.default_rng(0)

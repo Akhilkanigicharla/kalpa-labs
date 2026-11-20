@@ -126,3 +126,10 @@ def test_paper_runs_only_passing_setups_and_kill_stops_new_entries(tmp_path):
     assert st["start"] == "2020-06-01" and st["kill"] == "2021-01-01"
     led = pd.read_csv(out / "ledger.csv") if (out / "ledger.csv").stat().st_size > 1 else pd.DataFrame()
     assert led.empty or (pd.to_datetime(led.entry_date) <= "2021-01-01").all()
+
+
+def test_mirror_swaps_highs_lows_and_colours():
+    df = frame([(100, 110, 95, 105), (105, 106, 90, 92)])
+    m = msnr.mirror(df)
+    assert abs(m.high.iloc[0] - 1 / 95) < 1e-12 and abs(m.low.iloc[0] - 1 / 110) < 1e-12
+    assert (m.close.iloc[0] < m.open.iloc[0]) and (m.close.iloc[1] > m.open.iloc[1])   # green <-> red

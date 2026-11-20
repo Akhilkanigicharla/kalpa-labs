@@ -186,10 +186,10 @@
  },
  {
   "priority": "P2",
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-20T12:39:36Z",
-  "updated": "2026-11-20T13:06:51Z",
+  "updated": "2026-11-20T13:14:50Z",
   "context_chars": 6000,
   "owner": "Lifeboat",
   "world": "b4",
@@ -200,6 +200,6 @@
    "04-extensions/design/eng-check-site.md"
   ],
   "min_items": 8,
-  "vigil_notes": "FIX:\n- Surge.sh: `headers.json` is not a standard config file; Surge uses `_headers` (like Cloudflare/Netlify) or CLI flags.\n- Render: `render.yaml` does not support custom security headers for static sites; use `_headers` file or API.\n- GitHub Pages: The repo file `04-extensions/design/eng-check-site.md` explicitly states \"GitHub Pages can't send this header\"; the draft's claim that it requires a CDN is consistent, but the \"None natively supported\" phrasing is acceptable. However, ensure the distinction between \"no file\" and \"no feature\" is clear.\n- GitLab Pages: GitLab Pages *does* support custom headers via `pages` configuration or `_headers` file in newer versions; stating \"None natively supported\" may be inaccurate or outdated.\n- General: The draft lists 8 hosts, but the rule \"lists of 5 at most\" applies to chatbot outputs. Since this is a prep document (A232), the limit may not apply to the file itself, but if this text is intended for a chatbot response, it must be cut to 5 items."
+  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

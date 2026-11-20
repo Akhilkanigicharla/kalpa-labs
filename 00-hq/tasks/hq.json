@@ -984,10 +984,10 @@
  },
  {
   "priority": "P2",
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-20T16:45:17Z",
-  "updated": "2026-11-20T16:46:40Z",
+  "updated": "2026-11-20T18:50:57Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -1023,9 +1023,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "created": "2026-11-20T18:50:00Z",
-  "updated": "2026-11-20T18:50:00Z",
+  "updated": "2026-11-20T18:52:25Z",
   "context_chars": 12000,
   "id": "K145",
   "world": "hq",
@@ -1034,6 +1034,7 @@
   "read": [
    "00-hq/log/deploys.csv"
   ],
-  "min_items": 6
+  "min_items": 6,
+  "output": "00-hq/knowledge/K145.md"
  }
 ]

@@ -1,4 +1,4 @@
-"""A302: Can a gold strategy pass an Indian MCX prop-firm challenge? (Akhil, 21 Nov 2026). Research only.
+"""A305: Can a gold strategy pass an Indian MCX prop-firm challenge? (Akhil, 21 Nov 2026). Research only.
 
 Question: Akhil wants a gold bot that passes a ₹1 lakh (100k INR) funded-account challenge bought with his
 ₹10k, then earns from the funded account. This script answers with data, before any money is spent.

@@ -44,3 +44,17 @@ Workflow: `.github/workflows/tradingagents.yml` (pinned to commit `c4544913`, v0
   - **#1548:** decisions are scored only on final closes, and they settle across long market holidays (Diwali, Holi).
 - Checked here: installs clean in Python, `import tradingagents` = 0.7.1, the CLI still has `--ticker --date --analysts --save --no-show`. No workflow change was needed beyond the pin.
 - **Verdict unchanged:** a research input, never a signal; paper only; at most one run a week on free models; LLM look-ahead bias still applies (arXiv 2504.14765). The reel's "har agent = 1 kaam" idea is already our n8n Trading Desk (Pulse, Quant, Guard).
+
+## First full run, 21 Nov 2026 (Akhil: "Run")
+- **OpenRouter free quota was already used up** that day (429, shared with the n8n agents).
+- So the workflow got a `provider` choice: **google** (the `GEMINI_API_KEY` secret, now the default) or openrouter.
+- Gemini models on the free key:
+  - 2.5 Flash is closed to new users (404).
+  - 3.8 Flash answered "high demand" (503).
+  - **3.5 Flash-Lite worked for all agents.**
+- Also fixed: `set -o pipefail`. Before, `tee` hid a failed run as "success".
+- **Result for NIFTYBEES as of 20 Nov:** HOLD.
+  - The trend is strong, but it is overbought (RSI 76.84), so add only on a pullback to ~284.79, stop 276.43.
+  - Every figure matches the 19 Nov close in our own Yahoo data (point-in-time, no look-ahead).
+  - Report: `07-trading/reports/tradingagents/NIFTYBEES-2026-11-20.md`.
+- SEC EDGAR returned 403 for an Indian ETF (expected; it falls back to Yahoo).

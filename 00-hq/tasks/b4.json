@@ -186,10 +186,10 @@
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T12:39:36Z",
-  "updated": "2026-11-20T12:39:36Z",
+  "updated": "2026-11-20T12:40:45Z",
   "context_chars": 6000,
   "owner": "Lifeboat",
   "world": "b4",
@@ -199,6 +199,7 @@
   "read": [
    "04-extensions/design/eng-check-site.md"
   ],
-  "min_items": 8
+  "min_items": 8,
+  "vigil_notes": "FIX: incomplete, 0 of 8 required items. Write all 8, numbered 1 to 8."
  }
 ]

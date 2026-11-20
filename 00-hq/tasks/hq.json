@@ -1023,9 +1023,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T18:50:00Z",
-  "updated": "2026-11-20T18:52:25Z",
+  "updated": "2026-11-21T06:00:00Z",
   "context_chars": 12000,
   "id": "K145",
   "world": "hq",
@@ -1036,5 +1036,41 @@
   ],
   "min_items": 6,
   "output": "00-hq/knowledge/K145.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-21T06:00:00Z",
+  "updated": "2026-11-21T06:00:00Z",
+  "context_chars": 12000,
+  "world": "hq",
+  "id": "K146",
+  "title": "A225 prep: Render free instance hours for two services in one workspace",
+  "details": "For kalpa-n8n and kalpa-llm-router on Render's free web service tier: list the free instance-hours per workspace per month, spin-down rule after idle, what happens when hours run out, and how to read hours used in the Render dashboard/metrics. Every number UNVERIFIED with the render.com page URL to check. End with one plain rule: how many hours a day n8n may stay awake so both fit. Numbered 1 to 5.",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K146.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-21T06:00:00Z",
+  "updated": "2026-11-21T06:00:00Z",
+  "context_chars": 12000,
+  "world": "hq",
+  "id": "K147",
+  "title": "A226 prep: scheduled tasks health plan",
+  "details": "From 00-hq/LINKS.md (scheduled tasks section) list each Kalpa scheduled task, its cron in IST, and suggest a quieter hour for the Fact-check & audit task (avoid 6-9 AM Pacific = 19:30-22:30 IST) plus a smaller scope (one world per run, rotating). Plain English, numbered 1 to 5, no invented task names.",
+  "read": [
+   "00-hq/LINKS.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K147.md"
  }
 ]

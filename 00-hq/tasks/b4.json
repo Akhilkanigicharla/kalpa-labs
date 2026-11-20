@@ -183,5 +183,22 @@
   ],
   "min_items": 8,
   "output": "00-hq/knowledge/K134.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T12:39:36Z",
+  "updated": "2026-11-20T12:39:36Z",
+  "context_chars": 6000,
+  "owner": "Lifeboat",
+  "world": "b4",
+  "id": "K139",
+  "title": "A232 prep: free static hosts that send custom security headers",
+  "details": "List free static hosting options (no card) that let a site set custom response headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS) via a _headers or config file: e.g. Cloudflare Pages, Netlify, Vercel, Firebase Hosting. For each: header file name/format, free-tier limits, official docs URL. Mark every limit UNVERIFIED; Claude checks them.",
+  "read": [
+   "04-extensions/design/eng-check-site.md"
+  ],
+  "min_items": 8
  }
 ]

@@ -731,9 +731,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T15:00:00Z",
-  "updated": "2026-11-19T14:51:13Z",
+  "updated": "2026-11-20T12:39:36Z",
   "output": "00-hq/knowledge/K120.md",
   "id": "K120",
   "title": "A276 prep: licence + fit of presenton, openshorts, open-seo, dify, paperless-ngx",
@@ -767,9 +767,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T15:35:00Z",
-  "updated": "2026-11-19T20:42:56Z",
+  "updated": "2026-11-20T12:39:36Z",
   "output": "00-hq/knowledge/K122.md",
   "id": "K122",
   "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
@@ -930,9 +930,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T05:40:00Z",
-  "updated": "2026-11-20T08:44:41Z",
+  "updated": "2026-11-20T12:39:36Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -963,5 +963,22 @@
   ],
   "min_items": 8,
   "output": "00-hq/knowledge/K133.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T12:39:36Z",
+  "updated": "2026-11-20T12:39:36Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K138",
+  "title": "A276 goldfish review of 00-hq/research/a276-repo-fit.md",
+  "details": "Fresh reviewer, no context: read 00-hq/research/a276-repo-fit.md and list up to 8 problems: unclear rows, offers a Hyderabad shop owner would not understand, legal gaps (DPDP, licence, WhatsApp/TRAI), prices that look inconsistent across rows. Do not invent facts or prices; mark guesses UNVERIFIED.",
+  "read": [
+   "00-hq/research/a276-repo-fit.md"
+  ],
+  "min_items": 8
  }
 ]

@@ -41,14 +41,14 @@ jobs:
     timeout-minutes: 40
     env:
       TRADINGAGENTS_LLM_PROVIDER: ${{ inputs.provider || 'google' }}
-      # google: 3.5 Flash-Lite for the analysts/debaters (most calls), 3.8 Flash for the managers (2.5 Flash is closed
-      # to new users per Google's 404, 21 Nov 2026). openrouter: the free Nemotron pair used before.
+      # google: 3.5 Flash-Lite for every agent. Tried 21 Nov 2026: 2.5 Flash is closed to new users (404), 3.8 Flash
+      # answered "high demand" (503) on the free key. openrouter: the free Nemotron pair used before.
       TRADINGAGENTS_QUICK_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.5-flash-lite' || 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free' }}
-      TRADINGAGENTS_DEEP_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.8-flash' || 'nvidia/nemotron-3-super-120b-a12b:free' }}
+      TRADINGAGENTS_DEEP_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.5-flash-lite' || 'nvidia/nemotron-3-super-120b-a12b:free' }}
       TRADINGAGENTS_OUTPUT_LANGUAGE: English
       TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
       TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
-      TRADINGAGENTS_LLM_MAX_RETRIES: "4"
+      TRADINGAGENTS_LLM_MAX_RETRIES: "6"
       TRADINGAGENTS_BENCHMARK_TICKER: "^NSEI"
       TRADINGAGENTS_NO_UPDATE_CHECK: "1"
       TRADINGAGENTS_RESULTS_DIR: ${{ github.workspace }}/ta-out/reports

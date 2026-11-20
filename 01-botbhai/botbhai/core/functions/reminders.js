@@ -5,19 +5,19 @@
  * message asks for a Google review (salon), feedback + next step (real estate), or check-in (gym/coaching).
  * Renewal reminders 7/3/1 days before expiry and a win-back 15 days after, from the members table.
  */
-const { db, sendTemplate, templatesFor, cardUrl, enc, istTodayIso } = require("./_lib.js");
+const { db, dbAll, sendTemplate, templatesFor, cardUrl, enc, istTodayIso } = require("./_lib.js");
 const { dueReminders, dueRenewals, referralCode } = require("../automations.js");
 
 exports.handler = async () => {
   const now = Date.now(); let sent = 0;
-  const clients = await db("clients?active=eq.true&phone_number_id=not.is.null&select=*");
+  const clients = await dbAll("clients?active=eq.true&phone_number_id=not.is.null&select=*");
   for (const c of clients) {
     const tpl = templatesFor(c.niche); const cfg = c.config || {};
     // only bookings from 4 days ago onwards: the after-visit and referral windows end within 84 hours
     const since = istTodayIso(now - 4 * 864e5);
     const leads = await db(`leads?client_id=eq.${c.id}&status=eq.booked&details->>date_iso=gte.${since}&select=id,contact,name,details,marketing_opt_in&order=updated_at.desc&limit=2000`);
     // M10: only visits the owner marked "completed" in the 9 PM list get the review ask / referral invite
-    const completed = new Set((await db(`bookings?client_id=eq.${c.id}&status=eq.completed&date_iso=gte.${since}&select=contact,date_iso`)).map((b) => b.contact + b.date_iso));
+    const completed = new Set((await dbAll(`bookings?client_id=eq.${c.id}&status=eq.completed&date_iso=gte.${since}&select=contact,date_iso`)).map((b) => b.contact + b.date_iso));
     for (const l of leads) for (const key of dueReminders({ status: "booked", details: l.details }, now, completed.has(l.contact + l.details.date_iso) ? "completed" : "unmarked")) {
       if (!tpl[key] || l.contact.startsWith("web:")) continue;
       if (tpl[key].category === "MARKETING" && !l.marketing_opt_in) continue; // promotional messages need opt-in

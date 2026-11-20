@@ -1,6 +1,6 @@
 # Engineering checks: hq-site
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -19,12 +19,15 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | target=_blank has rel=noopener | PASS |  |
 | Encryption in Transit (no http:// links) | PASS |  |
 | Secrets Management (no keys in browser code) | PASS |  |
-| XSS sinks (innerHTML/eval with variables) | PASS | reviewed: app.js: i18n text from our own dictionary + constant markup |
+| XSS sinks (innerHTML/eval with variables) | WARN | review: site.js |
 | Rate Limiting: 00-hq/site/netlify/functions/chat.mjs | PASS | webhook: platform-signed, rate set by sender |
 | Input caps: 00-hq/site/netlify/functions/chat.mjs | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 118 KB |
+| Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
+| Failover (AI calls fall back to another model or a fixed reply) | PASS | 1 file(s) call AI, all with fallback |
+| Graceful Degradation (browser fetch failures are caught) | PASS | 2 file(s) call the server, all catch errors |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 165 KB |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -135,6 +138,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | done: static pages on Netlify's CDN (many locations); chat is a serverless function; it calls Groq/OpenRouter directly, so the single free Render router is not needed |
+| 109 | Auto Scaling | platform: Netlify functions scale per request |
+| 110 | Sharding | not relevant: no database |
+| 111 | Pagination + Limits | done: no list reads (eng_check 111 PASS) |
+| 112 | Failover | done: chat tries 3 free models in turn (Groq gpt-oss-20b → Groq Qwen → OpenRouter), then a polite 503 |
+| 113 | Graceful Degradation | done: if chat fails, the page shows an offline message pointing to the contact form; the form still works (site.js/app.js) |
 
 ## A242 engine flow: HQ morning brief (`00-hq/agent-engine/flows/hq-morning-brief.json`, 20 Nov 2026)
 | Check | Status |

@@ -1,6 +1,6 @@
 # Engineering checks: extension-site
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py extension-site --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -20,9 +20,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py extension-site --md`; t
 | Encryption in Transit (no http:// links) | PASS |  |
 | Secrets Management (no keys in browser code) | PASS |  |
 | XSS sinks (innerHTML/eval with variables) | PASS |  |
-| Performance Budgets (page + JS < 250 KB) | PASS | privacy.html: 11 KB |
+| Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
+| Failover (AI calls fall back to another model or a fixed reply) | PASS | no AI calls |
+| Graceful Degradation (browser fetch failures are caught) | PASS | no server calls |
+| Performance Budgets (page + JS < 250 KB) | PASS | privacy.html: 12 KB |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -133,3 +136,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py extension-site --md`; t
 | 105 | Hashing vs Encryption | not relevant: static pages on GitHub Pages, no server code |
 | 106 | Salting | not relevant: static pages on GitHub Pages, no server code |
 | 107 | Penetration Testing | done: no inputs, no scripts, no cookies: nothing to attack beyond the host |
+| 108 | Multiple Servers / Redundancy | platform: GitHub Pages CDN |
+| 109 | Auto Scaling | platform: GitHub Pages |
+| 110 | Sharding | not relevant: no database |
+| 111 | Pagination + Limits | done: no list reads |
+| 112 | Failover | not relevant: no AI calls |
+| 113 | Graceful Degradation | not relevant: static page, no server calls |

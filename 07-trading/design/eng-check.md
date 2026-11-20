@@ -1,6 +1,6 @@
 # Engineering checks: trading
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py trading --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -9,8 +9,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py trading --md`; the rest
 |---|---|---|
 | Secrets Management (no keys in code) | PASS | keys only from environment / GitHub secrets |
 | Timeouts (every HTTP call has timeout=) | PASS |  |
+| Pagination + Limits (every list read has limit=) | PASS | no unbounded list reads |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -121,6 +122,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py trading --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | not relevant: runs as scheduled GitHub Actions jobs; a failed run is re-run next day and the KILL switch stops trading |
+| 109 | Auto Scaling | not relevant: no live traffic |
+| 110 | Sharding | not relevant: price history in files |
+| 111 | Pagination + Limits | done: no database list reads (eng_check 111 PASS) |
+| 112 | Failover | done: Yahoo data errors skip the market for the day (strict=False) instead of trading on bad data |
+| 113 | Graceful Degradation | done: each paper step has continue-on-error, so one failing strategy never stops the others (paper-trade.yml) |
 
 ## A242 engine flow: paper-trade monitor + loss-cap guard (`00-hq/agent-engine/flows/b7-paper-monitor.json`, 20 Nov 2026)
 | Check | Status |

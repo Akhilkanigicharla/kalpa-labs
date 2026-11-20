@@ -22,12 +22,12 @@ exports.handler = async (event) => {
     L.rateHit(`chat:ip:${clientId}:${ip}`, 600, 120),       // 120 per IP per 10 minutes (shared Wi-Fi friendly)
   ]);
   if (!okVisitor || !okIp) return L.json(429, { error: "slow down", replies: [{ text: "You're sending messages very fast. Please wait a few minutes, or message us on WhatsApp." }] });
-  const [client] = await L.db(`clients?id=eq.${clientId}&active=eq.true&select=*`);
+  const [client] = await L.db(`clients?id=eq.${clientId}&active=eq.true&select=*&limit=1`);
   if (!client) return L.json(404, { error: "unknown client" });
   const contact = "web:" + visitor; const src = source === "voice" ? "voice" : "web";
   const [[sess], [prev], busy] = await Promise.all([
-    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state`),
-    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in`),
+    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state&limit=1`),
+    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in&limit=1`),
     L.busySlots(client.id),
   ]);
   // 5 languages (Akhil, 5 Nov 2026): English, Telugu, Hindi, Tenglish, Hinglish. Script Telugu/Hindi use the engine's own
@@ -49,7 +49,7 @@ exports.handler = async (event) => {
   }
   // One open booking per website visitor: a second booking moves the first one instead of taking another slot.
   if (out.events.some((e) => e.type === "booking" && !e.replaces)) {
-    const [mine] = await L.db(`bookings?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&status=eq.confirmed&date_iso=gte.${L.istTodayIso()}&select=date_iso,slot`);
+    const [mine] = await L.db(`bookings?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&status=eq.confirmed&date_iso=gte.${L.istTodayIso()}&select=date_iso,slot&limit=1`);
     if (mine) out.events = out.events.map((e) => (e.type === "booking" && !e.replaces ? Object.assign({}, e, { replaces: mine }) : e));
   }
   if (!(await L.applyCalendarEvents(client, contact, out.events, src))) {

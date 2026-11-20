@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     try {
       const v = ch.value;
       if (!/^\d{1,20}$/.test(String(v.page_id || "")) || !/^\d{1,25}$/.test(String(v.leadgen_id || ""))) { console.warn("bad lead ids"); continue; }
-      const [client] = await db(`clients?meta_page_id=eq.${enc(v.page_id)}&active=eq.true&select=*`);
+      const [client] = await db(`clients?meta_page_id=eq.${enc(v.page_id)}&active=eq.true&select=*&limit=1`);
       if (!client) { console.warn("no client for page", v.page_id); continue; }
       const pageToken = await clientToken(client.id, "meta_page");
       if (!pageToken) { console.warn("no page token in Vault for client", client.id); continue; } // never fall back to the WhatsApp token
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       const contact = lead.phone || `meta:${v.leadgen_id}`;
       if (!(await firstTime("lead:" + v.leadgen_id))) continue; // Meta retried this lead
       const answers = Object.assign({ email: lead.email, ad_id: lead.ad_id, form_id: lead.form_id, consent: "meta_lead_form", consent_at: lead.created_time }, lead.answers);
-      const [existing] = await db(`leads?client_id=eq.${client.id}&contact=eq.${enc(contact)}&select=id,details,status,name`);
+      const [existing] = await db(`leads?client_id=eq.${client.id}&contact=eq.${enc(contact)}&select=id,details,status,name&limit=1`);
       if (existing) { // a known customer filled a form again: add the answers, keep their booking and history
         await db(`leads?id=eq.${existing.id}`, { method: "PATCH", prefer: "return=minimal", body: { details: Object.assign({}, existing.details, { meta_form: answers }), name: existing.name || lead.name, updated_at: new Date().toISOString() } });
       } else {

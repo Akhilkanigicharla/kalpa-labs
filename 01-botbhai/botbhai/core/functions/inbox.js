@@ -46,7 +46,7 @@ exports.handler = async (event) => {
   const auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || "";
   const token = (auth.match(/^Bearer\s+([a-f0-9-]{36})$/i) || [])[1] || "";
   if (!token) return L.json(401, { error: "invalid token" }, false);
-  const [client] = await L.db(`clients?dashboard_token=eq.${L.enc(token)}&active=eq.true&select=id,name,niche,phone_number_id,owner_whatsapp,config`);
+  const [client] = await L.db(`clients?dashboard_token=eq.${L.enc(token)}&active=eq.true&select=id,name,niche,phone_number_id,owner_whatsapp,config&limit=1`);
   if (!client) return L.json(401, { error: "invalid token" }, false);
   const now = Date.now(); const cfg = client.config || {};
   const q = event.queryStringParameters || {};
@@ -68,12 +68,12 @@ exports.handler = async (event) => {
   if (method === "POST") { try { input = JSON.parse(event.body || "{}"); } catch (e) { return L.json(400, { error: "bad json" }, false); } }
   const contact = String(input.contact || "");
   if (!CONTACT.test(contact) || contact === client.owner_whatsapp) return L.json(400, { error: "bad contact" }, false);
-  const [row] = await L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=contact,state,status,assigned_to,human_until,notes,last_inbound_at,updated_at`);
+  const [row] = await L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=contact,state,status,assigned_to,human_until,notes,last_inbound_at,updated_at&limit=1`);
   if (!row) return L.json(404, { error: "no such conversation" }, false);
 
   if (method === "GET") {
     const msgs = await L.db(`messages?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=id,direction,author,body,created_at&order=created_at.desc&limit=150`);
-    const [lead] = await L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name`);
+    const [lead] = await L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name&limit=1`);
     const messages = (msgs || []).slice() // latest 150, shown oldest first; id breaks ties inside one webhook insert
       .sort((a, b) => String(a.created_at || "").localeCompare(String(b.created_at || "")) || Number(a.id) - Number(b.id))
       .map((m) => ({ direction: m.direction, author: m.author || (m.direction === "in" ? "customer" : "bot"), body: m.body, created_at: m.created_at || null }));

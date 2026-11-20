@@ -61,8 +61,8 @@ async function handleUpdate(client, update) {
 
   const profileName = [msg.chat.first_name, msg.chat.last_name].filter(Boolean).join(" ") || null;
   const [[sess], [prev], busy] = await Promise.all([
-    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state`),
-    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in`),
+    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state&limit=1`),
+    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in&limit=1`),
     L.busySlots(client.id),
   ]);
   const state0 = sess ? sess.state : BotBhai.newState();
@@ -102,7 +102,7 @@ exports.handler = async (event) => {
   let update; try { update = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}"); } catch (e) { return L.json(200, { ok: true }); }
   try {
     if (!(await L.firstTime("tg:" + update.update_id))) return L.json(200, { ok: true }); // Telegram retry → already handled
-    const [client] = await L.db(`clients?id=eq.${clientId}&active=eq.true&select=*`);
+    const [client] = await L.db(`clients?id=eq.${clientId}&active=eq.true&select=*&limit=1`);
     if (client) await handleUpdate(client, update);
   } catch (err) { console.error(err); }
   return L.json(200, { ok: true }); // always 200 fast, or Telegram retries

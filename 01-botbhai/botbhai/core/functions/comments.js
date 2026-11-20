@@ -13,7 +13,7 @@ const ID = /^[0-9_]{1,40}$/;
 async function handleEvent(e, nowMs) {
   if (!ID.test(e.account_id) || !ID.test(e.comment_id) || !ID.test(e.from_id)) return "bad_ids";
   const col = e.platform === "instagram" ? "ig_user_id" : "meta_page_id";
-  const [client] = await L.db(`clients?${col}=eq.${L.enc(e.account_id)}&active=eq.true&select=*`);
+  const [client] = await L.db(`clients?${col}=eq.${L.enc(e.account_id)}&active=eq.true&select=*&limit=1`);
   if (!client) return "no_client";
   const cfg = client.config || {};
   const d = C.decide(e, cfg.comment_dm, nowMs);
@@ -29,7 +29,7 @@ async function handleEvent(e, nowMs) {
   }
   const contact = (e.platform === "instagram" ? "ig:" : "fb:") + e.from_id;
   const source = e.platform + "_comment";
-  const [prev] = await L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=id,details,status,name,source,marketing_opt_in`);
+  const [prev] = await L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=id,details,status,name,source,marketing_opt_in&limit=1`);
   const now = new Date(nowMs).toISOString();
   await Promise.all([
     L.saveLead(client, contact, { source, name: (prev && prev.name) || e.from_name, score: "warm", status: (prev && prev.status) || "new",

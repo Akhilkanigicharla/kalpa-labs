@@ -84,8 +84,8 @@ async function handleMessage(client, v, msg) {
   const phoneNumberId = client.phone_number_id; const contact = msg.from;
   const profileName = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || null;
   const [[sess], [prev], busy] = await Promise.all([
-    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state`),
-    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in`),
+    L.db(`sessions?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=state&limit=1`),
+    L.db(`leads?client_id=eq.${client.id}&contact=eq.${L.enc(contact)}&select=name,details,status,source,marketing_opt_in&limit=1`),
     L.busySlots(client.id),
   ]);
   const state0 = sess ? sess.state : BotBhai.newState();
@@ -156,7 +156,7 @@ exports.handler = async (event) => {
       try {
         if (IGNORE.has(msg.type)) continue;                       // 👍 reactions etc. never get a bot reply
         if (!(await L.firstTime(msg.id))) continue;               // Meta retry → already handled
-        const [client] = await L.db(`clients?phone_number_id=eq.${L.enc(pnid)}&active=eq.true&select=*`);
+        const [client] = await L.db(`clients?phone_number_id=eq.${L.enc(pnid)}&active=eq.true&select=*&limit=1`);
         if (!client) { console.warn("no client for", pnid); continue; }
         await handleMessage(client, v, msg);
       } catch (err) { console.error(err); }

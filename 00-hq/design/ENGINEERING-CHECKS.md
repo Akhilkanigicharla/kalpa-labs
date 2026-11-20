@@ -1,6 +1,6 @@
 # Engineering checks (from Akhil's reel, 12 Nov 2026)
 
-107 items from the "Who's gonna tell vibe coders about..." reel (screenshots in `checklists/engineering-reel-*.png`).
+107 items from the "Who's gonna tell vibe coders about..." reel, plus 6 scale items (108–113, 20 Nov 2026) (screenshots in `checklists/engineering-reel-*.png`).
 Every Kalpa page and service is checked against this list, plus `UX-PATTERNS.md` (20) and `SEO-CHECKS.md` (20).
 Status is for the public site (`00-hq/site`). Items that only matter where there are logins or a database name the world they apply to.
 
@@ -119,9 +119,9 @@ Its 20 items were compared with the list above. 14 were already covered. These 6
 
 | # | Item | What we do on the site | Status |
 |---|---|---|---|
-| 108 | Multiple Servers / Redundancy | Netlify CDN edges; Render n8n is one instance | fix: A295 |
+| 108 | Multiple Servers / Redundancy | Netlify CDN edges; chat calls models directly, so the single free Render router isn't on the path | done (per-world rows in each eng-check.md) |
 | 109 | Auto Scaling | Netlify functions scale by platform | platform |
 | 110 | Sharding | one small Supabase DB per world; not needed below ~10 lakh rows | not relevant (scale) |
-| 111 | Pagination + Limits | every list endpoint returns pages with a max size | fix: A295 |
-| 112 | Failover | free model router falls back; DB single region | fix: A295 |
-| 113 | Graceful Degradation | static page still works when a function or model is down | fix: A295 |
+| 111 | Pagination + Limits | every list read pages (dbAll/restAll) or has limit=; machine-checked | done (eng_check 111) |
+| 112 | Failover | AI calls fall back model → model → fixed reply; DB calls time out; machine-checked | done (eng_check 112) |
+| 113 | Graceful Degradation | every browser call catches failure and the page keeps working; machine-checked | done (eng_check 113) |

@@ -8,6 +8,7 @@ async function db(path, opts = {}) {
     method: opts.method || "GET",
     headers: { apikey: SUPABASE_KEY(), Authorization: `Bearer ${SUPABASE_KEY()}`, "Content-Type": "application/json", Prefer: opts.prefer || "return=representation" },
     body: opts.body ? JSON.stringify(opts.body) : undefined,
+    signal: AbortSignal.timeout(opts.timeoutMs || 10000), // a stuck database call must not hang the function (check 112/113)
   });
   if (!res.ok) { // the body can echo customer text, so only the status and error code go to the logs
     let code = ""; try { code = (JSON.parse(await res.text()) || {}).code || ""; } catch (e) { /* not json */ }
@@ -15,6 +16,19 @@ async function db(path, opts = {}) {
   }
   const txt = await res.text();
   return txt ? JSON.parse(txt) : null;
+}
+// Every row of a list, page by page (check 111). Supabase cuts any single reply at 1,000 rows, so a
+// plain db() over "all clients" would quietly skip customers once there are more. Stable order by id.
+async function dbAll(path, { page = 500, max = 20000 } = {}) {
+  const sep = path.includes("?") ? "&" : "?";
+  const order = /[?&]order=/.test(path) ? "" : "&order=id.asc";
+  const out = [];
+  for (let off = 0; off < max; off += page) {
+    const rows = (await db(`${path}${sep}limit=${page}&offset=${off}${order}`)) || [];
+    out.push(...rows);
+    if (rows.length < page) break;
+  }
+  return out;
 }
 // Public endpoints (website chat) allow any origin; private ones (owner dashboard) pass cors=false: same-site only.
 const json = (status, body, cors = true) => ({ statusCode: status, headers: Object.assign({ "Content-Type": "application/json" }, cors ? { "Access-Control-Allow-Origin": "*" } : {}), body: JSON.stringify(body) });
@@ -170,5 +184,5 @@ function metaSignatureOk(event) {
   return sig.length === expected.length && require("crypto").timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-module.exports = { metaSignatureOk, db, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { metaSignatureOk, db, dbAll, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

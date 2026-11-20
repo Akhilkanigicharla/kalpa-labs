@@ -1,6 +1,6 @@
 # Engineering checks: jobcard
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -26,9 +26,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | Timeouts: 02-jobcard/bot/functions/reminders.js | PASS | fetch without timeout |
 | Rate Limiting: 02-jobcard/bot/functions/reminders.js | PASS | scheduled job, no public caller |
 | Input caps: 02-jobcard/bot/functions/reminders.js | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 32 KB |
+| Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
+| Failover (AI calls fall back to another model or a fixed reply) | PASS | no AI calls |
+| Graceful Degradation (browser fetch failures are caught) | PASS | 2 file(s) call the server, all catch errors |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 34 KB |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -139,6 +142,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | platform: Netlify CDN + serverless; Supabase free = one region |
+| 109 | Auto Scaling | platform: Netlify functions scale per request |
+| 110 | Sharding | not relevant: rows per technician, small |
+| 111 | Pagination + Limits | done 20 Nov 2026: reminders and the app read technicians, customers, job cards and AMCs page by page (dbAll/restAll); lookups use limit=1 |
+| 112 | Failover | done: no AI model calls in functions; WhatsApp and database calls go through fetchRetry with timeouts |
+| 113 | Graceful Degradation | done: app catches failed loads; service worker keeps the app usable offline (sw.template.js) |
 
 ## A242 engine flow: store-review watcher (`00-hq/agent-engine/flows/b2-review-watcher.json`, 20 Nov 2026)
 | Check | Status |

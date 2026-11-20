@@ -81,7 +81,7 @@ async def ws(websocket: WebSocket):
     transport_type, call_data = await parse_telephony_websocket(websocket)
     caller = "".join(ch for ch in str(call_data.get("from_number") or call_data.get("body", {}).get("from", "")) if ch.isdigit())
     async with aiohttp.ClientSession() as http:
-        rows = await sb(http, f"clients?id=eq.{client_id}&active=eq.true&select=*")
+        rows = await sb(http, f"clients?id=eq.{client_id}&active=eq.true&select=*&limit=1")
         if not rows:
             await websocket.close()
             return
@@ -177,7 +177,7 @@ async def outbound_worker():
             if 9 <= hour < 21:
                 jobs = await sb(http, "jobs?type=eq.voice_call&status=eq.queued&order=run_at.asc&limit=5&select=*")
                 for j in jobs or []:
-                    client = (await sb(http, f"clients?id=eq.{j['client_id']}&select=*"))[0]
+                    client = (await sb(http, f"clients?id=eq.{j['client_id']}&select=*&limit=1"))[0]
                     frm = (client.get("config") or {}).get("voice_number")
                     if not frm:
                         await sb(http, f"jobs?id=eq.{j['id']}", "PATCH", {"status": "skipped", "result": {"why": "no voice_number"}}, prefer="return=minimal")

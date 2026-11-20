@@ -16,3 +16,7 @@ Added by Akhil on 12 Nov 2026: "Add this as new earning model and work on it", a
 | [Kalpa QR](qr/) | Dynamic QR codes that stop working when a trial ends | A dynamic-QR SaaS shows $7,524 MRR / 38,492 customers on TrustMRR; dynamic QR market ~$1.49B in 2026 (DIResearch); India is the fastest-growing QR market (Scanova); QR Code Generator Pro: 9,194 Trustpilot reviews averaging 1.5 stars over codes dying after 14 days (Pageloot, Trustpilot) | Building v1 (free tier, not live) |
 
 Research: [research/idea-scan-2026-11-12.md](research/idea-scan-2026-11-12.md).
+
+
+## Standard
+Every micro-app meets the Kalpa standard (153 checks: `00-hq/design/ENGINEERING-CHECKS.md` 113 + UX 20 + SEO 20) before it's ticked. When the first app's code lands, add it to `WORLDS` in `00-hq/tools/eng_check.py` and run `python3 00-hq/tools/eng_check.py <app> --md`.

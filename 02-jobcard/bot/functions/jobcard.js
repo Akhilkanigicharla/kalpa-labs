@@ -45,6 +45,16 @@ export async function db(path, { method = "GET", body, prefer } = {}) {
   if (!r.ok) throw new Error(`db ${method} ${path.split("?")[0]} ${r.status}`);
   const t = await r.text(); return t ? JSON.parse(t) : null;
 }
+// Every row of a list, page by page (Kalpa check 111): Supabase cuts one reply at 1,000 rows.
+export async function dbAll(path, { page = 500, max = 20000 } = {}) {
+  const sep = path.includes("?") ? "&" : "?", order = /[?&]order=/.test(path) ? "" : "&order=id.asc", out = [];
+  for (let off = 0; off < max; off += page) {
+    const rows = (await db(`${path}${sep}limit=${page}&offset=${off}${order}`)) || [];
+    out.push(...rows);
+    if (rows.length < page) break;
+  }
+  return out;
+}
 const rpc = (fn, args) => db(`rpc/${fn}`, { method: "POST", body: args });
 async function graph(path, { method = "GET", body, form } = {}) {
   const r = await fetchRetry(`${GRAPH}/${path}`, { method, body: form || (body && JSON.stringify(body)),
@@ -219,10 +229,10 @@ function intentOf(msg) {
 
 async function handleMessage(pnid, msg) {
   const from = msg.from; const phone10 = String(from).replace(/^91/, "");
-  const [tech] = await db(`technicians?phone=eq.${encodeURIComponent(phone10)}&select=*`);
+  const [tech] = await db(`technicians?phone=eq.${encodeURIComponent(phone10)}&select=*&limit=1`);
   if (!tech) return sendText(pnid, from, S.en.unknown + "\n\n" + S.te.unknown);
   const lang = tech.language || "te";
-  const [sess] = await db(`bot_sessions?technician_id=eq.${tech.id}&select=pending`);
+  const [sess] = await db(`bot_sessions?technician_id=eq.${tech.id}&select=pending&limit=1`);
   const pending = sess && sess.pending;
   const keep = (card) => db("bot_sessions?on_conflict=technician_id", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal",
     body: { technician_id: tech.id, pending: card, updated_at: new Date().toISOString() } });
@@ -246,7 +256,7 @@ async function handleMessage(pnid, msg) {
 
   let text = msg.type === "text" ? msg.text.body : "";
   if (msg.type === "audio") {
-    const [use] = await db(`usage_minutes?technician_id=eq.${tech.id}&month=eq.${istMonth()}&select=seconds`);
+    const [use] = await db(`usage_minutes?technician_id=eq.${tech.id}&month=eq.${istMonth()}&select=seconds&limit=1`);
     const vq = voiceQuota(tech.plan, use && use.seconds);
     if (vq.blocked) return sendText(pnid, from, say(lang, "quota", { min: vq.limitSeconds / 60 }));
     const heard = await transcribe(msg.audio.id, lang);

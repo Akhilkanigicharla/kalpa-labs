@@ -4,14 +4,14 @@
  * cost-per-lead, pauses losers if the client allowed autopilot (never more than half the ads a day), and WhatsApps
  * the owner a report. On Mondays it also sends every owner a 7-day lead summary.
  */
-const { db, graph, sendTemplate, sendText, templatesFor, clientToken } = require("./_lib.js");
+const { db, dbAll, graph, sendTemplate, sendText, templatesFor, clientToken } = require("./_lib.js");
 const { judgeAds, capPauses, adsReport, weeklySummary } = require("../automations.js");
 const ADS = { salon: require("../../setups/salon/ads.config.json"), realestate: require("../../setups/realestate/ads.config.json"), gym: require("../../setups/gym/ads.config.json"), examkits: require("../../setups/examkits/ads.config.json") };
 
 exports.handler = async () => {
   // Mondays (IST): weekly lead summary to every owner, ads or not
   if (new Date(Date.now() + 330 * 60000).getUTCDay() === 1) {
-    for (const c of await db("clients?active=eq.true&owner_whatsapp=not.is.null&select=*")) {
+    for (const c of await dbAll("clients?active=eq.true&owner_whatsapp=not.is.null&select=*")) {
       try {
         const leads = await db(`leads?client_id=eq.${c.id}&select=score,status,source,created_at,updated_at&order=updated_at.desc&limit=2000`);
         const text = weeklySummary((c.config || {}).business || c.name, leads, Date.now());
@@ -19,7 +19,7 @@ exports.handler = async () => {
       } catch (e) { console.error("weekly", c.name, e.message); }
     }
   }
-  const clients = await db("clients?active=eq.true&meta_ad_account_id=not.is.null&select=*");
+  const clients = await dbAll("clients?active=eq.true&meta_ad_account_id=not.is.null&select=*");
   for (const c of clients) {
     try {
       const adsToken = await clientToken(c.id, "meta_ads");

@@ -42,6 +42,16 @@ export function createApi({ url, anonKey, fetchFn = fetch, store, now = () => Da
     if (!r.ok) throw new Error(`${method} ${path.split("?")[0]} ${r.status}`);
     const txt = await r.text(); return txt ? JSON.parse(txt) : null;
   }
+  // Every row of a list, page by page (Kalpa check 111): Supabase cuts one reply at 1,000 rows.
+  async function restAll(path, page = 500, max = 20000) {
+    const out = [];
+    for (let off = 0; off < max; off += page) {
+      const rows = (await rest(`${path}&limit=${page}&offset=${off}`)) || [];
+      out.push(...rows);
+      if (rows.length < page) break;
+    }
+    return out;
+  }
   return {
     signedIn: () => !!session,
     sendOtp: (phone10) => auth("otp", { phone: `+91${phone10}` }),
@@ -52,11 +62,11 @@ export function createApi({ url, anonKey, fetchFn = fetch, store, now = () => Da
       const since = addDays(today, -400);
       const [tech, customers, jobs, invoices, amc, usage] = await Promise.all([
         rest("technicians?select=name,business_name,plan,language&limit=1"),
-        rest("customers?select=id,name,phone,area,opted_in_whatsapp&order=name"),
-        rest(`job_cards?select=customer_id,next_service,appliance,visited_at&visited_at=gte.${since}`),
+        restAll("customers?select=id,name,phone,area,opted_in_whatsapp&order=name,id"),
+        restAll(`job_cards?select=customer_id,next_service,appliance,visited_at&visited_at=gte.${since}&order=id`),
         rest("invoices?select=number,issued_on,payable_paise,paid,customer_id&order=issued_on.desc&limit=100"),
-        rest("amc_contracts?select=customer_id,ends_on,visits_per_year,price_paise"),
-        rest(`usage_minutes?select=seconds&month=eq.${today.slice(0, 8)}01`),
+        restAll("amc_contracts?select=customer_id,ends_on,visits_per_year,price_paise&order=id"),
+        rest(`usage_minutes?select=seconds&month=eq.${today.slice(0, 8)}01&limit=1`),
       ]);
       return { tech: tech[0] || null, customers, jobs, invoices, amc, usedSeconds: usage[0] ? usage[0].seconds : 0 };
     },

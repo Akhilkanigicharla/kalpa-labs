@@ -67,7 +67,7 @@ exports.handler = async (event) => {
   if (method === "GET" && q.v !== undefined) {
     if (!(await L.rateHit(`bill:ip:${ipOf(event)}`, 600, 60))) return html(429, '<!doctype html><meta charset="utf-8"><title>Slow down</title>Too many requests. Try again in a few minutes.');
     if (!/^[0-9a-f]{32}$/.test(String(q.v))) return notFound();
-    const [inv] = await L.db(`invoices?view_key=eq.${q.v}&select=*`);
+    const [inv] = await L.db(`invoices?view_key=eq.${q.v}&select=*&limit=1`);
     return inv ? html(200, B.invoiceHTML(inv, seller())) : notFound();
   }
 
@@ -97,7 +97,7 @@ exports.handler = async (event) => {
 
   if (action === "create") {
     if (!/^[\w-]{1,64}$/.test(String(input.client_id || ""))) return L.json(400, { error: "pick a client" }, false);
-    const [client] = await L.db(`clients?id=eq.${L.enc(input.client_id)}&select=id,name,niche,owner_whatsapp,config`);
+    const [client] = await L.db(`clients?id=eq.${L.enc(input.client_id)}&select=id,name,niche,owner_whatsapp,config&limit=1`);
     if (!client) return L.json(404, { error: "no such client" }, false);
     let bill;
     try { bill = B.computeBill((Array.isArray(input.items) ? input.items : []).map((it) => ({ desc: it && it.desc, qty: it && it.qty, rate: it && it.amount }))); }
@@ -114,13 +114,13 @@ exports.handler = async (event) => {
 
   const number = String(input.number || "");
   if (!NUMBER.test(number)) return L.json(400, { error: "bad invoice number" }, false);
-  const [inv] = await L.db(`invoices?number=eq.${L.enc(number)}&select=*`);
+  const [inv] = await L.db(`invoices?number=eq.${L.enc(number)}&select=*&limit=1`);
   if (!inv) return L.json(404, { error: "no such invoice" }, false);
   const patch = (body) => L.db(`invoices?number=eq.${L.enc(number)}`, { method: "PATCH", prefer: "return=minimal", body });
 
   if (action === "send" || action === "remind") {
     if (inv.status !== "due") return L.json(409, { error: `this invoice is ${inv.status}` }, false);
-    const [client] = await L.db(`clients?id=eq.${L.enc(inv.client_id)}&select=id,name,niche,phone_number_id,owner_whatsapp,config`);
+    const [client] = await L.db(`clients?id=eq.${L.enc(inv.client_id)}&select=id,name,niche,phone_number_id,owner_whatsapp,config&limit=1`);
     if (!client || !client.owner_whatsapp || !client.phone_number_id) return L.json(409, { error: "this client has no WhatsApp number set up" }, false);
     const late = B.overdueDays(inv);
     const text = action === "remind"

@@ -18,7 +18,7 @@ exports.handler = async (event) => {
   const auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || "";
   const token = (auth.match(/^Bearer\s+([a-f0-9-]{36})$/i) || [])[1] || "";
   if (!token) return json(401, { error: "invalid token" }, false);
-  const [client] = await db(`clients?dashboard_token=eq.${encodeURIComponent(token)}&select=id,name,niche`);
+  const [client] = await db(`clients?dashboard_token=eq.${encodeURIComponent(token)}&select=id,name,niche&limit=1`);
   if (!client) return json(401, { error: "invalid token" }, false);
   const leads = await db(`leads?client_id=eq.${client.id}&select=contact,name,score,status,details,source,created_at,updated_at&order=updated_at.desc&limit=1000`);
   const messages = await db(`messages?client_id=eq.${client.id}&select=contact,direction,body,created_at&order=created_at.desc&limit=500`);

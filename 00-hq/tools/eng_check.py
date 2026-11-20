@@ -1,5 +1,5 @@
 """Kalpa engineering standard checker: runs the machine-checkable rows of
-00-hq/design/ENGINEERING-CHECKS.md (107 items) against every world's web code.
+00-hq/design/ENGINEERING-CHECKS.md (113 items) against every world's web code.
 
 Usage:
   python3 00-hq/tools/eng_check.py            # all worlds, table + exit 1 on any FAIL
@@ -19,6 +19,9 @@ What it checks (per world, where it applies):
   timeouts          every server fetch() has a timeout or AbortSignal
   input caps        server functions cap input length
   budget            largest page + its JS under 250 KB
+  pagination (111)  every database list read (select=) carries a limit= or goes through dbAll/restAll paging
+  failover (112)    every server file that calls an AI model has a fallback model or reply
+  degradation (113) every browser file that calls the server catches the failure (page keeps working)
 Items that need a person or a running system (load test, pen test, backups...) stay in the md file as "manual".
 """
 import pathlib, re, sys
@@ -45,6 +48,21 @@ REVIEWED = {"app.js": "i18n text from our own dictionary + constant markup",
             "index.src.html": "fmt() escapes first; tables use esc()",
             "widget.js": "constant SVG markup"}
 KEY = re.compile(r"(sk-[A-Za-z0-9]{20,}|gsk_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{30,}|ghp_[A-Za-z0-9]{30,}|xox[bp]-[A-Za-z0-9-]{20,}|-----BEGIN (RSA )?PRIVATE KEY)")
+
+
+SELECT = re.compile(r"""\b(?:L\.)?(db|rest|sb|fetchFn|fetch|call)\(\s*(?:http,\s*)?f?[`"']([^`"'\n]*\?[^`"'\n]*select=[^`"'\n]*)[`"']""")
+LLM = re.compile(r"openrouter\.ai|api\.groq\.com|generativelanguage\.googleapis|api\.openai\.com|api-inference\.huggingface")
+
+
+def unpaged(path):
+    """Check 111: select= reads with no limit (POST inserts that return rows are fine)."""
+    src = path.read_text(encoding="utf-8", errors="ignore")
+    bad = []
+    for m in SELECT.finditer(src):
+        if "limit=" in m.group(2) or re.search(r"method:\s*['\"]POST", src[m.end(): m.end() + 240]):
+            continue
+        bad.append(f"{path.name}: {m.group(2)[:40]}")
+    return bad
 
 
 def files(folder, exts):
@@ -80,6 +98,8 @@ def run_py(name):
         if re.search(r"urlopen\((?![^)]*timeout)", src):
             nt.append(p.name)
     add("Timeouts (every HTTP call has timeout=)", not nt, ", ".join(sorted(set(nt))[:5]))
+    up = [b for p in py if p.suffix == ".py" for b in unpaged(p)]
+    add("Pagination + Limits (every list read has limit=)", not up, "; ".join(up[:4]) or "no unbounded list reads")
     return res
 
 
@@ -146,6 +166,15 @@ def run(name):
                 add(f"Rate Limiting: {rel}", bool(re.search(r"429|rate.?limit|limited\(", src, re.I)),
                     "webhook: platform-signed, rate set by sender" if hook else "no limit", warn=hook)
             add(f"Input caps: {rel}", bool(re.search(r"\.length\s*>\s*\d{2,}|slice\(0,\s*\d+|substring\(0,\s*\d+|413|max(Len|Length)", src)), "no input length cap", warn=True)
+    srv = [f for fdir in fns for f in files(fdir, {".js", ".mjs", ".ts"})]
+    up = [b for f in srv + js for b in unpaged(f)]
+    add("Pagination + Limits (every list read has limit= or pages)", not up, "; ".join(up[:4]) or "no unbounded list reads")
+    ai = [f for f in srv if LLM.search(f.read_text(encoding="utf-8", errors="ignore"))]
+    nofo = [f.name for f in ai if not re.search(r"fallback|MODELS|models\.json|next model|for \(const (m|model) of", f.read_text(encoding="utf-8", errors="ignore"), re.I)]
+    add("Failover (AI calls fall back to another model or a fixed reply)", not nofo, ", ".join(nofo[:4]) or (f"{len(ai)} file(s) call AI, all with fallback" if ai else "no AI calls"))
+    calls = [p for p in js if re.search(r"\bfetch\(", p.read_text(encoding="utf-8", errors="ignore"))]
+    nocatch = [p.name for p in calls if not re.search(r"\.catch\(|catch\s*(\(|\{)", p.read_text(encoding="utf-8", errors="ignore"))]
+    add("Graceful Degradation (browser fetch failures are caught)", not nocatch, ", ".join(nocatch[:4]) or (f"{len(calls)} file(s) call the server, all catch errors" if calls else "no server calls"))
     if pages:
         big = max(pages, key=lambda p: p.stat().st_size)
         size = big.stat().st_size + sum(p.stat().st_size for p in files(web, {".js", ".mjs"}) if p.parent == big.parent)
@@ -154,21 +183,36 @@ def run(name):
 
 
 def write_md(name, res):
+    """Rewrite the generated part, but KEEP what people filled in: a status that isn't 'manual'/'auto: …'
+    in the items table, and every section added below it (20 Nov 2026 fix: --md used to wipe them)."""
     rows = {r[0].split(":")[0]: r for r in res}
     items = [l.split("|")[2].strip() for l in (ROOT / "00-hq/design/ENGINEERING-CHECKS.md").read_text().splitlines() if re.match(r"\| \d+ \|", l)]
-    out = [f"# Engineering checks: {name}", "", "Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).",
+    out = [f"# Engineering checks: {name}", "", f"Standard: `00-hq/design/ENGINEERING-CHECKS.md` ({len(items)}) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).",
            "Machine rows come from `python3 00-hq/tools/eng_check.py " + name + " --md`; the rest are filled by hand.", "",
            "## Automatic checks", "", "| Check | Result | Note |", "|---|---|---|"]
     out += [f"| {a} | {b} | {c} |" for a, b, c in res]
-    out += ["", "## All 107 items (fill: done / not relevant + why / missing + roadmap id)", "", "| # | Item | Status |", "|---|---|---|"]
-    for i, it in enumerate(items, 1):
-        hit = next((r for k, r in rows.items() if k.lower().startswith(it.lower()[:14])), None)
-        out.append(f"| {i} | {it} | {'auto: ' + hit[1] if hit else 'manual'} |")
-    path = ROOT / WORLDS[name][3] / ("eng-check.md" if name not in ("extension-site",) else "eng-check-site.md")
+    path = ROOT / WORLDS[name][3] / ("eng-check-site.md" if name.endswith("-site") else "eng-check.md")   # finops + finops-site used to overwrite each other
     if name == "hq-site":
         path = ROOT / "00-hq/design/eng-check-site.md"
+    old = path.read_text(encoding="utf-8") if path.exists() else ""
+    kept, tail = {}, []
+    if old:
+        lines = old.splitlines()
+        for l in lines:
+            m = re.match(r"\| (\d+) \| ([^|]+) \| (.+) \|$", l)
+            if m and not re.match(r"(manual|auto: (PASS|WARN|FAIL))$", m.group(3).strip()):
+                kept[m.group(2).strip()] = m.group(3).strip()
+        heads = [i for i, l in enumerate(lines) if l.startswith("## ")]
+        gen = {"## Automatic checks"} | {l for l in lines if l.startswith("## All ")}
+        extra = [i for i in heads if lines[i] not in gen]
+        if extra:
+            tail = [""] + lines[extra[0]:]
+    out += ["", f"## All {len(items)} items (fill: done / not relevant + why / missing + roadmap id)", "", "| # | Item | Status |", "|---|---|---|"]
+    for i, it in enumerate(items, 1):
+        hit = next((r for k, r in rows.items() if k.lower().startswith(it.lower()[:14])), None)
+        out.append(f"| {i} | {it} | {kept.get(it) or ('auto: ' + hit[1] if hit else 'manual')} |")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(out) + "\n", encoding="utf-8")
+    path.write_text("\n".join(out + tail) + "\n", encoding="utf-8")
 
 
 def main():

@@ -1,6 +1,6 @@
 # Engineering checks: finops
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py finops --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -9,8 +9,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py finops --md`; the rest 
 |---|---|---|
 | Secrets Management (no keys in code) | PASS | keys only from environment / GitHub secrets |
 | Timeouts (every HTTP call has timeout=) | PASS |  |
+| Pagination + Limits (every list read has limit=) | PASS | no unbounded list reads |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -121,6 +122,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py finops --md`; the rest 
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | not relevant until hosted: the API is not deployed yet; the LiteLLM callback runs inside the client's own stack |
+| 109 | Auto Scaling | not relevant until hosted |
+| 110 | Sharding | not relevant at this size: usage events keyed by tenant; revisit above ~10 lakh rows |
+| 111 | Pagination + Limits | done: price pass reads usage events in limited pages (limit=); store calls time out (8 s, 20 Nov) |
+| 112 | Failover | not relevant: no AI calls in the API itself |
+| 113 | Graceful Degradation | done: browser calls catch errors (eng_check 113 on the site) |
 
 ## A242 engine flow: X-ray intake + 14-day purge (`00-hq/agent-engine/flows/b6-xray-intake.json`, 20 Nov 2026)
 | Check | Status |

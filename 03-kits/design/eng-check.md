@@ -1,6 +1,6 @@
 # Engineering checks: kits
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py kits --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -9,8 +9,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py kits --md`; the rest ar
 |---|---|---|
 | Secrets Management (no keys in code) | PASS | keys only from environment / GitHub secrets |
 | Timeouts (every HTTP call has timeout=) | PASS |  |
+| Pagination + Limits (every list read has limit=) | PASS | no unbounded list reads |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -121,6 +122,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py kits --md`; the rest ar
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | not relevant: kit files + scheduled scripts, no live server |
+| 109 | Auto Scaling | not relevant: no live traffic |
+| 110 | Sharding | not relevant: no database |
+| 111 | Pagination + Limits | done: no unbounded list reads (eng_check 111 PASS) |
+| 112 | Failover | not relevant: no live AI calls (kit content is made in batch and reviewed) |
+| 113 | Graceful Degradation | not relevant: no live server calls |
 
 ## A242 engine flow: exam-date alert drafts (`00-hq/agent-engine/flows/b3-exam-alerts.json`, 20 Nov 2026)
 | Check | Status |

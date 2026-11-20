@@ -1,6 +1,6 @@
 # Engineering checks: botbhai
 
-Standard: `00-hq/design/ENGINEERING-CHECKS.md` (107) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
+Standard: `00-hq/design/ENGINEERING-CHECKS.md` (113) + `UX-PATTERNS.md` (20) + `SEO-CHECKS.md` (20).
 Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest are filled by hand.
 
 ## Automatic checks
@@ -44,9 +44,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | Input caps: 01-botbhai/botbhai/core/functions/leads.js | PASS | no input length cap |
 | Rate Limiting: 01-botbhai/botbhai/core/functions/chat.js | PASS | no limit |
 | Input caps: 01-botbhai/botbhai/core/functions/chat.js | PASS | no input length cap |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 100 KB |
+| Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
+| Failover (AI calls fall back to another model or a fixed reply) | PASS | 1 file(s) call AI, all with fallback |
+| Graceful Degradation (browser fetch failures are caught) | PASS | 4 file(s) call the server, all catch errors |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.src.html: 101 KB |
 
-## All 107 items (fill: done / not relevant + why / missing + roadmap id)
+## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
 | # | Item | Status |
 |---|---|---|
@@ -157,6 +160,12 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | partly: web + functions on Netlify CDN/serverless; Supabase free tier is one region with no replica (paid only); covered by backups (check 13); voice agent is one process |
+| 109 | Auto Scaling | platform: Netlify functions scale per request; Supabase free has a fixed size |
+| 110 | Sharding | not relevant at this size: one shared schema keyed by client_id; revisit above ~10 lakh rows |
+| 111 | Pagination + Limits | done 20 Nov 2026: scheduled jobs read every client/booking page by page (dbAll, 500 per page, 20,000 cap); single-row lookups use limit=1; owner screens capped (200–5,000); test core/functions/paging.test.js (1,203 clients) |
+| 112 | Failover | done: AI replies fall back to the next free model, then to the fixed menu reply (core/fallback.js, aifallback.test.js); database calls time out after 10 s (20 Nov) |
+| 113 | Graceful Degradation | done: owner screens catch failed calls and keep working (eng_check 113); the WhatsApp bot answers from the fixed menu when AI is down |
 
 ## Webhook door (A245, `botbhai/webhook-door/`, 14 Nov 2026)
 Test: `node 01-botbhai/botbhai/webhook-door/test.mjs` (37 checks, also in `test-all.sh`).

@@ -9,7 +9,7 @@
  * Meta template (Akhil creates it, category Utility, te/hi/en): body "{{1}} customers are due for service this week: {{2}}.
  *   Tap below to remind each one from your own WhatsApp." URL button: https://<site>/?tab={{1}}
  */
-import { db } from "./jobcard.js";
+import { db, dbAll } from "./jobcard.js";
 import { dueCustomers } from "../../lib/reminders.mjs";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
@@ -33,14 +33,14 @@ async function sendTemplate(to, lang, count, names) {
 
 export async function runReminders({ now = Date.now() } = {}) {
   const today = istToday(now); const out = { technicians: 0, sent: 0, skipped: 0, failed: 0 };
-  const techs = await db("technicians?select=id,name,phone,language,plan");
+  const techs = await dbAll("technicians?select=id,name,phone,language,plan");
   for (const t of techs) {
     if (!REMINDER_PLANS.has(t.plan)) { out.skipped++; continue; }
     out.technicians++;
     try {
       const [jobs, customers] = await Promise.all([
-        db(`job_cards?technician_id=eq.${t.id}&visited_at=gte.${shift(today, -400)}&select=customer_id,next_service,appliance,visited_at`),
-        db(`customers?technician_id=eq.${t.id}&opted_in_whatsapp=eq.true&select=id,name,phone,opted_in_whatsapp`),
+        dbAll(`job_cards?technician_id=eq.${t.id}&visited_at=gte.${shift(today, -400)}&select=customer_id,next_service,appliance,visited_at`),
+        dbAll(`customers?technician_id=eq.${t.id}&opted_in_whatsapp=eq.true&select=id,name,phone,opted_in_whatsapp`),
       ]);
       const due = dueCustomers(jobs, customers, today);
       if (!due.length) continue;

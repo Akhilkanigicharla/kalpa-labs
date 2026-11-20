@@ -135,3 +135,15 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: HQ morning brief (`00-hq/agent-engine/flows/hq-morning-brief.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Input validation | done: roadmap lines parsed only inside "Agent queue" / "CEO queue", task files must be JSON lists, statuses whitelisted, K ids pattern-checked, 900 KB per file and 5000 task rows max (`test_hq_morning_brief.js`) |
+| Prompt injection | done: no model call; instruction-like roadmap text is not shown, only its id |
+| Output escaping | done: HTML-escaped, control/bidi chars stripped, titles cut at 90/110 whole characters (emoji + Telugu tests), message capped at 4000 chars |
+| Edge cases | done: empty queue, 300+300 open items (3 shown each), 8 blocked (6 shown), duplicate ids, two lanes claiming one item, CEO items waiting 7+ days (age kept in static data, closed ones forgotten) |
+| Timeouts / retries | done: 10 s timeout, 3 tries, 5 s apart, per file; one bad file is named and the rest still briefed |
+| Outage | done: ROADMAP.md unreadable → one warning a day, then silence |
+| Secrets / privacy | done: GET of public repo files only, no keys in the file, private Telegram chat only, no public URL, ships `active: false` |
+| Spam control | done: one message a day at 07:00 IST |

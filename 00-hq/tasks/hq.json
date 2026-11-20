@@ -894,9 +894,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "todo",
+  "status": "done",
   "created": "2026-11-20T03:10:00Z",
-  "updated": "2026-11-20T03:10:00Z",
+  "updated": "2026-11-20T05:40:00Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -906,7 +906,8 @@
   "min_items": 10,
   "id": "K130",
   "title": "A242 HQ flow (daily brief): 10 test cases for a morning-brief builder",
-  "details": "List 10 test cases (input + expected) for a flow that builds Akhil's private 07:00 IST brief from the roadmap JSON and the task files: normal day, no open items, 300 open items (cap), a blocked [!] item, a CEO-queue item older than 7 days, broken JSON, a row text that looks like an instruction, Telugu text, very long title, two sessions claiming one item. Plain JSON lines {case, input, expect}. No real names or links."
+  "details": "List 10 test cases (input + expected) for a flow that builds Akhil's private 07:00 IST brief from the roadmap JSON and the task files: normal day, no open items, 300 open items (cap), a blocked [!] item, a CEO-queue item older than 7 days, broken JSON, a row text that looks like an instruction, Telugu text, very long title, two sessions claiming one item. Plain JSON lines {case, input, expect}. No real names or links.",
+  "output": "Not needed: the build team wrote the 10 cases into 00-hq/agent-engine/flows/test_hq_morning_brief.js (20 Nov)."
  },
  {
   "priority": "P2",
@@ -924,5 +925,40 @@
   "id": "K131",
   "title": "A242 b6 flow (X-ray intake): 10 test cases for intake checks + 14-day purge",
   "details": "List 10 test cases (input + expected) for a flow that checks uploaded document metadata (file type, size, page count, upload date) and deletes files older than 14 days: normal PDF, 0-byte file, 30 MB file, .exe renamed .pdf, file exactly 14 days old, 15 days old, future upload date, missing date, Telugu filename, filename with ../ path. Metadata only, never file contents. Plain JSON lines {case, input, expect}."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T05:40:00Z",
+  "updated": "2026-11-20T05:40:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K132",
+  "title": "A276: licence + fit table for presenton, openshorts, open-seo, dify, paperless-ngx",
+  "details": "For each of the 5 open-source projects (presenton, openshorts, open-seo, dify, paperless-ngx) write one row: project | GitHub repo URL | licence name exactly as written in the repo's LICENSE file (say 'unverified' if you cannot see it) | any extra licence conditions (e.g. dify's added terms on multi-tenant SaaS and logo) | what a small Hyderabad business would pay us to set it up | setup + monthly price idea in INR | one risk. Plain markdown table, 5 rows. No invented facts: write 'unverified' when unsure.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md",
+   "00-hq/research/BRIEF.md"
+  ],
+  "min_items": 5
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T05:40:00Z",
+  "updated": "2026-11-20T05:40:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K133",
+  "title": "A219: plans for the last 4 Kalpa-standard site rows (error tracking, load test, profiling budget, pen test)",
+  "details": "For the Kalpa website (static site + one /api/chat serverless function, free tiers only) write a short plan for each of 4 rows: 1) error tracking: window.onerror + unhandledrejection sent to the chat function log, with no personal data (list exactly which fields to send and which to drop); 2) load test of /api/chat with k6 or autocannon in GitHub Actions: 50 virtual users, p95 under 5 s, count 429s (give the test settings and pass/fail rules); 3) Lighthouse CI budget file: suggested numbers for LCP, CLS, TBT, total bytes, script bytes for a phone page; 4) a safe passive pen-test checklist for our own live site (headers, CSP, open redirects, exposed files), no attacks on others. 4 sections, at least 2 concrete items each. Licences of any tool named (k6, autocannon, Lighthouse CI) as written in their repos, or 'unverified'.",
+  "read": [
+   "00-hq/design/ENGINEERING-CHECKS.md"
+  ],
+  "min_items": 8
  }
 ]

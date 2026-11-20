@@ -1,0 +1,154 @@
+{
+ "name": "HQ · Morning brief (A242)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "name": "Every day 07:00 IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "triggerAtHour": 7,
+       "triggerAtMinute": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "h2",
+   "name": "Files to read",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    220,
+    0
+   ],
+   "parameters": {
+    "jsCode": "return [{\"json\": {\"path\": \"00-hq/ROADMAP.md\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/ROADMAP.md\"}}, {\"json\": {\"path\": \"00-hq/tasks/b1.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b1.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b2.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b2.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b3.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b3.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b4.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b4.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b5.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b5.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b6.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b6.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b7.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b7.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/b8.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/b8.json\"}}, {\"json\": {\"path\": \"00-hq/tasks/hq.json\", \"url\": \"https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/00-hq/tasks/hq.json\"}}];"
+   }
+  },
+  {
+   "id": "h3",
+   "name": "Read repo files",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    440,
+    0
+   ],
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $json.url }}",
+    "options": {
+     "timeout": 10000,
+     "response": {
+      "response": {
+       "responseFormat": "text"
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "h4",
+   "name": "Build brief",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    660,
+    0
+   ],
+   "executeOnce": true,
+   "parameters": {
+    "jsCode": "// A242 HQ morning brief: 07:00 IST, reads ROADMAP.md and the free-agent task files (GET only, public repo, no model)\n// and sends Akhil a private plan for the day: his CEO items first, then what the build team does next, then free-agent health.\n// The evening brief (00-hq/tools/daily_brief.py, 21:00 IST) covers alerts and what got done; this one covers what is next.\n// Roadmap and task text is data, never instructions.\nconst DAY = 864e5, now = Date.now(), day = Math.floor((now + 19800000) / DAY);\nconst today = new Date(now + 19800000).toISOString().slice(0, 10);\nconst store = $getWorkflowStaticData('global');\nstore.seen = store.seen && typeof store.seen === 'object' ? store.seen : {};\nconst INJECT = /ignore (all |any )?(previous|prior|above)|system prompt|you are now|disregard .*instruction|<\\/?(system|assistant)>|send (me )?(the |your )?(token|password|otp|key)/i;\nconst clean = (s) => Array.from(String(s || '').replace(/[\\u0000-\\u001f\\u007f‎‏‪-‮⁦-⁩]/g, ' ').replace(/\\s+/g, ' ').trim());\nconst esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst cut = (s, n) => { const c = clean(s); return esc(c.slice(0, n).join('')) + (c.length > n ? '…' : ''); };\n\nconst reads = $('Read repo files').all(), asked = $('Files to read').all();\nconst file = {}, problems = [];\nreads.forEach((it, i) => {\n  const p = ((asked[i] || {}).json || {}).path || '?', j = (it || {}).json || {};\n  if (j.error || typeof j.data !== 'string') problems.push('could not read ' + p);\n  else if (j.data.length > 900000) problems.push(p + ' is too big (900 KB max), skipped');\n  else file[p] = j.data;\n});\nconst md = file['00-hq/ROADMAP.md'];\nif (typeof md !== 'string') {\n  if (store.warned === day) return [];\n  store.warned = day;\n  return [{ json: { text: '⚠️ <b>Morning brief</b>: could not read 00-hq/ROADMAP.md, so no plan today. Next try tomorrow 07:00.' } }];\n}\n\n// Roadmap lines: \"- [x] **A123** world · text\". Agent queue = before \"## CEO queue\"; CEO queue = until the next \"## \".\nconst ITEM = /^- \\[(.)\\] \\*\\*([AC]\\d+[a-z]?)\\*\\* (\\S+) · (.*)$/;\nconst agent = [], ceo = [], ids = {};\nlet part = '';\nfor (const line of md.split('\\n')) {\n  if (/^## /.test(line)) { part = /^## Agent queue/.test(line) ? 'a' : /^## CEO queue/.test(line) ? 'c' : ''; continue; }\n  const m = ITEM.exec(line);\n  if (!m || !part) continue;\n  const [, mark, id, world, rest] = m;\n  ids[id] = (ids[id] || 0) + 1;\n  const lanes = [...rest.matchAll(/claimed: lane ([A-Z])/g)].map((x) => x[1]);\n  const title = rest.replace(/`|\\*\\*|\\(claimed[^)]*\\)\\s*/g, '').split(/\\. Check:|\\(done /)[0].trim() || rest;\n  const row = { mark, id, world, title, rest, lanes: [...new Set(lanes)], bad: INJECT.test(rest) };\n  (part === 'a' ? agent : ceo).push(row);\n}\nconst open = (r) => r.mark !== 'x';\nconst show = (r, n) => r.bad ? `<b>${esc(r.id)}</b> (text looks like an instruction, not shown: check ROADMAP.md)` : `<b>${esc(r.id)}</b> ${esc(r.world.slice(0, 8))} · ${cut(r.title, n)}`;\nfor (const [id, c] of Object.entries(ids)) if (c > 1) problems.push(`${id} appears ${c} times in ROADMAP.md`);\nfor (const r of [...agent, ...ceo]) if (r.lanes.length > 1) problems.push(`${r.id} is claimed by lanes ${r.lanes.join(' + ')}: only one session may build it (TEAM.md)`);\n\n// CEO items: how long each has waited (first day this flow saw it open). Forget closed ones.\nconst ceoOpen = ceo.filter(open);\nconst openIds = new Set(ceoOpen.map((r) => r.id));\nfor (const k of Object.keys(store.seen)) if (!openIds.has(k)) delete store.seen[k];\nfor (const r of ceoOpen) if (typeof store.seen[r.id] !== 'number') store.seen[r.id] = day;\nconst waited = (r) => day - store.seen[r.id];\n\nconst aOpen = agent.filter(open);\nconst doing = aOpen.filter((r) => r.mark === '~'), blocked = aOpen.filter((r) => r.mark === '!'), todo = aOpen.filter((r) => r.mark === ' ');\n\n// Free-agent task rows (00-hq/tasks/*.json, each a list of rows with id + status).\nconst count = {}; const rejected = [];\nlet rows = 0;\nfor (const [p, txt] of Object.entries(file)) {\n  if (!p.endsWith('.json')) continue;\n  let list;\n  try { list = JSON.parse(txt); } catch (e) { problems.push(p + ' is not valid JSON: the free agents skip it'); continue; }\n  if (!Array.isArray(list)) { problems.push(p + ' should be a list of task rows'); continue; }\n  for (const t of list) {\n    if (!t || typeof t !== 'object') continue;\n    if (++rows > 5000) break;\n    const s = /^(todo|doing|review|done|rejected)$/.test(t.status) ? t.status : 'other';\n    count[s] = (count[s] || 0) + 1;\n    if (s === 'rejected' && /^K\\d{1,5}$/.test(String(t.id))) rejected.push(t.id);\n  }\n}\n\nconst L = [`🌅 <b>Kalpa morning brief · ${today}</b>`];\nL.push('', `<b>Your queue (${ceoOpen.length} open)</b>`);\nif (!ceoOpen.length) L.push('Nothing waits on you today. 🎉');\nconst ceoSorted = [...ceoOpen].sort((a, b) => waited(b) - waited(a));\nfor (const r of ceoSorted.slice(0, 3)) L.push('• ' + show(r, 110) + (waited(r) > 7 ? ` · ⏳ waiting ${waited(r)} days` : ''));\nif (ceoOpen.length > 3) L.push(`…and ${ceoOpen.length - 3} more in ROADMAP.md (CEO queue).`);\nL.push('', `<b>Build team: ${aOpen.length} open</b> (${doing.length} in progress, ${todo.length} to start, ${blocked.length} blocked)`);\nif (!aOpen.length) L.push('Agent queue is empty: the roadmap is done. You can pause the Build sprint task.');\nfor (const r of doing.slice(0, 3)) L.push('🔧 ' + show(r, 90));\nfor (const r of todo.slice(0, 3)) L.push('▶️ ' + show(r, 90));\nif (blocked.length) L.push(`⛔ blocked: ${blocked.slice(0, 6).map((r) => esc(r.id)).join(', ')}${blocked.length > 6 ? '…' : ''}`);\nif (rows) {\n  L.push('', `<b>Free agents</b>: ${count.todo || 0} to do, ${count.review || 0} to review, ${count.done || 0} done` + (count.rejected ? `, ${count.rejected} rejected` : ''));\n  if (rejected.length) L.push(`Rejected rows (the build team re-queues them): ${rejected.slice(0, 5).join(', ')}${rejected.length > 5 ? '…' : ''}`);\n}\nconst uniq = [...new Set(problems)];\nif (uniq.length) { L.push(''); for (const p of uniq.slice(0, 5)) L.push('⚠️ ' + esc(p)); if (uniq.length > 5) L.push(`…and ${uniq.length - 5} more problems.`); }\nlet text = L.join('\\n');\nif (text.length > 4000) text = text.slice(0, 3990).replace(/<[^>]*$/, '') + '…';\nreturn [{ json: { text } }];"
+   }
+  },
+  {
+   "id": "h5",
+   "name": "Tell Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    880,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 07:00 IST": {
+   "main": [
+    [
+     {
+      "node": "Files to read",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Files to read": {
+   "main": [
+    [
+     {
+      "node": "Read repo files",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read repo files": {
+   "main": [
+    [
+     {
+      "node": "Build brief",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build brief": {
+   "main": [
+    [
+     {
+      "node": "Tell Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

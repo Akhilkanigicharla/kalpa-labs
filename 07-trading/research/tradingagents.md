@@ -58,3 +58,7 @@ Workflow: `.github/workflows/tradingagents.yml` (pinned to commit `c4544913`, v0
   - Every figure matches the 19 Nov close in our own Yahoo data (point-in-time, no look-ahead).
   - Report: `07-trading/reports/tradingagents/NIFTYBEES-2026-11-20.md`.
 - SEC EDGAR returned 403 for an Indian ETF (expected; it falls back to Yahoo).
+- 21 Nov 2026, all 5 markets run (summary `07-trading/reports/tradingagents/SUMMARY-2026-11-20.md`).
+  - The free Gemini key allows **15 requests a minute** per model. JUNIORBEES hit it once and passed on a rerun.
+  - Run the markets one after another, not in parallel.
+  - Two figure slips, both caught by our check: a mislabelled stop (MON100) and a slightly different 52-week low (GOLDBEES).

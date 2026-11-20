@@ -1,0 +1,25 @@
+{
+ "status": "running",
+ "start": "2026-11-21",
+ "rule": "30+ trades and avg R >= +0.10",
+ "candidates": {
+  "1h_fresh_short_k2": {
+   "trades": 0,
+   "sum_r": 0.0,
+   "avg_r": null,
+   "verdict": "watch"
+  },
+  "1h_fresh_short_k2_story": {
+   "trades": 0,
+   "sum_r": 0.0,
+   "avg_r": null,
+   "verdict": "watch"
+  },
+  "4h_fresh_short_k5": {
+   "trades": 0,
+   "sum_r": 0.0,
+   "avg_r": null,
+   "verdict": "watch"
+  }
+ }
+}

@@ -48,6 +48,10 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python research/gold_ema9_msnr.py --paper paper/gold-ema9-msnr --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: MSNR gold, 3 closest versions under Akhil's rule (A309; paper only, same KILL switch)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: python research/msnr_gold_robust.py --paper paper/msnr-gold-robust --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Quant Brain intraday master over 25 agents (A280; paper only, replays today after the close)
         working-directory: 07-trading
         continue-on-error: true

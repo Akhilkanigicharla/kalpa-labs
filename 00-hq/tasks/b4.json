@@ -204,10 +204,10 @@
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T14:40:55Z",
-  "updated": "2026-11-20T14:40:55Z",
+  "updated": "2026-11-20T14:41:49Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "b4",
@@ -218,14 +218,15 @@
    "04-extensions/research/extension-2-review-mining.md"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K140.md"
+  "output": "00-hq/knowledge/K140.md",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  },
  {
   "priority": "P2",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T14:40:55Z",
-  "updated": "2026-11-20T14:40:55Z",
+  "updated": "2026-11-20T14:42:58Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "b4",
@@ -236,6 +237,7 @@
    "04-extensions/design/eng-check-site.md"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K141.md"
+  "output": "00-hq/knowledge/K141.md",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

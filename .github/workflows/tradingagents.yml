@@ -41,10 +41,10 @@ jobs:
     timeout-minutes: 40
     env:
       TRADINGAGENTS_LLM_PROVIDER: ${{ inputs.provider || 'google' }}
-      # google: Flash-Lite for the analysts/debaters (most calls), 2.5 Flash for the managers (free tier; 3.5 Flash is
-      # blocked on free keys per the Gemini forum, 21 Nov 2026). openrouter: the free Nemotron pair used before.
+      # google: 3.5 Flash-Lite for the analysts/debaters (most calls), 3.8 Flash for the managers (2.5 Flash is closed
+      # to new users per Google's 404, 21 Nov 2026). openrouter: the free Nemotron pair used before.
       TRADINGAGENTS_QUICK_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.5-flash-lite' || 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free' }}
-      TRADINGAGENTS_DEEP_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-2.5-flash' || 'nvidia/nemotron-3-super-120b-a12b:free' }}
+      TRADINGAGENTS_DEEP_THINK_LLM: ${{ (inputs.provider || 'google') == 'google' && 'gemini-3.8-flash' || 'nvidia/nemotron-3-super-120b-a12b:free' }}
       TRADINGAGENTS_OUTPUT_LANGUAGE: English
       TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
       TRADINGAGENTS_MAX_RISK_ROUNDS: "1"

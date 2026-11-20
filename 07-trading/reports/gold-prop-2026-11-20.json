@@ -1,0 +1,318 @@
+{
+ "challenge": {
+  "HF1|trend|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|donchian|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|revert|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|random|0.005": {
+   "starts": 492.0,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0.0,
+   "ev_per_attempt_rs": -4599.0
+  },
+  "HF1|trend|0.01": {
+   "starts": 492,
+   "pass": 0.258,
+   "fail": 0.313,
+   "timeout": 0.429,
+   "median_days_to_pass": 469.0,
+   "avg_6m_payout_if_passed": 260,
+   "ev_per_attempt_rs": -4532
+  },
+  "HF1|donchian|0.01": {
+   "starts": 492,
+   "pass": 0.026,
+   "fail": 0.482,
+   "timeout": 0.492,
+   "median_days_to_pass": 715.0,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|revert|0.01": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|random|0.01": {
+   "starts": 492.0,
+   "pass": 0.089,
+   "fail": 0.064,
+   "timeout": 0.847,
+   "median_days_to_pass": 452.0,
+   "avg_6m_payout_if_passed": 274.6,
+   "ev_per_attempt_rs": -4476.8
+  },
+  "HF1|trend|0.02": {
+   "starts": 492,
+   "pass": 0.02,
+   "fail": 0.87,
+   "timeout": 0.11,
+   "median_days_to_pass": 233.5,
+   "avg_6m_payout_if_passed": 15691,
+   "ev_per_attempt_rs": -4280
+  },
+  "HF1|donchian|0.02": {
+   "starts": 492,
+   "pass": 0.033,
+   "fail": 0.911,
+   "timeout": 0.057,
+   "median_days_to_pass": 162.5,
+   "avg_6m_payout_if_passed": 491,
+   "ev_per_attempt_rs": -4583
+  },
+  "HF1|revert|0.02": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.167,
+   "timeout": 0.833,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|random|0.02": {
+   "starts": 492.0,
+   "pass": 0.106,
+   "fail": 0.748,
+   "timeout": 0.146,
+   "median_days_to_pass": 227.75,
+   "avg_6m_payout_if_passed": 1111.4,
+   "ev_per_attempt_rs": -4189.0
+  },
+  "HF1|trend|0.03": {
+   "starts": 492,
+   "pass": 0.012,
+   "fail": 0.878,
+   "timeout": 0.11,
+   "median_days_to_pass": 133.5,
+   "avg_6m_payout_if_passed": 16483,
+   "ev_per_attempt_rs": -4398
+  },
+  "HF1|donchian|0.03": {
+   "starts": 492,
+   "pass": 0.018,
+   "fail": 0.925,
+   "timeout": 0.057,
+   "median_days_to_pass": 145.0,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -4599
+  },
+  "HF1|revert|0.03": {
+   "starts": 492,
+   "pass": 0.069,
+   "fail": 0.335,
+   "timeout": 0.596,
+   "median_days_to_pass": 266.5,
+   "avg_6m_payout_if_passed": 3248,
+   "ev_per_attempt_rs": -4375
+  },
+  "HF1|random|0.03": {
+   "starts": 492.0,
+   "pass": 0.081,
+   "fail": 0.882,
+   "timeout": 0.037,
+   "median_days_to_pass": 157.667,
+   "avg_6m_payout_if_passed": 2221.2,
+   "ev_per_attempt_rs": -4045.0
+  },
+  "GW2|trend|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|donchian|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|revert|0.005": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|random|0.005": {
+   "starts": 492.0,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0.0,
+   "ev_per_attempt_rs": -3499.0
+  },
+  "GW2|trend|0.01": {
+   "starts": 492,
+   "pass": 0.175,
+   "fail": 0.368,
+   "timeout": 0.457,
+   "median_days_to_pass": 533.5,
+   "avg_6m_payout_if_passed": 1443,
+   "ev_per_attempt_rs": -3247
+  },
+  "GW2|donchian|0.01": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.15,
+   "timeout": 0.85,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|revert|0.01": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.0,
+   "timeout": 1.0,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|random|0.01": {
+   "starts": 492.0,
+   "pass": 0.052,
+   "fail": 0.012,
+   "timeout": 0.936,
+   "median_days_to_pass": 540.5,
+   "avg_6m_payout_if_passed": 58.8,
+   "ev_per_attempt_rs": -3483.6
+  },
+  "GW2|trend|0.02": {
+   "starts": 492,
+   "pass": 0.004,
+   "fail": 0.848,
+   "timeout": 0.148,
+   "median_days_to_pass": 333.5,
+   "avg_6m_payout_if_passed": 31262,
+   "ev_per_attempt_rs": -3372
+  },
+  "GW2|donchian|0.02": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.886,
+   "timeout": 0.114,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|revert|0.02": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.069,
+   "timeout": 0.931,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|random|0.02": {
+   "starts": 492.0,
+   "pass": 0.096,
+   "fail": 0.598,
+   "timeout": 0.306,
+   "median_days_to_pass": 466.0,
+   "avg_6m_payout_if_passed": 1009.8,
+   "ev_per_attempt_rs": -3012.6
+  },
+  "GW2|trend|0.03": {
+   "starts": 492,
+   "pass": 0.073,
+   "fail": 0.817,
+   "timeout": 0.11,
+   "median_days_to_pass": 302.5,
+   "avg_6m_payout_if_passed": 38384,
+   "ev_per_attempt_rs": -690
+  },
+  "GW2|donchian|0.03": {
+   "starts": 492,
+   "pass": 0.0,
+   "fail": 0.925,
+   "timeout": 0.075,
+   "median_days_to_pass": null,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|revert|0.03": {
+   "starts": 492,
+   "pass": 0.035,
+   "fail": 0.264,
+   "timeout": 0.701,
+   "median_days_to_pass": 212.0,
+   "avg_6m_payout_if_passed": 0,
+   "ev_per_attempt_rs": -3499
+  },
+  "GW2|random|0.03": {
+   "starts": 492.0,
+   "pass": 0.109,
+   "fail": 0.827,
+   "timeout": 0.064,
+   "median_days_to_pass": 273.5,
+   "avg_6m_payout_if_passed": 1622.8,
+   "ev_per_attempt_rs": -3176.8
+  }
+ },
+ "strategy": {
+  "trend": {
+   "trades": 133,
+   "win": 0.256,
+   "avg_ret_pct": 0.466,
+   "sum_ret_pct": 62.0
+  },
+  "donchian": {
+   "trades": 84,
+   "win": 0.286,
+   "avg_ret_pct": -0.008,
+   "sum_ret_pct": -0.6
+  },
+  "revert": {
+   "trades": 92,
+   "win": 0.674,
+   "avg_ret_pct": -0.005,
+   "sum_ret_pct": -0.5
+  },
+  "random": {
+   "trades": 140,
+   "win": 0.379,
+   "avg_ret_pct": 0.027,
+   "sum_ret_pct": 3.7
+  }
+ }
+}

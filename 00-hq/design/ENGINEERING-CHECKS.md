@@ -113,3 +113,15 @@ Status is for the public site (`00-hq/site`). Items that only matter where there
 | 105 | Hashing vs Encryption | - | BotBhai owner app |
 | 106 | Salting | - | BotBhai owner app |
 | 107 | Penetration Testing | - | fix: A205 scan |
+
+### Added 20 Nov 2026: scale reel ("Vibe coded app production pe daali…", design_with_vinod)
+Its 20 items were compared with the list above. 14 were already covered. These 6 were missing:
+
+| # | Item | What we do on the site | Status |
+|---|---|---|---|
+| 108 | Multiple Servers / Redundancy | Netlify CDN edges; Render n8n is one instance | fix: A295 |
+| 109 | Auto Scaling | Netlify functions scale by platform | platform |
+| 110 | Sharding | one small Supabase DB per world; not needed below ~10 lakh rows | not relevant (scale) |
+| 111 | Pagination + Limits | every list endpoint returns pages with a max size | fix: A295 |
+| 112 | Failover | free model router falls back; DB single region | fix: A295 |
+| 113 | Graceful Degradation | static page still works when a function or model is down | fix: A295 |

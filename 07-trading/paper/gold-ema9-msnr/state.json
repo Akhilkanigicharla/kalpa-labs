@@ -1,0 +1,9 @@
+{
+ "status": "running",
+ "trades": 0,
+ "sum_R": 0.0,
+ "balance_usd": 50000,
+ "start": "2026-11-21",
+ "today": "2026-11-20",
+ "risk_usd": 400
+}

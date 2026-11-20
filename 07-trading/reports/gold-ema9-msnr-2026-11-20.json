@@ -1,0 +1,200 @@
+{
+ "generated": "2026-11-20",
+ "level": 3100.0,
+ "hourly": {
+  "level": {
+   "n": 1057,
+   "win": 0.357,
+   "avg_r": -0.003,
+   "pf": 1.0,
+   "total_r": -3.4,
+   "longs": 346,
+   "shorts": 711,
+   "placebo_avg_r": -0.067,
+   "p_not_better": 0.073
+  },
+  "level_since_peak": {
+   "n": 398,
+   "win": 0.349,
+   "avg_r": 0.002,
+   "pf": 1.0,
+   "total_r": 0.8,
+   "longs": 0,
+   "shorts": 398
+  },
+  "level_shorts_only": {
+   "n": 711,
+   "win": 0.359,
+   "avg_r": 0.015,
+   "pf": 1.02,
+   "total_r": 10.9,
+   "longs": 0,
+   "shorts": 711
+  },
+  "both": {
+   "n": 1591,
+   "win": 0.342,
+   "avg_r": -0.04,
+   "pf": 0.94,
+   "total_r": -63.5,
+   "longs": 805,
+   "shorts": 786,
+   "placebo_avg_r": -0.062,
+   "p_not_better": 0.254
+  },
+  "ema_d": {
+   "n": 1047,
+   "win": 0.366,
+   "avg_r": 0.025,
+   "pf": 1.04,
+   "total_r": 25.8,
+   "longs": 608,
+   "shorts": 439,
+   "placebo_avg_r": -0.07,
+   "p_not_better": 0.016
+  }
+ },
+ "daily": {
+  "both": {
+   "n": 687,
+   "win": 0.349,
+   "avg_r": -0.0,
+   "pf": 1.0,
+   "total_r": -0.3,
+   "longs": 369,
+   "shorts": 318,
+   "placebo_avg_r": 0.012,
+   "p_not_better": 0.583
+  },
+  "ema_d": {
+   "n": 682,
+   "win": 0.353,
+   "avg_r": 0.008,
+   "pf": 1.01,
+   "total_r": 5.7,
+   "longs": 362,
+   "shorts": 320,
+   "placebo_avg_r": -0.03,
+   "p_not_better": 0.253
+  }
+ },
+ "topstep": {
+  "level": {
+   "risk_$200": {
+    "starts": 116,
+    "pass_rate": 0.09,
+    "fail_rate": 0.76,
+    "median_days_to_pass": 77,
+    "avg_cost_usd_per_attempt": 205.0,
+    "cost_usd_per_pass": 2163.0
+   },
+   "risk_$400": {
+    "starts": 116,
+    "pass_rate": 0.23,
+    "fail_rate": 0.76,
+    "median_days_to_pass": 20,
+    "avg_cost_usd_per_attempt": 92.0,
+    "cost_usd_per_pass": 396.0
+   },
+   "risk_$600": {
+    "starts": 116,
+    "pass_rate": 0.21,
+    "fail_rate": 0.79,
+    "median_days_to_pass": 15,
+    "avg_cost_usd_per_attempt": 84.0,
+    "cost_usd_per_pass": 406.0
+   },
+   "journey_$400": {
+    "starts": 116,
+    "first_payout_rate": 0.09,
+    "avg_net_usd": -49.0,
+    "median_net_usd": -78.0,
+    "best_usd": 1216.0
+   },
+   "placebo_journey_$400": {
+    "first_payout_rate": 0.05,
+    "avg_net_usd": -77.0
+   }
+  },
+  "both": {
+   "risk_$200": {
+    "starts": 116,
+    "pass_rate": 0.12,
+    "fail_rate": 0.76,
+    "median_days_to_pass": 57,
+    "avg_cost_usd_per_attempt": 173.0,
+    "cost_usd_per_pass": 1432.0
+   },
+   "risk_$400": {
+    "starts": 116,
+    "pass_rate": 0.23,
+    "fail_rate": 0.77,
+    "median_days_to_pass": 11,
+    "avg_cost_usd_per_attempt": 79.0,
+    "cost_usd_per_pass": 341.0
+   },
+   "risk_$600": {
+    "starts": 116,
+    "pass_rate": 0.22,
+    "fail_rate": 0.78,
+    "median_days_to_pass": 8,
+    "avg_cost_usd_per_attempt": 78.0,
+    "cost_usd_per_pass": 362.0
+   },
+   "journey_$400": {
+    "starts": 116,
+    "first_payout_rate": 0.06,
+    "avg_net_usd": -38.0,
+    "median_net_usd": -78.0,
+    "best_usd": 1665.0
+   },
+   "placebo_journey_$400": {
+    "first_payout_rate": 0.05,
+    "avg_net_usd": -55.0
+   }
+  },
+  "ema_d": {
+   "risk_$200": {
+    "starts": 116,
+    "pass_rate": 0.29,
+    "fail_rate": 0.41,
+    "median_days_to_pass": 63,
+    "avg_cost_usd_per_attempt": 221.0,
+    "cost_usd_per_pass": 755.0
+   },
+   "risk_$400": {
+    "starts": 116,
+    "pass_rate": 0.31,
+    "fail_rate": 0.68,
+    "median_days_to_pass": 17,
+    "avg_cost_usd_per_attempt": 93.0,
+    "cost_usd_per_pass": 299.0
+   },
+   "risk_$600": {
+    "starts": 116,
+    "pass_rate": 0.32,
+    "fail_rate": 0.68,
+    "median_days_to_pass": 11,
+    "avg_cost_usd_per_attempt": 82.0,
+    "cost_usd_per_pass": 257.0
+   },
+   "journey_$400": {
+    "starts": 116,
+    "first_payout_rate": 0.04,
+    "avg_net_usd": -99.0,
+    "median_net_usd": -78.0,
+    "best_usd": 1325.0
+   },
+   "placebo_journey_$400": {
+    "first_payout_rate": 0.06,
+    "avg_net_usd": -55.0
+   }
+  }
+ },
+ "gold_peak": {
+  "date": "2026-01-29",
+  "close": 5318.4,
+  "last": 3513.2,
+  "last_date": "2026-11-20"
+ }
+}

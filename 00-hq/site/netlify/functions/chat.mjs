@@ -142,6 +142,16 @@ const json = (status, obj) => new Response(JSON.stringify(obj), { status, header
 // one JSON line per request for Netlify logs: no message text, no IP (DPDP: we log only what we need)
 const log = (status, t0, extra = {}) => console.log(JSON.stringify({ at: new Date().toISOString(), fn: "chat", status, ms: Date.now() - t0, ...extra }));
 
+// Browser error reports (row 53 Error Tracking): keep only what helps fix the bug, never personal data.
+// Kept: message (emails, phone-like numbers and URLs' query strings scrubbed, 200 chars), file name, line, col, kind.
+// Dropped: IP, user agent, page query, form values, full stack.
+export function cleanClientError(b) {
+  const scrub = (s, n) => String(s ?? "").replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "[email]").replace(/\+?\d[\d\s-]{6,}\d/g, "[number]").replace(/\?[^\s'")]*/g, "").slice(0, n);
+  const num = (v) => (Number.isInteger(v) && v >= 0 && v < 1e7 ? v : 0);
+  const file = scrub(String(b?.file ?? "").split("/").pop(), 60);
+  return { kind: b?.kind === "rejection" ? "rejection" : "error", msg: scrub(b?.msg, 200), file, line: num(b?.line), col: num(b?.col) };
+}
+
 export default async (req, context) => {
   const t0 = Date.now();
   const res = await handle(req, context);
@@ -154,6 +164,7 @@ async function handle(req, context) {
   const ip = context?.ip || req.headers.get("x-nf-client-connection-ip") || "anon";
   if (limited(ip)) return json(429, { output: "You're sending messages very fast 🙂 Please wait a minute and try again." });
   let body; try { body = await req.json(); } catch { return json(400, { error: "json" }); }
+  if (body?.type === "client_error") { log(204, Date.now(), { client_error: cleanClientError(body) }); return new Response(null, { status: 204 }); }
   const text = String(body?.chatInput || "").trim();
   if (!text) return json(400, { error: "empty" });
   if (text.length > 1000) return json(413, { error: "too long" }); // the box allows 500; anything bigger is not a person typing

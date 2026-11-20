@@ -83,7 +83,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 50 | Alerting | manual |
 | 51 | Distributed Tracing | manual |
 | 52 | Structured Logging | manual |
-| 53 | Error Tracking | manual |
+| 53 | Error Tracking | done (live after next deploy, C91): window.onerror + unhandledrejection → /api/chat `client_error` log line; emails, numbers, query strings scrubbed; 3 per page (`tests/test_error_beacon.py`, `chat.test.mjs`) |
 | 54 | Uptime Monitoring | manual |
 | 55 | Feature Flags | manual |
 | 56 | Staging Environments | manual |
@@ -94,9 +94,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 61 | API Versioning | manual |
 | 62 | API Documentation | manual |
 | 63 | Unit vs Integration vs End-to-End Tests | manual |
-| 64 | Load Testing | manual |
+| 64 | Load Testing | missing: A303: `tests/load_chat.mjs`: local 50 users p95 1.4 s PASS; live 20 Nov p95 8.1 s, 4/70 = 503, limiter gave 0 429s |
 | 65 | Debugging | manual |
-| 66 | Profiling | manual |
+| 66 | Profiling | missing: A302: Lighthouse budget `00-hq/site/lighthouserc.json` (job hq-site in lighthouse.yml): LCP 1.9 s, 275 KB, 0 third-party PASS; CLS 0.116 + TBT 1.1 s warn |
 | 67 | Time Zones | manual |
 | 68 | Character Encoding | manual |
 | 69 | Concurrency | manual |
@@ -137,7 +137,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 104 | Encryption in Transit | auto: PASS |
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
-| 107 | Penetration Testing | manual |
+| 107 | Penetration Testing | fix built, live after C91: `tests/pentest_live.py` (passive, ~25 requests): 21 pass, 3 fail (test + function source served) → 404 redirects in netlify.toml |
 | 108 | Multiple Servers / Redundancy | done: static pages on Netlify's CDN (many locations); chat is a serverless function; it calls Groq/OpenRouter directly, so the single free Render router is not needed |
 | 109 | Auto Scaling | platform: Netlify functions scale per request |
 | 110 | Sharding | not relevant: no database |

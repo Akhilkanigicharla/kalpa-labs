@@ -949,9 +949,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T05:40:00Z",
-  "updated": "2026-11-20T10:42:34Z",
+  "updated": "2026-11-20T16:45:17Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "hq",
@@ -981,5 +981,41 @@
   ],
   "min_items": 8,
   "output": "00-hq/knowledge/K138.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T16:45:17Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K142",
+  "title": "A303 prep: free shared stores a Netlify function can use for a per-visitor rate limit",
+  "details": "List 5 free options (no card) that a Netlify serverless function can call to keep a shared 'messages per visitor per minute' counter (e.g. Netlify Blobs, Upstash Redis free, Cloudflare KV via a Worker, Supabase table, Deno KV): name, how the count is stored (one example call), free-tier limits per day/month, latency notes, licence or terms link, official docs link. Mark anything not on an official page as UNVERIFIED. JSON lines.",
+  "read": [
+   "00-hq/site/netlify/functions/chat.mjs"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K142.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T16:45:17Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K143",
+  "title": "A221 prep: proof questions for 8 backend rows (BotBhai + JobCard)",
+  "details": "For each of these 8 Kalpa-standard backend rows: logins, IDOR, row-level security, backups, audit logs, token expiry, secret rotation, soft deletes, write: what 'done' means for a small Supabase + Netlify app, the one file or setting to look at, a concrete test that proves it (command or SQL), and the usual mistake. Plain English, numbered 1 to 8.",
+  "read": [
+   "01-botbhai/design/eng-check.md"
+  ],
+  "min_items": 8,
+  "output": "00-hq/knowledge/K143.md"
  }
 ]

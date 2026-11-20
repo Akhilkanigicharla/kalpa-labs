@@ -25,3 +25,20 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Row 107 pen test (20 Nov 2026): source and test files in this folder must not be served.
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/test_headers.py"
+  to = "/404.html"
+  status = 404
+  force = true

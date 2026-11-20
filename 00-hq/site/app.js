@@ -1,4 +1,9 @@
 (function(){
+/* row 53 Error Tracking: tell /api/chat about browser errors (message, file, line only; max 3 per page; the function scrubs personal data) */
+let errSent=0;
+const report=(kind,msg,file,line,col)=>{if(errSent++>=3)return;try{fetch('/api/chat',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'client_error',kind,msg:String(msg||'').slice(0,300),file:String(file||'').split('?')[0],line,col})}).catch(()=>{});}catch(e){}};
+addEventListener('error',e=>{if(e.message)report('error',e.message,e.filename,e.lineno,e.colno);});
+addEventListener('unhandledrejection',e=>report('rejection',e.reason&&e.reason.message||e.reason,'',0,0));
 const NS='http://www.w3.org/2000/svg';
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.append(e);return e;};

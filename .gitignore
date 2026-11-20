@@ -37,3 +37,4 @@ graft/
 06-finops/site/_dist/
 07-trading/deploy/dhan-cloud/dist/
 .wrangler/
+00-hq/site/.lighthouseci/

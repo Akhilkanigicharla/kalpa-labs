@@ -76,3 +76,23 @@ console.log("site chat tests passed (9 groups)");
   assert.ok(g.calls.length >= 2 && g.calls.every((c) => c.signal instanceof AbortSignal), "an outbound call has no timeout");
   console.log("ok - outbound calls time out");
 }
+
+// row 53 Error Tracking: browser error reports are logged without personal data
+{
+  const { cleanClientError } = await import("../netlify/functions/chat.mjs");
+  const c = cleanClientError({ kind: "error", msg: "x is undefined for ravi@mail.com +91 98765 43210 at https://kalpalabs.dpdns.org/?phone=9876543210", file: "https://kalpalabs.dpdns.org/app.js?v=1", line: 12, col: 4, ua: "Mozilla", ip: "1.2.3.4" });
+  assert.deepStrictEqual(Object.keys(c).sort(), ["col", "file", "kind", "line", "msg"]);
+  assert.ok(!/ravi|98765|phone=/.test(c.msg), c.msg);
+  assert.strictEqual(c.file, "app.js");
+  assert.strictEqual(cleanClientError({ msg: "a".repeat(5000), line: "<b>", col: -1 }).msg.length, 200);
+  assert.deepStrictEqual([cleanClientError({ line: "<b>", col: -1 }).line, cleanClientError({ col: -1 }).col], [0, 0]);
+  assert.strictEqual(cleanClientError({ kind: "<script>" }).kind, "error");
+  const lines = []; const orig = console.log; console.log = (l) => lines.push(l);
+  const r = await handler(new Request("http://x/api/chat", { method: "POST", body: JSON.stringify({ type: "client_error", msg: "boom 9876543210", file: "app.js" }) }), { ip: "err-test" });
+  console.log = orig;
+  assert.strictEqual(r.status, 204);
+  const logged = JSON.parse(lines.find((l) => l.includes("client_error")));
+  assert.strictEqual(logged.client_error.msg, "boom [number]");
+  assert.ok(!JSON.stringify(logged).includes("err-test"), "IP must not be logged");
+  console.log("client error beacon: PASS");
+}

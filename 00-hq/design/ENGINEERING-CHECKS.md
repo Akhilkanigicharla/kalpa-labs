@@ -58,7 +58,7 @@ Status is for the public site (`00-hq/site`). Items that only matter where there
 | 50 | Alerting | - | Telegram 9 PM |
 | 51 | Distributed Tracing | - | later |
 | 52 | Structured Logging | chat fn: one JSON line per request, no text or IP | done |
-| 53 | Error Tracking | - | fix: window.onerror beacon |
+| 53 | Error Tracking | window.onerror + unhandledrejection → /api/chat `client_error` log line; emails, numbers, query strings scrubbed; 3 per page (`tests/test_error_beacon.py`, `chat.test.mjs`) | done (live after next deploy, C91) |
 | 54 | Uptime Monitoring | - | scheduled check |
 | 55 | Feature Flags | - | later |
 | 56 | Staging Environments | Netlify deploy preview | check |
@@ -69,9 +69,9 @@ Status is for the public site (`00-hq/site`). Items that only matter where there
 | 61 | API Versioning | - | later |
 | 62 | API Documentation | - | later |
 | 63 | Unit vs Integration vs End-to-End Tests | unit + browser tests | done |
-| 64 | Load Testing | - | fix: chat fn load test |
+| 64 | Load Testing | `tests/load_chat.mjs`: local 50 users p95 1.4 s PASS; live 20 Nov p95 8.1 s, 4/70 = 503, limiter gave 0 429s | missing: A303 |
 | 65 | Debugging | systematic-debugging skill | done |
-| 66 | Profiling | - | fix: page weight check |
+| 66 | Profiling | Lighthouse budget `00-hq/site/lighthouserc.json` (job hq-site in lighthouse.yml): LCP 1.9 s, 275 KB, 0 third-party PASS; CLS 0.116 + TBT 1.1 s warn | missing: A302 |
 | 67 | Time Zones | IST shown | check |
 | 68 | Character Encoding | UTF-8, Telugu text | done |
 | 69 | Concurrency | - | BotBhai |
@@ -112,7 +112,7 @@ Status is for the public site (`00-hq/site`). Items that only matter where there
 | 104 | Encryption in Transit | HTTPS | done |
 | 105 | Hashing vs Encryption | - | BotBhai owner app |
 | 106 | Salting | - | BotBhai owner app |
-| 107 | Penetration Testing | - | fix: A205 scan |
+| 107 | Penetration Testing | `tests/pentest_live.py` (passive, ~25 requests): 21 pass, 3 fail (test + function source served) → 404 redirects in netlify.toml | fix built, live after C91 |
 
 ### Added 20 Nov 2026: scale reel ("Vibe coded app production pe daali…", design_with_vinod)
 Its 20 items were compared with the list above. 14 were already covered. These 6 were missing:

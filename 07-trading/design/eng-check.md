@@ -121,3 +121,15 @@ Machine rows come from `python3 00-hq/tools/eng_check.py trading --md`; the rest
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: paper-trade monitor + loss-cap guard (`00-hq/agent-engine/flows/b7-paper-monitor.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Money safety | done: watch only, no order, broker or Dhan call anywhere in the file (test); any ledger row not in `paper` mode raises a 🚨 line |
+| Limits drift | done: each track carries the bot's own limits read from `risk.py` at build time (Track A: day/week/month caps off, 20% pause); the test re-reads `risk.py` and fails on any drift |
+| Stop-loss / caps | done: open position without a stop-loss, pot over the ₹10,000 hard max, positions costing more than the pot, cash below ₹0, broken quantities all raise ⛔ |
+| Input validation | done: state JSON shape checked, marks with bad dates / NaN skipped, quoted CSV parsed, 2 MB state / 5 MB ledger limits, 20,000-row ledger tested |
+| Prompt injection / escaping | done: no model; symbols must match `[A-Z0-9&_-]`, other text HTML-escaped, control/bidi chars stripped (test) |
+| Timeouts / retries / outage | done: 10 s timeout, 3 tries 5 s apart; a missing or broken file becomes a ⛔ line, not a crash; stale runs (> 4 days) flagged |
+| Spam control | done: quiet when all is well, one "all OK" line on Fridays, same alert not repeated for 7 days, store pruned at 40 days, message under 4,096 chars |
+| Secrets / public URL | not relevant: public repo GETs only, no keys; schedule only, `active: false`, private Telegram to Akhil |

@@ -63,10 +63,11 @@
   ],
   "context_chars": 38000,
   "min_items": 15,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T08:50:00Z",
-  "updated": "2026-11-20T08:42:08Z",
-  "output": "00-hq/knowledge/K135.md"
+  "updated": "2026-11-20T11:20:00Z",
+  "output": "00-hq/knowledge/K135.md",
+  "note": "Used in A242 b7 flow test; K135 guessed a 3% day cap, repo risk.py says Track A caps are off (1%/2%/4% for swing tracks), tests follow the repo."
  },
  {
   "id": "K136",
@@ -87,5 +88,23 @@
   "output": "",
   "tries": 2,
   "vigil_notes": "FIX: incomplete, 5 of 12 required items. Write all 12, numbered 1 to 12."
+ },
+ {
+  "id": "K137",
+  "world": "b7",
+  "priority": "P2",
+  "owner": "Goldfish",
+  "title": "A290 prep: list of public NSE sources for Nifty 100 / Nifty 200 index changes 2011-2026",
+  "details": "Read the A290 line. List the public places where NSE (niftyindices.com / nseindia.com) published index reconstitution press releases and constituent CSVs for Nifty 100 and Nifty 200, year by year 2011-2026: page title, URL pattern, file format, what months it covers, and gaps. Only official NSE / NSE Indices pages; mark anything not checked as UNVERIFIED. No trade tips, no predictions.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "07-trading/README.md"
+  ],
+  "context_chars": 30000,
+  "min_items": 10,
+  "status": "todo",
+  "created": "2026-11-20T11:20:00Z",
+  "updated": "2026-11-20T11:20:00Z",
+  "output": "00-hq/knowledge/K137.md"
  }
 ]

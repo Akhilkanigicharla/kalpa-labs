@@ -387,10 +387,10 @@
  {
   "priority": "P2",
   "owner": "Forge",
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "created": "2026-11-20T18:50:00Z",
-  "updated": "2026-11-20T18:50:00Z",
+  "updated": "2026-11-20T18:50:39Z",
   "context_chars": 12000,
   "id": "K144",
   "world": "b1",
@@ -399,6 +399,7 @@
   "read": [
    "01-botbhai/PLAN.md"
   ],
-  "min_items": 5
+  "min_items": 5,
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

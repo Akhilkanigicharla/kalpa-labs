@@ -11,7 +11,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py extension --md`; the re
 | Encryption in Transit (no http:// links) | PASS |  |
 | Secrets Management (no keys in browser code) | PASS |  |
 | XSS sinks (innerHTML/eval with variables) | PASS |  |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 6 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 7 KB |
 
 ## All 107 items (fill: done / not relevant + why / missing + roadmap id)
 
@@ -124,3 +124,9 @@ Machine rows come from `python3 00-hq/tools/eng_check.py extension --md`; the re
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+| 108 | Multiple Servers / Redundancy | manual |
+| 109 | Auto Scaling | manual |
+| 110 | Sharding | manual |
+| 111 | Pagination + Limits | manual |
+| 112 | Failover | manual |
+| 113 | Graceful Degradation | manual |

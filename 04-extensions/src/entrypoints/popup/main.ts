@@ -21,11 +21,21 @@ async function refresh() {
     meta.append(name, sub);
     const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = x.ok ? `Opened ${plural(x.tabs, "tab")}${x.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
     const del = document.createElement("button"); del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
-    del.onclick = async () => { if (confirm(`Delete "${s.name}"?`)) { await send({ type: "delete", id: s.id }); await refresh(); } };
+    del.onclick = async () => { const r = await send({ type: "delete", id: s.id }); if (r.ok) offerUndo(s.id, s.name); await refresh(); };
     li.append(meta, open, del); ul.append(li);
   }
 }
 
+// A231: Delete needs no confirm; it moves the session to Recently deleted and offers Undo for 10 s.
+let undoT: ReturnType<typeof setTimeout> | undefined; let undoId = "";
+function offerUndo(id: string, name: string) {
+  undoId = id; $("undo-msg").textContent = `Deleted "${name.length > 40 ? `${name.slice(0, 40)}…` : name}".`; $("undo").hidden = false;
+  clearTimeout(undoT); undoT = setTimeout(() => { $("undo").hidden = true; }, 10_000);
+}
+$("undo-btn").addEventListener("click", async () => {
+  clearTimeout(undoT); const r = await send({ type: "undelete", id: undoId });
+  $("undo-msg").textContent = r.ok ? "Put back." : (r.error || "Could not undo."); setTimeout(() => { $("undo").hidden = true; }, 2500); await refresh();
+});
 $("save").addEventListener("click", async () => {
   const b = $<HTMLButtonElement>("save"); b.disabled = true;
   const r = await send<{ counts: { tabs: number; groups: number } }>({ type: "save" });

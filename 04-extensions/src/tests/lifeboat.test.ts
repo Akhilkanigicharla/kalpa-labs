@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { captureAll, chromeMajor, restore, type Br } from "../lib/capture";
 import { detectAndParse, parseOneTab, parseSessionBuddy } from "../lib/importers";
 import { countTabs, restorable, type Session } from "../lib/model";
-import { _clearForTests, listSessions, pruneAuto, putSession } from "../lib/store";
+import { _clearForTests, deleteForever, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
 // @ts-expect-error plain .mjs helper
 import { onetabText, sessionBuddyV3, sessionBuddyV4 } from "./fixtures/make-fixtures.mjs";
 
@@ -144,5 +144,37 @@ describe("capture and restore (E3)", () => {
   it("restorable() only reopens web URLs (no local files from an imported list)", () => {
     expect(["https://x.test", "http://x.test"].every(restorable)).toBe(true);
     expect(["file:///C:/Users/a.pdf", "ftp://x.test", "chrome://settings", "about:blank", "javascript:alert(1)", "data:text/html,x", ""].some(restorable)).toBe(false);
+  });
+});
+
+describe("A231 undo delete: Recently deleted keeps a session 7 days", () => {
+  const mk = (id: string, name: string): Session => ({ id, name, kind: "manual", createdAt: 1, windows: [{ tabs: [{ url: `https://x.test/${id}`, title: name }] }] }) as unknown as Session;
+  beforeEach(async () => { await _clearForTests(); });
+  it("delete moves to Recently deleted, undo puts it back unchanged", async () => {
+    const s = mk("s1", "తెలుగు 🚀 <b>x</b>"); await putSession(s);
+    expect(await trashSession("s1", 1000)).toBe(true);
+    expect(await listSessions()).toEqual([]);
+    expect((await listTrash(1000)).map((t) => [t.id, t.deletedAt])).toEqual([["s1", 1000]]);
+    expect(await undeleteSession("s1")).toBe(true);
+    expect(await listSessions()).toEqual([s]);
+    expect(await listTrash(1000)).toEqual([]);
+  });
+  it("unknown ids are refused, not crashed", async () => {
+    expect(await trashSession("nope")).toBe(false);
+    expect(await undeleteSession("nope")).toBe(false);
+    expect(await deleteForever("nope")).toBe(false);
+  });
+  it("after 7 days it is gone for good; before that it stays; newest deleted first", async () => {
+    await putSession(mk("a", "A")); await putSession(mk("b", "B"));
+    await trashSession("a", 0); await trashSession("b", 1000);
+    expect((await listTrash(7 * 864e5 - 1)).map((t) => t.id)).toEqual(["b", "a"]);
+    expect((await listTrash(7 * 864e5 + 1)).map((t) => t.id)).toEqual(["b"]);   // a expired and purged
+    expect(await purgeTrash(7 * 864e5 + 2000)).toBe(1);
+    expect(await listTrash(0)).toEqual([]);
+  });
+  it("delete forever skips the 7 days", async () => {
+    await putSession(mk("c", "C")); await trashSession("c");
+    expect(await deleteForever("c")).toBe(true);
+    expect(await listTrash()).toEqual([]); expect(await undeleteSession("c")).toBe(false);
   });
 });

@@ -36,3 +36,5 @@ li.empty { color: var(--muted); justify-content: center; }
 details { margin-top: 16px; } summary { cursor: pointer; color: var(--accent); font-weight: 600; }
 textarea { width: 100%; margin-top: 8px; border-radius: 12px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); padding: 8px; font: 12px var(--f-mono); }
 .link { display: block; margin: 12px auto 0; border: 0; background: none; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.undo { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 4px 4px 4px 12px; }
+.undo[hidden] { display: none; }

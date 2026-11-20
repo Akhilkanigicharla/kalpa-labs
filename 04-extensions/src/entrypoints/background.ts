@@ -2,7 +2,7 @@ import { captureAll, restore } from "../lib/capture";
 import { detectAndParse } from "../lib/importers";
 import { backupFileName, parseBackup, toBackup } from "../lib/backup";
 import { countTabs } from "../lib/model";
-import { LIMITS, deleteSession, getSession, listSessions, pruneAuto, putSession } from "../lib/store";
+import { LIMITS, deleteForever, getSession, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
 import { DRIVE_SCOPE, DriveError, deviceName, driveFileName, gunzip, gzip, list as driveList, download as driveDownload, remove as driveRemove, sha256, toPrune, upload as driveUpload, type DriveDeps } from "../lib/drive";
 import { backupDue, findDuplicates, findStale, searchTabs, tabTimeline, upgradeNudge, type OpenTab } from "../lib/tools";
 
@@ -100,7 +100,7 @@ export default defineBackground(() => {
   browser.runtime.onStartup.addListener(() => browser.alarms.create("drive-backup", { periodInMinutes: 60 }));
   browser.alarms.onAlarm.addListener((a) => {
     if (a.name === "snapshot") void snapshot();
-    if (a.name === "daily-backup") void dailyBackup();
+    if (a.name === "daily-backup") { void dailyBackup(); void purgeTrash(); }
     if (a.name === "drive-backup") void driveOnce(false).catch(() => { /* error saved for the settings page */ });
   });
 
@@ -113,7 +113,10 @@ export default defineBackground(() => {
         case "status": { const { lastSnapshot, lastFileAt, lastBackupAt } = await browser.storage.local.get(["lastSnapshot", "lastFileAt", "lastBackupAt"]); const files = [lastFileAt, lastBackupAt].filter((x): x is number => typeof x === "number"); return { ok: true, lastSnapshot: lastSnapshot ?? null, lastFileAt: files.length ? Math.max(...files) : null, sessions: (await listSessions()).length, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false, plan: await plan(), every: SNAPSHOT_MINUTES, limits: LIMITS }; }
         case "list": return { ok: true, sessions: (await listSessions()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) })) };
         case "restore": { const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" }; return { ok: true, ...(await restore(br, s)) }; }
-        case "delete": await deleteSession(msg.id!); return { ok: true };
+        case "delete": return (await trashSession(msg.id ?? "")) ? { ok: true } : { ok: false, error: "That session is already gone." };   // A231: 7 days in Recently deleted
+        case "trash-list": return { ok: true, sessions: (await listTrash()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, deletedAt: s.deletedAt, ...countTabs(s) })) };
+        case "undelete": return (await undeleteSession(msg.id ?? "")) ? { ok: true } : { ok: false, error: "That session is no longer in Recently deleted." };
+        case "delete-forever": return (await deleteForever(msg.id ?? "")) ? { ok: true } : { ok: false, error: "That session is already gone." };
         case "preview-import": { const p = detectAndParse(msg.text ?? ""); return { ok: true, tabs: p.tabs, groups: p.groups, skipped: p.skipped, format: p.format }; }
         case "import": {
           const p = detectAndParse(msg.text ?? ""); await putSession(p.session);

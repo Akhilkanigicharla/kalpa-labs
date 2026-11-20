@@ -23,7 +23,7 @@ Tests (all PASS): `npm test` (34), `npm run test:screens` (real built extension,
 | 16 | Referral pages | ➖ Not in v1. |
 | 17 | Custom 404 | ✅ Store site has a branded 404 (A191). |
 | 18 | Mobile-optimised layout | ✅ Store site passes the 390 px tap sweep (fixed 9 Nov: header logo link 32 → 44 px). Popup/options: no sideways scroll at 390 px; buttons raised from 36 px to 44 px (fixed 9 Nov). |
-| 19 | Destructive action protection | ✅ Delete asks first ("This can't be undone"); cleanup saves "Before cleanup" first so it can be undone. |
+| 19 | Destructive action protection | ✅ Delete moves a session to "Recently deleted" for 7 days with a 10 s Undo bar (A231; no confirm box to click through); "Delete forever" asks first; cleanup saves "Before cleanup" first so it can be undone. |
 | 20 | Graceful error recovery | ✅ Fixed 9 Nov: if the background is busy or asleep, popup and options show "Tab Lifeboat is busy. Try again." instead of failing silently; import and restore errors are shown in words. |
 
 No ❌ left.

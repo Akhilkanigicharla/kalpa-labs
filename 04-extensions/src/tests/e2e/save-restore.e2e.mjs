@@ -64,6 +64,26 @@ try {
   await popup.evaluate((sid) => chrome.runtime.sendMessage({ type: "rename", id: sid, name: "Renamed" }), saved.session.id);
   const l2 = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
   check(l2.sessions.some((s) => s.name === "Renamed"), "rename saved");
+  // A231 delete → undo, the way a user does it: tap Delete in the popup (no confirm), then Undo
+  await popup.reload(); await popup.waitForTimeout(300);
+  let dialogs = 0; popup.on("dialog", (d) => { dialogs++; void d.dismiss(); });
+  await popup.getByRole("button", { name: "Delete Renamed" }).click();
+  await popup.locator("#undo").waitFor({ state: "visible" });
+  const gone = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
+  const bin = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "trash-list" }));
+  check(dialogs === 0 && !gone.sessions.some((s) => s.name === "Renamed") && bin.sessions.some((s) => s.name === "Renamed"), "Delete moves the session to Recently deleted without a confirm box");
+  const ub = await popup.locator("#undo-btn").boundingBox();
+  check(ub && ub.height >= 44, `Undo button is ${ub?.height} px tall`);
+  await popup.locator("#undo-btn").click(); await popup.waitForTimeout(300);
+  const back = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }));
+  const bin2 = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "trash-list" }));
+  check(back.sessions.some((s) => s.name === "Renamed" && s.tabs === saved.counts.tabs) && !bin2.sessions.length, "Undo puts it back with every tab");
+  await popup.evaluate((sid) => chrome.runtime.sendMessage({ type: "delete", id: sid }), saved.session.id);
+  const tr = await ctx.newPage(); await tr.goto(`chrome-extension://${id}/options.html`); await tr.waitForTimeout(500);
+  check((await tr.locator("#trash li").first().textContent())?.includes("Renamed"), "options page lists it under Recently deleted");
+  await tr.getByRole("button", { name: "Put back Renamed" }).click(); await tr.waitForTimeout(300);
+  check((await tr.locator("#list").textContent())?.includes("Renamed") && /Nothing deleted/.test((await tr.locator("#trash").textContent()) ?? ""), "Put back on the options page works");
+  await tr.close();
   const locked = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
   check(!locked.ok && locked.error === "pro", "cleanup is Pro-only for free users");
   await sw.evaluate(() => chrome.storage.local.set({ plan: "pro" }));

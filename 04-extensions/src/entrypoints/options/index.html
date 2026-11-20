@@ -60,7 +60,13 @@
       <section class="card" aria-labelledby="h-list">
         <div class="row"><h2 id="h-list">Saved sessions</h2>
           <input id="q" type="search" placeholder="Search names" aria-label="Search saved sessions" /></div>
+        <p id="undo" class="hint undo" role="status" hidden><span id="undo-msg"></span> <button id="undo-btn" type="button">Undo</button></p>
         <ul id="list" class="sessions" aria-live="polite"><li class="empty">Loading…</li></ul>
+      </section>
+      <section class="card" aria-labelledby="h-trash">
+        <h2 id="h-trash">Recently deleted</h2>
+        <p class="hint">Deleted sessions stay here for 7 days, then they are gone for good.</p>
+        <ul id="trash" class="sessions" aria-live="polite"><li class="empty">Loading…</li></ul>
       </section>
       <section class="card" aria-labelledby="h-find">
         <h2 id="h-find">Find a tab</h2>

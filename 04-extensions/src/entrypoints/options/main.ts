@@ -33,10 +33,41 @@ function draw() {
     const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Rename"; ren.setAttribute("aria-label", `Rename ${s.name}`);
     ren.onclick = async () => { const v = prompt("New name for this session", s.name); if (v && v.trim() && v.trim() !== s.name) { await send({ type: "rename", id: s.id, name: v }); await refresh(); } };
     const del = document.createElement("button"); del.type = "button"; del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
-    del.onclick = async () => { if (confirm(`Delete "${s.name}"? This can't be undone.`)) { await send({ type: "delete", id: s.id }); await refresh(); } };
+    del.onclick = async () => { const r = await send({ type: "delete", id: s.id }); if (r.ok) offerUndo(s.id, s.name); await refresh(); };
     li.append(meta, open, ren, del); ul.append(li);
   }
 }
+
+type Gone = Row & { deletedAt: number };
+async function drawTrash() {
+  const r = await send<{ sessions: Gone[] }>({ type: "trash-list" }); const ul = $("trash"); ul.replaceChildren();
+  const one = (t: string) => { const li = document.createElement("li"); li.className = "empty"; li.textContent = t; ul.append(li); };
+  if (!r.ok) return one(err(r.error));
+  if (!r.sessions?.length) return one("Nothing deleted in the last 7 days.");
+  for (const s of r.sessions) {
+    const li = document.createElement("li");
+    const meta = document.createElement("div"); meta.className = "meta";
+    const name = document.createElement("strong"); name.textContent = s.name;
+    const left = Math.max(1, 7 - Math.floor((Date.now() - s.deletedAt) / 864e5));
+    const sub = document.createElement("span"); sub.textContent = `${plural(s.tabs, "tab")} · deleted ${ago(s.deletedAt)} · gone in ${plural(left, "day")}`;
+    meta.append(name, sub);
+    const back = document.createElement("button"); back.type = "button"; back.textContent = "Put back"; back.setAttribute("aria-label", `Put back ${s.name}`);
+    back.onclick = async () => { const x = await send({ type: "undelete", id: s.id }); if (!x.ok) back.textContent = err(x.error); await refresh(); };
+    const gone = document.createElement("button"); gone.type = "button"; gone.className = "ghost"; gone.textContent = "Delete forever"; gone.setAttribute("aria-label", `Delete ${s.name} forever`);
+    gone.onclick = async () => { if (confirm(`Delete "${s.name}" forever? This can't be undone.`)) { await send({ type: "delete-forever", id: s.id }); await drawTrash(); } };
+    li.append(meta, back, gone); ul.append(li);
+  }
+}
+// A231: Delete needs no confirm; it moves the session to Recently deleted and offers Undo for 10 s.
+let undoT: ReturnType<typeof setTimeout> | undefined; let undoId = "";
+function offerUndo(id: string, name: string) {
+  undoId = id; $("undo-msg").textContent = `Deleted "${name.length > 40 ? `${name.slice(0, 40)}…` : name}".`; $("undo").hidden = false;
+  clearTimeout(undoT); undoT = setTimeout(() => { $("undo").hidden = true; }, 10_000);
+}
+$("undo-btn").addEventListener("click", async () => {
+  clearTimeout(undoT); const r = await send({ type: "undelete", id: undoId });
+  $("undo-msg").textContent = r.ok ? "Put back." : (r.error || "Could not undo."); setTimeout(() => { $("undo").hidden = true; }, 2500); await refresh();
+});
 
 async function refresh() {
   const [list, st] = await Promise.all([send<{ sessions: Row[] }>({ type: "list" }), send<Status>({ type: "status" })]);
@@ -59,7 +90,7 @@ async function refresh() {
   }
   $("every").textContent = String(st.every ?? 5);
   if (st.limits) { $("free-n").textContent = String(st.limits.freeAutoSnapshots); $("pro-d").textContent = String(st.limits.proAutoDays); }
-  draw();
+  draw(); await drawTrash();
 }
 
 $("q").addEventListener("input", draw);

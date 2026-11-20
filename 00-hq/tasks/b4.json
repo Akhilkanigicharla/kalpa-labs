@@ -151,9 +151,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-19T20:42:05Z",
+  "updated": "2026-11-20T14:40:55Z",
   "output": "00-hq/knowledge/K124.md",
   "context_chars": 8000,
   "world": "b4",
@@ -169,9 +169,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T08:10:00Z",
-  "updated": "2026-11-20T08:41:44Z",
+  "updated": "2026-11-20T14:40:55Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "b4",
@@ -201,5 +201,41 @@
   ],
   "min_items": 8,
   "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T14:40:55Z",
+  "updated": "2026-11-20T14:40:55Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "b4",
+  "id": "K140",
+  "title": "A217 prep: 5 Manifest V2 extensions removed 31 Aug 2026 with no working replacement",
+  "details": "From public pages only (Chrome Web Store listings, news, GitHub issues, Reddit threads quoted in news). For each of 5 candidates: name, users before removal, rating, last update, does a working MV3 replacement exist today (name + link), top 3 one-star complaints, one way to charge, two source links. Mark anything you cannot source as UNVERIFIED. JSON lines.",
+  "read": [
+   "04-extensions/research/extension-2-review-mining.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K140.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T14:40:55Z",
+  "updated": "2026-11-20T14:40:55Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "b4",
+  "id": "K141",
+  "title": "A232 prep: free static hosts that let a site set its own security headers",
+  "details": "List 5 free static hosting options (no card) that let a site send custom HTTP headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Permissions-Policy): host, how headers are set (file name + one example line), free-tier limits, link to the official docs page. Mark anything not on an official page as UNVERIFIED. JSON lines.",
+  "read": [
+   "04-extensions/design/eng-check-site.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K141.md"
  }
 ]

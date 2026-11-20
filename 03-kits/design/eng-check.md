@@ -121,3 +121,19 @@ Machine rows come from `python3 00-hq/tools/eng_check.py kits --md`; the rest ar
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: exam-date alert drafts (`00-hq/agent-engine/flows/b3-exam-alerts.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Input validation | done: safe exam ids, real ISO dates only (2026-02-30 rejected), event text 1–300 chars, junk rows skipped, 300 rows max (`test_b3_exam_alerts.js`) |
+| Source trust | done: only CONFIRMED dates with an https link on .gov.in / .nic.in / .ac.in / .edu.in become drafts; blogs, missing links, `javascript:` and look-alike hosts flagged, TO_VERIFY listed but never drafted |
+| Prompt injection | done: no model call; instruction-like rows skipped and their text not shown |
+| Output escaping | done: HTML-escaped, control/bidi chars stripped, long names cut on whole characters (Telugu/Hindi safe) |
+| Edge cases | done: date change (shows old date), new date in the past flagged, two exams same day flagged once, 7-day and 1-day reminders once each, first run only seeds |
+| Personal data (DPDP) | done: feed holds exam dates only; no student data; drafts go only to Akhil's private chat |
+| Timeouts / retries | done: 10 s timeout, 3 tries, 5 s apart |
+| Outage / bad file | done: missing, non-JSON, non-list or >600 KB → one warning a day |
+| Spam control | done: one message a day max, 10 drafts shown, sent list capped at 3000 |
+| Messages to students | not relevant here: the flow never messages students; sending needs opt-in WhatsApp templates + Akhil's "go" |
+| Public surface | done: schedule trigger only, `active: false`, one GET of a public repo file |
+| Go gate | waits A241 / C79 (engine up) and Akhil's "go" |

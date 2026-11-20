@@ -1,0 +1,342 @@
+[
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-06",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-07",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-13",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-14",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-20",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Exam day (one session per paper; your paper's day is on the admit card)",
+  "event_te": "",
+  "status": "CONFIRMED",
+  "date": "2027-02-21",
+  "source": "https://gate2027.iitm.ac.in"
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Admit card download",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "gate-2027-cs",
+  "exam": "GATE 2027 CS",
+  "exam_te": "",
+  "event": "Result",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "Next CEN (notification)",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": "https://www.rrbapply.gov.in"
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "Last date to apply",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "CBT 1",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "CBT 1 result",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "CBT 2",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "rrb-ntpc",
+  "exam": "RRB NTPC",
+  "exam_te": "",
+  "event": "Typing Skill Test / CBAT",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Notification (next CGL cycle)",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": "https://ssc.gov.in"
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Last date to apply",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Tier 1 exam",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Tier 1 result",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Tier 2 exam",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "ssc-cgl",
+  "exam": "SSC CGL",
+  "exam_te": "",
+  "event": "Final result",
+  "event_te": "",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Notification (new Group 2 recruitment)",
+  "event_te": "నోటిఫికేషన్",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": "https://www.tgpsc.gov.in"
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Online application opens",
+  "event_te": "ఆన్‌లైన్ దరఖాస్తు ప్రారంభం",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Last date to apply",
+  "event_te": "దరఖాస్తుకు చివరి తేదీ",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Hall ticket download",
+  "event_te": "హాల్ టికెట్ డౌన్‌లోడ్",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Written exam (Papers I to IV)",
+  "event_te": "రాత పరీక్ష (పేపర్లు I–IV)",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Preliminary answer key",
+  "event_te": "ప్రాథమిక కీ",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group2",
+  "exam": "TGPSC Group 2",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-2 సర్వీసులు",
+  "event": "Result / general ranking list",
+  "event_te": "ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Notification (new Group 3 recruitment)",
+  "event_te": "నోటిఫికేషన్",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": "https://www.tgpsc.gov.in"
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Online application opens",
+  "event_te": "ఆన్‌లైన్ దరఖాస్తు ప్రారంభం",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Last date to apply",
+  "event_te": "దరఖాస్తుకు చివరి తేదీ",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Hall ticket download",
+  "event_te": "హాల్ టికెట్ డౌన్‌లోడ్",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Written exam (Papers I to III)",
+  "event_te": "రాత పరీక్ష (పేపర్లు I–III)",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Preliminary answer key",
+  "event_te": "ప్రాథమిక కీ",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ },
+ {
+  "exam_id": "tgpsc-group3",
+  "exam": "TGPSC Group 3",
+  "exam_te": "టీజీపీఎస్సీ గ్రూప్-3 సర్వీసులు",
+  "event": "Result / general ranking list",
+  "event_te": "ఫలితాలు / జనరల్ ర్యాంకింగ్ జాబితా",
+  "status": "NOT_ANNOUNCED",
+  "date": null,
+  "source": ""
+ }
+]

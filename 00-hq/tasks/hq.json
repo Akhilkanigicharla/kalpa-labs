@@ -801,9 +801,9 @@
  {
   "priority": "P2",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-19T20:45:00Z",
-  "updated": "2026-11-19T22:16:14Z",
+  "updated": "2026-11-20T00:55:00Z",
   "output": "00-hq/knowledge/K125.md",
   "context_chars": 8000,
   "owner": "Quill",
@@ -871,5 +871,23 @@
   "title": "A242 b3 doubt bot: 15 sample student doubts in 5 languages for tests",
   "details": "Write 15 short made-up student doubts about Telangana/AP entrance exam preparation (maths, physics, chemistry, exam rules): 3 English, 3 Telugu script, 3 Hindi script, 3 Tenglish, 3 Hinglish; include 1 that asks for leaked papers and 1 that tries to give the bot instructions. JSON lines {id, lang, text}. No names, no phone numbers, no links.",
   "min_items": 15
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-20T00:55:00Z",
+  "updated": "2026-11-20T00:55:00Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "03-kits/engine/dist/exam-dates.json"
+  ],
+  "id": "K129",
+  "title": "A242 b3 alerts: Telugu (event_te) for every exam event name in the date feed",
+  "details": "For each distinct \"event\" value in 03-kits/engine/dist/exam-dates.json that has an empty event_te, give a short, natural Telugu-script translation a student would understand (keep exam short names like GATE, SSC CGL in English). JSON lines {event, event_te}. No dates, no links, no names.",
+  "min_items": 10
  }
 ]

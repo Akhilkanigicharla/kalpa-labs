@@ -1,0 +1,130 @@
+{
+ "name": "b3 · Exam-date alert drafts (A242)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "e1",
+   "name": "Every day 07:40 IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "triggerAtHour": 7,
+       "triggerAtMinute": 40
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e2",
+   "name": "Read exam dates (repo file)",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    220,
+    0
+   ],
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/03-kits/engine/dist/exam-dates.json",
+    "options": {
+     "timeout": 10000,
+     "response": {
+      "response": {
+       "responseFormat": "text"
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e3",
+   "name": "Draft exam alerts",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    440,
+    0
+   ],
+   "executeOnce": true,
+   "parameters": {
+    "jsCode": "// A242 b3 exam-date alerts: drafts student alerts from the kit engine's date feed and sends the drafts to Akhil only.\n// No model call, nothing goes to students from here (opt-in WhatsApp templates + Akhil's \"go\" come later).\n// Only CONFIRMED dates from an official site (.gov.in, .nic.in, .ac.in, .edu.in) become drafts. Feed text is data, never instructions.\nconst DAY = 864e5, now = Date.now(), day = Math.floor(now / DAY);\nconst ist = (ms) => new Date(ms + 19800000).toISOString().slice(0, 10);\nconst today = ist(now), plus = (n) => ist(now + n * DAY);\nconst store = $getWorkflowStaticData('global');\nfor (const k of ['dates', 'sent']) store[k] = store[k] && typeof store[k] === 'object' ? store[k] : {};\nconst out = (text) => [{ json: { text } }];\nconst warn = (why) => { if (store.warned === day) return []; store.warned = day; return out('⚠️ <b>Exam alerts</b>: ' + why + ' (03-kits/engine/dist/exam-dates.json). Next try tomorrow.'); };\nconst res = ($('Read exam dates (repo file)').first() || {}).json || {};\nif (res.error || typeof res.data !== 'string') return warn('could not read the exam dates file');\nif (res.data.length > 600000) return warn('the exam dates file is too big (600 KB max)');\nlet list;\ntry { list = JSON.parse(res.data); } catch (e) { return warn('the exam dates file is not valid JSON'); }\nif (!Array.isArray(list)) return warn('the exam dates file must be a list');\n\nconst INJECT = /ignore (all |any )?(previous|prior|above)|system prompt|you are now|disregard .*instruction|<\\/?(system|assistant)>/i;\nconst OFFICIAL = /^https:\\/\\/([a-z0-9-]+\\.)+(gov\\.in|nic\\.in|ac\\.in|edu\\.in)(\\/[^\\s<>\"]*)?$/i;\nconst clean = (s) => Array.from(String(s || '').replace(/[\\u0000-\\u001f\\u007f‎‏‪-‮⁦-⁩]/g, ' ').replace(/\\s+/g, ' ').trim());\nconst esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst cut = (s, n) => { const c = clean(s); return esc(c.slice(0, n).join('')) + (c.length > n ? '…' : ''); };\nconst isoOk = (s) => typeof s === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(s) && !isNaN(Date.parse(s + 'T00:00:00Z')) && new Date(s + 'T00:00:00Z').toISOString().startsWith(s);\nconst nice = (s) => new Date(s + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });\nconst host = (u) => u.replace(/^https:\\/\\//i, '').split('/')[0].toLowerCase();\n\nconst now_dates = {}, flags = [], tocheck = new Set();\nlet n = 0;\nfor (const r of list) {\n  if (++n > 300) { flags.push('more than 300 rows: only the first 300 read'); break; }\n  if (!r || typeof r !== 'object' || typeof r.exam_id !== 'string' || !/^[a-z0-9-]{1,40}$/.test(r.exam_id)) continue;\n  if (typeof r.event !== 'string' || !r.event.trim() || r.event.length > 300) continue;\n  if ([r.exam, r.exam_te, r.event, r.event_te].some((t) => INJECT.test(String(t || '')))) { flags.push(`${r.exam_id}: text looks like an instruction, row skipped`); continue; }\n  if (r.status === 'TO_VERIFY' && r.date) { tocheck.add(r.exam_id); continue; }\n  if (r.status !== 'CONFIRMED' || r.date == null) continue;\n  if (!isoOk(r.date)) { flags.push(`${r.exam_id}: \"${cut(r.date, 20)}\" is not a real date`); continue; }\n  if (!OFFICIAL.test(String(r.source || ''))) { flags.push(`${r.exam_id}: ${r.source ? 'source is not an official site' : 'no source link'}, not sent`); continue; }\n  const key = r.exam_id + '|' + clean(r.event).join('');\n  const e = now_dates[key] = now_dates[key] || { r, dates: new Set() };\n  e.dates.add(r.date);\n}\n\nconst first = !store.init, drafts = [];\nconst draft = (kind, r, date, extra) => {\n  const ex = cut(r.exam || r.exam_id, 60), ev = cut(r.event, 90);\n  const te = clean(r.exam_te).length || clean(r.event_te).length ? `\\n   తెలుగు: ${cut(r.exam_te || r.exam, 60)}: ${cut(r.event_te || r.event, 90)} · ${nice(date)}` : '';\n  drafts.push({ date, line: `${kind} <b>${ex}</b>: ${ev} · <b>${nice(date)}</b>${extra || ''}${te}\\n   Source: ${esc(host(r.source))}` });\n};\nfor (const [key, { r, dates }] of Object.entries(now_dates)) {\n  const old = Array.isArray(store.dates[key]) ? store.dates[key] : null;\n  const added = [...dates].filter((d) => !(old || []).includes(d)).sort();\n  for (const d of added) {\n    if (first) break;\n    if (d < today) { flags.push(`${r.exam_id}: new date ${d} is in the past, check the source`); continue; }\n    const id = key + '|' + d + '|new';\n    if (store.sent[id]) continue;\n    store.sent[id] = now;\n    const was = old && old.length ? old.filter((x) => !dates.has(x)) : [];\n    draft(was.length ? '🔁 Date changed' : '📢 New date', r, d, was.length ? ` (was ${was.map(nice).join(', ')})` : '');\n  }\n  if (!first) for (const d of dates) for (const [w, label] of [[7, '⏰ In 7 days'], [1, '⏰ Tomorrow']]) {\n    const id = key + '|' + d + '|' + w;\n    if (d === plus(w) && !store.sent[id]) { store.sent[id] = now; draft(label, r, d); }\n  }\n  store.dates[key] = [...dates].sort();\n}\nconst byDate = {};\nfor (const { r, dates } of Object.values(now_dates)) for (const d of dates) if (d >= today) (byDate[d] = byDate[d] || new Set()).add(r.exam || r.exam_id);\nfor (const [d, ex] of Object.entries(byDate).sort()) if (ex.size > 1) {\n  const id = 'clash|' + d + '|' + [...ex].sort().join(',');\n  if (!store.sent[id]) { store.sent[id] = now; flags.push(`clash on ${nice(d)}: ${[...ex].map((x) => cut(x, 40)).join(' + ')} (students taking both need a heads-up)`); }\n}\nconst sk = Object.keys(store.sent);\nif (sk.length > 3000) sk.sort((a, b) => store.sent[a] - store.sent[b]).slice(0, sk.length - 3000).forEach((k) => delete store.sent[k]);\n\nif (first) {\n  store.init = now;\n  return out(`🗓️ <b>Exam alerts</b> are on: watching ${Object.values(now_dates).reduce((s, e) => s + e.dates.size, 0)} confirmed dates across ${new Set(Object.values(now_dates).map((e) => e.r.exam_id)).size} exams. New or changed dates will come here as drafts.`);\n}\nconst fl = [...new Set(flags)];\nif (!drafts.length && !fl.length) return [];\ndrafts.sort((a, b) => a.date.localeCompare(b.date));\nconst lines = [`🗓️ <b>Exam alerts: ${drafts.length} draft${drafts.length === 1 ? '' : 's'} to approve</b>`];\nfor (const d of drafts.slice(0, 10)) lines.push(d.line);\nif (drafts.length > 10) lines.push(`…and ${drafts.length - 10} more.`);\nfor (const f of fl.slice(0, 6)) lines.push('⚠️ ' + f);\nif (tocheck.size) lines.push(`🔎 Dates still TO_VERIFY (not sent): ${[...tocheck].slice(0, 6).join(', ')}`);\nlines.push('Nothing went to students. Check each date on the official site before sending to opted-in students.');\nreturn out(lines.join('\\n'));"
+   }
+  },
+  {
+   "id": "e4",
+   "name": "Tell Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 07:40 IST": {
+   "main": [
+    [
+     {
+      "node": "Read exam dates (repo file)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read exam dates (repo file)": {
+   "main": [
+    [
+     {
+      "node": "Draft exam alerts",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Draft exam alerts": {
+   "main": [
+    [
+     {
+      "node": "Tell Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

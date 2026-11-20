@@ -49,5 +49,41 @@
   "created": "2026-11-06T19:05:00Z",
   "updated": "2026-11-06T19:00:21Z",
   "output": "00-hq/knowledge/K043.md"
+ },
+ {
+  "id": "K135",
+  "world": "b7",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "A242 b7 prep: 15 test cases for the paper-trade monitor + daily loss-cap guard flow",
+  "details": "Read the A242 and A272 lines. Write 15 numbered test cases for a daily n8n check that reads the b7 bot's paper/live state file and alerts Akhil privately: each case = input situation (e.g. day loss at 2.9% vs 3% cap, stop-loss missing on an open position, stale state file over 26 h, broker error, duplicate order id, NaN price, holiday) + expected alert text in one line. Plain English. No trade tips, no predictions.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "07-trading/README.md"
+  ],
+  "context_chars": 38000,
+  "min_items": 15,
+  "status": "todo",
+  "created": "2026-11-20T08:50:00Z",
+  "updated": "2026-11-20T08:50:00Z",
+  "output": ""
+ },
+ {
+  "id": "K136",
+  "world": "b7",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "A250 prep: Kronos vs random-walk test plan checklist",
+  "details": "Read the A250 line and 07-trading/research/video-kronos-candlestick-model.md. Write a 12-item checklist for a fair out-of-sample test of a candlestick forecasting model on Nifty and Bank Nifty (daily + 15-min): data split dates, walk-forward, direction accuracy, after-cost return with Indian charges (STT, brokerage, GST, stamp duty: write 'unverified' for any rate you cannot cite from nseindia.com or the broker's page), random-walk and buy-and-hold baselines, minimum trade count, and when to stop. Each item one line.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "07-trading/research/video-kronos-candlestick-model.md"
+  ],
+  "context_chars": 38000,
+  "min_items": 12,
+  "status": "todo",
+  "created": "2026-11-20T08:50:00Z",
+  "updated": "2026-11-20T08:50:00Z",
+  "output": ""
  }
 ]

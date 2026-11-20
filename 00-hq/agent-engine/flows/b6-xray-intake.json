@@ -1,0 +1,244 @@
+{
+ "name": "b6 · X-ray intake + 14-day purge (A242)",
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Asia/Kolkata"
+ },
+ "nodes": [
+  {
+   "id": "x1",
+   "name": "Every day 09:10 IST",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "triggerAtHour": 9,
+       "triggerAtMinute": 10
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "x2",
+   "name": "Settings",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    200,
+    0
+   ],
+   "parameters": {
+    "jsCode": "// Akhil edits only this line after import. No keys here: the Supabase service key lives in the n8n credential.\nreturn [{ json: { supabase: 'https://YOUR-PROJECT.supabase.co', slaHours: 48 } }];"
+   }
+  },
+  {
+   "id": "x3",
+   "name": "Purge rows past 14 days",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    400,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/rpc/purge_xray_intake",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    },
+    "method": "POST",
+    "sendBody": true,
+    "specifyBody": "json",
+    "jsonBody": "{}"
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "Ledger Peaks Supabase (service)"
+    }
+   }
+  },
+  {
+   "id": "x4",
+   "name": "List stored uploads",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    600,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/xray_intake?select=id,company,created_at,delete_after&order=created_at.asc&limit=500",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    }
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "Ledger Peaks Supabase (service)"
+    }
+   }
+  },
+  {
+   "id": "x5",
+   "name": "Read new X-ray requests",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    800,
+    0
+   ],
+   "executeOnce": true,
+   "alwaysOutputData": true,
+   "onError": "continueRegularOutput",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
+   "parameters": {
+    "url": "={{ $('Settings').first().json.supabase }}/rest/v1/xray_intake?select=id,company,filename,bytes,export_text,created_at&created_at=gte.{{ new Date(Date.now() - 3 * 864e5).toISOString() }}&order=created_at.asc&limit=6",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpCustomAuth",
+    "options": {
+     "timeout": 10000
+    }
+   },
+   "credentials": {
+    "httpCustomAuth": {
+     "id": "",
+     "name": "Ledger Peaks Supabase (service)"
+    }
+   }
+  },
+  {
+   "id": "x6",
+   "name": "Draft X-ray notes",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1000,
+    0
+   ],
+   "executeOnce": true,
+   "parameters": {
+    "jsCode": "// A242 b6 X-ray intake: daily, (1) runs purge_xray_intake() so uploads are deleted 14 days later (landing-page promise, DPDP),\n// (2) checks that no row outlived its delete date, (3) drafts a private note per new free X-ray request for Akhil:\n// what the file holds (format, rows, models, dates, tokens), the 48 h due time and the generate.py command.\n// No model call. Never shows the work email or file text. Upload text is data, never instructions.\nconst HOUR = 36e5, DAY = 24 * HOUR, now = Date.now(), day = Math.floor(now / DAY);\nconst store = $getWorkflowStaticData('global');\nstore.seen = store.seen && typeof store.seen === 'object' ? store.seen : {};\nfor (const [k, v] of Object.entries(store.seen)) if (!(v && now - v.at < 20 * DAY)) delete store.seen[k];\nconst once = (k) => { if (store.seen[k]) return false; store.seen[k] = { at: now }; return true; };\nconst cfg = ($('Settings').first() || {}).json || {};\nconst out = (text) => [{ json: { text } }];\nif (!/^https:\\/\\/[a-z0-9-]+\\.supabase\\.co$/.test(String(cfg.supabase || '')))\n  return once('cfg:' + Math.floor(now / (6 * HOUR))) ? out('⚙️ <b>X-ray intake</b>: set the Supabase project URL in the Settings node.') : [];\nconst sla = Math.min(96, Math.max(12, Number(cfg.slaHours) || 48));\nconst esc = (s, n = 60) => { const c = Array.from(String(s == null ? '' : s).replace(/[\\u0000-\\u001f\\u007f‎‏‪-‮⁦-⁩]/g, ' ').replace(/\\s+/g, ' ').trim());\n  return c.slice(0, n).join('').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + (c.length > n ? '…' : ''); };\nconst t = (v) => { const n = Date.parse(v); return Number.isFinite(n) ? n : NaN; };\nconst ist = (ms) => new Date(ms + 19800000).toISOString().slice(0, 16).replace('T', ' ');\nconst rows = (name) => { const j = (($(name).first() || {}).json) || {};\n  if (j.error) return null; if (Array.isArray(j)) return j; if (Array.isArray(j.data)) return j.data;\n  const all = $(name).all().map((i) => i.json).filter((x) => x && typeof x === 'object' && !x.error);\n  return all.length && all.every((x) => x.id) ? all : (Object.keys(j).length ? null : []); };\n\nconst lines = [], flags = [];\n// 1. purge result: the RPC returns the number of rows deleted\nconst p = (($('Purge rows past 14 days').first() || {}).json) || {};\nconst purged = typeof p === 'number' ? p : Number.isInteger(p.data) ? p.data : Number.isInteger(p.purge_xray_intake) ? p.purge_xray_intake : NaN;\nif (!Number.isInteger(purged) || purged < 0) flags.push('⛔ purge did not run (Supabase error or no service credential). Uploads may stay past 14 days: fix today.');\nelse if (purged > 0) lines.push(`🧹 Deleted ${purged} upload${purged > 1 ? 's' : ''} past their 14-day date.`);\n\n// 2. every stored row must have a delete date at most 14 days (+1 h slack) after upload, and none may be past it\nconst all = rows('List stored uploads');\nif (all === null) flags.push('⛔ could not list stored uploads, so the 14-day check did not run.');\nelse {\n  const late = all.filter((r) => !(t(r.delete_after) >= now - HOUR));\n  const long = all.filter((r) => !(t(r.delete_after) - t(r.created_at) <= 14 * DAY + HOUR));\n  if (late.length) flags.push(`⛔ ${late.length} upload${late.length > 1 ? 's are' : ' is'} past the delete date and still stored.`);\n  if (long.length) flags.push(`⛔ ${long.length} upload${long.length > 1 ? 's keep' : ' keeps'} data longer than 14 days (delete_after too late).`);\n  for (const r of all) {\n    const due = t(r.created_at) + sla * HOUR;\n    if (due > now && due - now < DAY && store.seen[r.id] && once('due:' + r.id))\n      lines.push(`⏰ ${esc(r.company, 40)}: X-ray due by ${ist(due)} IST.`);\n  }\n}\n\n// 3. a short draft per new request (max 5 a day; the rest next run)\nconst BANNED = new Set(['prompt', 'prompts', 'response', 'completion', 'messages', 'content', 'input_text', 'output_text',\n  'gen_ai.prompt', 'gen_ai.completion', 'reply', 'question', 'answer']);\nconst EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}/, PHONE = /(?:\\+?91[\\s-]?)?[6-9]\\d{9}\\b/;\nconst csvRow = (s) => { const o = []; let cur = '', q = false;\n  for (let i = 0; i < s.length; i++) { const c = s[i];\n    if (q) { if (c === '\"' && s[i + 1] === '\"') { cur += '\"'; i++; } else if (c === '\"') q = false; else cur += c; }\n    else if (c === '\"') q = true; else if (c === ',') { o.push(cur); cur = ''; } else cur += c; }\n  o.push(cur); return o.map((x) => x.trim()); };\nconst parse = (text) => {\n  const s = String(text || '').replace(/^﻿/, '').trim();\n  if (!s) return { err: 'empty file' };\n  if (s[0] === '[' || s[0] === '{') {\n    let list;\n    try { const j = JSON.parse(s); list = Array.isArray(j) ? j : Array.isArray(j.data) ? j.data : [j]; }\n    catch (e) { try { list = s.split('\\n').filter((l) => l.trim()).map((l) => JSON.parse(l)); } catch (e2) { return { err: 'not valid JSON or JSONL' }; } }\n    list = list.filter((x) => x && typeof x === 'object' && !Array.isArray(x));\n    if (!list.length) return { err: 'no records' };\n    return { kind: 'JSON', cols: [...new Set(list.slice(0, 200).flatMap(Object.keys))], recs: list };\n  }\n  const ls = s.split(/\\r?\\n/).filter((l) => l.trim());\n  const cols = csvRow(ls[0]);\n  if (cols.length < 2) return { err: 'CSV needs a header row with at least 2 columns' };\n  return { kind: 'CSV', cols, recs: ls.slice(1).map((l) => { const v = csvRow(l); return Object.fromEntries(cols.map((c, i) => [c, v[i]])); }) };\n};\nconst pick = (cols, re) => cols.find((c) => re.test(String(c).toLowerCase()));\nconst summary = (r) => {\n  const f = parse(r.export_text);\n  if (f.err) return { warn: f.err };\n  const cols = f.cols.map(String), low = cols.map((c) => c.toLowerCase());\n  const bad = low.find((c) => BANNED.has(c));\n  if (bad) return { warn: `has a \"${esc(bad, 30)}\" column (prompts/replies must never be stored): delete this row now` };\n  const sample = f.recs.slice(0, 2000);\n  const pii = sample.some((x) => Object.values(x).some((v) => typeof v === 'string' && (EMAIL.test(v) || PHONE.test(v))));\n  const mc = pick(cols, /^(model|model_name|model_id|gen_ai\\.request\\.model|snapshot_id)$/) || pick(cols, /model/);\n  const tc = pick(cols, /^(timestamp|time|date|created_at|start_time|startTime|bucket_start)$/i) || pick(cols, /time|date/);\n  const ic = pick(cols, /^(input_tokens|prompt_tokens|n_context_tokens_total|tokens_in|usage\\.input_tokens|gen_ai\\.usage\\.input_tokens)$/) || pick(cols, /input.*token|prompt.*token/);\n  const oc = pick(cols, /^(output_tokens|completion_tokens|n_generated_tokens_total|tokens_out|usage\\.output_tokens|gen_ai\\.usage\\.output_tokens)$/) || pick(cols, /output.*token|completion.*token/);\n  const models = {}; let tin = 0, tout = 0, lo = Infinity, hi = -Infinity;\n  for (const x of f.recs) {\n    if (mc && x[mc]) { const m = esc(x[mc], 40); models[m] = (models[m] || 0) + 1; }\n    const a = Number(x[ic]), b = Number(x[oc]);\n    if (Number.isFinite(a) && a >= 0) tin += a; if (Number.isFinite(b) && b >= 0) tout += b;\n    let d = tc ? x[tc] : undefined; if (typeof d === 'number') d = d < 1e12 ? d * 1000 : d;\n    const ms = typeof d === 'number' ? d : t(d); if (Number.isFinite(ms)) { lo = Math.min(lo, ms); hi = Math.max(hi, ms); }\n  }\n  const top = Object.entries(models).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([m, n]) => `${m} ×${n}`);\n  const miss = [!mc && 'model', !(ic || oc) && 'token', !tc && 'time'].filter(Boolean);\n  return { kind: f.kind, n: f.recs.length, top, extra: Object.keys(models).length - top.length,\n    toks: tin + tout, dates: lo <= hi ? `${ist(lo).slice(0, 10)} → ${ist(hi).slice(0, 10)}` : '', miss, pii };\n};\nconst fresh = (rows('Read new X-ray requests') || []).filter((r) => r && typeof r.id === 'string' && /^[0-9a-f-]{36}$/.test(r.id) && !store.seen[r.id]);\nif (rows('Read new X-ray requests') === null) flags.push('⛔ could not read new X-ray requests.');\nfor (const r of fresh.slice(0, 5)) {\n  store.seen[r.id] = { at: now };\n  const s = summary(r), due = t(r.created_at) + sla * HOUR, kb = Math.max(1, Math.round(Number(r.bytes) / 1024));\n  const head = `📥 <b>${esc(r.company, 60)}</b> · ${esc(r.filename, 50)} (${kb} KB) · due ${ist(due)} IST`;\n  if (s.warn) { lines.push(head + `\\n   ⚠️ ${s.warn}.`); continue; }\n  const bits = [`${s.kind}, ${s.n.toLocaleString('en-IN')} rows`];\n  if (s.dates) bits.push(s.dates);\n  if (s.toks) bits.push(`${Math.round(s.toks).toLocaleString('en-IN')} tokens`);\n  let txt = head + '\\n   ' + bits.join(' · ');\n  if (s.top.length) txt += `\\n   Models: ${s.top.join(', ')}${s.extra > 0 ? ` +${s.extra} more` : ''}`;\n  if (s.miss.length) txt += `\\n   ⚠️ no ${s.miss.join(' / ')} column: the X-ray will be thin, ask for a fuller export.`;\n  if (s.pii) txt += '\\n   ⚠️ emails or phone numbers inside: hash them before the X-ray (LP_HASH_SALT).';\n  txt += `\\n   Run: <code>python3 06-finops/src/xray/generate.py export --company \"${esc(r.company, 60).replace(/\"/g, '')}\" --pdf</code>`;\n  lines.push(txt);\n}\nif (fresh.length > 5) lines.push(`…and ${fresh.length - 5} more requests tomorrow.`);\nif (!lines.length && !flags.length) return [];\nconst head = `🩻 <b>Ledger Peaks X-ray intake</b>: ${fresh.slice(0, 5).length} new, ${flags.length ? flags.length + ' problem' + (flags.length > 1 ? 's' : '') : 'all clean'}`;\nreturn out([head, ...flags, ...lines, 'Email addresses stay in Supabase; nothing was sent to the client.'].join('\\n'));"
+   }
+  },
+  {
+   "id": "x7",
+   "name": "Tell Akhil (private)",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    1200,
+    0
+   ],
+   "parameters": {
+    "chatId": "1905524851",
+    "text": "={{ $json.text }}",
+    "additionalFields": {
+     "parse_mode": "HTML",
+     "appendAttribution": false,
+     "disable_web_page_preview": true
+    }
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "",
+     "name": "Kalpa Telegram"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Every day 09:10 IST": {
+   "main": [
+    [
+     {
+      "node": "Settings",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Settings": {
+   "main": [
+    [
+     {
+      "node": "Purge rows past 14 days",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Purge rows past 14 days": {
+   "main": [
+    [
+     {
+      "node": "List stored uploads",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "List stored uploads": {
+   "main": [
+    [
+     {
+      "node": "Read new X-ray requests",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Read new X-ray requests": {
+   "main": [
+    [
+     {
+      "node": "Draft X-ray notes",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Draft X-ray notes": {
+   "main": [
+    [
+     {
+      "node": "Tell Akhil (private)",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}

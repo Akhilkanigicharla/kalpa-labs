@@ -121,3 +121,17 @@ Machine rows come from `python3 00-hq/tools/eng_check.py finops --md`; the rest 
 | 105 | Hashing vs Encryption | manual |
 | 106 | Salting | manual |
 | 107 | Penetration Testing | manual |
+
+## A242 engine flow: X-ray intake + 14-day purge (`00-hq/agent-engine/flows/b6-xray-intake.json`, 20 Nov 2026)
+| Check | Status |
+|---|---|
+| Data retention (DPDP) | done: daily `purge_xray_intake()` RPC; flow also lists stored rows and raises ⛔ if any row is past `delete_after` or keeps data >14 days, or if the purge fails (`test_b6_xray_intake.js`) |
+| Personal data | done: the work email is never selected or shown; emails/phones inside an upload are flagged for hashing (LP_HASH_SALT) before the X-ray |
+| Prompts / replies | done: same banned column list as `intake.js`; a stored file with a prompt/reply column is flagged "delete this row now" and its text is never shown |
+| Input validation | done: uuid ids only, CSV (quoted fields) / JSON / JSONL parsed defensively, empty / broken / 1-column files reported, 20,000-row file in under 2 s |
+| Prompt injection | done: no model call; upload text is counted, never echoed |
+| Output escaping | done: HTML-escaped, control/bidi chars stripped, names cut at 60 whole characters (emoji test), quotes removed inside the generate.py command |
+| Secrets | done: Supabase service key only in the n8n credential "Ledger Peaks Supabase (service)" that Akhil sets; no key in the file (test) |
+| Timeouts / retries / outage | done: 10 s timeout, 3 tries 5 s apart, errors become ⛔ lines instead of a crash |
+| Spam control | done: one message a day max, silent on quiet days, each request announced once + one "due in <24 h" reminder, 5 drafts a run, seen store pruned at 20 days |
+| Public URL | not relevant: schedule only, `active: false`, private Telegram to Akhil; nothing goes to the client |

@@ -1,0 +1,41 @@
+{
+ "generated": "2026-11-21",
+ "session_bars": 4802,
+ "gate_open_share": 0.0217,
+ "gate_open_bars": 104,
+ "funnel": {
+  "ok_regime": {
+   "alone": 0.341,
+   "cumulative": 0.3411,
+   "bars": 1638
+  },
+  "ok_trend": {
+   "alone": 0.102,
+   "cumulative": 0.1018,
+   "bars": 489
+  },
+  "vol_ok": {
+   "alone": 0.604,
+   "cumulative": 0.081,
+   "bars": 389
+  },
+  "ok_liq": {
+   "alone": 0.161,
+   "cumulative": 0.0344,
+   "bars": 165
+  },
+  "ok_struct": {
+   "alone": 0.166,
+   "cumulative": 0.0217,
+   "bars": 104
+  }
+ },
+ "liquidity_round_number_always_hit": true,
+ "on_a315_signals": {
+  "total": 118,
+  "kept": 12,
+  "kept_avg_r": 0.474,
+  "dropped_avg_r": 0.036,
+  "kept_total_r": 5.7
+ }
+}

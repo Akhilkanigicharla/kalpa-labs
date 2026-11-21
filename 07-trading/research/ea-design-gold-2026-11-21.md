@@ -44,3 +44,23 @@ targets 1R, 2R, 3R; after target 1 the stop moves to breakeven + $0.20, after ta
 Of the 3-trade signals: 53% hit no target, 25% one, 14% two, 9% all three.
 The 3-trade version wins more often but makes less, because the breakeven stop cuts trades 2 and 3 short.
 Forward test: `paper/ea-ladder/state.json`, every weekday from 21 Nov 2026 (no orders sent).
+
+## A317 · Phase 3 "Market Intelligence Layer" gate, measured (2 years of hourly gold)
+Code `research/phase3_gate.py`, tests `tests/test_phase3_gate.py`, numbers `reports/phase3-gate-*.json`.
+
+| Gate step (London/NY hours, cumulative) | Open alone | Still open after this step |
+|---|---|---|
+| Regime confirmed, not ranging (with persistence) | 34% | 34% |
+| H1 trend = regime direction | 10% | 10% |
+| Volatility not too quiet / news spike | 60% | 8.1% |
+| Liquidity score ≥ 0.50 | 16% | 3.4% |
+| H4 and H1 structure agree | 17% | **2.2% (104 hours in 2 years)** |
+
+- **Round-number rule:** "within 25 pips of a $50 level" is always true when 1 pip = $1 (the reading the
+  doc's ATR numbers need), so every entry loses 0.25 liquidity points. The pip size has to be defined once.
+- **On the 118 A315 signals:** the gate keeps 12 (+0.47R avg, +5.7R ≈ +$430 on $10K) and drops 106 (+0.04R).
+  The direction is encouraging, but 12 trades in 2.4 years is too few to prove anything, and it is 0.4 trades a month.
+- **Phase 2.5 hardening report:** it reviews MQL5 files (`Guards/*.mqh`, `EA_XAUUSD.mq5`) that are not in the
+  repo or the uploads, so the 8 must-fix items can't be applied or checked here.
+- Execution "randomisation" / "human-like" timing: The5%ers allows EAs, so disguising a bot isn't needed,
+  and doing it to hide automation could break a firm's terms. Left out.

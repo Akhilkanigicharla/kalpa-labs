@@ -85,7 +85,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | 30 | SQL Injection | done: no SQL strings in functions; PostgREST values URL-encoded (L.enc); SQL functions take parameters |
 | 31 | XSS (Cross-Site Scripting) | done: automatic XSS rows PASS + strict CSP on owner pages (A220) |
 | 32 | CSRF | not relevant: no cookies; private APIs need a Bearer header and send no CORS header to other sites |
-| 33 | Dependency Vulnerabilities | missing: no dependency audit step yet, A311 |
+| 33 | Dependency Vulnerabilities | done: no npm lockfile in this world today; `00-hq/tools/dep_audit.py` in quality.yml audits any package-lock.json on every push, high/critical fails (A311) |
 | 34 | Principle of Least Privilege | done: anon/authenticated get nothing (RLS on, no policies, execute revoked); Meta tokens readable only through client_token() by service_role |
 | 35 | Race Conditions | done: book_slot() books in one locked statement; invoice numbers via counter upsert (40 parallel invoices test in supabase/test.sh) |
 | 36 | Connection Pooling | not relevant: functions talk to Supabase over HTTP (PostgREST pools the connections) |

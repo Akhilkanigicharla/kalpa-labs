@@ -1095,9 +1095,9 @@
  {
   "priority": "P2",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-20T22:49:51Z",
+  "updated": "2026-11-21T12:00:00Z",
   "context_chars": 8000,
   "owner": "Quill",
   "id": "K150",
@@ -1108,7 +1108,8 @@
    ".github/workflows/quality.yml"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K150.md"
+  "output": "00-hq/knowledge/K150.md",
+  "note": "Used for A311: npm audit chosen (built into npm, no account, live run 21 Nov)"
  },
  {
   "id": "K156",
@@ -1122,10 +1123,11 @@
   "details": "Read the A311 line. Compare `npm audit --omit=dev --audit-level=high` and Google's osv-scanner as a GitHub Actions step for a repo with several package-lock.json folders: licence of each tool (link the LICENSE file), how each exits on high/critical findings, how to scan many folders in one step, how to ignore one accepted advisory with a reason, and whether each needs network or an account. Cite each tool's own docs URL; write 'unverified' where you have none. End with a 3-line pick.",
   "min_items": "5",
   "tries": 0,
-  "status": "todo",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-21T05:05:00Z",
-  "updated": "2026-11-21T05:05:00Z",
-  "output": "00-hq/knowledge/K156.md"
+  "updated": "2026-11-21T12:00:00Z",
+  "output": "00-hq/knowledge/K156.md",
+  "note": "Superseded by K150 + live run, A311 done"
  }
 ]

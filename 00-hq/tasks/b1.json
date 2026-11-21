@@ -452,5 +452,23 @@
   "created": "2026-11-21T05:05:00Z",
   "updated": "2026-11-21T05:05:00Z",
   "output": "00-hq/knowledge/K157.md"
+ },
+ {
+  "id": "K158",
+  "world": "b1",
+  "owner": "Quill",
+  "title": "A313 prep: free load + pen test tools for a Netlify preview deploy, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/design/ENGINEERING-CHECKS.md"
+  ],
+  "details": "Read the A313 line. Compare k6 (Grafana), autocannon and OWASP ZAP baseline scan for testing a Netlify deploy-preview URL from GitHub Actions: licence of each (link the LICENSE file), install line in Actions, how to run 50 parallel users for 60 seconds, how to fail the job on p95 latency or error rate, and any rule in Netlify's own terms about load testing their hosting. Cite each fact with the official doc URL. No guesses; write 'unverified' when no source.",
+  "min_items": "4",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T12:00:00Z",
+  "updated": "2026-11-21T12:00:00Z",
+  "output": "00-hq/knowledge/K158.md"
  }
 ]

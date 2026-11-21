@@ -67,7 +67,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 30 | SQL Injection | done: PostgREST with URL-encoded values; SQL functions use parameters |
 | 31 | XSS (Cross-Site Scripting) | done: automatic XSS rows PASS (esc() on every value) + strict CSP |
 | 32 | CSRF | not relevant: no cookies; token sent in the Authorization header |
-| 33 | Dependency Vulnerabilities | missing: no dependency audit step yet, A311 |
+| 33 | Dependency Vulnerabilities | done: `00-hq/tools/dep_audit.py` runs `npm audit --omit=dev --audit-level=high` on 02-jobcard + apps/jyotish in quality.yml on every push; 21 Nov: 0 high/critical (A311) |
 | 34 | Principle of Least Privilege | done: anon gets nothing; technicians can't delete their profile; invoices insert-only except `paid`; service-only functions (0001_security.sql) |
 | 35 | Race Conditions | done: invoice numbers from a per-technician counter in one statement (next_invoice_no) |
 | 36 | Connection Pooling | not relevant: functions talk to Supabase over HTTP (PostgREST pools the connections) |

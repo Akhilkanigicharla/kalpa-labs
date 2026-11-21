@@ -64,6 +64,9 @@ jobs:
         run: python3 00-hq/tools/eng_check.py | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Openverse image helper tests (A209, offline)
         run: python3 00-hq/tools/test_openverse_images.py
+      - name: Dependency audit, every package-lock.json (A311, eng row 33; high/critical fails)
+        shell: bash  # bash -eo pipefail, so a FAIL is not hidden by tee
+        run: python3 00-hq/tools/test_dep_audit.py && python3 00-hq/tools/dep_audit.py | tee -a "$GITHUB_STEP_SUMMARY"
 
   design:
     # 20 "vibecoded" tells (gradients, glass, emoji headings, scroll fades, em dashes, off-scale spacing …) across every site

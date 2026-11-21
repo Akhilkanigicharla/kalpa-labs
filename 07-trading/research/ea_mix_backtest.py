@@ -1,4 +1,4 @@
-"""A328: backtest of the MT5 EA as it is now built (A320 EA + A325 layer + A327 mix engine), 2 years of gold.
+"""A329: backtest of the MT5 EA as it is now built (A320 EA + A325 layer + A327 mix engine), 2 years of gold.
 
 Akhil (21 Nov 2026): "Do back testing now".  The MT5 Strategy Tester cannot run in the build cloud (Windows
 desktop app), so this replays the EA's own rules in Python on the same free hourly data:

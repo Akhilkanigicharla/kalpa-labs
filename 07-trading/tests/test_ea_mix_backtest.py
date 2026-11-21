@@ -1,4 +1,4 @@
-"""A328: portfolio rules of the EA backtest (lots, cap, news, daily stop, streak)."""
+"""A329: portfolio rules of the EA backtest (lots, cap, news, daily stop, streak)."""
 import sys
 from pathlib import Path
 import pandas as pd

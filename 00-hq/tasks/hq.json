@@ -1217,11 +1217,10 @@
   "details": "Read the A229 line. From each provider's own docs or pricing page give: requests per minute and per day for free models, whether a one-time credit top-up changes the daily cap (OpenRouter), and what error code is returned when the cap is hit. One row per provider per fact, doc URL per fact; write 'unverified' when no official page says it.",
   "min_items": 6,
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-22T05:40:00Z",
-  "updated": "2026-11-21T22:46:04Z",
-  "output": "00-hq/knowledge/K168.md",
-  "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
+  "updated": "2026-11-21T23:26:41Z",
+  "output": "00-hq/knowledge/K168.md"
  }
 ]

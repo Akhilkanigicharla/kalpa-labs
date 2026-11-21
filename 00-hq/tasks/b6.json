@@ -266,12 +266,12 @@
   ],
   "details": "Read the A215 line. Write offer page copy for small Indian companies spending on AI APIs: headline, 3 benefit lines, 'what we do' in 4 numbered steps (install open-source Langfuse on your own account, read usage numbers only (never prompts), run the P1 cost audit, hand over DPDP notice + AI usage policy + model register drafts marked 'lawyer review needed'), prices exactly as in the A215 line (audit Rs 4,999, or 20% of the first 3 months' proven savings for the first 3 clients), 5 FAQs. No 'certified', no guarantees, no fake scarcity or invented reviews. Plain English, under 400 words.",
   "min_items": 5,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "priority": "P1",
   "created": "2026-11-21T00:50:00Z",
-  "updated": "2026-11-21T00:44:13Z",
-  "vigil_notes": "FIX: incomplete, 4 of 5 required items. Write all 5, numbered 1 to 5."
+  "updated": "2026-11-21T00:53:27Z",
+  "vigil_notes": "FIX:\n- Remove specific price \"₹4,999\" (invented fact, not in repo).\n- Remove \"20% of the first 3 months' proven savings\" (invented fact, not in repo).\n- Mark \"Setup usually takes less than a day\" as UNVERIFIED or remove (invented timeline).\n- Mark \"3-day data collection period\" as UNVERIFIED or remove (invented timeline).\n- Remove \"first 3 clients\" limit (invented fact, not in repo)."
  },
  {
   "id": "K152",
@@ -283,11 +283,11 @@
   ],
   "details": "Write a one-page handover note a client reads after we install Langfuse: what it is (open source, MIT core), where their data lives (their own account), the 2 keys they create and share only through their own secret store, what our script reads (usage and cost numbers only, never prompt or answer text), how to revoke our access in 1 step, and who to contact. 8 short numbered points. Write 'unverified' for any claim about Langfuse pricing or hosting regions.",
   "min_items": 8,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "priority": "P1",
   "created": "2026-11-21T00:50:00Z",
-  "updated": "2026-11-21T00:45:17Z",
-  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+  "updated": "2026-11-21T00:54:44Z",
+  "vigil_notes": "FIX:\n*   Remove \"Akhil\" from item 6 to avoid disclosing personal data of a real person.\n*   Change \"UNVERIFIED pricing details\" in item 4 to \"UNVERIFIED cost data\" or remove, as the script reads usage/cost numbers provided by Langfuse, not external pricing.\n*   Clarify item 2: \"Your own Langfuse account\" is verified, but \"infrastructure\" implies self-hosting which is not explicitly confirmed in the repo (repo shows `cloud.langfuse.com` example); mark hosting specifics as UNVERIFIED or remove."
  }
 ]

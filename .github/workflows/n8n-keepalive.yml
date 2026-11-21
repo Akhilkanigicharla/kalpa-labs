@@ -5,7 +5,9 @@ on:
   schedule:
     # Odd minutes: GitHub delays/drops crons at :00 and */5 marks (only 8 runs landed 4-6 Nov).
     # The reliable keep-awake is an external pinger (cron-job.org) hitting /healthz every 5 min; this is the backup.
-    - cron: "7,23,41,53 0-18 * * *"   # UTC 00:00-18:59 = IST 05:30-00:29
+    # A225: every gap must stay under Render's 15 min idle limit (old 7,23,41,53 had 16/18 min gaps).
+    # Budget check: python3 00-hq/n8n-selfhost/hours_budget.py (must fit 750 h with the LLM router).
+    - cron: "3,17,31,45,59 0-18 * * *"   # UTC 00:03-18:59 = IST 05:33-00:29
   workflow_dispatch:
 permissions: {}
 jobs:

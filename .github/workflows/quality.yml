@@ -66,6 +66,8 @@ jobs:
         run: python3 00-hq/tools/test_eng_check.py
       - name: Openverse image helper tests (A209, offline)
         run: python3 00-hq/tools/test_openverse_images.py
+      - name: Render free hours budget (A225; n8n keep-awake must fit 750 h)
+        run: cd 00-hq/n8n-selfhost && python3 test_hours_budget.py && python3 hours_budget.py
       - name: Dependency audit, every package-lock.json (A311, eng row 33; high/critical fails)
         shell: bash  # bash -eo pipefail, so a FAIL is not hidden by tee
         run: python3 00-hq/tools/test_dep_audit.py && python3 00-hq/tools/dep_audit.py | tee -a "$GITHUB_STEP_SUMMARY"

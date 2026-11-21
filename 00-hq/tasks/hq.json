@@ -1198,10 +1198,29 @@
   "details": "Read the A225 line. From Render's own docs (render.com/docs/free) give: free instance hours per workspace per month, what happens when they run out, spin-down after how many minutes idle, cold-start time, and whether two free services share the hours. Then draft a keep-awake schedule (IST hours) for kalpa-n8n and kalpa-llm-router that fits the monthly hours with 10% spare. Doc URL per fact; 'unverified' otherwise.",
   "min_items": 5,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-22T02:30:00Z",
-  "updated": "2026-11-21T20:55:02Z",
-  "output": "00-hq/knowledge/K167.md"
+  "updated": "2026-11-22T05:40:00Z",
+  "output": "00-hq/knowledge/K167.md",
+  "note": "Claude verified 22 Nov on render.com/docs/free: 750 h/workspace/month, suspend all Free services when out, 15 min idle spin-down, spun-down time free. Correction: cold start is \"about one minute\" (not 50-100 s). Used in A225."
+ },
+ {
+  "id": "K168",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A229 prep: free model request limits (OpenRouter free models, Groq free tier, Gemini free tier), facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/DELEGATE.md"
+  ],
+  "details": "Read the A229 line. From each provider's own docs or pricing page give: requests per minute and per day for free models, whether a one-time credit top-up changes the daily cap (OpenRouter), and what error code is returned when the cap is hit. One row per provider per fact, doc URL per fact; write 'unverified' when no official page says it.",
+  "min_items": 6,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-22T05:40:00Z",
+  "updated": "2026-11-22T05:40:00Z",
+  "output": "00-hq/knowledge/K168.md"
  }
 ]

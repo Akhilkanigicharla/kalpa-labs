@@ -12,7 +12,7 @@ Why: our n8n Cloud trial ended on 31 Oct 2026 21:45 IST and n8n Cloud has no fre
 
 Why not Hugging Face Spaces: since 2026 a new Docker Space needs a paid HF plan (HF docs, Spaces hardware page and huggingface_hub guide). Oracle / Google Cloud free VMs need a card.
 
-**Hours budget:** awake 18.5 h a day is about 575 h a month. Our LLM router on Render uses the same 750 h pool but only when called, so keep it light. If Render says hours are running out, shorten the keep-awake window in `n8n-keepalive.yml`.
+**Hours budget (A225, measured 22 Nov 2026):** Render gives 750 Free instance hours per workspace per calendar month; spun-down time is free; 15 min with no traffic = spin-down; out of hours = every Free service suspended to month end (render.com/docs/free, fetched 22 Nov 2026). Render metrics 15–21 Nov (hours with a running instance): **kalpa-n8n 97 h in 7 days ≈ 14 h/day** (awake about 12:30–01:30 IST; the early-morning GitHub pings mostly did not land), **kalpa-llm-router 11 h in 7 days ≈ 1.6 h/day** (wakes only when called). November pace ≈ 470 h of 750. Plan: router keeps sleeping on its own; n8n keep-awake runs 05:33–00:29 IST on a cron whose gaps are all ≤ 14 min (the old one had 16/18 min gaps, so n8n slept between pings) = 19.2 h/day. Worst case 31-day month: (19.2 + 3 h router allowance) × 31 = 688 h, under the 712 h (95%) line. Check: `python3 00-hq/n8n-selfhost/hours_budget.py` (exit 1 if a cron edit would break the budget). Do not run n8n 24/7: 744 h alone eats the pool.
 
 **Licence:** n8n Community Edition (Sustainable Use License) is free for our own business automation. Not allowed: letting clients build workflows in it, white-labelling it, or selling it as a service. BotBhai customers never log into this n8n.
 

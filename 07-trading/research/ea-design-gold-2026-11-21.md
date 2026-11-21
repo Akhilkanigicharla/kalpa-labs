@@ -64,3 +64,19 @@ Code `research/phase3_gate.py`, tests `tests/test_phase3_gate.py`, numbers `repo
   repo or the uploads, so the 8 must-fix items can't be applied or checked here.
 - Execution "randomisation" / "human-like" timing: The5%ers allows EAs, so disguising a bot isn't needed,
   and doing it to hide automation could break a firm's terms. Left out.
+
+## Full Phase 1 document (re-uploaded complete, 858 lines) — 3 problems in its pseudo-code
+The re-upload adds sections 9–11 (trade management, pseudo-code, risk review). The other 6 uploads are exact
+copies of the Phase 3 design and Phase 2.5 report (same file hashes). Still no `.mq5` / `.mqh` code.
+
+1. **Lot size is 10–100× too small (line 738).** `pip_value = TICK_VALUE × (10 / TICK_SIZE)`. On a typical
+   XAUUSD contract (100 oz, tick 0.01, tick value $1) that gives $1,000 a pip per lot. True value: $100 a pip
+   if 1 pip = $1, or $10 if 1 pip = $0.10. So $75 risk / (30 × 1,000) = 0.0025 lot, which rounds to 0.00 and is
+   clamped up to 0.01 lot. Real risk is then $30 (pip = $1) or $3 (pip = $0.10), never the intended 0.75%.
+   Fix: `pip_value = TICK_VALUE × (pip_size / TICK_SIZE)` with `pip_size` defined once.
+2. **Wide stops are tightened instead of skipped (lines 729 vs 661).** `CalculateSLDistance` clamps the stop to
+   80, so the later `sl_pips > 80` check can never fire. Section 4A says such trades must be skipped; the code
+   would take them with a stop that is too tight. Fix: return the unclamped value and skip above 80.
+3. **"Pass probability 55–70%" (line 837)** is an estimate with no test behind it. Our 2-year test: as written,
+   0 trades; loosened, 33% of starts reach 8% and the median takes well over a year.
+Also still open: "no daily DD" (High Stakes has 5%), target $1,000 = 10% vs step-1 8%, and the undefined pip size.

@@ -198,11 +198,12 @@ def simulate(x: pd.DataFrame, x_tf, sets, trig_window: pd.Timedelta, rule="the5e
         if halted:
             break
         t0 = s["t_close"]
-        if t0 < max(busy_until, cool_until, pause_until):
-            continue
         d = t0.date()
-        if day_trades.get(d, 0) >= 3 or day_pnl.get(d, 0) <= -0.03 * START_BAL:
-            continue
+        if not EVERY:
+            if t0 < max(busy_until, cool_until, pause_until):
+                continue
+            if day_trades.get(d, 0) >= 3 or day_pnl.get(d, 0) <= -0.03 * START_BAL:
+                continue
         side, entry_i = s["side"], None
         for i in range(p0, len(x)):
             if close_t[i] - t0 > trig_window:
@@ -290,6 +291,7 @@ def simulate(x: pd.DataFrame, x_tf, sets, trig_window: pd.Timedelta, rule="the5e
     return pd.DataFrame(trades)
 
 
+EVERY = False         # A321: take every setup (no one-position / daily caps / cooldown)
 LADDER = False        # Akhil 21 Nov: "every opportunity take three trades with stop loss"
 LOOSE = {"rejection", "room", "h1", "pullback"}   # the A315 version that trades most (never broke rules)
 

@@ -47,7 +47,7 @@ def load_h1() -> pd.DataFrame:
     return h1
 
 
-def msnr_state(h1: pd.DataFrame, h4: pd.DataFrame, k: int = 2) -> pd.DataFrame:
+def msnr_state(h1: pd.DataFrame, h4: pd.DataFrame, k: int = 2, tf: str = "1h") -> pd.DataFrame:
     """For every H1 bar (as of its close): nearest active support below / resistance above built from
     H4 key levels known by then, whether each is fresh, and whether this bar touched it."""
     lv = levels(h4, k)
@@ -56,7 +56,7 @@ def msnr_state(h1: pd.DataFrame, h4: pd.DataFrame, k: int = 2) -> pd.DataFrame:
     role = np.array([1 if x.kind == "V" else -1 for x in lv])          # +1 support, -1 resistance
     fresh = np.ones(len(lv), dtype=bool)
     h, lo, c = h1.high.values, h1.low.values, h1.close.values
-    close_t = (h1.index + pd.Timedelta("1h")).values
+    close_t = (h1.index + pd.Timedelta(tf)).values
     out = np.full((len(h1), 6), np.nan)    # sup, sup_fresh_before, sup_touched, res, res_fresh_before, res_touched
     for t in range(len(h1)):
         act = known_t <= close_t[t]
@@ -98,8 +98,8 @@ def weekly_story(h1: pd.DataFrame) -> pd.Series:
     return s.reindex(h1.index, method="ffill").fillna(0)
 
 
-def apply(sig: list[dict], st: pd.DataFrame, story: pd.Series, at_h1: pd.Series, on: set, h1_index) -> list[dict]:
-    pos = h1_index.get_indexer([s["t_close"] - pd.Timedelta("1h") for s in sig])
+def apply(sig: list[dict], st: pd.DataFrame, story: pd.Series, at_h1: pd.Series, on: set, h1_index, tf: str = "1h") -> list[dict]:
+    pos = h1_index.get_indexer([s["t_close"] - pd.Timedelta(tf) for s in sig])
     out = []
     for s, i in zip(sig, pos):
         if i < 0:

@@ -89,6 +89,7 @@ CCooldownManager    GuardCooldown;
 #include "Execution/CPositionSizer.mqh"
 #include "Execution/CTradeCalculator.mqh"
 #include "Execution/CEntryEngine.mqh"
+#include "Execution/CMixEngine.mqh"         // A327: the 12 extra strategies of the best gold mix
 // #include "Execution/CRiskEngine.mqh"
 // #include "Management/CTradeManager.mqh"
 // #include "Recovery/CVPSHandler.mqh"
@@ -288,6 +289,9 @@ int OnInit()
    if(!MSNR.Init())
       Logger.Warn("INIT", "MSNR not ready yet — MSNR gate blocks entries until it is (retried every 60s)");
 
+   // --- A327: strategy mix engine
+   MixEngine.Init();
+
    // --- A320: ATR handles for spread calibration (M5) and the trailing stop (M15)
    g_atr_m5  = iATR(EA_SYMBOL, PERIOD_M5, 14);
    g_atr_m15 = iATR(EA_SYMBOL, PERIOD_M15, 14);
@@ -338,7 +342,10 @@ void OnTick()
 
    // --- Terminal states: do nothing
    if(StateManager.IsTerminal())
+   {
+      MixEngine.CancelPendings("terminal_state");     // A327: no mix order may fill after target / fatal
       return;
+   }
 
    // --- Stale price guard
    if(TimerSystem.IsPriceStale())
@@ -357,6 +364,16 @@ void OnTick()
    // A320 (P0-2): equity floor + daily-loss buffer on EVERY tick, whatever the state
    if(!GuardCoordinator.FastSafetyCheck())
       return;
+
+   // A327: the mix runs beside the EA's own strategy. New orders only when the EA is not suspended,
+   // stopped or at its target; while suspended it only does time exits and cancels pendings.
+   if(StateManager.IsSuspended())
+   {
+      MixEngine.CancelPendings("suspended");
+      MixEngine.Manage();
+   }
+   else if(!StateManager.IsTerminal())
+      MixEngine.OnTick();
 
    //=================================================================
    // MAIN STATE DISPATCH
@@ -681,6 +698,7 @@ void OnTradeTransaction(
    // Phase 7: Recovery will detect unexpected closures
 
    if(trans.type != TRADE_TRANSACTION_DEAL_ADD) return;
+   MixEngine.OnTransaction(trans);                       // A327: mix streak sizing (own magics)
    Logger.Debug("TRANSACTION",
       StringFormat("Deal added: type=%s symbol=%s volume=%.2f price=%.5f",
                    EnumToString(trans.deal_type), trans.symbol, trans.volume, trans.price));

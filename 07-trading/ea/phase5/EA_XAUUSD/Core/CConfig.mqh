@@ -320,4 +320,11 @@ public:
 //--- Global singleton
 CConfig Config;
 
+//--- A327: the EA's own magic or one of the mix strategies' magics
+bool IsOurMagic(long m)
+{
+   return m == Config.MagicNumber ||
+          (m >= Config.MagicNumber + MIX_MAGIC_OFFSET && m < Config.MagicNumber + MIX_MAGIC_OFFSET + MIX_MAGIC_SPAN);
+}
+
 #endif // CCONFIG_MQH

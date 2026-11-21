@@ -317,70 +317,20 @@ private:
    // Retry logic handled by RetryManager (Phase 7).
    // For Phase 2: up to 3 direct attempts with 2-second gaps.
    //=================================================================
+   //--- A327 + guard audit C3: close EVERY position of ours (EA + mix), not just the first one found
    bool CloseOpenPositionSafely(string reason)
    {
-      ulong ticket = 0;
+      bool ok = true;
       for(int i = PositionsTotal() - 1; i >= 0; i--)
       {
          ulong t = PositionGetTicket(i);
          if(t == 0) continue;
-         if(PositionGetString(POSITION_SYMBOL) == EA_SYMBOL &&
-            PositionGetInteger(POSITION_MAGIC) == Config.MagicNumber)
-         {
-            ticket = t;
-            break;
-         }
+         if(PositionGetString(POSITION_SYMBOL) != EA_SYMBOL) continue;
+         if(!IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+         if(!ClosePositionByTicket(t, reason)) ok = false;
       }
-
-      if(ticket == 0)
-      {
-         Logger.Debug("GUARD_COORD", "CloseOpenPositionSafely: no position found");
-         return true; // Nothing to close — success
-      }
-
-      // Attempt close with slippage allowance
-      MqlTradeRequest  req;
-      MqlTradeResult   res;
-      ZeroMemory(req);
-      ZeroMemory(res);
-
-      req.action    = TRADE_ACTION_DEAL;
-      req.position  = ticket;
-      req.symbol    = EA_SYMBOL;
-      req.volume    = PositionGetDouble(POSITION_VOLUME);
-      req.type      = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-                      ? ORDER_TYPE_SELL : ORDER_TYPE_BUY;
-      req.price     = (req.type == ORDER_TYPE_SELL)
-                      ? SymbolInfoDouble(EA_SYMBOL, SYMBOL_BID)
-                      : SymbolInfoDouble(EA_SYMBOL, SYMBOL_ASK);
-      req.deviation = (ulong)(Config.SlippageMax * 10);  // Convert pips to points
-      req.magic     = Config.MagicNumber;
-      req.comment   = "guard_close_" + reason;
-
-      for(int attempt = 1; attempt <= 3; attempt++)
-      {
-         bool sent = OrderSend(req, res);
-         if(sent && res.retcode == TRADE_RETCODE_DONE)
-         {
-            Logger.Info("GUARD_COORD",
-               StringFormat("Position closed by guard. ticket=%llu reason=%s",
-                            ticket, reason));
-            return true;
-         }
-
-         Logger.Error("GUARD_COORD",
-            StringFormat("Close attempt %d/3 failed. retcode=%d ticket=%llu",
-                         attempt, res.retcode, ticket));
-
-         if(attempt < 3) Sleep(2000); // 2-second gap between retries
-      }
-
-      // All 3 attempts failed — critical
-      Logger.Critical("GUARD_COORD",
-         StringFormat("CLOSE FAILED after 3 attempts. ticket=%llu retcode=%d",
-                      ticket, res.retcode),
-         StringFormat("reason=%s — Phase 7 RetryManager will handle", reason));
-      return false;
+      if(!ok) Logger.Error("GUARD_COORD", "CloseOpenPositionSafely: some positions did not close — " + reason);
+      return ok;
    }
 
    //=================================================================
@@ -414,7 +364,7 @@ private:
          ulong ticket = PositionGetTicket(i);
          if(ticket == 0) continue;
          if(PositionGetString(POSITION_SYMBOL) != EA_SYMBOL) continue;
-         if(PositionGetInteger(POSITION_MAGIC) != Config.MagicNumber) continue;
+         if(!IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;   // A327: EA + mix
 
          if(ClosePositionByTicket(ticket, reason))
             closed++;
@@ -481,7 +431,7 @@ private:
          ulong ticket = OrderGetTicket(i);
          if(ticket == 0) continue;
          if(OrderGetString(ORDER_SYMBOL) != EA_SYMBOL) continue;
-         if(OrderGetInteger(ORDER_MAGIC) != Config.MagicNumber) continue;
+         if(!IsOurMagic(OrderGetInteger(ORDER_MAGIC))) continue;         // A327: EA + mix
 
          MqlTradeRequest req;
          MqlTradeResult  res;

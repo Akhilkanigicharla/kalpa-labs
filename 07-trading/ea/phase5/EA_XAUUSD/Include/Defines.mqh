@@ -15,6 +15,8 @@
 #define EA_NAME          "XAUUSD_INST_EA"
 #define EA_VERSION       "1.0.0"
 #define EA_BUILD_DATE    "2026.05.22"
+#define MIX_MAGIC_OFFSET 100        // A327: mix strategy i uses magic = MagicNumber + 100 + i
+#define MIX_MAGIC_SPAN   20
 #define EA_SYMBOL        _Symbol    // A320: chart symbol (brokers use XAUUSD.r, GOLD ...)
 
 //===================================================================

@@ -1,0 +1,21 @@
+{
+  "_note": "A227/A61: live URLs for 00-hq/launch/smoke.py. Add a target only once that product is live (rule 9). Names match readiness.json smoke targets.",
+  "hq-site": {
+    "url": "https://kalpalabs.dpdns.org/",
+    "chat_url": "https://kalpalabs.dpdns.org/api/chat",
+    "checks": [
+      "page",
+      "headers",
+      "chat",
+      "tap"
+    ]
+  },
+  "tab-lifeboat-site": {
+    "url": "https://akhilkanigicharla.github.io/kalpa-labs/",
+    "checks": [
+      "page",
+      "tap"
+    ],
+    "_why": "GitHub Pages cannot send security headers; header gap tracked in A232"
+  }
+}

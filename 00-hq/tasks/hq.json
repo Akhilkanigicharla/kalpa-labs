@@ -1121,7 +1121,7 @@
    ".github/workflows/quality.yml"
   ],
   "details": "Read the A311 line. Compare `npm audit --omit=dev --audit-level=high` and Google's osv-scanner as a GitHub Actions step for a repo with several package-lock.json folders: licence of each tool (link the LICENSE file), how each exits on high/critical findings, how to scan many folders in one step, how to ignore one accepted advisory with a reason, and whether each needs network or an account. Cite each tool's own docs URL; write 'unverified' where you have none. End with a 3-line pick.",
-  "min_items": "5",
+  "min_items": 5,
   "tries": 0,
   "status": "done",
   "priority": "P2",
@@ -1140,12 +1140,48 @@
    "00-hq/n8n-selfhost/README.md"
   ],
   "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
-  "min_items": "4",
+  "min_items": 4,
   "tries": 0,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-21T14:50:00Z",
   "updated": "2026-11-21T05:05:00Z",
   "output": "00-hq/knowledge/K163.md"
+ },
+ {
+  "id": "K164",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A228 prep: why social-voiceover.yml failed at start-up, likely causes and fixes",
+  "read": [
+   "00-hq/ROADMAP.md",
+   ".github/workflows/social-voiceover.yml"
+  ],
+  "details": "Read the A228 line and the workflow file. List the most likely causes of a GitHub Actions 'startup failure' for this file (invalid YAML/expression, unknown input, missing permission, bad action version, reusable workflow ref), each with GitHub docs URL and the exact line in the workflow that could trigger it. 'unverified' without a docs URL.",
+  "min_items": 4,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T19:30:00Z",
+  "updated": "2026-11-21T19:30:00Z",
+  "output": "00-hq/knowledge/K164.md"
+ },
+ {
+  "id": "K165",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A229 prep: Groq and OpenRouter free limits, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/DELEGATE.md"
+  ],
+  "details": "Read the A229 line. From Groq's own rate-limit page (console.groq.com/docs/rate-limits) and OpenRouter's own docs (openrouter.ai/docs/api-reference/limits), give requests per day/minute for free models, what happens at the limit, and which response headers report remaining calls, each with the doc URL. 'unverified' for anything without the provider's URL.",
+  "min_items": 5,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T19:30:00Z",
+  "updated": "2026-11-21T19:30:00Z",
+  "output": "00-hq/knowledge/K165.md"
  }
 ]

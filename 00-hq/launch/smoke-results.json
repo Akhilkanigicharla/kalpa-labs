@@ -1,0 +1,47 @@
+{
+ "at": "2026-11-21T16:41:31Z",
+ "results": [
+  {
+   "name": "hq-site",
+   "url": "https://kalpalabs.dpdns.org/",
+   "at": "2026-11-21T16:41:31Z",
+   "ok": true,
+   "detail": "page, headers, chat, tap",
+   "steps": {
+    "page": {
+     "ok": true,
+     "detail": "200 HTML"
+    },
+    "headers": {
+     "ok": true,
+     "detail": "6 headers OK"
+    },
+    "chat": {
+     "ok": true,
+     "detail": "answered (225 chars)"
+    },
+    "tap": {
+     "ok": true,
+     "detail": "PASS tap sweep"
+    }
+   }
+  },
+  {
+   "name": "tab-lifeboat-site",
+   "url": "https://akhilkanigicharla.github.io/kalpa-labs/",
+   "at": "2026-11-21T16:41:39Z",
+   "ok": true,
+   "detail": "page, tap",
+   "steps": {
+    "page": {
+     "ok": true,
+     "detail": "200 HTML"
+    },
+    "tap": {
+     "ok": true,
+     "detail": "PASS tap sweep"
+    }
+   }
+  }
+ ]
+}

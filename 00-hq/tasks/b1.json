@@ -428,7 +428,7 @@
    "00-hq/ROADMAP.md"
   ],
   "details": "Read the A223 line. List the current Meta WhatsApp Business Platform per-message rates for India (marketing, utility, authentication, service) in INR or USD, the free service-reply allowance, and whether utility templates inside the 24 h window are charged. Give the exact Meta developers.facebook.com page URL for every number. Write 'unverified' for any number without that page. Then 3 lines on what it means for BotBhai's ₹999/₹1,499 monthly plans at 500 and 2,000 customer messages a month.",
-  "min_items": "6",
+  "min_items": 6,
   "tries": 0,
   "status": "todo",
   "priority": "P2",
@@ -445,7 +445,7 @@
    "00-hq/ROADMAP.md"
   ],
   "details": "Read the A312 line. (1) From Telegram's own Bot API docs (core.telegram.org/bots/api and /bots/faq), give the sendMessage limits that matter for alerts (messages per second to one chat, message length, what 429 retry_after means), each with the doc URL. (2) Write 8 one-line alert templates for BotBhai/JobCard failures (webhook signature bad, Supabase timeout, WhatsApp send failed, payment link failed, reminder job failed, rate limit hit, unknown error, alert flood summary) that hold NO customer name, phone number or message text: only error kind, function name, count and time (IST). Write 'unverified' for any limit without a doc URL.",
-  "min_items": "8",
+  "min_items": 8,
   "tries": 0,
   "status": "done",
   "priority": "P2",
@@ -464,7 +464,7 @@
    "00-hq/design/ENGINEERING-CHECKS.md"
   ],
   "details": "Read the A313 line. Compare k6 (Grafana), autocannon and OWASP ZAP baseline scan for testing a Netlify deploy-preview URL from GitHub Actions: licence of each (link the LICENSE file), install line in Actions, how to run 50 parallel users for 60 seconds, how to fail the job on p95 latency or error rate, and any rule in Netlify's own terms about load testing their hosting. Cite each fact with the official doc URL. No guesses; write 'unverified' when no source.",
-  "min_items": "4",
+  "min_items": 4,
   "tries": 0,
   "status": "todo",
   "priority": "P2",
@@ -482,7 +482,7 @@
    "01-botbhai/PLAN.md"
   ],
   "details": "Read the A223 line. From Meta's own WhatsApp Business pricing page and rate card (developers.facebook.com/docs/whatsapp/pricing), give India per-message prices for marketing, utility, authentication and service, the free service-reply rules, and whether utility templates inside the 24 h window are charged, each with the doc URL and the 'last updated' date shown. Then compute one salon's monthly reminder cost at 300, 600 and 1,000 reminders. Write 'unverified' for anything without a Meta URL.",
-  "min_items": "4",
+  "min_items": 4,
   "tries": 0,
   "status": "todo",
   "priority": "P2",

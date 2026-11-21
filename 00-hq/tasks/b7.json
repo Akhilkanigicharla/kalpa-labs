@@ -118,7 +118,7 @@
    "00-hq/ROADMAP.md"
   ],
   "details": "Read the A224 line. Summarise the SEBI retail algo framework as it applies to one person trading own money through a broker API: static IP registration, Algo ID, 2FA, order-per-second limit. Cite sebi.gov.in or nseindia.com circular numbers for each rule; write 'unverified' otherwise. Then list 4 options to send orders from one fixed IP at zero recurring cost (e.g. a free-tier cloud VM with a static IP), each with the provider's own pricing page URL and 'unverified' if not cited.",
-  "min_items": "5",
+  "min_items": 5,
   "tries": 0,
   "status": "todo",
   "priority": "P2",

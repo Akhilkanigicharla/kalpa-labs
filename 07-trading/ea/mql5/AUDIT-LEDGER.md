@@ -52,3 +52,10 @@ missing. Guard-layer findings: `AUDIT-2026-11-21.md`.
 - **Edge (phase 16):** THE EXISTING INFORMATION IS INSUFFICIENT TO ESTABLISH A STATISTICALLY VALIDATED TRADING EDGE.
   Evidence so far: design as written 0 trades in 2 yrs (H1); loosened +0.08R/trade, 118 trades, early half +0.02R;
   3-trade variant +0.05R. No out-of-sample or live proof.
+
+## 5. Intelligence-layer audit prompt (2d8a0e40-attachment.txt, 758 lines, received 10:51 IST)
+Read in full. It names 10 files (CVolatilityEngine 719, CDailyStats 237, IIntelligenceEngine 190,
+CIntelligenceCoordinator 1,020, CRegimeEngine 764, CLiquidityEngine 1,281, CRegimePersistenceModel 689,
+CStructureEngine 1,078, CTrendEngine 536, IntelligenceTypes 607 = 7,121 lines). **None of the source was attached**:
+the upload holds only the instructions (no `#include`, no class code), and no `.mqh` exists anywhere on this machine.
+Audit not started; waiting for the files. The prompt's last line is cut off mid-sentence ("…rather than guessing").

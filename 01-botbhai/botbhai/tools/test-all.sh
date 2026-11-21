@@ -22,6 +22,7 @@ node core/billing.test.js
 NO_DELAY=1 node core/functions/webhook.test.js
 NO_DELAY=1 node core/functions/agents.test.js
 NO_DELAY=1 node core/functions/hardening.test.js
+node core/functions/opsalert.test.js
 NO_DELAY=1 node core/functions/paging.test.js
 NO_DELAY=1 node core/functions/billing.test.js
 NO_DELAY=1 node core/functions/telegram.test.js

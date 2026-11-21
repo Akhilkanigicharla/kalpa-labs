@@ -36,6 +36,9 @@ const json = (status, body, cors = true) => ({ statusCode: status, headers: Obje
 async function rateHit(key, windowS, max) {
   return (await db("rpc/rate_hit", { method: "POST", body: { p_key: key, p_window_s: windowS, p_max: max } })) !== false;
 }
+// A312: failure → one line to Akhil's private Telegram (no customer data), max one per kind per hour across all copies.
+const { alertOps } = require("./_opsalert.js");
+const opsAlert = (fn, err) => alertOps({ app: "BotBhai", fn, err }, { allow: (key) => rateHit(key, 3600, 1) });
 // ---------- Cloudflare Turnstile (free bot check) before a website booking is saved (A50).
 // Fails closed: no secret, no token, a used/forged token, a token for another action or Cloudflare unreachable → not ok.
 // No secret = "turnstile: off": bookings are paused, unless BOTBHAI_DEMO=1 (a private demo/preview deploy only).
@@ -184,5 +187,5 @@ function metaSignatureOk(event) {
   return sig.length === expected.length && require("crypto").timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-module.exports = { metaSignatureOk, db, dbAll, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { opsAlert, metaSignatureOk, db, dbAll, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

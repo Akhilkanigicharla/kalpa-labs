@@ -19,6 +19,7 @@ import crypto from "node:crypto";
 import { parseTranscript } from "../../lib/parse.mjs";
 import { computeInvoice, invoicePDF, upiLink, SAC } from "../../lib/invoice.mjs";
 import { cardQuota, istMonth, voiceQuota } from "../../lib/quota.mjs";
+import ops from "../../lib/opsalert.cjs";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
 const IGNORE = new Set(["reaction", "system", "unsupported", "ephemeral", "request_welcome", "order"]);
@@ -74,6 +75,8 @@ export function validSignature(event) {
   const expected = "sha256=" + crypto.createHmac("sha256", secret).update(raw).digest("hex");
   return sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
+// A312: one Telegram line to Akhil per error kind per hour; the hour slot is claimed in the same table so many copies send once.
+export const opsAlert = (fn, err) => ops.alertOps({ app: "JobCard", fn, err }, { allow: (key) => firstTime(`${key}:${Math.floor(Date.now() / 3600000)}`) });
 async function firstTime(id) { // insert-or-ignore; an empty result means we saw this message already
   const rows = await db("wa_processed?on_conflict=id", { method: "POST", body: { id }, prefer: "resolution=ignore-duplicates,return=representation" });
   return Array.isArray(rows) && rows.length > 0;
@@ -294,7 +297,7 @@ export async function handler(event) {
         if (IGNORE.has(msg.type)) continue;
         if (!(await firstTime(msg.id))) continue; // Meta retry: already handled
         await handleMessage(pnid, msg);
-      } catch (err) { console.error("jobcard", err.message); }
+      } catch (err) { console.error("jobcard", err.message); await opsAlert("jobcard", err); }
     }
   }
   return json(200, { ok: true }); // always 200 fast, or Meta retries

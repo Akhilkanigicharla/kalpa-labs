@@ -1129,5 +1129,23 @@
   "updated": "2026-11-21T12:00:00Z",
   "output": "00-hq/knowledge/K156.md",
   "note": "Superseded by K150 + live run, A311 done"
+ },
+ {
+  "id": "K163",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A225 prep: Render free instance hours rules, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/n8n-selfhost/README.md"
+  ],
+  "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
+  "min_items": "4",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T14:50:00Z",
+  "updated": "2026-11-21T05:05:00Z",
+  "output": "00-hq/knowledge/K163.md"
  }
 ]

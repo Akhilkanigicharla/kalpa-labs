@@ -69,7 +69,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | 14 | Caching | not relevant: replies are per person and live; static files cached by the Netlify CDN |
 | 15 | CDNs | done: Netlify CDN serves every static page |
 | 16 | Logging | done: console.error with a short tag on every failure path → Netlify function log |
-| 17 | Monitoring | missing (alerts): logs exist, alerting is A312; answer quality checked by botbhai-depth-live.yml |
+| 17 | Monitoring | done (A312, 21 Nov): logs + failure alerts to Akhil's private Telegram via `_opsalert.js`/`lib/opsalert.cjs`; live once OPS_ALERT_BOT_TOKEN + OPS_ALERT_CHAT_ID are set (C95); answer quality checked by botbhai-depth-live.yml |
 | 18 | Timeouts | auto: PASS |
 | 19 | Exponential Backoff | not relevant: Meta retries webhooks itself and the processed table dedupes; DB calls have 10 s timeouts and fail to the fixed reply |
 | 20 | Idempotency | done: processed(wamid) handles each WhatsApp message once (_lib.js); invoice number + row in one transaction |
@@ -102,10 +102,10 @@ Machine rows come from `python3 00-hq/tools/eng_check.py botbhai --md`; the rest
 | 47 | Stateless Services | done: functions keep no state between calls; state lives in Supabase tables |
 | 48 | Health Checks | missing: post-deploy smoke of the live URL is A227 |
 | 49 | Graceful Shutdown | not relevant: serverless; the platform ends each call |
-| 50 | Alerting | missing: function errors only reach the Netlify log; Telegram alert to Akhil is A312 |
+| 50 | Alerting | done (A312, 21 Nov): every function catch sends one line (app · function · kind · IST time), max 1 per kind per hour across copies (Supabase claim); test `core/functions/opsalert.test.js` 8 checks; off until C95 env is set |
 | 51 | Distributed Tracing | not relevant: one hop (function → Supabase / Meta) |
 | 52 | Structured Logging | not relevant at this size: one tagged console.error line per failure |
-| 53 | Error Tracking | missing: same as 50, A312 |
+| 53 | Error Tracking | done (A312): same as 50; alert holds no message text, names or numbers (test checks it) |
 | 54 | Uptime Monitoring | missing: live uptime check is A227 |
 | 55 | Feature Flags | done: per-client config switches (ads_autopilot, inbox_hold_hours) and BOTBHAI_DEMO |
 | 56 | Staging Environments | done: Netlify deploy previews + tests on fakes; nothing live without Akhil's go (rule 9) |

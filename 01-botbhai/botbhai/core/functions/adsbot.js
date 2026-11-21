@@ -16,7 +16,7 @@ exports.handler = async () => {
         const leads = await db(`leads?client_id=eq.${c.id}&select=score,status,source,created_at,updated_at&order=updated_at.desc&limit=2000`);
         const text = weeklySummary((c.config || {}).business || c.name, leads, Date.now());
         await sendText(c.phone_number_id, c.owner_whatsapp, text).catch(() => sendTemplate(c.phone_number_id, c.owner_whatsapp, templatesFor(c.niche).owner_report, { summary: text.split("\n")[1] }));
-      } catch (e) { console.error("weekly", c.name, e.message); }
+      } catch (e) { console.error("weekly", c.name, e.message); await L.opsAlert("adsweekly", e); }
     }
   }
   const clients = await dbAll("clients?active=eq.true&meta_ad_account_id=not.is.null&select=*");
@@ -35,7 +35,7 @@ exports.handler = async () => {
         // inside 24h window a plain text works; otherwise use the approved owner_report utility template
         await sendText(c.phone_number_id, c.owner_whatsapp, report).catch(() => sendTemplate(c.phone_number_id, c.owner_whatsapp, templatesFor(c.niche).owner_report, { summary: report.split("\n")[1] }));
       }
-    } catch (e) { console.error("adsbot", c.name, e.message); }
+    } catch (e) { console.error("adsbot", c.name, e.message); await L.opsAlert("adsbot", e); }
   }
   return { statusCode: 200, body: "ok" };
 };

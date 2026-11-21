@@ -447,11 +447,12 @@
   "details": "Read the A312 line. (1) From Telegram's own Bot API docs (core.telegram.org/bots/api and /bots/faq), give the sendMessage limits that matter for alerts (messages per second to one chat, message length, what 429 retry_after means), each with the doc URL. (2) Write 8 one-line alert templates for BotBhai/JobCard failures (webhook signature bad, Supabase timeout, WhatsApp send failed, payment link failed, reminder job failed, rate limit hit, unknown error, alert flood summary) that hold NO customer name, phone number or message text: only error kind, function name, count and time (IST). Write 'unverified' for any limit without a doc URL.",
   "min_items": "8",
   "tries": 0,
-  "status": "todo",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-21T05:05:00Z",
   "updated": "2026-11-21T05:05:00Z",
-  "output": "00-hq/knowledge/K157.md"
+  "output": "00-hq/knowledge/K157.md",
+  "note": "Superseded: A312 built 21 Nov with one fixed line format (app · function · kind · IST time); Telegram limits still to verify in C95"
  },
  {
   "id": "K158",
@@ -470,5 +471,23 @@
   "created": "2026-11-21T12:00:00Z",
   "updated": "2026-11-21T12:00:00Z",
   "output": "00-hq/knowledge/K158.md"
+ },
+ {
+  "id": "K162",
+  "world": "b1",
+  "owner": "Quill",
+  "title": "A223 prep: Meta WhatsApp India rate card Nov 2026, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "01-botbhai/PLAN.md"
+  ],
+  "details": "Read the A223 line. From Meta's own WhatsApp Business pricing page and rate card (developers.facebook.com/docs/whatsapp/pricing), give India per-message prices for marketing, utility, authentication and service, the free service-reply rules, and whether utility templates inside the 24 h window are charged, each with the doc URL and the 'last updated' date shown. Then compute one salon's monthly reminder cost at 300, 600 and 1,000 reminders. Write 'unverified' for anything without a Meta URL.",
+  "min_items": "4",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T14:50:00Z",
+  "updated": "2026-11-21T05:05:00Z",
+  "output": "00-hq/knowledge/K162.md"
  }
 ]

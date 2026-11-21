@@ -9,7 +9,7 @@
  * Meta template (Akhil creates it, category Utility, te/hi/en): body "{{1}} customers are due for service this week: {{2}}.
  *   Tap below to remind each one from your own WhatsApp." URL button: https://<site>/?tab={{1}}
  */
-import { db, dbAll } from "./jobcard.js";
+import { db, dbAll, opsAlert } from "./jobcard.js";
 import { dueCustomers } from "../../lib/reminders.mjs";
 
 const GRAPH = "https://graph.facebook.com/v21.0";
@@ -50,7 +50,7 @@ export async function runReminders({ now = Date.now() } = {}) {
       const names = due.map((d) => d.customer.name).join(", ").slice(0, 200);
       await sendTemplate(`91${t.phone}`, t.language, due.length, names);
       out.sent++;
-    } catch (e) { out.failed++; console.error("reminders", t.id, e.message); }
+    } catch (e) { out.failed++; console.error("reminders", t.id, e.message); await opsAlert("reminders", e); }
   }
   return out;
 }

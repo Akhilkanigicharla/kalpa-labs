@@ -159,7 +159,7 @@ exports.handler = async (event) => {
         const [client] = await L.db(`clients?phone_number_id=eq.${L.enc(pnid)}&active=eq.true&select=*&limit=1`);
         if (!client) { console.warn("no client for", pnid); continue; }
         await handleMessage(client, v, msg);
-      } catch (err) { console.error(err); }
+      } catch (err) { console.error(err); await L.opsAlert("whatsapp", err); }
     }
   }
   return L.json(200, { ok: true }); // always 200 fast, or Meta retries

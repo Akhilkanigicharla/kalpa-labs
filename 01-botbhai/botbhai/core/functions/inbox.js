@@ -98,7 +98,7 @@ exports.handler = async (event) => {
     try { await L.sendText(client.phone_number_id, contact, text); }
     catch (e) {
       if (/131047|Re-engagement/.test(e.message)) return L.json(409, { error: "outside_24h", message: "WhatsApp says the 24-hour window has closed." }, false);
-      console.error("inbox send", e.message.slice(0, 120)); return L.json(502, { error: "send_failed", message: "WhatsApp didn't accept the message. Try again in a minute." }, false);
+      console.error("inbox send", e.message.slice(0, 120)); await L.opsAlert("inbox", e); return L.json(502, { error: "send_failed", message: "WhatsApp didn't accept the message. Try again in a minute." }, false);
     }
     hold(); // a person is talking now: keep the bot out of the way
     await L.db("messages", { method: "POST", prefer: "return=minimal", body: { client_id: client.id, contact, direction: "out", author: "staff", body: text } });

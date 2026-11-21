@@ -53,7 +53,7 @@ exports.handler = async (event) => {
   try { body = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, "base64").toString() : event.body || "{}"); } catch { return L.json(400, { error: "json" }); }
   const results = [];
   for (const e of C.parseCommentEvents(body)) {
-    try { results.push(await handleEvent(e, Date.now())); } catch (err) { console.error("comment dm failed", err.message); results.push("error"); }
+    try { results.push(await handleEvent(e, Date.now())); } catch (err) { console.error("comment dm failed", err.message); await L.opsAlert("comments", err); results.push("error"); }
   }
   return L.json(200, { ok: true, results });
 };

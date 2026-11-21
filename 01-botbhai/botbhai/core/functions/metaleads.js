@@ -4,7 +4,7 @@
  * For each new lead: fetch the form answers, save the lead (source "meta_ads"), send the WhatsApp
  * welcome template with "Book now / Call me" buttons, alert the owner, and queue a voice call if enabled.
  */
-const { db, json, metaSignatureOk, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
+const { opsAlert, db, json, metaSignatureOk, graph, sendTemplate, templatesFor, alertOwner, firstTime, enc, clientToken } = require("./_lib.js");
 const { parseMetaLead } = require("../automations.js");
 
 exports.handler = async (event) => {
@@ -43,7 +43,7 @@ exports.handler = async (event) => {
       if (lead.phone && client.phone_number_id) await sendTemplate(client.phone_number_id, lead.phone, tpl.lead_welcome, { name: lead.name || "there", business: cfg.business || client.name });
       await alertOwner(client, `🆕 Meta lead: ${lead.name || "?"} (${lead.phone || "no phone"}) ` + Object.entries(lead.answers).map(([k, a]) => `${k.replace(/_/g, " ")}: ${a}`).join("; "));
       if (cfg.voice_followup && lead.phone) await db("jobs", { method: "POST", prefer: "return=minimal", body: { client_id: client.id, type: "voice_call", payload: { to: lead.phone, name: lead.name, reason: "new_meta_lead" }, run_at: new Date(Date.now() + 120000).toISOString() } });
-    } catch (e) { console.error("lead failed", e.message); }
+    } catch (e) { console.error("lead failed", e.message); await opsAlert("metaleads", e); }
   }
   return json(200, { ok: true });
 };

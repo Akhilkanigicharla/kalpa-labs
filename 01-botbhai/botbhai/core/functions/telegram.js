@@ -104,7 +104,7 @@ exports.handler = async (event) => {
     if (!(await L.firstTime("tg:" + update.update_id))) return L.json(200, { ok: true }); // Telegram retry → already handled
     const [client] = await L.db(`clients?id=eq.${clientId}&active=eq.true&select=*&limit=1`);
     if (client) await handleUpdate(client, update);
-  } catch (err) { console.error(err); }
+  } catch (err) { console.error(err); await L.opsAlert("telegram", err); }
   return L.json(200, { ok: true }); // always 200 fast, or Telegram retries
 };
 exports._keyboard = keyboard;

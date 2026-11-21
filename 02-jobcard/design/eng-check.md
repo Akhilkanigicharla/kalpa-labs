@@ -28,8 +28,8 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | Input caps: 02-jobcard/bot/functions/reminders.js | PASS | no input length cap |
 | Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
 | Failover (AI calls fall back to another model or a fixed reply) | PASS | no AI calls |
-| Graceful Degradation (browser fetch failures are caught) | PASS | 1 file(s) call the server, all catch errors |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 32 KB |
+| Graceful Degradation (browser fetch failures are caught) | PASS | 2 file(s) call the server, all catch errors |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 34 KB |
 
 ## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
@@ -51,7 +51,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 14 | Caching | not relevant: replies are per person and live; static files cached by the Netlify CDN |
 | 15 | CDNs | done: Netlify CDN serves every static page |
 | 16 | Logging | done: console.error on failure paths → Netlify function log |
-| 17 | Monitoring | missing (alerts): logs exist, alerting is A312 |
+| 17 | Monitoring | done (A312, 21 Nov): logs + failure alerts to Akhil's private Telegram via `_opsalert.js`/`lib/opsalert.cjs`; live once OPS_ALERT_BOT_TOKEN + OPS_ALERT_CHAT_ID are set (C95) |
 | 18 | Timeouts | auto: PASS |
 | 19 | Exponential Backoff | done: fetchRetry: 250 ms × 2^n + jitter, reads only (jobcard.js) |
 | 20 | Idempotency | done: wa_processed: each Meta message handled once; reminder_sends: one reminder per technician per day |
@@ -84,10 +84,10 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 47 | Stateless Services | done: functions keep no state between calls; state lives in Supabase tables |
 | 48 | Health Checks | missing: post-deploy smoke of the live URL is A227 |
 | 49 | Graceful Shutdown | not relevant: serverless; the platform ends each call |
-| 50 | Alerting | missing: function errors only reach the Netlify log; Telegram alert to Akhil is A312 |
+| 50 | Alerting | done (A312, 21 Nov): every function catch sends one line (app · function · kind · IST time), max 1 per kind per hour across copies (Supabase claim); test `core/functions/opsalert.test.js` 8 checks; off until C95 env is set |
 | 51 | Distributed Tracing | not relevant: one hop (function → Supabase / Meta) |
 | 52 | Structured Logging | not relevant at this size: one tagged console.error line per failure |
-| 53 | Error Tracking | missing: same as 50, A312 |
+| 53 | Error Tracking | done (A312): same as 50; alert holds no message text, names or numbers (test checks it) |
 | 54 | Uptime Monitoring | missing: live uptime check is A227 |
 | 55 | Feature Flags | not relevant: product parked (Akhil, 6 Nov 2026); plan flag on technicians is set only by the server |
 | 56 | Staging Environments | done: Netlify deploy previews + tests on fakes; nothing live without Akhil's go (rule 9) |

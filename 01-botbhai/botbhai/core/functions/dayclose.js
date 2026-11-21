@@ -21,7 +21,7 @@ exports.handler = async (event) => {
       try {
         const from = new Date(Date.parse(day + "T00:00:00Z") - 90 * 864e5).toISOString().slice(0, 10);
         nudges = ownerNudges(await L.db(`bookings?client_id=eq.${c.id}&date_iso=gte.${from}&select=contact,name,date_iso,status,confirmed_at&limit=5000`), day);
-      } catch (e) { console.error("nudges", c.id, e.message); }
+      } catch (e) { console.error("nudges", c.id, e.message); await L.opsAlert("nudges", e); }
       try { await L.sendText(c.phone_number_id, c.owner_whatsapp, list.text + (nudges ? "\n\n" + nudges : "")); }
       catch (e) { // outside the 24 h window: the approved utility template, then the list arrives once they reply
         const tpl = L.templatesFor(c.niche).owner_report;
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
       const state = Object.assign({}, sess ? sess.state : {}, { dayclose: { date_iso: day, ids: list.ids, text: list.text } });
       await L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: c.id, contact: c.owner_whatsapp, state, updated_at: new Date().toISOString() } });
       lists++;
-    } catch (e) { console.error("dayclose", c.id, e.message); }
+    } catch (e) { console.error("dayclose", c.id, e.message); await L.opsAlert("dayclose", e); }
   }
   return { statusCode: 200, body: `lists sent ${lists}` };
 };

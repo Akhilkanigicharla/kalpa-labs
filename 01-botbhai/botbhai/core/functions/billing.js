@@ -55,7 +55,7 @@ async function message(client, text, short) {
     const tpl = L.templatesFor(client.niche).owner_alert; if (!tpl) return false;
     const link = short.link; const head = short.head.slice(0, Math.max(0, 196 - link.length));
     try { await L.sendTemplate(client.phone_number_id, client.owner_whatsapp, tpl, { business: (client.config && client.config.business) || client.name, summary: `${head} ${link}` }); return true; }
-    catch (err) { console.error("billing send failed", err.message.slice(0, 120)); return false; }
+    catch (err) { console.error("billing send failed", err.message.slice(0, 120)); await L.opsAlert("billing", err); return false; }
   }
 }
 

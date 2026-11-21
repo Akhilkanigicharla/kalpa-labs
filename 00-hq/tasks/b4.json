@@ -242,10 +242,10 @@
  },
  {
   "priority": "P2",
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-21T00:44:16Z",
+  "updated": "2026-11-21T00:53:31Z",
   "context_chars": 8000,
   "owner": "Quill",
   "world": "b4",
@@ -257,6 +257,6 @@
   ],
   "min_items": 5,
   "output": "00-hq/knowledge/K148.md",
-  "vigil_notes": "FIX:\n*   All 5 candidates are consumer tab managers, violating the repo data (Pass 1b) which mandates B2B tools (sellers, recruiters, marketers) for revenue.\n*   All user counts, ratings, and specific 1-star complaints are invented; mark them UNVERIFIED or remove them as they are not in the repo files.\n*   The \"Working Replacement\" for all 5 is listed as \"Tab Lifeboat,\" which is an internal project, not a public market replacement; this is misleading.\n*   The task requires \"many 'stopped working' reviews,\" but the draft lists generic complaints (UI, sync) without evidence of \"stopped working\" issues from the repo.\n*   The sources provided are mostly generic MV2 transition docs or broken/unverified URLs, failing the requirement for two specific sources per candidate with verified data."
+  "vigil_notes": "FIX:\n*   Remove item 2 (Closet Tools): Repo explicitly states \"Closet Tools-style posting bots... are out\" due to Kalpa rules.\n*   Mark \"Working Replacement Today\" as UNVERIFIED for all items: Repo files do not verify the existence or status of Mailmeteor, PosherVA, Hoverify, TweetHunter X, or Wordtune as replacements.\n*   Mark \"Top 3 One-Star Complaints\" as UNVERIFIED for all items: Specific technical failure modes (e.g., \"popup button does not attach,\" \"session timeouts\") are not present in the provided repo files.\n*   Mark \"Rating\" and \"Last Updated\" as UNVERIFIED for all items: Specific ratings (4.7, 4.2, etc.) and dates are not found in the repo files.\n*   Mark \"Users\" as UNVERIFIED for items 2, 3, 4, and 5: Only GMass (~400,000) is verified in the repo; user counts for the others are not provided in the source files."
  }
 ]

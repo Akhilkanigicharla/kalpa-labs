@@ -32,15 +32,16 @@ If the server is ever stopped, every open trade still has its stop-loss and targ
    - Create, then copy the **Public IP**.
 3. **Send the two files**: open PowerShell where the key and files are, and run:
    ```
-   scp -i ssh-key.key setup_mt5_free_cloud.sh EA_XAUUSD_The5ers_10K.zip ubuntu@PUBLIC_IP:~
+   scp -i ssh-key.key setup_mt5_free_cloud.sh EA_XAUUSD_E8.zip ubuntu@PUBLIC_IP:~
    ssh -i ssh-key.key ubuntu@PUBLIC_IP
    ```
 4. **Run the setup on the server:**
    ```
-   sudo bash setup_mt5_free_cloud.sh EA_XAUUSD_The5ers_10K.zip
+   sudo PRESET=E8_Pro_10K_challenge.set bash setup_mt5_free_cloud.sh EA_XAUUSD_E8.zip
    ```
+   - `PRESET` picks the settings file: `E8_Pro_10K_challenge.set` (demo and E8 challenge), `E8_Pro_10K_funded.set` (after passing), or `The5ers_HighStakes_10K_step1.set`. If the broker names gold differently (for example `XAUUSD.` or `GOLD`), add `SYMBOL=<that name>` before `bash`.
    - Step 5 compiles the EA. If it says FAIL, send Claude the last lines it prints.
-   - Step 6 asks for the MT5 login, server and password. For the 2-week demo, use the demo account opened in the MT5 phone app; later use the The5%ers account. You type the password there yourself; never send it to Claude.
+   - Step 6 asks for the MT5 login, server and password. For the 2-week demo, open a free demo account in the browser at https://web.metatrader.app/terminal?mode=demo (MetaQuotes's own page; set the demo balance to 10000). The E8 free trial can't be used: it runs on MatchTrader or E8 Terminal, not MT5. After you buy E8 Pro $10K, run the setup again with the E8 login. You type the password there yourself; never send it to Claude.
 5. **Check:** open the MT5 phone app with the same login. The EA's trades appear there within a few hours.
 
 ## Daily commands (on the server)

@@ -112,8 +112,17 @@ if [ "$DRY_RUN" != "1" ]; then [ -n "$SRC_DIR" ] && [ -f "${SRC_DIR}/${EA_NAME}.
 run mkdir -p "$(dirname "$EA_DIR")"
 run rm -rf "$EA_DIR"
 run cp -r "${SRC_DIR:-./${EA_NAME}}" "$EA_DIR"
+# A337: firm presets (.set) go to MQL5/Presets; PRESET=E8_Pro_10K_challenge.set picks one at start-up
+PRESET="${PRESET:-E8_Pro_10K_challenge.set}"
+SYMBOL="${SYMBOL:-XAUUSD}"
+[[ "$PRESET" =~ ^[A-Za-z0-9._-]+\.set$ ]] || fail "PRESET must be a .set file name"
+[[ "$SYMBOL" =~ ^[A-Za-z0-9._#-]{3,20}$ ]] || fail "SYMBOL looks wrong"
+PRESET_SRC="$(dirname "${SRC_DIR:-./${EA_NAME}}")/presets"
+run mkdir -p "${MT5_DIR}/MQL5/Presets"
+if [ -d "$PRESET_SRC" ]; then run cp "$PRESET_SRC"/*.set "${MT5_DIR}/MQL5/Presets/"; fi
+if [ "$DRY_RUN" != "1" ]; then [ -f "${MT5_DIR}/MQL5/Presets/${PRESET}" ] || fail "preset ${PRESET} not found in the zip"; fi
 run chown -R "${MT5_USER}:${MT5_USER}" "$HOME_DIR"
-ok "EA copied"
+ok "EA copied (preset ${PRESET}, symbol ${SYMBOL})"
 
 say "5/7 Compile the EA"
 LOG="${HOME_DIR}/compile.log"
@@ -129,13 +138,13 @@ if [ "$DRY_RUN" != "1" ]; then
   grep -iE "result|error|warning" "$LOG" | tail -n 5 || true
 fi
 
-say "6/7 Your The5%ers MT5 login (typed here only)"
+say "6/7 Your MT5 login: demo first, then the prop-firm account (typed here only)"
 INI="${MT5_DIR}/kalpa_start.ini"
 if [ "$DRY_RUN" = "1" ]; then
   printf '    would ask for login / server / password and write %s (chmod 600)\n' "$INI"
 else
   read -r -p "    MT5 login number: " LOGIN
-  read -r -p "    MT5 server (exactly as in the The5%ers email): " SERVER
+  read -r -p "    MT5 server (exactly as shown by your broker or prop firm): " SERVER
   read -r -s -p "    MT5 password (not shown): " PASS; echo
   [[ "$LOGIN" =~ ^[0-9]{4,12}$ ]] || fail "login must be the account number"
   [[ "$SERVER" =~ ^[A-Za-z0-9._-]{3,64}$ ]] || fail "server name looks wrong"
@@ -155,7 +164,8 @@ Account=0
 Profile=0
 [StartUp]
 Expert=${EA_NAME}\\${EA_NAME}
-Symbol=XAUUSD
+ExpertParameters=${PRESET}
+Symbol=${SYMBOL}
 Period=H1
 EOF
   unset PASS

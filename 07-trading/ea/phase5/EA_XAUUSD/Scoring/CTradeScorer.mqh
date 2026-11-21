@@ -308,6 +308,10 @@ public:
       if(!SweepGate(pkt, dir, sweep_aligned, sweep_strength))
          return Reject(DEC_SWEEP_GATE, dir, "opposing_fresh_sweep");
 
+      //--- Gate 8 (A320): MSNR — nearest level on the trade side must be fresh (inputs pick the parts)
+      if(!MSNR.Allows(dir == DIR_LONG ? 1 : -1))
+         return Reject(DEC_MSNR_GATE, dir, MSNR.LastReason());
+
       //--- ALL GATES PASSED — build the valid decision
       TradeDecision d;
       ZeroMemory(d);
@@ -324,10 +328,10 @@ public:
       d.sweep_strength  = sweep_strength;
       d.decided_at      = TimeCurrent();
       d.detail          = StringFormat(
-         "VALID %s score=%d thr=%d pullback=%.1f sweep_aligned=%s",
+         "VALID %s score=%d thr=%d pullback=%.1f sweep_aligned=%s msnr_story=%d",
          (dir == DIR_LONG ? "LONG" : "SHORT"),
          score, threshold, pullback_pips,
-         sweep_aligned ? "yes" : "no");
+         sweep_aligned ? "yes" : "no", MSNR.Storyline());
 
       m_valid_count++;
       m_last_decision = d;

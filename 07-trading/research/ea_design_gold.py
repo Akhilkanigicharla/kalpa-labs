@@ -239,7 +239,12 @@ def simulate(x: pd.DataFrame, x_tf, sets, trig_window: pd.Timedelta, rule="the5e
             if bal <= 9_100:
                 halted = True
             continue
-        st, tp1, tp2 = en - side * sl_dist, en + side * 1.5 * sl_dist, en + side * 2.5 * sl_dist
+        tp2_d = 2.5 * sl_dist
+        if "tp2_level" in s:                                # A320 MSNR target: next opposite level
+            tp2_d = (s["tp2_level"] - en) * side - 0.1 * s["atr"]
+            if tp2_d < 1.5 * sl_dist:
+                continue                                    # no room to the next level
+        st, tp1, tp2 = en - side * sl_dist, en + side * 1.5 * sl_dist, en + side * tp2_d
         half_done, pnl, k, trail = False, 0.0, entry_i, None
         for k in range(entry_i, len(x)):
             if side == 1:

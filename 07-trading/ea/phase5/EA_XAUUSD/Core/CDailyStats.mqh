@@ -195,6 +195,13 @@ public:
 
    //--- Query methods (used by guards)
    bool IsDailyLimitHit()   const { return m_daily_limit_hit; }
+   //--- A320: equity-based daily stop (open trades included) locks the day like the closed-P&L limit
+   void ForceDailyLimit(string why)
+   {
+      if(m_daily_limit_hit) return;
+      m_daily_limit_hit = true;
+      Logger.Warn("STATS", "Daily limit forced", why);
+   }
    bool IsMaxTradesHit()    const { return m_max_trades_hit; }
    int  GetTradeCount()     const { return m_stats.trade_count; }
    int  GetConsecLosses()   const { return m_stats.consec_losses; }

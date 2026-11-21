@@ -29,6 +29,12 @@
 //   But always confirm from SymbolInfoDouble — broker-specific.
 //===================================================================
 
+//--- A320 (P0-1): one pip definition for the whole EA. The design's thresholds (SL 30-80 pips,
+//    swings 150/60/25, ATR spike 40, M15 ATR 8-35) only fit 1 pip = $1.00 of gold price; the
+//    backtest (research/ea_design_gold.py) uses the same reading. Old code used 1 pip = 1 point
+//    ($0.01), which marked every bar a volatility spike and blocked every trade.
+input double   inp_PipSizePrice    = 1.0;    // 1 pip in price units ($1.00 on XAUUSD)
+
 class CPriceUtils
 {
 private:
@@ -54,7 +60,12 @@ public:
       // For XAUUSD Digits=2: pip = 1 point = 0.01
       // For XAUUSD Digits=3: pip = 1 point = 0.001 (some brokers)
       // We treat 1 pip = 1 point regardless — confirmed by digits check
-      m_pip_size = m_point;
+      m_pip_size = inp_PipSizePrice;
+      if(m_pip_size < m_point || m_pip_size > 10.0)
+      {
+         Print("[PRICEUTILS FATAL] inp_PipSizePrice=", m_pip_size, " outside [point, 10]");
+         return false;
+      }
 
       // Pip value = tick value × (pip_size / tick_size)
       double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);

@@ -15,7 +15,7 @@
 #define EA_NAME          "XAUUSD_INST_EA"
 #define EA_VERSION       "1.0.0"
 #define EA_BUILD_DATE    "2026.05.22"
-#define EA_SYMBOL        "XAUUSD"
+#define EA_SYMBOL        _Symbol    // A320: chart symbol (brokers use XAUUSD.r, GOLD ...)
 
 //===================================================================
 // EA MASTER STATES
@@ -376,7 +376,7 @@ struct LiqZone
 #define CONSEC_LOSS_PAUSE_SEC 3600     // 1 hour in seconds
 #define MIN_TRADE_DURATION    300      // 5 minutes minimum
 
-#define SPREAD_HARD_CAP_PIPS  25.0     // Fallback if no calibration data
+#define SPREAD_HARD_CAP_PIPS  0.80      // Fallback if no calibration data
 #define SPREAD_REAL_RR_MIN    1.5      // Minimum real RR after spread
 #define SPREAD_SPIKE_RATIO    3.0      // Ratio to average = spike
 #define SPREAD_CALIBRATION_DAYS 3      // Days before dynamic threshold
@@ -411,7 +411,7 @@ struct LiqZone
                                        // > 2.20: spike territory
 #define VOL_RATIO_SPIKE       2.20     // >= this: VOL_SPIKE
 #define VOL_RANGE_SPIKE_MULT  2.50     // Last candle range > this × ATR = NEWS_SPIKE
-#define VOL_BASELINE_FALLBACK 15.0     // Pips: used when SpreadGuard uncalibrated
+#define VOL_BASELINE_FALLBACK 7.5      // Pips: used when SpreadGuard uncalibrated
 #define VOL_STABILITY_WINDOW  5        // M15 bars for ATR trend (expanding/contracting)
 #define VOL_ATR_PERIOD        14       // ATR period (matches Config.ATRPeriod default)
 #define VOL_LOOKBACK_M15      50       // M15 bars for ATR calculation
@@ -424,7 +424,7 @@ struct LiqZone
 #define LOT_VARIATION_MAX     1.05     // Lot micro-variation upper bound
 
 #define STALE_PRICE_SEC       30       // No tick for this long = stale
-#define SLIPPAGE_MAX_PIPS     10.0     // Max acceptable entry slippage
+#define SLIPPAGE_MAX_PIPS     0.50      // Max acceptable entry slippage
 
 #define SWING_CONFIRM_BARS    2        // Bars right of swing for confirm
 #define SWING_POOL_PIPS       20.0     // Swings within this = a "pool"
@@ -470,7 +470,7 @@ struct LiqZone
 #define LIQ_SWEEP_RELEVANCE_BARS   5   // Sweep events fresh for N M15 bars
 #define LIQ_SWEEP_EVENT_BUFFER     5   // Ring buffer size for recent sweeps
 #define LIQ_WICK_MIN_PIP_NOISE     1.0 // Wicks under N pips = noise, not pierce
-#define LIQ_ATR_FALLBACK_PIPS     15.0 // Fallback ATR if not injected
+#define LIQ_ATR_FALLBACK_PIPS      7.5 // Fallback ATR if not injected
 
 #define LIQ_STALE_SEC           2700   // > 3 M15 bars without update = stale
 
@@ -580,7 +580,8 @@ enum DECISION_REASON
    DEC_VOL_TOO_LOW        = 5,  // Volatility floor — dead range
    DEC_NO_TRIGGER         = 6,  // Pullback-resume did not fire
    DEC_SWEEP_GATE         = 7,  // Blocked by opposing fresh sweep
-   DEC_PULLBACK_TOO_FAR   = 8   // Price not near EMA20 (no pullback context)
+   DEC_PULLBACK_TOO_FAR   = 8,  // Price not near EMA20 (no pullback context)
+   DEC_MSNR_GATE          = 9   // A320: MSNR level not fresh / storyline against
 };
 
 // Phase 4 tuning constants

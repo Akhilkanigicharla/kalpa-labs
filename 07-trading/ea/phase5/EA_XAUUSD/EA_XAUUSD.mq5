@@ -35,6 +35,7 @@
 //--- Include Phase 1 modules in dependency order
 #include "Include/Defines.mqh"        // Enums + structs (no dependencies)
 #include "Include/PriceUtils.mqh"     // Price math (depends: Defines)
+#include <Trade/Trade.mqh>            // A320: CTrade for position management
 #include "Core/CLogger.mqh"           // Logging (depends: Defines)
 #include "Core/CConfig.mqh"           // Config (depends: Logger)
 #include "Core/CPersistence.mqh"      // File I/O (depends: Logger)
@@ -56,6 +57,14 @@
 #include "Guards/CCooldownManager.mqh"
 
 //--- Guard singletons (global — registered into coordinator in OnInit)
+//--- A320 globals
+int    g_atr_m5  = INVALID_HANDLE;
+int    g_atr_m15 = INVALID_HANDLE;
+CTrade g_mgr;                    // position management (partial close, stop moves)
+ulong  g_txn_pos  = 0;           // trade-transaction accumulator
+double g_txn_pnl  = 0.0;
+double g_txn_risk = 0.0;
+
 CSystemHealthCheck  GuardSysHealth;
 CPropFirmGuard      GuardPropFirm;
 CEquityGuard        GuardEquity;
@@ -75,6 +84,7 @@ CCooldownManager    GuardCooldown;
 // #include "Intelligence/CRegimePersistenceModel.mqh"
 // #include "Intelligence/CTrendEngine.mqh"
 // #include "Intelligence/CLiquidityEngine.mqh"  // Included via CIntelligenceCoordinator.mqh
+#include "Intelligence/CMSNREngine.mqh"       // A320: MSNR levels + gate (before the scorer)
 #include "Scoring/CTradeScorer.mqh"
 #include "Execution/CPositionSizer.mqh"
 #include "Execution/CTradeCalculator.mqh"
@@ -274,6 +284,20 @@ int OnInit()
 
    Logger.Info("INIT", "Phase 3 intelligence layer initialized (Structure + Volatility + Regime + Liquidity + Persistence + Trend)");
 
+   // --- A320: MSNR engine (history may still be loading on first start; OnTimer retries)
+   if(!MSNR.Init())
+      Logger.Warn("INIT", "MSNR not ready yet — MSNR gate blocks entries until it is (retried every 60s)");
+
+   // --- A320: ATR handles for spread calibration (M5) and the trailing stop (M15)
+   g_atr_m5  = iATR(EA_SYMBOL, PERIOD_M5, 14);
+   g_atr_m15 = iATR(EA_SYMBOL, PERIOD_M15, 14);
+   if(g_atr_m5 == INVALID_HANDLE || g_atr_m15 == INVALID_HANDLE)
+   { Logger.Fatal("INIT", "ATR handle creation failed"); return INIT_FAILED; }
+   g_mgr.SetExpertMagicNumber(Config.MagicNumber);
+   g_mgr.SetTypeFillingBySymbol(EA_SYMBOL);
+   g_mgr.SetDeviationInPoints((ulong)MathMax(1.0, MathRound(Config.PipsToPoints(Config.SlippageMax))));
+   g_mgr.LogLevel(0);
+
    // --- Step 10: Check for orphaned position from previous session
    // (Phase 7 will implement full recovery — Phase 1 just detects)
    TradeState orphan;
@@ -328,6 +352,11 @@ void OnTick()
    // Fast on most ticks (bar boundary check + early return).
    // Slow path only on bar closes (engines run, packet rebuilt).
    IntelligenceCoordinator.Update();
+   MSNR.Update();                                   // A320: cheap unless an H1/H4/W1 bar closed
+
+   // A320 (P0-2): equity floor + daily-loss buffer on EVERY tick, whatever the state
+   if(!GuardCoordinator.FastSafetyCheck())
+      return;
 
    //=================================================================
    // MAIN STATE DISPATCH
@@ -513,7 +542,88 @@ void OnState_ManageTrade()
       StateManager.Transition(STATE_GUARD_CHECK, "no_position_from_manage");
       return;
    }
-   // Position management stub — will be replaced in Phase 6
+
+   // A320 (P0-2): the full guard chain also runs while a trade is open. The coordinator acts on
+   // the result itself (suspend, close_required -> close, fatal -> emergency close).
+   GuardEvalResult gr = GuardCoordinator.Evaluate();
+   if(gr.status == GUARD_FATAL || gr.status == GUARD_SUSPEND)
+      return;
+
+   // A320: the exits that were backtested (doc section 9, research/ea_design_gold.py):
+   //   50% off at TP1 (1.5R) + stop to breakeven + $0.20; rest trails 0.75 x ATR(M15),
+   //   clamped to [TrailMinPips, TrailMaxPips]; TP2 (2.5R) stays on the order.
+   ManageOpenPosition();
+}
+
+//--- A320: per-position memory (re-derived after a restart from SL vs entry)
+ulong  g_mng_ticket   = 0;
+double g_mng_risk     = 0.0;     // initial SL distance (price)
+bool   g_mng_half     = false;
+
+void ManageOpenPosition()
+{
+   ulong ticket = GetOpenPositionTicket();
+   if(ticket == 0 || !PositionSelectByTicket(ticket)) return;
+   double open  = PositionGetDouble(POSITION_PRICE_OPEN);
+   double sl    = PositionGetDouble(POSITION_SL);
+   double tp    = PositionGetDouble(POSITION_TP);
+   double vol   = PositionGetDouble(POSITION_VOLUME);
+   bool   longp = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY);
+   int    side  = longp ? 1 : -1;
+   if(ticket != g_mng_ticket)
+   {
+      g_mng_ticket = ticket;
+      g_mng_risk   = MathAbs(open - sl);
+      g_mng_half   = (sl > 0 && (sl - open) * side >= 0);     // stop already at/after entry
+   }
+   if(g_mng_risk <= 0 || sl <= 0) return;
+   MqlTick tk;
+   if(!SymbolInfoTick(EA_SYMBOL, tk)) return;
+   double px   = longp ? tk.bid : tk.ask;                    // the price we would close at
+   double gain = (px - open) * side;
+
+   //--- TP1: half off + breakeven
+   if(!g_mng_half && gain >= Config.TP1RR * g_mng_risk)
+   {
+      double step = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_STEP);
+      double vmin = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_MIN);
+      double half = (step > 0) ? MathFloor(vol / 2.0 / step) * step : vol / 2.0;
+      if(half >= vmin && vol - half >= vmin)
+      {
+         if(!g_mgr.PositionClosePartial(ticket, half))
+            { Logger.Warn("MANAGE", StringFormat("partial close failed rc=%d", g_mgr.ResultRetcode())); return; }
+      }
+      double be = PriceUtils.NormalizePrice(open + side * 0.20);
+      if(g_mgr.PositionModify(ticket, be, tp))
+      {
+         g_mng_half = true;
+         Logger.Info("MANAGE", StringFormat("TP1 hit: half closed (%.2f lots), stop to %.2f", half, be));
+      }
+      return;
+   }
+
+   //--- trail the rest on each new closed M15 bar
+   if(g_mng_half)
+   {
+      static datetime last_bar = 0;
+      datetime bar = iTime(EA_SYMBOL, PERIOD_M15, 1);
+      if(bar == last_bar) return;
+      last_bar = bar;
+      double atr[1];
+      if(CopyBuffer(g_atr_m15, 0, 1, 1, atr) != 1) return;
+      double dist = Config.TrailAtrMult * atr[0];
+      dist = MathMax(PriceUtils.PipsToPrice(Config.TrailMinPips), MathMin(PriceUtils.PipsToPrice(Config.TrailMaxPips), dist));
+      double c1 = iClose(EA_SYMBOL, PERIOD_M15, 1);
+      double nsl = PriceUtils.NormalizePrice(c1 - side * dist);
+      double minmove = PriceUtils.PipsToPrice(TRAIL_STEP_MIN_PIPS) * 0.1;   // $0.50 at 1 pip = $1
+      if((nsl - sl) * side > minmove)
+      {
+         long lvl = SymbolInfoInteger(EA_SYMBOL, SYMBOL_TRADE_STOPS_LEVEL);
+         double minstop = lvl * SymbolInfoDouble(EA_SYMBOL, SYMBOL_POINT);
+         if((px - nsl) * side > minstop)
+            g_mgr.PositionModify(ticket, nsl, tp);
+      }
+   }
 }
 
 void OnState_Suspended()
@@ -521,6 +631,11 @@ void OnState_Suspended()
    // Delegate resume check to coordinator
    // Coordinator identifies the responsible guard and checks its conditions
    GuardCoordinator.CheckResume();
+
+   // A320 (guard audit C1): FastSafetyCheck already ran in OnTick. If a position is still open
+   // while suspended (a guard that pauses entries but does not require a close), keep managing it.
+   if(StateManager.IsSuspended() && HasOpenPosition())
+      ManageOpenPosition();
 
    // Also: add spread timer sample if we have a valid quote
    // (calibration continues even during suspension)
@@ -536,7 +651,11 @@ void OnTimer()
    // Phase 2: Spread calibration sampling (every 60s)
    GuardContext ctx;
    PopulateGuardContext(ctx, Config.MagicNumber, PriceUtils.PipSize());
-   double atr_m5 = 0; // Phase 3 will provide real ATR — stub for now
+   double atr_m5 = 0;                                  // A320: real ATR(M5) in pips (P1-1)
+   double ab[1];
+   if(g_atr_m5 != INVALID_HANDLE && CopyBuffer(g_atr_m5, 0, 1, 1, ab) == 1)
+      atr_m5 = PriceUtils.PriceToPips(ab[0]);
+   if(!MSNR.IsReady()) MSNR.Init();
    SpreadGuard.OnTimerSample(ctx, atr_m5);
 
    // Phase 2: Guard coordinator cache invalidation (ensure fresh eval)
@@ -561,15 +680,52 @@ void OnTradeTransaction(
    // Phase 6: TradeManager will process position changes
    // Phase 7: Recovery will detect unexpected closures
 
-   // Phase 1: Log significant transactions only
-   if(trans.type == TRADE_TRANSACTION_DEAL_ADD)
+   if(trans.type != TRADE_TRANSACTION_DEAL_ADD) return;
+   Logger.Debug("TRANSACTION",
+      StringFormat("Deal added: type=%s symbol=%s volume=%.2f price=%.5f",
+                   EnumToString(trans.deal_type), trans.symbol, trans.volume, trans.price));
+
+   //=================================================================
+   // A320 (P0-3): feed every guard that counts trades. Before this,
+   // DailyStats.OnTradeOpen/OnTradeClose had no callers, so the daily
+   // loss limit, max 3 trades, 3-loss pause and cooldown never fired.
+   // Partial closes are summed; the trade is "closed" when the
+   // position is gone.
+   //=================================================================
+   if(trans.deal == 0 || !HistoryDealSelect(trans.deal)) return;
+   if(HistoryDealGetString(trans.deal, DEAL_SYMBOL) != EA_SYMBOL) return;
+   if(HistoryDealGetInteger(trans.deal, DEAL_MAGIC) != Config.MagicNumber) return;
+   long   entry = HistoryDealGetInteger(trans.deal, DEAL_ENTRY);
+   ulong  pos   = (ulong)HistoryDealGetInteger(trans.deal, DEAL_POSITION_ID);
+   double pnl   = HistoryDealGetDouble(trans.deal, DEAL_PROFIT)
+                + HistoryDealGetDouble(trans.deal, DEAL_SWAP)
+                + HistoryDealGetDouble(trans.deal, DEAL_COMMISSION);
+
+   if(entry == DEAL_ENTRY_IN)
    {
-      Logger.Debug("TRANSACTION",
-         StringFormat("Deal added: type=%s symbol=%s volume=%.2f price=%.5f",
-                      EnumToString(trans.deal_type),
-                      trans.symbol,
-                      trans.volume,
-                      trans.price));
+      g_txn_pos  = pos;
+      g_txn_pnl  = pnl;                                 // entry commission
+      double sl  = 0.0;
+      if(PositionSelectByTicket(pos)) sl = PositionGetDouble(POSITION_SL);
+      double vol = HistoryDealGetDouble(trans.deal, DEAL_VOLUME);
+      double tv  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_VALUE);
+      double ts  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_SIZE);
+      double px  = HistoryDealGetDouble(trans.deal, DEAL_PRICE);
+      g_txn_risk = (sl > 0 && ts > 0) ? MathAbs(px - sl) / ts * tv * vol : 0.0;
+      DailyStats.OnTradeOpen();
+      long dt = HistoryDealGetInteger(trans.deal, DEAL_TYPE);
+      GuardPropFirm.RecordTradeDirection(dt == DEAL_TYPE_BUY ? DIR_LONG : DIR_SHORT);
+      return;
+   }
+   if(entry == DEAL_ENTRY_OUT || entry == DEAL_ENTRY_OUT_BY || entry == DEAL_ENTRY_INOUT)
+   {
+      if(pos == g_txn_pos) g_txn_pnl += pnl; else { g_txn_pos = pos; g_txn_pnl = pnl; }
+      if(PositionSelectByTicket(pos)) return;          // partial close — wait for the rest
+      double rr = (g_txn_risk > 0) ? g_txn_pnl / g_txn_risk : 0.0;
+      DailyStats.OnTradeClose(g_txn_pnl, rr);
+      GuardCooldown.OnTradeClosed(TimeCurrent());
+      Logger.Info("TRANSACTION", StringFormat("Trade closed pos=%I64u pnl=%.2f R=%.2f", pos, g_txn_pnl, rr));
+      g_txn_pos = 0; g_txn_pnl = 0.0; g_txn_risk = 0.0;
    }
 }
 

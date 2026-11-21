@@ -284,8 +284,8 @@ public:
                             Config.CBExpandMultATR));
       }
 
-      // CB3: Price velocity
-      else if(m_price_120s_ago > 0)
+      // CB3: Price velocity — A320: own check (was an unreachable else-if behind CB1/CB2)
+      if(m_state != CB_ACTIVE && m_price_120s_ago > 0)
       {
          double velocity_pips = MathAbs(ctx.current_bid - m_price_120s_ago)
                                 / PriceUtils.PipSize();

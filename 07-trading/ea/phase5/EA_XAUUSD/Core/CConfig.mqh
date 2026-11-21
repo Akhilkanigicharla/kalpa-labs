@@ -33,7 +33,7 @@
 input group "=== ACCOUNT & RISK ==="
 input double   inp_RiskPct         = 0.75;   // Risk per trade (%)
 input double   inp_EquityFloor     = 9100.0; // Hard equity floor ($)
-input double   inp_ProfitTarget    = 11000.0;// Profit target (equity $)
+input double   inp_ProfitTarget    = 10800.0;// Profit target (equity $) — The5%ers step 1 = 8%
 input double   inp_DailyLossLimit  = 300.0;  // Daily self-imposed loss ($)
 input int      inp_MaxDailyTrades  = 3;      // Max trades per calendar day
 input double   inp_LotHardCap      = 0.10;   // Maximum lot size ever
@@ -50,8 +50,8 @@ input int      inp_RolloverEndHr   = 0;      // Rollover blackout end (GMT)
 input int      inp_RolloverEndMn   = 15;     // Rollover blackout end (min)
 
 input group "=== SPREAD & SLIPPAGE ==="
-input double   inp_SpreadHardCap   = 25.0;   // Spread hard cap (pips)
-input double   inp_SlippageMax     = 10.0;   // Max entry slippage (pips)
+input double   inp_SpreadHardCap   = 0.80;   // Spread hard cap (pips; 1 pip = $1 -> $0.80)
+input double   inp_SlippageMax     = 0.50;   // Max entry slippage (pips; $0.50)
 input double   inp_RealRRMin       = 1.5;    // Minimum real RR after spread
 
 input group "=== STOP LOSS & TARGETS ==="
@@ -212,8 +212,8 @@ public:
       ok &= ValidateInt(   inp_MaxDailyTrades,  1,    10,    "MaxDailyTrades");
       ok &= ValidateDouble(inp_LotHardCap,      0.01, 1.0,   "LotHardCap");
       ok &= ValidateInt(   inp_GmtOffset,       -12,  14,    "GmtOffset");
-      ok &= ValidateDouble(inp_SpreadHardCap,   5.0,  100.0, "SpreadHardCap");
-      ok &= ValidateDouble(inp_SlippageMax,     1.0,  50.0,  "SlippageMax");
+      ok &= ValidateDouble(inp_SpreadHardCap,   0.1,  5.0,   "SpreadHardCap");
+      ok &= ValidateDouble(inp_SlippageMax,     0.05, 5.0,   "SlippageMax");
       ok &= ValidateDouble(inp_SLPipsMin,       10.0, 200.0, "SLPipsMin");
       ok &= ValidateDouble(inp_SLPipsMax,       inp_SLPipsMin+1, 500.0, "SLPipsMax");
       ok &= ValidateDouble(inp_TP1RR,           0.5,  5.0,   "TP1RR");
@@ -310,9 +310,10 @@ public:
    // This helper wraps the conversion (set in PriceUtils)
    double PipsToPoints(double pips) const
    {
-      // Point size for XAUUSD is typically 0.01
-      // This is set correctly by PriceUtils — placeholder here
-      return pips; // Will be refined in Phase 5 with actual point conversion
+      // A320: pips -> broker points using the single pip definition
+      double pt = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+      if(pt <= 0) return 0;
+      return pips * inp_PipSizePrice / pt;
    }
 };
 

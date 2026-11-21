@@ -64,6 +64,8 @@ class IGuard;  // Base interface from GuardTypes.mqh
 //===================================================================
 #define GUARD_COUNT 10
 
+input double   inp_PropDailyStopPct = 4.0;  // A320: close all + pause if equity falls this % below day open (The5%ers limit 5%)
+
 class CGuardCoordinator
 {
 private:
@@ -430,38 +432,46 @@ private:
    }
 
    //--- Close a single position by ticket
+   //--- A320 (guard audit C2): fresh tick each try, a filling mode the symbol accepts,
+   //    deviation in real points, 3 tries; an emergency close may slip — it must not fail.
    bool ClosePositionByTicket(ulong ticket, string reason)
    {
-      if(!PositionSelectByTicket(ticket)) return false;
-
-      MqlTradeRequest req;
-      MqlTradeResult  res;
-      ZeroMemory(req);
-      ZeroMemory(res);
-
-      req.action    = TRADE_ACTION_DEAL;
-      req.position  = ticket;
-      req.symbol    = PositionGetString(POSITION_SYMBOL);
-      req.volume    = PositionGetDouble(POSITION_VOLUME);
-      req.type      = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-                      ? ORDER_TYPE_SELL : ORDER_TYPE_BUY;
-      req.price     = (req.type == ORDER_TYPE_SELL)
-                      ? SymbolInfoDouble(req.symbol, SYMBOL_BID)
-                      : SymbolInfoDouble(req.symbol, SYMBOL_ASK);
-      req.deviation = (ulong)(Config.SlippageMax * 10);
-      req.magic     = Config.MagicNumber;
-      req.comment   = "emergency_" + reason;
-
-      bool ok = OrderSend(req, res);
-      if(!ok || res.retcode != TRADE_RETCODE_DONE)
+      for(int attempt = 1; attempt <= 3; attempt++)
       {
+         if(!PositionSelectByTicket(ticket)) return true;          // already gone = closed
+
+         MqlTradeRequest req;
+         MqlTradeResult  res;
+         MqlTick         tk;
+         ZeroMemory(req);
+         ZeroMemory(res);
+         req.action    = TRADE_ACTION_DEAL;
+         req.position  = ticket;
+         req.symbol    = PositionGetString(POSITION_SYMBOL);
+         req.volume    = PositionGetDouble(POSITION_VOLUME);
+         req.type      = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+                         ? ORDER_TYPE_SELL : ORDER_TYPE_BUY;
+         if(!SymbolInfoTick(req.symbol, tk)) { Sleep(200); continue; }
+         req.price     = (req.type == ORDER_TYPE_SELL) ? tk.bid : tk.ask;
+         long fill     = SymbolInfoInteger(req.symbol, SYMBOL_FILLING_MODE);
+         req.type_filling = ((fill & SYMBOL_FILLING_FOK) != 0) ? ORDER_FILLING_FOK
+                          : (((fill & SYMBOL_FILLING_IOC) != 0) ? ORDER_FILLING_IOC : ORDER_FILLING_RETURN);
+         req.deviation = (ulong)MathMax(50.0, MathRound(Config.PipsToPoints(Config.SlippageMax) * 4));
+         req.magic     = Config.MagicNumber;
+         req.comment   = "emergency_" + reason;
+
+         bool ok = OrderSend(req, res);
+         if(ok && (res.retcode == TRADE_RETCODE_DONE || res.retcode == TRADE_RETCODE_DONE_PARTIAL))
+         {
+            if(!PositionSelectByTicket(ticket)) return true;
+         }
          Logger.Error("GUARD_COORD",
-            StringFormat("CloseByTicket failed. ticket=%llu retcode=%d",
-                         ticket, res.retcode));
-         return false;
+            StringFormat("CloseByTicket try %d failed. ticket=%llu retcode=%d", attempt, ticket, res.retcode));
+         Sleep(300);
       }
-      return true;
+      return !PositionSelectByTicket(ticket);
    }
+
 
    //--- Cancel all pending orders with our magic number
    void CancelAllPendingOrders(string reason)
@@ -500,6 +510,40 @@ private:
    }
 
 public:
+   //===================================================================
+   // A320 (P0-2, guard audit C1/H8): FAST SAFETY CHECK — every tick in
+   // MANAGE_TRADE and SUSPENDED, not only in GUARD_CHECK.
+   //   1. equity <= floor            -> close all, fatal lock
+   //   2. The5%ers 5% daily loss: equity below day-open equity by
+   //      inp_PropDailyStopPct (default 4%, 1% buffer) -> close all,
+   //      suspend until the next day.
+   // Returns false when it acted.
+   //===================================================================
+   bool FastSafetyCheck()
+   {
+      double eq = AccountInfoDouble(ACCOUNT_EQUITY);
+      if(eq <= Config.EquityFloor)
+      {
+         GuardEvalResult fatal = GuardFatal(GPRIO_PROP_FIRM, "EQUITY_FAST_CHECK", 0,
+            SUSPEND_PROP_FIRM_LOCK,
+            StringFormat("equity=%.2f <= floor=%.2f", eq, Config.EquityFloor), true);
+         ActOnResult(fatal);
+         EmergencyCloseAll("equity_floor");
+         return false;
+      }
+      double day_open = DailyStats.GetOpenEquity();
+      if(day_open > 0 && eq <= day_open * (1.0 - inp_PropDailyStopPct / 100.0))
+      {
+         EmergencyCloseAll("daily_loss_buffer");
+         DailyStats.ForceDailyLimit(StringFormat("equity %.2f vs day open %.2f", eq, day_open));
+         if(!StateManager.IsSuspended())
+            StateManager.Suspend(SUSPEND_DAILY_LIMIT,
+               StringFormat("equity=%.2f day_open=%.2f stop=%.1f%%", eq, day_open, inp_PropDailyStopPct));
+         return false;
+      }
+      return true;
+   }
+
    //--- Constructor
    CGuardCoordinator() : m_initialized(false), m_eval_count(0),
       m_last_eval_time(0), m_last_eval_microsec(0),
@@ -705,6 +749,10 @@ public:
       // Build context for resume check
       GuardContext ctx;
       PopulateGuardContext(ctx, Config.MagicNumber, PriceUtils.PipSize());
+
+      // A320 (guard audit H3): news/circuit-breaker states only advance inside Evaluate(),
+      // so ask the guard to re-evaluate first; otherwise CheckResume() never sees them clear.
+      responsible_guard.Evaluate(ctx);
 
       if(responsible_guard.CheckResume(ctx))
       {

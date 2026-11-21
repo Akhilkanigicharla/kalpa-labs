@@ -109,7 +109,7 @@ public:
 
       m_trade.SetExpertMagicNumber(Config.MagicNumber);
       m_trade.SetTypeFillingBySymbol(symbol);   // pick a valid filling mode
-      m_trade.SetDeviationInPoints((ulong)(Config.SlippageMax * 10)); // pips->points approx
+      m_trade.SetDeviationInPoints((ulong)MathMax(1.0, MathRound(Config.PipsToPoints(Config.SlippageMax)))); // A320
       m_trade.LogLevel(0);                       // we do our own logging
 
       m_initialized = true;
@@ -184,6 +184,13 @@ public:
       bool sent = false;
       for(int attempt = 1; attempt <= EXEC_MAX_RETRIES + 1; attempt++)
       {
+         //--- A320: a "failed" send can still have filled (timeout) — never open a duplicate
+         if(attempt > 1 && HasOpenPosition())
+         {
+            Logger.Warn("ENTRY_ENGINE", "Position appeared after a failed attempt — not resending");
+            sent = true;
+            break;
+         }
          //--- Refresh price each attempt (market moved)
          double ask = SymbolInfoDouble(m_symbol, SYMBOL_ASK);
          double bid = SymbolInfoDouble(m_symbol, SYMBOL_BID);

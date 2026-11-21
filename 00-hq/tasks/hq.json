@@ -1141,13 +1141,13 @@
   ],
   "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
   "min_items": 4,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "priority": "P2",
   "created": "2026-11-21T14:50:00Z",
-  "updated": "2026-11-21T16:59:28Z",
+  "updated": "2026-11-21T18:07:25Z",
   "output": "00-hq/knowledge/K163.md",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "vigil_notes": "FIX:\n* Mark specific hour limits (750 hours, 15 min spin-down) as UNVERIFIED or remove if not in repo files.\n* Remove invented \"Keep-Awake Schedule\" and specific service allocations (Service A/B) as they are not in repo files.\n* Do not invent operational strategies or calculations not present in the provided data.\n* Ensure all facts are strictly derived from `00-hq/ROADMAP.md` or marked UNVERIFIED."
  },
  {
   "id": "K164",
@@ -1178,12 +1178,12 @@
   ],
   "details": "Read the A229 line. From Groq's own rate-limit page (console.groq.com/docs/rate-limits) and OpenRouter's own docs (openrouter.ai/docs/api-reference/limits), give requests per day/minute for free models, what happens at the limit, and which response headers report remaining calls, each with the doc URL. 'unverified' for anything without the provider's URL.",
   "min_items": 5,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-21T19:30:00Z",
-  "updated": "2026-11-21T17:01:09Z",
+  "updated": "2026-11-21T18:09:00Z",
   "output": "00-hq/knowledge/K165.md",
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  "vigil_notes": "FIX:\n- Mark specific Groq RPD/RPM numbers (1,440, 14,400, 30) as UNVERIFIED; they are not in the repo files.\n- Mark specific OpenRouter RPD/RPM numbers (20, 200, 1,000) as UNVERIFIED; they are not in the repo files.\n- Mark specific HTTP 429 behavior details as UNVERIFIED; not present in repo files.\n- Mark Groq response header names as UNVERIFIED; not present in repo files.\n- Mark OpenRouter response header names as UNVERIFIED; not present in repo files."
  }
 ]

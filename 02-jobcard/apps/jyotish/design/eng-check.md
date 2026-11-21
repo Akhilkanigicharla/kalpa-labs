@@ -103,7 +103,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jyotish --md`; the rest
 | 72 | Cost Monitoring | done: static hosting on free tier; Netlify credit budget tool (A222) |
 | 73 | Disaster Recovery | done: redeploy from git; no server state |
 | 74 | Data Privacy (GDPR) | done: no data leaves the phone; CSP blocks outside requests; no analytics |
-| 75 | Accessibility | partly: labels, aria-live, 44 px taps checked; full axe audit missing → A331 |
+| 75 | Accessibility | done 21 Nov (A331): `00-hq/site/tests/test_axe.py` (axe-core 4.10.3) at 390 px light + dark on the app, its main screens and 404 → 0 serious/critical |
 | 76 | Mobile Responsiveness | done: tap sweep PASS at 390 px light + dark (21 Nov) |
 | 77 | Performance Budgets | auto: PASS |
 | 78 | Technical Debt | done: open work tracked in ROADMAP.md (A331) and each app README |

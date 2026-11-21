@@ -1,7 +1,7 @@
 # UX check: Kalpa Bhasha Kids (02-jobcard/apps/bhasha-kids) · 21 Nov 2026 (A328)
 
 Against `00-hq/design/UX-PATTERNS.md`. ✅ done · ➖ not relevant (why) · ❌ missing (roadmap id).
-Proof run 21 Nov: `npm test` (19 pass), tap sweep `00-hq/site/tests/test_tap_sweep.py` at 390 px light + dark on the app and on `404.html` → PASS (app run with SpeechRecognition.available stubbed: in headless Chromium 157 `available({processLocally:true})` crashes the tab; real-phone check is A331), `python3 00-hq/tools/eng_check.py bhasha-kids` 0 FAIL. Private prototype, not live (rule 9).
+Proof run 21 Nov: `npm test` (19 pass), tap sweep `00-hq/site/tests/test_tap_sweep.py` at 390 px light + dark on the app and on `404.html` → PASS (21 Nov, A331: no stub needed any more; the speech probe now waits for the first Say it tap, and if it ever kills the tab the app skips the on-device probe on the next try), `python3 00-hq/tools/eng_check.py bhasha-kids` 0 FAIL. Private prototype, not live (rule 9).
 
 | # | Pattern | Status |
 |---|---|---|
@@ -22,6 +22,6 @@ Proof run 21 Nov: `npm test` (19 pass), tap sweep `00-hq/site/tests/test_tap_swe
 | 15 | Onboarding data capture | ➖ No account; only the language choice. |
 | 16 | Referral pages | ➖ Not live. |
 | 17 | Custom 404 | ✅ `404.html` added 21 Nov (A328). |
-| 18 | Mobile-optimised layout | ✅ Tap sweep PASS at 390 px, light + dark (with the speech stub above). |
+| 18 | Mobile-optimised layout | ✅ Tap sweep PASS at 390 px, light + dark, no stub (A331). |
 | 19 | Destructive action protection | ✅ Reset sits behind the parent gate and a "cannot be undone" confirm; "Save a copy" export next to it. |
 | 20 | Graceful error recovery | ✅ Speech and service-worker failures caught; offline falls back to the cached app. ❌ A renderer crash in `SpeechRecognition.available` cannot be caught in JS → A331. |

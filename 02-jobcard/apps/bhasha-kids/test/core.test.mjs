@@ -7,7 +7,7 @@ import { lessonsFor, validateLang, matchRound, seeded, shuffle } from '../src/le
 import { makeChallenge, checkAnswer } from '../src/gate.js';
 import { judge, normalize, levenshtein, similarity } from '../src/match.js';
 import { makeStore } from '../src/storage.js';
-import { pickVoice, recognitionMode, sayItAllowed, speak, ttsSupport } from '../src/speech.js';
+import { pickVoice, recognitionMode, sayItAllowed, speak, ttsSupport, startupMode, sayTabOpen, probeGuard } from '../src/speech.js';
 
 const load = f => JSON.parse(readFileSync(new URL(`../data/${f}`, import.meta.url), 'utf8'));
 const te = load('te.json'), hi = load('hi.json');
@@ -237,4 +237,34 @@ test('recognition mode: local only when on-device; cloud needs parent opt-in', a
   assert.equal(sayItAllowed('cloud', false), false);
   assert.equal(sayItAllowed('cloud', true), true);
   assert.equal(sayItAllowed('none', true), false);
+});
+
+test('A331: start-up never calls SpeechRecognition.available; the first Say it tap does', async () => {
+  let calls = 0;
+  const R = function () {}; R.available = async () => { calls++; return 'available'; };
+  const win = { SpeechRecognition: R };
+  assert.equal(startupMode(win), 'unchecked');
+  assert.equal(startupMode({}), 'none');
+  assert.equal(calls, 0);
+  assert.equal(sayTabOpen('unchecked', false), true);
+  assert.equal(sayTabOpen('none', true), false);
+  assert.equal(sayTabOpen('cloud', false), false);
+  assert.equal(sayTabOpen('local', false), true);
+  assert.equal(sayItAllowed('unchecked', true), false);
+  assert.equal(await recognitionMode(win, 'te-IN'), 'local');
+  assert.equal(calls, 1);
+});
+
+test('A331: if a local probe crashed the tab last time, skip it next time', async () => {
+  const seen = [];
+  const R = function () {}; R.available = async o => { seen.push(o.processLocally); return o.processLocally ? 'available' : 'available'; };
+  const win = { SpeechRecognition: R };
+  let flag = false; const guard = { get: () => flag, set: v => { flag = v; } };
+  assert.equal(await recognitionMode(win, 'te-IN', guard), 'local');
+  assert.equal(flag, false); // cleared after a probe that returned
+  flag = true;               // as if the tab died mid-probe
+  assert.equal(await recognitionMode(win, 'te-IN', guard), 'cloud');
+  assert.deepEqual(seen, [true, false]);
+  const g = probeGuard({ localStorage: { getItem: () => { throw new Error('blocked'); }, setItem: () => { throw new Error('blocked'); } } });
+  assert.equal(g.get(), false); g.set(true); // storage blocked: no throw
 });

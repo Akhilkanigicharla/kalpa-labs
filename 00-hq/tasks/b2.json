@@ -127,5 +127,23 @@
   "context_chars": 30000,
   "status": "todo",
   "created": "2026-11-21T10:55:00Z"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-21T12:42:07Z",
+  "updated": "2026-11-21T12:42:07Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "id": "K161",
+  "world": "b2",
+  "title": "A334 prep: free uptime checks for 3 static Netlify apps, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/audit/README.md"
+  ],
+  "min_items": 4,
+  "details": "Read the A334 line. Compare 4 uptime-check options that need no card: GitHub Actions scheduled curl, UptimeRobot free, Better Stack free, Cloudflare Worker cron. Per option: checks per month, interval, alert channels (Telegram?), whether a card is required, licence if self-run, and the provider page URL you used. Mark anything you could not confirm on the provider's own page as unverified."
  }
 ]

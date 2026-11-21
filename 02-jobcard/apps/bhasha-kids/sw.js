@@ -1,5 +1,5 @@
 // Offline shell: cache our own files only, never anything cross-origin. Bump VERSION on change.
-const VERSION = 'bhasha-kids-v1';
+const VERSION = 'bhasha-kids-v2';
 const SHELL = ['./', 'index.html', 'app.css', 'app.js', 'vendor/tokens.css', 'manifest.webmanifest', 'icon.svg',
   'src/srs.js', 'src/progress.js', 'src/lessons.js', 'src/gate.js', 'src/match.js', 'src/storage.js', 'src/speech.js',
   'data/te.json', 'data/hi.json',

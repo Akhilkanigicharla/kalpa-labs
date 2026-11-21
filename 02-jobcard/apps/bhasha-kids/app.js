@@ -6,7 +6,7 @@ import { lessonsFor, matchRound, shuffle } from './src/lessons.js';
 import { makeChallenge, checkAnswer } from './src/gate.js';
 import { judge } from './src/match.js';
 import { makeStore, browserBackend } from './src/storage.js';
-import { loadVoices, pickVoice, speak, ttsSupport, recognitionMode, recognitionCtor, sayItAllowed, listenOnce } from './src/speech.js';
+import { loadVoices, pickVoice, speak, ttsSupport, recognitionMode, recognitionCtor, sayItAllowed, listenOnce, startupMode, sayTabOpen, probeGuard } from './src/speech.js';
 
 const LANGS = ['te', 'hi'];
 const app = document.getElementById('app');
@@ -43,7 +43,7 @@ async function boot() {
   const voices = await loadVoices(window);
   for (const l of LANGS) {
     voice[l] = pickVoice(voices, data[l].speech_lang);
-    rec[l] = await recognitionMode(window, data[l].speech_lang);
+    rec[l] = startupMode(window); // A331: the probe waits for the first Say it tap
   }
   render();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -123,7 +123,7 @@ function startLesson(id, mode = 'cards') {
 
 function modeTabs(les) {
   const l = lang();
-  const canSay = sayItAllowed(rec[l], state.settings.cloudSpeech);
+  const canSay = sayTabOpen(rec[l], state.settings.cloudSpeech);
   const tab = (m, label, dis) => `<button class="pill" data-act="mode" data-mode="${m}" aria-pressed="${view.mode === m}"${dis ? ' disabled' : ''}>${label}</button>`;
   return `<div class="pills" role="group" aria-label="Game">
     ${tab('cards', 'Cards')}${les.items.length >= 2 ? tab('match', 'Match') : ''}${tab('say', 'Say it', !canSay)}
@@ -353,13 +353,15 @@ function settingsPanel(l) {
     'local-download': `This browser can listen on the device after a one-time ${name} speech pack download from the browser maker.`,
     cloud: `This browser can only listen by sending the child's voice to its maker's speech service. Off unless you allow it.`,
     none: 'This browser cannot listen to speech. Cards and Match still work.',
+    unchecked: 'Not checked yet. It is checked the first time your child taps Say it, or tap Check below.',
   }[mode] || 'Checking...';
+  const chk = mode === 'unchecked' ? `<button class="btn ghost wide" data-act="checksay">Check Say it on this device</button>` : '';
   const dl = mode === 'local-download' ? `<button class="btn ghost wide" data-act="install">Download ${esc(name)} speech pack</button>` : '';
   const cloud = mode === 'cloud' ? `<label class="switch"><input type="checkbox" data-act="cloud" ${state.settings.cloudSpeech ? 'checked' : ''}>
       <span>Allow the browser's speech service for Say it. Your child's voice goes to the browser maker (for example Google or Apple), not to Kalpa Labs.</span></label>` : '';
   return `<section class="panel stack"><h2>Sound and privacy</h2>
     <p class="small"><b>Listen:</b> ${v}</p>
-    <p class="small"><b>Say it:</b> ${sayTxt}</p>${dl}${cloud}
+    <p class="small"><b>Say it:</b> ${sayTxt}</p>${chk}${dl}${cloud}
     <p class="small"><b>Your data:</b> no accounts, no ads, no chat. Progress is kept only in this browser${store.persistent ? '' : ' (not saved: this browser blocks storage, so progress ends when the tab closes)'}. Nothing is sent to Kalpa Labs.</p>
     <div class="row"><button class="btn ghost" data-act="export">Save a copy</button><button class="btn ghost danger" data-act="reset">Reset progress</button></div>
   </section>`;
@@ -385,17 +387,29 @@ document.addEventListener('click', async e => {
   if (a === 'lang') { state.settings.lang = b.dataset.lang; save(); return render(); }
   if (a === 'plang') { view.lang = b.dataset.lang; return render(); }
   if (a === 'open') return startLesson(b.dataset.id);
-  if (a === 'mode') return startLesson(view.id, b.dataset.mode);
+  if (a === 'mode') {
+    const l = lang();
+    if (b.dataset.mode === 'say' && rec[l] === 'unchecked') {
+      rec[l] = await recognitionMode(window, data[l].speech_lang, probeGuard(window));
+      if (!sayItAllowed(rec[l], state.settings.cloudSpeech)) return render();
+    }
+    return startLesson(view.id, b.dataset.mode);
+  }
   if (a === 'flip') { view.flipped = true; view.focus = '[data-g="good"]'; return render(); }
   if (a === 'grade') return grade(b.dataset.g);
   if (a === 'listen') return listen(b.dataset.id);
   if (a === 'm') return matchTap(b.dataset.side, b.dataset.id);
   if (a === 'mic') return mic();
   if (a === 'saynext') return sayNext();
+  if (a === 'checksay') {
+    const l = view.lang || lang();
+    rec[l] = await recognitionMode(window, data[l].speech_lang, probeGuard(window));
+    return render();
+  }
   if (a === 'install') {
     const l = view.lang || lang(), R = recognitionCtor(window);
     try { if (R && R.install) await R.install({ langs: [data[l].speech_lang], processLocally: true }); } catch { /* user declined or offline */ }
-    rec[l] = await recognitionMode(window, data[l].speech_lang);
+    rec[l] = await recognitionMode(window, data[l].speech_lang, probeGuard(window));
     return render();
   }
   if (a === 'export') {

@@ -46,12 +46,19 @@ export function recognitionCtor(win) {
 
 // mode: 'local' (on-device, ready), 'local-download' (needs a one-time language pack),
 // 'cloud' (only the browser's server service; needs parent opt-in), 'none'.
-export async function recognitionMode(win, lang) {
+// guard (optional): {get, set} flag kept across reloads. It is set while the on-device
+// probe runs; if the tab dies mid-probe the flag survives, and the next probe skips it.
+export async function recognitionMode(win, lang, guard) {
   const R = recognitionCtor(win);
   if (!R) return 'none';
   if (typeof R.available === 'function') {
     try {
-      const local = await R.available({ langs: [lang], processLocally: true });
+      let local = 'unavailable';
+      if (!(guard && guard.get())) {
+        if (guard) guard.set(true);
+        local = await R.available({ langs: [lang], processLocally: true });
+        if (guard) guard.set(false);
+      }
       if (local === 'available') return 'local';
       if (local === 'downloadable' || local === 'downloading') return 'local-download';
       const any = await R.available({ langs: [lang], processLocally: false });
@@ -59,6 +66,25 @@ export async function recognitionMode(win, lang) {
     } catch { return 'none'; }
   }
   return 'cloud'; // old API: cannot promise on-device, assume server-based
+}
+
+// A331: never probe at start-up. In some Chromium builds available({processLocally})
+// crashes the whole tab, which JS cannot catch. So start-up only checks that the API
+// exists; the real probe waits for the child's first tap on "Say it".
+export function startupMode(win) {
+  return recognitionCtor(win) ? 'unchecked' : 'none';
+}
+
+// The Say it tab can be tapped while unchecked (the tap runs the probe).
+export function sayTabOpen(mode, cloudOptIn) {
+  return mode === 'unchecked' || sayItAllowed(mode, cloudOptIn);
+}
+
+export function probeGuard(win, key = 'bhasha-kids-local-probe') {
+  return {
+    get() { try { return win.localStorage.getItem(key) === '1'; } catch { return false; } },
+    set(v) { try { v ? win.localStorage.setItem(key, '1') : win.localStorage.removeItem(key); } catch { /* storage blocked */ } },
+  };
 }
 
 export function sayItAllowed(mode, cloudOptIn) {

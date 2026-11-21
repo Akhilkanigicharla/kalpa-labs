@@ -1141,12 +1141,13 @@
   ],
   "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
   "min_items": 4,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-21T14:50:00Z",
-  "updated": "2026-11-21T05:05:00Z",
-  "output": "00-hq/knowledge/K163.md"
+  "updated": "2026-11-21T16:44:22Z",
+  "output": "00-hq/knowledge/K163.md",
+  "vigil_notes": "FIX:\n- Mark \"750 free instance hours per month\" as UNVERIFIED (not in repo files).\n- Mark \"15 minutes of inactivity\" spin-down rule as UNVERIFIED (not in repo files).\n- Mark \"suspends all free web services\" behavior as UNVERIFIED (not in repo files).\n- Mark \"shared pool\" mechanism as UNVERIFIED (not in repo files).\n- Remove specific service names `kalpa-n8n` and `kalpa-llm-router` from the schedule as they are not defined in the provided repo files (mark as UNVERIFIED or generic)."
  },
  {
   "id": "K164",
@@ -1160,10 +1161,10 @@
   "details": "Read the A228 line and the workflow file. List the most likely causes of a GitHub Actions 'startup failure' for this file (invalid YAML/expression, unknown input, missing permission, bad action version, reusable workflow ref), each with GitHub docs URL and the exact line in the workflow that could trigger it. 'unverified' without a docs URL.",
   "min_items": 4,
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-21T19:30:00Z",
-  "updated": "2026-11-21T19:30:00Z",
+  "updated": "2026-11-21T16:46:32Z",
   "output": "00-hq/knowledge/K164.md"
  },
  {

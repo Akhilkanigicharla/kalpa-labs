@@ -53,3 +53,4 @@
 {"at": "2026-11-20T16:46Z", "task": "K142", "lesson": "Vigil asked: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."}
 {"at": "2026-11-20T18:50Z", "task": "K142", "lesson": "Vigil asked: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."}
 {"at": "2026-11-20T20:01Z", "task": "K142", "lesson": "Vigil asked: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."}
+{"at": "2026-11-21T16:44Z", "task": "K163", "lesson": "Vigil asked: Mark \"750 free instance hours per month\" as UNVERIFIED (not in repo files).; Mark \"15 minutes of inactivity\" spin-down rule as UNVERIFIED (not in repo files).; Mark \"suspends all free web services\" behavior as UNVERIFIED (not in repo files).; Mark \"shared pool\" mechanism as UNVERIFIED (not in repo files).; Remove specific service names `kalpa-n8n` and `kalpa-llm-router` from the sched"}

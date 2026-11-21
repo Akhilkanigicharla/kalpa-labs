@@ -33,7 +33,7 @@
 input group "=== ACCOUNT & RISK ==="
 input double   inp_RiskPct         = 0.75;   // Risk per trade (%)
 input double   inp_EquityFloor     = 9100.0; // Hard equity floor ($)
-input double   inp_ProfitTarget    = 10800.0;// Profit target (equity $) — The5%ers step 1 = 8%
+input double   inp_ProfitTarget    = 11000.0;// Profit target (equity $): The5%ers High Stakes New step 1 = 10% (11,000); Classic = 8% (10,800); step 2 = 5% (10,500)
 input double   inp_DailyLossLimit  = 300.0;  // Daily self-imposed loss ($)
 input int      inp_MaxDailyTrades  = 3;      // Max trades per calendar day
 input double   inp_LotHardCap      = 0.10;   // Maximum lot size ever

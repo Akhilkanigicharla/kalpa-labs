@@ -505,12 +505,12 @@
   ],
   "details": "Read the A230 line. From the official DPDP Rules 2025 text (meity.gov.in) list every duty of a data fiduciary and processor with its start date (13 Nov 2026 or 13 May 2027): notice contents, consent, consent managers, security safeguards, breach reporting (to whom, how fast), erasure and the 48 h warning, children's data, retention. One row per duty: rule number, plain-English duty, start date, official URL. 'unverified' for anything without the official URL.",
   "min_items": 10,
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-22T02:30:00Z",
-  "updated": "2026-11-21T20:47:10Z",
+  "updated": "2026-11-21T20:54:27Z",
   "output": "00-hq/knowledge/K166.md",
-  "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
+  "vigil_notes": "FIX:\n- The draft does not use all 5 required languages (English, Telugu, Hindi, Tenglish, Hinglish); add the language switcher or a short note in Telugu/Hindi/Tenglish/Hinglish.\n- Check that lists of items are at most 5 per section/list (the draft currently has two tables of 5 items, which is fine, but the footer mentions asking in Hindi/Hinglish without offering Telugu/Tenglish)."
  }
 ]

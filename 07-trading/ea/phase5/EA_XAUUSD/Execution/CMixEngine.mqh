@@ -30,7 +30,8 @@
 input group    "=== A327 STRATEGY MIX ==="
 input bool     inp_MixEnabled        = true;   // Trade the 12 extra mix strategies
 input double   inp_MixRiskPct        = 0.25;   // % of equity risked per mix trade (funded sim: 0.25 best)
-input double   inp_MixMaxOpenRiskPct = 3.0;    // Max total risk of open mix positions + pendings (% equity)
+input double   inp_MixMaxOpenRiskPct = 2.0;    // Max total risk of open mix trades + pendings (% equity). A335: 2% keeps a 3.7x gap (worst seen) at 7.4%, inside the 10% limit
+input double   inp_MixSpikeAtr       = 3.0;    // A335: skip new entries if the last closed M15 bar was wider than this x ATR(M15)
 input int      inp_MixBars           = 3000;   // Closed bars used to rebuild setups (port check: exact match from 2,000)
 
 #define MIX_N 12
@@ -63,6 +64,7 @@ class CMixEngine
 private:
    MixStrat m_s[MIX_N];
    CTrade   m_trade;
+   int      m_atr15;            // A335 spike check
    bool     m_ready;
    datetime m_last_news_check;
 
@@ -318,7 +320,7 @@ private:
    {
       double eq = AccountInfoDouble(ACCOUNT_EQUITY);
       double mult = (m_s[i].last_r > 0.05) ? 1.5 : ((m_s[i].last_r < -0.05) ? 0.75 : 1.0);
-      risk_usd = eq * inp_MixRiskPct / 100.0 * mult;
+      risk_usd = eq * inp_MixRiskPct / 100.0 * mult * StageRiskMult();   // A335
       double vpp = ValuePerPriceLot();
       if(dist <= 0 || vpp <= 0) return 0.0;
       double step = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_STEP);
@@ -342,11 +344,29 @@ private:
       return OpenRisk() + risk_usd <= cap;
    }
 
+   //--- A335: no new entries while the spread is too wide or right after a spike bar
+   bool MarketCalm(string &why)
+   {
+      why = "";
+      MqlTick tk;
+      if(!SymbolInfoTick(EA_SYMBOL, tk)) { why = "no_tick"; return false; }
+      double spread = tk.ask - tk.bid;
+      if(spread > Config.SpreadHardCap * PriceUtils.PipSize()) { why = StringFormat("spread %.2f", spread); return false; }
+      double a[1];
+      if(m_atr15 != INVALID_HANDLE && CopyBuffer(m_atr15, 0, 2, 1, a) == 1 && a[0] > 0)
+      {
+         double rng = iHigh(EA_SYMBOL, PERIOD_M15, 1) - iLow(EA_SYMBOL, PERIOD_M15, 1);
+         if(rng > inp_MixSpikeAtr * a[0]) { why = StringFormat("spike bar %.2f > %.1fxATR", rng, inp_MixSpikeAtr); return false; }
+      }
+      return true;
+   }
+
    void Act(int i)
    {
       if(Positions(i) > 0) return;                            // one trade at a time per strategy (python busy_until)
       string why;
       if(NewsBlackout(why)) return;
+      if(!MarketCalm(why)) { Logger.Info("MIX", m_s[i].name + " skipped: " + why); return; }
       MixBars b;
       double top = 0, stop = 0;
       bool mirror = (m_s[i].side == -1);
@@ -420,7 +440,7 @@ private:
    }
 
 public:
-   CMixEngine() : m_ready(false), m_last_news_check(0) {}
+   CMixEngine() : m_atr15(INVALID_HANDLE), m_ready(false), m_last_news_check(0) {}
 
    bool Init()
    {
@@ -437,6 +457,7 @@ public:
       Def(9,  "MSNR fresh_v short H4", PERIOD_H4, MIX_FRESH, -1, 10, 20);
       Def(10, "MSNR qm long H4",       PERIOD_H4, MIX_QM,     1, 10, 20);
       Def(11, "MSNR qm short H4",      PERIOD_H4, MIX_QM,    -1, 10, 20);
+      m_atr15 = iATR(EA_SYMBOL, PERIOD_M15, 14);
       m_trade.SetTypeFillingBySymbol(EA_SYMBOL);
       m_trade.SetDeviationInPoints((ulong)MathMax(1.0, MathRound(Config.PipsToPoints(Config.SlippageMax))));
       m_trade.LogLevel(0);

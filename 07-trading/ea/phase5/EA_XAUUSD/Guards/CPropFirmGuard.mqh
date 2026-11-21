@@ -228,7 +228,8 @@ public:
       }
 
       //--- [P2] Profit target reached (use BALANCE — recognized profit)
-      if(!m_target_reached && ctx.balance >= Config.ProfitTarget)
+      if(!m_target_reached && ctx.balance >= Config.ProfitTarget
+         && CountProfitableDays() >= inp_MinProfitDays)          // A335: The5%ers also needs 3 profitable days
       {
          m_target_reached = true;
          Logger.Info("PROPFIRM",

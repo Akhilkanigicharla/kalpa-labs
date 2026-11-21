@@ -30,10 +30,21 @@
 //===================================================================
 
 //--- All user-facing inputs declared as extern for MT5 input panel
+//--- A335: The5%ers High Stakes stage-aware limits (targets, floor and 3 profitable days set themselves)
+enum ENUM_5ERS_STAGE   { STAGE_STEP1 = 1, STAGE_STEP2 = 2, STAGE_FUNDED = 3 };
+enum ENUM_5ERS_PROGRAM { PROGRAM_NEW = 10, PROGRAM_CLASSIC = 8 };
+
+input group "=== THE5%ERS ACCOUNT (A335) ==="
+input ENUM_5ERS_STAGE   inp_Stage         = STAGE_STEP1;   // Stage: Step 1 / Step 2 / Funded
+input ENUM_5ERS_PROGRAM inp_Program       = PROGRAM_NEW;   // High Stakes New (Step 1 = 10%) or Classic (8%)
+input double            inp_AccountSize   = 10000.0;       // Starting balance of this account ($)
+input int               inp_MinProfitDays = 3;             // The5%ers: profitable days needed per step
+input double            inp_ProfitDayPct  = 0.5;           // A profitable day = closed profit >= this % of start
+
 input group "=== ACCOUNT & RISK ==="
 input double   inp_RiskPct         = 0.25;   // Risk per trade (%) — A329: 0.25 keeps more funded accounts alive than 0.75
-input double   inp_EquityFloor     = 9100.0; // Hard equity floor ($)
-input double   inp_ProfitTarget    = 11000.0;// Profit target (equity $): The5%ers High Stakes New step 1 = 10% (11,000); Classic = 8% (10,800); step 2 = 5% (10,500)
+input double   inp_EquityFloor     = 0.0;    // Hard equity floor ($); 0 = auto: 91% of account size
+input double   inp_ProfitTarget    = 0.0;    // Profit target ($); 0 = auto from stage/program (Step 1 New 10%, Classic 8%, Step 2 5%, Funded none)
 input double   inp_DailyLossLimit  = 300.0;  // Daily self-imposed loss ($)
 input int      inp_MaxDailyTrades  = 3;      // Max trades per calendar day
 input double   inp_LotHardCap      = 0.10;   // Maximum lot size ever
@@ -206,8 +217,11 @@ public:
 
       // Copy and validate each input
       ok &= ValidateDouble(inp_RiskPct,        0.1,  2.0,   "RiskPct");
-      ok &= ValidateDouble(inp_EquityFloor,     1000, 50000, "EquityFloor");
-      ok &= ValidateDouble(inp_ProfitTarget,    1000, 50000, "ProfitTarget");
+      ok &= ValidateDouble(inp_AccountSize,     1000, 500000, "AccountSize");
+      ok &= ValidateInt(   inp_MinProfitDays,   0,    20,    "MinProfitDays");
+      ok &= ValidateDouble(inp_ProfitDayPct,    0.0,  5.0,   "ProfitDayPct");
+      if(inp_EquityFloor  != 0) ok &= ValidateDouble(inp_EquityFloor,  0.5 * inp_AccountSize, inp_AccountSize, "EquityFloor");
+      if(inp_ProfitTarget != 0) ok &= ValidateDouble(inp_ProfitTarget, inp_AccountSize, 3 * inp_AccountSize, "ProfitTarget");
       ok &= ValidateDouble(inp_DailyLossLimit,  50,   2000,  "DailyLossLimit");
       ok &= ValidateInt(   inp_MaxDailyTrades,  1,    10,    "MaxDailyTrades");
       ok &= ValidateDouble(inp_LotHardCap,      0.01, 1.0,   "LotHardCap");
@@ -229,8 +243,10 @@ public:
 
       // Copy validated values
       RiskPct         = inp_RiskPct / 100.0; // Convert % to fraction
-      EquityFloor     = inp_EquityFloor;
-      ProfitTarget    = inp_ProfitTarget;
+      EquityFloor     = (inp_EquityFloor != 0) ? inp_EquityFloor : inp_AccountSize * 0.91;
+      double tgt_pct  = (inp_Stage == STAGE_STEP1) ? (double)inp_Program : ((inp_Stage == STAGE_STEP2) ? 5.0 : 0.0);
+      ProfitTarget    = (inp_ProfitTarget != 0) ? inp_ProfitTarget
+                      : ((tgt_pct > 0) ? inp_AccountSize * (1.0 + tgt_pct / 100.0) : 1e12);   // funded: no target
       DailyLossLimit  = inp_DailyLossLimit;
       MaxDailyTrades  = inp_MaxDailyTrades;
       LotHardCap      = inp_LotHardCap;
@@ -319,6 +335,47 @@ public:
 
 //--- Global singleton
 CConfig Config;
+
+//--- A335: profitable days on this account (The5%ers: a day with closed profit >= ProfitDayPct% of start).
+//    Counted from the account's deal history by broker-server date, so it survives restarts. Cached 60 s.
+int CountProfitableDays()
+{
+   static datetime last = 0;
+   static int      cached = 0;
+   if(TimeCurrent() - last < 60 && last != 0) return cached;
+   last = TimeCurrent();
+   if(!HistorySelect(0, TimeCurrent() + 60)) return cached;
+   double   day_sum[];
+   datetime day_key[];
+   int n = 0;
+   for(int i = 0; i < HistoryDealsTotal(); i++)
+   {
+      ulong d = HistoryDealGetTicket(i);
+      long type = HistoryDealGetInteger(d, DEAL_TYPE);
+      if(type != DEAL_TYPE_BUY && type != DEAL_TYPE_SELL) continue;      // skip deposits / credits
+      double v = HistoryDealGetDouble(d, DEAL_PROFIT) + HistoryDealGetDouble(d, DEAL_SWAP)
+               + HistoryDealGetDouble(d, DEAL_COMMISSION);
+      datetime t = (datetime)HistoryDealGetInteger(d, DEAL_TIME);
+      datetime k = t - (t % 86400);                                          // server-date midnight
+      int j = -1;
+      for(int q = 0; q < n; q++) if(day_key[q] == k) { j = q; break; }
+      if(j < 0) { ArrayResize(day_sum, n + 1); ArrayResize(day_key, n + 1); day_key[n] = k; day_sum[n] = 0; j = n; n++; }
+      day_sum[j] += v;
+   }
+   int c = 0;
+   for(int q = 0; q < n; q++) if(day_sum[q] >= inp_AccountSize * inp_ProfitDayPct / 100.0) c++;
+   cached = c;
+   return c;
+}
+
+//--- A335: risk multiplier. Target reached but fewer than the required profitable days -> keep trading
+//    at 40% size until the day count is met (The5%ers needs both).
+double StageRiskMult()
+{
+   if(inp_MinProfitDays <= 0) return 1.0;
+   if(AccountInfoDouble(ACCOUNT_BALANCE) >= Config.ProfitTarget && CountProfitableDays() < inp_MinProfitDays) return 0.4;
+   return 1.0;
+}
 
 //--- A327: the EA's own magic or one of the mix strategies' magics
 bool IsOurMagic(long m)

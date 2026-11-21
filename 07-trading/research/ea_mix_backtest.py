@@ -7,7 +7,7 @@ desktop app), so this replays the EA's own rules in Python on the same free hour
   - the EA's own strategy runs with the EA rules (1 position, 3 trades a day, cooldown, 3-loss pause),
     at its own risk input (inp_RiskPct, default 0.75%), tested also at 0.25%;
   - mix trades: 0.25% risk (inp_MixRiskPct), x1.5 after that strategy's last trade won, x0.75 after a loss;
-  - open-risk cap 3% of equity for mix trades (inp_MixMaxOpenRiskPct): a new trade that would push the
+  - open-risk cap 2% of equity for mix trades (inp_MixMaxOpenRiskPct; 3% until A335): a new trade that would push the
     open mix risk over it is skipped;
   - broker lots: $100 per $1 move per lot, 0.01-lot steps; below 0.01 lot the trade uses 0.01 only if that
     risks <= 1.5x the target, else it is skipped (CMixEngine.Lot);
@@ -72,7 +72,7 @@ def stop_dist(strategy: str, row, atr_by_tf) -> float:
     return 1.5 * a / 2.0                         # EA: 1.5 x M15 ATR ~ 0.75 x H1 ATR
 
 
-def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025, cap: float = 0.03,
+def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025, cap: float = 0.02,
               news_block_h: float = 2.0) -> pd.DataFrame:
     atr_by_tf = {tf: pd.Series(e.g.atr(x), index=x.index + pd.Timedelta(tf)) for tf, x in fr.items()}
     ev = ml.events_utc().values

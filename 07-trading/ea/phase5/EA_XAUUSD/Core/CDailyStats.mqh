@@ -41,11 +41,12 @@ private:
    bool        m_max_trades_hit;
    datetime    m_last_reset_check;
 
-   //--- Get current GMT date as midnight timestamp
+   //--- Current trading-day start. A335: broker SERVER date (The5%ers' daily loss resets at server
+   //    midnight), not GMT. Name kept so callers do not change.
    datetime TodayGMT() const
    {
       MqlDateTime dt;
-      TimeToStruct(TimeGMT(), dt);
+      TimeToStruct(TimeTradeServer(), dt);
       dt.hour = 0; dt.min = 0; dt.sec = 0;
       return StructToTime(dt);
    }

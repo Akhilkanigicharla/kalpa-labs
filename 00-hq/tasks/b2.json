@@ -108,8 +108,10 @@
   ],
   "min_items": 20,
   "context_chars": 38000,
-  "status": "todo",
-  "created": "2026-11-21T10:55:00Z"
+  "status": "review",
+  "created": "2026-11-21T10:55:00Z",
+  "updated": "2026-11-21T16:45:24Z",
+  "output": "00-hq/knowledge/K159.md"
  },
  {
   "id": "K160",
@@ -125,8 +127,10 @@
   ],
   "min_items": 15,
   "context_chars": 30000,
-  "status": "todo",
-  "created": "2026-11-21T10:55:00Z"
+  "status": "review",
+  "created": "2026-11-21T10:55:00Z",
+  "updated": "2026-11-21T16:47:13Z",
+  "output": "00-hq/knowledge/K160.md"
  },
  {
   "priority": "P2",

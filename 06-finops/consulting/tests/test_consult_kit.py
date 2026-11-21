@@ -81,6 +81,36 @@ def test_report_has_sections_method_and_synthetic_banner():
     assert "certified" not in md.lower()
 
 
+def test_report_langfuse_source_paperwork_pack_and_fee_options():
+    rows, problems, synth = audit.load(SAMPLE)
+    a = audit.analyse(rows)
+    md = audit.render(a, client="Demo", currency="INR", synthetic=synth, problems=problems,
+                      source="langfuse", fee="savings-share")
+    assert "Langfuse" in md and "never prompt or answer text" in md
+    assert "## 7. Paperwork pack" in md
+    for f in ("dpdp-privacy-notice.md", "ai-use-policy.md", "ai-system-inventory.csv", "langfuse-handover.md"):
+        assert f in md
+        assert (KIT / ("p1_cost_audit" if f.startswith("langfuse") else "p2_guardrails/templates") / f).exists()
+    assert "lawyer review needed" in md.lower()
+    assert "## 8. Your fee" in md and "20%" in md and "first 3 months" in md and "4,999" in md
+    assert "proven" in md and "certified" not in md.lower()
+    plain = audit.render(a, client="Demo", currency="USD")
+    assert "## 8. Your fee" not in plain and "usage CSV" in plain
+    fixed = audit.render(a, client="Demo", currency="INR", fee="fixed")
+    assert "4,999" in fixed and "20%" not in fixed
+    with pytest.raises(ValueError):
+        audit.render(a, client="Demo", source="ftp")
+    with pytest.raises(ValueError):
+        audit.render(a, client="Demo", fee="free-lunch")
+
+
+def test_langfuse_handover_note_is_honest():
+    t = (KIT / "p1_cost_audit" / "langfuse-handover.md").read_text().lower()
+    for must in ("mit", "revoke", "never send keys", "prompt", "delete"):
+        assert must in t
+    assert "certified" not in t and "unverified" not in t
+
+
 def test_downgrade_saving_uses_engine_ratio(tmp_path):
     p = _csv(tmp_path, [HEAD, "2026-10-01,chat,gpt-4o,400,50,10.00", "2026-10-02,chat,gpt-4o,400,50,10.00"])
     rows, _, synth = audit.load(p)
@@ -139,7 +169,8 @@ def test_checklist_covers_every_framework_item_and_is_fresh():
 
 
 @pytest.mark.parametrize("name", ["ai-use-policy.md", "prompt-injection-data-leak-tests.md",
-                                  "staff-one-pager.md", "dpdp-eu-ai-act-art50-checklist.md"])
+                                  "staff-one-pager.md", "dpdp-eu-ai-act-art50-checklist.md",
+                                  "dpdp-privacy-notice.md"])
 def test_every_legal_template_carries_the_lawyer_check(name):
     text = (KIT / "p2_guardrails" / "templates" / name).read_text()
     assert LAWYER in text.lower()

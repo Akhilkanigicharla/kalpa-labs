@@ -5,15 +5,33 @@ Built 6 Nov 2026 from the approved plan (`../research/a150-consulting-plan.md`).
 
 ## 1. Package one-pagers
 
-### P1 · AI Cost Audit ("AI bill X-ray"): ₹14,999 India / $750 world
-**For:** startups and agencies spending ≥ ₹1.5 lakh/month (≈ $1.5k) on AI APIs.
-**You give us:** read-only exports of your last 30–90 days of AI invoices and usage logs. Never passwords or keys.
-**You get in 5 working days:**
-1. Spend baseline by model, feature and team.
-2. Top-10 waste list: wrong model for the job, no caching, long prompts, retries, unused keys.
-3. Savings plan with ₹/$ estimates and the effort for each fix.
-4. One 30-minute review call.
-**Not included:** making the code changes (that's a separate sprint quote).
+### P1 · AI Cost Audit ("AI bill X-ray"): ₹4,999 India (rebuilt 21 Nov 2026, A215)
+**Headline:** Cut your AI API bill without sharing your prompts.
+**Sub-line:** We install open-source Langfuse on your own account, find the savings, and hand you the India paperwork.
+**For:** Indian startups and agencies spending ₹50k+/month on AI APIs.
+
+**Why it works**
+- **We never see your prompts.** We read model, tokens, cost and status only; prompt and answer text are never requested.
+- **Your tool, your data.** Langfuse runs on your server or your own Langfuse Cloud project. Its core is MIT-licensed, so it stays yours after we leave.
+- **Paperwork in the box.** Drafts of your DPDP privacy notice, staff AI usage policy and model register, each marked "lawyer review needed".
+
+**What we do (5 working days after the install)**
+1. **Install:** we add Langfuse to your app on staging, then production. You create the keys and keep them; you never send them to us by chat or email.
+2. **Measure:** 7–30 days of real calls, or your past usage export if you have one.
+3. **Audit:** `langfuse_pull.py` + `audit.py` give spend by model and feature, the top-10 waste list (wrong model, no caching, repeat prompts, retries) and a savings plan with ₹ estimates.
+4. **Hand over:** one 30-minute review call, the report, the handover note (`langfuse-handover.md`) and the paperwork pack. Then you delete our key pair.
+
+**Fee (approved by Akhil 11 Nov 2026)**
+- Fixed: **₹4,999** for the audit.
+- Or, for the first 3 clients only: **20% of the savings proven in your first 3 months** after the fixes, instead of the fixed fee. Proven = billed AI spend measured the same way before and after, adjusted for traffic. No proven saving, no fee.
+
+**FAQ**
+- *Do you see our customers' data?* No. Only usage numbers. We delete them 30 days after delivery.
+- *Will Langfuse slow or break our app?* We test on staging first, including with Langfuse switched off.
+- *Are the policy drafts legally final?* No. They are drafts for your lawyer; we are not a law firm and we certify nothing.
+- *Who makes the code fixes?* You, or us on a separate quote.
+
+**Not included:** making the code changes (separate sprint quote); legal sign-off. Helicone instead of Langfuse: not built yet (no importer), so do not offer it.
 
 ### P2 · AI Guardrails Setup: ₹39,999 India / $1,800 world
 **For:** companies running customer-facing chatbots or AI features.
@@ -35,7 +53,7 @@ Built 6 Nov 2026 from the approved plan (`../research/a150-consulting-plan.md`).
 **Retainer (after P1 or P2):** ₹7,999/month India, $400/month world, for a monthly AI spend and guardrail check.
 
 ## 2. Free pilot terms (first 3 clients)
-- P1 or P2 delivered free.
+- P1: the savings-share fee above (no proven saving, no fee). P2 delivered free.
 - In return, the client agrees in writing to (a) a short case study with real before/after numbers (anonymised if they want) and (b) a testimonial, only if they are happy.
 - Read-only data only. We sign their NDA or use ours. Data is deleted 30 days after delivery (DPDP-friendly).
 - No promise of savings. We report what we find.

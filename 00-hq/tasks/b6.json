@@ -248,12 +248,13 @@
   "details": "Read the A215 line. Write 3 numbered drafts for a small Indian company using AI APIs: (1) a DPDP Act 2023 privacy notice outline (headings + one plain line each), (2) a one-page AI usage policy for staff (10 rules), (3) a model register table with 8 columns and 2 example rows. Put 'Draft: lawyer review needed' at the top of each. Cite the official source (meity.gov.in or indiacode.nic.in) for any law you name; write 'unverified' where you have none. No 'certified' claims.",
   "min_items": 3,
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "priority": "P1",
   "owner": "FinOps",
   "created": "2026-11-14T03:00:00Z",
-  "updated": "2026-11-14T02:43:17Z",
-  "output": "00-hq/knowledge/K110.md"
+  "updated": "2026-11-21T02:55:00Z",
+  "output": "00-hq/knowledge/K110.md",
+  "note": "used in A215 after Claude review (prices, Helicone, region and DPDP claims corrected)"
  },
  {
   "id": "K151",
@@ -267,11 +268,12 @@
   "details": "Read the A215 line. Write offer page copy for small Indian companies spending on AI APIs: headline, 3 benefit lines, 'what we do' in 4 numbered steps (install open-source Langfuse on your own account, read usage numbers only (never prompts), run the P1 cost audit, hand over DPDP notice + AI usage policy + model register drafts marked 'lawyer review needed'), prices exactly as in the A215 line (audit Rs 4,999, or 20% of the first 3 months' proven savings for the first 3 clients), 5 FAQs. No 'certified', no guarantees, no fake scarcity or invented reviews. Plain English, under 400 words.",
   "min_items": 5,
   "tries": 2,
-  "status": "review",
+  "status": "done",
   "priority": "P1",
   "created": "2026-11-21T00:50:00Z",
-  "updated": "2026-11-21T00:58:24Z",
-  "output": "00-hq/knowledge/K151.md"
+  "updated": "2026-11-21T02:55:00Z",
+  "output": "00-hq/knowledge/K151.md",
+  "note": "used in A215 after Claude review (prices, Helicone, region and DPDP claims corrected)"
  },
  {
   "id": "K152",
@@ -284,10 +286,11 @@
   "details": "Write a one-page handover note a client reads after we install Langfuse: what it is (open source, MIT core), where their data lives (their own account), the 2 keys they create and share only through their own secret store, what our script reads (usage and cost numbers only, never prompt or answer text), how to revoke our access in 1 step, and who to contact. 8 short numbered points. Write 'unverified' for any claim about Langfuse pricing or hosting regions.",
   "min_items": 8,
   "tries": 2,
-  "status": "review",
+  "status": "done",
   "priority": "P1",
   "created": "2026-11-21T00:50:00Z",
-  "updated": "2026-11-21T00:59:44Z",
-  "output": "00-hq/knowledge/K152.md"
+  "updated": "2026-11-21T02:55:00Z",
+  "output": "00-hq/knowledge/K152.md",
+  "note": "used in A215 after Claude review (prices, Helicone, region and DPDP claims corrected)"
  }
 ]

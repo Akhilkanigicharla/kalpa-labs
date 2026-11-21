@@ -249,8 +249,29 @@ def _table(spend: dict, calls: dict, total: Decimal, cur: str, head: str) -> lis
     return out
 
 
+SOURCES = {
+    "csv": "the usage CSV the client exported (provider billing or their own logs)",
+    "langfuse": "the client's own Langfuse (open source, MIT core), read with `langfuse_pull.py` using "
+                "read keys the client set and can revoke; model, tokens, cost and status only, never prompt "
+                "or answer text",
+}
+PAPERWORK = [  # (file, what it is). Every item is a draft for the client's lawyer.
+    ("p2_guardrails/templates/dpdp-privacy-notice.md", "DPDP privacy notice outline"),
+    ("p2_guardrails/templates/ai-use-policy.md", "AI usage policy for staff"),
+    ("p2_guardrails/templates/ai-system-inventory.csv", "model register (every AI system, provider, "
+                                                        "data, region, risk)"),
+    ("p1_cost_audit/langfuse-handover.md", "Langfuse handover note: keys, what we read, how to revoke"),
+]
+FIXED_FEE_INR = 4999       # approved by Akhil 11 Nov 2026 (ROADMAP A215)
+SHARE, SHARE_MONTHS = Decimal("0.20"), 3
+
+
 def render(a: dict, *, client: str, currency: str = "USD", synthetic: bool = False,
-           problems: list[str] | None = None) -> str:
+           problems: list[str] | None = None, source: str = "csv", fee: str | None = None) -> str:
+    if source not in SOURCES:
+        raise ValueError(f"source must be one of {sorted(SOURCES)}")
+    if fee not in (None, "fixed", "savings-share"):
+        raise ValueError("fee must be fixed or savings-share")
     cur, pm = currency, a["per_month"]
     est = a["combined"] * pm
     low = est * ASSUME["conservative_factor"]
@@ -299,7 +320,25 @@ def render(a: dict, *, client: str, currency: str = "USD", synthetic: bool = Fal
     notes = list(problems or [])
     if a["unpriced"]:
         notes.append("no list price for: " + ", ".join(a["unpriced"]) + " (their savings are not counted)")
+    L += [f"- Data came from {SOURCES[source]}."]
     L += [f"- {n}" for n in notes] or ["- No problems found in the file."]
+    L += ["", "## 7. Paperwork pack", "",
+          "Drafts handed over with this audit. **Each one is marked lawyer review needed**: have your "
+          "lawyer check it before you use it. They are Kalpa Labs' starting drafts, not legal advice.", ""]
+    L += [f"- `{f.split('/')[-1]}`: {what}" for f, what in PAPERWORK]
+    if fee:
+        L += ["", "## 8. Your fee", ""]
+        if fee == "fixed":
+            L += [f"- Fixed fee: **₹{FIXED_FEE_INR:,}** for this audit (India price)."]
+        else:
+            share_lo, share_hi = low * SHARE * SHARE_MONTHS, est * SHARE * SHARE_MONTHS
+            L += [f"- Savings share (first 3 clients only): **{SHARE * 100:.0f}% of the savings proven in your "
+                  f"first {SHARE_MONTHS} months** after the fixes, instead of the fixed ₹{FIXED_FEE_INR:,}.",
+                  "- Proven means your billed AI spend measured the same way (same Langfuse or same billing "
+                  "export) before and after each fix, adjusted for traffic. Estimates in this report are "
+                  "not billed.",
+                  f"- If the estimate above holds, that share would be about {_m(share_lo, cur)} to "
+                  f"{_m(share_hi, cur)} in total. No proven saving means no fee."]
     L += ["", "---", "Next step: 30-minute review call to agree which fixes to test first."]
     return "\n".join(L) + "\n"
 
@@ -309,6 +348,8 @@ def main(argv=None) -> int:
     ap.add_argument("csv")
     ap.add_argument("--client", default="Client")
     ap.add_argument("--currency", default="USD")
+    ap.add_argument("--source", choices=sorted(SOURCES), default="csv")
+    ap.add_argument("--fee", choices=["fixed", "savings-share"])
     ap.add_argument("--out")
     a = ap.parse_args(argv)
     try:
@@ -319,7 +360,8 @@ def main(argv=None) -> int:
     if not rows:
         print("error: no usable rows", file=sys.stderr)
         return 2
-    md = render(analyse(rows), client=a.client, currency=a.currency, synthetic=synth, problems=problems)
+    md = render(analyse(rows), client=a.client, currency=a.currency, synthetic=synth, problems=problems,
+                source=a.source, fee=a.fee)
     if a.out:
         Path(a.out).write_text(md, encoding="utf-8")
         print(f"wrote {a.out}")

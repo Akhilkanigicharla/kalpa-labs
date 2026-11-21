@@ -5,7 +5,7 @@ name: b6 langfuse audit demo
 on:
   workflow_dispatch:
   push:
-    paths: ["06-finops/consulting/p1_cost_audit/**", ".github/workflows/finops-langfuse-demo.yml"]
+    paths: ["06-finops/consulting/p1_cost_audit/**", "06-finops/consulting/p2_guardrails/templates/**", ".github/workflows/finops-langfuse-demo.yml"]
 permissions:
   contents: read
 concurrency: { group: finops-langfuse-demo, cancel-in-progress: true }
@@ -54,8 +54,8 @@ jobs:
             echo "seen $n of 60"; [ "$n" -ge 60 ] && break; sleep 10
           done
           [ "$n" -eq 60 ] || { echo "expected 60 generations, saw $n"; exit 1; }
-          python p1_cost_audit/audit.py /tmp/usage.csv --client "Demo Co (synthetic)" --currency USD --out /tmp/p1-report.md
-          grep -q "Demo Co" /tmp/p1-report.md && grep -qi "synthetic" /tmp/p1-report.md
+          python p1_cost_audit/audit.py /tmp/usage.csv --client "Demo Co (synthetic)" --currency USD --source langfuse --fee savings-share --out /tmp/p1-report.md
+          grep -q "Demo Co" /tmp/p1-report.md && grep -qi "synthetic" /tmp/p1-report.md && grep -q "Paperwork pack" /tmp/p1-report.md
           head -40 /tmp/p1-report.md
       - uses: actions/upload-artifact@v4
         if: always()

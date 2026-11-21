@@ -418,5 +418,22 @@
   "created": "2026-11-21T00:50:00Z",
   "updated": "2026-11-21T00:44:02Z",
   "output": "00-hq/knowledge/K153.md"
+ },
+ {
+  "id": "K154",
+  "world": "b1",
+  "owner": "BotBhai",
+  "title": "A223 prep: WhatsApp per-message prices for India, with sources",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A223 line. List the current Meta WhatsApp Business Platform per-message rates for India (marketing, utility, authentication, service) in INR or USD, the free service-reply allowance, and whether utility templates inside the 24 h window are charged. Give the exact Meta developers.facebook.com page URL for every number. Write 'unverified' for any number without that page. Then 3 lines on what it means for BotBhai's ₹999/₹1,499 monthly plans at 500 and 2,000 customer messages a month.",
+  "min_items": "6",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T02:55:00Z",
+  "updated": "2026-11-21T02:55:00Z",
+  "output": "00-hq/knowledge/K154.md"
  }
 ]

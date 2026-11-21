@@ -10,8 +10,8 @@ Everything runs offline here (no network, no accounts, no secrets). Akhil review
 | Folder | For | What it is |
 |---|---|---|
 | `intake/` | all | `questionnaire.md` to send the client; `intake.schema.json` shape of the answers; `validate_intake.py` checks an `intake.json`; `example_intake_SYNTHETIC.json` |
-| `p1_cost_audit/` | P1 AI Cost Audit | `audit.py` turns a usage CSV into a markdown audit report; `sample_usage_SYNTHETIC.csv` (made-up data) |
-| `p2_guardrails/templates/` | P2 AI Guardrails Setup | AI use policy, AI system inventory (CSV), risk register (CSV), prompt-injection + data-leak tests, DPDP + EU AI Act Art. 50 checklist, staff one-pager |
+| `p1_cost_audit/` | P1 AI Cost Audit | `audit.py` turns a usage CSV into a markdown audit report (`--source langfuse`, `--fee fixed|savings-share` add the data line, paperwork pack and fee); `langfuse_pull.py` reads a client's own Langfuse into that CSV; `langfuse-handover.md` for the client; `sample_usage_SYNTHETIC.csv` (made-up data) |
+| `p2_guardrails/templates/` | P2 AI Guardrails Setup | DPDP privacy notice outline, AI use policy, AI system inventory (CSV, = model register), risk register (CSV), prompt-injection + data-leak tests, DPDP + EU AI Act Art. 50 checklist, staff one-pager |
 | `p2_guardrails/build_checklist.py` | P2 | rebuilds the DPDP + Art. 50 checklist from `../src/frameworks/*.json` |
 | `p3_iso42001/` | P3 ISO/IEC 42001 Readiness | `gap.py` turns an answers file into a scored gap report + 90-day roadmap; `areas.json` (Kalpa's own words); `answers_example_SYNTHETIC.json` |
 | `tests/` | | pytest for all the generators |

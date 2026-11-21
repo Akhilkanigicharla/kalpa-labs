@@ -1,4 +1,4 @@
-"""A321: Akhil's $3,100 bias and the take-every-setup switch."""
+"""A321/A322: take-every-setup switch; the $3,100 rule is removed."""
 import sys
 from pathlib import Path
 import pandas as pd
@@ -8,10 +8,8 @@ import ea_multitf_gold as mt  # noqa: E402
 import ea_design_gold as e  # noqa: E402
 
 
-def test_bias_shorts_above_longs_below():
-    s = [dict(side=-1, trig=3500.0), dict(side=1, trig=3500.0), dict(side=1, trig=3050.0), dict(side=-1, trig=3050.0)]
-    kept = mt.bias3100(s)
-    assert [(k["side"], k["trig"]) for k in kept] == [(-1, 3500.0), (1, 3050.0)]
+def test_no_3100_rule():
+    assert not hasattr(mt, "bias3100") and not hasattr(mt, "LEVEL")
 
 
 def test_every_flag_resets_and_defaults_off():

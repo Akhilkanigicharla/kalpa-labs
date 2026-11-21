@@ -20,9 +20,13 @@ def _walk(n=600, seed=1, base=3500):
     return _bars(base + r)
 
 
-def test_level_bias_short_above_long_below():
+def test_level_bias_removed():
+    """A322: Akhil asked to remove the $3,100 rule."""
+    import pytest
     d = _bars([3200, 3150, 3101, 3100, 3050])
-    assert list(g.bias_series(d, "level")) == [-1, -1, -1, 1, 1]
+    with pytest.raises(ValueError):
+        g.bias_series(d, "level")
+    assert not hasattr(g, "LEVEL")
 
 
 def test_setups_have_no_lookahead():
@@ -33,9 +37,10 @@ def test_setups_have_no_lookahead():
     assert early == [(s["t"], s["side"]) for s in cut if s["t"] < 398]
 
 
-def test_bias_blocks_wrong_side():
-    d = _walk(seed=3, base=4000)                     # all above 3100: shorts only
-    assert all(s["side"] == -1 for s in g.setups(d, g.bias_series(d, "level")))
+def test_both_mode_allows_longs_above_3100():
+    d = _walk(seed=3, base=4000)
+    sides = {s["side"] for s in g.setups(d, g.bias_series(d, "both"))}
+    assert sides <= {1, -1} and len(sides) >= 1
 
 
 def test_stop_hit_before_target_counts_as_loss():

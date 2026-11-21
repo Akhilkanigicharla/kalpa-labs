@@ -8,8 +8,8 @@ Setups (src/msnr.py, from the playlist mapping in research/msnr-2026-11-20.md):
   eq_sweep   equal lows swept and closed back above                     (video 9.x)
   rejection  wick into a fresh level + close back, 9 EMA sloping (A308 trigger)
 Shorts = the same long logic on the mirrored chart (1/price), as in src/msnr.mirror.
-Filters, every combination: k (key level width) 2/5 · weekly storyline on/off · 9 EMA on/off ·
-Akhil's $3,100 side rule on/off.  Timeframes: 1h and 4h (Jul 2024 → now), daily (2005 → now).
+Filters, every combination: k (key level width) 2/5 · weekly storyline on/off · 9 EMA on/off.
+(Akhil's $3,100 side rule removed 21 Nov 2026, A322).  Timeframes: 1h and 4h (Jul 2024 → now), daily (2005 → now).
 
 PASS rules (written before any result was looked at):
   1. out-of-sample (1h/4h: from 2025-09-01; daily: from 2019-01-01) trades >= 30
@@ -38,7 +38,6 @@ from src.smc import Zone, placebo, simulate  # noqa: E402
 import gold_ema9_msnr as g  # noqa: E402
 
 COST = 0.0002          # ~$0.70 a round trip at $3,500 (MGC commission + 1 tick + spread)
-LEVEL = 3100.0
 TF = {"1h": dict(wait=20, hold=48, split="2025-09-01"),
       "4h": dict(wait=10, hold=20, split="2025-09-01"),
       "1d": dict(wait=20, hold=20, split="2019-01-01")}
@@ -77,7 +76,7 @@ def zones_job(key):
     return key, ALL[setup](df, k=k, storyline_on=story)
 
 
-def filt(zs, real, df, ema_on, bias_on, side):
+def filt(zs, real, df, ema_on, side):
     c_real = real.close.values
     e = g.ema(df.close).values
     c = df.close.values
@@ -85,8 +84,6 @@ def filt(zs, real, df, ema_on, bias_on, side):
     for z in zs:
         t = z.known_at
         if ema_on and not (c[t] > e[t] and e[t] > e[t - 1]):
-            continue
-        if bias_on and ((side == "long" and c_real[t] > LEVEL) or (side == "short" and c_real[t] <= LEVEL)):
             continue
         out.append(z)
     return out
@@ -101,10 +98,10 @@ def trades(df, zs, tf, cost):
 
 
 def evaluate(cfg, zs):
-    tf, setup, side, k, story, ema_on, bias_on = cfg
+    tf, setup, side, k, story, ema_on = cfg
     real = _DATA[tf]
     df = mirror(real) if side == "short" else real
-    zs = filt(zs, real, df, ema_on, bias_on, side)
+    zs = filt(zs, real, df, ema_on, side)
     split = pd.Timestamp(TF[tf]["split"])
     t1, t2 = trades(df, zs, tf, COST), trades(df, zs, tf, 2 * COST)
     if t1.empty:
@@ -152,8 +149,8 @@ def verdict(rows: list[dict]) -> list[dict]:
     for r, qq in zip(rows, q):
         r["q"] = round(float(qq), 4)
     for r in rows:
-        tf, setup, side, k, story, e, b = r["cfg"]
-        nb = by.get((tf, setup, side, 5 if k == 2 else 2, story, e, b), {})
+        tf, setup, side, k, story, e = r["cfg"]
+        nb = by.get((tf, setup, side, 5 if k == 2 else 2, story, e), {})
         why = []
         if r["oos_n"] < 30:
             why.append("oos<30")
@@ -182,9 +179,9 @@ def monte_carlo_dd(r: np.ndarray, risk=0.01, n=2000, seed=3) -> float:
 # Closest to passing under Akhil's rule (9 EMA on, $3,100 side rule on), picked from the
 # 21 Nov report BEFORE any forward data existed. None passed; paper decides from here.
 CANDIDATES = {
-    "1h_fresh_short_k2": ("1h", "fresh_v", "short", 2, False, True, True),
-    "1h_fresh_short_k2_story": ("1h", "fresh_v", "short", 2, True, True, True),
-    "4h_fresh_short_k5": ("4h", "fresh_v", "short", 5, False, True, True),
+    "1h_fresh_short_k2": ("1h", "fresh_v", "short", 2, False, True),
+    "1h_fresh_short_k2_story": ("1h", "fresh_v", "short", 2, True, True),
+    "4h_fresh_short_k5": ("4h", "fresh_v", "short", 5, False, True),
 }
 PAPER_START = "2026-11-21"
 
@@ -198,10 +195,10 @@ def paper(out: Path, flags: Path | None = None, data: dict | None = None) -> dic
         _DATA.update(data or load())
         st = {}
         for name, cfg in CANDIDATES.items():
-            tf, setup, side, k, story, e, b = cfg
+            tf, setup, side, k, story, e = cfg
             real = _DATA[tf]
             df = mirror(real) if side == "short" else real
-            zs = filt(ALL[setup](df, k=k, storyline_on=story), real, df, e, b, side)
+            zs = filt(ALL[setup](df, k=k, storyline_on=story), real, df, e, side)
             t = trades(df, zs, tf, COST)
             t = t[t.date >= pd.Timestamp(PAPER_START)] if not t.empty else t
             t.to_csv(out / f"{name}.csv", index=False)
@@ -222,24 +219,23 @@ def main() -> int:
     keys = list(itertools.product(TF, ALL, ("long", "short"), (2, 5), (True, False)))
     with ProcessPoolExecutor(initializer=_init) as ex:
         zmap = dict(ex.map(zones_job, keys))
-        jobs = [((*key, e, b), zmap[key]) for key in keys for e in (True, False) for b in (True, False)]
+        jobs = [((*key, e), zmap[key]) for key in keys for e in (True, False)]
         rows = list(ex.map(eval_job, jobs, chunksize=4))
     rows = verdict(rows)
     _init()
     for r in rows:
         if r["pass"]:
-            tf, setup, side, k, story, e, b = r["cfg"]
+            tf, setup, side, k, story, e = r["cfg"]
             real = _DATA[tf]
             df = mirror(real) if side == "short" else real
-            t = trades(df, filt(zmap[r["cfg"][:5]], real, df, e, b, side), tf, 2 * COST)
+            t = trades(df, filt(zmap[r["cfg"][:5]], real, df, e, side), tf, 2 * COST)
             r["mc_dd95_1pct"] = monte_carlo_dd(t[t.date >= pd.Timestamp(TF[tf]["split"])].r.values)
     rows.sort(key=lambda r: (not r["pass"], -(r.get("oos_r_2x") or -9)))
-    names = ["tf", "setup", "side", "k", "storyline", "ema9", "level3100"]
+    names = ["tf", "setup", "side", "k", "storyline", "ema9"]
     for r in rows:
         r["cfg"] = dict(zip(names, r["cfg"]))
     out = dict(generated=str(date.today()), configs=len(rows), passed=sum(r["pass"] for r in rows),
                rules="oos>=30, oos R@2x cost>=0.10, in-sample R>0, BH q<0.10, neighbour k positive",
-               akhil_rule=[r for r in rows if r["cfg"]["level3100"] and r["cfg"]["ema9"]][:12],
                top=rows[:25])
     Path("reports").mkdir(exist_ok=True)
     p = Path("reports") / f"msnr-gold-robust-{date.today()}.json"
@@ -248,7 +244,7 @@ def main() -> int:
     for r in rows[:15]:
         c = r["cfg"]
         print(c["tf"], c["setup"], c["side"], "k", c["k"], "story", int(c["storyline"]), "ema", int(c["ema9"]),
-              "lvl", int(c["level3100"]), "| IS", r["is_n"], r.get("is_r"), "| OOS", r["oos_n"], r.get("oos_r"),
+              "| IS", r["is_n"], r.get("is_r"), "| OOS", r["oos_n"], r.get("oos_r"),
               "2x", r.get("oos_r_2x"), "pl", r["placebo_r"], "q", r["q"], "PASS" if r["pass"] else r["why"])
     return 0
 

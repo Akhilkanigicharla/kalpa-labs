@@ -10,8 +10,7 @@ breakeven, trail, 2.5R), $0.40 cost, $10K, 0.75% risk.  MSNR: H4 key levels from
 trading timeframe; the nearest level on the trade side must be fresh.
 Two trade rules:  ea     = the EA's guards (1 position, 3 a day, cooldown, 3-loss pause, -3% day)
                   every  = every setup is taken, positions may overlap
-Akhil's bias:     none   = both directions (EA regime decides)
-                  3100   = only shorts while price is above $3,100; only longs at/below $3,100
+Direction: the EA regime decides (Akhil's $3,100 rule removed 21 Nov 2026, A322).
 Data (free): 5m and 30m = last 60 days (Yahoo limit for intraday), 1h = 2 years.  Random-entry
 baseline per row (same count, sides, hours and exits, 30 seeds).
 Research code only.  Not investment advice.
@@ -32,7 +31,6 @@ import ea_design_gold as e  # noqa: E402
 import ea_msnr_gold as m  # noqa: E402
 from src.msnr import levels  # noqa: E402
 
-LEVEL = 3100.0
 CACHE5 = Path("/tmp/gc_m5_60d.parquet")
 
 
@@ -45,15 +43,6 @@ def load():
         m5 = e._ohlc(yf.download("GC=F", period="60d", interval="5m", progress=False, auto_adjust=False))
         m5.to_parquet(CACHE5)
     return m5, h1
-
-
-def bias3100(sig):
-    out = []
-    for s in sig:
-        px = s["trig"]
-        if (s["side"] == -1 and px > LEVEL) or (s["side"] == 1 and px <= LEVEL):
-            out.append(s)
-    return out
 
 
 def placebo(sig, x, tf, seed):
@@ -88,7 +77,7 @@ def row(x, tf, sig, every, seeds=30):
 
 
 def levels_now(h1: pd.DataFrame):
-    """Current MSNR support/resistance: fresh/unfresh key levels on H4 and daily between price and $3,100."""
+    """Current MSNR support/resistance: fresh/unfresh key levels on H4 and daily within $400 below / $300 above price."""
     out = {}
     px = float(h1.close.iloc[-1])
     for name, rule in (("H4", "4h"), ("D1", "1D")):
@@ -105,9 +94,9 @@ def levels_now(h1: pd.DataFrame):
                     if c > lv.price: role, fresh = 1, True
                     elif h >= lv.price: fresh = False
             st.append((round(lv.price, 1), "support" if role == 1 else "resistance", fresh))
-        sup = sorted({s for s in st if s[1] == "support" and LEVEL - 50 <= s[0] <= px}, key=lambda z: -z[0])
+        sup = sorted({s for s in st if s[1] == "support" and px - 400 <= s[0] <= px}, key=lambda z: -z[0])
         res = sorted({s for s in st if s[1] == "resistance" and px <= s[0] <= px + 300}, key=lambda z: z[0])
-        out[name] = dict(supports_down_to_3100=[dict(price=p, fresh=f) for p, _, f in sup][:12],
+        out[name] = dict(supports_below=[dict(price=p, fresh=f) for p, _, f in sup][:12],
                          resistances_above=[dict(price=p, fresh=f) for p, _, f in res][:5])
     return px, out
 
@@ -127,14 +116,13 @@ def main() -> int:
         story0 = pd.Series(0.0, index=x.index)
         fresh = m.apply(base, st, story0, at, {"fresh"}, x.index, tf=tf)
         per = f"{x.index[0].date()} to {x.index[-1].date()}"
-        for bname, sig in (("none", fresh), ("3100", bias3100(fresh))):
-            for rule in ("ea", "every"):
-                rep["results"][f"{tf}|{bname}|{rule}"] = dict(period=per, **row(x, tf, sig, rule == "every"))
+        for rule in ("ea", "every"):
+            rep["results"][f"{tf}|{rule}"] = dict(period=per, **row(x, tf, fresh, rule == "every"))
         # 1h only: same window as 5m/30m for a fair comparison
         if tf == "1h":
             x60 = x[x.index >= m5.index[0]]
             s60 = [s for s in fresh if s["t_close"] >= m5.index[0]]
-            rep["results"]["1h_last60d|none|every"] = dict(period=f"{x60.index[0].date()} to {x60.index[-1].date()}",
+            rep["results"]["1h_last60d|every"] = dict(period=f"{x60.index[0].date()} to {x60.index[-1].date()}",
                                                            **row(x, tf, s60, True))
     px, lv = levels_now(h1)
     rep["last_price"] = dict(price=round(px, 1), at=str(h1.index[-1]))

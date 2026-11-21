@@ -4,7 +4,7 @@ Akhil: "Gold sell trade bot until 3100 and from there buy trade strategy using 9
 and malaysia strategy (MSNR)".
 
 Rules (fixed before any result was seen):
-  bias    level  - short while gold closes above LEVEL (3100), long at/below it (Akhil's rule)
+  bias    (the $3,100 level rule was removed 21 Nov 2026 on Akhil's request, A322)
           both   - both sides, no level (tests the 9 EMA + MSNR trigger alone)
           ema_d  - side = direction of the DAILY 9 EMA (data-driven bias, for comparison)
   trigger short: close < EMA9, EMA9 falling, and the bar's high wicks into a FRESH MSNR
@@ -32,7 +32,6 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.msnr import levels  # noqa: E402
 
-LEVEL = 3100.0
 COST = 0.40            # $ of gold price per round trip
 RR = 2.0
 ATR_BUF = 0.25
@@ -61,8 +60,6 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
 
 def bias_series(d: pd.DataFrame, mode: str, daily_ema_up: pd.Series | None = None) -> np.ndarray:
     """+1 long only, -1 short only, 0 both sides."""
-    if mode == "level":
-        return np.where(d.close.values > LEVEL, -1, 1)
     if mode == "both":
         return np.zeros(len(d), dtype=int)
     if mode == "ema_d":
@@ -336,25 +333,25 @@ def main(argv=None) -> int:
     hd, dd = load_hourly(), load_daily()
     up = ema(dd.close) > ema(dd.close).shift()
     if a.paper:
-        tr = run(hd, setups(hd, bias_series(hd, "level")), 48)
+        tr = run(hd, setups(hd, bias_series(hd, "both")), 48)
         print(json.dumps(paper(Path(a.paper), tr, Path(a.flags) if a.flags else None)))
         return 0
     if a.signal:
-        sig = setups(hd, bias_series(hd, "level"))
+        sig = setups(hd, bias_series(hd, "both"))
         last = sig[-1] if sig else None
         print(json.dumps(dict(time=str(hd.index[-1]), close=round(float(hd.close.iloc[-1]), 1),
-                              bias="SHORT" if hd.close.iloc[-1] > LEVEL else "LONG",
+                              bias="BOTH",
                               ema9=round(float(ema(hd.close).iloc[-1]), 1),
                               last_setup=None if not last else dict(
                                   at=str(hd.index[last["t"]]), side="SHORT" if last["side"] < 0 else "LONG",
                                   level=round(last["level"], 1), stop=round(last["stop"], 1)))))
         return 0
-    out = {"generated": str(date.today()), "level": LEVEL, "hourly": {}, "daily": {}, "topstep": {}}
+    out = {"generated": str(date.today()), "hourly": {}, "daily": {}, "topstep": {}}
     peak = dd.close.idxmax()
-    for mode in ("level", "both", "ema_d"):
+    for mode in ("both", "ema_d"):
         r = honest(hd, setups(hd, bias_series(hd, mode, up)), hold=48)
         out["hourly"][mode] = r["real"]
-        if mode == "level" and "trades" in r:
+        if mode == "both" and "trades" in r:
             t = r["trades"]
             since = t[t.t_in.dt.tz_localize(None) >= peak] if t.t_in.dt.tz else t[t.t_in >= peak]
             out["hourly"]["level_since_peak"] = stats(since)

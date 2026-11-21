@@ -1,0 +1,13 @@
+; Kalpa gold EA - E8 Markets "E8 Pro" $10K, challenge stage (A337, rules from E8 help centre 22 Nov 2026)
+; E8 Pro: 8% target, only 2%/day counts, 2.5% daily drawdown, 8% static max loss, metals 1:15.
+inp_Stage=1
+inp_Program=8
+inp_AccountSize=10000
+inp_MinProfitDays=0
+inp_FirmDailyLossPct=2.5
+inp_FirmMaxLossPct=8
+inp_PropDailyStopPct=1.5
+inp_DailyProfitCapPct=2.0
+inp_MetalLeverage=15
+inp_ProfitTarget=10850
+inp_EquityFloor=0

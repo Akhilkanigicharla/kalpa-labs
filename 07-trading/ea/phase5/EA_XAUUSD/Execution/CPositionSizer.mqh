@@ -224,7 +224,7 @@ bool OrderAllowed(int side, double lot, double price, string &why)
    if(inp_MaxOpenPositions > 0 && n >= inp_MaxOpenPositions)  { why = StringFormat("max_open_positions %d", n); return false; }
    if(!inp_AllowOpposite && ((side > 0 && hs) || (side < 0 && hl))) { why = "opposite_position_open"; return false; }
 
-   //--- margin: broker figure, and never less than notional / 25 (The5%ers metals 1:25)
+   //--- margin: broker figure, and never less than notional / inp_MetalLeverage (The5%ers 1:25, E8 Pro 1:15)
    double margin = 0.0;
    ENUM_ORDER_TYPE ot = (side > 0) ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
    if(!OrderCalcMargin(ot, _Symbol, lot, price, margin) || margin <= 0)
@@ -233,7 +233,7 @@ bool OrderAllowed(int side, double lot, double price, string &why)
       return false;
    }
    double contract = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_CONTRACT_SIZE);
-   double m25 = (contract > 0) ? lot * contract * price / 25.0 : 0.0;
+   double m25 = (contract > 0) ? lot * contract * price / inp_MetalLeverage : 0.0;
    margin = MathMax(margin, m25);
    double free_m = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
    if(margin > 0.5 * free_m)

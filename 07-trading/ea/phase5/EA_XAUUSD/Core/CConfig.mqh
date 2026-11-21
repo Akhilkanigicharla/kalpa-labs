@@ -44,6 +44,8 @@ input double            inp_ProfitDayPct  = 0.5;           // A profitable day =
 input group "=== LIVE SAFETY (A336) ==="
 input double   inp_FirmDailyLossPct     = 0.0;   // Prop firm daily loss limit (%). 0 = The5%ers table: 5% (<$50K), 4% ($50K+)
 input double   inp_FirmMaxLossPct       = 0.0;   // Prop firm max loss, static from initial balance (%). 0 = The5%ers table: 10% (<$50K), 8% ($50K+)
+input double   inp_DailyProfitCapPct    = 0.0;   // A337: close all + stop for the day once equity is this % of account size above the day base. 0 = off (The5%ers). E8 Pro = 2.0
+input double   inp_MetalLeverage        = 25.0;  // A337: firm leverage for gold, used as a margin floor (The5%ers 1:25, E8 Pro 1:15)
 input double   inp_PropDailyStopPct     = 4.0;   // Close all + pause when equity falls this % below the day base (max(balance,equity) at 00:00 server). Capped at firm limit - 1%
 input double   inp_FridayMaxOpenRiskPct = 1.25;  // Friday after inp_FridayCutHour: max total open risk held into the weekend (% equity)
 input int      inp_FridayCutHour        = 22;    // Friday cut hour (SERVER time): cancel pendings, shrink open risk, no new entries until Monday
@@ -257,6 +259,8 @@ public:
       ok &= ValidateInt(   inp_EMA_Slow,        inp_EMA_Fast+1, 300, "EMA_Slow");
       // A336 live-safety inputs
       ok &= ValidateDouble(inp_PropDailyStopPct,     0.5,  10.0, "PropDailyStopPct");
+      ok &= ValidateDouble(inp_DailyProfitCapPct,    0.0,  20.0, "DailyProfitCapPct");
+      ok &= ValidateDouble(inp_MetalLeverage,        1.0, 500.0, "MetalLeverage");
       if(inp_FirmDailyLossPct != 0) ok &= ValidateDouble(inp_FirmDailyLossPct, 1.5, 20.0, "FirmDailyLossPct");
       if(inp_FirmMaxLossPct   != 0) ok &= ValidateDouble(inp_FirmMaxLossPct,   2.0, 30.0, "FirmMaxLossPct");
       ok &= ValidateDouble(inp_FridayMaxOpenRiskPct, 0.0,  5.0,  "FridayMaxOpenRiskPct");

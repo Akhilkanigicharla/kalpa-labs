@@ -173,7 +173,7 @@ def test_15_inactivity_watchdog():
 
 def test_16_margin_check():
     oa = body(src("Execution/CPositionSizer.mqh"), "bool OrderAllowed(", 1800)
-    assert "OrderCalcMargin(" in oa and "/ 25.0" in oa and "0.5 * free_m" in oa
+    assert "OrderCalcMargin(" in oa and "/ inp_MetalLeverage" in oa and "0.5 * free_m" in oa
 
 
 def test_17_medium_low_review_items():
@@ -238,3 +238,29 @@ def test_strategy_weights_scenario_g():
     ps = src("Execution/CPositionSizer.mqh")
     assert "inp_MainWeight   = 0.5" in ps and "Config.RiskPct * MathMax(0.0, inp_MainWeight)" in ps
     assert "inp_RiskPct         = 0.40" in src("Core/CConfig.mqh")
+
+
+# --- A337: E8 Pro support -------------------------------------------------------------------------
+def _ea(rel):
+    import pathlib
+    return (pathlib.Path(__file__).resolve().parents[1] / "ea/phase5" / rel).read_text(encoding="utf-8", errors="ignore")
+
+
+def test_e8_daily_profit_cap_closes_and_stops_for_day():
+    g = _ea("EA_XAUUSD/Guards/CGuardCoordinator.mqh")
+    assert "inp_DailyProfitCapPct > 0.0" in g and 'EmergencyCloseAll("daily_profit_cap")' in g
+    assert "ForceDailyLimit(StringFormat(\"profit cap" in g
+
+
+def test_metal_leverage_is_an_input_used_for_margin():
+    assert "input double   inp_MetalLeverage" in _ea("EA_XAUUSD/Core/CConfig.mqh")
+    s = _ea("EA_XAUUSD/Execution/CPositionSizer.mqh")
+    assert "/ inp_MetalLeverage" in s and "/ 25.0" not in s
+
+
+def test_e8_preset_matches_verified_rules():
+    kv = dict(l.split("=", 1) for l in _ea("presets/E8_Pro_10K_challenge.set").splitlines()
+              if "=" in l and not l.startswith(";"))
+    assert kv["inp_FirmDailyLossPct"] == "2.5" and kv["inp_FirmMaxLossPct"] == "8"
+    assert float(kv["inp_PropDailyStopPct"]) < 2.5 and kv["inp_DailyProfitCapPct"] == "2.0"
+    assert kv["inp_MetalLeverage"] == "15" and kv["inp_MinProfitDays"] == "0"

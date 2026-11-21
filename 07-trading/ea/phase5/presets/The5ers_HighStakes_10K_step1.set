@@ -1,0 +1,12 @@
+; Kalpa gold EA - The5%ers High Stakes $10K, Step 1 New (10%). Needs The5%ers written EA approval first.
+inp_Stage=1
+inp_Program=10
+inp_AccountSize=10000
+inp_MinProfitDays=3
+inp_FirmDailyLossPct=0
+inp_FirmMaxLossPct=0
+inp_PropDailyStopPct=4.0
+inp_DailyProfitCapPct=0
+inp_MetalLeverage=25
+inp_ProfitTarget=0
+inp_EquityFloor=0

@@ -502,6 +502,19 @@ public:
                StringFormat("equity=%.2f day_base=%.2f stop=%.1f%%", eq, day_base, Config.DailyStopPct));
          return false;
       }
+      //--- A337 (E8 Pro): only inp_DailyProfitCapPct of the initial balance per day counts toward target/payout,
+      //    so once the day is that far up, bank it: close all and stop for the day.
+      if(inp_DailyProfitCapPct > 0.0 && day_base > 0 &&
+         eq >= day_base + inp_DailyProfitCapPct / 100.0 * inp_AccountSize)
+      {
+         if(HasAnyOurPosition()) EmergencyCloseAll("daily_profit_cap");
+         CancelAllPendingOrders("daily_profit_cap");
+         DailyStats.ForceDailyLimit(StringFormat("profit cap: equity %.2f vs day base %.2f", eq, day_base));
+         if(!terminal && !StateManager.IsSuspended())
+            StateManager.Suspend(SUSPEND_DAILY_LIMIT,
+               StringFormat("daily profit cap %.1f%% reached", inp_DailyProfitCapPct));
+         return false;
+      }
       return true;
    }
 

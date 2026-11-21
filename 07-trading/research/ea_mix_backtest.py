@@ -100,7 +100,8 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
               no_opposite: bool = False, friday_cut: float | None = None, friday_hour: int = 22,
               extra_cost: float = 0.0, min_stop: float = 0.0, lot_cap: float | None = None,
               day_stop_eq: float | None = None, eq_floor: float | None = None, curve: bool = False,
-              gap_pct: float | None = None, gap_budget: float = 0.03):
+              gap_pct: float | None = None, gap_budget: float = 0.03, day_profit_cap: float | None = None,
+              margin_lev: float | None = None, margin_use: float = 0.5):
     """EA portfolio replay.  Defaults = the A329 behaviour (closed-loss 4% day stop, no MTM rules).
 
     Options (21 Nov 2026, mirroring the EA changes):
@@ -114,6 +115,10 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
       day_stop_eq  replaces the closed-loss day stop: if equity <= (1-x) x max(balance, equity) at day start,
                    close all at the current price and no new entries that day
       eq_floor     if equity <= this ($), close all and stop trading for good
+      day_profit_cap (A337, E8 Pro) once equity is day_profit_cap x START above the day base, close all and stop for
+                   the day (E8 only counts 2%/day toward target and payouts)
+      margin_lev   (A337) skip an entry if all open lots + this one need more than margin_use x equity at this
+                   leverage (E8 metals 1:15; EA uses 50% of free margin)
       gap_pct      (A336) at the Friday cut also assume a weekend gap of gap_pct jumps every stop: worst loss of a
                    position = max(risk, gap_pct x price x 100 oz x lot); close losers first, then largest lot,
                    until the sum <= gap_budget x max(balance, equity)
@@ -168,6 +173,8 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
             why, st["halted"] = "floor", True
         elif day_stop_eq is not None and eq <= (1 - day_stop_eq) * st["ref"]:
             why, st["locked"] = "daystop", st["day"]
+        elif day_profit_cap is not None and eq - st["ref"] >= day_profit_cap * START:
+            why, st["locked"] = "profitcap", st["day"]
         if why:
             for p in list(open_pos):
                 close(p, m[id(p)], c, why)
@@ -219,6 +226,8 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
         if gap <= news_block_h:
             continue
         # EA daily stop 4%: closed losses (default) or equity-based (day_stop_eq)
+        if st["locked"] == row.t_in.normalize():
+            continue
         if day_stop_eq is None:
             if closed_day.get(row.t_in.normalize(), 0.0) <= -0.04 * START:
                 continue
@@ -251,6 +260,10 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
             if open_mix + risk_usd > cap * START:
                 continue
         e0 = open_px.asof(row.t_in)
+        if margin_lev is not None:
+            lots_open = sum(p["lot"] for p in open_pos) + lot
+            if lots_open * USD_PER_LOT_PER_DOLLAR * float(e0) / margin_lev > margin_use * st["eq"]:
+                continue
         rec = dict(tid=tid, t_in=row.t_in, t_out=row.t_out, strategy=row.strategy, side=row.side, r=row.r,
                    lot=round(lot, 2), risk=risk_usd, is_ea=is_ea, entry=float(e0), dist=dist)
         rec["pnl"] = row.r * risk_usd - cost(rec)

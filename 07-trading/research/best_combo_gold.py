@@ -158,6 +158,11 @@ def the5ers(t, start=10_000.0, target=0.08, daily=0.05, maxloss=0.10):
 
 
 def main() -> int:
+    if "--paper" in sys.argv:
+        fl = sys.argv[sys.argv.index("--flags") + 1] if "--flags" in sys.argv else None
+        st = paper(Path(sys.argv[sys.argv.index("--paper") + 1]), Path(fl) if fl else None)
+        print(json.dumps({k: v for k, v in st.items() if k not in ("open_trades", "by_strategy")}, default=str))
+        return 0
     fr = frames()
     cand = candidates(fr)
     rows, kept = [], []
@@ -201,6 +206,63 @@ def main() -> int:
         print(f"{r['name']:28s} early {r['early']['trades']:4d} {r['early']['avg_r']} | late {r['late']['trades']:4d} {r['late']['avg_r']} {'<- IN' if r['chosen'] else ''}")
     print(json.dumps({k: v for k, v in rep.items() if k not in ("candidates",)}, indent=1, default=str))
     return 0
+
+
+# ---------------- A324: 6-month forward test (paper only) ----------------
+PAPER_START = pd.Timestamp("2026-11-21")
+PAPER_END = pd.Timestamp("2027-05-21")
+PAPER_RISK = 0.0025          # the risk chosen in A323 (The5%ers step 1 passed 98% in the backtest)
+CHOSEN = ["EA+MSNR 1h", "MSNR fresh_v long 1h", "MSNR qm long 1h", "MSNR qm short 1h", "EMA9 2h",
+          "MSNR fresh_v long 2h", "MSNR fresh_v short 2h", "MSNR qm long 2h", "EMA9 4h",
+          "MSNR fresh_v long 4h", "MSNR fresh_v short 4h", "MSNR qm long 4h", "MSNR qm short 4h"]   # frozen 21 Nov 2026
+
+
+def paper(out: Path, flags: Path | None = None, fr: dict | None = None, today: pd.Timestamp | None = None) -> dict:
+    """Append-only forward ledger: a trade is written once it has CLOSED, entered on/after PAPER_START and
+    before PAPER_END. Trades already in the ledger are never rewritten (later data revisions can't change
+    the record). Still-open trades are listed separately. No orders are sent anywhere."""
+    out.mkdir(parents=True, exist_ok=True)
+    led_p = out / "ledger.csv"
+    if flags and (flags / "KILL").exists():
+        st = dict(status="killed")
+        (out / "state.json").write_text(json.dumps(st, indent=1))
+        return st
+    fr = fr or frames()
+    last_bar = fr["1h"].index[-1]
+    today = today or pd.Timestamp(date.today())
+    cand = candidates(fr)
+    new = []
+    open_now = []
+    for k in CHOSEN:
+        t = cand[k]()
+        if t.empty:
+            continue
+        t = t[(t.t_in >= PAPER_START) & (t.t_in < PAPER_END)]
+        done = t[t.t_out < last_bar]               # a trade ending on the last bar may still be running
+        new.append(done.assign(strategy=k))
+        for _, row in t[t.t_out >= last_bar].iterrows():
+            open_now.append(dict(strategy=k, t_in=str(row.t_in), side="LONG" if row.side == 1 else "SHORT"))
+    new = pd.concat(new) if new else pd.DataFrame(columns=["t_in", "t_out", "side", "r", "strategy"])
+    old = pd.read_csv(led_p, parse_dates=["t_in", "t_out"]) if led_p.exists() else new.iloc[0:0]
+    key = lambda d: d.strategy.astype(str) + "|" + d.t_in.astype(str)
+    add = new[~key(new).isin(set(key(old)))] if len(old) else new
+    led = pd.concat([old, add.assign(recorded=str(today.date()))]).sort_values("t_in")
+    led.to_csv(led_p, index=False)
+    global RISK
+    RISK = PAPER_RISK
+    st = dict(status="running" if today < PAPER_END else "finished", start=str(PAPER_START.date()),
+              end=str(PAPER_END.date()), days_done=int((min(today, PAPER_END) - PAPER_START).days),
+              risk_per_trade_pct=PAPER_RISK * 100, data_up_to=str(last_bar),
+              **count(led), open_trades=open_now,
+              **(account(led) if len(led) else {}),
+              backtest_expected=dict(avg_r=0.143, win_rate=0.406, trades_per_month=168),
+              by_strategy={k: count(led[led.strategy == k]) for k in CHOSEN if (led.strategy == k).any()})
+    if len(led) >= 30:
+        st["verdict"] = ("on track" if st["avg_r"] >= 0.07 else "below backtest — review")
+    else:
+        st["verdict"] = "too early (fewer than 30 closed trades)"
+    (out / "state.json").write_text(json.dumps(st, indent=1, default=str))
+    return st
 
 
 if __name__ == "__main__":

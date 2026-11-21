@@ -1,0 +1,23 @@
+{
+ "status": "running",
+ "start": "2026-11-21",
+ "end": "2027-05-21",
+ "days_done": 0,
+ "risk_per_trade_pct": 0.25,
+ "data_up_to": "2026-11-20 21:00:00",
+ "trades": 0,
+ "wins": 0,
+ "losses": 0,
+ "breakeven": 0,
+ "win_rate": null,
+ "avg_r": null,
+ "total_r": 0.0,
+ "open_trades": [],
+ "backtest_expected": {
+  "avg_r": 0.143,
+  "win_rate": 0.406,
+  "trades_per_month": 168
+ },
+ "by_strategy": {},
+ "verdict": "too early (fewer than 30 closed trades)"
+}

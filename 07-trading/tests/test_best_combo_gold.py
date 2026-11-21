@@ -30,3 +30,21 @@ def test_the5ers_fails_on_daily_loss():
     res = b.the5ers(_t([-1.0, -1.0, -1.0]))       # -6% in one day
     b.RISK = 0.005
     assert res["fail"] == 1.0
+
+
+def test_paper_ledger_is_append_only(tmp_path, monkeypatch):
+    t0 = pd.Timestamp("2026-11-23 08:00")
+    fr = {"1h": pd.DataFrame(index=pd.date_range(t0, periods=200, freq="h"))}
+    first = pd.DataFrame(dict(t_in=[t0], t_out=[t0 + pd.Timedelta(hours=3)], side=[1], r=[1.0]))
+    monkeypatch.setattr(b, "CHOSEN", ["X"])
+    monkeypatch.setattr(b, "candidates", lambda fr: {"X": lambda: first})
+    b.paper(tmp_path, fr=fr, today=pd.Timestamp("2026-11-24"))
+    revised = first.assign(r=[-1.0])                       # later data revision must not change the record
+    monkeypatch.setattr(b, "candidates", lambda fr: {"X": lambda: revised})
+    st = b.paper(tmp_path, fr=fr, today=pd.Timestamp("2026-11-25"))
+    assert st["trades"] == 1 and st["wins"] == 1
+
+
+def test_paper_kill(tmp_path):
+    (tmp_path / "KILL").write_text("x")
+    assert b.paper(tmp_path / "o", flags=tmp_path)["status"] == "killed"

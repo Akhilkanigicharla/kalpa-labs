@@ -17,7 +17,7 @@ concurrency:
 jobs:
   paper:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,11 +44,11 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python -m src.msnr --paper paper/msnr --flags paper/track-A/flags --out reports | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Gold 9 EMA + MSNR, Akhil's $3,100 rule vs Topstep 50K (A308; paper only, same KILL switch)
+      - name: Gold 9 EMA + MSNR, both directions vs Topstep 50K (A308; $3,100 rule removed A322; paper only, same KILL switch)
         working-directory: 07-trading
         continue-on-error: true
         run: python research/gold_ema9_msnr.py --paper paper/gold-ema9-msnr --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: MSNR gold, 3 closest versions under Akhil's rule (A309; paper only, same KILL switch)
+      - name: MSNR gold, 3 closest versions (A309; $3,100 rule removed A322; paper only, same KILL switch)
         working-directory: 07-trading
         continue-on-error: true
         run: python research/msnr_gold_robust.py --paper paper/msnr-gold-robust --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
@@ -56,6 +56,10 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python research/ea_design_gold.py --paper paper/ea-ladder --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Best gold mix, 13 strategies on 1h/2h/4h, 6-month forward test 21 Nov 2026 - 21 May 2027 (A324; paper only, same KILL switch)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: python research/best_combo_gold.py --paper paper/best-combo-gold --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Quant Brain intraday master over 25 agents (A280; paper only, replays today after the close)
         working-directory: 07-trading
         continue-on-error: true
@@ -106,6 +110,7 @@ jobs:
           git config user.name "kalpa-paper-bot"
           git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
           git add 07-trading/paper/track-A 07-trading/paper/track-A-gold 07-trading/paper/intraday 07-trading/paper/stocks-in-play 07-trading/paper/kronos 07-trading/paper/tournament 07-trading/paper/quant-brain 07-trading/paper/alpha-brain
+          for d in msnr gold-ema9-msnr msnr-gold-robust ea-ladder best-combo-gold; do [ -d "07-trading/paper/$d" ] && git add "07-trading/paper/$d"; done; true
           git diff --cached --quiet && exit 0
           git commit -q -m "b7 paper: Track A $(TZ=Asia/Kolkata date +%F)"
           for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

@@ -46,7 +46,7 @@ enum SUSPEND_REASON
 {
    SUSPEND_NONE             = 0,  // Not suspended
    SUSPEND_SESSION_CLOSED   = 1,  // Outside valid session window
-   SUSPEND_ROLLOVER         = 2,  // 21:45–00:15 GMT blackout
+   SUSPEND_ROLLOVER         = 2,  // A336: 23:50-00:20 SERVER time blackout
    SUSPEND_NEWS_WINDOW      = 3,  // Near scheduled high-impact news
    SUSPEND_SPREAD_HIGH      = 4,  // Spread exceeds dynamic threshold
    SUSPEND_EQUITY_FLOOR     = 5,  // HARD STOP — equity <= $9,100
@@ -208,8 +208,10 @@ struct TradeState
 // Daily statistics — reset at 00:01 GMT
 struct DailyStatsData
 {
-   datetime reset_date;       // Date this struct covers
-   double   open_equity;      // Equity at start of day
+   datetime reset_date;       // Server date this struct covers (00:00 server time)
+   double   open_equity;      // A336: day base = MathMax(balance, equity) at 00:00 server (The5%ers rule)
+   double   start_balance;    // A336: balance at 00:00 server (previous day's end balance)
+   bool     forced_limit;     // A336: equity daily stop hit today (survives restart)
    double   closed_pnl;       // Sum of all closed P&L today
    double   peak_equity;      // Highest equity seen today
    double   min_equity;       // Lowest equity seen today

@@ -223,7 +223,7 @@ private:
 
       // --- Time ---
       ctx.server_time  = TimeCurrent();
-      ctx.gmt_time     = TimeGMT();
+      ctx.gmt_time     = EAGmtNow();      // A336 (#20)
       MqlDateTime gdt;
       TimeToStruct(ctx.gmt_time, gdt);
       ctx.gmt_hour     = gdt.hour;

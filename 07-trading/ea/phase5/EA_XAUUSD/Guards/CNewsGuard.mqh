@@ -120,7 +120,7 @@ private:
    }
 
    public:
-   void SaveState()
+   virtual void SaveState() override
    {
       int h = FileOpen(NEWS_CIRCUIT_FILE,
                        FILE_WRITE|FILE_TXT|FILE_ANSI, '\n');
@@ -132,8 +132,8 @@ private:
       FileClose(h);
    }
 
-   private:
-   void LoadState()
+   // A336 (#31): overrides a PUBLIC virtual of IGuard, so it stays public
+   virtual void LoadState() override
    {
       if(!FileIsExist(NEWS_CIRCUIT_FILE)) return;
       int h = FileOpen(NEWS_CIRCUIT_FILE,
@@ -162,6 +162,7 @@ private:
                          TimeToString(m_cooldown_end_time, TIME_DATE|TIME_SECONDS)));
    }
 
+private:
    //--- Pointer to SpreadGuard (injected after both are initialized)
    CSpreadGuard* m_spread_guard;
 

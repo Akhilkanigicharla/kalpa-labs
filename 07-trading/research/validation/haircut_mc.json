@@ -1,0 +1,194 @@
+{
+ "current13 0.25%/2% haircut=0%": {
+  "avg_r": 0.104,
+  "mean_month": 304.0,
+  "step1": {
+   "pass_60d": 0.358,
+   "pass_90d": 0.556,
+   "pass_180d": 0.842,
+   "fail_1y": 0.042,
+   "pass_1y": 0.946
+  },
+  "step2_1y": 0.959
+ },
+ "current13 0.25%/2% haircut=25%": {
+  "avg_r": 0.08,
+  "mean_month": 233.0,
+  "step1": {
+   "pass_60d": 0.289,
+   "pass_90d": 0.465,
+   "pass_180d": 0.743,
+   "fail_1y": 0.094,
+   "pass_1y": 0.882
+  },
+  "step2_1y": 0.922
+ },
+ "current13 0.25%/2% haircut=50%": {
+  "avg_r": 0.056,
+  "mean_month": 163.0,
+  "step1": {
+   "pass_60d": 0.228,
+   "pass_90d": 0.375,
+   "pass_180d": 0.627,
+   "fail_1y": 0.172,
+   "pass_1y": 0.784
+  },
+  "step2_1y": 0.861
+ },
+ "current13 0.25%/2% haircut=75%": {
+  "avg_r": 0.031,
+  "mean_month": 92.0,
+  "step1": {
+   "pass_60d": 0.174,
+   "pass_90d": 0.293,
+   "pass_180d": 0.503,
+   "fail_1y": 0.29,
+   "pass_1y": 0.652
+  },
+  "step2_1y": 0.766
+ },
+ "cut8 0.25%/2% haircut=0%": {
+  "avg_r": 0.192,
+  "mean_month": 350.0,
+  "step1": {
+   "pass_60d": 0.296,
+   "pass_90d": 0.598,
+   "pass_180d": 0.943,
+   "fail_1y": 0.0,
+   "pass_1y": 0.999
+  },
+  "step2_1y": 1.0
+ },
+ "cut8 0.25%/2% haircut=25%": {
+  "avg_r": 0.147,
+  "mean_month": 268.0,
+  "step1": {
+   "pass_60d": 0.192,
+   "pass_90d": 0.431,
+   "pass_180d": 0.848,
+   "fail_1y": 0.002,
+   "pass_1y": 0.987
+  },
+  "step2_1y": 0.996
+ },
+ "cut8 0.25%/2% haircut=50%": {
+  "avg_r": 0.101,
+  "mean_month": 185.0,
+  "step1": {
+   "pass_60d": 0.118,
+   "pass_90d": 0.274,
+   "pass_180d": 0.656,
+   "fail_1y": 0.014,
+   "pass_1y": 0.916
+  },
+  "step2_1y": 0.976
+ },
+ "cut8 0.25%/2% haircut=75%": {
+  "avg_r": 0.056,
+  "mean_month": 103.0,
+  "step1": {
+   "pass_60d": 0.062,
+   "pass_90d": 0.152,
+   "pass_180d": 0.426,
+   "fail_1y": 0.075,
+   "pass_1y": 0.712
+  },
+  "step2_1y": 0.881
+ },
+ "cut8 0.40%/2% haircut=0%": {
+  "avg_r": 0.178,
+  "mean_month": 582.0,
+  "step1": {
+   "pass_60d": 0.652,
+   "pass_90d": 0.852,
+   "pass_180d": 0.982,
+   "fail_1y": 0.008,
+   "pass_1y": 0.992
+  },
+  "step2_1y": 0.994
+ },
+ "cut8 0.40%/2% haircut=25%": {
+  "avg_r": 0.134,
+  "mean_month": 439.0,
+  "step1": {
+   "pass_60d": 0.522,
+   "pass_90d": 0.733,
+   "pass_180d": 0.935,
+   "fail_1y": 0.026,
+   "pass_1y": 0.973
+  },
+  "step2_1y": 0.976
+ },
+ "cut8 0.40%/2% haircut=50%": {
+  "avg_r": 0.091,
+  "mean_month": 296.0,
+  "step1": {
+   "pass_60d": 0.389,
+   "pass_90d": 0.58,
+   "pass_180d": 0.822,
+   "fail_1y": 0.089,
+   "pass_1y": 0.904
+  },
+  "step2_1y": 0.927
+ },
+ "cut8 0.40%/2% haircut=75%": {
+  "avg_r": 0.047,
+  "mean_month": 153.0,
+  "step1": {
+   "pass_60d": 0.273,
+   "pass_90d": 0.414,
+   "pass_180d": 0.626,
+   "fail_1y": 0.244,
+   "pass_1y": 0.734
+  },
+  "step2_1y": 0.826
+ },
+ "cut8 0.50%/2% haircut=0%": {
+  "avg_r": 0.201,
+  "mean_month": 796.0,
+  "step1": {
+   "pass_60d": 0.796,
+   "pass_90d": 0.929,
+   "pass_180d": 0.987,
+   "fail_1y": 0.012,
+   "pass_1y": 0.988
+  },
+  "step2_1y": 0.991
+ },
+ "cut8 0.50%/2% haircut=25%": {
+  "avg_r": 0.152,
+  "mean_month": 602.0,
+  "step1": {
+   "pass_60d": 0.672,
+   "pass_90d": 0.837,
+   "pass_180d": 0.955,
+   "fail_1y": 0.037,
+   "pass_1y": 0.963
+  },
+  "step2_1y": 0.966
+ },
+ "cut8 0.50%/2% haircut=50%": {
+  "avg_r": 0.103,
+  "mean_month": 407.0,
+  "step1": {
+   "pass_60d": 0.528,
+   "pass_90d": 0.695,
+   "pass_180d": 0.856,
+   "fail_1y": 0.115,
+   "pass_1y": 0.884
+  },
+  "step2_1y": 0.913
+ },
+ "cut8 0.50%/2% haircut=75%": {
+  "avg_r": 0.054,
+  "mean_month": 213.0,
+  "step1": {
+   "pass_60d": 0.405,
+   "pass_90d": 0.54,
+   "pass_180d": 0.695,
+   "fail_1y": 0.26,
+   "pass_1y": 0.737
+  },
+  "step2_1y": 0.798
+ }
+}

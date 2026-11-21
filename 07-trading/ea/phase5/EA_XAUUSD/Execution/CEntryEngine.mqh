@@ -114,7 +114,7 @@ public:
 
       m_initialized = true;
       Logger.Info("ENTRY_ENGINE",
-         StringFormat("Initialized. magic=%d dry_run=%s slippage_max=%.1fp",
+         StringFormat("Initialized. magic=%I64d dry_run=%s slippage_max=%.1fp",
                        Config.MagicNumber,
                        Config.DryRun ? "ON" : "OFF",
                        Config.SlippageMax));
@@ -168,6 +168,20 @@ public:
          return plan;
       }
 
+      //--- A336 (#2, #10, #11, #15): weekend cut, account-size check, max positions,
+      //    no opposite positions, margin (1:25 metals) - same checks as the mix engine
+      {
+         int    side0 = (plan.direction == DIR_LONG) ? 1 : -1;
+         double px0   = (side0 > 0) ? SymbolInfoDouble(m_symbol, SYMBOL_ASK) : SymbolInfoDouble(m_symbol, SYMBOL_BID);
+         string why0;
+         if(!OrderAllowed(side0, plan.lot, px0, why0))
+         {
+            Logger.Info("ENTRY_ENGINE", "Order refused by live-safety checks: " + why0);
+            plan.result = EXEC_REJECTED_EXISTING;
+            return plan;
+         }
+      }
+
       //--- DRY RUN: log + stop, no send
       if(Config.DryRun)
       {
@@ -182,6 +196,8 @@ public:
       LogIntendedOrder(plan, "LIVE");
 
       bool sent = false;
+      int  side = (plan.direction == DIR_LONG) ? 1 : -1;
+      double tp_dist = (plan.tp_price > 0 && plan.entry_price > 0) ? MathAbs(plan.tp_price - plan.entry_price) : 0.0;
       for(int attempt = 1; attempt <= EXEC_MAX_RETRIES + 1; attempt++)
       {
          //--- A320: a "failed" send can still have filled (timeout) — never open a duplicate
@@ -196,6 +212,13 @@ public:
          double bid = SymbolInfoDouble(m_symbol, SYMBOL_BID);
          double price = (plan.direction == DIR_LONG) ? ask : bid;
          price = PriceUtils.NormalizePrice(price);
+         //--- A336 (#13): on a retry the price moved - rebuild SL/TP from the NEW price so the
+         //    risk stays what was sized (sl_pips), instead of reusing the old SL
+         if(attempt > 1)
+         {
+            plan.sl_price = PriceUtils.NormalizePrice(price - side * PriceUtils.PipsToPrice(plan.sl_pips));
+            if(tp_dist > 0) plan.tp_price = PriceUtils.NormalizePrice(price + side * tp_dist);
+         }
 
          bool ok;
          if(plan.direction == DIR_LONG)
@@ -218,10 +241,22 @@ public:
             break;
          }
 
-         //--- Retry only on requote / price-off / rejection kinds
          Logger.Warn("ENTRY_ENGINE",
             StringFormat("Send attempt %d failed. retcode=%d (%s)",
                           attempt, retcode, m_trade.ResultRetcodeDescription()));
+
+         //--- A336 (#13): a timeout / no reply may already be FILLED on the server. Poll up to
+         //    3 s for the position and never resend.
+         if(retcode == TRADE_RETCODE_TIMEOUT || retcode == TRADE_RETCODE_CONNECTION || retcode == 0)
+         {
+            for(int w = 0; w < 10 && !HasOpenPosition(); w++) Sleep(300);
+            if(HasOpenPosition()) { sent = true; Logger.Warn("ENTRY_ENGINE", "Order filled despite timeout - not resending"); }
+            break;
+         }
+         //--- Retry ONLY on price-kind rejections
+         if(retcode != TRADE_RETCODE_REQUOTE && retcode != TRADE_RETCODE_PRICE_CHANGED &&
+            retcode != TRADE_RETCODE_PRICE_OFF)
+            break;
 
          if(attempt <= EXEC_MAX_RETRIES)
             Sleep(EXEC_RETRY_WAIT_MS);

@@ -16,6 +16,7 @@
 #define GUARDTYPES_MQH
 
 #include "../Include/Defines.mqh"
+#include "../Core/CConfig.mqh"       // A336: EAGmtNow()
 
 //===================================================================
 // GUARD PRIORITY LEVELS
@@ -409,7 +410,7 @@ void PopulateGuardContext(GuardContext &ctx, long magic_number, double pip_size)
                            : 0.0;
 
    ctx.server_time     = TimeCurrent();
-   ctx.gmt_time        = TimeGMT();
+   ctx.gmt_time        = EAGmtNow();          // A336 (#20): real GMT live, server-offset GMT in the tester
 
    MqlDateTime gmt_dt;
    TimeToStruct(ctx.gmt_time, gmt_dt);

@@ -311,16 +311,60 @@ CMSNREngine MSNR;
 //| NOTE: MT5 calendar functions return nothing in the Strategy       |
 //| Tester, so this gate only works on demo/live charts.              |
 //+------------------------------------------------------------------+
-input int      inp_NewsBlockMin = 120;    // A325: block entries this many minutes before/after high-impact USD news (0 = off)
+input int      inp_NewsBlockMin = 120;    // A325: block entries this many minutes before/after high-impact USD news (min 3 = The5%ers +/-2 min rule, always on)
+
+//--- A336 (#9 / G6): the calendar FAILS CLOSED. If CalendarValueHistory errors (-1) or the
+//    calendar has no USD events at all for the current server week (database not synced, e.g.
+//    on a Wine VPS), new entries are blocked and this is logged once per hour.
+datetime g_cal_last_log      = 0;
+datetime g_cal_synced_check  = 0;
+bool     g_cal_synced        = false;
+
+void CalendarLog(string why)
+{
+   if(g_cal_last_log != 0 && TimeCurrent() - g_cal_last_log < 3600) return;
+   g_cal_last_log = TimeCurrent();
+   Logger.Error("NEWS_CAL", "Economic calendar unavailable - NEW ENTRIES BLOCKED (fail closed)", why);
+}
+
+bool CalendarSynced()
+{
+   if(g_cal_synced_check != 0 && TimeCurrent() - g_cal_synced_check < 600) return g_cal_synced;
+   g_cal_synced_check = TimeCurrent();
+   MqlDateTime s;
+   TimeToStruct(TimeTradeServer(), s);
+   int back_days = (s.day_of_week + 6) % 7;                 // days since Monday
+   s.hour = 0; s.min = 0; s.sec = 0;
+   datetime week0 = StructToTime(s) - back_days * 86400;
+   MqlCalendarValue w[];
+   ResetLastError();
+   int n = CalendarValueHistory(w, week0, week0 + 7 * 86400, "US", "USD");
+   g_cal_synced = (n > 0);
+   if(!g_cal_synced)
+      CalendarLog(StringFormat("no USD events this week (n=%d err=%d)", n, GetLastError()));
+   return g_cal_synced;
+}
 
 bool NewsBlackout(string &why)
 {
    why = "";
-   if(inp_NewsBlockMin <= 0) return false;
    if(MQLInfoInteger(MQL_TESTER)) return false;            // calendar not available in the tester
+   int win = MathMax(inp_NewsBlockMin, 3);                 // A336: the firm's +/-2 min rule cannot be switched off
    datetime now = TimeTradeServer();
    MqlCalendarValue v[];
-   int n = CalendarValueHistory(v, now - inp_NewsBlockMin * 60, now + inp_NewsBlockMin * 60, "US", "USD");
+   ResetLastError();
+   int n = CalendarValueHistory(v, now - win * 60, now + win * 60, "US", "USD");
+   if(n < 0)
+   {
+      why = StringFormat("calendar_error_%d", GetLastError());
+      CalendarLog(why);
+      return true;                                          // fail closed
+   }
+   if(!CalendarSynced())
+   {
+      why = "calendar_not_synced";
+      return true;                                          // fail closed
+   }
    for(int i = 0; i < n; i++)
    {
       MqlCalendarEvent ev;

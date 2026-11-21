@@ -61,6 +61,7 @@
 int    g_atr_m5  = INVALID_HANDLE;
 int    g_atr_m15 = INVALID_HANDLE;
 CTrade g_mgr;                    // position management (partial close, stop moves)
+bool   g_lock_owner = false;     // A336 (#7): this chart owns the single-instance lock
 ulong  g_txn_pos  = 0;           // trade-transaction accumulator
 double g_txn_pnl  = 0.0;
 double g_txn_risk = 0.0;
@@ -121,13 +122,33 @@ int OnInit()
                    EA_VERSION, EA_BUILD_DATE, Symbol(),
                    AccountInfoInteger(ACCOUNT_LOGIN)));
 
-   // --- Step 2: Validate we are on the correct symbol
-   if(Symbol() != EA_SYMBOL)
+   // --- Step 2: Validate we are on a GOLD chart (A336 #19: EA_SYMBOL is _Symbol, so the old
+   //     check could never fail; on EURUSD/US30 the EA would trade with gold pip maths)
    {
-      Logger.Fatal("INIT",
-         StringFormat("Wrong symbol: running on %s, required %s",
-                      Symbol(), EA_SYMBOL));
-      return INIT_FAILED;
+      string sym = _Symbol;
+      StringToUpper(sym);
+      if(StringFind(sym, "XAU") < 0 && StringFind(sym, "GOLD") < 0)
+      {
+         Logger.Fatal("INIT", StringFormat("Wrong symbol: %s is not gold (XAU/GOLD)", _Symbol));
+         return INIT_FAILED;
+      }
+      double cs = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_CONTRACT_SIZE);
+      if(MathAbs(cs - 100.0) > 0.001)
+         Logger.Warn("INIT", StringFormat("Contract size %.2f (expected 100 oz) - check sizing", cs));
+   }
+
+   // --- Step 2b (A336 #7): one instance per magic. A second chart with the same magic would
+   //     double every order. The temp global variable holds the owning chart id.
+   {
+      string lock = StringFormat("EAX_LOCK_%I64d", inp_MagicNumber);
+      if(GlobalVariableCheck(lock) && GlobalVariableGet(lock) != (double)(ChartID() & 0xFFFFFFFFFFFF))
+      {
+         Logger.Fatal("INIT", "Another chart already runs this EA with the same magic number - refusing to start");
+         return INIT_FAILED;
+      }
+      GlobalVariableTemp(lock);
+      GlobalVariableSet(lock, (double)(ChartID() & 0xFFFFFFFFFFFF));
+      g_lock_owner = true;
    }
 
    // --- Step 3: Validate account type (must be able to hedge)
@@ -225,8 +246,9 @@ int OnInit()
    GuardCoordinator.RegisterGuard(&GuardPropFirm,    2);
    GuardCoordinator.RegisterGuard(&GuardEquity,      3);
    GuardCoordinator.RegisterGuard(&GuardDailyDD,     4);
-   GuardCoordinator.RegisterGuard(&GuardSession,     5);
-   GuardCoordinator.RegisterGuard(&GuardRollover,    6);
+   // A336 (#10): rollover BEFORE session, so the rollover window is seen even outside London/NY
+   GuardCoordinator.RegisterGuard(&GuardRollover,    5);
+   GuardCoordinator.RegisterGuard(&GuardSession,     6);
    GuardCoordinator.RegisterGuard(&GuardNews,        7);
    GuardCoordinator.RegisterGuard(&SpreadGuard,      8);
    GuardCoordinator.RegisterGuard(&GuardCircuitBrk,  9);
@@ -302,6 +324,9 @@ int OnInit()
    g_mgr.SetDeviationInPoints((ulong)MathMax(1.0, MathRound(Config.PipsToPoints(Config.SlippageMax))));
    g_mgr.LogLevel(0);
 
+   // --- A336 (#29): streak sizing survives a restart (sign of the main strategy's last close)
+   RebuildMainStreak();
+
    // --- Step 10: Check for orphaned position from previous session
    // (Phase 7 will implement full recovery — Phase 1 just detects)
    TradeState orphan;
@@ -324,6 +349,11 @@ int OnInit()
                    DailyStats.GetTradeCount(),
                    DailyStats.GetClosedPnL()));
 
+   // --- A336 (G19): show the live limits so they can be confirmed on the chart
+   Alert(EA_NAME, StringFormat(": stage=%d target=%.2f floor=%.2f daily stop=%.1f%% of day base (firm %.1f%%) dry_run=%d size_ok=%d",
+                               (int)inp_Stage, Config.ProfitTarget, Config.EquityFloor, Config.DailyStopPct,
+                               Config.FirmDailyPct, (int)Config.DryRun, (int)Config.AccountSizeOk));
+
    Logger.Info("INIT", "=== EA INITIALIZATION COMPLETE ===");
 
    return INIT_SUCCEEDED;
@@ -337,21 +367,37 @@ void OnTick()
    // --- Track tick timing (stale price detection)
    TimerSystem.OnTickFire();
 
+   // --- A336 (#7/#8): server-day rollover on EVERY tick (base snapped at 00:00 server)
+   DailyStats.CheckDayRollover();
+
    // --- Update equity tracking every tick
    DailyStats.UpdateEquity(AccountInfoDouble(ACCOUNT_EQUITY));
 
-   // --- Terminal states: do nothing
+   // --- A320/A336: equity floor + daily stop on EVERY tick, in EVERY state (terminal included, #5)
+   bool safe = GuardCoordinator.FastSafetyCheck();
+
+   // --- A336 (#2): Friday weekend-gap cut (cancel pendings, shrink open risk)
+   GuardCoordinator.WeekendRiskCut();
+
+   // --- A336 (#5): terminal states keep protecting and managing open positions
    if(StateManager.IsTerminal())
    {
-      MixEngine.CancelPendings("terminal_state");     // A327: no mix order may fill after target / fatal
+      OnTerminalState();
       return;
    }
 
-   // --- Stale price guard
+   if(!safe)
+   {
+      MixEngine.CancelPendings("safety_stop");
+      MixEngine.Manage();
+      return;
+   }
+
+   // --- Stale price guard (A336 #15: real quote age). No new entries; keep managing.
    if(TimerSystem.IsPriceStale())
    {
-      // Phase 7 will handle VPS disconnect properly
-      // For Phase 1: just don't execute on stale data
+      MixEngine.Manage();
+      if(HasOpenPosition()) ManageOpenPosition();
       return;
    }
 
@@ -361,18 +407,15 @@ void OnTick()
    IntelligenceCoordinator.Update();
    MSNR.Update();                                   // A320: cheap unless an H1/H4/W1 bar closed
 
-   // A320 (P0-2): equity floor + daily-loss buffer on EVERY tick, whatever the state
-   if(!GuardCoordinator.FastSafetyCheck())
-      return;
-
    // A327: the mix runs beside the EA's own strategy. New orders only when the EA is not suspended,
    // stopped or at its target; while suspended it only does time exits and cancels pendings.
+   // A336 (#5/#6): inside OnTick the mix passes its own guard gate before any order.
    if(StateManager.IsSuspended())
    {
       MixEngine.CancelPendings("suspended");
       MixEngine.Manage();
    }
-   else if(!StateManager.IsTerminal())
+   else
       MixEngine.OnTick();
 
    //=================================================================
@@ -404,11 +447,8 @@ void OnTick()
          break;
 
       case STATE_PROFIT_TARGET:
-         // Terminal — do nothing until manual restart
-         break;
-
       case STATE_FATAL_ERROR:
-         // Terminal — do nothing
+         // A336: handled by OnTerminalState() above (never reached)
          break;
 
       default:
@@ -423,6 +463,23 @@ void OnTick()
 //+------------------------------------------------------------------+
 //| STATE HANDLERS — one per state, called from OnTick dispatch       |
 //+------------------------------------------------------------------+
+
+//--- A336 (#5): PROFIT_TARGET / FATAL no longer switch every safety check off.
+//    FastSafetyCheck() already ran this tick. Here: no mix order may fill, mix time exits keep
+//    running, the main trade keeps its breakeven/trailing, and at PROFIT_TARGET any position
+//    still open is closed again every 5 s until flat.
+void OnTerminalState()
+{
+   MixEngine.CancelPendings("terminal_state");
+   MixEngine.Manage();
+   if(StateManager.GetState() == STATE_PROFIT_TARGET)
+   {
+      if(GuardCoordinator.HasAnyOurPosition())
+         GuardCoordinator.CloseAllOurPositions("profit_target_flatten");
+      return;
+   }
+   if(HasOpenPosition()) ManageOpenPosition();
+}
 
 void OnState_GuardCheck()
 {
@@ -575,7 +632,17 @@ void OnState_ManageTrade()
 //--- A320: per-position memory (re-derived after a restart from SL vs entry)
 ulong  g_mng_ticket   = 0;
 double g_mng_risk     = 0.0;     // initial SL distance (price)
-bool   g_mng_half     = false;
+bool   g_mng_half     = false;   // breakeven done (stop at/after entry)
+bool   g_mng_partial  = false;   // A336 (#12): the TP1 half-close already went through
+
+//--- A336 (#22): broker distance limit for stop moves = max(stops level, freeze level)
+double StopMoveLimit()
+{
+   double pt  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_POINT);
+   long   lvl = SymbolInfoInteger(EA_SYMBOL, SYMBOL_TRADE_STOPS_LEVEL);
+   long   fz  = SymbolInfoInteger(EA_SYMBOL, SYMBOL_TRADE_FREEZE_LEVEL);
+   return (double)MathMax(lvl, fz) * pt;
+}
 
 void ManageOpenPosition()
 {
@@ -589,33 +656,45 @@ void ManageOpenPosition()
    int    side  = longp ? 1 : -1;
    if(ticket != g_mng_ticket)
    {
-      g_mng_ticket = ticket;
-      g_mng_risk   = MathAbs(open - sl);
-      g_mng_half   = (sl > 0 && (sl - open) * side >= 0);     // stop already at/after entry
+      g_mng_ticket  = ticket;
+      g_mng_risk    = MathAbs(open - sl);
+      g_mng_half    = (sl > 0 && (sl - open) * side >= 0);     // stop already at/after entry
+      g_mng_partial = g_mng_half;
    }
    if(g_mng_risk <= 0 || sl <= 0) return;
    MqlTick tk;
    if(!SymbolInfoTick(EA_SYMBOL, tk)) return;
    double px   = longp ? tk.bid : tk.ask;                    // the price we would close at
    double gain = (px - open) * side;
+   double lim  = StopMoveLimit();
 
    //--- TP1: half off + breakeven
-   if(!g_mng_half && gain >= Config.TP1RR * g_mng_risk)
+   if(!g_mng_half && (g_mng_partial || gain >= Config.TP1RR * g_mng_risk))
    {
-      double step = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_STEP);
-      double vmin = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_MIN);
-      double half = (step > 0) ? MathFloor(vol / 2.0 / step) * step : vol / 2.0;
-      if(half >= vmin && vol - half >= vmin)
+      //--- A336 (#12): the half-close happens ONCE; a failed breakeven modify is retried alone
+      if(!g_mng_partial)
       {
-         if(!g_mgr.PositionClosePartial(ticket, half))
-            { Logger.Warn("MANAGE", StringFormat("partial close failed rc=%d", g_mgr.ResultRetcode())); return; }
+         double step = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_STEP);
+         double vmin = SymbolInfoDouble(EA_SYMBOL, SYMBOL_VOLUME_MIN);
+         double half = (step > 0) ? MathFloor(vol / 2.0 / step) * step : vol / 2.0;
+         if(half >= vmin && vol - half >= vmin)
+         {
+            if(!g_mgr.PositionClosePartial(ticket, half) ||
+               (g_mgr.ResultRetcode() != TRADE_RETCODE_DONE && g_mgr.ResultRetcode() != TRADE_RETCODE_DONE_PARTIAL))
+               { Logger.Warn("MANAGE", StringFormat("partial close failed rc=%d", g_mgr.ResultRetcode())); return; }
+            Logger.Info("MANAGE", StringFormat("TP1 hit: half closed (%.2f lots)", half));
+         }
+         g_mng_partial = true;
       }
       double be = PriceUtils.NormalizePrice(open + side * 0.20);
+      if((px - be) * side <= lim) return;                     // A336 (#22): too close for the broker - retry later
       if(g_mgr.PositionModify(ticket, be, tp))
       {
          g_mng_half = true;
-         Logger.Info("MANAGE", StringFormat("TP1 hit: half closed (%.2f lots), stop to %.2f", half, be));
+         Logger.Info("MANAGE", StringFormat("Stop to breakeven %.2f", be));
       }
+      else
+         Logger.Warn("MANAGE", StringFormat("breakeven modify failed rc=%d - retrying next tick (no new partial)", g_mgr.ResultRetcode()));
       return;
    }
 
@@ -624,8 +703,7 @@ void ManageOpenPosition()
    {
       static datetime last_bar = 0;
       datetime bar = iTime(EA_SYMBOL, PERIOD_M15, 1);
-      if(bar == last_bar) return;
-      last_bar = bar;
+      if(bar == 0 || bar == last_bar) return;
       double atr[1];
       if(CopyBuffer(g_atr_m15, 0, 1, 1, atr) != 1) return;
       double dist = Config.TrailAtrMult * atr[0];
@@ -635,11 +713,12 @@ void ManageOpenPosition()
       double minmove = PriceUtils.PipsToPrice(TRAIL_STEP_MIN_PIPS) * 0.1;   // $0.50 at 1 pip = $1
       if((nsl - sl) * side > minmove)
       {
-         long lvl = SymbolInfoInteger(EA_SYMBOL, SYMBOL_TRADE_STOPS_LEVEL);
-         double minstop = lvl * SymbolInfoDouble(EA_SYMBOL, SYMBOL_POINT);
-         if((px - nsl) * side > minstop)
-            g_mgr.PositionModify(ticket, nsl, tp);
+         //--- A336 (#22): freeze level too; the bar is marked done only after a successful modify
+         if((px - nsl) * side > lim && g_mgr.PositionModify(ticket, nsl, tp))
+            last_bar = bar;
       }
+      else
+         last_bar = bar;                                       // nothing to move on this bar
    }
 }
 
@@ -663,7 +742,12 @@ void OnState_Suspended()
 //+------------------------------------------------------------------+
 void OnTimer()
 {
+   // A336: the timer fires every SECOND. Day rollover (inside OnTimerFire), the safety stops and
+   //       the Friday cut run each second; the rest only on the minute tick.
    TimerSystem.OnTimerFire();
+   GuardCoordinator.FastSafetyCheck();
+   GuardCoordinator.WeekendRiskCut();
+   if(!TimerSystem.IsMinuteTick()) return;
 
    // Phase 2: Spread calibration sampling (every 60s)
    GuardContext ctx;
@@ -712,24 +796,25 @@ void OnTradeTransaction(
    //=================================================================
    if(trans.deal == 0 || !HistoryDealSelect(trans.deal)) return;
    if(HistoryDealGetString(trans.deal, DEAL_SYMBOL) != EA_SYMBOL) return;
-   if(HistoryDealGetInteger(trans.deal, DEAL_MAGIC) != Config.MagicNumber) return;
+   long   magic = HistoryDealGetInteger(trans.deal, DEAL_MAGIC);
+   if(!IsOurMagic(magic)) return;                       // A336 (#18): daily limits count ALL our magics
+   bool   main_magic = (magic == Config.MagicNumber);
    long   entry = HistoryDealGetInteger(trans.deal, DEAL_ENTRY);
    ulong  pos   = (ulong)HistoryDealGetInteger(trans.deal, DEAL_POSITION_ID);
-   double pnl   = HistoryDealGetDouble(trans.deal, DEAL_PROFIT)
-                + HistoryDealGetDouble(trans.deal, DEAL_SWAP)
-                + HistoryDealGetDouble(trans.deal, DEAL_COMMISSION);
 
    if(entry == DEAL_ENTRY_IN)
    {
-      g_txn_pos  = pos;
-      g_txn_pnl  = pnl;                                 // entry commission
-      double sl  = 0.0;
-      if(PositionSelectByTicket(pos)) sl = PositionGetDouble(POSITION_SL);
-      double vol = HistoryDealGetDouble(trans.deal, DEAL_VOLUME);
-      double tv  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_VALUE);
-      double ts  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_SIZE);
-      double px  = HistoryDealGetDouble(trans.deal, DEAL_PRICE);
-      g_txn_risk = (sl > 0 && ts > 0) ? MathAbs(px - sl) / ts * tv * vol : 0.0;
+      if(main_magic)
+      {
+         g_txn_pos  = pos;
+         double sl  = 0.0;
+         if(PositionSelectByTicket(pos)) sl = PositionGetDouble(POSITION_SL);
+         double vol = HistoryDealGetDouble(trans.deal, DEAL_VOLUME);
+         double tv  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_VALUE);
+         double ts  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_SIZE);
+         double px  = HistoryDealGetDouble(trans.deal, DEAL_PRICE);
+         g_txn_risk = (sl > 0 && ts > 0) ? MathAbs(px - sl) / ts * tv * vol : 0.0;
+      }
       DailyStats.OnTradeOpen();
       long dt = HistoryDealGetInteger(trans.deal, DEAL_TYPE);
       GuardPropFirm.RecordTradeDirection(dt == DEAL_TYPE_BUY ? DIR_LONG : DIR_SHORT);
@@ -737,14 +822,36 @@ void OnTradeTransaction(
    }
    if(entry == DEAL_ENTRY_OUT || entry == DEAL_ENTRY_OUT_BY || entry == DEAL_ENTRY_INOUT)
    {
-      if(pos == g_txn_pos) g_txn_pnl += pnl; else { g_txn_pos = pos; g_txn_pnl = pnl; }
       if(PositionSelectByTicket(pos)) return;          // partial close — wait for the rest
-      double rr = (g_txn_risk > 0) ? g_txn_pnl / g_txn_risk : 0.0;
-      DailyStats.OnTradeClose(g_txn_pnl, rr);
-      g_last_trade_r = rr;                               // A325 streak sizing
+      //--- A336 (#18): whole-position P&L from history (several positions can be open at once)
+      double pnl = 0.0, mix_risk = 0.0;
+      if(HistorySelectByPosition(pos))
+      {
+         int nd = HistoryDealsTotal();
+         for(int d = 0; d < nd; d++)
+         {
+            ulong dk = HistoryDealGetTicket(d);
+            if(dk == 0) continue;
+            pnl += HistoryDealGetDouble(dk, DEAL_PROFIT) + HistoryDealGetDouble(dk, DEAL_SWAP)
+                 + HistoryDealGetDouble(dk, DEAL_COMMISSION);
+            if(HistoryDealGetInteger(dk, DEAL_ENTRY) == DEAL_ENTRY_IN)
+            {
+               string parts[];
+               if(StringSplit(HistoryDealGetString(dk, DEAL_COMMENT), StringGetCharacter("|", 0), parts) >= 2)
+                  mix_risk = StringToDouble(parts[1]);
+            }
+         }
+      }
+      double risk = main_magic ? ((pos == g_txn_pos) ? g_txn_risk : 0.0) : mix_risk;
+      double rr = (risk > 0) ? pnl / risk : 0.0;
+      DailyStats.OnTradeClose(pnl, rr);
       GuardCooldown.OnTradeClosed(TimeCurrent());
-      Logger.Info("TRANSACTION", StringFormat("Trade closed pos=%I64u pnl=%.2f R=%.2f", pos, g_txn_pnl, rr));
-      g_txn_pos = 0; g_txn_pnl = 0.0; g_txn_risk = 0.0;
+      if(main_magic)
+      {
+         g_last_trade_r = (risk > 0) ? rr : (pnl > 0 ? 1.0 : -1.0);   // A325 streak sizing
+         g_txn_pos = 0; g_txn_risk = 0.0;
+      }
+      Logger.Info("TRANSACTION", StringFormat("Trade closed pos=%I64u magic=%I64d pnl=%.2f R=%.2f", pos, magic, pnl, rr));
    }
 }
 
@@ -777,6 +884,19 @@ void OnDeinit(const int reason)
    GuardCircuitBrk.Shutdown();
    GuardCooldown.Shutdown();
    GuardNews.SaveState();
+
+   // A336 (#28): release the indicator handles owned here and by the mix engine
+   if(g_atr_m5  != INVALID_HANDLE) { IndicatorRelease(g_atr_m5);  g_atr_m5  = INVALID_HANDLE; }
+   if(g_atr_m15 != INVALID_HANDLE) { IndicatorRelease(g_atr_m15); g_atr_m15 = INVALID_HANDLE; }
+   MixEngine.Shutdown();
+
+   // A336 (#7): release the single-instance lock
+   if(g_lock_owner)
+   {
+      string lock = StringFormat("EAX_LOCK_%I64d", inp_MagicNumber);
+      if(GlobalVariableCheck(lock) && GlobalVariableGet(lock) == (double)(ChartID() & 0xFFFFFFFFFFFF)) GlobalVariableDel(lock);
+      g_lock_owner = false;
+   }
 
    // Shutdown in reverse order of init
    TimerSystem.Shutdown();
@@ -820,6 +940,28 @@ ulong GetOpenPositionTicket()
          return ticket;
    }
    return 0;
+}
+
+//--- A336 (#29): main-strategy streak sizing after a restart = sign of its last closed trade
+void RebuildMainStreak()
+{
+   if(!HistorySelect(TimeCurrent() - 60 * 86400, TimeCurrent() + 60)) return;
+   datetime last_t = 0;
+   int total = HistoryDealsTotal();
+   for(int d = 0; d < total; d++)
+   {
+      ulong dk = HistoryDealGetTicket(d);
+      if(dk == 0) continue;
+      if(HistoryDealGetInteger(dk, DEAL_MAGIC) != Config.MagicNumber) continue;
+      long en = HistoryDealGetInteger(dk, DEAL_ENTRY);
+      if(en != DEAL_ENTRY_OUT && en != DEAL_ENTRY_OUT_BY) continue;
+      datetime t = (datetime)HistoryDealGetInteger(dk, DEAL_TIME);
+      if(t < last_t) continue;
+      last_t = t;
+      double pnl = HistoryDealGetDouble(dk, DEAL_PROFIT) + HistoryDealGetDouble(dk, DEAL_SWAP)
+                 + HistoryDealGetDouble(dk, DEAL_COMMISSION);
+      g_last_trade_r = (pnl > 0) ? 1.0 : -1.0;
+   }
 }
 
 //--- Convert deinit reason code to human-readable string

@@ -64,7 +64,7 @@ class IGuard;  // Base interface from GuardTypes.mqh
 //===================================================================
 #define GUARD_COUNT 10
 
-input double   inp_PropDailyStopPct = 4.0;  // A320: close all + pause if equity falls this % below day open (The5%ers limit 5%)
+// A336: inp_PropDailyStopPct moved to Core/CConfig.mqh (capped by the firm limit as Config.DailyStopPct)
 
 class CGuardCoordinator
 {
@@ -469,29 +469,156 @@ public:
    //      suspend until the next day.
    // Returns false when it acted.
    //===================================================================
+   //   A336: runs in EVERY state, terminal ones included (#5). The day base is
+   //   MathMax(balance, equity) at 00:00 server (#8/G1); stop = Config.DailyStopPct.
    bool FastSafetyCheck()
    {
       double eq = AccountInfoDouble(ACCOUNT_EQUITY);
+      // Review fix: equity 0 = account data not loaded yet (OnTimer can fire before login);
+      // acting on it would close everything and latch FATAL. Nothing can be sent anyway.
+      if(eq <= 0.0) return true;
+      bool terminal = StateManager.IsTerminal();
       if(eq <= Config.EquityFloor)
       {
-         GuardEvalResult fatal = GuardFatal(GPRIO_PROP_FIRM, "EQUITY_FAST_CHECK", 0,
-            SUSPEND_PROP_FIRM_LOCK,
-            StringFormat("equity=%.2f <= floor=%.2f", eq, Config.EquityFloor), true);
-         ActOnResult(fatal);
-         EmergencyCloseAll("equity_floor");
+         if(!terminal)
+         {
+            GuardEvalResult fatal = GuardFatal(GPRIO_PROP_FIRM, "EQUITY_FAST_CHECK", 0,
+               SUSPEND_PROP_FIRM_LOCK,
+               StringFormat("equity=%.2f <= floor=%.2f", eq, Config.EquityFloor), true);
+            ActOnResult(fatal);
+         }
+         if(HasAnyOurPosition()) EmergencyCloseAll("equity_floor");
+         CancelAllPendingOrders("equity_floor");
          return false;
       }
-      double day_open = DailyStats.GetOpenEquity();
-      if(day_open > 0 && eq <= day_open * (1.0 - inp_PropDailyStopPct / 100.0))
+      double day_base = DailyStats.GetDayBase();
+      if(day_base > 0 && eq <= day_base * (1.0 - Config.DailyStopPct / 100.0))
       {
-         EmergencyCloseAll("daily_loss_buffer");
-         DailyStats.ForceDailyLimit(StringFormat("equity %.2f vs day open %.2f", eq, day_open));
-         if(!StateManager.IsSuspended())
+         if(HasAnyOurPosition()) EmergencyCloseAll("daily_loss_buffer");
+         CancelAllPendingOrders("daily_loss_buffer");
+         DailyStats.ForceDailyLimit(StringFormat("equity %.2f vs day base %.2f", eq, day_base));
+         if(!terminal && !StateManager.IsSuspended())
             StateManager.Suspend(SUSPEND_DAILY_LIMIT,
-               StringFormat("equity=%.2f day_open=%.2f stop=%.1f%%", eq, day_open, inp_PropDailyStopPct));
+               StringFormat("equity=%.2f day_base=%.2f stop=%.1f%%", eq, day_base, Config.DailyStopPct));
          return false;
       }
       return true;
+   }
+
+   //--- A336: any open position of ours (EA + mix magics)?
+   bool HasAnyOurPosition()
+   {
+      for(int i = PositionsTotal() - 1; i >= 0; i--)
+      {
+         ulong t = PositionGetTicket(i);
+         if(t == 0) continue;
+         if(PositionGetString(POSITION_SYMBOL) != EA_SYMBOL) continue;
+         if(IsOurMagic(PositionGetInteger(POSITION_MAGIC))) return true;
+      }
+      return false;
+   }
+
+   //--- A336 (#5): public flatten for terminal states (PROFIT_TARGET keeps retrying every 5 s)
+   bool CloseAllOurPositions(string reason)
+   {
+      static datetime last_try = 0;
+      if(last_try != 0 && TimeCurrent() - last_try < 5) return false;
+      last_try = TimeCurrent();
+      return CloseOpenPositionSafely(reason);
+   }
+
+   void CancelAllOurPendings(string reason) { CancelAllPendingOrders(reason); }
+
+   //--- A336 (#2): remaining risk of one selected position if its stop is hit.
+   //    SL = 0 counts as 1% of equity; a stop at/beyond entry (profit locked) counts 0.
+   double SelectedPositionRisk(double vpp)
+   {
+      double sl  = PositionGetDouble(POSITION_SL);
+      double op  = PositionGetDouble(POSITION_PRICE_OPEN);
+      double cur = PositionGetDouble(POSITION_PRICE_CURRENT);
+      double vol = PositionGetDouble(POSITION_VOLUME);
+      int side   = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? 1 : -1;
+      if(sl <= 0) return AccountInfoDouble(ACCOUNT_EQUITY) * 0.01;
+      if((sl - op) * side >= 0) return 0.0;                       // stop at/beyond entry
+      double d = (cur - sl) * side;                               // distance still to lose
+      if(d <= 0) return 0.0;
+      return d * vol * vpp;
+   }
+
+   //--- A336 (#2 CRITICAL): weekend gap protection. Friday from inp_FridayCutHour (server):
+   //    cancel all our pendings; if total open risk > inp_FridayMaxOpenRiskPct of equity,
+   //    close losing positions first (largest risk first), then the largest risk, until under.
+   //    Then the lot-based gap check: worst case per position = max(SL risk, inp_WeekendGapPct
+   //    of price x volume), stop assumed jumped; close losers first, then the largest volume,
+   //    until the sum <= inp_WeekendLossBudgetPct x max(balance, equity).
+   //    Called every tick and every second; runs at most every 10 s. New entries are blocked
+   //    by WeekendCutActive() until Monday.
+   void WeekendRiskCut()
+   {
+      if(!WeekendCutActive()) return;
+      if(ServerDayOfWeek() != 5) return;                           // market closed Sat/Sun: nothing to send
+      static datetime last_run = 0;
+      if(last_run != 0 && TimeCurrent() - last_run < 10) return;
+      last_run = TimeCurrent();
+
+      CancelAllPendingOrders("friday_cut");
+
+      double tv  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_VALUE);
+      double ts  = SymbolInfoDouble(EA_SYMBOL, SYMBOL_TRADE_TICK_SIZE);
+      double vpp = (ts > 0) ? tv / ts : 0.0;
+      if(vpp <= 0) { Logger.Error("GUARD_COORD", "Friday cut: no tick value - closing all"); CloseOpenPositionSafely("friday_cut_no_tickvalue"); return; }
+      double cap    = AccountInfoDouble(ACCOUNT_EQUITY) * inp_FridayMaxOpenRiskPct / 100.0;
+      //--- lot-based gap budget: assume the weekend gap JUMPS every stop
+      double budget = MathMax(AccountInfoDouble(ACCOUNT_BALANCE), AccountInfoDouble(ACCOUNT_EQUITY))
+                    * inp_WeekendLossBudgetPct / 100.0;
+
+      for(int guard = 0; guard < 50; guard++)
+      {
+         double total = 0.0, worst_total = 0.0, best_loss_risk = -1.0, best_risk = -1.0;
+         double best_loss_vol = -1.0, best_vol = -1.0;
+         ulong  best_loss_tk = 0, best_tk = 0, gap_loss_tk = 0, gap_vol_tk = 0;
+         for(int i = PositionsTotal() - 1; i >= 0; i--)
+         {
+            ulong t = PositionGetTicket(i);
+            if(t == 0) continue;
+            if(PositionGetString(POSITION_SYMBOL) != EA_SYMBOL) continue;
+            if(!IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+            double r   = SelectedPositionRisk(vpp);
+            double vol = PositionGetDouble(POSITION_VOLUME);
+            double cur = PositionGetDouble(POSITION_PRICE_CURRENT);
+            // worst case = max(SL risk, gap% x price x volume x value per price unit); profit is NOT a cushion
+            double gap_loss = inp_WeekendGapPct / 100.0 * cur * vol * vpp;
+            worst_total += MathMax(r, gap_loss);
+            total += r;
+            double pl = PositionGetDouble(POSITION_PROFIT) + PositionGetDouble(POSITION_SWAP);
+            if(pl < 0 && vol > best_loss_vol) { best_loss_vol = vol; gap_loss_tk = t; }
+            if(vol > best_vol)                { best_vol = vol;      gap_vol_tk  = t; }
+            if(r <= 0) continue;
+            if(pl < 0 && r > best_loss_risk) { best_loss_risk = r; best_loss_tk = t; }
+            if(r > best_risk) { best_risk = r; best_tk = t; }
+         }
+         ulong pick = 0;
+         string rule = "";
+         if(total > cap)                       // stop-risk cap: losers first (largest risk), then largest risk
+         {
+            pick = (best_loss_tk != 0) ? best_loss_tk : best_tk;
+            rule = "stop_risk_cap";
+         }
+         else if(worst_total > budget)         // gap budget: losers first (largest volume), then largest volume
+         {
+            pick = (gap_loss_tk != 0) ? gap_loss_tk : gap_vol_tk;
+            rule = "gap_budget";
+         }
+         if(pick == 0) return;
+         Logger.Warn("GUARD_COORD", "Friday cut: weekend exposure too high - closing a position",
+            StringFormat("rule=%s open_risk=%.2f cap=%.2f worst_gap_loss=%.2f budget=%.2f ticket=%I64u",
+                         rule, total, cap, worst_total, budget, pick));
+         if(!ClosePositionByTicket(pick, "friday_cut"))
+         {
+            Logger.Error("GUARD_COORD", StringFormat("Friday cut: close failed ticket=%I64u - retry in 10 s", pick));
+            return;
+         }
+      }
    }
 
    //--- Constructor
@@ -729,8 +856,8 @@ public:
          case SUSPEND_DAILY_LIMIT:
          case SUSPEND_MAX_TRADES:
          case SUSPEND_CONSEC_LOSSES:  return 3;  // Slot 4 = DailyDD
-         case SUSPEND_SESSION_CLOSED: return 4;  // Slot 5 = Session
-         case SUSPEND_ROLLOVER:       return 5;  // Slot 6 = Rollover
+         case SUSPEND_ROLLOVER:       return 4;  // A336 (#10): Slot 5 = Rollover (before Session)
+         case SUSPEND_SESSION_CLOSED: return 5;  // A336: Slot 6 = Session
          case SUSPEND_NEWS_WINDOW:    return 6;  // Slot 7 = News
          case SUSPEND_SPREAD_HIGH:    return 7;  // Slot 8 = Spread
          case SUSPEND_CIRCUIT_BREAKER:return 8;  // Slot 9 = CircuitBreaker

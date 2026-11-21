@@ -1,0 +1,576 @@
+{
+ "grid": {
+  "current13 risk=0.25% cap=2% extra_cost=0.0": {
+   "n": 3731,
+   "pnl": 13240.0,
+   "pnl_post_sel": 4715.0,
+   "sharpe": 3.06,
+   "maxdd_pct_of_start": 10.53,
+   "worst_day_pct": -2.03,
+   "mean_month": 457.0,
+   "mean_month_post_sel": 314.0,
+   "step1": {
+    "pass_60d": 0.507,
+    "pass_90d": 0.737,
+    "pass_180d": 0.956,
+    "fail_1y": 0.007,
+    "pass_1y": 0.992
+   },
+   "step2": {
+    "pass_60d": 0.804,
+    "pass_90d": 0.914,
+    "pass_180d": 0.986,
+    "fail_1y": 0.007,
+    "pass_1y": 0.993
+   }
+  },
+  "current13 risk=0.25% cap=2% extra_cost=0.3": {
+   "n": 3731,
+   "pnl": 8818.0,
+   "pnl_post_sel": 3488.0,
+   "sharpe": 2.06,
+   "maxdd_pct_of_start": 12.2,
+   "worst_day_pct": -2.19,
+   "mean_month": 304.0,
+   "mean_month_post_sel": 233.0,
+   "step1": {
+    "pass_60d": 0.352,
+    "pass_90d": 0.556,
+    "pass_180d": 0.839,
+    "fail_1y": 0.043,
+    "pass_1y": 0.944
+   },
+   "step2": {
+    "pass_60d": 0.679,
+    "pass_90d": 0.813,
+    "pass_180d": 0.936,
+    "fail_1y": 0.038,
+    "pass_1y": 0.961
+   }
+  },
+  "current13 risk=0.50% cap=2% extra_cost=0.0": {
+   "n": 3107,
+   "pnl": 27358.0,
+   "pnl_post_sel": 11031.0,
+   "sharpe": 3.57,
+   "maxdd_pct_of_start": 12.4,
+   "worst_day_pct": -3.52,
+   "mean_month": 943.0,
+   "mean_month_post_sel": 735.0,
+   "step1": {
+    "pass_60d": 0.829,
+    "pass_90d": 0.92,
+    "pass_180d": 0.959,
+    "fail_1y": 0.04,
+    "pass_1y": 0.96
+   },
+   "step2": {
+    "pass_60d": 0.932,
+    "pass_90d": 0.958,
+    "pass_180d": 0.965,
+    "fail_1y": 0.034,
+    "pass_1y": 0.966
+   }
+  },
+  "current13 risk=0.50% cap=2% extra_cost=0.3": {
+   "n": 3107,
+   "pnl": 20676.0,
+   "pnl_post_sel": 8848.0,
+   "sharpe": 2.72,
+   "maxdd_pct_of_start": 14.97,
+   "worst_day_pct": -3.92,
+   "mean_month": 713.0,
+   "mean_month_post_sel": 590.0,
+   "step1": {
+    "pass_60d": 0.731,
+    "pass_90d": 0.836,
+    "pass_180d": 0.897,
+    "fail_1y": 0.099,
+    "pass_1y": 0.901
+   },
+   "step2": {
+    "pass_60d": 0.866,
+    "pass_90d": 0.903,
+    "pass_180d": 0.914,
+    "fail_1y": 0.086,
+    "pass_1y": 0.914
+   }
+  },
+  "current13 risk=0.50% cap=3% extra_cost=0.0": {
+   "n": 4051,
+   "pnl": 32675.0,
+   "pnl_post_sel": 14727.0,
+   "sharpe": 3.49,
+   "maxdd_pct_of_start": 21.77,
+   "worst_day_pct": -4.18,
+   "mean_month": 1127.0,
+   "mean_month_post_sel": 982.0,
+   "step1": {
+    "pass_60d": 0.858,
+    "pass_90d": 0.91,
+    "pass_180d": 0.924,
+    "fail_1y": 0.076,
+    "pass_1y": 0.924
+   },
+   "step2": {
+    "pass_60d": 0.919,
+    "pass_90d": 0.934,
+    "pass_180d": 0.936,
+    "fail_1y": 0.064,
+    "pass_1y": 0.936
+   }
+  },
+  "current13 risk=0.50% cap=3% extra_cost=0.3": {
+   "n": 4051,
+   "pnl": 23808.0,
+   "pnl_post_sel": 12054.0,
+   "sharpe": 2.56,
+   "maxdd_pct_of_start": 25.2,
+   "worst_day_pct": -4.59,
+   "mean_month": 821.0,
+   "mean_month_post_sel": 804.0,
+   "step1": {
+    "pass_60d": 0.763,
+    "pass_90d": 0.829,
+    "pass_180d": 0.851,
+    "fail_1y": 0.149,
+    "pass_1y": 0.851
+   },
+   "step2": {
+    "pass_60d": 0.85,
+    "pass_90d": 0.866,
+    "pass_180d": 0.869,
+    "fail_1y": 0.131,
+    "pass_1y": 0.869
+   }
+  },
+  "cut8 risk=0.25% cap=2% extra_cost=0.0": {
+   "n": 2299,
+   "pnl": 12863.0,
+   "pnl_post_sel": 5385.0,
+   "sharpe": 4.17,
+   "maxdd_pct_of_start": 6.84,
+   "worst_day_pct": -1.64,
+   "mean_month": 444.0,
+   "mean_month_post_sel": 359.0,
+   "step1": {
+    "pass_60d": 0.436,
+    "pass_90d": 0.753,
+    "pass_180d": 0.986,
+    "fail_1y": 0.0,
+    "pass_1y": 1.0
+   },
+   "step2": {
+    "pass_60d": 0.838,
+    "pass_90d": 0.953,
+    "pass_180d": 0.998,
+    "fail_1y": 0.0,
+    "pass_1y": 1.0
+   }
+  },
+  "cut8 risk=0.25% cap=2% extra_cost=0.3": {
+   "n": 2299,
+   "pnl": 10164.0,
+   "pnl_post_sel": 4662.0,
+   "sharpe": 3.33,
+   "maxdd_pct_of_start": 7.17,
+   "worst_day_pct": -1.69,
+   "mean_month": 350.0,
+   "mean_month_post_sel": 311.0,
+   "step1": {
+    "pass_60d": 0.291,
+    "pass_90d": 0.585,
+    "pass_180d": 0.944,
+    "fail_1y": 0.0,
+    "pass_1y": 0.999
+   },
+   "step2": {
+    "pass_60d": 0.737,
+    "pass_90d": 0.892,
+    "pass_180d": 0.992,
+    "fail_1y": 0.0,
+    "pass_1y": 1.0
+   }
+  },
+  "cut8 risk=0.25% cap=3% extra_cost=0.0": {
+   "n": 2299,
+   "pnl": 12863.0,
+   "pnl_post_sel": 5385.0,
+   "sharpe": 4.17,
+   "maxdd_pct_of_start": 6.84,
+   "worst_day_pct": -1.64,
+   "mean_month": 444.0,
+   "mean_month_post_sel": 359.0,
+   "step1": {
+    "pass_60d": 0.423,
+    "pass_90d": 0.758,
+    "pass_180d": 0.987,
+    "fail_1y": 0.0,
+    "pass_1y": 1.0
+   },
+   "step2": {
+    "pass_60d": 0.844,
+    "pass_90d": 0.957,
+    "pass_180d": 0.999,
+    "fail_1y": 0.0,
+    "pass_1y": 1.0
+   }
+  },
+  "cut8 risk=0.25% cap=3% extra_cost=0.3": {
+   "n": 2299,
+   "pnl": 10164.0,
+   "pnl_post_sel": 4662.0,
+   "sharpe": 3.33,
+   "maxdd_pct_of_start": 7.17,
+   "worst_day_pct": -1.69,
+   "mean_month": 350.0,
+   "mean_month_post_sel": 311.0,
+   "step1": {
+    "pass_60d": 0.299,
+    "pass_90d": 0.599,
+    "pass_180d": 0.946,
+    "fail_1y": 0.0,
+    "pass_1y": 0.999
+   },
+   "step2": {
+    "pass_60d": 0.731,
+    "pass_90d": 0.893,
+    "pass_180d": 0.991,
+    "fail_1y": 0.001,
+    "pass_1y": 0.999
+   }
+  },
+  "cut8 risk=0.40% cap=2% extra_cost=0.0": {
+   "n": 2605,
+   "pnl": 21356.0,
+   "pnl_post_sel": 10244.0,
+   "sharpe": 4.07,
+   "maxdd_pct_of_start": 5.68,
+   "worst_day_pct": -2.42,
+   "mean_month": 736.0,
+   "mean_month_post_sel": 683.0,
+   "step1": {
+    "pass_60d": 0.775,
+    "pass_90d": 0.933,
+    "pass_180d": 0.998,
+    "fail_1y": 0.001,
+    "pass_1y": 0.999
+   },
+   "step2": {
+    "pass_60d": 0.946,
+    "pass_90d": 0.987,
+    "pass_180d": 0.999,
+    "fail_1y": 0.001,
+    "pass_1y": 0.999
+   }
+  },
+  "cut8 risk=0.40% cap=2% extra_cost=0.3": {
+   "n": 2605,
+   "pnl": 16871.0,
+   "pnl_post_sel": 8959.0,
+   "sharpe": 3.24,
+   "maxdd_pct_of_start": 6.34,
+   "worst_day_pct": -2.82,
+   "mean_month": 582.0,
+   "mean_month_post_sel": 597.0,
+   "step1": {
+    "pass_60d": 0.652,
+    "pass_90d": 0.849,
+    "pass_180d": 0.981,
+    "fail_1y": 0.008,
+    "pass_1y": 0.992
+   },
+   "step2": {
+    "pass_60d": 0.891,
+    "pass_90d": 0.96,
+    "pass_180d": 0.992,
+    "fail_1y": 0.006,
+    "pass_1y": 0.994
+   }
+  },
+  "cut8 risk=0.40% cap=3% extra_cost=0.0": {
+   "n": 2673,
+   "pnl": 23673.0,
+   "pnl_post_sel": 10791.0,
+   "sharpe": 4.36,
+   "maxdd_pct_of_start": 5.46,
+   "worst_day_pct": -2.42,
+   "mean_month": 816.0,
+   "mean_month_post_sel": 719.0,
+   "step1": {
+    "pass_60d": 0.816,
+    "pass_90d": 0.955,
+    "pass_180d": 0.998,
+    "fail_1y": 0.001,
+    "pass_1y": 0.999
+   },
+   "step2": {
+    "pass_60d": 0.956,
+    "pass_90d": 0.991,
+    "pass_180d": 0.998,
+    "fail_1y": 0.001,
+    "pass_1y": 0.999
+   }
+  },
+  "cut8 risk=0.40% cap=3% extra_cost=0.3": {
+   "n": 2673,
+   "pnl": 19011.0,
+   "pnl_post_sel": 9480.0,
+   "sharpe": 3.54,
+   "maxdd_pct_of_start": 6.13,
+   "worst_day_pct": -2.82,
+   "mean_month": 656.0,
+   "mean_month_post_sel": 632.0,
+   "step1": {
+    "pass_60d": 0.712,
+    "pass_90d": 0.894,
+    "pass_180d": 0.991,
+    "fail_1y": 0.004,
+    "pass_1y": 0.996
+   },
+   "step2": {
+    "pass_60d": 0.911,
+    "pass_90d": 0.972,
+    "pass_180d": 0.994,
+    "fail_1y": 0.005,
+    "pass_1y": 0.995
+   }
+  },
+  "cut8 risk=0.50% cap=2% extra_cost=0.0": {
+   "n": 2481,
+   "pnl": 28407.0,
+   "pnl_post_sel": 13876.0,
+   "sharpe": 4.46,
+   "maxdd_pct_of_start": 6.77,
+   "worst_day_pct": -3.28,
+   "mean_month": 980.0,
+   "mean_month_post_sel": 925.0,
+   "step1": {
+    "pass_60d": 0.879,
+    "pass_90d": 0.973,
+    "pass_180d": 0.997,
+    "fail_1y": 0.003,
+    "pass_1y": 0.997
+   },
+   "step2": {
+    "pass_60d": 0.972,
+    "pass_90d": 0.993,
+    "pass_180d": 0.997,
+    "fail_1y": 0.003,
+    "pass_1y": 0.997
+   }
+  },
+  "cut8 risk=0.50% cap=2% extra_cost=0.3": {
+   "n": 2481,
+   "pnl": 23082.0,
+   "pnl_post_sel": 12307.0,
+   "sharpe": 3.65,
+   "maxdd_pct_of_start": 8.33,
+   "worst_day_pct": -3.4,
+   "mean_month": 796.0,
+   "mean_month_post_sel": 820.0,
+   "step1": {
+    "pass_60d": 0.802,
+    "pass_90d": 0.93,
+    "pass_180d": 0.987,
+    "fail_1y": 0.01,
+    "pass_1y": 0.99
+   },
+   "step2": {
+    "pass_60d": 0.937,
+    "pass_90d": 0.979,
+    "pass_180d": 0.99,
+    "fail_1y": 0.01,
+    "pass_1y": 0.99
+   }
+  },
+  "cut8 risk=0.50% cap=3% extra_cost=0.0": {
+   "n": 2719,
+   "pnl": 30815.0,
+   "pnl_post_sel": 14541.0,
+   "sharpe": 4.39,
+   "maxdd_pct_of_start": 7.04,
+   "worst_day_pct": -2.98,
+   "mean_month": 1063.0,
+   "mean_month_post_sel": 969.0,
+   "step1": {
+    "pass_60d": 0.9,
+    "pass_90d": 0.979,
+    "pass_180d": 0.996,
+    "fail_1y": 0.003,
+    "pass_1y": 0.997
+   },
+   "step2": {
+    "pass_60d": 0.976,
+    "pass_90d": 0.993,
+    "pass_180d": 0.996,
+    "fail_1y": 0.004,
+    "pass_1y": 0.996
+   }
+  },
+  "cut8 risk=0.50% cap=3% extra_cost=0.3": {
+   "n": 2719,
+   "pnl": 24909.0,
+   "pnl_post_sel": 12859.0,
+   "sharpe": 3.59,
+   "maxdd_pct_of_start": 8.35,
+   "worst_day_pct": -3.48,
+   "mean_month": 859.0,
+   "mean_month_post_sel": 857.0,
+   "step1": {
+    "pass_60d": 0.826,
+    "pass_90d": 0.942,
+    "pass_180d": 0.987,
+    "fail_1y": 0.012,
+    "pass_1y": 0.988
+   },
+   "step2": {
+    "pass_60d": 0.945,
+    "pass_90d": 0.98,
+    "pass_180d": 0.989,
+    "fail_1y": 0.011,
+    "pass_1y": 0.989
+   }
+  }
+ },
+ "fill_through": {
+  "through_0.0": {
+   "MSNR fresh_v long 1h": {
+    "n": 1002,
+    "avg_r": 0.185
+   },
+   "MSNR qm long 1h": {
+    "n": 208,
+    "avg_r": 0.161
+   },
+   "MSNR qm short 1h": {
+    "n": 210,
+    "avg_r": 0.137
+   },
+   "MSNR fresh_v long 2h": {
+    "n": 546,
+    "avg_r": 0.279
+   },
+   "MSNR fresh_v short 2h": {
+    "n": 527,
+    "avg_r": 0.304
+   },
+   "MSNR qm long 2h": {
+    "n": 99,
+    "avg_r": 0.066
+   },
+   "MSNR fresh_v long 4h": {
+    "n": 283,
+    "avg_r": 0.214
+   },
+   "MSNR fresh_v short 4h": {
+    "n": 267,
+    "avg_r": 0.205
+   },
+   "MSNR qm long 4h": {
+    "n": 48,
+    "avg_r": 0.506
+   },
+   "MSNR qm short 4h": {
+    "n": 51,
+    "avg_r": 0.09
+   },
+   "ALL_MSNR": {
+    "n": 3241,
+    "avg_r": 0.219
+   }
+  },
+  "through_0.3": {
+   "MSNR fresh_v long 1h": {
+    "n": 988,
+    "avg_r": 0.171
+   },
+   "MSNR qm long 1h": {
+    "n": 206,
+    "avg_r": 0.154
+   },
+   "MSNR qm short 1h": {
+    "n": 208,
+    "avg_r": 0.111
+   },
+   "MSNR fresh_v long 2h": {
+    "n": 543,
+    "avg_r": 0.258
+   },
+   "MSNR fresh_v short 2h": {
+    "n": 525,
+    "avg_r": 0.282
+   },
+   "MSNR qm long 2h": {
+    "n": 98,
+    "avg_r": 0.047
+   },
+   "MSNR fresh_v long 4h": {
+    "n": 283,
+    "avg_r": 0.214
+   },
+   "MSNR fresh_v short 4h": {
+    "n": 268,
+    "avg_r": 0.188
+   },
+   "MSNR qm long 4h": {
+    "n": 48,
+    "avg_r": 0.509
+   },
+   "MSNR qm short 4h": {
+    "n": 50,
+    "avg_r": 0.066
+   },
+   "ALL_MSNR": {
+    "n": 3217,
+    "avg_r": 0.204
+   }
+  },
+  "through_1.0": {
+   "MSNR fresh_v long 1h": {
+    "n": 971,
+    "avg_r": 0.147
+   },
+   "MSNR qm long 1h": {
+    "n": 204,
+    "avg_r": 0.125
+   },
+   "MSNR qm short 1h": {
+    "n": 202,
+    "avg_r": 0.064
+   },
+   "MSNR fresh_v long 2h": {
+    "n": 541,
+    "avg_r": 0.219
+   },
+   "MSNR fresh_v short 2h": {
+    "n": 513,
+    "avg_r": 0.27
+   },
+   "MSNR qm long 2h": {
+    "n": 97,
+    "avg_r": 0.004
+   },
+   "MSNR fresh_v long 4h": {
+    "n": 280,
+    "avg_r": 0.185
+   },
+   "MSNR fresh_v short 4h": {
+    "n": 264,
+    "avg_r": 0.184
+   },
+   "MSNR qm long 4h": {
+    "n": 47,
+    "avg_r": 0.479
+   },
+   "MSNR qm short 4h": {
+    "n": 49,
+    "avg_r": 0.054
+   },
+   "ALL_MSNR": {
+    "n": 3168,
+    "avg_r": 0.178
+   }
+  }
+ }
+}

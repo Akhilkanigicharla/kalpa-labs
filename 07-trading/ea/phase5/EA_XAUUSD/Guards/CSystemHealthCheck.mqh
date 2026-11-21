@@ -61,6 +61,11 @@ private:
    //--- Timer health tracking
    bool               m_timer_ok_confirmed;
 
+   //--- A336 (#4): recoverable symbol / permission state
+   bool               m_symbol_bad;
+   bool               m_perm_bad;
+   datetime           m_last_recheck;
+
    //=================================================================
    // CHECK: Broker connectivity
    //=================================================================
@@ -108,62 +113,42 @@ private:
    //=================================================================
    // CHECK: Symbol availability and trade mode
    //=================================================================
+   //--- A336 (#4): a bid of 0 (quotes not synced after a Wine reconnect) or a trade-mode change
+   //    is TRANSIENT: HEALTH_FAILED -> SUSPENDED, rechecked every minute. It no longer latches
+   //    a FATAL state that switched off every safety check while positions were open.
    HEALTH_CHECK_STATUS CheckSymbol()
    {
-      if(m_symbol_fatal) return HEALTH_FATAL; // Already confirmed fatal
-
-      // Verify bid price is non-zero (symbol active)
       double bid = SymbolInfoDouble(EA_SYMBOL, SYMBOL_BID);
-      if(bid <= 0)
-      {
-         Logger.Fatal("SYS_HEALTH",
-            StringFormat("Symbol %s bid=0 — symbol unavailable", EA_SYMBOL));
-         m_symbol_fatal = true;
-         return HEALTH_FATAL;
-      }
-
-      // Verify full trade mode
       long trade_mode = SymbolInfoInteger(EA_SYMBOL, SYMBOL_TRADE_MODE);
-      if(trade_mode != SYMBOL_TRADE_MODE_FULL)
-      {
-         Logger.Fatal("SYS_HEALTH",
-            StringFormat("Symbol trade mode = %d (expected FULL=%d)",
-                         (int)trade_mode, (int)SYMBOL_TRADE_MODE_FULL));
-         m_symbol_fatal = true;
-         return HEALTH_FATAL;
-      }
-
-      return HEALTH_OK;
+      bool bad = (bid <= 0 || trade_mode != SYMBOL_TRADE_MODE_FULL);
+      if(bad && !m_symbol_bad)
+         Logger.Error("SYS_HEALTH",
+            StringFormat("Symbol %s not tradable (bid=%.2f trade_mode=%d) - suspending, rechecked every minute",
+                         EA_SYMBOL, bid, (int)trade_mode));
+      if(!bad && m_symbol_bad)
+         Logger.Info("SYS_HEALTH", "Symbol tradable again");
+      m_symbol_bad = bad;
+      return bad ? HEALTH_FAILED : HEALTH_OK;
    }
 
    //=================================================================
    // CHECK: Trading permissions
    //=================================================================
+   //--- A336 (#4): permissions can flip for a moment (terminal button, reconnect): recoverable
    HEALTH_CHECK_STATUS CheckTradePermissions()
    {
-      if(m_permissions_fatal) return HEALTH_FATAL;
-
       bool account_trade = (bool)AccountInfoInteger(ACCOUNT_TRADE_ALLOWED);
       bool ea_trade      = (bool)AccountInfoInteger(ACCOUNT_TRADE_EXPERT);
-
-      if(!account_trade)
-      {
-         Logger.Fatal("SYS_HEALTH",
-            "ACCOUNT_TRADE_ALLOWED = false — trading disabled on this account");
-         m_permissions_fatal = true;
-         return HEALTH_FATAL;
-      }
-
-      if(!ea_trade)
-      {
-         Logger.Fatal("SYS_HEALTH",
-            "ACCOUNT_TRADE_EXPERT = false — EA trading disabled. "
-            "Enable 'Allow automated trading' in terminal settings.");
-         m_permissions_fatal = true;
-         return HEALTH_FATAL;
-      }
-
-      return HEALTH_OK;
+      bool term_trade    = (bool)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED);
+      bool bad = (!account_trade || !ea_trade || !term_trade);
+      if(bad && !m_perm_bad)
+         Logger.Error("SYS_HEALTH",
+            StringFormat("Trading not permitted (account=%d expert=%d terminal=%d) - suspending, rechecked every minute. "
+                         "Enable 'Allow automated trading'.", (int)account_trade, (int)ea_trade, (int)term_trade));
+      if(!bad && m_perm_bad)
+         Logger.Info("SYS_HEALTH", "Trading permitted again");
+      m_perm_bad = bad;
+      return bad ? HEALTH_FAILED : HEALTH_OK;
    }
 
    //=================================================================
@@ -296,7 +281,10 @@ public:
       m_consec_disconnects(0),
       m_first_disconnect_time(0),
       m_was_disconnected(false),
-      m_timer_ok_confirmed(false)
+      m_timer_ok_confirmed(false),
+      m_symbol_bad(false),
+      m_perm_bad(false),
+      m_last_recheck(0)
    {
       m_meta.index       = 1;
       m_meta.priority    = GPRIO_SYSTEM_HEALTH;
@@ -315,9 +303,11 @@ public:
       m_ea_start_time = TimeCurrent();
       Logger.Info("SYS_HEALTH", "Running startup health checks");
 
-      // Fatal checks — run once and cache result
-      if(CheckSymbol()          == HEALTH_FATAL) return false;
-      if(CheckTradePermissions() == HEALTH_FATAL) return false;
+      // Fatal checks — run once and cache result.
+      // A336 (#4): symbol/permission problems at startup are recoverable (the EA suspends and
+      // rechecks every minute) so open positions are still managed; account mode stays fatal.
+      if(CheckSymbol()           != HEALTH_OK) Logger.Warn("SYS_HEALTH", "Symbol not tradable at startup - EA starts SUSPENDED");
+      if(CheckTradePermissions() != HEALTH_OK) Logger.Warn("SYS_HEALTH", "Trading not permitted at startup - EA starts SUSPENDED");
       if(CheckAccountMode()     == HEALTH_FATAL) return false;
       if(CheckConfig()          == HEALTH_FATAL) return false;
 
@@ -333,8 +323,8 @@ public:
       // Cache initial result
       m_cached_result.connectivity = conn_status;
       m_cached_result.persistence  = persist_status;
-      m_cached_result.symbol_valid = HEALTH_OK;
-      m_cached_result.trade_allowed = HEALTH_OK;
+      m_cached_result.symbol_valid = m_symbol_bad ? HEALTH_FAILED : HEALTH_OK;
+      m_cached_result.trade_allowed = m_perm_bad ? HEALTH_FAILED : HEALTH_OK;
       m_cached_result.account_mode  = HEALTH_OK;
       m_cached_result.config_valid  = HEALTH_OK;
       m_cached_result.last_check_time = TimeCurrent();
@@ -390,6 +380,20 @@ public:
       {
          m_last_full_check = now;
 
+         // A336 (#4): symbol + permissions, recoverable -> SUSPEND (not FATAL)
+         HEALTH_CHECK_STATUS sym  = CheckSymbol();
+         HEALTH_CHECK_STATUS perm = CheckTradePermissions();
+         m_cached_result.symbol_valid  = sym;
+         m_cached_result.trade_allowed = perm;
+         if(sym != HEALTH_OK || perm != HEALTH_OK)
+         {
+            RecordTrigger(GUARD_SUSPEND);
+            return GuardSuspend(GPRIO_SYSTEM_HEALTH, m_meta.name, m_meta.index,
+                                SUSPEND_SYSTEM_HEALTH,
+                                StringFormat("symbol_ok=%d trade_permitted=%d", (int)(sym == HEALTH_OK), (int)(perm == HEALTH_OK)),
+                                "Rechecked every minute; resumes when quotes and permissions are back");
+         }
+
          // Price sanity
          HEALTH_CHECK_STATUS price = CheckPriceSanity(ctx);
          m_cached_result.price_sane = price;
@@ -443,6 +447,15 @@ public:
       if(ctx.current_bid < HEALTH_PRICE_MIN ||
          ctx.current_bid > HEALTH_PRICE_MAX)
          return false;
+
+      // A336 (#4): symbol + permissions rechecked at most once a minute while suspended
+      if(m_symbol_bad || m_perm_bad)
+      {
+         if(m_last_recheck != 0 && TimeCurrent() - m_last_recheck < 60) return false;
+         m_last_recheck = TimeCurrent();
+         if(CheckSymbol() != HEALTH_OK)           return false;
+         if(CheckTradePermissions() != HEALTH_OK) return false;
+      }
 
       return true;
    }

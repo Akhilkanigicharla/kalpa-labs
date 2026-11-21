@@ -79,7 +79,7 @@ public:
                              StringFormat("Daily P&L %.2f <= -%.2f limit",
                                           DailyStats.GetClosedPnL(),
                                           Config.DailyLossLimit),
-                             "Resets at 00:01 GMT tomorrow");
+                             "Resets at 00:00 server time");
       }
 
       //--- [D2] Max daily trades
@@ -99,7 +99,7 @@ public:
                              StringFormat("Trades today=%d max=%d",
                                           DailyStats.GetTradeCount(),
                                           Config.MaxDailyTrades),
-                             "Resets at 00:01 GMT tomorrow");
+                             "Resets at 00:00 server time");
       }
 
       //--- [D3] Consecutive loss pause (1-hour)

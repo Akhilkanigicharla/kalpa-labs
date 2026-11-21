@@ -48,6 +48,7 @@
 #define POSITION_FILE   "EA_XAUUSD_position.txt"
 #define DAILY_FILE      "EA_XAUUSD_daily.txt"
 #define HEARTBEAT_FILE  "EA_XAUUSD_heartbeat.txt"
+#define DAYS_FILE       "EA_XAUUSD_days.txt"        // A336: per-day midnight snapshots
 
 class CPersistence
 {
@@ -225,7 +226,9 @@ public:
       }
 
       WriteKV(h, "reset_date",    IntegerToString(ds.reset_date));
-      WriteKV(h, "open_equity",   DoubleToString(ds.open_equity, 2));
+      WriteKV(h, "open_equity",   DoubleToString(ds.open_equity, 2));     // day base (A336)
+      WriteKV(h, "start_balance", DoubleToString(ds.start_balance, 2));   // A336
+      WriteKV(h, "forced_limit",  IntegerToString(ds.forced_limit ? 1 : 0)); // A336
       WriteKV(h, "closed_pnl",    DoubleToString(ds.closed_pnl, 2));
       WriteKV(h, "peak_equity",   DoubleToString(ds.peak_equity, 2));
       WriteKV(h, "min_equity",    DoubleToString(ds.min_equity, 2));
@@ -251,6 +254,8 @@ public:
 
       ds.reset_date     = (datetime)StringToInteger(GetKV(keys,vals,"reset_date","0"));
       ds.open_equity    = StringToDouble(GetKV(keys,vals,"open_equity","0"));
+      ds.start_balance  = StringToDouble(GetKV(keys,vals,"start_balance","0"));
+      ds.forced_limit   = (GetKV(keys,vals,"forced_limit","0") == "1");
       ds.closed_pnl     = StringToDouble(GetKV(keys,vals,"closed_pnl","0"));
       ds.peak_equity    = StringToDouble(GetKV(keys,vals,"peak_equity","0"));
       ds.min_equity     = StringToDouble(GetKV(keys,vals,"min_equity","0"));
@@ -260,9 +265,10 @@ public:
       ds.consec_losses  = (int)StringToInteger(GetKV(keys,vals,"consec_losses","0"));
       ds.last_close_time = (datetime)StringToInteger(GetKV(keys,vals,"last_close","0"));
 
-      // Check if file is from today (GMT)
+      // A336 (#1): the file's reset_date is a SERVER date, so compare with the SERVER date
+      //            (TimeGMT() here threw the file away for 2-3 h after every server midnight)
       MqlDateTime today, file_date;
-      TimeToStruct(TimeGMT(), today);
+      TimeToStruct(TimeTradeServer(), today);
       TimeToStruct(ds.reset_date, file_date);
 
       bool same_day = (today.year == file_date.year &&
@@ -278,6 +284,49 @@ public:
       Logger.Info("PERSIST", "Daily stats restored",
          StringFormat("trades=%d closed_pnl=%.2f", ds.trade_count, ds.closed_pnl));
       return true;
+   }
+
+   //=== A336 (#13): PER-DAY MIDNIGHT SNAPSHOTS (official The5%ers profitable-day formula) ===
+   //    One line per closed server day: day=<date>;<start_balance>;<end_balance>;<end_equity>
+   //    Appended at each server-midnight rollover. Equity at midnight cannot be rebuilt from
+   //    history, so it is recorded live.
+   bool AppendDaySnapshot(datetime day, double start_bal, double end_bal, double end_eq)
+   {
+      int h = FileOpen(DAYS_FILE, FILE_READ|FILE_WRITE|FILE_TXT|FILE_SHARE_READ|FILE_ANSI, '\n');
+      if(h == INVALID_HANDLE)
+      {
+         Logger.Error("PERSIST", "Cannot open day snapshot file");
+         return false;
+      }
+      FileSeek(h, 0, SEEK_END);
+      FileWriteString(h, StringFormat("day=%I64d;%.2f;%.2f;%.2f\n", (long)day, start_bal, end_bal, end_eq));
+      FileClose(h);
+      return true;
+   }
+
+   //--- Returns the number of snapshots read (arrays oldest first, as written)
+   int ReadDaySnapshots(datetime &days[], double &start_bal[], double &end_bal[], double &end_eq[])
+   {
+      ArrayResize(days, 0); ArrayResize(start_bal, 0); ArrayResize(end_bal, 0); ArrayResize(end_eq, 0);
+      string keys[], vals[];
+      int n = ReadKVFile(DAYS_FILE, keys, vals);
+      int m = 0;
+      ushort sep = StringGetCharacter(";", 0);
+      for(int i = 0; i < n; i++)
+      {
+         if(keys[i] != "day") continue;
+         string parts[];
+         if(StringSplit(vals[i], sep, parts) != 4) continue;
+         datetime d = (datetime)StringToInteger(parts[0]);
+         if(d <= 0) continue;
+         ArrayResize(days, m + 1); ArrayResize(start_bal, m + 1); ArrayResize(end_bal, m + 1); ArrayResize(end_eq, m + 1);
+         days[m]      = d;
+         start_bal[m] = StringToDouble(parts[1]);
+         end_bal[m]   = StringToDouble(parts[2]);
+         end_eq[m]    = StringToDouble(parts[3]);
+         m++;
+      }
+      return m;
    }
 
    //=== HEARTBEAT ===

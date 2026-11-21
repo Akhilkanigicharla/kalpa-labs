@@ -35,7 +35,7 @@ private:
       // Softens session window edges by a small random amount
       // Seed from current date to be deterministic per day
       MqlDateTime dt;
-      TimeToStruct(TimeGMT(), dt);
+      TimeToStruct(EAGmtNow(), dt);
       int seed = dt.year * 10000 + dt.mon * 100 + dt.day;
       // Use DeterministicRand — no global MathSrand side effects
 
@@ -50,7 +50,7 @@ private:
       // NY end: -10 to 0 minutes
       m_ny_end_min_soft     = ny_end_base     + DeterministicRand(seed+3, -10, 0);
 
-      m_soft_boundaries_date = TimeGMT();
+      m_soft_boundaries_date = EAGmtNow();
       Logger.Debug("SESSION",
          StringFormat("Soft boundaries set: "
                       "london_end=%d:%02d ny_start=%d:%02d ny_end=%d:%02d",
@@ -182,6 +182,16 @@ public:
       return GuardPass(GPRIO_SESSION, m_meta.name, m_meta.index);
    }
 
+   //--- A336 (#5): the hard part of the session rules (weekend, Monday grace, Friday cutoff),
+   //    used by the mix engine, whose strategies were tested 24/5 outside the London/NY window.
+   bool IsHardClosed(const GuardContext &ctx) const
+   {
+      if(ctx.is_weekend) return true;
+      if(ctx.is_monday && ctx.gmt_hour < MONDAY_GRACE_GMT_HOUR) return true;
+      if(ctx.is_friday && ctx.gmt_hour >= FRIDAY_CUTOFF_GMT_HOUR) return true;
+      return false;
+   }
+
    virtual bool CheckResume(const GuardContext &ctx) override
    {
       if(ctx.is_weekend) return false;
@@ -192,7 +202,9 @@ public:
 };
 
 //+------------------------------------------------------------------+
-//| CRolloverGuard — 21:45 to 00:15 GMT blackout                      |
+//| CRolloverGuard — A336: 23:50 to 00:20 SERVER time blackout        |
+//| (server midnight is 21:00 GMT in summer, 22:00 GMT in winter, so  |
+//| a fixed GMT window missed the summer spread spike).               |
 //| File: Guards/CSessionGuard.mqh (combined for brevity)             |
 //| GUARD SLOT: 6                                                      |
 //+------------------------------------------------------------------+
@@ -203,32 +215,32 @@ private:
    int  m_rollover_end_min;   // e.g. 0*60+15  = 15
    int  m_pre_rollover_min;   // 15 min before start = suppression buffer
 
-   bool IsInRolloverWindow(int gmt_hour, int gmt_min) const
+   //--- A336 (#10): both windows are in SERVER minutes-of-day (ServerMinuteOfDay())
+   bool IsInRolloverWindow(int server_min) const
    {
-      int current_min = gmt_hour * 60 + gmt_min;
       // Window spans midnight: either >= start OR <= end
-      return (current_min >= m_rollover_start_min ||
-              current_min <= m_rollover_end_min);
+      if(m_rollover_start_min > m_rollover_end_min)
+         return (server_min >= m_rollover_start_min || server_min <= m_rollover_end_min);
+      return (server_min >= m_rollover_start_min && server_min <= m_rollover_end_min);
    }
 
-   bool IsPreRollover(int gmt_hour, int gmt_min) const
+   bool IsPreRollover(int server_min) const
    {
-      int current_min = gmt_hour * 60 + gmt_min;
       int pre_start   = m_rollover_start_min - m_pre_rollover_min;
-      return (current_min >= pre_start &&
-              current_min < m_rollover_start_min);
+      return (server_min >= pre_start &&
+              server_min < m_rollover_start_min);
    }
 
 public:
    CRolloverGuard() :
-      m_rollover_start_min(1305),  // 21:45
-      m_rollover_end_min(15),      // 00:15
+      m_rollover_start_min(1430),  // 23:50 server
+      m_rollover_end_min(20),      // 00:20 server
       m_pre_rollover_min(15)
    {
       m_meta.index       = 6;
       m_meta.priority    = GPRIO_ROLLOVER;
       m_meta.name        = "ROLLOVER";
-      m_meta.description = "Rollover blackout 21:45–00:15 GMT";
+      m_meta.description = "Rollover blackout 23:50-00:20 server time";
       m_meta.enabled     = true;
    }
 
@@ -240,7 +252,7 @@ public:
       m_meta.initialized = true;
       m_initialized      = true;
       Logger.Info("ROLLOVER",
-         StringFormat("Blackout: %d:%02d – %d:%02d GMT",
+         StringFormat("Blackout: %d:%02d - %d:%02d SERVER time",
                       Config.RolloverStartHr, Config.RolloverStartMn,
                       Config.RolloverEndHr, Config.RolloverEndMn));
       return true;
@@ -250,25 +262,26 @@ public:
    {
       RecordEval();
 
-      if(IsInRolloverWindow(ctx.gmt_hour, ctx.gmt_minute))
+      int sm = ServerMinuteOfDay();
+      if(IsInRolloverWindow(sm))
       {
          RecordTrigger(GUARD_SUSPEND);
          return GuardSuspend(GPRIO_ROLLOVER, m_meta.name, m_meta.index,
                              SUSPEND_ROLLOVER,
-                             StringFormat("Rollover blackout: %02d:%02d GMT",
-                                          ctx.gmt_hour, ctx.gmt_minute),
-                             StringFormat("Resumes after %d:%02d GMT",
+                             StringFormat("Rollover blackout: %02d:%02d server",
+                                          sm / 60, sm % 60),
+                             StringFormat("Resumes after %d:%02d server",
                                           Config.RolloverEndHr,
                                           Config.RolloverEndMn));
       }
 
-      if(IsPreRollover(ctx.gmt_hour, ctx.gmt_minute))
+      if(IsPreRollover(sm))
       {
          RecordTrigger(GUARD_BLOCK);
          return GuardBlock(GPRIO_ROLLOVER, m_meta.name, m_meta.index,
-                           StringFormat("Pre-rollover buffer: %02d:%02d GMT "
+                           StringFormat("Pre-rollover buffer: %02d:%02d server "
                                         "(rollover starts %d:%02d)",
-                                        ctx.gmt_hour, ctx.gmt_minute,
+                                        sm / 60, sm % 60,
                                         Config.RolloverStartHr,
                                         Config.RolloverStartMn));
       }
@@ -278,8 +291,8 @@ public:
 
    virtual bool CheckResume(const GuardContext &ctx) override
    {
-      return (!IsInRolloverWindow(ctx.gmt_hour, ctx.gmt_minute) &&
-              !IsPreRollover(ctx.gmt_hour, ctx.gmt_minute));
+      int sm = ServerMinuteOfDay();
+      return (!IsInRolloverWindow(sm) && !IsPreRollover(sm));
    }
 };
 

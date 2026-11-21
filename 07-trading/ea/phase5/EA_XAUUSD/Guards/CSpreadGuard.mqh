@@ -116,10 +116,9 @@ private:
       double p95 = ComputeP95(sess_idx, hour);
       if(p95 > 0 && p95 < 200) // Sanity bounds
       {
-         m_dynamic_threshold = p95 * 1.3;
-         m_dynamic_threshold = MathMax(m_dynamic_threshold, 10.0); // Floor at 10 pips
-         m_dynamic_threshold = MathMin(m_dynamic_threshold,
-                                       Config.SpreadHardCap * 1.5); // Cap at 1.5× hard cap
+         // A336 (#21): calibration may only TIGHTEN the cap. Old code floored at 10 pips ($10 on
+         // gold) and capped at 1.5x the hard cap, so once calibrated it was always 1.5x looser.
+         m_dynamic_threshold = MathMin(MathMax(p95 * 1.3, 0.2), Config.SpreadHardCap);
       }
       else
       {

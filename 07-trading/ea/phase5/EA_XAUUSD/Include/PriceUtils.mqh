@@ -70,10 +70,14 @@ public:
       // Pip value = tick value × (pip_size / tick_size)
       double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
       double tick_size  = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
-      if(tick_size > 0)
-         m_pip_value = tick_value * (m_pip_size / tick_size);
-      else
-         m_pip_value = 1.0; // Fallback: $1/pip/lot for XAUUSD
+      // A336 (#27): no silent fallback. A wrong pip value (old fallback 1.0, real ~100) would
+      //             undersize by 100x and hide a symbol-data fault.
+      if(tick_size <= 0 || tick_value <= 0)
+      {
+         Print("[PRICEUTILS FATAL] tick_size=", tick_size, " tick_value=", tick_value, " - symbol data not ready");
+         return false;
+      }
+      m_pip_value = tick_value * (m_pip_size / tick_size);
 
       // Validate this is actually XAUUSD
       if(symbol != "XAUUSD" && StringFind(symbol, "XAU") < 0 &&
@@ -146,6 +150,8 @@ public:
    }
 
    //--- Clamp lot to [min, hardcap]
+   //    A336 (#3): NOT used for risk sizing any more (it rounded UP to the minimum lot).
+   //    CPositionSizer floors to the step and refuses a min lot above 1.5x the risk budget.
    double ClampLot(double lot, double hard_cap) const
    {
       lot = NormalizeLot(lot);

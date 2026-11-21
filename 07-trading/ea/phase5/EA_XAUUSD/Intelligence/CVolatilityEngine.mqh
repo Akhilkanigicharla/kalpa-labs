@@ -75,7 +75,9 @@ private:
       ArraySetAsSeries(m_atr_m15_buf, true);
       int copied = CopyBuffer(m_atr_m15_handle, 0, 1,
                               VOL_LOOKBACK_M15, m_atr_m15_buf);
-      if(copied <= 0)
+      // A336 (#14): a partial copy shrinks the dynamic array; AnalyseStability reads index
+      //             VOL_STABILITY_WINDOW, so anything shorter would be "array out of range"
+      if(copied < VOL_STABILITY_WINDOW + 1)
       {
          Logger.Error("VOLATILITY",
             StringFormat("CopyBuffer M15 ATR failed: copied=%d error=%d",
@@ -276,6 +278,12 @@ private:
    void AnalyseStability(VolatilityResult &result) const
    {
       int window = VOL_STABILITY_WINDOW;
+      if(ArraySize(m_atr_m15_buf) <= window)                       // A336 (#14)
+      {
+         result.atr_expanding   = false;
+         result.atr_contracting = false;
+         return;
+      }
       if(m_atr_m15_buf[0] <= 0 || m_atr_m15_buf[window] <= 0)
       {
          result.atr_expanding   = false;

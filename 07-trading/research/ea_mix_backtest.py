@@ -72,28 +72,145 @@ def stop_dist(strategy: str, row, atr_by_tf) -> float:
     return 1.5 * a / 2.0                         # EA: 1.5 x M15 ATR ~ 0.75 x H1 ATR
 
 
+# 21 Nov 2026 quant validation (research/validation/quant-validation-2026-11-21.md, section 8): risk multiplier per
+# strategy. KEEP 1.0 / HALF 0.5 / CUT 0.  Strategies not listed keep 1.0.
+WEIGHTS_2026_11_21 = {
+    "MSNR fresh_v long 1h": 1.0, "MSNR fresh_v long 2h": 1.0, "MSNR fresh_v short 2h": 1.0,
+    "MSNR fresh_v long 4h": 0.5, "MSNR qm long 1h": 0.5, "MSNR qm long 4h": 0.5, "MSNR qm short 1h": 0.5,
+    "EA+MSNR 1h (EA rules)": 0.5,
+    "EMA9 2h": 0.0, "EMA9 4h": 0.0, "MSNR qm long 2h": 0.0, "MSNR fresh_v short 4h": 0.0, "MSNR qm short 4h": 0.0,
+}
+
+
+def _friday_cuts(h1: pd.DataFrame, hour: int) -> set:
+    """Checkpoint (bar close) time of the Friday cut: the first bar close at/after Friday `hour`:00, or the last
+    Friday bar close when the market shuts before then (GC=F's last Friday bar closes 21:00 or 22:00 UTC)."""
+    c = pd.Series(h1.index + pd.Timedelta("1h"), index=h1.index)
+    fri = c[c.index.dayofweek == 4]
+    out = set()
+    for _, g in fri.groupby(fri.index.date):
+        cut = g.iloc[0].normalize() + pd.Timedelta(hours=hour)
+        late = g[g >= cut]
+        out.add(late.iloc[0] if len(late) else g.iloc[-1])
+    return out
+
+
 def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025, cap: float = 0.02,
-              news_block_h: float = 2.0) -> pd.DataFrame:
+              news_block_h: float = 2.0, *, weights: dict | None = None, max_pos: int | None = None,
+              no_opposite: bool = False, friday_cut: float | None = None, friday_hour: int = 22,
+              extra_cost: float = 0.0, min_stop: float = 0.0, lot_cap: float | None = None,
+              day_stop_eq: float | None = None, eq_floor: float | None = None, curve: bool = False,
+              gap_pct: float | None = None, gap_budget: float = 0.03):
+    """EA portfolio replay.  Defaults = the A329 behaviour (closed-loss 4% day stop, no MTM rules).
+
+    Options (21 Nov 2026, mirroring the EA changes):
+      weights      risk multiplier per strategy (0 = strategy off)
+      max_pos      max open positions across all strategies (EA included)
+      no_opposite  skip a signal whose side is opposite to any open position
+      friday_cut   at the Friday `friday_hour`:00 checkpoint, close positions (losers first, most negative first)
+                   until open risk <= friday_cut x $10K
+      extra_cost   extra $ per oz per side, charged on every fill (entry + exit)
+      min_stop     minimum stop distance in $ used for sizing;  lot_cap: max lots per trade
+      day_stop_eq  replaces the closed-loss day stop: if equity <= (1-x) x max(balance, equity) at day start,
+                   close all at the current price and no new entries that day
+      eq_floor     if equity <= this ($), close all and stop trading for good
+      gap_pct      (A336) at the Friday cut also assume a weekend gap of gap_pct jumps every stop: worst loss of a
+                   position = max(risk, gap_pct x price x 100 oz x lot); close losers first, then largest lot,
+                   until the sum <= gap_budget x max(balance, equity)
+    Equity is marked at every 1h bar close (checkpoint).  Research trades carry R only, so the entry price is the
+    1h open at t_in and the open R is side x (close - entry) / stop distance, clipped to [min(-1, r), max(2, r)].
+    With curve=True returns (trades, mtm_records, checkpoints)."""
     atr_by_tf = {tf: pd.Series(e.g.atr(x), index=x.index + pd.Timedelta(tf)) for tf, x in fr.items()}
     ev = ml.events_utc().values
+    h1 = fr["1h"]
+    C = list(h1.index + pd.Timedelta("1h"))
+    PX = h1.close.values
+    open_px = h1.open
+    fri = _friday_cuts(h1, friday_hour) if friday_cut is not None else set()
     t = trades.sort_values("t_in").reset_index(drop=True)
     open_pos: list[dict] = []
     last_r: dict[str, float] = {}
     closed_day: dict = {}
-    out = []
-    eq = START
-    for _, row in t.iterrows():
-        # close everything that ended before this entry (realise P&L, update streaks)
-        still = []
-        for p in sorted(open_pos, key=lambda z: z["t_out"]):
-            if p["t_out"] <= row.t_in:
-                eq += p["pnl"]
-                last_r[p["strategy"]] = p["r"]
-                dd = p["t_out"].normalize()
-                closed_day[dd] = closed_day.get(dd, 0.0) + p["pnl"]
+    out: list[dict] = []
+    mtm_rec: list[tuple] = []
+    ck_rec: list[tuple] = []
+    st = dict(bal=START, eq=START, day=None, ref=START, locked=None, halted=False, k=0)
+
+    def cost(p):
+        return extra_cost * USD_PER_LOT_PER_DOLLAR * p["lot"] * 2
+
+    def roll(ts):
+        d = ts.normalize()
+        if d != st["day"]:
+            st["day"], st["ref"] = d, max(st["bal"], st["eq"])
+
+    def close(p, pnl, when, why):
+        p["pnl"], p["t_close"], p["exit"] = pnl, when, why
+        p["r_real"] = pnl / p["risk"]
+        st["bal"] += pnl
+        last_r[p["strategy"]] = p["r"] if why == "rule" and extra_cost == 0 else p["r_real"]
+        dd = when.normalize()
+        closed_day[dd] = closed_day.get(dd, 0.0) + pnl
+        open_pos.remove(p)
+
+    def mtm(p, px):
+        rr = p["side"] * (px - p["entry"]) / p["dist"]
+        rr = min(max(rr, min(-1.0, p["r"])), max(2.0, p["r"]))
+        return rr * p["risk"] - cost(p)
+
+    def checkpoint(k):
+        c, px = C[k], PX[k]
+        roll(c - pd.Timedelta("1h"))
+        m = {id(p): mtm(p, px) for p in open_pos}
+        eq = st["bal"] + sum(m.values())
+        why = None
+        if eq_floor is not None and eq <= eq_floor:
+            why, st["halted"] = "floor", True
+        elif day_stop_eq is not None and eq <= (1 - day_stop_eq) * st["ref"]:
+            why, st["locked"] = "daystop", st["day"]
+        if why:
+            for p in list(open_pos):
+                close(p, m[id(p)], c, why)
+        elif c in fri:
+            if sum(p["risk"] for p in open_pos) > friday_cut * START:
+                for p in sorted(open_pos, key=lambda z: m[id(z)]):
+                    if sum(q["risk"] for q in open_pos) <= friday_cut * START:
+                        break
+                    close(p, m[id(p)], c, "friday")
+            if gap_pct is not None:
+                worst = lambda q: max(q["risk"], gap_pct * px * USD_PER_LOT_PER_DOLLAR * q["lot"])
+                budget = gap_budget * max(st["bal"], eq)
+                for p in sorted(open_pos, key=lambda z: (m[id(z)] >= 0, -z["lot"])):
+                    if sum(worst(q) for q in open_pos) <= budget:
+                        break
+                    close(p, m[id(p)], c, "weekend")
+        m = {id(p): mtm(p, px) for p in open_pos}
+        st["eq"] = st["bal"] + sum(m.values())
+        if curve:
+            mtm_rec.extend((p["tid"], k, v) for p in open_pos for v in (m[id(p)],))
+            ck_rec.append((c, st["bal"], st["eq"], sum(p["lot"] * p["side"] for p in open_pos),
+                           sum(p["risk"] for p in open_pos)))
+
+    def advance(T):
+        while True:
+            tc = min((p["t_out"] for p in open_pos), default=None)
+            kc = C[st["k"]] if st["k"] < len(C) else None
+            nxt = [x for x in (tc, kc) if x is not None and x <= T]
+            if not nxt:
+                return
+            if tc is not None and tc <= T and (kc is None or tc <= kc):
+                p = min(open_pos, key=lambda z: z["t_out"])
+                roll(tc)
+                close(p, p["pnl"], p["t_out"], "rule")
             else:
-                still.append(p)
-        open_pos = still
+                checkpoint(st["k"])
+                st["k"] += 1
+
+    for tid, row in enumerate(t.itertuples(index=False)):
+        advance(row.t_in)
+        roll(row.t_in)
+        if st["halted"]:
+            continue
         # news blackout
         ti = np.datetime64(row.t_in)
         j = np.searchsorted(ev, ti)
@@ -101,32 +218,52 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
                   abs((ti - ev[max(j - 1, 0)]) / np.timedelta64(1, "h")))
         if gap <= news_block_h:
             continue
-        # EA daily stop 4%
-        if closed_day.get(row.t_in.normalize(), 0.0) <= -0.04 * START:
+        # EA daily stop 4%: closed losses (default) or equity-based (day_stop_eq)
+        if day_stop_eq is None:
+            if closed_day.get(row.t_in.normalize(), 0.0) <= -0.04 * START:
+                continue
+        elif st["locked"] == row.t_in.normalize():
+            continue
+        w = 1.0 if weights is None else weights.get(row.strategy, 1.0)
+        if w <= 0:
+            continue
+        if max_pos is not None and len(open_pos) >= max_pos:
+            continue
+        if no_opposite and any(p["side"] != row.side for p in open_pos):
             continue
         is_ea = row.strategy.startswith("EA+MSNR")
         base = ea_risk if is_ea else mix_risk
         lr = last_r.get(row.strategy, 0.0)
         mult = 1.5 if lr > 0.05 else (0.75 if lr < -0.05 else 1.0)
-        target = START * base * mult                   # funded account: payouts reset it to $10K, so no compounding
-        dist = stop_dist(row.strategy, row, atr_by_tf)
+        target = START * base * mult * w               # funded account: payouts reset it to $10K, so no compounding
+        dist = max(stop_dist(row.strategy, row, atr_by_tf), min_stop)
         lot = np.floor(target / (dist * USD_PER_LOT_PER_DOLLAR) / 0.01) * 0.01
         if lot < 0.01:
             if 0.01 * dist * USD_PER_LOT_PER_DOLLAR <= 1.5 * target:
                 lot = 0.01
             else:
                 continue
+        if lot_cap is not None:
+            lot = min(lot, lot_cap)
         risk_usd = lot * dist * USD_PER_LOT_PER_DOLLAR
         if not is_ea:
             open_mix = sum(p["risk"] for p in open_pos if not p["is_ea"])
             if open_mix + risk_usd > cap * START:
                 continue
-        pnl = row.r * risk_usd
-        rec = dict(t_in=row.t_in, t_out=row.t_out, strategy=row.strategy, side=row.side, r=row.r,
-                   lot=round(lot, 2), risk=risk_usd, pnl=pnl, is_ea=is_ea)
+        e0 = open_px.asof(row.t_in)
+        rec = dict(tid=tid, t_in=row.t_in, t_out=row.t_out, strategy=row.strategy, side=row.side, r=row.r,
+                   lot=round(lot, 2), risk=risk_usd, is_ea=is_ea, entry=float(e0), dist=dist)
+        rec["pnl"] = row.r * risk_usd - cost(rec)
+        rec.update(t_close=row.t_out, exit="rule", r_real=rec["pnl"] / risk_usd)
         open_pos.append(rec)
         out.append(rec)
-    return pd.DataFrame(out)
+    advance(max(t.t_out.max(), C[-1]) if len(t) else C[-1])
+    p = pd.DataFrame(out)
+    if not curve:
+        return p
+    mt = pd.DataFrame(mtm_rec, columns=["tid", "k", "mtm"])
+    ck = pd.DataFrame(ck_rec, columns=["c", "bal", "eq", "net_lots", "open_risk"])
+    return p, mt, ck
 
 
 def report(p: pd.DataFrame) -> dict:

@@ -73,21 +73,22 @@ The status quo is a local "digital marketing" freelancer at ₹2,000+/mo with no
 
 ### 3a. WhatsApp fees from 1 Oct 2026 (India), and who pays
 
-India rates from 1 Oct 2026 (all + 18% GST):
+India rates from 1 Oct 2026 (all + 18% GST). **Verified 22 Nov 2026 (A223)** on Meta's own page, developers.facebook.com/documentation/business-messaging/whatsapp/pricing ("Updated: Nov 18, 2026"), and its "INR list rates" file ("Cost per message in INR … effective October 1, 2026", row India). Second source: myoperator.com and whatsbizapi.com October 2026 guides give the same India figures.
 
-| Category | Rate | Note |
+| Category | Rate (Meta INR list rate) | Note |
 |---|---|---|
-| Service (free-form replies inside the 24 h window) | 1,000 free per number per month (no roll-over), then ~₹0.115 | Free tier verified (Meta pricing page, updated 30 Sep 2026, fetched 13 Nov 2026: developers.facebook.com/documentation/business-messaging/whatsapp/pricing); ₹ rate: confirm at onboarding |
-| Utility templates (reminders, alerts) | ~₹0.115 | Charged outside a window. Inside a normal 24 h window: unverified (Meta's page fetched 13 Nov doesn't say), confirm at onboarding. Free inside an open FEP window |
-| Marketing | ~₹0.863 | Unchanged |
+| Service (free-form replies inside the 24 h window) | 1,000 free per number per month (no roll-over), then ₹0.115 | Meta page: "1,000 free service messages per month, which do not roll over but reset monthly" |
+| Utility templates (reminders, alerts) | ₹0.115 | **Charged inside an open 24 h window too since 1 Oct 2026** (Meta: pricing type changed "from free_customer_service to regular as of October 1, 2026"). Free only inside an open FEP window |
+| Authentication | ₹0.115 (international ₹2.4971) | Not used by BotBhai |
+| Marketing | ₹0.8631 | Unchanged |
 | Chats opened from Click-to-WhatsApp ads or a Page button | Free for up to 7 days, all categories (FEP window) | Verified: Meta pricing page fetched 13 Nov 2026 |
 | Incoming messages | Free | |
 
 - **A payment method is now mandatory.** Without one, even service replies stop delivering.
-- BSP figures of ₹0.14–0.145 and ₹0.95–1.09 include their markup.
-- Meta's developer page didn't list India among the October changes. Confirm the INR rate card in WhatsApp Manager at every onboarding.
+- BSP figures of ₹0.14–0.145 and ₹0.95–1.09 include their markup (the "₹0.145" in old notes was a BSP price, not Meta's).
+- Rates and the message mix live in `docs/sales/prices.json` (`whatsapp_fees.rates_inr`, `monthly_mix`); `tools/test_offer.py` recomputes the ₹290 / ₹660 figures from them, so a new rate card means one edit and a failing test until the figures match. Still show the salon its own WhatsApp Manager bill at onboarding.
 
-**Typical salon bill (300 bookings a month; ₹ rates confirm at onboarding in WhatsApp Manager):**
+**Typical salon bill (300 bookings a month; Meta INR list rates checked 22 Nov 2026):**
 
 | Message | Count | ₹ |
 |---|---|---|
@@ -97,6 +98,10 @@ India rates from 1 Oct 2026 (all + 18% GST):
 | Review asks to completed visits (marketing) | 260 | 224 |
 | Win-back, opt-in only (marketing) | 100 | 86 |
 | **Total** | | **≈ ₹560 + GST ≈ ₹660/mo** (Lite with no marketing ≈ ₹290) |
+
+**Reminder cost per salon:** 600 reminders × ₹0.115 = ₹69 (+GST ₹81) a month, now charged even when sent inside an open chat window.
+
+**Margins:** unchanged by the October rates, because the salon pays Meta directly: Lite ₹999/mo and Standard ₹1,499/mo stay ours minus our own cost to serve (3b). The salon's all-in monthly spend is Lite ₹999 + ≈₹290 Meta, Standard ₹1,499 + ≈₹660 Meta.
 
 **Who pays:** the salon, directly to Meta, on its own WABA and card. Kalpa Labs never fronts Meta fees, because that would bring credit risk, GST on pass-through and ban exposure on our account.
 

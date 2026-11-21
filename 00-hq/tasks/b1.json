@@ -388,9 +388,9 @@
   "priority": "P2",
   "owner": "Forge",
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-20T18:50:00Z",
-  "updated": "2026-11-20T18:52:54Z",
+  "updated": "2026-11-22T02:30:00Z",
   "context_chars": 12000,
   "id": "K144",
   "world": "b1",
@@ -400,7 +400,8 @@
    "01-botbhai/PLAN.md"
   ],
   "min_items": 5,
-  "output": "00-hq/knowledge/K144.md"
+  "output": "00-hq/knowledge/K144.md",
+  "verified": "A223: Meta INR list rates file fetched 22 Nov 2026 (India 0.8631/0.115/0.115/0.115); K162 superseded"
  },
  {
   "id": "K153",
@@ -485,11 +486,30 @@
   "details": "Read the A223 line. From Meta's own WhatsApp Business pricing page and rate card (developers.facebook.com/docs/whatsapp/pricing), give India per-message prices for marketing, utility, authentication and service, the free service-reply rules, and whether utility templates inside the 24 h window are charged, each with the doc URL and the 'last updated' date shown. Then compute one salon's monthly reminder cost at 300, 600 and 1,000 reminders. Write 'unverified' for anything without a Meta URL.",
   "min_items": 4,
   "tries": 1,
-  "status": "todo",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-21T14:50:00Z",
-  "updated": "2026-11-21T20:41:03Z",
+  "updated": "2026-11-22T02:30:00Z",
   "output": "00-hq/knowledge/K162.md",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4.",
+  "verified": "A223: Meta INR list rates file fetched 22 Nov 2026 (India 0.8631/0.115/0.115/0.115); K162 superseded"
+ },
+ {
+  "id": "K166",
+  "world": "b1",
+  "owner": "Quill",
+  "title": "A230 prep: DPDP Rules 2025 duty list for BotBhai, site form and chat",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "01-botbhai/PLAN.md"
+  ],
+  "details": "Read the A230 line. From the official DPDP Rules 2025 text (meity.gov.in) list every duty of a data fiduciary and processor with its start date (13 Nov 2026 or 13 May 2027): notice contents, consent, consent managers, security safeguards, breach reporting (to whom, how fast), erasure and the 48 h warning, children's data, retention. One row per duty: rule number, plain-English duty, start date, official URL. 'unverified' for anything without the official URL.",
+  "min_items": 10,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-22T02:30:00Z",
+  "updated": "2026-11-22T02:30:00Z",
+  "output": "00-hq/knowledge/K166.md"
  }
 ]

@@ -29,6 +29,18 @@ def check_ladder():
     print("  ✓ approved ladder: Starter ₹999 once · Lite ₹1,999 + ₹999/mo · Standard ₹2,999 + ₹1,499/mo; ₹4,999 tier paused")
 
 
+def check_whatsapp_fees():
+    """A223: the two fee figures come from Meta's INR rate card x the typical salon's message mix, + 18% GST."""
+    W = P["whatsapp_fees"]; r = W["rates_inr"]; m = W["monthly_mix"]
+    assert r["source"].startswith("https://developers.facebook.com/") and re.fullmatch(r"\d{4}-\d{2}-\d{2}", r["fetched"]), "rates need Meta's page + fetch date"
+    paid_service = max(0, m["service"] - r["free_service_per_month"])
+    base = (m["utility"]) * r["utility"] + paid_service * r["service"]
+    full = base + m["marketing"] * r["marketing"]
+    for key, amount in (("lite_no_marketing", base), ("typical", full)):
+        want = round(amount * (1 + r["gst"]) / 10) * 10
+        assert W[key] == want, f"whatsapp_fees.{key} = {W[key]}, rate card gives {want}"
+
+
 def check_page(name, html, lang_te=False):
     v = visible(html); low = v.lower()
     for need in ["front desk", "5 languages", "set up and run by us", "no per-staff fee", "14-day", "₹999 once", "₹1,999", "₹1,499"]:
@@ -65,5 +77,5 @@ def check_card():
 
 
 if __name__ == "__main__":
-    check_ladder(); check_demo(); check_card()
+    check_ladder(); check_whatsapp_fees(); check_demo(); check_card()
     print("offer tests passed")

@@ -41,6 +41,23 @@
   "whatsapp_fees": {
     "lite_no_marketing": 290,
     "typical": 660,
-    "paid_by": "the salon, directly to Meta on its own WhatsApp account"
+    "paid_by": "the salon, directly to Meta on its own WhatsApp account",
+    "rates_inr": {
+      "marketing": 0.8631,
+      "utility": 0.115,
+      "service": 0.115,
+      "free_service_per_month": 1000,
+      "gst": 0.18,
+      "utility_inside_24h_window": "charged since 1 Oct 2026",
+      "effective": "2026-10-01",
+      "source": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing (INR list rates file)",
+      "fetched": "2026-11-22"
+    },
+    "monthly_mix": {
+      "note": "300 bookings a month: 600 reminders + ~60 owner digests (utility), 2,500 bot replies (service), 260 review asks + 100 win-backs (marketing, opt-in)",
+      "utility": 660,
+      "service": 2500,
+      "marketing": 360
+    }
   }
 }

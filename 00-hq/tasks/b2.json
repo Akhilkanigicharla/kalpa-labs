@@ -134,10 +134,10 @@
  },
  {
   "priority": "P2",
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "created": "2026-11-21T12:42:07Z",
-  "updated": "2026-11-21T16:59:52Z",
+  "updated": "2026-11-21T18:07:29Z",
   "context_chars": 8000,
   "owner": "Quill",
   "id": "K161",
@@ -149,6 +149,6 @@
   ],
   "min_items": 4,
   "details": "Read the A334 line. Compare 4 uptime-check options that need no card: GitHub Actions scheduled curl, UptimeRobot free, Better Stack free, Cloudflare Worker cron. Per option: checks per month, interval, alert channels (Telegram?), whether a card is required, licence if self-run, and the provider page URL you used. Mark anything you could not confirm on the provider's own page as unverified.",
-  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+  "vigil_notes": "FIX:\n- Mark GitHub Actions free tier limits (2,000 min private, free public) as UNVERIFIED; not in repo files.\n- Mark UptimeRobot limits (50 monitors, 5-min interval) as UNVERIFIED; not in repo files.\n- Mark Better Stack limits (10 monitors, 3-min interval) as UNVERIFIED; not in repo files.\n- Mark Cloudflare Workers limits (100k req/day, 1-min cron) as UNVERIFIED; not in repo files.\n- Mark Cloudflare `workerd` Apache-2.0 licence as UNVERIFIED; not in repo files."
  }
 ]

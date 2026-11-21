@@ -1,4 +1,4 @@
-# A310 · MSNR + Fair Value Gap + Order Block on gold: a combined strategy (21 Nov 2026)
+# A314 · MSNR + Fair Value Gap + Order Block on gold: a combined strategy (21 Nov 2026)
 
 Akhil: "Msnr 1hr and 4hr fix also try adding fair value gap and order block and other things and take best trades
 from other and form a new strategy and test it". Code `research/combo_gold.py`, tests `tests/test_combo_gold.py`,

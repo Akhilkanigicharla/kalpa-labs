@@ -1,8 +1,8 @@
-"""A311: self-picking gold bot, walk-forward tested (Akhil 21 Nov 2026: "do it yourself, make more profit
+"""A316 (not run): self-picking gold bot, walk-forward tested (Akhil 21 Nov 2026: "do it yourself, make more profit
 and more trades, forward test it, give me true and best results").
 
 Pool of trade streams (all double costs, gold futures GC=F hourly, Jul 2024 -> now):
-  - all 1,024 MSNR / FVG / order block / Fibonacci versions from A310 (research/combo_gold.py)
+  - all 1,024 MSNR / FVG / order block / Fibonacci versions from A314 (research/combo_gold.py)
   - time of day: buy or sell at the open of hour H (UTC), hold 1 or 4 hours, stop 1 ATR  (96 streams)
   - Asia range breakout at London (playlist setups 4/5): range 00-07 UTC, first break 07-12 UTC,
     stop at the range middle, target 2R, both sides

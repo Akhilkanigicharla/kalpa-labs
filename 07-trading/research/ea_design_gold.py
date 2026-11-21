@@ -1,4 +1,4 @@
-"""A311: Akhil's "XAUUSD Institutional EA" design (The5%ers High Stakes), backtested as written.
+"""A315: Akhil's "XAUUSD Institutional EA" design (The5%ers High Stakes), backtested as written.
 
 Source: Akhil's upload 21 Nov 2026, "XAUUSD Institutional EA - Full Architecture Design" (sections 1-9,
 text cut off inside section 9). Rules implemented (doc section in brackets):

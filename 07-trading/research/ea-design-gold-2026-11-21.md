@@ -1,4 +1,4 @@
-# A311 · Akhil's "XAUUSD Institutional EA" design (The5%ers High Stakes), backtested (21 Nov 2026)
+# A315 · Akhil's "XAUUSD Institutional EA" design (The5%ers High Stakes), backtested (21 Nov 2026)
 
 Source: Akhil's upload (sections 1–9; the text stops inside section 9). Code `research/ea_design_gold.py`,
 tests `tests/test_ea_design_gold.py`, numbers `reports/ea-design-gold*.json`.

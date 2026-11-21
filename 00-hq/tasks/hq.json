@@ -1197,11 +1197,12 @@
   ],
   "details": "Read the A225 line. From Render's own docs (render.com/docs/free) give: free instance hours per workspace per month, what happens when they run out, spin-down after how many minutes idle, cold-start time, and whether two free services share the hours. Then draft a keep-awake schedule (IST hours) for kalpa-n8n and kalpa-llm-router that fits the monthly hours with 10% spare. Doc URL per fact; 'unverified' otherwise.",
   "min_items": 5,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-22T02:30:00Z",
-  "updated": "2026-11-22T02:30:00Z",
-  "output": "00-hq/knowledge/K167.md"
+  "updated": "2026-11-21T20:47:18Z",
+  "output": "00-hq/knowledge/K167.md",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

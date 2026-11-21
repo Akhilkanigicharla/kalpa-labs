@@ -31,7 +31,7 @@
 
 //--- All user-facing inputs declared as extern for MT5 input panel
 input group "=== ACCOUNT & RISK ==="
-input double   inp_RiskPct         = 0.75;   // Risk per trade (%)
+input double   inp_RiskPct         = 0.25;   // Risk per trade (%) — A328: 0.25 keeps more funded accounts alive than 0.75
 input double   inp_EquityFloor     = 9100.0; // Hard equity floor ($)
 input double   inp_ProfitTarget    = 11000.0;// Profit target (equity $): The5%ers High Stakes New step 1 = 10% (11,000); Classic = 8% (10,800); step 2 = 5% (10,500)
 input double   inp_DailyLossLimit  = 300.0;  // Daily self-imposed loss ($)

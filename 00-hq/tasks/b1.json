@@ -414,7 +414,7 @@
   "min_items": 5,
   "priority": "P2",
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "created": "2026-11-21T00:50:00Z",
   "updated": "2026-11-21T00:44:02Z",
   "output": "00-hq/knowledge/K153.md"
@@ -435,5 +435,22 @@
   "created": "2026-11-21T02:55:00Z",
   "updated": "2026-11-21T02:55:00Z",
   "output": "00-hq/knowledge/K154.md"
+ },
+ {
+  "id": "K157",
+  "world": "b1",
+  "owner": "BotBhai",
+  "title": "A312 prep: Telegram error alert rules + one-line message templates",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A312 line. (1) From Telegram's own Bot API docs (core.telegram.org/bots/api and /bots/faq), give the sendMessage limits that matter for alerts (messages per second to one chat, message length, what 429 retry_after means), each with the doc URL. (2) Write 8 one-line alert templates for BotBhai/JobCard failures (webhook signature bad, Supabase timeout, WhatsApp send failed, payment link failed, reminder job failed, rate limit hit, unknown error, alert flood summary) that hold NO customer name, phone number or message text: only error kind, function name, count and time (IST). Write 'unverified' for any limit without a doc URL.",
+  "min_items": "8",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T05:05:00Z",
+  "updated": "2026-11-21T05:05:00Z",
+  "output": "00-hq/knowledge/K157.md"
  }
 ]

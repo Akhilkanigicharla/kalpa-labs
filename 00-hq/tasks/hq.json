@@ -1109,5 +1109,23 @@
   ],
   "min_items": 5,
   "output": "00-hq/knowledge/K150.md"
+ },
+ {
+  "id": "K156",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A311 prep: npm audit vs osv-scanner for CI, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   ".github/workflows/quality.yml"
+  ],
+  "details": "Read the A311 line. Compare `npm audit --omit=dev --audit-level=high` and Google's osv-scanner as a GitHub Actions step for a repo with several package-lock.json folders: licence of each tool (link the LICENSE file), how each exits on high/critical findings, how to scan many folders in one step, how to ignore one accepted advisory with a reason, and whether each needs network or an account. Cite each tool's own docs URL; write 'unverified' where you have none. End with a 3-line pick.",
+  "min_items": "5",
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-21T05:05:00Z",
+  "updated": "2026-11-21T05:05:00Z",
+  "output": "00-hq/knowledge/K156.md"
  }
 ]

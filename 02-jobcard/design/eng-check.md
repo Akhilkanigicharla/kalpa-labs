@@ -47,7 +47,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 10 | Automated Testing | done: `npm test` in 02-jobcard (37 tests) + `bash supabase/test.sh` in quality.yml |
 | 11 | Database Indexing | done: indexes on job_cards (tech, visited_at), next_service, invoices (tech, issued_on), audit_log |
 | 12 | Database Migrations | done: schema.sql idempotent + supabase/migrations/0001_security.sql, both re-applied in test.sh |
-| 13 | Backups | missing: no backup we control yet; nightly dump + restore drill is A310 |
+| 13 | Backups | built 21 Nov (A310): nightly age-encrypted pg_dump, 7-day artifact, `.github/workflows/db-backup.yml`, tests `00-hq/backups/test.sh`; live after C93 secrets |
 | 14 | Caching | not relevant: replies are per person and live; static files cached by the Netlify CDN |
 | 15 | CDNs | done: Netlify CDN serves every static page |
 | 16 | Logging | done: console.error on failure paths → Netlify function log |
@@ -107,7 +107,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | 70 | Async / Await | done: async/await throughout; fire-and-forget calls end in .catch |
 | 71 | Memory Leaks | not relevant: short-lived functions |
 | 72 | Cost Monitoring | done: free tiers only; Netlify deploys counted by 00-hq/tools/deploy_budget.py |
-| 73 | Disaster Recovery | missing: restore drill is part of A310 |
+| 73 | Disaster Recovery | built 21 Nov (A310): monthly restore check (row counts + grants + schema tests) and disaster-day steps in `00-hq/backups/README.md`; first real run after C93 |
 | 74 | Data Privacy (GDPR) | done: reminders only to customers who opted in (views + tests); each technician sees only his own rows |
 | 75 | Accessibility | done: 390 px light/dark tap tests + design/ux-check.md |
 | 76 | Mobile Responsiveness | done: 390 px tap sweep before ticks (rule 5) |

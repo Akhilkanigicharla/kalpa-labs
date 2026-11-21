@@ -1,0 +1,107 @@
+name: db backup (A310)
+# Nightly encrypted pg_dump of the BotBhai and JobCard Supabase databases, kept 7 days as a private artifact,
+# plus a monthly restore check into a throwaway Postgres. Scripts + tests: 00-hq/backups/ (README there).
+# Secrets Akhil adds (never in code): BOTBHAI_DB_URL, JOBCARD_DB_URL (Supabase session-pooler string),
+# BACKUP_AGE_RECIPIENT (public key, age1...), BACKUP_AGE_KEY (the matching private key, for the restore check only).
+on:
+  schedule:
+    - cron: '41 20 * * *'   # 02:11 IST every night
+    - cron: '17 21 1 * *'   # 02:47 IST on the 1st: backup + restore check
+  workflow_dispatch:
+    inputs:
+      restore:
+        description: 'Also run the restore check'
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths: ['00-hq/backups/**', '.github/workflows/db-backup.yml']
+permissions:
+  contents: read
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  self-test:   # proves the scripts on made-up data; runs on every change, needs no secret
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      pg:
+        image: postgres:16-alpine
+        env: { POSTGRES_PASSWORD: throwaway }
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: throwaway }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y -qq age >/dev/null && pg_dump --version && age --version
+      - run: bash 00-hq/backups/test.sh
+
+  backup:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        world: [botbhai, jobcard]
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y -qq age >/dev/null
+      - name: backup
+        id: b
+        env:
+          DB_URL: ${{ matrix.world == 'botbhai' && secrets.BOTBHAI_DB_URL || secrets.JOBCARD_DB_URL }}
+          AGE_RECIPIENT: ${{ secrets.BACKUP_AGE_RECIPIENT }}
+          # pg_dump 17 reads Supabase's Postgres 15 and 17 servers; the client must not be older than the server.
+          PG_DUMP: docker run --rm --network host postgres:17.12-alpine pg_dump
+        run: |
+          if [ -z "$DB_URL" ] || [ -z "$AGE_RECIPIENT" ]; then
+            echo "::warning::${{ matrix.world }}: backup skipped, secrets not set yet (see 00-hq/backups/README.md)"; exit 0
+          fi
+          mkdir -p out && bash 00-hq/backups/backup.sh "out/${{ matrix.world }}-$(date -u +%F)"
+          echo "made=1" >> "$GITHUB_OUTPUT"
+      - if: steps.b.outputs.made == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-${{ matrix.world }}
+          path: out/*.tar.age
+          retention-days: 7
+          if-no-files-found: error
+
+  restore-check:
+    needs: backup
+    if: github.event.schedule == '17 21 1 * *' || (github.event_name == 'workflow_dispatch' && inputs.restore)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { world: botbhai, sb: 01-botbhai/botbhai/supabase }
+          - { world: jobcard, sb: 02-jobcard/supabase }
+    services:
+      pg:
+        image: postgres:17.12-alpine
+        env: { POSTGRES_PASSWORD: throwaway }
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env: { PGHOST: localhost, PGUSER: postgres, PGPASSWORD: throwaway }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y -qq age >/dev/null
+      - uses: actions/download-artifact@v4
+        continue-on-error: true   # no artifact = backup was skipped (no secrets yet)
+        with: { name: 'db-${{ matrix.world }}', path: in }
+      - name: restore check
+        env:
+          AGE_KEY: ${{ secrets.BACKUP_AGE_KEY }}
+          PG_RESTORE: docker run --rm -i --network host -v /tmp:/tmp -e PGHOST -e PGUSER -e PGPASSWORD -e PGOPTIONS postgres:17.12-alpine pg_restore
+        run: |
+          f=$(ls in/*.tar.age 2>/dev/null | head -1)
+          if [ -z "$f" ] || [ -z "$AGE_KEY" ]; then echo "::warning::${{ matrix.world }}: restore check skipped (no backup or no key yet)"; exit 0; fi
+          umask 077; printf '%s\n' "$AGE_KEY" > "$RUNNER_TEMP/age.key"
+          AGE_KEY_FILE="$RUNNER_TEMP/age.key" bash 00-hq/backups/restore_check.sh "$f" "${{ matrix.sb }}"
+          rm -f "$RUNNER_TEMP/age.key"

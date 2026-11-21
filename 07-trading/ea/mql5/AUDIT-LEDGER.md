@@ -59,3 +59,6 @@ CIntelligenceCoordinator 1,020, CRegimeEngine 764, CLiquidityEngine 1,281, CRegi
 CStructureEngine 1,078, CTrendEngine 536, IntelligenceTypes 607 = 7,121 lines). **None of the source was attached**:
 the upload holds only the instructions (no `#include`, no class code), and no `.mqh` exists anywhere on this machine.
 Audit not started; waiting for the files. The prompt's last line is cut off mid-sentence ("…rather than guessing").
+
+## 6. Phase 5 zip received (11:19 IST): 36 files incl. EA main, Intelligence (10), Execution (3), Core (6), Scoring, Session guard
+Findings: `07-trading/ea/phase5/AUDIT-PHASE5-2026-11-21.md`. Still pending line-by-line: the 8 intelligence files (~6,000 lines), CLogger, CPersistence, CTimerSystem, Defines remainder, CSessionGuard body.

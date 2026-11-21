@@ -1,0 +1,29 @@
+{
+ "generated": "2026-11-21",
+ "A_m15_m5_60days": {
+  "period": "2026-09-13 to 2026-11-20",
+  "setups": 1,
+  "n": 1,
+  "per_month": 30.0,
+  "win": 1.0,
+  "avg_r": 1.623,
+  "total_r": 1.6,
+  "profit_usd": 122.0,
+  "worst_drop_pct": 0.0,
+  "longs": 0,
+  "shorts": 1,
+  "the5ers_step1": {
+   "starts": 1,
+   "pass_": 0.0,
+   "fail": 0.0,
+   "running": 1.0
+  }
+ },
+ "B_h1_2years": {
+  "period": "2024-07-01 to 2026-11-20",
+  "setups": 0,
+  "n": 0,
+  "the5ers_step1_8pct": {},
+  "doc_target_10pct": {}
+ }
+}

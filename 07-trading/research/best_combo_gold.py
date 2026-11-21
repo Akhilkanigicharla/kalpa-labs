@@ -217,6 +217,29 @@ CHOSEN = ["EA+MSNR 1h", "MSNR fresh_v long 1h", "MSNR qm long 1h", "MSNR qm shor
           "MSNR fresh_v long 4h", "MSNR fresh_v short 4h", "MSNR qm long 4h", "MSNR qm short 4h"]   # frozen 21 Nov 2026
 
 
+def layer_view(led: pd.DataFrame) -> dict:
+    """A325 layer on the same paper ledger: 1.5x size after that strategy's last closed trade won, 0.75x after a
+    loss; plus how trades within 2 h of CPI / jobs report / FOMC did (the EA blocks those)."""
+    import macro_layer_gold as ml
+    t = led.sort_values("t_in").reset_index(drop=True)
+    w = []
+    for _, row in t.iterrows():
+        prior = t[(t.strategy == row.strategy) & (t.t_out < row.t_in)].sort_values("t_out")
+        last = prior.r.iloc[-1] if len(prior) else 0.0
+        w.append(1.5 if last > 0.05 else (0.75 if last < -0.05 else 1.0))
+    w = np.array(w)
+    ev = ml.events_utc().values
+    ti = t.t_in.values.astype("datetime64[ns]")
+    j = np.searchsorted(ev, ti)
+    gap = np.minimum(np.abs((ev[np.minimum(j, len(ev) - 1)] - ti) / np.timedelta64(1, "h")),
+                     np.abs((ti - ev[np.maximum(j - 1, 0)]) / np.timedelta64(1, "h")))
+    near = gap <= 2
+    return dict(streak_sized_total_r=round(float((t.r.values * w).sum()), 1),
+                streak_sized_profit_usd=round(float((t.r.values * w).sum() * 10_000 * PAPER_RISK), 0),
+                near_news_trades=int(near.sum()),
+                near_news_avg_r=round(float(t.r.values[near].mean()), 3) if near.any() else None)
+
+
 def paper(out: Path, flags: Path | None = None, fr: dict | None = None, today: pd.Timestamp | None = None) -> dict:
     """Append-only forward ledger: a trade is written once it has CLOSED, entered on/after PAPER_START and
     before PAPER_END. Trades already in the ledger are never rewritten (later data revisions can't change
@@ -257,6 +280,7 @@ def paper(out: Path, flags: Path | None = None, fr: dict | None = None, today: p
               **(account(led) if len(led) else {}),
               backtest_expected=dict(avg_r=0.143, win_rate=0.406, trades_per_month=168),
               by_strategy={k: count(led[led.strategy == k]) for k in CHOSEN if (led.strategy == k).any()})
+    st["with_layer_A325"] = layer_view(led) if len(led) else {}
     if len(led) >= 30:
         st["verdict"] = ("on track" if st["avg_r"] >= 0.07 else "below backtest — review")
     else:

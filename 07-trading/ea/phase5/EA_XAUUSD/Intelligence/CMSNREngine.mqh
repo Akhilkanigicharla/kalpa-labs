@@ -301,4 +301,35 @@ public:
 
 CMSNREngine MSNR;
 
+//+------------------------------------------------------------------+
+//| A325: news blackout — no NEW entries within inp_NewsBlockMin of a |
+//| high-impact USD event (CPI, jobs report, FOMC ...) from the MT5   |
+//| economic calendar. 2-year test (research/macro_layer_gold.py):    |
+//| the 163 trades within 2h of CPI/NFP/FOMC made only +0.015R vs     |
+//| +0.169R for the rest, before the wider news spreads a real broker |
+//| charges. It is a safety rule; it does not add backtest profit.    |
+//| NOTE: MT5 calendar functions return nothing in the Strategy       |
+//| Tester, so this gate only works on demo/live charts.              |
+//+------------------------------------------------------------------+
+input int      inp_NewsBlockMin = 120;    // A325: block entries this many minutes before/after high-impact USD news (0 = off)
+
+bool NewsBlackout(string &why)
+{
+   why = "";
+   if(inp_NewsBlockMin <= 0) return false;
+   if(MQLInfoInteger(MQL_TESTER)) return false;            // calendar not available in the tester
+   datetime now = TimeTradeServer();
+   MqlCalendarValue v[];
+   int n = CalendarValueHistory(v, now - inp_NewsBlockMin * 60, now + inp_NewsBlockMin * 60, "US", "USD");
+   for(int i = 0; i < n; i++)
+   {
+      MqlCalendarEvent ev;
+      if(!CalendarEventById(v[i].event_id, ev)) continue;
+      if(ev.importance != CALENDAR_IMPORTANCE_HIGH) continue;
+      why = StringFormat("news_blackout:%s@%s", ev.name, TimeToString(v[i].time, TIME_MINUTES));
+      return true;
+   }
+   return false;
+}
+
 #endif // CMSNRENGINE_MQH

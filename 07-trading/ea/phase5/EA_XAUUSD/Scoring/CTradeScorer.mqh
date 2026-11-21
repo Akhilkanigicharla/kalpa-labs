@@ -312,6 +312,11 @@ public:
       if(!MSNR.Allows(dir == DIR_LONG ? 1 : -1))
          return Reject(DEC_MSNR_GATE, dir, MSNR.LastReason());
 
+      //--- Gate 9 (A325): high-impact USD news blackout (MT5 calendar)
+      string news_why;
+      if(NewsBlackout(news_why))
+         return Reject(DEC_NEWS_BLACKOUT, dir, news_why);
+
       //--- ALL GATES PASSED — build the valid decision
       TradeDecision d;
       ZeroMemory(d);

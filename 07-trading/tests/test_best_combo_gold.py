@@ -48,3 +48,11 @@ def test_paper_ledger_is_append_only(tmp_path, monkeypatch):
 def test_paper_kill(tmp_path):
     (tmp_path / "KILL").write_text("x")
     assert b.paper(tmp_path / "o", flags=tmp_path)["status"] == "killed"
+
+
+def test_layer_view_sizes_after_win():
+    t0 = pd.Timestamp("2026-11-23 08:00")
+    led = pd.DataFrame(dict(t_in=[t0, t0 + pd.Timedelta(hours=5)], t_out=[t0 + pd.Timedelta(hours=2), t0 + pd.Timedelta(hours=7)],
+                            side=[1, 1], r=[1.0, 1.0], strategy=["X", "X"]))
+    v = b.layer_view(led)
+    assert v["streak_sized_total_r"] == 2.5          # 1.0 + 1.5 x 1.0

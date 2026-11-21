@@ -723,6 +723,7 @@ void OnTradeTransaction(
       if(PositionSelectByTicket(pos)) return;          // partial close — wait for the rest
       double rr = (g_txn_risk > 0) ? g_txn_pnl / g_txn_risk : 0.0;
       DailyStats.OnTradeClose(g_txn_pnl, rr);
+      g_last_trade_r = rr;                               // A325 streak sizing
       GuardCooldown.OnTradeClosed(TimeCurrent());
       Logger.Info("TRANSACTION", StringFormat("Trade closed pos=%I64u pnl=%.2f R=%.2f", pos, g_txn_pnl, rr));
       g_txn_pos = 0; g_txn_pnl = 0.0; g_txn_risk = 0.0;

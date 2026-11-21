@@ -581,7 +581,8 @@ enum DECISION_REASON
    DEC_NO_TRIGGER         = 6,  // Pullback-resume did not fire
    DEC_SWEEP_GATE         = 7,  // Blocked by opposing fresh sweep
    DEC_PULLBACK_TOO_FAR   = 8,  // Price not near EMA20 (no pullback context)
-   DEC_MSNR_GATE          = 9   // A320: MSNR level not fresh / storyline against
+   DEC_MSNR_GATE          = 9,  // A320: MSNR level not fresh / storyline against
+   DEC_NEWS_BLACKOUT      = 10  // A325: high-impact USD news within the blackout window
 };
 
 // Phase 4 tuning constants

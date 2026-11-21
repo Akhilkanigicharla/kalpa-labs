@@ -1,0 +1,65 @@
+# b6 A215: the P1 AI Cost Audit, end to end on a throwaway demo Langfuse (open source, self-hosted
+# with Docker Compose inside this runner, deleted when the job ends). Synthetic data only, no secrets:
+# the demo keys below exist only inside this job. Free on GitHub Actions.
+name: b6 langfuse audit demo
+on:
+  workflow_dispatch:
+  push:
+    paths: ["06-finops/consulting/p1_cost_audit/**", ".github/workflows/finops-langfuse-demo.yml"]
+permissions:
+  contents: read
+concurrency: { group: finops-langfuse-demo, cancel-in-progress: true }
+env:
+  LANGFUSE_COMPOSE_SHA: 4afc77978b844de865398c8e4f5af93c4b53e301  # langfuse main, checked 2026-11-21
+  LANGFUSE_IMAGE_TAG: "4"
+  LANGFUSE_HOST: http://localhost:3000
+  LANGFUSE_PUBLIC_KEY: pk-lf-kalpa-demo
+  LANGFUSE_SECRET_KEY: sk-lf-kalpa-demo
+  LANGFUSE_INIT_ORG_ID: kalpa-demo-org
+  LANGFUSE_INIT_ORG_NAME: Kalpa demo
+  LANGFUSE_INIT_PROJECT_ID: kalpa-demo
+  LANGFUSE_INIT_PROJECT_NAME: Kalpa demo
+  LANGFUSE_INIT_PROJECT_PUBLIC_KEY: pk-lf-kalpa-demo
+  LANGFUSE_INIT_PROJECT_SECRET_KEY: sk-lf-kalpa-demo
+jobs:
+  audit-demo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Start demo Langfuse (pinned compose file)
+        run: |
+          mkdir -p /tmp/lf && cd /tmp/lf
+          curl -fsSL --retry 3 -o docker-compose.yml \
+            "https://raw.githubusercontent.com/langfuse/langfuse/${LANGFUSE_COMPOSE_SHA}/docker-compose.yml"
+          docker compose up -d langfuse-web langfuse-worker
+          for i in $(seq 1 60); do
+            curl -fs http://localhost:3000/api/public/health >/dev/null && { echo "up after $((i*5)) s"; exit 0; }
+            sleep 5
+          done
+          docker compose logs --tail 40 langfuse-web; exit 1
+      - name: Seed made-up LLM calls (SDK, MIT)
+        run: |
+          pip install -q langfuse==5.2.0 -r 06-finops/requirements.txt
+          python 06-finops/consulting/p1_cost_audit/langfuse_demo_seed.py
+      - name: Pull usage from Langfuse, run the audit
+        working-directory: 06-finops/consulting
+        run: |
+          FROM=$(date -u -d yesterday +%F); TO=$(date -u -d tomorrow +%F)
+          for i in $(seq 1 24); do   # ingestion is async: wait until all 60 calls are queryable
+            python p1_cost_audit/langfuse_pull.py --from "$FROM" --to "$TO" --out /tmp/usage.csv --synthetic || true
+            n=$(python -c "import csv;print(sum(int(r['requests']) for r in csv.DictReader(l for l in open('/tmp/usage.csv') if not l.startswith('#'))))" 2>/dev/null || echo 0)
+            echo "seen $n of 60"; [ "$n" -ge 60 ] && break; sleep 10
+          done
+          [ "$n" -eq 60 ] || { echo "expected 60 generations, saw $n"; exit 1; }
+          python p1_cost_audit/audit.py /tmp/usage.csv --client "Demo Co (synthetic)" --currency USD --out /tmp/p1-report.md
+          grep -q "Demo Co" /tmp/p1-report.md && grep -qi "synthetic" /tmp/p1-report.md
+          head -40 /tmp/p1-report.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: p1-langfuse-demo, path: "/tmp/usage.csv\n/tmp/p1-report.md", retention-days: 7, if-no-files-found: ignore }
+      - name: Stop demo Langfuse
+        if: always()
+        run: cd /tmp/lf && docker compose down -v || true

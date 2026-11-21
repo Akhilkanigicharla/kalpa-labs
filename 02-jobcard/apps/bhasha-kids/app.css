@@ -145,3 +145,7 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 label.switch{display:flex;gap:12px;align-items:flex-start;min-height:48px;padding:8px 0}
 label.switch input{width:24px;height:24px;flex:none;margin-top:2px;accent-color:var(--accent)}
 .danger{color:var(--bad);border-color:var(--bad)}
+
+/* 404 page (A328) */
+.nf{max-width:32rem;margin:0 auto;padding:max(48px,env(safe-area-inset-top)) 16px 48px}
+.nf .btn{display:inline-flex;align-items:center;min-height:44px;text-decoration:none}

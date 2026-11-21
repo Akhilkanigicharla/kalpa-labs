@@ -28,8 +28,8 @@ Machine rows come from `python3 00-hq/tools/eng_check.py jobcard --md`; the rest
 | Input caps: 02-jobcard/bot/functions/reminders.js | PASS | no input length cap |
 | Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
 | Failover (AI calls fall back to another model or a fixed reply) | PASS | no AI calls |
-| Graceful Degradation (browser fetch failures are caught) | PASS | 2 file(s) call the server, all catch errors |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 34 KB |
+| Graceful Degradation (browser fetch failures are caught) | PASS | 1 file(s) call the server, all catch errors |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 32 KB |
 
 ## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 

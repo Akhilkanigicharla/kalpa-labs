@@ -4,6 +4,7 @@
 Usage:
   python3 00-hq/tools/eng_check.py            # all worlds, table + exit 1 on any FAIL
   python3 00-hq/tools/eng_check.py botbhai    # one world
+  python3 00-hq/tools/eng_check.py b2         # every checker world of roadmap world b2 (JobCard + its 3 apps)
   python3 00-hq/tools/eng_check.py --md       # also write <world>/design/eng-check.md
 
 What it checks (per world, where it applies):
@@ -32,6 +33,10 @@ WORLDS = {
     "hq-site": ("00-hq/site", ["00-hq/site/netlify.toml"], ["00-hq/site/netlify/functions"], "00-hq/design"),
     "botbhai": ("01-botbhai/botbhai/web", ["01-botbhai/botbhai/netlify.toml"], ["01-botbhai/botbhai/core/functions"], "01-botbhai/design"),
     "jobcard": ("02-jobcard/web", ["02-jobcard/netlify.toml"], ["02-jobcard/bot/functions"], "02-jobcard/design"),
+    # b2 apps Akhil chose in C80 (A328): static PWAs, no server functions
+    "jyotish": ("02-jobcard/apps/jyotish", ["02-jobcard/apps/jyotish/netlify.toml"], [], "02-jobcard/apps/jyotish/design"),
+    "photo-studio": ("02-jobcard/apps/photo-studio", ["02-jobcard/apps/photo-studio/netlify.toml"], [], "02-jobcard/apps/photo-studio/design"),
+    "bhasha-kids": ("02-jobcard/apps/bhasha-kids", ["02-jobcard/apps/bhasha-kids/netlify.toml"], [], "02-jobcard/apps/bhasha-kids/design"),
     "extension-site": ("04-extensions/site", [], [], "04-extensions/design"),
     "extension": ("04-extensions/src/entrypoints", [], [], "04-extensions/design"),
     # Python worlds (no public pages): secrets, timeouts, shell and eval checks only
@@ -41,6 +46,9 @@ WORLDS = {
     "finops-site": ("06-finops/site/_dist", ["06-finops/site/_dist/_headers"], ["06-finops/src/api"], "06-finops/design"),  # built output: run 06-finops/site/build.py first
     "deals": ("05-deals/site/dist", ["05-deals/site/public/_headers"], ["05-deals/site/functions"], "05-deals/design"),  # built output: run `npm run build` first
 }
+# World ids b1–b7 (as ROADMAP.md uses them) expand to every checker world in that folder (A328)
+GROUPS = {"hq": ["hq-site"], "b1": ["botbhai"], "b2": ["jobcard", "jyotish", "photo-studio", "bhasha-kids"], "b3": ["kits"],
+          "b4": ["extension-site", "extension"], "b5": ["deals"], "b6": ["finops", "finops-site"], "b7": ["trading"]}
 SKIP = re.compile(r"(node_modules|/dist/|/_dist/|/vendor/|\.test\.|/tests?/|/fixtures/)")
 # innerHTML uses read line by line by a person; re-review when these files change a lot (12 Nov 2026)
 REVIEWED = {"app.js": "i18n text from our own dictionary + constant markup",
@@ -215,8 +223,19 @@ def write_md(name, res):
     path.write_text("\n".join(out + tail) + "\n", encoding="utf-8")
 
 
+def expand(args):
+    """World names or b1–b7 ids → checker world names; unknown names stop with a clear message (exit 2)."""
+    names = []
+    for a in args or list(WORLDS):
+        if a not in WORLDS and a not in GROUPS:
+            print(f"unknown world '{a}'. Use one of: {', '.join(list(GROUPS) + list(WORLDS))}", file=sys.stderr)
+            sys.exit(2)
+        names += [n for n in GROUPS.get(a, [a]) if n not in names]
+    return names
+
+
 def main():
-    names = [a for a in sys.argv[1:] if not a.startswith("--")] or list(WORLDS)
+    names = expand([a for a in sys.argv[1:] if not a.startswith("--")])
     bad = 0
     for n in names:
         res = run(n)

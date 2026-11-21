@@ -91,5 +91,41 @@
   "created": "2026-11-08T12:45:00Z",
   "output": "00-hq/knowledge/K050.md",
   "updated": "2026-11-08T15:21:28Z"
+ },
+ {
+  "id": "K159",
+  "world": "b2",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "A328 goldfish review: Bhasha Kids UX check vs its code",
+  "details": "You are a fresh reviewer with no other context. Read 02-jobcard/apps/bhasha-kids/design/ux-check.md (20 rows) and the app code. For each row say AGREE or DISAGREE, with the file and a short quote as evidence. Anything you cannot see is UNVERIFIED, never guessed. Then list up to 5 rows that are wrong or weak, most important first, with a 1-line fix. Plain short English.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "02-jobcard/apps/bhasha-kids/design/ux-check.md",
+   "02-jobcard/apps/bhasha-kids/app.js",
+   "02-jobcard/apps/bhasha-kids/index.html",
+   "02-jobcard/apps/bhasha-kids/src/speech.js"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "todo",
+  "created": "2026-11-21T10:55:00Z"
+ },
+ {
+  "id": "K160",
+  "world": "b2",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "A331 prep: accessibility check list for 3 phone web apps (kids, photo, astrology)",
+  "details": "Write a check list of 15 accessibility checks a person can run by hand on a phone web app at 390 px (screen reader labels, focus order, colour contrast 4.5:1, text zoom 200%, reduced motion, form error messages, touch targets 44 px, language attribute for Telugu/Hindi text, etc.). For each: what to do, what passes, which WCAG 2.2 criterion number. Then one line per app (02-jobcard/apps/jyotish, photo-studio, bhasha-kids) naming the 3 checks most likely to fail, using the index.html you can see as evidence; anything you cannot see is UNVERIFIED. Plain short English.",
+  "read": [
+   "02-jobcard/apps/jyotish/index.html",
+   "02-jobcard/apps/photo-studio/index.html",
+   "02-jobcard/apps/bhasha-kids/index.html"
+  ],
+  "min_items": 15,
+  "context_chars": 30000,
+  "status": "todo",
+  "created": "2026-11-21T10:55:00Z"
  }
 ]

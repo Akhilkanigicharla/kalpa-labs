@@ -71,3 +71,7 @@ select:focus-visible,input:focus-visible,.btn:focus-visible{outline:3px solid va
 
 @media (prefers-reduced-motion:no-preference){.card:not([hidden]){animation:rise .24s ease-out}}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+
+/* 404 page (A328) */
+.nf{max-width:32rem;margin:0 auto;padding:max(48px,env(safe-area-inset-top)) 16px 48px}
+.nf .btn{display:inline-flex;align-items:center;min-height:44px;text-decoration:none}

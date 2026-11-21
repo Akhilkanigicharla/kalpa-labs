@@ -8,5 +8,5 @@ self.addEventListener('activate', e => e.waitUntil(caches.keys()
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
-  e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request)));
+  e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request)).catch(() => caches.match('index.html')));
 });

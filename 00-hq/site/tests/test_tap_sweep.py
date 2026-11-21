@@ -7,7 +7,7 @@ Inline links inside running text are exempt from the size rule (WCAG 2.5.8).
 Run:  python3 00-hq/site/tests/test_tap_sweep.py [URL]
 Default serves 00-hq/site locally.
 """
-import functools, http.server, sys, threading
+import functools, http.server, os, sys, threading
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -85,6 +85,8 @@ def main():
                             has_touch=True, color_scheme=scheme)
             if badge:
                 pg.add_init_script(FAKE_BADGE)
+            if os.environ.get('TAP_INIT_JS'):   # e.g. stub a browser API that crashes headless Chromium (A328)
+                pg.add_init_script(os.environ['TAP_INIT_JS'])
             errs = []
             pg.on("pageerror", lambda ex: errs.append(str(ex)[:100]))
             pg.goto(url, wait_until="load", timeout=60000)

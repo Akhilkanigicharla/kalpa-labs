@@ -52,6 +52,10 @@ jobs:
         working-directory: 07-trading
         continue-on-error: true
         run: python research/msnr_gold_robust.py --paper paper/msnr-gold-robust --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Gold EA (A315 loose) with 3 trades per signal, 1R/2R/3R, one stop (A316; paper only, same KILL switch)
+        working-directory: 07-trading
+        continue-on-error: true
+        run: python research/ea_design_gold.py --paper paper/ea-ladder --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Quant Brain intraday master over 25 agents (A280; paper only, replays today after the close)
         working-directory: 07-trading
         continue-on-error: true

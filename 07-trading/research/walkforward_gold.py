@@ -1,4 +1,4 @@
-"""A316 (not run): self-picking gold bot, walk-forward tested (Akhil 21 Nov 2026: "do it yourself, make more profit
+"""Unnumbered, not run yet: self-picking gold bot, walk-forward tested (Akhil 21 Nov 2026: "do it yourself, make more profit
 and more trades, forward test it, give me true and best results").
 
 Pool of trade streams (all double costs, gold futures GC=F hourly, Jul 2024 -> now):

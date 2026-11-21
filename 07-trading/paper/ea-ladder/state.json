@@ -1,0 +1,6 @@
+{
+ "status": "running",
+ "start": "2026-11-21",
+ "rule": "3 trades per signal, 0.25% risk each, targets 1R/2R/3R, one stop, breakeven after target 1",
+ "n": 0
+}

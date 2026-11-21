@@ -222,6 +222,23 @@ def simulate(x: pd.DataFrame, x_tf, sets, trig_window: pd.Timedelta, rule="the5e
             continue
         risk_usd = bal * RISK_PCT
         size = risk_usd / sl_dist                          # $ per $1 move
+        if LADDER:
+            leg = size / 3                                 # 3 trades x 0.25% risk
+            lp, k, hits = ladder_exit(o, h, lo, c, close_t, entry_i, side, en, sl_dist, s["atr"])
+            pnl = lp * leg - 3 * COST * leg
+            bal += pnl
+            t_out = close_t[k]
+            trades.append(dict(t_in=x.index[entry_i], t_out=t_out, side=side, r=pnl / risk_usd, pnl=pnl, bal=bal,
+                               entry=en, stop=en - side * sl_dist, legs_hit=hits))
+            day_trades[d] = day_trades.get(d, 0) + 1
+            day_pnl[d] = day_pnl.get(d, 0) + pnl
+            loss_streak = loss_streak + 1 if pnl < 0 else 0
+            busy_until, cool_until = t_out, t_out + pd.Timedelta("15min")
+            if loss_streak >= 3:
+                pause_until, loss_streak = t_out + pd.Timedelta("1h"), 0
+            if bal <= 9_100:
+                halted = True
+            continue
         st, tp1, tp2 = en - side * sl_dist, en + side * 1.5 * sl_dist, en + side * 2.5 * sl_dist
         half_done, pnl, k, trail = False, 0.0, entry_i, None
         for k in range(entry_i, len(x)):
@@ -268,6 +285,42 @@ def simulate(x: pd.DataFrame, x_tf, sets, trig_window: pd.Timedelta, rule="the5e
     return pd.DataFrame(trades)
 
 
+LADDER = False        # Akhil 21 Nov: "every opportunity take three trades with stop loss"
+LOOSE = {"rejection", "room", "h1", "pullback"}   # the A315 version that trades most (never broke rules)
+
+
+def ladder_exit(o, h, lo, c, close_t, entry_i, side, en, sl, atr_):
+    """3 legs, one stop: targets 1R/2R/3R. Leg 1 hit -> stop to breakeven + $0.20; leg 2 hit -> stop
+    to the 1R level. Stop checked first in a bar (worst case). Max hold 3 days. Returns
+    (pnl per $1-per-leg size summed over legs, exit index, legs that hit target)."""
+    tps = [en + side * k * sl for k in (1, 2, 3)]
+    st = en - side * sl
+    open_legs, pnl, hits, k = [0, 1, 2], 0.0, 0, entry_i
+    for k in range(entry_i, len(o)):
+        if (side == 1 and lo[k] <= st) or (side == -1 and h[k] >= st):
+            pnl += len(open_legs) * (st - en) * side
+            open_legs = []
+            break
+        for leg in list(open_legs):
+            if (side == 1 and h[k] >= tps[leg]) or (side == -1 and lo[k] <= tps[leg]):
+                pnl += (tps[leg] - en) * side
+                open_legs.remove(leg)
+                hits += 1
+                if leg == 0:
+                    st = en + side * 0.2
+                elif leg == 1:
+                    st = tps[0]
+        if not open_legs:
+            break
+        if close_t[k] - close_t[entry_i] > pd.Timedelta("3D"):
+            pnl += len(open_legs) * (c[k] - en) * side
+            open_legs = []
+            break
+    if open_legs:
+        pnl += len(open_legs) * (c[k] - en) * side
+    return pnl, k, hits
+
+
 def prop(trades: pd.DataFrame, target=0.08, daily=0.05, maxloss=0.10, start=None):
     t = trades if start is None else trades[trades.t_in >= start]
     bal, peak_day = START_BAL, {}
@@ -312,8 +365,62 @@ def weekly_prop(t: pd.DataFrame, **kw) -> dict:
                 running=round(res.count("running") / n, 2))
 
 
+PAPER_START = pd.Timestamp("2026-11-21")
+
+
+def ladder_run(h1=None):
+    """2-year H1 test of the loose A315 version with the 3-trade ladder vs the doc's own exits."""
+    global SCALED, DROP, LADDER
+    import yfinance as yf
+    if h1 is None:
+        h1 = _ohlc(yf.download("GC=F", period="730d", interval="1h", progress=False, auto_adjust=False))
+    SCALED, DROP = True, set(LOOSE)                    # must be set BEFORE the features are built
+    h4 = resample(h1, "4h")
+    h4f, h1f = h4_features(h4, h1), h1_features(h1)
+    sig = setups(h1, pd.Timedelta("1h"), h1f, h4f)
+    res = {}
+    for name, lad in (("doc_exits", False), ("three_trades", True)):
+        LADDER = lad
+        res[name] = simulate(h1, pd.Timedelta("1h"), sig, pd.Timedelta("2h"))
+    LADDER = True
+    return res
+
+
+def paper(out: Path, flags: Path | None) -> dict:
+    out.mkdir(parents=True, exist_ok=True)
+    if flags and (flags / "KILL").exists():
+        st = dict(status="killed")
+    else:
+        t = ladder_run()["three_trades"]
+        t = t[t.t_in >= PAPER_START] if not t.empty else t
+        t.to_csv(out / "ledger.csv", index=False)
+        st = dict(status="running", start=str(PAPER_START.date()), rule="3 trades per signal, 0.25% risk each, "
+                  "targets 1R/2R/3R, one stop, breakeven after target 1", **summary(t))
+        if not t.empty:
+            st["the5ers"] = prop(t.assign(pnl=t.r * START_BAL * RISK_PCT))
+    (out / "state.json").write_text(json.dumps(st, indent=1, default=str))
+    return st
+
+
 def main() -> int:
     global SCALED
+    if "--paper" in sys.argv:
+        fl = sys.argv[sys.argv.index("--flags") + 1] if "--flags" in sys.argv else None
+        print(json.dumps(paper(Path(sys.argv[sys.argv.index("--paper") + 1]), Path(fl) if fl else None), default=str))
+        return 0
+    if "--ladder" in sys.argv:
+        res = ladder_run()
+        split = pd.Timestamp("2025-09-01")
+        out = {}
+        for k, t in res.items():
+            a, b = t[t.t_in < split], t[t.t_in >= split]
+            out[k] = dict(**summary(t), early_avg_r=round(float(a.r.mean()), 3), late_avg_r=round(float(b.r.mean()), 3),
+                          the5ers_8pct=weekly_prop(t), the5ers_by_month={str(p): int(v) for p, v in t.groupby(t.t_in.dt.to_period("M")).pnl.sum().round(0).items()})
+            if "legs_hit" in t:
+                out[k]["legs_hit_share"] = {int(i): round(float(v), 2) for i, v in t.legs_hit.value_counts(normalize=True).sort_index().items()}
+        (Path("reports") / f"ea-ladder-gold-{date.today()}.json").write_text(json.dumps(out, indent=1, default=str))
+        print(json.dumps(out, indent=1, default=str))
+        return 0
     SCALED = "--scaled" in sys.argv
     import yfinance as yf
     m5 = _ohlc(yf.download("GC=F", period="60d", interval="5m", progress=False, auto_adjust=False))

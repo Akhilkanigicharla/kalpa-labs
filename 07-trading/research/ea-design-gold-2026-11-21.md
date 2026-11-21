@@ -32,3 +32,15 @@ the rejection candle and the "$30 room" rule, 1,700 London/NY 15-minute bars shr
 Reading: the design's risk side works (0.75% risk, 3% daily stop, never broke The5%ers' 5% daily or 10% max
 loss in any start). The entry side is too strict to trade, and when loosened it earns about +0.1R a trade,
 around $300 a year on $10K: an 8% target takes ~2.5 years at that pace.
+
+## A316 · 3 trades per opportunity (Akhil: "every time… take three trades with stop loss… forward test it")
+Same 118 signals (loose version above, 2 years H1). Risk 0.75% split into 3 × 0.25%; one stop for all three;
+targets 1R, 2R, 3R; after target 1 the stop moves to breakeven + $0.20, after target 2 to the 1R level.
+
+| Exits | Win % | Avg R | Profit on $10K | Worst drop | Green months | Reach The5%ers 8% | Fail |
+|---|---|---|---|---|---|---|---|
+| Doc's exits (50% at 1.5R, trail, 2.5R) | 46% | +0.08R | +$690 | 6.7% | 17/29 | 33% | 0% |
+| **3 trades, 1R/2R/3R** | **52%** | +0.05R | **+$377** | 7.3% | 18/29 | 19% | 0% |
+Of the 3-trade signals: 53% hit no target, 25% one, 14% two, 9% all three.
+The 3-trade version wins more often but makes less, because the breakeven stop cuts trades 2 and 3 short.
+Forward test: `paper/ea-ladder/state.json`, every weekday from 21 Nov 2026 (no orders sent).

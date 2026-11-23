@@ -1,49 +1,49 @@
 {
- "date": "2026-11-18",
- "run_ist": "2026-11-20 00:39",
+ "date": "2026-11-20",
+ "run_ist": "2026-11-24 03:43",
  "kill": false,
  "paper_only": true,
  "agents": [
   {
    "agent": "nifty_tsmom252",
    "market": "NIFTYBEES",
-   "score": -4.367,
+   "score": -4.289,
    "money_pct": 0.0,
-   "signal": 0.0
+   "signal": 1.0
   },
   {
    "agent": "nifty_tsmom126",
    "market": "NIFTYBEES",
-   "score": -0.158,
-   "money_pct": 0.0,
+   "score": 0.544,
+   "money_pct": 2.21,
    "signal": 1.0
   },
   {
    "agent": "nifty_ma200",
    "market": "NIFTYBEES",
-   "score": 2.207,
-   "money_pct": 11.26,
+   "score": 2.864,
+   "money_pct": 9.43,
    "signal": 1.0
   },
   {
    "agent": "nifty_ma100",
    "market": "NIFTYBEES",
-   "score": 0.48,
-   "money_pct": 4.02,
+   "score": 1.015,
+   "money_pct": 4.12,
    "signal": 1.0
   },
   {
    "agent": "nifty_turtle55",
    "market": "NIFTYBEES",
-   "score": -0.322,
-   "money_pct": 0.0,
+   "score": 0.631,
+   "money_pct": 2.56,
    "signal": 1.0
   },
   {
    "agent": "nifty_ema12_50",
    "market": "NIFTYBEES",
-   "score": 0.262,
-   "money_pct": 2.2,
+   "score": 0.885,
+   "money_pct": 3.59,
    "signal": 1.0
   },
   {
@@ -63,36 +63,36 @@
   {
    "agent": "nifty_macd",
    "market": "NIFTYBEES",
-   "score": 1.689,
-   "money_pct": 11.26,
+   "score": 2.135,
+   "money_pct": 8.66,
    "signal": 1.0
   },
   {
    "agent": "nifty_regime200",
    "market": "NIFTYBEES",
-   "score": 2.207,
-   "money_pct": 11.26,
+   "score": 2.864,
+   "money_pct": 9.43,
    "signal": 1.0
   },
   {
    "agent": "bank_tsmom252",
    "market": "BANKBEES",
-   "score": -1.174,
+   "score": -0.347,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "bank_ma200",
    "market": "BANKBEES",
-   "score": 0.134,
-   "money_pct": 0.0,
+   "score": 0.97,
+   "money_pct": 6.26,
    "signal": 1.0
   },
   {
    "agent": "bank_turtle20",
    "market": "BANKBEES",
-   "score": 0.609,
-   "money_pct": 6.8,
+   "score": 1.472,
+   "money_pct": 9.5,
    "signal": 1.0
   },
   {
@@ -105,49 +105,49 @@
   {
    "agent": "bank_macd",
    "market": "BANKBEES",
-   "score": 1.496,
-   "money_pct": 15.0,
+   "score": 2.11,
+   "money_pct": 13.62,
    "signal": 1.0
   },
   {
    "agent": "junior_tsmom252",
    "market": "JUNIORBEES",
-   "score": -0.027,
+   "score": 0.086,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "junior_ma150",
    "market": "JUNIORBEES",
-   "score": 0.023,
+   "score": 0.152,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "junior_high52",
    "market": "JUNIORBEES",
-   "score": -0.412,
+   "score": -0.274,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "gold_hold",
    "market": "GOLDBEES",
-   "score": -2.044,
+   "score": -2.534,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "gold_tsmom126",
    "market": "GOLDBEES",
-   "score": -2.394,
+   "score": -2.452,
    "money_pct": 0.0,
    "signal": 0.0
   },
   {
    "agent": "gold_ma200",
    "market": "GOLDBEES",
-   "score": -2.086,
+   "score": -2.135,
    "money_pct": 0.0,
    "signal": 0.0
   },
@@ -161,31 +161,31 @@
   {
    "agent": "us_hold",
    "market": "MON100",
-   "score": -0.983,
+   "score": -0.801,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "us_tsmom252",
    "market": "MON100",
-   "score": -0.983,
+   "score": -0.801,
    "money_pct": 0.0,
    "signal": 1.0
   },
   {
    "agent": "us_ema12_50",
    "market": "MON100",
-   "score": -1.414,
+   "score": -1.263,
    "money_pct": 0.0,
    "signal": 0.0
   }
  ],
  "positions_rs": {
   "NIFTYBEES": 4000,
-  "BANKBEES": 2065,
+  "BANKBEES": 2938,
   "JUNIORBEES": 0,
   "GOLDBEES": 0,
   "MON100": 0
  },
- "cash_rs": 3935
+ "cash_rs": 3062
 }

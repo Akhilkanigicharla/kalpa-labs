@@ -2,5 +2,14 @@
  "status": "running",
  "start": "2026-11-21",
  "rule": "3 trades per signal, 0.25% risk each, targets 1R/2R/3R, one stop, breakeven after target 1",
- "n": 0
+ "n": 1,
+ "per_month": 30.0,
+ "win": 1.0,
+ "avg_r": 0.337,
+ "total_r": 0.3,
+ "profit_usd": 620.0,
+ "worst_drop_pct": 0.0,
+ "longs": 0,
+ "shorts": 1,
+ "the5ers": "running"
 }

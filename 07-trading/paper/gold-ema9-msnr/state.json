@@ -1,9 +1,9 @@
 {
  "status": "running",
- "trades": 2,
- "sum_R": 3.95,
- "balance_usd": 51234.0,
+ "trades": 6,
+ "sum_R": 4.66,
+ "balance_usd": 51277.0,
  "start": "2026-11-21",
- "today": "2026-11-23",
+ "today": "2026-11-24",
  "risk_usd": 400
 }

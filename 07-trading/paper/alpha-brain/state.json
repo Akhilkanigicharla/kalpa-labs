@@ -1,55 +1,55 @@
 {
- "date": "2026-11-20",
+ "date": "2026-11-23",
  "paper_only": true,
  "rebalance_day": false,
- "run_ist": "2026-11-24 03:45",
+ "run_ist": "2026-11-25 02:23",
  "picks": {
-  "TECHM": 2000,
+  "INDUSINDBK": 2000,
+  "TATASTEEL": 2000,
   "SUNPHARMA": 2000,
-  "MON100": 2000,
-  "SHRIRAMFIN": 2000,
-  "GOLDBEES": 2000
+  "TECHM": 2000,
+  "SHRIRAMFIN": 2000
  },
  "top10": [
   [
    "ADANIENT",
-   0.99
-  ],
-  [
-   "TECHM",
-   0.933
-  ],
-  [
-   "SUNPHARMA",
-   0.923
-  ],
-  [
-   "MON100",
-   0.923
-  ],
-  [
-   "SHRIRAMFIN",
-   0.904
-  ],
-  [
-   "BAJAJ-AUTO",
-   0.856
-  ],
-  [
-   "GOLDBEES",
-   0.856
-  ],
-  [
-   "ADANIPORTS",
-   0.769
+   0.971
   ],
   [
    "INDUSINDBK",
-   0.76
+   0.971
   ],
   [
-   "INFY",
-   0.75
+   "TATASTEEL",
+   0.904
+  ],
+  [
+   "SUNPHARMA",
+   0.894
+  ],
+  [
+   "TECHM",
+   0.894
+  ],
+  [
+   "SHRIRAMFIN",
+   0.865
+  ],
+  [
+   "MON100",
+   0.808
+  ],
+  [
+   "BAJAJ-AUTO",
+   0.808
+  ],
+  [
+   "SBIN",
+   0.798
+  ],
+  [
+   "GRASIM",
+   0.788
   ]
  ]
 }

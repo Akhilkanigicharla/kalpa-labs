@@ -5,3 +5,4 @@ run_at_ist,asof,track,mode,strategy,symbol,side,qty,value_pct_capital,fee_inr,td
 2026-11-19T09:15:00+05:30,2026-11-18,A,paper,tsmom,NIFTYBEES,hold,0,0.0,0.0,0.0,no_change,,1.0,4986.83,4982.89,0.08
 2026-11-23T09:15:00+05:30,2026-11-20,A,paper,tsmom,NIFTYBEES,sell,1.0,5.88,15.64,0.0,filled,,1.0,5056.41,5067.92,-0.23
 2026-11-24T09:15:00+05:30,2026-11-23,A,paper,tsmom,NIFTYBEES,buy,1,5.79,0.34,0.0,filled,,1.0,4995.06,5003.58,-0.17
+2026-11-26T09:15:00+05:30,2026-11-25,A,paper,tsmom,NIFTYBEES,hold,0,0.0,0.0,0.0,no_change,,1.0,5057.48,5065.91,-0.17

@@ -4,21 +4,21 @@
  "rule": "30+ trades and avg R >= +0.10",
  "candidates": {
   "1h_fresh_short_k2": {
-   "trades": 3,
-   "sum_r": 1.68,
-   "avg_r": 0.559,
+   "trades": 6,
+   "sum_r": 2.8,
+   "avg_r": 0.467,
    "verdict": "watch"
   },
   "1h_fresh_short_k2_story": {
-   "trades": 3,
-   "sum_r": 1.68,
-   "avg_r": 0.559,
+   "trades": 6,
+   "sum_r": 2.8,
+   "avg_r": 0.467,
    "verdict": "watch"
   },
   "4h_fresh_short_k5": {
-   "trades": 1,
-   "sum_r": 1.62,
-   "avg_r": 1.625,
+   "trades": 2,
+   "sum_r": 0.97,
+   "avg_r": 0.485,
    "verdict": "watch"
   }
  }

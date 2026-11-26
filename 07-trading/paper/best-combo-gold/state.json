@@ -2,34 +2,44 @@
  "status": "running",
  "start": "2026-11-21",
  "end": "2027-05-21",
- "days_done": 4,
+ "days_done": 5,
  "risk_per_trade_pct": 0.25,
- "data_up_to": "2026-11-25 20:00:00",
- "trades": 29,
- "wins": 13,
+ "data_up_to": "2026-11-26 04:00:00",
+ "trades": 30,
+ "wins": 14,
  "losses": 16,
  "breakeven": 0,
- "win_rate": 0.448,
- "avg_r": 0.233,
- "total_r": 6.7,
+ "win_rate": 0.467,
+ "avg_r": 0.291,
+ "total_r": 8.7,
  "open_trades": [
   {
    "strategy": "MSNR fresh_v long 1h",
-   "t_in": "2026-11-25 18:00:00",
+   "t_in": "2026-11-25 23:00:00",
    "side": "LONG"
   },
   {
    "strategy": "EMA9 2h",
    "t_in": "2026-11-24 16:00:00",
    "side": "SHORT"
+  },
+  {
+   "strategy": "MSNR fresh_v long 2h",
+   "t_in": "2026-11-26 00:00:00",
+   "side": "LONG"
+  },
+  {
+   "strategy": "MSNR fresh_v long 4h",
+   "t_in": "2026-11-26 00:00:00",
+   "side": "LONG"
   }
  ],
- "profit_usd": 169.0,
+ "profit_usd": 218.0,
  "worst_drop_pct": 1.1,
  "worst_day_usd": -52.0,
  "best_day_usd": 160.0,
  "max_open_together": 6,
- "trades_per_month": 29.0,
+ "trades_per_month": 30.0,
  "profit_months": "1 of 1",
  "backtest_expected": {
   "avg_r": 0.143,
@@ -47,13 +57,13 @@
    "total_r": -1.4
   },
   "MSNR fresh_v long 1h": {
-   "trades": 6,
-   "wins": 1,
+   "trades": 7,
+   "wins": 2,
    "losses": 5,
    "breakeven": 0,
-   "win_rate": 0.167,
-   "avg_r": -0.517,
-   "total_r": -3.1
+   "win_rate": 0.286,
+   "avg_r": -0.159,
+   "total_r": -1.1
   },
   "MSNR qm long 1h": {
    "trades": 1,
@@ -129,10 +139,10 @@
   }
  },
  "with_layer_A325": {
-  "streak_sized_total_r": 4.5,
-  "streak_sized_profit_usd": 112.0,
+  "streak_sized_total_r": 6.0,
+  "streak_sized_profit_usd": 149.0,
   "near_news_trades": 0,
   "near_news_avg_r": null
  },
- "verdict": "too early (fewer than 30 closed trades)"
+ "verdict": "on track"
 }

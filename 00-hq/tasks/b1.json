@@ -628,15 +628,14 @@
    "00-hq/site/privacy.html"
   ],
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-26T18:42:09Z",
-  "updated": "2026-11-26T18:43:28Z",
+  "updated": "2026-11-26T19:42:09Z",
   "id": "K176",
   "title": "A348 check: Telugu and Hindi text of the privacy page",
   "min_items": 5,
   "details": "Read the Telugu (section id te) and Hindi (section id hi) parts of 00-hq/site/privacy.html. List up to 10 lines where the grammar, spelling or word choice is wrong or hard for an everyday reader, numbered, each with: section, the exact current text, your better text, and why. Do not change meaning (12 months, 48 hours, 30 days, 90 days, DELETE, Netlify, Groq, OpenRouter must stay). Say 'no change' if a part is fine.",
-  "output": "00-hq/knowledge/K176.md",
-  "vigil_notes": "FIX: incomplete, 4 of 5 required items. Write all 5, numbered 1 to 5."
+  "output": "00-hq/knowledge/K176.md"
  }
 ]

@@ -14,3 +14,7 @@ inp_ProfitTarget=10850
 inp_EquityFloor=0
 inp_MixRiskPct=0.30
 inp_RiskPct=0.30
+; Audit 26 Nov 2026: a weekend gap is booked against Monday's 2.5% daily limit, so keep the worst-case gap loss inside the EA's 1.5% daily stop (default 3% > 2.5%).
+inp_WeekendLossBudgetPct=1.5
+; A347: send real orders (the EA's own default is a log-only dry run)
+inp_DryRun=false

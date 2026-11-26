@@ -433,8 +433,7 @@ private:
       if(ok) { r = SpreadGuard.Evaluate(c);     if(r.status != GUARD_PASS) { ok = false; why = "spread"; } }
       if(ok) { r = GuardCircuitBrk.Evaluate(c); if(r.status != GUARD_PASS) { ok = false; why = "circuit_breaker"; } }
       if(ok) { r = GuardNews.Evaluate(c);       if(r.status != GUARD_PASS) { ok = false; why = "news_guard"; } }
-      if(ok) { r = GuardCooldown.Evaluate(c);   if(r.status != GUARD_PASS) { ok = false; why = "cooldown"; } }
-      if(ok && DailyStats.IsConsecLossPaused()) { ok = false; why = "consec_loss_pause"; }
+      //--- A347: no cooldown / 3-loss pause for the mix (never in its backtests; they cut tested trades)
       string w2;
       if(ok && NewEntryBlocked(w2))            { ok = false; why = w2; }
       if(ok && NewsBlackout(w2))               { ok = false; why = w2; }

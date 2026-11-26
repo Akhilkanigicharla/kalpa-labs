@@ -81,7 +81,8 @@ private:
          if(HistoryDealGetString(t, DEAL_SYMBOL) != EA_SYMBOL) continue;
          if(!IsOurMagic(HistoryDealGetInteger(t, DEAL_MAGIC))) continue;
          our_closed += v;
-         if(HistoryDealGetInteger(t, DEAL_ENTRY) == DEAL_ENTRY_IN) our_opens++;
+         if(HistoryDealGetInteger(t, DEAL_ENTRY) == DEAL_ENTRY_IN &&
+            HistoryDealGetInteger(t, DEAL_MAGIC) == Config.MagicNumber) our_opens++;   // A347: main strategy only
       }
       return true;
    }
@@ -280,7 +281,7 @@ public:
       }
    }
 
-   //--- Record a trade open (any of our magics, A336 #18)
+   //--- Record a trade open (main strategy only since A347; mix fills are not capped, as in the backtests)
    void OnTradeOpen()
    {
       m_stats.trade_count++;
@@ -289,6 +290,22 @@ public:
          m_max_trades_hit = true;
          Logger.Info("STATS",
             StringFormat("Max daily trades reached: %d", m_stats.trade_count));
+      }
+      Persistence.WriteDaily(m_stats);
+   }
+
+   //--- A347: a mix-strategy close only adds to the day's closed P&L (and the $ loss limit).
+   //    Trade count, win/loss streak, 3-loss pause and cooldown stay for the main strategy only,
+   //    exactly as in the backtests (they never applied these limits to the 12 mix strategies).
+   void OnMixTradeClose(double pnl)
+   {
+      m_stats.closed_pnl     += pnl;
+      m_stats.last_close_time = TimeCurrent();
+      if(m_stats.closed_pnl <= -(Config.DailyLossLimit) && !m_daily_limit_hit)
+      {
+         m_daily_limit_hit = true;
+         Logger.Warn("STATS", "Daily loss limit reached (mix close)",
+            StringFormat("closed_pnl=%.2f limit=%.2f", m_stats.closed_pnl, Config.DailyLossLimit));
       }
       Persistence.WriteDaily(m_stats);
    }
@@ -423,6 +440,31 @@ public:
 CDailyStats DailyStats;
 
 //--- A336 (#13 / G5): profitable days the official The5%ers way (see CDailyStats).
+
+//--- A347: E8 moves its static loss level up to the initial balance after the first payout.
+//    inp_FloorAfterPayoutPct > 0 (E8 funded preset: 101) lifts the EA floor to that % of the account
+//    size as soon as the account history shows a withdrawal (a negative balance deal). 0 = off.
+input double inp_FloorAfterPayoutPct = 0.0;   // A347: floor after first payout (% of account size, 0 = off)
+
+double FloorNow()
+{
+   static datetime checked = 0;
+   static bool     paid    = false;
+   if(inp_FloorAfterPayoutPct > 0.0 && !paid && TimeCurrent() - checked >= 60)
+   {
+      checked = TimeCurrent();
+      if(HistorySelect(0, TimeCurrent()))
+         for(int i = HistoryDealsTotal() - 1; i >= 0; i--)
+         {
+            ulong t = HistoryDealGetTicket(i);
+            if(t != 0 && HistoryDealGetInteger(t, DEAL_TYPE) == DEAL_TYPE_BALANCE &&
+               HistoryDealGetDouble(t, DEAL_PROFIT) < 0) { paid = true; break; }
+         }
+   }
+   if(paid) return MathMax(Config.EquityFloor, inp_FloorAfterPayoutPct / 100.0 * inp_AccountSize);
+   return Config.EquityFloor;
+}
+
 int CountProfitableDays()
 {
    return DailyStats.GetProfitableDays();

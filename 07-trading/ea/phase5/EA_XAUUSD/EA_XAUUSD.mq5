@@ -817,7 +817,7 @@ void OnTradeTransaction(
          double px  = HistoryDealGetDouble(trans.deal, DEAL_PRICE);
          g_txn_risk = (sl > 0 && ts > 0) ? MathAbs(px - sl) / ts * tv * vol : 0.0;
       }
-      DailyStats.OnTradeOpen();
+      if(main_magic) DailyStats.OnTradeOpen();          // A347: the 3-trades/day cap is for the main strategy only
       long dt = HistoryDealGetInteger(trans.deal, DEAL_TYPE);
       GuardPropFirm.RecordTradeDirection(dt == DEAL_TYPE_BUY ? DIR_LONG : DIR_SHORT);
       return;
@@ -846,8 +846,13 @@ void OnTradeTransaction(
       }
       double risk = main_magic ? ((pos == g_txn_pos) ? g_txn_risk : 0.0) : mix_risk;
       double rr = (risk > 0) ? pnl / risk : 0.0;
-      DailyStats.OnTradeClose(pnl, rr);
-      GuardCooldown.OnTradeClosed(TimeCurrent());
+      if(main_magic)
+      {
+         DailyStats.OnTradeClose(pnl, rr);
+         GuardCooldown.OnTradeClosed(TimeCurrent());
+      }
+      else
+         DailyStats.OnMixTradeClose(pnl);                  // A347: day P&L only, no streak/cooldown for the mix
       if(main_magic)
       {
          g_last_trade_r = (risk > 0) ? rr : (pnl > 0 ? 1.0 : -1.0);   // A325 streak sizing

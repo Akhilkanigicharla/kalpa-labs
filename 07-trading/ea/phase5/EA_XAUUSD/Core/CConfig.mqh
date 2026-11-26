@@ -239,7 +239,7 @@ public:
       ok &= ValidateDouble(inp_AccountSize,     1000, 500000, "AccountSize");
       ok &= ValidateInt(   inp_MinProfitDays,   0,    20,    "MinProfitDays");
       ok &= ValidateDouble(inp_ProfitDayPct,    0.0,  5.0,   "ProfitDayPct");
-      if(inp_EquityFloor  != 0) ok &= ValidateDouble(inp_EquityFloor,  0.5 * inp_AccountSize, inp_AccountSize, "EquityFloor");
+      if(inp_EquityFloor  != 0) ok &= ValidateDouble(inp_EquityFloor,  0.5 * inp_AccountSize, 2.0 * inp_AccountSize, "EquityFloor");   // above size: E8 Pro after 1st payout (floor = initial balance)
       if(inp_ProfitTarget != 0) ok &= ValidateDouble(inp_ProfitTarget, inp_AccountSize, 3 * inp_AccountSize, "ProfitTarget");
       ok &= ValidateDouble(inp_DailyLossLimit,  50,   2000,  "DailyLossLimit");
       ok &= ValidateInt(   inp_MaxDailyTrades,  1,    10,    "MaxDailyTrades");

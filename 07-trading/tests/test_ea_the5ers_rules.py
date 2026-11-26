@@ -91,7 +91,7 @@ def test_6_mix_passes_guards():
     m = src("Execution/CMixEngine.mqh")
     gate = body(m, "bool GateOk(string &why)", 2500)
     for g in ["GuardRollover.Evaluate", "SpreadGuard.Evaluate", "GuardCircuitBrk.Evaluate",
-              "GuardNews.Evaluate", "GuardCooldown.Evaluate", "GuardSession.IsHardClosed",
+              "GuardNews.Evaluate", "GuardSession.IsHardClosed",   # A347: cooldown is main-strategy only
               "NewsBlackout(", "MarketCalm(", "NewEntryBlocked("]:
         assert g in gate, g
     assert 'CancelPendings("gate:" + why)' in m
@@ -285,3 +285,18 @@ def test_news_derisk_cuts_book_before_scheduled_news():
     assert "DailyStats.GetDayBase()" in s and "side * net <= 0" in s          # only closes positions that shrink the net book
     m = _ea("EA_XAUUSD/EA_XAUUSD.mq5")
     assert m.count("NewsDerisk();") == 2                                         # every tick and every timer second
+
+
+def test_trade_cap_and_streak_pauses_apply_to_main_strategy_only():
+    m = _ea("EA_XAUUSD/EA_XAUUSD.mq5")
+    assert "if(main_magic) DailyStats.OnTradeOpen();" in m and "DailyStats.OnMixTradeClose(pnl);" in m
+    assert "GuardCooldown.Evaluate" not in _ea("EA_XAUUSD/Execution/CMixEngine.mqh")
+    assert "== Config.MagicNumber) our_opens++" in _ea("EA_XAUUSD/Core/CDailyStats.mqh")
+
+
+def test_presets_send_real_orders_and_funded_floor_rises_after_payout():
+    for f in ("E8_Pro_10K_challenge.set", "E8_Pro_10K_funded.set", "The5ers_HighStakes_10K_step1.set"):
+        assert "inp_DryRun=false" in _ea("presets/" + f)
+    assert "inp_FloorAfterPayoutPct=101" in _ea("presets/E8_Pro_10K_funded.set")
+    assert "double FloorNow()" in _ea("EA_XAUUSD/Core/CDailyStats.mqh")
+    assert "FloorNow()" in _ea("EA_XAUUSD/Guards/CGuardCoordinator.mqh")

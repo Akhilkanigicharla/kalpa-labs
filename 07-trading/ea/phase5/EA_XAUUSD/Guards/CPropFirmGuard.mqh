@@ -188,7 +188,7 @@ public:
 
       //--- [P1] Hard equity floor — CRITICAL
       //    Use live equity from context (pre-populated this tick)
-      if(ctx.equity <= Config.EquityFloor)
+      if(ctx.equity <= FloorNow())
       {
          m_lock_engaged  = true;
          m_lock_time     = TimeCurrent();

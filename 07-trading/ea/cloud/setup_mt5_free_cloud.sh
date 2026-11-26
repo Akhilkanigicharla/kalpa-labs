@@ -2,7 +2,7 @@
 # A334: run the Kalpa gold EA 24/5 on a FREE Oracle Cloud server (Always Free tier), no PC needed.
 #
 #   Works on:  Oracle "VM.Standard.E2.1.Micro" (x86, 1 GB RAM)  -> normal Wine (WineHQ stable) + 4 GB swap
-#              Oracle "VM.Standard.A1.Flex"   (ARM, up to 24 GB) -> Hangover 11.4 (Wine for ARM; Box64 is
+#              Oracle "VM.Standard.A1.Flex"   (ARM, 2 OCPU + 12 GB free in total; use 1 OCPU + 6 GB) -> Hangover 11.4 (Wine for ARM; Box64 is
 #              detected by MT5 as a debugger, see research notes in 07-trading/ea/cloud/README.md)
 #   OS:        Ubuntu 24.04 (Canonical image in the Oracle console)
 #
@@ -12,7 +12,7 @@
 #   3. MetaTrader 5 from metaquotes' official installer
 #   4. the EA: downloads the zip you give it (or uses ./EA_XAUUSD), copies it into MQL5/Experts
 #   5. COMPILES the EA with MetaEditor and prints the error count + log (send it to Claude if > 0)
-#   6. asks YOU for the The5%ers login, server and password (typed here only; stored in a file only
+#   6. asks YOU for the MT5 login, server and password (demo, then E8) (typed here only; stored in a file only
 #      root and the mt5 user can read; never sent anywhere else)
 #   MT5 runs in /portable mode so MQL5/ lives inside the install folder (as in the ARM write-up).
 #   7. systemd services: invisible screen + MT5 with the EA on XAUUSD H1, auto-start on boot,
@@ -106,6 +106,10 @@ if [ -n "$EA_SRC" ]; then
   esac
   run unzip -q -o "${W}/ea.zip" -d "$W"
   SRC_DIR="$(find "$W" -maxdepth 3 -type d -name "$EA_NAME" | head -1)"
+  if [ -z "$SRC_DIR" ] && [ "$DRY_RUN" != "1" ]; then  # the whole kit zip was given: open the EA zip inside it
+    find "$W" -maxdepth 2 -name '*.zip' ! -path "${W}/ea.zip" -exec unzip -q -o {} -d "${W}/inner" \;
+    SRC_DIR="$(find "${W}/inner" -maxdepth 3 -type d -name "$EA_NAME" 2>/dev/null | head -1)"
+  fi
 elif [ -d "./${EA_NAME}" ]; then SRC_DIR="./${EA_NAME}"
 else SRC_DIR=""; fi
 if [ "$DRY_RUN" != "1" ]; then [ -n "$SRC_DIR" ] && [ -f "${SRC_DIR}/${EA_NAME}.mq5" ] || fail "EA folder ${EA_NAME} not found (give the zip path)"; fi
@@ -145,7 +149,7 @@ if [ "$DRY_RUN" = "1" ]; then
 else
   read -r -p "    MT5 login number: " LOGIN
   read -r -p "    MT5 server (exactly as shown by your broker or prop firm): " SERVER
-  read -r -s -p "    MT5 password (not shown): " PASS; echo
+  IFS= read -r -s -p "    MT5 password (not shown): " PASS; echo
   [[ "$LOGIN" =~ ^[0-9]{4,12}$ ]] || fail "login must be the account number"
   [[ "$SERVER" =~ ^[A-Za-z0-9._-]{3,64}$ ]] || fail "server name looks wrong"
   umask 077
@@ -175,6 +179,7 @@ fi
 
 say "7/7 Run forever (systemd)"
 if [ "$DRY_RUN" != "1" ]; then
+WINE_BIN="$(command -v wine)"
 cat > /etc/systemd/system/kalpa-xvfb.service <<EOF
 [Unit]
 Description=Invisible screen for MT5
@@ -194,7 +199,7 @@ Requires=kalpa-xvfb.service
 [Service]
 User=${MT5_USER}
 Environment=WINEPREFIX=${PREFIX} DISPLAY=:99 WINEDEBUG=-all
-ExecStart=/usr/bin/wine "C:/Program Files/MetaTrader 5/terminal64.exe" /portable "/config:C:/Program Files/MetaTrader 5/kalpa_start.ini"
+ExecStart=${WINE_BIN} "C:/Program Files/MetaTrader 5/terminal64.exe" /portable "/config:C:/Program Files/MetaTrader 5/kalpa_start.ini"
 Restart=always
 RestartSec=30
 [Install]
@@ -205,7 +210,7 @@ cat > /etc/systemd/system/kalpa-watchdog.service <<'EOF'
 Description=Restart MT5 if terminal64 is not running
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'pgrep -f terminal64.exe >/dev/null || systemctl restart kalpa-mt5'
+ExecStart=/bin/sh -c 'pgrep -f "[t]erminal64[.]exe" >/dev/null || systemctl restart kalpa-mt5'
 EOF
 cat > /etc/systemd/system/kalpa-watchdog.timer <<'EOF'
 [Unit]
@@ -217,7 +222,9 @@ OnUnitActiveSec=5min
 WantedBy=timers.target
 EOF
 systemctl daemon-reload
-systemctl enable --now kalpa-xvfb kalpa-mt5 kalpa-watchdog.timer
+pkill -f "^Xvfb :99" || true   # the temporary screen from step 3; the service takes over :99
+systemctl enable kalpa-xvfb kalpa-mt5 kalpa-watchdog.timer
+systemctl restart kalpa-xvfb kalpa-mt5 kalpa-watchdog.timer   # restart, so a re-run loads the new login, preset and EA
 sleep 60
 if pgrep -f terminal64.exe >/dev/null; then ok "MT5 is running with the EA"; else fail "MT5 not running: journalctl -u kalpa-mt5 -n 50"; fi
 else

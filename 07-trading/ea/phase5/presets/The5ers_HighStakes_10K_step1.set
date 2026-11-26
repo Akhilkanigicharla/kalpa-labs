@@ -10,3 +10,5 @@ inp_DailyProfitCapPct=0
 inp_MetalLeverage=25
 inp_ProfitTarget=0
 inp_EquityFloor=0
+; A347: send real orders
+inp_DryRun=false

@@ -49,7 +49,7 @@ def main():
     mix = pd.concat([cand[k]().assign(strategy=k) for k in em.MIX])
     ea = em.ea_rules_trades(fr)[["t_in", "t_out", "side", "r", "strategy"]]
     allt = pd.concat([mix[["t_in", "t_out", "side", "r", "strategy"]], ea])
-    kw = dict(mix_risk=float(sys.argv[3]) / 100 if len(sys.argv) > 3 else 0.004, weights=em.WEIGHTS_2026_11_21, friday_cut=0.0125, gap_pct=0.0375, gap_budget=0.03,
+    kw = dict(mix_risk=float(sys.argv[3]) / 100 if len(sys.argv) > 3 else 0.004, weights=em.WEIGHTS_2026_11_21, friday_cut=0.0125, gap_pct=0.0375, gap_budget=float(sys.argv[4]) / 100 if len(sys.argv) > 4 else 0.03,
               extra_cost=0.30, min_stop=1.5, lot_cap=0.10, day_stop_eq=float(sys.argv[2]) if len(sys.argv) > 2 else 0.015, eq_floor=INIT * 0.93, day_profit_cap=0.02,
               margin_lev=15.0)
     p, mt, ck = S.run(allt, fr, kw)

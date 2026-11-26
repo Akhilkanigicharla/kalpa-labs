@@ -77,7 +77,7 @@ public:
 
       //--- Equity floor: never open a new trade below the floor
       double equity = AccountInfoDouble(ACCOUNT_EQUITY);
-      if(equity <= Config.EquityFloor)
+      if(equity <= FloorNow())
       {
          Logger.Warn("POS_SIZER",
             StringFormat("Equity %.2f <= floor %.2f — refusing to size",

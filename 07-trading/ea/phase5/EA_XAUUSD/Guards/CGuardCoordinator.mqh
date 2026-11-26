@@ -407,7 +407,7 @@ private:
          req.type_filling = ((fill & SYMBOL_FILLING_FOK) != 0) ? ORDER_FILLING_FOK
                           : (((fill & SYMBOL_FILLING_IOC) != 0) ? ORDER_FILLING_IOC : ORDER_FILLING_RETURN);
          req.deviation = (ulong)MathMax(50.0, MathRound(Config.PipsToPoints(Config.SlippageMax) * 4));
-         req.magic     = Config.MagicNumber;
+         req.magic     = (ulong)PositionGetInteger(POSITION_MAGIC);   // review 26 Nov: keep the position's own magic (mix streaks)
          req.comment   = "emergency_" + reason;
 
          bool ok = OrderSend(req, res);
@@ -478,7 +478,7 @@ public:
       // acting on it would close everything and latch FATAL. Nothing can be sent anyway.
       if(eq <= 0.0) return true;
       bool terminal = StateManager.IsTerminal();
-      if(eq <= Config.EquityFloor)
+      if(eq <= FloorNow())
       {
          if(!terminal)
          {
@@ -504,8 +504,12 @@ public:
       }
       //--- A337 (E8 Pro): only inp_DailyProfitCapPct of the initial balance per day counts toward target/payout,
       //    so once the day is that far up, bank it: close all and stop for the day.
-      if(inp_DailyProfitCapPct > 0.0 && day_base > 0 &&
-         eq >= day_base + inp_DailyProfitCapPct / 100.0 * inp_AccountSize)
+      //    E8 measures the cap from the day's START BALANCE (help centre: day starts at $101,000 ->
+      //    cap limit $103,000), so floating profit carried over midnight must not raise our line.
+      double cap_base = DailyStats.GetStartBalance();
+      if(cap_base <= 0.0) cap_base = day_base;
+      if(inp_DailyProfitCapPct > 0.0 && cap_base > 0 &&
+         eq >= cap_base + inp_DailyProfitCapPct / 100.0 * inp_AccountSize)
       {
          if(HasAnyOurPosition()) EmergencyCloseAll("daily_profit_cap");
          CancelAllPendingOrders("daily_profit_cap");
@@ -729,7 +733,7 @@ public:
       // Fast equity check — always runs, bypasses throttle
       // This is our last line of defense against account termination
       double current_equity = AccountInfoDouble(ACCOUNT_EQUITY);
-      if(current_equity <= Config.EquityFloor)
+      if(current_equity <= FloorNow())
       {
          // Don't even wait for throttle — this is CRITICAL
          GuardEvalResult fatal = GuardFatal(GPRIO_PROP_FIRM, "EQUITY_FAST_CHECK", 0,

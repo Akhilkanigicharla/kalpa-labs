@@ -474,7 +474,7 @@ void NewsDerisk()
       {
          ulong t = PositionGetTicket(i);
          if(t == 0 || PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-         if(!Config.IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+         if(!IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
          double vol = PositionGetDouble(POSITION_VOLUME);
          net += (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? vol : -vol;
       }
@@ -485,13 +485,17 @@ void NewsDerisk()
       {
          ulong t = PositionGetTicket(i);
          if(t == 0 || PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-         if(!Config.IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+         if(!IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
          int side = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? 1 : -1;
          if(side * net <= 0) continue;
          double key = (PositionGetDouble(POSITION_PROFIT) < 0 ? 1e6 : 0.0) + PositionGetDouble(POSITION_VOLUME);
          if(key > best_key) { best_key = key; pick = t; }
       }
       if(pick == 0) return;
+      //--- review 26 Nov: the closing deal carries the request magic. Use the position's own magic,
+      //    else the close is magic 0 and OnTradeTransaction/daily stats/streaks never see it.
+      if(!PositionSelectByTicket(pick)) continue;
+      tr.SetExpertMagicNumber((ulong)PositionGetInteger(POSITION_MAGIC));
       if(!tr.PositionClose(pick))
       {
          Logger.Error("NEWS_DERISK", StringFormat("close failed ticket=%I64u retcode=%u", pick, tr.ResultRetcode()), "");

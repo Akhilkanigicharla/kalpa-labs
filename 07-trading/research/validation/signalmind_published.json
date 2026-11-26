@@ -1,0 +1,482 @@
+[
+{
+"t": "2026-11-26 10:45:00",
+"side": "SELL",
+"entry": 3555.08,
+"stop": 3572.48,
+"target": 3416.15,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 12:30:00",
+"side": "BUY",
+"entry": 3510.62,
+"stop": 3483.55,
+"target": 3537.39,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 12:00:00",
+"side": "SELL",
+"entry": 3490.58,
+"stop": 3534.33,
+"target": 3447.13,
+"result": "TARGET"
+},
+{
+"t": "2026-11-25 10:15:00",
+"side": "BUY",
+"entry": 3533.56,
+"stop": 3522.2,
+"target": 3544.62,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 05:45:00",
+"side": "SELL",
+"entry": 3575.38,
+"stop": 3586.34,
+"target": 3564.72,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 04:30:00",
+"side": "SELL",
+"entry": 3594.98,
+"stop": 3603.26,
+"target": 3587.0,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 02:30:00",
+"side": "BUY",
+"entry": 3565.54,
+"stop": 3532.38,
+"target": 3598.4,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-25 01:15:00",
+"side": "SELL",
+"entry": 3540.24,
+"stop": 3559.67,
+"target": 3521.11,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-24 23:30:00",
+"side": "BUY",
+"entry": 3566.49,
+"stop": 3549.07,
+"target": 3583.61,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-24 16:00:00",
+"side": "SELL",
+"entry": 3569.0,
+"stop": 3681.39,
+"target": 3456.91,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 15:00:00",
+"side": "SELL",
+"entry": 3622.16,
+"stop": 3682.35,
+"target": 3562.27,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 14:30:00",
+"side": "SELL",
+"entry": 3618.84,
+"stop": 3633.96,
+"target": 3588.9,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 14:00:00",
+"side": "SELL",
+"entry": 3615.06,
+"stop": 3651.83,
+"target": 3321.17,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 13:45:00",
+"side": "SELL",
+"entry": 3616.98,
+"stop": 3640.66,
+"target": 3427.82,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 11:30:00",
+"side": "SELL",
+"entry": 3643.01,
+"stop": 3648.42,
+"target": 3632.51,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 10:30:00",
+"side": "BUY",
+"entry": 3622.82,
+"stop": 3614.47,
+"target": 3630.87,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 09:00:00",
+"side": "SELL",
+"entry": 3619.1,
+"stop": 3678.53,
+"target": 3559.97,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 08:45:00",
+"side": "BUY",
+"entry": 3611.14,
+"stop": 3605.86,
+"target": 3616.12,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 08:30:00",
+"side": "SELL",
+"entry": 3610.0,
+"stop": 3667.82,
+"target": 3147.75,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 03:15:00",
+"side": "SELL",
+"entry": 3633.06,
+"stop": 3668.5,
+"target": 3349.8,
+"result": "TARGET"
+},
+{
+"t": "2026-11-24 01:00:00",
+"side": "BUY",
+"entry": 3669.4,
+"stop": 3618.45,
+"target": 3720.05,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-24 00:30:00",
+"side": "BUY",
+"entry": 3645.54,
+"stop": 3625.98,
+"target": 3664.8,
+"result": "TARGET"
+},
+{
+"t": "2026-11-23 23:45:00",
+"side": "SELL",
+"entry": 3627.87,
+"stop": 3648.27,
+"target": 3464.99,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-23 18:45:00",
+"side": "SELL",
+"entry": 3648.94,
+"stop": 3665.65,
+"target": 3632.53,
+"result": "TARGET"
+},
+{
+"t": "2026-11-23 12:30:00",
+"side": "BUY",
+"entry": 3614.87,
+"stop": 3611.18,
+"target": 3621.92,
+"result": "TARGET"
+},
+{
+"t": "2026-11-23 11:00:00",
+"side": "BUY",
+"entry": 3624.58,
+"stop": 3600.62,
+"target": 3672.22,
+"result": "TARGET"
+},
+{
+"t": "2026-11-23 09:15:00",
+"side": "SELL",
+"entry": 3617.99,
+"stop": 3622.27,
+"target": 3614.01,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-23 08:15:00",
+"side": "SELL",
+"entry": 3620.84,
+"stop": 3626.17,
+"target": 3615.81,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-23 08:00:00",
+"side": "SELL",
+"entry": 3628.02,
+"stop": 3632.64,
+"target": 3619.09,
+"result": "TARGET"
+},
+{
+"t": "2026-11-23 07:45:00",
+"side": "SELL",
+"entry": 3633.52,
+"stop": 3638.59,
+"target": 3628.75,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-20 13:00:00",
+"side": "SELL",
+"entry": 3573.28,
+"stop": 3586.97,
+"target": 3559.89,
+"result": "TARGET"
+},
+{
+"t": "2026-11-20 12:00:00",
+"side": "SELL",
+"entry": 3574.66,
+"stop": 3591.23,
+"target": 3558.39,
+"result": "TARGET"
+},
+{
+"t": "2026-11-20 07:00:00",
+"side": "BUY",
+"entry": 3560.74,
+"stop": 3517.31,
+"target": 3603.87,
+"result": "TARGET"
+},
+{
+"t": "2026-11-19 04:45:00",
+"side": "SELL",
+"entry": 3735.28,
+"stop": 3747.16,
+"target": 3711.82,
+"result": "TARGET"
+},
+{
+"t": "2026-11-19 03:15:00",
+"side": "SELL",
+"entry": 3700.07,
+"stop": 3756.41,
+"target": 3587.7,
+"result": "TARGET"
+},
+{
+"t": "2026-11-19 03:00:00",
+"side": "SELL",
+"entry": 3709.37,
+"stop": 3809.98,
+"target": 3609.06,
+"result": "TARGET"
+},
+{
+"t": "2026-11-19 02:45:00",
+"side": "SELL",
+"entry": 3733.64,
+"stop": 3759.83,
+"target": 3681.57,
+"result": "TARGET"
+},
+{
+"t": "2026-11-18 23:45:00",
+"side": "BUY",
+"entry": 3743.01,
+"stop": 3721.68,
+"target": 3764.04,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-18 14:00:00",
+"side": "BUY",
+"entry": 3782.34,
+"stop": 3741.53,
+"target": 3822.86,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 18:45:00",
+"side": "SELL",
+"entry": 3858.46,
+"stop": 3880.78,
+"target": 3680.18,
+"result": "TARGET"
+},
+{
+"t": "2026-11-17 14:45:00",
+"side": "BUY",
+"entry": 3867.37,
+"stop": 3835.86,
+"target": 3898.58,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 14:30:00",
+"side": "BUY",
+"entry": 3857.42,
+"stop": 3851.34,
+"target": 3869.27,
+"result": "TARGET"
+},
+{
+"t": "2026-11-17 14:15:00",
+"side": "BUY",
+"entry": 3846.34,
+"stop": 3835.87,
+"target": 3856.51,
+"result": "TARGET"
+},
+{
+"t": "2026-11-17 13:45:00",
+"side": "SELL",
+"entry": 3846.34,
+"stop": 3858.69,
+"target": 3834.29,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 12:00:00",
+"side": "BUY",
+"entry": 3868.16,
+"stop": 3851.94,
+"target": 3884.08,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 10:15:00",
+"side": "SELL",
+"entry": 3856.91,
+"stop": 3871.81,
+"target": 3737.98,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 10:15:00",
+"side": "SELL",
+"entry": 3856.91,
+"stop": 3868.2,
+"target": 3845.92,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-17 08:15:00",
+"side": "SELL",
+"entry": 3864.4,
+"stop": 3880.5,
+"target": 3848.6,
+"result": "TARGET"
+},
+{
+"t": "2026-11-17 02:00:00",
+"side": "BUY",
+"entry": 3868.47,
+"stop": 3842.61,
+"target": 3894.03,
+"result": "TARGET"
+},
+{
+"t": "2026-11-17 01:15:00",
+"side": "SELL",
+"entry": 3853.14,
+"stop": 3864.52,
+"target": 3842.06,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 23:15:00",
+"side": "BUY",
+"entry": 3853.08,
+"stop": 3847.91,
+"target": 3863.12,
+"result": "TARGET"
+},
+{
+"t": "2026-11-16 18:15:00",
+"side": "SELL",
+"entry": 3845.29,
+"stop": 3869.43,
+"target": 3652.5,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 18:15:00",
+"side": "SELL",
+"entry": 3845.29,
+"stop": 3868.27,
+"target": 3822.61,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 15:30:00",
+"side": "SELL",
+"entry": 3865.06,
+"stop": 3890.08,
+"target": 3840.34,
+"result": "TARGET"
+},
+{
+"t": "2026-11-16 09:30:00",
+"side": "BUY",
+"entry": 3858.04,
+"stop": 3853.04,
+"target": 3862.74,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 09:00:00",
+"side": "SELL",
+"entry": 3865.99,
+"stop": 3890.32,
+"target": 3841.96,
+"result": "TARGET"
+},
+{
+"t": "2026-11-16 06:00:00",
+"side": "SELL",
+"entry": 3837.17,
+"stop": 3870.65,
+"target": 3803.99,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 06:00:00",
+"side": "SELL",
+"entry": 3837.17,
+"stop": 3929.44,
+"target": 3745.2,
+"result": "TARGET"
+},
+{
+"t": "2026-11-16 04:45:00",
+"side": "SELL",
+"entry": 3879.85,
+"stop": 3883.83,
+"target": 3876.17,
+"result": "STOPPED"
+},
+{
+"t": "2026-11-16 03:00:00",
+"side": "SELL",
+"entry": 3874.69,
+"stop": 3888.8,
+"target": 3860.88,
+"result": "TARGET"
+}
+]

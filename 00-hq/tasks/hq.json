@@ -1237,11 +1237,12 @@
     "details": "Read the A342 line. For each of the 20 laws named there, write one row: law name, one-sentence plain-English meaning, one concrete check a builder can tick on a 390 px phone page (e.g. 'primary button is the only filled button on screen' for Von Restorff), and the lawsofux.com page URL for it (mark 'unverified' if unsure the page exists). No other sources, no invented studies or numbers.",
     "min_items": 20,
     "tries": 1,
-    "status": "review",
+    "status": "done",
     "priority": "P2",
     "created": "2026-11-26T12:00:00Z",
-    "updated": "2026-11-26T12:42:13Z",
-    "output": "00-hq/knowledge/K171.md"
+    "updated": "2026-11-27T00:00:00Z",
+    "output": "00-hq/knowledge/K171.md",
+    "note": "Used for A342 as a starting point only: its list swapped in Fitts/Hick/Jakob/Miller/Postel/Continuity/Closure instead of Akhil's 20 laws and its links were unverified; Claude rewrote the table with the 20 named laws and live-checked links."
   },
   {
     "id": "K178",
@@ -1256,7 +1257,24 @@
     "min_items": 5,
     "tries": 0,
     "status": "todo",
-    "priority": "P3",
+    "priority": "P2",
+    "created": "2026-11-27T00:00:00Z",
+    "updated": "2026-11-27T00:00:00Z"
+  },
+  {
+    "id": "K179",
+    "world": "hq",
+    "owner": "Quill",
+    "title": "A343 prep: freellmapi facts check",
+    "read": [
+      "00-hq/DELEGATE.md",
+      "00-hq/research/reels-2026-11-26.md"
+    ],
+    "details": "For roadmap A343 (freellmapi as the internal free-model router for delegation): from the project's own GitHub page and one second source, list in a 6-row table: licence (exact file name), stars, last commit date, which free providers it supports, how keys are stored, and whether it needs a server that must stay on. Mark anything you could not open 'unverified'. Then 3 lines: how it would fit the DELEGATE.md 'Second route' and one risk. No install steps, no invented numbers.",
+    "min_items": 6,
+    "tries": 0,
+    "status": "todo",
+    "priority": "P2",
     "created": "2026-11-27T00:00:00Z",
     "updated": "2026-11-27T00:00:00Z"
   }

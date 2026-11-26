@@ -1161,11 +1161,12 @@
   "details": "Read the A228 line and the workflow file. List the most likely causes of a GitHub Actions 'startup failure' for this file (invalid YAML/expression, unknown input, missing permission, bad action version, reusable workflow ref), each with GitHub docs URL and the exact line in the workflow that could trigger it. 'unverified' without a docs URL.",
   "min_items": 4,
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-21T19:30:00Z",
-  "updated": "2026-11-21T16:46:32Z",
-  "output": "00-hq/knowledge/K164.md"
+  "updated": "2026-11-26T10:40:00Z",
+  "output": "00-hq/knowledge/K164.md",
+  "review_note": "Used as a checklist only (its lines were all UNVERIFIED). Real cause found by Claude: run 43098174765 created 0 jobs; the same workflow file (unchanged since 7689493) ran green in 43261011326 and 45803256028, and actionlint runs on every push, so it was a GitHub-side start-up failure on a dispatch sent 8 s after the push."
  },
  {
   "id": "K165",

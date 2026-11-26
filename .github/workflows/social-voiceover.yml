@@ -7,6 +7,9 @@
 # our own synthesised sounds (earshot only once Akhil okays installing it), an optional CC0 Openverse recording,
 # mixed under the voice with ffmpeg, plus a 9:16 test MP4, credits.txt and a sync + loudness report.
 # "sfx_only" skips Parler and tests the SFX step on a quick espeak-ng voice (no secret needed).
+# A228: run 43098174765 (11 Nov) was a GitHub "startup_failure" with 0 jobs, dispatched 8 s after the push that
+# changed this file; the same file then ran green twice and passes actionlint (quality.yml). If it happens again,
+# wait a minute after pushing and press Re-run; only change this file if actionlint fails.
 name: Social voice-over
 on:
   workflow_dispatch:

@@ -101,7 +101,9 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
               extra_cost: float = 0.0, min_stop: float = 0.0, lot_cap: float | None = None,
               day_stop_eq: float | None = None, eq_floor: float | None = None, curve: bool = False,
               gap_pct: float | None = None, gap_budget: float = 0.03, day_profit_cap: float | None = None,
-              margin_lev: float | None = None, margin_use: float = 0.5):
+              margin_lev: float | None = None, margin_use: float = 0.5,
+              shock_pct: float | None = None, shock_budget: float = 0.02,
+              derisk_at: set | None = None, derisk_shock: float = 0.03, derisk_budget: float = 0.02):
     """EA portfolio replay.  Defaults = the A329 behaviour (closed-loss 4% day stop, no MTM rules).
 
     Options (21 Nov 2026, mirroring the EA changes):
@@ -117,6 +119,11 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
       eq_floor     if equity <= this ($), close all and stop trading for good
       day_profit_cap (A337, E8 Pro) once equity is day_profit_cap x START above the day base, close all and stop for
                    the day (E8 only counts 2%/day toward target and payouts)
+      shock_pct    (A346) skip an entry if an instant jump of shock_pct against the whole net book (stops skipped)
+                   would lose more than shock_budget x START minus what the day has already lost
+      derisk_at    (A346) bar times (CPI/NFP/FOMC and the daily break) where the net book is cut, losers first then
+                   biggest lot, until a derisk_shock jump would lose <= derisk_budget x START minus today's loss;
+                   no new entries on those bars
       margin_lev   (A337) skip an entry if all open lots + this one need more than margin_use x equity at this
                    leverage (E8 metals 1:15; EA uses 50% of free margin)
       gap_pct      (A336) at the Friday cut also assume a weekend gap of gap_pct jumps every stop: worst loss of a
@@ -178,7 +185,14 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
         if why:
             for p in list(open_pos):
                 close(p, m[id(p)], c, why)
-        elif c in fri:
+        elif derisk_at is not None and c in derisk_at:
+            room = derisk_budget * START - max(0.0, st["ref"] - eq)
+            netf = lambda: abs(sum(q["lot"] * q["side"] for q in open_pos)) * USD_PER_LOT_PER_DOLLAR * px * derisk_shock
+            for p in sorted(open_pos, key=lambda z: (m[id(z)] >= 0, -z["lot"])):
+                if netf() <= room:
+                    break
+                close(p, m[id(p)], c, "derisk")
+        if not why and c in fri:
             if sum(p["risk"] for p in open_pos) > friday_cut * START:
                 for p in sorted(open_pos, key=lambda z: m[id(z)]):
                     if sum(q["risk"] for q in open_pos) <= friday_cut * START:
@@ -260,6 +274,13 @@ def portfolio(trades: pd.DataFrame, fr, ea_risk: float, mix_risk: float = 0.0025
             if open_mix + risk_usd > cap * START:
                 continue
         e0 = open_px.asof(row.t_in)
+        if derisk_at is not None and row.t_in.floor("h") in derisk_at:
+            continue
+        if shock_pct is not None:
+            net = sum(p["lot"] * p["side"] for p in open_pos) + lot * row.side
+            room = shock_budget * START - max(0.0, st["ref"] - st["eq"])
+            if abs(net) * USD_PER_LOT_PER_DOLLAR * float(e0) * shock_pct > room:
+                continue
         if margin_lev is not None:
             lots_open = sum(p["lot"] for p in open_pos) + lot
             if lots_open * USD_PER_LOT_PER_DOLLAR * float(e0) / margin_lev > margin_use * st["eq"]:

@@ -277,3 +277,11 @@ def test_official_us_schedule_backup_in_news_guard():
     assert "const datetime KALPA_US_EVENTS_UTC[]" in s and "ScheduledEventNear(win, why)" in s
     assert "D'2027.12.10 13:30'" in s and "D'2027.01.27 19:00'" in s      # last CPI, first 2027 FOMC
     assert s.count("if(ScheduleCovers())") == 2                          # used only when the MT5 calendar fails
+
+
+def test_news_derisk_cuts_book_before_scheduled_news():
+    s = _ea("EA_XAUUSD/Intelligence/CMSNREngine.mqh")
+    assert "void NewsDerisk()" in s and "inp_JumpPct" in s and "inp_JumpBudgetPct" in s
+    assert "DailyStats.GetDayBase()" in s and "side * net <= 0" in s          # only closes positions that shrink the net book
+    m = _ea("EA_XAUUSD/EA_XAUUSD.mq5")
+    assert m.count("NewsDerisk();") == 2                                         # every tick and every timer second

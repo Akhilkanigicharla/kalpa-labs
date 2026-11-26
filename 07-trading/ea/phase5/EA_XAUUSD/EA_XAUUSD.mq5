@@ -375,6 +375,7 @@ void OnTick()
 
    // --- A320/A336: equity floor + daily stop on EVERY tick, in EVERY state (terminal included, #5)
    bool safe = GuardCoordinator.FastSafetyCheck();
+   NewsDerisk();                                            // A346: cut the book before scheduled news
 
    // --- A336 (#2): Friday weekend-gap cut (cancel pendings, shrink open risk)
    GuardCoordinator.WeekendRiskCut();
@@ -746,6 +747,7 @@ void OnTimer()
    //       the Friday cut run each second; the rest only on the minute tick.
    TimerSystem.OnTimerFire();
    GuardCoordinator.FastSafetyCheck();
+   NewsDerisk();                                            // A346
    GuardCoordinator.WeekendRiskCut();
    if(!TimerSystem.IsMinuteTick()) return;
 

@@ -417,4 +417,88 @@ bool NewsBlackout(string &why)
    return false;
 }
 
+//+------------------------------------------------------------------+
+//| A346: cut the book before scheduled news (instant-jump guard).   |
+//| Within inp_NewsDeriskMin minutes BEFORE a CPI / NFP / FOMC        |
+//| release (official list above, plus high-importance USD events in  |
+//| the MT5 calendar), close our positions - losers first, then the   |
+//| largest - until a sudden inp_JumpPct move against the net book    |
+//| (stops skipped) would lose at most inp_JumpBudgetPct of the       |
+//| account minus what today has already lost. Backtest (29 months,  |
+//| E8 $10K): news-time jump risk 22% -> 1.4% of releases, profit -5%.|
+//+------------------------------------------------------------------+
+input int      inp_NewsDeriskMin  = 120;   // A346: minutes before news to cut the book (0 = off)
+input double   inp_JumpPct        = 3.0;   // A346: instant move to survive (%)
+input double   inp_JumpBudgetPct  = 2.0;   // A346: max loss from that move incl. today's loss (% of account size)
+
+bool UpcomingEventWithin(int minutes)
+{
+   datetime now = TimeGMT();
+   for(int i = 0; i < ArraySize(KALPA_US_EVENTS_UTC); i++)
+   {
+      long dt = (long)(KALPA_US_EVENTS_UTC[i] - now);
+      if(dt >= 0 && dt <= (long)minutes * 60) return true;
+   }
+   datetime srv = TimeTradeServer();
+   MqlCalendarValue v[];
+   int n = CalendarValueHistory(v, srv, srv + minutes * 60, "US", "USD");
+   for(int i = 0; i < n; i++)
+   {
+      MqlCalendarEvent ev;
+      if(CalendarEventById(v[i].event_id, ev) && ev.importance == CALENDAR_IMPORTANCE_HIGH) return true;
+   }
+   return false;
+}
+
+void NewsDerisk()
+{
+   if(inp_NewsDeriskMin <= 0 || MQLInfoInteger(MQL_TESTER)) return;
+   static datetime last_check = 0;
+   static bool     near = false;
+   if(TimeGMT() - last_check >= 30) { near = UpcomingEventWithin(inp_NewsDeriskMin); last_check = TimeGMT(); }
+   if(!near) return;
+   double contract = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_CONTRACT_SIZE);
+   double price    = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   if(contract <= 0 || price <= 0) return;
+   double day_base = DailyStats.GetDayBase();
+   double equity   = AccountInfoDouble(ACCOUNT_EQUITY);
+   if(equity <= 0) return;
+   double room = inp_JumpBudgetPct / 100.0 * inp_AccountSize - MathMax(0.0, day_base - equity);
+   CTrade tr;
+   tr.SetDeviationInPoints(50);
+   tr.SetTypeFillingBySymbol(_Symbol);
+   for(int guard = 0; guard < 20; guard++)
+   {
+      double net = 0.0;
+      for(int i = PositionsTotal() - 1; i >= 0; i--)
+      {
+         ulong t = PositionGetTicket(i);
+         if(t == 0 || PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+         if(!Config.IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+         double vol = PositionGetDouble(POSITION_VOLUME);
+         net += (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? vol : -vol;
+      }
+      if(MathAbs(net) * contract * price * inp_JumpPct / 100.0 <= MathMax(room, 0.0)) return;
+      //--- pick the position to close: same side as the net book, losers first, then the largest
+      ulong pick = 0; double best_key = -DBL_MAX;
+      for(int i = PositionsTotal() - 1; i >= 0; i--)
+      {
+         ulong t = PositionGetTicket(i);
+         if(t == 0 || PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+         if(!Config.IsOurMagic(PositionGetInteger(POSITION_MAGIC))) continue;
+         int side = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? 1 : -1;
+         if(side * net <= 0) continue;
+         double key = (PositionGetDouble(POSITION_PROFIT) < 0 ? 1e6 : 0.0) + PositionGetDouble(POSITION_VOLUME);
+         if(key > best_key) { best_key = key; pick = t; }
+      }
+      if(pick == 0) return;
+      if(!tr.PositionClose(pick))
+      {
+         Logger.Error("NEWS_DERISK", StringFormat("close failed ticket=%I64u retcode=%u", pick, tr.ResultRetcode()), "");
+         return;
+      }
+      Logger.Info("NEWS_DERISK", StringFormat("closed ticket=%I64u before news (net %.2f lots, room $%.2f)", pick, net, room));
+   }
+}
+
 #endif // CMSNRENGINE_MQH

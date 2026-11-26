@@ -42,3 +42,22 @@ Akhil, 12 Nov: "next one: solve a real problem people from all over the world wi
 **Kalpa rules that cut the list:** no tool that scrapes LinkedIn, Instagram or Google Maps, sends bulk messages, or automates another site in a way its terms forbid (rule 4, rule 10). Closet Tools-style posting bots and LinkedIn automation are out.
 
 **Pass 2 (A217, updated):** pick 5 concrete candidates inside the 4 earning categories that pass our rules (for example: a helper for marketplace sellers that reads their own listing page; a platform-specific AI writing helper on free models; a study tool that is not a cheating tool). For each: 2+ paying competitors with price and users, their top 1-star complaints, what we would do better, price, and two sources. Show Akhil before any code.
+
+## Pass 2 (27 Nov 2026, A217): the biggest removed extensions, checked
+Searched and read today (Firecrawl, public pages only, no logins). Main list: Exstats "MV2 Purge in Numbers" (5 Sep 2026), which says Chrome removed **44,158 MV2 listings with 92.3 million users on 9–10 Oct 2025**, ten months before Google's 31 Aug 2026 date; 6,808 of them had zero users. Second sources per row below. "unverified" = only one source or not found.
+
+| # | Extension (removed) | Users | Rating | Last update | Working replacement today? | Top 1-star complaint | Way to charge | Sources | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Office – Enable Copy and Paste | 9,000,000 | 2.1 | 10 Feb 2022 | Not needed in most cases: it existed only to let Office web use the clipboard (unverified that Office web works without it today) | "Microsoft installed this without my permission" (debugbear) | None: people never chose it | exstats.com/blog/mv2-purge-in-numbers; debugbear.com/blog/chrome-extension-statistics; support.google.com/chrome/thread/329265459 | SKIP |
+| 2 | Postman (Chrome app) | 1,000,000 | 4.7 | 11 Jul 2022 | Yes: Postman's own desktop/web app (company product) | unverified | None for us: another company's product | exstats (above); Postman replacement = one source only (unverified) | SKIP |
+| 3 | Proxy SwitchyOmega | 1,000,000 | 4.6 | 22 Nov 2020 | Yes: ZeroOmega ("SwitchyOmega V3"), rated 4.7 on Firefox Add-ons | "disabled in Chrome Web Store and not enabling" (GitHub issue #2243) | Weak: free open-source fork already exists | exstats; github.com/FelisCatus/SwitchyOmega/issues/2243; addons.mozilla.org ZeroOmega reviews | SKIP |
+| 4 | JSON Viewer | 800,000 | 4.6 | 23 Dec 2020 | Yes: JSON Viewer Pro and many others; Chrome itself pretty-prints JSON | unverified | Weak: many free tools | exstats; digifix.com.au/best-chrome-extensions-for-web-developers | SKIP |
+| 5 | Padlet | 700,000 | 4.4 | 8 Jan 2019 | Yes: Padlet Mini, rebuilt by Padlet itself | unverified | None for us: another company's product | exstats; padlet.blog/padlet-mini; Chrome Web Store "Padlet Mini" listing | SKIP |
+
+Others in the Exstats top 15, ruled out by our rules: uBlock Origin, Touch VPN, Hotspot Shield, Runet unblocker (ad blocking / VPN / proxy-bypass), Dropbox, Evernote, Microsoft Power Automate, Save to Facebook (another company's product or login), Vysor (700k, 3.3; phone mirroring needs a desktop app, replacement status unverified), Internet-Start (new-tab page).
+
+**What this means (plain):** the big removed extensions are not open gaps. Each one is a company product that already shipped a new version, has a free open-source fork, or is no longer needed. The real gaps are in the long tail (thousands of small tools with 1k–50k users), and no free public list of those with user counts was found today (Exstats' full data needs an account; price unverified).
+
+**Recommendation for Akhil's pick:** drop the "rebuild a removed extension" route and use Pass 1b's money rule instead: a tool for people whose time earns money (sellers, recruiters, marketers, freelancers) that works only on their own pages. Akhil chooses one route; no code until then.
+
+Free agents: K140 and K148 were rejected (free models cannot browse, so every number was unverified); this pass was done by Claude with live search.

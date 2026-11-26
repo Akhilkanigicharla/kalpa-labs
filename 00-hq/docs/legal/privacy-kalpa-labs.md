@@ -1,5 +1,7 @@
 # Privacy notice: Kalpa Labs websites (draft v1.0, 16 Oct 2026)
 
+> Live text (A348, 27 Nov 2026): `00-hq/site/privacy.html` (site form + chat, 5 languages). This draft stays as the wider notes for other Kalpa sites.
+
 **Who we are.** Kalpa Labs, a sole proprietorship of Akhil Kanigicharla, Hyderabad, Telangana, India (Udyam UDYAM-TS-02-0382711). Contact and grievance officer: Akhil Kanigicharla, aakhiil51458@gmail.com.
 
 This notice covers our own websites: the BotBhai demo and website chat, the money calculators and the kits pages. When a salon uses BotBhai to talk to *its* customers, the salon decides how that data is used and gives its own notice. We act only as its processor.

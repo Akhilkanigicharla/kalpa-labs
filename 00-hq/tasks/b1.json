@@ -557,10 +557,10 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-26T14:30:00Z",
-  "updated": "2026-11-26T14:42:01Z",
+  "updated": "2026-11-26T18:42:09Z",
   "id": "K172",
   "title": "A348 prep: Kalpa site privacy notice draft (plain English)",
   "min_items": 8,
@@ -620,5 +620,22 @@
   "details": "For the A349 line: find how long Netlify keeps (1) form submissions, (2) function logs, (3) access/request logs on the Free plan. For each give the number, the exact quote, and two source URLs (Netlify's own docs page first). Say 'unknown' if a page does not state it. No guesses.",
   "output": "00-hq/knowledge/K175.md",
   "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3."
+ },
+ {
+  "world": "b1",
+  "owner": "Quill",
+  "read": [
+   "00-hq/site/privacy.html"
+  ],
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-26T18:42:09Z",
+  "updated": "2026-11-26T18:42:09Z",
+  "id": "K176",
+  "title": "A348 check: Telugu and Hindi text of the privacy page",
+  "min_items": 5,
+  "details": "Read the Telugu (section id te) and Hindi (section id hi) parts of 00-hq/site/privacy.html. List up to 10 lines where the grammar, spelling or word choice is wrong or hard for an everyday reader, numbered, each with: section, the exact current text, your better text, and why. Do not change meaning (12 months, 48 hours, 30 days, 90 days, DELETE, Netlify, Groq, OpenRouter must stay). Say 'no change' if a part is fine.",
+  "output": "00-hq/knowledge/K176.md"
  }
 ]

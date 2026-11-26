@@ -203,6 +203,7 @@ nav.links a:hover{color:var(--fg)}
 @media (prefers-reduced-motion:no-preference){.live-dot{animation:ping 2s infinite}@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 53%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}}
 .screen{height:600px}
 .demo-note{text-align:center;color:var(--muted);font-size:13px;margin-top:.75rem}
+.priv-link{display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:var(--accent)}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
 /* live strip */
@@ -410,6 +411,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
     </div>
    </div>
    <p class="demo-note" data-i="demo_note">This is a real AI, the same kind BotBhai puts in your business. Ask anything, or ask for a call back.</p>
+   <p class="demo-note"><span data-i="chat_priv">Chat messages go to an AI provider only to write the reply; we don't save them.</span> <a href="/privacy" data-i="priv_link">Privacy notice</a></p>
   </div>
  </div>
 </section>
@@ -477,6 +479,7 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
    <label><span data-i="l_name">Your name</span><input name="name" required autocomplete="name" aria-describedby="name-err"><span class="field-err" id="name-err" hidden></span></label>
    <label><span data-i="l_phone">WhatsApp number</span><input name="phone" required inputmode="tel" autocomplete="tel" placeholder="+91" aria-describedby="phone-err"><span class="field-err" id="phone-err" hidden></span></label>
    <label class="consent"><input type="checkbox" name="consent" required><span data-i="l_consent">I agree that Kalpa Labs may contact me on WhatsApp about this request. I can ask for my data to be deleted any time.</span></label><span class="field-err" id="consent-err" hidden></span>
+   <a class="priv-link" href="/privacy" data-i="priv_form">How we use your details (privacy notice)</a>
    <button class="btn btn-acc" type="submit" data-i="l_send">Send</button>
    <div class="form-msg" id="formmsg" role="status"></div><button class="btn" type="button" id="formretry" hidden>Try again</button>
   </form>
@@ -514,6 +517,6 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 </footer>
 <div class="mbar"><a class="btn btn-gold" href="#demo" data-i="mb1">Chat with our AI</a><a class="btn btn-ghost" href="#founding" data-i="mb2">Free salon pilot</a></div>
 
-<script src="app.js?v=6c30294a" defer></script>
+<script src="app.js?v=1e3d88c8" defer></script>
 </body>
 </html>

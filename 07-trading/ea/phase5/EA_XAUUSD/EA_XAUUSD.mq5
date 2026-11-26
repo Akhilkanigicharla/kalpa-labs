@@ -89,7 +89,7 @@ CCooldownManager    GuardCooldown;
 #include "Scoring/CTradeScorer.mqh"
 #include "Execution/CPositionSizer.mqh"
 #include "Execution/CTradeCalculator.mqh"
-bool HasOpenPosition();   // A348: prototype - defined below, called from CEntryEngine
+bool HasOpenPosition();   // A352: prototype - defined below, called from CEntryEngine
 #include "Execution/CEntryEngine.mqh"
 #include "Execution/CMixEngine.mqh"         // A327: the 12 extra strategies of the best gold mix
 // #include "Execution/CRiskEngine.mqh"

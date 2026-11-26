@@ -93,7 +93,7 @@ public:
                             DailyStats.GetTradeCount(),
                             Config.MaxDailyTrades));
          }
-         //--- A348: BLOCK the main strategy only. A SUSPEND here stopped the whole EA (and cancelled the
+         //--- A352: BLOCK the main strategy only. A SUSPEND here stopped the whole EA (and cancelled the
          //    13-strategy mix), which no backtest did. The mix keeps its own gate (CMixEngine::GateOk).
          RecordTrigger(GUARD_BLOCK);
          return GuardBlock(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
@@ -115,7 +115,7 @@ public:
                             DailyStats.GetConsecLosses(),
                             CONSEC_LOSS_LIMIT));
          }
-         RecordTrigger(GUARD_BLOCK);                        // A348: main strategy only, see [D2]
+         RecordTrigger(GUARD_BLOCK);                        // A352: main strategy only, see [D2]
          return GuardBlock(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
                            StringFormat("%d consecutive losses — cooling down",
                                         DailyStats.GetConsecLosses()),

@@ -1,1281 +1,1283 @@
 [
-  {
-    "id": "K016",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Kalpa",
-    "playbook": "specialized-chief-of-staff",
-    "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
-    "details": "Use the readiness board and roadmap.",
-    "read": [
-      "00-hq/SOFT-LAUNCH.md",
-      "00-hq/launch/readiness.json"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T08:07:24Z",
-    "output": "00-hq/knowledge/K016.md"
-  },
-  {
-    "id": "K017",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Kalpa",
-    "playbook": "design-brand-guardian",
-    "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
-    "details": "Kalpavruksha theme.",
-    "read": [
-      "00-hq/SOFT-LAUNCH.md"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T16:25:29Z",
-    "tries": 1,
-    "output": "00-hq/knowledge/K017.md"
-  },
-  {
-    "id": "K018",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Kalpa",
-    "playbook": "product-feedback-synthesizer",
-    "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
-    "details": "Short, kind, DPDP consent line.",
-    "read": [
-      "00-hq/SOFT-LAUNCH.md"
-    ],
-    "status": "review",
-    "created": "2026-11-04T08:00:00Z",
-    "updated": "2026-11-04T16:26:48Z",
-    "output": "00-hq/knowledge/K018.md"
-  },
-  {
-    "id": "K022",
-    "world": "hq",
-    "priority": "P0",
-    "owner": "Scout",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "First customers shortlist using the first-customer-finder method: 10 Indian AI startups (Ledger Peaks X-ray), 15 Hyderabad salons types/areas to approach (BotBhai), 5 places AC technicians gather online (JobCard)",
-    "details": "Follow .claude/skills/first-customer-finder/SKILL.md and references/research-framework.md: public demand signals only, evidence for each pick, no personal phone numbers, no private groups, no scraping of Google Maps/Justdial/Instagram/LinkedIn. For salons give areas and salon TYPES, not personal data. Mark anything you cannot see in the files as UNVERIFIED. Draft 1 short outreach message per group for Akhil to send himself.",
-    "read": [
-      ".claude/skills/first-customer-finder/SKILL.md",
-      ".claude/skills/first-customer-finder/references/research-framework.md",
-      "01-botbhai/docs/OFFER.md"
-    ],
-    "status": "rejected",
-    "created": "2026-11-06T12:00:00Z",
-    "updated": "2026-11-06T12:24:49Z",
-    "tries": 2,
-    "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data.",
-    "akhil_note": "replaced by K023 (agents cannot search the web; Vigil caught invented names)"
-  },
-  {
-    "id": "K023",
-    "world": "hq",
-    "priority": "P0",
-    "owner": "Scout",
-    "playbook": "sales-offer-lead-gen-strategist",
-    "title": "First-customer search plan (replaces K022's invented names): for Ledger Peaks, BotBhai and JobCard give the exact public places and search queries Akhil should use to find real prospects (e.g. Product Hunt India makers, YC/Inc42 lists, OpenStreetMap salon areas, technician Facebook groups by name of platform), with what proof to look for. NO company or person names unless they appear in the repo files.",
-    "details": "Agents have no web search; never invent names. Follow first-customer-finder method.",
-    "read": [
-      ".claude/skills/first-customer-finder/references/research-framework.md",
-      "01-botbhai/docs/OFFER.md"
-    ],
-    "status": "review",
-    "created": "2026-11-06T13:20:00Z",
-    "updated": "2026-11-06T12:31:12Z",
-    "output": "00-hq/knowledge/K023.md"
-  },
-  {
-    "id": "K024",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Kalpa",
-    "playbook": "specialized-chief-of-staff",
-    "title": "13 Dec soft-launch day run-sheet: hour-by-hour plan (IST) for Akhil (1 hour) + agents, what goes live in which order, checks before each, rollback if broken",
-    "details": "Use readiness board and soft-launch plan.",
-    "read": [
-      "00-hq/SOFT-LAUNCH.md",
-      "00-hq/launch/readiness.json"
-    ],
-    "status": "review",
-    "created": "2026-11-06T13:20:00Z",
-    "updated": "2026-11-06T17:33:02Z",
-    "output": "00-hq/knowledge/K024.md"
-  },
-  {
-    "id": "K036",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Goldfish",
-    "title": "Elephant-Goldfish review of 00-hq/PLAN.md: you are a zero-context goldfish reviewer",
-    "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
-    "read": [
-      "00-hq/vendor/egm/agents/zoom_out.md",
-      "00-hq/vendor/egm/agents/implementation_readiness.md",
-      "00-hq/PLAN.md"
-    ],
-    "context_chars": 38000,
-    "status": "review",
-    "created": "2026-11-06T19:05:00Z",
-    "updated": "2026-11-06T19:01:20Z",
-    "tries": 1,
-    "output": "00-hq/knowledge/K036.md"
-  },
-  {
-    "id": "K044",
-    "world": "hq",
-    "priority": "P0",
-    "owner": "Goldfish",
-    "title": "Elephant-Goldfish review of 00-hq/research/a170-harness-memory-router.md: you are a zero-context goldfish reviewer",
-    "details": "Follow the two EGM reviewer prompts given. Focus: safety of a self-learning skill layer next to hard rules, cost, privacy of agent memory, terms-of-service risk of the router. Output up to 8 findings (severity, exact line, one-line fix), unstated assumptions, questions only Akhil can answer. Say UNVERIFIED where unsure.",
-    "read": [
-      "00-hq/vendor/egm/agents/zoom_out.md",
-      "00-hq/vendor/egm/agents/implementation_readiness.md",
-      "00-hq/research/a170-harness-memory-router.md"
-    ],
-    "context_chars": 20000,
-    "status": "review",
-    "created": "2026-11-06T19:40:00Z",
-    "updated": "2026-11-06T19:22:40Z",
-    "output": "00-hq/knowledge/K044.md"
-  },
-  {
-    "id": "K047",
-    "world": "hq",
-    "priority": "P0",
-    "owner": "Kalpa",
-    "playbook": "marketing-growth-hacker",
-    "title": "Kalpa AI Marketing Team (like the 'AI marketing team that replaces a $5,000/month agency' short): 6 roles (strategist, 5-language copywriter, designer brief writer, scheduler, community replier, analyst), what each does weekly for every stream in VISION.md, which of our free skills/playbooks each uses, and a 4-week content calendar per stream. Same team is sold to BotBhai clients (gyms, salons, real estate) as their social media agent.",
-    "details": "Free tools only; owner approves every post; no buying followers; ASCI #ad on affiliate posts; 5 languages (EN, TE, HI, Tenglish, Hinglish).",
-    "read": [
-      "00-hq/VISION.md",
-      "00-hq/marketing/launch/places-to-post.md"
-    ],
-    "status": "review",
-    "created": "2026-11-07T15:10:00Z",
-    "updated": "2026-11-08T19:25:03Z",
-    "tries": 1,
-    "output": "00-hq/knowledge/K047.md"
-  },
-  {
-    "id": "K048",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "Kalpa site (kalpalabs.dpdns.org) UX pattern audit",
-    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
-    "read": [
-      "00-hq/design/UX-PATTERNS.md",
-      "00-hq/site/index.html"
-    ],
-    "min_items": 20,
-    "context_chars": 38000,
-    "status": "rejected",
-    "created": "2026-11-08T12:45:00Z",
-    "output": "00-hq/knowledge/K048.md",
-    "updated": "2026-11-08T19:30:06Z",
-    "tries": 3,
-    "vigil_notes": "FIX:\n- Row 9: change ❌ Missing to UNVERIFIED — the HTML slice is truncated and `.field-err` / `[aria-invalid]` CSS already exists, so absence of validation is not confirmed.\n- Row 20: change ❌ Missing to UNVERIFIED — full HTML/JS is not visible in the provided repo slice, so offline/retry handling cannot be confirmed as missing.\n- Row 17: keep UNVERIFIED — `404.html` is not in the provided files.\n- No invented prices, customers, results, or dates; no personal data; language is English."
-  },
-  {
-    "id": "K055",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "CEO Room dashboard UX pattern audit (for A189)",
-    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. It is an internal, phone-first dashboard for one CEO. Output the per-UI table with all 20 rows numbered 1 to 20: done / not relevant (why) / missing, with a short quote as evidence. Anything you cannot see is UNVERIFIED. Then the top 5 missing patterns in fix order, 1-2 lines each, using the Kalpa design system only. Plain short English.",
-    "read": [
-      "00-hq/design/UX-PATTERNS.md",
-      "00-hq/design/ceo-room-dashboard.html"
-    ],
-    "min_items": 20,
-    "context_chars": 38000,
-    "status": "done",
-    "created": "2026-11-09T00:00:00Z",
-    "output": "00-hq/knowledge/K055.md",
-    "updated": "2026-11-08T19:48:32Z",
-    "tries": 1
-  },
-  {
-    "id": "K056",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Kavi",
-    "title": "last30days topic list per world (for A197)",
-    "details": "For each of the 7 Kalpa worlds plus HQ (read the label cards), write 3 search topics for a monthly 'what people say online' scan: what our buyers complain about, ask for, or compare. Number the worlds 1 to 8; under each give 3 topics as short search phrases (English, plus one Telugu or Hindi phrase where buyers write that way). Public posts only; no personal data, no names of private people.",
-    "read": [
-      "README.md",
-      "00-hq/VISION.md"
-    ],
-    "min_items": 8,
-    "context_chars": 38000,
-    "status": "rejected",
-    "created": "2026-11-09T00:00:00Z",
-    "output": "00-hq/knowledge/K056.md",
-    "updated": "2026-11-08T19:53:22Z",
-    "tries": 3,
-    "vigil_notes": "FIX: incomplete, 3 of 8 required items. Write all 8, numbered 1 to 8."
-  },
-  {
-    "id": "K060",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "Sound-effect cue plan for Kalpa reels (for A196)",
-    "details": "Read the reel workflow and write a cue plan for short 9:16 reels. Give exactly 12 numbered rows: trigger words or moments in a voiceover (for example a number, a price, 'before/after', a question, the call to action), the sound type (whoosh, pop, click, rise, chime...), length in ms, and how loud under the voice (dB below voice). Add 5 Openverse search phrases for CC0 real recordings. Rules: sounds must stay under the voice, at most one cue every 2 seconds, no copyrighted music, no brand jingles.",
-    "read": [
-      ".github/workflows/social-voiceover.yml"
-    ],
-    "min_items": 12,
-    "context_chars": 20000,
-    "status": "done",
-    "created": "2026-11-09T05:00:00Z",
-    "output": "00-hq/knowledge/K060.md",
-    "updated": "2026-11-09T04:53:14Z",
-    "tries": 0
-  },
-  {
-    "id": "K061",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Scout",
-    "title": "Free public APIs worth using in Kalpa (from the public-apis list)",
-    "details": "From your knowledge of the public-apis/public-apis GitHub list, propose 12 free public APIs that could help Kalpa Labs: Telugu Deals & calculators (b5), Exam Kits (b3), BotBhai salon/gym bots (b1), Trading Lab research (b7). Number them 1 to 12. For each: name, what it gives, which Kalpa world uses it and for what, auth needed (none / key), and write 'free limit: UNVERIFIED' (Claude checks limits later). India-relevant first (holidays, pincode, weather, exchange rates, public exam calendars). No scraping APIs, no APIs that return personal data.",
-    "read": [
-      "README.md"
-    ],
-    "min_items": 12,
-    "context_chars": 12000,
-    "status": "review",
-    "created": "2026-11-11T00:00:00Z",
-    "output": "00-hq/knowledge/K061.md",
-    "updated": "2026-11-11T08:16:32Z"
-  },
-  {
-    "priority": "P2",
-    "status": "done",
-    "created": "2026-11-11T10:45:00Z",
-    "context_chars": 12000,
-    "id": "K068",
-    "world": "hq",
-    "owner": "Kavi",
-    "title": "Sound-effect cue plan for Kalpa reels (A196 prep)",
-    "details": "Write a numbered list of 12 cue rules for short 9:16 explainer reels: for each, the trigger in the script (e.g. a number appears, a list item, a price, a warning, a reveal, the call to action), the cue type (whoosh, pop, tick, soft chime, low hit...), length in ms, and volume relative to the voice (always under it). Also 3 rules for when NOT to add a sound. No product or brand names of paid libraries; sounds will be generated or CC0 only.",
-    "read": [
-      "00-hq/ROADMAP.md"
-    ],
-    "min_items": 12,
-    "output": "00-hq/knowledge/K068.md",
-    "updated": "2026-11-11T10:45:11Z"
-  },
-  {
-    "priority": "P2",
-    "status": "done",
-    "created": "2026-11-11T10:45:00Z",
-    "context_chars": 12000,
-    "id": "K069",
-    "world": "hq",
-    "owner": "Scout",
-    "title": "Monthly 'what people say' topics and query phrasing per world (A197 prep)",
-    "details": "For each of the 7 Kalpa worlds in 00-hq/VISION.md give 3 topics and 2 search queries each for Reddit, Hacker News, YouTube and GitHub only (numbered list, 7 items, one per world). Rules: topics are problems and opinions, never named private people; no Instagram, X, Google Maps or Justdial; no personal phone numbers or emails. Add one line per world on what answer would change our plan.",
-    "read": [
-      "00-hq/VISION.md"
-    ],
-    "min_items": 7,
-    "output": "00-hq/knowledge/K069.md",
-    "updated": "2026-11-12T00:00:00Z",
-    "notes": "Used by Claude for A197 topics.json (rewritten as plain topic phrases; OR/quote syntax dropped)."
-  },
-  {
-    "id": "K070",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Kavi",
-    "title": "Telugu + Hindi trigger words for reel sound effects (A196 follow-up)",
-    "details": "Give exactly 20 numbered rows: a common spoken Telugu or Hindi word (in its own script) that should trigger one of these reel sound cues: chime (price), thud (warning/mistake), whoosh (first/next step), click (done/booked), pop (a number). Each row: word, script language, English meaning, cue kind. Only everyday words a salon or shop owner would say.",
-    "read": [
-      "01-botbhai/botbhai/social/sfx.py"
-    ],
-    "min_items": 20,
-    "context_chars": 12000,
-    "status": "done",
-    "created": "2026-11-11T21:00:00Z",
-    "output": "00-hq/knowledge/K070.md",
-    "updated": "2026-11-12T16:45:00Z",
-    "tries": 1,
-    "note": "Claude checked 12 Nov: 19/20 matched; బుకింగ్ did NOT match (బుక్ pattern needs virama) -> regex fixed + test_te_hi_trigger_words (A196)"
-  },
-  {
-    "id": "K071",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "title": "Unslop checklist for 5 remaining Kalpa UIs (A198 part 2 prep)",
-    "details": "For exactly these 5 UIs write one numbered row each (1 to 5): BotBhai web (01-botbhai), JobCard, Tab Lifeboat site + popup, Ledger Peaks landing (06-finops/design/landing.html), CEO Room dashboard (00-hq/design/ceo-room-dashboard.html). Per row: file path, the 3 most visible 'AI-looking' tells to check (from: glows, colour washes, emoji icons, uppercase tracked labels, off-4px spacing, tap targets under 44 px, exclamation marks), and one 'signature detail' idea from that world's colour. Plain English, under 60 words per row.",
-    "read": "['README.md']",
-    "min_items": 5,
-    "context_chars": 20000,
-    "status": "done",
-    "created": "2026-11-11T21:00:00Z",
-    "output": "00-hq/knowledge/K071.md",
-    "updated": "2026-11-12T04:55:00Z",
-    "tries": 0,
-    "note": "Checked 12 Nov (A198 part 2): BotBhai row named a wrong file and signs not present; audit done from code scan instead."
-  },
-  {
-    "id": "K072",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Scout",
-    "title": "What people say Nov 2026: 3 takeaways per world (A197 follow-up)",
-    "details": "Read the 7 files in 00-hq/knowledge/whatpeoplesay/2026-11/. For each world give exactly 3 numbered takeaways (21 rows total): what people complain about or ask for, the link(s) from the file that show it, and one change it suggests for that world's plan. Only use links that appear in the files; write 'no signal' when a world has under 3 findings. Never name or describe individual people.",
-    "read": [
-      "00-hq/knowledge/whatpeoplesay/2026-11/b1.md",
-      "00-hq/knowledge/whatpeoplesay/2026-11/b6.md"
-    ],
-    "min_items": 21,
-    "context_chars": 20000,
-    "status": "review",
-    "created": "2026-11-12T00:00:00Z",
-    "output": "00-hq/knowledge/K072.md",
-    "updated": "2026-11-12T00:48:48Z"
-  },
-  {
-    "id": "K073",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "title": "JobCard copy pass for unslop (A198 part 3 prep)",
-    "details": "Read 02-jobcard/web/i18n.mjs. List every English UI string that has an exclamation mark, an emoji, ALL CAPS words or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: the key, the current text, a plain sentence-case rewrite under 12 words. Keep the meaning; do not add features. If none, say 'none' for that check.",
-    "read": "['02-jobcard/web/i18n.mjs']",
-    "min_items": 5,
-    "context_chars": 20000,
-    "status": "done",
-    "created": "2026-11-12T04:55:00Z",
-    "output": "00-hq/knowledge/K073.md",
-    "updated": "2026-11-12T08:00:00Z",
-    "tries": 0,
-    "note": "Checked 12 Nov: output was 5 placeholder rows, not used; audit done from code (00-hq/design/unslop-audit-jobcard.md). Lesson: no min_items when \"none\" is a valid answer."
-  },
-  {
-    "id": "K074",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "title": "Tab Lifeboat popup copy pass for unslop (A198 part 4 prep)",
-    "details": "Read 04-extensions/src/entrypoints/popup/index.html and main.ts. List every user-visible English string that has an exclamation mark, an emoji, ALL CAPS words, a plural bug like '1 tabs', or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: file, the current text exactly as in the file, a plain sentence-case rewrite under 12 words. Quote only text that is really in the files. If a check finds nothing, write 'none' for it. Do not invent rows.",
-    "read": "['04-extensions/src/entrypoints/popup/index.html', '04-extensions/src/entrypoints/popup/main.ts']",
-    "context_chars": 20000,
-    "status": "done",
-    "created": "2026-11-12T08:00:00Z",
-    "output": "00-hq/knowledge/K074.md",
-    "tries": 0,
-    "updated": "2026-11-12T06:42:55Z",
-    "note": "Checked 12 Nov (A198 part 4): agent said the files were missing, but they exist (04-extensions/src/entrypoints/popup/*). Output unused; audit done from code scan + screenshots."
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "tries": 0,
-    "id": "K076",
-    "title": "Ledger Peaks landing copy pass for unslop (A198 part 5 prep)",
-    "details": "Read 06-finops/design/landing.html and 06-finops/design/xray.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word, plural bug like '1 files', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: file, exact quote, suggested plain rewrite (max 12 words). Quote only strings that are really in the file; if none, say none.",
-    "read": [
-      "06-finops/design/landing.html",
-      "06-finops/design/xray.html"
-    ],
-    "status": "done",
-    "created": "2026-11-12T09:00:00Z",
-    "output": "00-hq/knowledge/K076.md",
-    "min_items": 5,
-    "updated": "2026-11-12T08:51:14Z",
-    "note": "Claude 12 Nov: 1 of 5 rewrites used (#4); #1-3,#5 dropped trust facts or the FBIL source. See unslop-audit-ledgerpeaks.md"
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-12T12:30:00Z",
-    "id": "K080",
-    "title": "CEO Room copy pass for unslop (A198 part 6 prep)",
-    "details": "Read 00-hq/design/ceo-room-dashboard.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word or uppercase CSS label, plural bug like '1 items', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: exact quote, suggested plain rewrite (max 12 words) that keeps every fact. Quote only strings really in the file; if none, say none.",
-    "read": [
-      "00-hq/design/ceo-room-dashboard.html"
-    ],
-    "output": "00-hq/knowledge/K080.md",
-    "min_items": 5,
-    "updated": "2026-11-12T14:41:36Z",
-    "review_notes": "Used 1 of 5 (#1 uppercase kicker, fixed in CSS). #2 rejected: \"CEO Room\" is the product name used in LINKS and docs. #3 no change. #4, #5 rejected: the interpunct is the Kalpa separator everywhere."
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-12T12:30:00Z",
-    "id": "K081",
-    "title": "A219 prep: what a privacy-safe browser error log may keep",
-    "details": "Read 00-hq/design/ENGINEERING-CHECKS.md rows 54, 64, 66 and 107. Write a short checklist (max 12 lines) for a window.onerror logger on a small public site under India's DPDP Act: which fields to keep (message, file, line, page path, user agent family), which to never keep (query strings, form values, IP, emails, phone numbers), how long to keep them, and a per-visitor rate limit. Plain English, no code. Mark anything you are not sure of as 'unverified'.",
-    "read": [
-      "00-hq/design/ENGINEERING-CHECKS.md"
-    ],
-    "output": "00-hq/knowledge/K081.md",
-    "min_items": 8,
-    "updated": "2026-11-12T13:13:48Z",
-    "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "id": "K083",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-12T14:41:36Z",
-    "updated": "2026-11-12T14:43:09Z",
-    "title": "A205 prep: TruffleHog beside gitleaks, what to check",
-    "details": "Read .github/workflows/quality.yml (hygiene job). Write a numbered list of 8 points for adding TruffleHog OSS as an unmodified CI tool beside gitleaks: which flags make it scan only verified secrets, how to scan only the pushed commits, how to pin the action to a commit SHA, how to keep it from failing on test fixtures, and the AGPL note (CI tool only, never copied into a product). Mark any fact you are not sure of as \"unverified\".",
-    "read": "['.github/workflows/quality.yml']",
-    "output": "00-hq/knowledge/K083.md",
-    "min_items": 8
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "id": "K084",
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-12T16:45:00Z",
-    "updated": "2026-11-12T18:01:04Z",
-    "title": "A206 prep: roles in markfulton/ai-employees our registry lacks",
-    "details": "Read 00-hq/agents/registry.js (agent names and roles). From the public README of github.com/markfulton/ai-employees (MIT), write a numbered list of 10 roles or routines it has that our registry lacks: role name, one-line job, which Kalpa world it helps, and the source file path in that repo. Mark anything you could not read as \"unverified\".",
-    "min_items": 10,
-    "read": [
-      "00-hq/agents/README.md"
-    ],
-    "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Ganaka",
-    "context_chars": 20000,
-    "id": "K085",
-    "tries": 2,
-    "status": "rejected",
-    "created": "2026-11-12T16:45:00Z",
-    "updated": "2026-11-13T05:00:00Z",
-    "title": "A206 prep: roles in msitarzewski/agency-agents our registry lacks",
-    "details": "Same as K084 for github.com/msitarzewski/agency-agents (MIT): numbered list of 10 roles our 300-agent registry lacks, with one-line job, Kalpa world, source file path. Mark anything you could not read as \"unverified\".",
-    "min_items": 10,
-    "read": [
-      "00-hq/agents/README.md"
-    ],
-    "output": "00-hq/knowledge/K085.md",
-    "note": "A206 review: every source pointed at our own README, not the repo; roles read from the repo clone instead (registry.js hq.reality…hq.churn)."
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Chitti",
-    "context_chars": 12000,
-    "id": "K088",
-    "title": "Plain checklist: what a secret scanner must catch in our repo (A205 prep)",
-    "details": "Write a numbered checklist of 10 kinds of secrets a CI secret scanner should catch in a small company repo (API keys, webhook URLs with tokens, .env files, private keys, service-account JSON, bot tokens, database URLs with passwords...). For each: one line on why it is dangerous and one fake example pattern that is obviously fake (use FAKE in it). No real keys.",
-    "read": [
-      "00-hq/AGENT-TOOLS.md"
-    ],
-    "output": "00-hq/knowledge/K088.md",
-    "min_items": 10,
-    "created": "2026-11-12T18:50:00Z",
-    "status": "done",
-    "tries": 3,
-    "updated": "2026-11-12T22:46:59Z"
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "context_chars": 30000,
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-12T17:15:00Z",
-    "id": "K093",
-    "title": "TruffleHog vs gitleaks: what each catches and a CI setup note (for A205)",
-    "read": [
-      "00-hq/AGENT-TOOLS.md",
-      ".github/workflows/quality.yml"
-    ],
-    "details": "Compare TruffleHog (run unmodified as a CI tool only; AGPL) and gitleaks for our GitHub Actions: what each detects, verified vs unverified findings, how to run TruffleHog on a git diff in Actions without secrets, false-positive handling. Any version, licence or flag you cannot quote from the provider's own page is UNVERIFIED.",
-    "output": "00-hq/knowledge/K093.md",
-    "min_items": 5,
-    "updated": "2026-11-13T00:49:10Z"
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "context_chars": 20000,
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-13T01:05:00Z",
-    "id": "K094",
-    "title": "A207 prep: trial plan for claude-mem, ECC, Worktrunk, Agent Reach in GitHub Actions",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/AGENT-TOOLS.md"
-    ],
-    "details": "For each of the 4 tools (claude-mem, ECC, Worktrunk, Agent Reach public no-login channels only): what it claims to do, licence as stated in its repo, one measurable test we can run in a GitHub Actions job with no logins and no secrets, the number to record, and what we already use for the same job (Graft, Superpowers, TEAM.md lanes, Firecrawl). Mark any fact you could not check as unverified.",
-    "output": "00-hq/knowledge/K094.md",
-    "min_items": 4,
-    "updated": "2026-11-13T01:55:56Z",
-    "vigil_notes": "FIX:\n- Add the required output: write keep/drop with numbers in `00-hq/research/reel-trials.md`, with one measured line per tool.\n- State the trials run only in GitHub Actions and the workflow run must be green (nothing on Akhil's PC, no logins, no secrets).\n- Mark every \"what it claims to do\" and licence for ECC, Worktrunk and Agent Reach as UNVERIFIED (only claude-mem is tagged).\n- Fix claude-mem test: benchmark claude-mem against Graft on indexing time and token cost per build-sprint query.\n- Make the existing-tool comparisons explicit: claude-mem vs Graft, ECC vs Superpowers, Worktrunk vs TEAM.md lanes, Agent Reach vs Firecrawl."
-  },
-  {
-    "priority": "P2",
-    "owner": "Forge",
-    "context_chars": 20000,
-    "tries": 4,
-    "status": "rejected",
-    "created": "2026-11-13T02:50:00Z",
-    "id": "K096",
-    "world": "hq",
-    "title": "A207 prep v2: one GitHub Actions test per tool (claude-mem, ECC, Worktrunk, Agent Reach)",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/AGENT-TOOLS.md"
-    ],
-    "details": "Short table, one row per tool: repo URL, licence as written in its LICENSE file (quote it), one shell command a GitHub Actions ubuntu job could run with no login and no secret, and the one number to record (time, tokens, pass/fail). Write UNVERIFIED next to any fact you could not see on the repo page. No install steps for a personal PC.",
-    "min_items": 4,
-    "updated": "2026-11-13T02:49:36Z",
-    "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
-  },
-  {
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-13T05:00:00Z",
-    "id": "K098",
-    "world": "hq",
-    "title": "A209 prep: fit check notes for LFM2.5 and the other reel repos",
-    "read": [
-      "00-hq/ROADMAP.md"
-    ],
-    "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
-    "min_items": 4,
-    "updated": "2026-11-13T08:10:23Z",
-    "output": "00-hq/knowledge/K098.md",
-    "owner": "Forge",
-    "priority": "P2",
-    "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
-  },
-  {
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-13T08:45:00Z",
-    "updated": "2026-11-13T08:40:36Z",
-    "priority": "P2",
-    "id": "K101",
-    "world": "hq",
-    "title": "A207 prep: trial plan for claude-mem, ECC, Worktrunk, Agent Reach",
-    "read": [
-      "00-hq/ROADMAP.md"
-    ],
-    "details": "Read the A207 line in 00-hq/ROADMAP.md. Write exactly 4 numbered items, one per tool (1 claude-mem, 2 ECC, 3 Worktrunk, 4 Agent Reach). For each: licence as written in its LICENSE file (or \"unverified\"), whether it can run inside a GitHub Actions job with no login and no secrets, one number we could measure against what we already use (Graft, Superpowers, TEAM.md lanes, Firecrawl). Do not recommend signing up or paying.",
-    "min_items": 4,
-    "output": "00-hq/knowledge/K101.md",
-    "owner": "Forge"
-  },
-  {
-    "tries": 2,
-    "status": "done",
-    "created": "2026-11-13T08:45:00Z",
-    "updated": "2026-11-13T10:05:13Z",
-    "priority": "P2",
-    "id": "K102",
-    "world": "hq",
-    "title": "A209 prep (retry of K098): fit check for LFM2.5, Switch, Openverse API",
-    "read": [
-      "00-hq/ROADMAP.md"
-    ],
-    "details": "Read the A209 line in 00-hq/ROADMAP.md. Write exactly 4 numbered items, 1 to 4: 1 LFM2.5, 2 Switch, 3 Openverse API, 4 blueprint.io / Ghidra / BLA together. For each: licence name (or \"unverified\"), runs on a free Hugging Face endpoint or GitHub Actions with no card (yes/no/unverified), one Kalpa use in one line. Keep each item under 60 words.",
-    "min_items": 4,
-    "output": "00-hq/knowledge/K102.md",
-    "owner": "Forge"
-  },
-  {
-    "id": "K113",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "A243 prep: Hugging Face terms for commercial use of free Spaces and keep-awake pings",
-    "details": "Find the Hugging Face Terms of Service, Content Policy and Spaces docs sections that cover: commercial use of a free CPU Basic Space, running a business backend on it, private Spaces, sleep after inactivity, and whether pinging a Space to keep it awake is allowed. Quote the exact sentence and give the official URL for each point. Say 'not stated' if the docs are silent. Claude will verify each quote.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md",
-      "00-hq/audit/facts.md"
-    ],
-    "context_chars": 20000,
-    "tries": 4,
-    "status": "rejected",
-    "created": "2026-11-14T04:50:00Z",
-    "output": "00-hq/knowledge/K113.md",
-    "min_items": 5,
-    "updated": "2026-11-14T04:44:20Z",
-    "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
-  },
-  {
-    "id": "K114",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "A244 prep: do Groq, OpenRouter free, Gemini free and Cloudflare Workers AI train on API inputs?",
-    "details": "For each provider (Groq, OpenRouter free models, Google Gemini API free tier, Cloudflare Workers AI) find the official policy page that says whether API prompts/outputs are used to train or improve models, and whether that differs on the free tier. Quote the sentence, give the URL, and note any per-model exception (OpenRouter free models may log). One row per provider, 4 rows minimum. Claude verifies each quote.",
-    "read": [
-      "00-hq/audit/facts.md"
-    ],
-    "context_chars": 20000,
-    "tries": 4,
-    "status": "done",
-    "created": "2026-11-14T04:50:00Z",
-    "output": "00-hq/knowledge/K114.md",
-    "min_items": 4,
-    "updated": "2026-11-19T15:00:00Z",
-    "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4.",
-    "used_by": "A244: Claude fetched the official pages instead (facts 2026-11-19)"
-  },
-  {
-    "id": "K115",
-    "world": "hq",
-    "priority": "P1",
-    "owner": "Forge",
-    "title": "A239 goldfish review: cf-runner design",
-    "details": "You are a zero-context goldfish reviewer. Review ONLY the design in the repo file for hidden assumptions, failure modes, races with the GitHub Actions runner, Cloudflare Workers Free limits and security gaps. Numbered list, at most 8 findings, each labelled BLOCKER/MAJOR/MINOR with a concrete fix.",
-    "read": [
-      "00-hq/cf-runner/DESIGN.md"
-    ],
-    "context_chars": 12000,
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-19T10:50:00Z",
-    "updated": "2026-11-19T10:47:09Z",
-    "output": "00-hq/knowledge/K115.md"
-  },
-  {
-    "id": "K116",
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "title": "A242 prep: one engine flow per world, test cases",
-    "details": "From DESIGN section 5, write for each of the 8 flows (b1 front desk, b2 review watcher, b3 exam alerts + doubt bot, b4 review-reply drafts, b5 deal poster with #ad, b6 X-ray intake + 14-day purge, b7 paper-trade monitor + loss-cap guard, HQ brief/runner): trigger, inputs, output, 3 test cases incl. one hostile input, and which law rule applies. Numbered 1 to 8.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "context_chars": 20000,
-    "min_items": 8,
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-19T10:50:00Z",
-    "updated": "2026-11-19T13:20:00Z",
-    "output": "00-hq/knowledge/K116.md"
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-19T13:30:00Z",
-    "updated": "2026-11-19T15:00:00Z",
-    "output": "00-hq/knowledge/K118.md",
-    "id": "K118",
-    "title": "A244 prep: messages per salon per day vs free model caps",
-    "details": "For a typical Hyderabad salon using a WhatsApp front-desk bot (bookings, reminders, FAQs in 5 languages), estimate messages per day (low/typical/busy) and tokens per message. Then a table: for 1, 10 and 50 salons, daily tokens and requests. Mark every number as an estimate with its reasoning. Do not state any provider's limits; Claude will fill those from official pages.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "context_chars": 12000,
-    "min_items": 3,
-    "used_by": "A244 (volume used; 400 tokens/msg raised to ~1,500 estimate)"
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 2,
-    "status": "review",
-    "created": "2026-11-19T13:30:00Z",
-    "updated": "2026-11-19T14:50:11Z",
-    "output": "00-hq/knowledge/K119.md",
-    "id": "K119",
-    "title": "C89 prep: free always-on hosts for a Docker n8n (no card)",
-    "details": "List up to 8 hosts that might run a Docker container (n8n, 512 MB+) free with no card in Nov 2026 (e.g. Render free, Koyeb, Fly, Railway, Northflank, Back4app, Zeabur). For each: the official pricing page URL to check, claimed RAM, sleep rules, card needed? Mark everything UNVERIFIED; Claude verifies before Akhil sees it.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md",
-      "00-hq/audit/facts.md"
-    ],
-    "context_chars": 15000,
-    "min_items": 5
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-19T15:00:00Z",
-    "updated": "2026-11-20T12:39:36Z",
-    "output": "00-hq/knowledge/K120.md",
-    "id": "K120",
-    "title": "A276 prep: licence + fit of presenton, openshorts, open-seo, dify, paperless-ngx",
-    "details": "For each of the 5 repos: GitHub URL, the licence name as you believe it is (mark UNVERIFIED; Claude reads each LICENSE file), what a small Hyderabad business would pay us for (setup + monthly), one-line risk. Numbered 1 to 5. No prices of third-party services.",
-    "read": [
-      "00-hq/research/videos-2026-11-14.md"
-    ],
-    "context_chars": 12000,
-    "min_items": 5
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-19T15:00:00Z",
-    "updated": "2026-11-19T16:44:40Z",
-    "output": "00-hq/knowledge/K121.md",
-    "id": "K121",
-    "title": "A244 follow-up: trim the salon bot prompt to fit free caps",
-    "details": "Read the research note. Suggest 5 concrete ways to cut tokens per request for a 5-language WhatsApp salon bot (history window, cached business facts, short system prompt), each with an estimated saving marked ESTIMATE. Numbered 1 to 5.",
-    "read": [
-      "00-hq/research/free-model-pii.md"
-    ],
-    "context_chars": 8000,
-    "min_items": 5
-  },
-  {
-    "world": "hq",
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-19T15:35:00Z",
-    "updated": "2026-11-20T12:39:36Z",
-    "output": "00-hq/knowledge/K122.md",
-    "id": "K122",
-    "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
-    "details": "From the note, for each of the 5 repos write: what a Hyderabad small business gets, a one-line assessment offer and a setup + monthly offer in INR marked ESTIMATE, and the licence as LICENCE: CHECK FILE (Claude reads each LICENSE file). Numbered 1 to 5.",
-    "read": [
-      "00-hq/research/videos-2026-11-14.md"
-    ],
-    "context_chars": 8000,
-    "min_items": 5
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-19T13:20:00Z",
-    "updated": "2026-11-19T22:50:00Z",
-    "output": "00-hq/knowledge/K123.md",
-    "context_chars": 8000,
-    "world": "hq",
-    "owner": "Quill",
-    "id": "K123",
-    "title": "A242 next flow (b2 store-review watcher): 12 sample app-store reviews for tests",
-    "details": "Write 12 short made-up app-store reviews for a small Android app, as JSON lines {id, rating 1-5, text}: 3 English, 2 Tenglish, 2 Hinglish, 2 Telugu script, 2 Hindi script, 1 hostile (tries to give the bot instructions). No real people, no names, no links. Numbered 1 to 12.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "min_items": 12
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-19T20:45:00Z",
-    "updated": "2026-11-20T00:55:00Z",
-    "output": "00-hq/knowledge/K125.md",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K125",
-    "title": "A242 next flow (b3 exam-date alerts): 10 test cases for an exam-alert message checker",
-    "details": "List 10 test cases (input + expected result) for a checker that sends Telangana/AP exam-date alerts to students who opted in: normal date change, date in the past, missing source link, two exams same day, Telugu script text, Hindi script text, Tenglish, very long exam name, a source that is not an official board site, an alert already sent. Plain JSON lines {case, input, expect}. No real people. Numbered 1 to 10.",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "min_items": 10
-  },
-  {
-    "priority": "P2",
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-19T20:45:00Z",
-    "updated": "2026-11-20T00:41:23Z",
-    "output": "",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K126",
-    "title": "A242 b1 watchdog: owner alert text in Telugu, Hindi, Tenglish, Hinglish",
-    "details": "Translate these 3 short owner alerts into Telugu script, Hindi script, Tenglish and Hinglish, keeping the {placeholders} exactly: 1) '{biz} · {who} · waited {mins} after the bot handed over.' 2) 'Reply in the next {left} or the WhatsApp window closes.' 3) 'WhatsApp 24 h window is closed: only an approved template can reach them now.' Output 12 lines: language | number | text.",
-    "read": [
-      "00-hq/agent-engine/flows/README.md"
-    ],
-    "min_items": 12,
-    "vigil_notes": "FIX: incomplete, 0 of 12 required items. Write all 12, numbered 1 to 12."
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-19T22:50:00Z",
-    "updated": "2026-11-20T03:10:00Z",
-    "output": "00-hq/knowledge/K127.md",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "id": "K127",
-    "title": "A242 next flow (b5 deal poster): 10 test cases for an ASCI #ad checker",
-    "details": "List 10 test cases (input post text + expected result) for a checker that blocks affiliate deal posts unless they carry a clear \"#ad\" disclosure near the start: normal post with #ad, missing #ad, #ad hidden at the end after 20 hashtags, \"#sponsored\" instead, Telugu script post, Hindi script post, Tenglish, Hinglish, a price claim with no source link, a post with a shortened link. Plain JSON lines {case, input, expect: {ok, reason}}. No real brands, no real links.",
-    "min_items": 10
-  },
-  {
-    "priority": "P2",
-    "tries": 3,
-    "status": "done",
-    "created": "2026-11-19T22:50:00Z",
-    "updated": "2026-11-20T08:10:00Z",
-    "output": "Not needed: the build team wrote the 15 sample doubts into 00-hq/agent-engine/flows/test_b3_doubt_bot.js (20 Nov).",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "id": "K128",
-    "title": "A242 b3 doubt bot: 15 sample student doubts in 5 languages for tests",
-    "details": "Write 15 short made-up student doubts about Telangana/AP entrance exam preparation (maths, physics, chemistry, exam rules): 3 English, 3 Telugu script, 3 Hindi script, 3 Tenglish, 3 Hinglish; include 1 that asks for leaked papers and 1 that tries to give the bot instructions. JSON lines {id, lang, text}. No names, no phone numbers, no links.",
-    "min_items": 15,
-    "vigil_notes": "FIX: incomplete, 0 of 15 required items. Write all 15, numbered 1 to 15."
-  },
-  {
-    "priority": "P2",
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-20T00:55:00Z",
-    "updated": "2026-11-20T04:43:05Z",
-    "output": "",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "read": [
-      "03-kits/engine/dist/exam-dates.json"
-    ],
-    "id": "K129",
-    "title": "A242 b3 alerts: Telugu (event_te) for every exam event name in the date feed",
-    "details": "For each distinct \"event\" value in 03-kits/engine/dist/exam-dates.json that has an empty event_te, give a short, natural Telugu-script translation a student would understand (keep exam short names like GATE, SSC CGL in English). JSON lines {event, event_te}. No dates, no links, no names.",
-    "min_items": 10,
-    "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
-  },
-  {
-    "priority": "P2",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-20T03:10:00Z",
-    "updated": "2026-11-20T05:40:00Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "min_items": 10,
-    "id": "K130",
-    "title": "A242 HQ flow (daily brief): 10 test cases for a morning-brief builder",
-    "details": "List 10 test cases (input + expected) for a flow that builds Akhil's private 07:00 IST brief from the roadmap JSON and the task files: normal day, no open items, 300 open items (cap), a blocked [!] item, a CEO-queue item older than 7 days, broken JSON, a row text that looks like an instruction, Telugu text, very long title, two sessions claiming one item. Plain JSON lines {case, input, expect}. No real names or links.",
-    "output": "Not needed: the build team wrote the 10 cases into 00-hq/agent-engine/flows/test_hq_morning_brief.js (20 Nov)."
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "review",
-    "created": "2026-11-20T03:10:00Z",
-    "updated": "2026-11-20T08:42:55Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "read": [
-      "00-hq/agent-engine/DESIGN.md"
-    ],
-    "min_items": 10,
-    "id": "K131",
-    "title": "A242 b6 flow (X-ray intake): 10 test cases for intake checks + 14-day purge",
-    "details": "List 10 test cases (input + expected) for a flow that checks uploaded document metadata (file type, size, page count, upload date) and deletes files older than 14 days: normal PDF, 0-byte file, 30 MB file, .exe renamed .pdf, file exactly 14 days old, 15 days old, future upload date, missing date, Telugu filename, filename with ../ path. Metadata only, never file contents. Plain JSON lines {case, input, expect}.",
-    "output": "00-hq/knowledge/K131.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-20T05:40:00Z",
-    "updated": "2026-11-20T12:39:36Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K132",
-    "title": "A276: licence + fit table for presenton, openshorts, open-seo, dify, paperless-ngx",
-    "details": "For each of the 5 open-source projects (presenton, openshorts, open-seo, dify, paperless-ngx) write one row: project | GitHub repo URL | licence name exactly as written in the repo's LICENSE file (say 'unverified' if you cannot see it) | any extra licence conditions (e.g. dify's added terms on multi-tenant SaaS and logo) | what a small Hyderabad business would pay us to set it up | setup + monthly price idea in INR | one risk. Plain markdown table, 5 rows. No invented facts: write 'unverified' when unsure.",
-    "read": [
-      "00-hq/research/videos-2026-11-14.md",
-      "00-hq/research/BRIEF.md"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K132.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 1,
-    "status": "done",
-    "created": "2026-11-20T05:40:00Z",
-    "updated": "2026-11-20T16:45:17Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K133",
-    "title": "A219: plans for the last 4 Kalpa-standard site rows (error tracking, load test, profiling budget, pen test)",
-    "details": "For the Kalpa website (static site + one /api/chat serverless function, free tiers only) write a short plan for each of 4 rows: 1) error tracking: window.onerror + unhandledrejection sent to the chat function log, with no personal data (list exactly which fields to send and which to drop); 2) load test of /api/chat with k6 or autocannon in GitHub Actions: 50 virtual users, p95 under 5 s, count 429s (give the test settings and pass/fail rules); 3) Lighthouse CI budget file: suggested numbers for LCP, CLS, TBT, total bytes, script bytes for a phone page; 4) a safe passive pen-test checklist for our own live site (headers, CSP, open redirects, exposed files), no attacks on others. 4 sections, at least 2 concrete items each. Licences of any tool named (k6, autocannon, Lighthouse CI) as written in their repos, or 'unverified'.",
-    "read": [
-      "00-hq/design/ENGINEERING-CHECKS.md"
-    ],
-    "min_items": 8,
-    "output": "00-hq/knowledge/K133.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-20T12:39:36Z",
-    "updated": "2026-11-20T12:40:45Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K138",
-    "title": "A276 goldfish review of 00-hq/research/a276-repo-fit.md",
-    "details": "Fresh reviewer, no context: read 00-hq/research/a276-repo-fit.md and list up to 8 problems: unclear rows, offers a Hyderabad shop owner would not understand, legal gaps (DPDP, licence, WhatsApp/TRAI), prices that look inconsistent across rows. Do not invent facts or prices; mark guesses UNVERIFIED.",
-    "read": [
-      "00-hq/research/a276-repo-fit.md"
-    ],
-    "min_items": 8,
-    "output": "00-hq/knowledge/K138.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 3,
-    "status": "rejected",
-    "created": "2026-11-20T16:45:17Z",
-    "updated": "2026-11-20T20:01:33Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K142",
-    "title": "A303 prep: free shared stores a Netlify function can use for a per-visitor rate limit",
-    "details": "List 5 free options (no card) that a Netlify serverless function can call to keep a shared 'messages per visitor per minute' counter (e.g. Netlify Blobs, Upstash Redis free, Cloudflare KV via a Worker, Supabase table, Deno KV): name, how the count is stored (one example call), free-tier limits per day/month, latency notes, licence or terms link, official docs link. Mark anything not on an official page as UNVERIFIED. JSON lines.",
-    "read": [
-      "00-hq/site/netlify/functions/chat.mjs"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K142.md",
-    "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
-  },
-  {
-    "priority": "P2",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-20T16:45:17Z",
-    "updated": "2026-11-20T22:48:06Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "world": "hq",
-    "id": "K143",
-    "title": "A221 prep: proof questions for 8 backend rows (BotBhai + JobCard)",
-    "details": "For each of these 8 Kalpa-standard backend rows: logins, IDOR, row-level security, backups, audit logs, token expiry, secret rotation, soft deletes, write: what 'done' means for a small Supabase + Netlify app, the one file or setting to look at, a concrete test that proves it (command or SQL), and the usual mistake. Plain English, numbered 1 to 8.",
-    "read": [
-      "01-botbhai/design/eng-check.md"
-    ],
-    "min_items": 8,
-    "output": "00-hq/knowledge/K143.md",
-    "used_in": "A221 (rows 13, 89, 97 checked against the repo; generic, no repo-specific facts used)"
-  },
-  {
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-20T18:50:00Z",
-    "updated": "2026-11-21T06:00:00Z",
-    "context_chars": 12000,
-    "id": "K145",
-    "world": "hq",
-    "title": "A222 prep: Netlify credit plan vs Cloudflare Pages free for our static sites",
-    "details": "Compare Netlify's credit-based Free plan (credits per month, credits per production deploy, bandwidth) with Cloudflare Pages free (builds per month, bandwidth, custom headers via _headers, functions) for 5 static sites. Every number UNVERIFIED unless a repo file shows it; give each provider page URL to check. End with a plain one-line rule for how many deploys a day we can afford. Numbered 1 to 6.",
-    "read": [
-      "00-hq/log/deploys.csv"
-    ],
-    "min_items": 6,
-    "output": "00-hq/knowledge/K145.md"
-  },
-  {
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-21T06:00:00Z",
-    "updated": "2026-11-20T20:40:11Z",
-    "context_chars": 12000,
-    "world": "hq",
-    "id": "K146",
-    "title": "A225 prep: Render free instance hours for two services in one workspace",
-    "details": "For kalpa-n8n and kalpa-llm-router on Render's free web service tier: list the free instance-hours per workspace per month, spin-down rule after idle, what happens when hours run out, and how to read hours used in the Render dashboard/metrics. Every number UNVERIFIED with the render.com page URL to check. End with one plain rule: how many hours a day n8n may stay awake so both fit. Numbered 1 to 5.",
-    "read": [
-      "00-hq/ROADMAP.md"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K146.md"
-  },
-  {
-    "priority": "P2",
-    "owner": "Forge",
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-21T06:00:00Z",
-    "updated": "2026-11-20T20:41:26Z",
-    "context_chars": 12000,
-    "world": "hq",
-    "id": "K147",
-    "title": "A226 prep: scheduled tasks health plan",
-    "details": "From 00-hq/LINKS.md (scheduled tasks section) list each Kalpa scheduled task, its cron in IST, and suggest a quieter hour for the Fact-check & audit task (avoid 6-9 AM Pacific = 19:30-22:30 IST) plus a smaller scope (one world per run, rotating). Plain English, numbered 1 to 5, no invented task names.",
-    "read": [
-      "00-hq/LINKS.md"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K147.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 0,
-    "status": "review",
-    "created": "2026-11-20T22:48:06Z",
-    "updated": "2026-11-20T22:49:01Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "id": "K149",
-    "world": "hq",
-    "title": "A310 prep: Supabase free plan backups and pg_dump from GitHub Actions",
-    "details": "From Supabase's own docs pages only: (1) does the Free plan include automatic backups, how many days, can a free user download them; (2) the documented way to take a logical dump (supabase db dump or pg_dump) with which connection string (direct vs pooler, IPv4/IPv6 note); (3) how to restore into a plain Postgres 16. Give the docs URL for each fact; mark anything not on a supabase.com page UNVERIFIED. 5 numbered items.",
-    "read": [
-      "01-botbhai/botbhai/supabase/test.sh"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K149.md"
-  },
-  {
-    "priority": "P2",
-    "tries": 0,
-    "status": "done",
-    "created": "2026-11-20T22:48:06Z",
-    "updated": "2026-11-21T12:00:00Z",
-    "context_chars": 8000,
-    "owner": "Quill",
-    "id": "K150",
-    "world": "hq",
-    "title": "A311 prep: npm audit vs osv-scanner for CI",
-    "details": "Compare `npm audit --omit=dev` and Google's osv-scanner for a GitHub Actions step on folders with package-lock.json: licence of the tool, install line, exit codes for high/critical, how to ignore one advisory with a reason, needs network or not. Official docs URL per fact; UNVERIFIED otherwise. 5 numbered items.",
-    "read": [
-      ".github/workflows/quality.yml"
-    ],
-    "min_items": 5,
-    "output": "00-hq/knowledge/K150.md",
-    "note": "Used for A311: npm audit chosen (built into npm, no account, live run 21 Nov)"
-  },
-  {
-    "id": "K156",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A311 prep: npm audit vs osv-scanner for CI, facts with sources",
-    "read": [
-      "00-hq/ROADMAP.md",
-      ".github/workflows/quality.yml"
-    ],
-    "details": "Read the A311 line. Compare `npm audit --omit=dev --audit-level=high` and Google's osv-scanner as a GitHub Actions step for a repo with several package-lock.json folders: licence of each tool (link the LICENSE file), how each exits on high/critical findings, how to scan many folders in one step, how to ignore one accepted advisory with a reason, and whether each needs network or an account. Cite each tool's own docs URL; write 'unverified' where you have none. End with a 3-line pick.",
-    "min_items": 5,
-    "tries": 0,
-    "status": "done",
-    "priority": "P2",
-    "created": "2026-11-21T05:05:00Z",
-    "updated": "2026-11-21T12:00:00Z",
-    "output": "00-hq/knowledge/K156.md",
-    "note": "Superseded by K150 + live run, A311 done"
-  },
-  {
-    "id": "K163",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A225 prep: Render free instance hours rules, facts with sources",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/n8n-selfhost/README.md"
-    ],
-    "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
-    "min_items": 4,
-    "tries": 3,
-    "status": "rejected",
-    "priority": "P2",
-    "created": "2026-11-21T14:50:00Z",
-    "updated": "2026-11-21T18:07:25Z",
-    "output": "00-hq/knowledge/K163.md",
-    "vigil_notes": "FIX:\n* Mark specific hour limits (750 hours, 15 min spin-down) as UNVERIFIED or remove if not in repo files.\n* Remove invented \"Keep-Awake Schedule\" and specific service allocations (Service A/B) as they are not in repo files.\n* Do not invent operational strategies or calculations not present in the provided data.\n* Ensure all facts are strictly derived from `00-hq/ROADMAP.md` or marked UNVERIFIED."
-  },
-  {
-    "id": "K164",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A228 prep: why social-voiceover.yml failed at start-up, likely causes and fixes",
-    "read": [
-      "00-hq/ROADMAP.md",
-      ".github/workflows/social-voiceover.yml"
-    ],
-    "details": "Read the A228 line and the workflow file. List the most likely causes of a GitHub Actions 'startup failure' for this file (invalid YAML/expression, unknown input, missing permission, bad action version, reusable workflow ref), each with GitHub docs URL and the exact line in the workflow that could trigger it. 'unverified' without a docs URL.",
-    "min_items": 4,
-    "tries": 0,
-    "status": "done",
-    "priority": "P2",
-    "created": "2026-11-21T19:30:00Z",
-    "updated": "2026-11-26T10:40:00Z",
-    "output": "00-hq/knowledge/K164.md",
-    "review_note": "Used as a checklist only (its lines were all UNVERIFIED). Real cause found by Claude: run 43098174765 created 0 jobs; the same workflow file (unchanged since 7689493) ran green in 43261011326 and 45803256028, and actionlint runs on every push, so it was a GitHub-side start-up failure on a dispatch sent 8 s after the push."
-  },
-  {
-    "id": "K165",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A229 prep: Groq and OpenRouter free limits, facts with sources",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/DELEGATE.md"
-    ],
-    "details": "Read the A229 line. From Groq's own rate-limit page (console.groq.com/docs/rate-limits) and OpenRouter's own docs (openrouter.ai/docs/api-reference/limits), give requests per day/minute for free models, what happens at the limit, and which response headers report remaining calls, each with the doc URL. 'unverified' for anything without the provider's URL.",
-    "min_items": 5,
-    "tries": 3,
-    "status": "rejected",
-    "priority": "P2",
-    "created": "2026-11-21T19:30:00Z",
-    "updated": "2026-11-21T20:41:16Z",
-    "output": "00-hq/knowledge/K165.md",
-    "vigil_notes": "FIX: incomplete, 2 of 5 required items. Write all 5, numbered 1 to 5."
-  },
-  {
-    "id": "K167",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A225 prep: Render free web service hours and sleep rules, facts with sources",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/n8n-selfhost/README.md"
-    ],
-    "details": "Read the A225 line. From Render's own docs (render.com/docs/free) give: free instance hours per workspace per month, what happens when they run out, spin-down after how many minutes idle, cold-start time, and whether two free services share the hours. Then draft a keep-awake schedule (IST hours) for kalpa-n8n and kalpa-llm-router that fits the monthly hours with 10% spare. Doc URL per fact; 'unverified' otherwise.",
-    "min_items": 5,
-    "tries": 1,
-    "status": "done",
-    "priority": "P2",
-    "created": "2026-11-22T02:30:00Z",
-    "updated": "2026-11-22T05:40:00Z",
-    "output": "00-hq/knowledge/K167.md",
-    "note": "Claude verified 22 Nov on render.com/docs/free: 750 h/workspace/month, suspend all Free services when out, 15 min idle spin-down, spun-down time free. Correction: cold start is \"about one minute\" (not 50-100 s). Used in A225."
-  },
-  {
-    "id": "K168",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A229 prep: free model request limits (OpenRouter free models, Groq free tier, Gemini free tier), facts with sources",
-    "read": [
-      "00-hq/ROADMAP.md",
-      "00-hq/DELEGATE.md"
-    ],
-    "details": "Read the A229 line. From each provider's own docs or pricing page give: requests per minute and per day for free models, whether a one-time credit top-up changes the daily cap (OpenRouter), and what error code is returned when the cap is hit. One row per provider per fact, doc URL per fact; write 'unverified' when no official page says it.",
-    "min_items": 6,
-    "tries": 1,
-    "status": "done",
-    "priority": "P2",
-    "created": "2026-11-22T05:40:00Z",
-    "updated": "2026-11-26T12:00:00Z",
-    "output": "00-hq/knowledge/K168.md",
-    "note": "Claude checked 26 Nov on provider pages: OpenRouter :free 20 RPM, 50/day under $10 credits bought, 1000/day at $10+ (openrouter.ai/docs/api/reference/limits); Groq gpt-oss-120b/20b and qwen3.8-27b 30 RPM, 1K RPD, org level, 429 (console.groq.com/docs/rate-limits). Draft's items were all UNVERIFIED; used as a checklist only. Used in A229."
-  },
-  {
-    "id": "K171",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A342 prep: the 20 Laws of UX as one-line page checks",
-    "read": [
-      "00-hq/design/UX-PATTERNS.md",
-      "00-hq/ROADMAP.md"
-    ],
-    "details": "Read the A342 line. For each of the 20 laws named there, write one row: law name, one-sentence plain-English meaning, one concrete check a builder can tick on a 390 px phone page (e.g. 'primary button is the only filled button on screen' for Von Restorff), and the lawsofux.com page URL for it (mark 'unverified' if unsure the page exists). No other sources, no invented studies or numbers.",
-    "min_items": 20,
-    "tries": 1,
-    "status": "done",
-    "priority": "P2",
-    "created": "2026-11-26T12:00:00Z",
-    "updated": "2026-11-27T00:00:00Z",
-    "output": "00-hq/knowledge/K171.md",
-    "note": "Used for A342 as a starting point only: its list swapped in Fitts/Hick/Jakob/Miller/Postel/Continuity/Closure instead of Akhil's 20 laws and its links were unverified; Claude rewrote the table with the 20 named laws and live-checked links."
-  },
-  {
-    "id": "K178",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A341 prep: test plan to compare Understand Anything with graft",
-    "read": [
-      "00-hq/research/token-savers.md",
-      "00-hq/research/reels-2026-11-26.md"
-    ],
-    "details": "Read both files. Write 5 code-finding questions about the Kalpa repo a builder really asks (e.g. 'where is the chat rate limit set'), and for each the way to score a tool: found the right file (yes/no), number of steps, tokens if shown. Then a 5-row table: what graft does per the repo notes vs what the reel says Understand Anything does, marking anything not in those files 'unverified'. No install steps, no invented numbers.",
-    "min_items": 5,
-    "tries": 0,
-    "status": "todo",
-    "priority": "P2",
-    "created": "2026-11-27T00:00:00Z",
-    "updated": "2026-11-27T00:00:00Z"
-  },
-  {
-    "id": "K179",
-    "world": "hq",
-    "owner": "Quill",
-    "title": "A343 prep: freellmapi facts check",
-    "read": [
-      "00-hq/DELEGATE.md",
-      "00-hq/research/reels-2026-11-26.md"
-    ],
-    "details": "For roadmap A343 (freellmapi as the internal free-model router for delegation): from the project's own GitHub page and one second source, list in a 6-row table: licence (exact file name), stars, last commit date, which free providers it supports, how keys are stored, and whether it needs a server that must stay on. Mark anything you could not open 'unverified'. Then 3 lines: how it would fit the DELEGATE.md 'Second route' and one risk. No install steps, no invented numbers.",
-    "min_items": 6,
-    "tries": 0,
-    "status": "todo",
-    "priority": "P2",
-    "created": "2026-11-27T00:00:00Z",
-    "updated": "2026-11-27T00:00:00Z"
-  }
+ {
+  "id": "K016",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "Soft-launch readiness gap list: for each of the 5 offers, what is missing for 13 Dec, owner (Claude/Akhil/agents) and the smallest next step",
+  "details": "Use the readiness board and roadmap.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md",
+   "00-hq/launch/readiness.json"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T08:07:24Z",
+  "output": "00-hq/knowledge/K016.md"
+ },
+ {
+  "id": "K017",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "design-brand-guardian",
+  "title": "Kalpa brand voice guide v1: how each world talks (Telugu-first warmth), 10 do/don't examples, words we never use",
+  "details": "Kalpavruksha theme.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:25:29Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K017.md"
+ },
+ {
+  "id": "K018",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kalpa",
+  "playbook": "product-feedback-synthesizer",
+  "title": "Feedback form questions for pilot salons, Tab Lifeboat users and deals channel readers (5 questions each, Telugu + English)",
+  "details": "Short, kind, DPDP consent line.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md"
+  ],
+  "status": "review",
+  "created": "2026-11-04T08:00:00Z",
+  "updated": "2026-11-04T16:26:48Z",
+  "output": "00-hq/knowledge/K018.md"
+ },
+ {
+  "id": "K022",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Scout",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "First customers shortlist using the first-customer-finder method: 10 Indian AI startups (Ledger Peaks X-ray), 15 Hyderabad salons types/areas to approach (BotBhai), 5 places AC technicians gather online (JobCard)",
+  "details": "Follow .claude/skills/first-customer-finder/SKILL.md and references/research-framework.md: public demand signals only, evidence for each pick, no personal phone numbers, no private groups, no scraping of Google Maps/Justdial/Instagram/LinkedIn. For salons give areas and salon TYPES, not personal data. Mark anything you cannot see in the files as UNVERIFIED. Draft 1 short outreach message per group for Akhil to send himself.",
+  "read": [
+   ".claude/skills/first-customer-finder/SKILL.md",
+   ".claude/skills/first-customer-finder/references/research-framework.md",
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "rejected",
+  "created": "2026-11-06T12:00:00Z",
+  "updated": "2026-11-06T12:24:49Z",
+  "tries": 2,
+  "vigil_notes": "FIX:\n*   Remove all invented company names, specific signals, and sources (e.g., \"AI-Health Insights\", \"Luxury-Glow Salon\") as they are not in the repo files and are not marked as UNVERIFIED in the context of being *real* leads; the draft presents them as specific entities rather than generic placeholders.\n*   The draft claims \"Live web-search unavailable\" but then lists specific dates (2021-2023) and sources (TechCrunch, Reddit) for the invented entities; this is contradictory and violates the rule against inventing facts.\n*   Section 4.2 is unfinished (row 12 is cut off) and does not reach the required count of 15.\n*   Section 4.3 (JobCard) is completely missing from the draft.\n*   The draft includes specific contact routes (e.g., \"info@medvision.ai\") for invented companies, which constitutes inventing data.",
+  "akhil_note": "replaced by K023 (agents cannot search the web; Vigil caught invented names)"
+ },
+ {
+  "id": "K023",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Scout",
+  "playbook": "sales-offer-lead-gen-strategist",
+  "title": "First-customer search plan (replaces K022's invented names): for Ledger Peaks, BotBhai and JobCard give the exact public places and search queries Akhil should use to find real prospects (e.g. Product Hunt India makers, YC/Inc42 lists, OpenStreetMap salon areas, technician Facebook groups by name of platform), with what proof to look for. NO company or person names unless they appear in the repo files.",
+  "details": "Agents have no web search; never invent names. Follow first-customer-finder method.",
+  "read": [
+   ".claude/skills/first-customer-finder/references/research-framework.md",
+   "01-botbhai/docs/OFFER.md"
+  ],
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T12:31:12Z",
+  "output": "00-hq/knowledge/K023.md"
+ },
+ {
+  "id": "K024",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kalpa",
+  "playbook": "specialized-chief-of-staff",
+  "title": "13 Dec soft-launch day run-sheet: hour-by-hour plan (IST) for Akhil (1 hour) + agents, what goes live in which order, checks before each, rollback if broken",
+  "details": "Use readiness board and soft-launch plan.",
+  "read": [
+   "00-hq/SOFT-LAUNCH.md",
+   "00-hq/launch/readiness.json"
+  ],
+  "status": "review",
+  "created": "2026-11-06T13:20:00Z",
+  "updated": "2026-11-06T17:33:02Z",
+  "output": "00-hq/knowledge/K024.md"
+ },
+ {
+  "id": "K036",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 00-hq/PLAN.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "00-hq/PLAN.md"
+  ],
+  "context_chars": 38000,
+  "status": "review",
+  "created": "2026-11-06T19:05:00Z",
+  "updated": "2026-11-06T19:01:20Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K036.md"
+ },
+ {
+  "id": "K044",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Goldfish",
+  "title": "Elephant-Goldfish review of 00-hq/research/a170-harness-memory-router.md: you are a zero-context goldfish reviewer",
+  "details": "Follow the two EGM reviewer prompts given. Focus: safety of a self-learning skill layer next to hard rules, cost, privacy of agent memory, terms-of-service risk of the router. Output up to 8 findings (severity, exact line, one-line fix), unstated assumptions, questions only Akhil can answer. Say UNVERIFIED where unsure.",
+  "read": [
+   "00-hq/vendor/egm/agents/zoom_out.md",
+   "00-hq/vendor/egm/agents/implementation_readiness.md",
+   "00-hq/research/a170-harness-memory-router.md"
+  ],
+  "context_chars": 20000,
+  "status": "review",
+  "created": "2026-11-06T19:40:00Z",
+  "updated": "2026-11-06T19:22:40Z",
+  "output": "00-hq/knowledge/K044.md"
+ },
+ {
+  "id": "K047",
+  "world": "hq",
+  "priority": "P0",
+  "owner": "Kalpa",
+  "playbook": "marketing-growth-hacker",
+  "title": "Kalpa AI Marketing Team (like the 'AI marketing team that replaces a $5,000/month agency' short): 6 roles (strategist, 5-language copywriter, designer brief writer, scheduler, community replier, analyst), what each does weekly for every stream in VISION.md, which of our free skills/playbooks each uses, and a 4-week content calendar per stream. Same team is sold to BotBhai clients (gyms, salons, real estate) as their social media agent.",
+  "details": "Free tools only; owner approves every post; no buying followers; ASCI #ad on affiliate posts; 5 languages (EN, TE, HI, Tenglish, Hinglish).",
+  "read": [
+   "00-hq/VISION.md",
+   "00-hq/marketing/launch/places-to-post.md"
+  ],
+  "status": "review",
+  "created": "2026-11-07T15:10:00Z",
+  "updated": "2026-11-08T19:25:03Z",
+  "tries": 1,
+  "output": "00-hq/knowledge/K047.md"
+ },
+ {
+  "id": "K048",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Kalpa site (kalpalabs.dpdns.org) UX pattern audit",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "00-hq/site/index.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "rejected",
+  "created": "2026-11-08T12:45:00Z",
+  "output": "00-hq/knowledge/K048.md",
+  "updated": "2026-11-08T19:30:06Z",
+  "tries": 3,
+  "vigil_notes": "FIX:\n- Row 9: change ❌ Missing to UNVERIFIED — the HTML slice is truncated and `.field-err` / `[aria-invalid]` CSS already exists, so absence of validation is not confirmed.\n- Row 20: change ❌ Missing to UNVERIFIED — full HTML/JS is not visible in the provided repo slice, so offline/retry handling cannot be confirmed as missing.\n- Row 17: keep UNVERIFIED — `404.html` is not in the provided files.\n- No invented prices, customers, results, or dates; no personal data; language is English."
+ },
+ {
+  "id": "K055",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "CEO Room dashboard UX pattern audit (for A189)",
+  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. It is an internal, phone-first dashboard for one CEO. Output the per-UI table with all 20 rows numbered 1 to 20: done / not relevant (why) / missing, with a short quote as evidence. Anything you cannot see is UNVERIFIED. Then the top 5 missing patterns in fix order, 1-2 lines each, using the Kalpa design system only. Plain short English.",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "00-hq/design/ceo-room-dashboard.html"
+  ],
+  "min_items": 20,
+  "context_chars": 38000,
+  "status": "done",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K055.md",
+  "updated": "2026-11-08T19:48:32Z",
+  "tries": 1
+ },
+ {
+  "id": "K056",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Kavi",
+  "title": "last30days topic list per world (for A197)",
+  "details": "For each of the 7 Kalpa worlds plus HQ (read the label cards), write 3 search topics for a monthly 'what people say online' scan: what our buyers complain about, ask for, or compare. Number the worlds 1 to 8; under each give 3 topics as short search phrases (English, plus one Telugu or Hindi phrase where buyers write that way). Public posts only; no personal data, no names of private people.",
+  "read": [
+   "README.md",
+   "00-hq/VISION.md"
+  ],
+  "min_items": 8,
+  "context_chars": 38000,
+  "status": "rejected",
+  "created": "2026-11-09T00:00:00Z",
+  "output": "00-hq/knowledge/K056.md",
+  "updated": "2026-11-08T19:53:22Z",
+  "tries": 3,
+  "vigil_notes": "FIX: incomplete, 3 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "id": "K060",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "Sound-effect cue plan for Kalpa reels (for A196)",
+  "details": "Read the reel workflow and write a cue plan for short 9:16 reels. Give exactly 12 numbered rows: trigger words or moments in a voiceover (for example a number, a price, 'before/after', a question, the call to action), the sound type (whoosh, pop, click, rise, chime...), length in ms, and how loud under the voice (dB below voice). Add 5 Openverse search phrases for CC0 real recordings. Rules: sounds must stay under the voice, at most one cue every 2 seconds, no copyrighted music, no brand jingles.",
+  "read": [
+   ".github/workflows/social-voiceover.yml"
+  ],
+  "min_items": 12,
+  "context_chars": 20000,
+  "status": "done",
+  "created": "2026-11-09T05:00:00Z",
+  "output": "00-hq/knowledge/K060.md",
+  "updated": "2026-11-09T04:53:14Z",
+  "tries": 0
+ },
+ {
+  "id": "K061",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Scout",
+  "title": "Free public APIs worth using in Kalpa (from the public-apis list)",
+  "details": "From your knowledge of the public-apis/public-apis GitHub list, propose 12 free public APIs that could help Kalpa Labs: Telugu Deals & calculators (b5), Exam Kits (b3), BotBhai salon/gym bots (b1), Trading Lab research (b7). Number them 1 to 12. For each: name, what it gives, which Kalpa world uses it and for what, auth needed (none / key), and write 'free limit: UNVERIFIED' (Claude checks limits later). India-relevant first (holidays, pincode, weather, exchange rates, public exam calendars). No scraping APIs, no APIs that return personal data.",
+  "read": [
+   "README.md"
+  ],
+  "min_items": 12,
+  "context_chars": 12000,
+  "status": "review",
+  "created": "2026-11-11T00:00:00Z",
+  "output": "00-hq/knowledge/K061.md",
+  "updated": "2026-11-11T08:16:32Z"
+ },
+ {
+  "priority": "P2",
+  "status": "done",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K068",
+  "world": "hq",
+  "owner": "Kavi",
+  "title": "Sound-effect cue plan for Kalpa reels (A196 prep)",
+  "details": "Write a numbered list of 12 cue rules for short 9:16 explainer reels: for each, the trigger in the script (e.g. a number appears, a list item, a price, a warning, a reveal, the call to action), the cue type (whoosh, pop, tick, soft chime, low hit...), length in ms, and volume relative to the voice (always under it). Also 3 rules for when NOT to add a sound. No product or brand names of paid libraries; sounds will be generated or CC0 only.",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "min_items": 12,
+  "output": "00-hq/knowledge/K068.md",
+  "updated": "2026-11-11T10:45:11Z"
+ },
+ {
+  "priority": "P2",
+  "status": "done",
+  "created": "2026-11-11T10:45:00Z",
+  "context_chars": 12000,
+  "id": "K069",
+  "world": "hq",
+  "owner": "Scout",
+  "title": "Monthly 'what people say' topics and query phrasing per world (A197 prep)",
+  "details": "For each of the 7 Kalpa worlds in 00-hq/VISION.md give 3 topics and 2 search queries each for Reddit, Hacker News, YouTube and GitHub only (numbered list, 7 items, one per world). Rules: topics are problems and opinions, never named private people; no Instagram, X, Google Maps or Justdial; no personal phone numbers or emails. Add one line per world on what answer would change our plan.",
+  "read": [
+   "00-hq/VISION.md"
+  ],
+  "min_items": 7,
+  "output": "00-hq/knowledge/K069.md",
+  "updated": "2026-11-12T00:00:00Z",
+  "notes": "Used by Claude for A197 topics.json (rewritten as plain topic phrases; OR/quote syntax dropped)."
+ },
+ {
+  "id": "K070",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Kavi",
+  "title": "Telugu + Hindi trigger words for reel sound effects (A196 follow-up)",
+  "details": "Give exactly 20 numbered rows: a common spoken Telugu or Hindi word (in its own script) that should trigger one of these reel sound cues: chime (price), thud (warning/mistake), whoosh (first/next step), click (done/booked), pop (a number). Each row: word, script language, English meaning, cue kind. Only everyday words a salon or shop owner would say.",
+  "read": [
+   "01-botbhai/botbhai/social/sfx.py"
+  ],
+  "min_items": 20,
+  "context_chars": 12000,
+  "status": "done",
+  "created": "2026-11-11T21:00:00Z",
+  "output": "00-hq/knowledge/K070.md",
+  "updated": "2026-11-12T16:45:00Z",
+  "tries": 1,
+  "note": "Claude checked 12 Nov: 19/20 matched; బుకింగ్ did NOT match (బుక్ pattern needs virama) -> regex fixed + test_te_hi_trigger_words (A196)"
+ },
+ {
+  "id": "K071",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Unslop checklist for 5 remaining Kalpa UIs (A198 part 2 prep)",
+  "details": "For exactly these 5 UIs write one numbered row each (1 to 5): BotBhai web (01-botbhai), JobCard, Tab Lifeboat site + popup, Ledger Peaks landing (06-finops/design/landing.html), CEO Room dashboard (00-hq/design/ceo-room-dashboard.html). Per row: file path, the 3 most visible 'AI-looking' tells to check (from: glows, colour washes, emoji icons, uppercase tracked labels, off-4px spacing, tap targets under 44 px, exclamation marks), and one 'signature detail' idea from that world's colour. Plain English, under 60 words per row.",
+  "read": "['README.md']",
+  "min_items": 5,
+  "context_chars": 20000,
+  "status": "done",
+  "created": "2026-11-11T21:00:00Z",
+  "output": "00-hq/knowledge/K071.md",
+  "updated": "2026-11-12T04:55:00Z",
+  "tries": 0,
+  "note": "Checked 12 Nov (A198 part 2): BotBhai row named a wrong file and signs not present; audit done from code scan instead."
+ },
+ {
+  "id": "K072",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Scout",
+  "title": "What people say Nov 2026: 3 takeaways per world (A197 follow-up)",
+  "details": "Read the 7 files in 00-hq/knowledge/whatpeoplesay/2026-11/. For each world give exactly 3 numbered takeaways (21 rows total): what people complain about or ask for, the link(s) from the file that show it, and one change it suggests for that world's plan. Only use links that appear in the files; write 'no signal' when a world has under 3 findings. Never name or describe individual people.",
+  "read": [
+   "00-hq/knowledge/whatpeoplesay/2026-11/b1.md",
+   "00-hq/knowledge/whatpeoplesay/2026-11/b6.md"
+  ],
+  "min_items": 21,
+  "context_chars": 20000,
+  "status": "review",
+  "created": "2026-11-12T00:00:00Z",
+  "output": "00-hq/knowledge/K072.md",
+  "updated": "2026-11-12T00:48:48Z"
+ },
+ {
+  "id": "K073",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "JobCard copy pass for unslop (A198 part 3 prep)",
+  "details": "Read 02-jobcard/web/i18n.mjs. List every English UI string that has an exclamation mark, an emoji, ALL CAPS words or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: the key, the current text, a plain sentence-case rewrite under 12 words. Keep the meaning; do not add features. If none, say 'none' for that check.",
+  "read": "['02-jobcard/web/i18n.mjs']",
+  "min_items": 5,
+  "context_chars": 20000,
+  "status": "done",
+  "created": "2026-11-12T04:55:00Z",
+  "output": "00-hq/knowledge/K073.md",
+  "updated": "2026-11-12T08:00:00Z",
+  "tries": 0,
+  "note": "Checked 12 Nov: output was 5 placeholder rows, not used; audit done from code (00-hq/design/unslop-audit-jobcard.md). Lesson: no min_items when \"none\" is a valid answer."
+ },
+ {
+  "id": "K074",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "Tab Lifeboat popup copy pass for unslop (A198 part 4 prep)",
+  "details": "Read 04-extensions/src/entrypoints/popup/index.html and main.ts. List every user-visible English string that has an exclamation mark, an emoji, ALL CAPS words, a plural bug like '1 tabs', or vague words (e.g. 'seamless', 'awesome'). One numbered row per string: file, the current text exactly as in the file, a plain sentence-case rewrite under 12 words. Quote only text that is really in the files. If a check finds nothing, write 'none' for it. Do not invent rows.",
+  "read": "['04-extensions/src/entrypoints/popup/index.html', '04-extensions/src/entrypoints/popup/main.ts']",
+  "context_chars": 20000,
+  "status": "done",
+  "created": "2026-11-12T08:00:00Z",
+  "output": "00-hq/knowledge/K074.md",
+  "tries": 0,
+  "updated": "2026-11-12T06:42:55Z",
+  "note": "Checked 12 Nov (A198 part 4): agent said the files were missing, but they exist (04-extensions/src/entrypoints/popup/*). Output unused; audit done from code scan + screenshots."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 0,
+  "id": "K076",
+  "title": "Ledger Peaks landing copy pass for unslop (A198 part 5 prep)",
+  "details": "Read 06-finops/design/landing.html and 06-finops/design/xray.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word, plural bug like '1 files', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: file, exact quote, suggested plain rewrite (max 12 words). Quote only strings that are really in the file; if none, say none.",
+  "read": [
+   "06-finops/design/landing.html",
+   "06-finops/design/xray.html"
+  ],
+  "status": "done",
+  "created": "2026-11-12T09:00:00Z",
+  "output": "00-hq/knowledge/K076.md",
+  "min_items": 5,
+  "updated": "2026-11-12T08:51:14Z",
+  "note": "Claude 12 Nov: 1 of 5 rewrites used (#4); #1-3,#5 dropped trust facts or the FBIL source. See unslop-audit-ledgerpeaks.md"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-12T12:30:00Z",
+  "id": "K080",
+  "title": "CEO Room copy pass for unslop (A198 part 6 prep)",
+  "details": "Read 00-hq/design/ceo-room-dashboard.html. List every user-visible English string with an exclamation mark, emoji, ALL CAPS word or uppercase CSS label, plural bug like '1 items', vague word ('seamless', 'powerful', 'unlock', 'supercharge'), or a claim with no number behind it. For each: exact quote, suggested plain rewrite (max 12 words) that keeps every fact. Quote only strings really in the file; if none, say none.",
+  "read": [
+   "00-hq/design/ceo-room-dashboard.html"
+  ],
+  "output": "00-hq/knowledge/K080.md",
+  "min_items": 5,
+  "updated": "2026-11-12T14:41:36Z",
+  "review_notes": "Used 1 of 5 (#1 uppercase kicker, fixed in CSS). #2 rejected: \"CEO Room\" is the product name used in LINKS and docs. #3 no change. #4, #5 rejected: the interpunct is the Kalpa separator everywhere."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-12T12:30:00Z",
+  "id": "K081",
+  "title": "A219 prep: what a privacy-safe browser error log may keep",
+  "details": "Read 00-hq/design/ENGINEERING-CHECKS.md rows 54, 64, 66 and 107. Write a short checklist (max 12 lines) for a window.onerror logger on a small public site under India's DPDP Act: which fields to keep (message, file, line, page path, user agent family), which to never keep (query strings, form values, IP, emails, phone numbers), how long to keep them, and a per-visitor rate limit. Plain English, no code. Mark anything you are not sure of as 'unverified'.",
+  "read": [
+   "00-hq/design/ENGINEERING-CHECKS.md"
+  ],
+  "output": "00-hq/knowledge/K081.md",
+  "min_items": 8,
+  "updated": "2026-11-12T13:13:48Z",
+  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K083",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-12T14:41:36Z",
+  "updated": "2026-11-12T14:43:09Z",
+  "title": "A205 prep: TruffleHog beside gitleaks, what to check",
+  "details": "Read .github/workflows/quality.yml (hygiene job). Write a numbered list of 8 points for adding TruffleHog OSS as an unmodified CI tool beside gitleaks: which flags make it scan only verified secrets, how to scan only the pushed commits, how to pin the action to a commit SHA, how to keep it from failing on test fixtures, and the AGPL note (CI tool only, never copied into a product). Mark any fact you are not sure of as \"unverified\".",
+  "read": "['.github/workflows/quality.yml']",
+  "output": "00-hq/knowledge/K083.md",
+  "min_items": 8
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K084",
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-12T16:45:00Z",
+  "updated": "2026-11-12T18:01:04Z",
+  "title": "A206 prep: roles in markfulton/ai-employees our registry lacks",
+  "details": "Read 00-hq/agents/registry.js (agent names and roles). From the public README of github.com/markfulton/ai-employees (MIT), write a numbered list of 10 roles or routines it has that our registry lacks: role name, one-line job, which Kalpa world it helps, and the source file path in that repo. Mark anything you could not read as \"unverified\".",
+  "min_items": 10,
+  "read": [
+   "00-hq/agents/README.md"
+  ],
+  "vigil_notes": "FIX: incomplete, 5 of 10 required items. Write all 10, numbered 1 to 10."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Ganaka",
+  "context_chars": 20000,
+  "id": "K085",
+  "tries": 2,
+  "status": "rejected",
+  "created": "2026-11-12T16:45:00Z",
+  "updated": "2026-11-13T05:00:00Z",
+  "title": "A206 prep: roles in msitarzewski/agency-agents our registry lacks",
+  "details": "Same as K084 for github.com/msitarzewski/agency-agents (MIT): numbered list of 10 roles our 300-agent registry lacks, with one-line job, Kalpa world, source file path. Mark anything you could not read as \"unverified\".",
+  "min_items": 10,
+  "read": [
+   "00-hq/agents/README.md"
+  ],
+  "output": "00-hq/knowledge/K085.md",
+  "note": "A206 review: every source pointed at our own README, not the repo; roles read from the repo clone instead (registry.js hq.reality…hq.churn)."
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Chitti",
+  "context_chars": 12000,
+  "id": "K088",
+  "title": "Plain checklist: what a secret scanner must catch in our repo (A205 prep)",
+  "details": "Write a numbered checklist of 10 kinds of secrets a CI secret scanner should catch in a small company repo (API keys, webhook URLs with tokens, .env files, private keys, service-account JSON, bot tokens, database URLs with passwords...). For each: one line on why it is dangerous and one fake example pattern that is obviously fake (use FAKE in it). No real keys.",
+  "read": [
+   "00-hq/AGENT-TOOLS.md"
+  ],
+  "output": "00-hq/knowledge/K088.md",
+  "min_items": 10,
+  "created": "2026-11-12T18:50:00Z",
+  "status": "done",
+  "tries": 3,
+  "updated": "2026-11-12T22:46:59Z"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 30000,
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-12T17:15:00Z",
+  "id": "K093",
+  "title": "TruffleHog vs gitleaks: what each catches and a CI setup note (for A205)",
+  "read": [
+   "00-hq/AGENT-TOOLS.md",
+   ".github/workflows/quality.yml"
+  ],
+  "details": "Compare TruffleHog (run unmodified as a CI tool only; AGPL) and gitleaks for our GitHub Actions: what each detects, verified vs unverified findings, how to run TruffleHog on a git diff in Actions without secrets, false-positive handling. Any version, licence or flag you cannot quote from the provider's own page is UNVERIFIED.",
+  "output": "00-hq/knowledge/K093.md",
+  "min_items": 5,
+  "updated": "2026-11-13T00:49:10Z"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-13T01:05:00Z",
+  "id": "K094",
+  "title": "A207 prep: trial plan for claude-mem, ECC, Worktrunk, Agent Reach in GitHub Actions",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/AGENT-TOOLS.md"
+  ],
+  "details": "For each of the 4 tools (claude-mem, ECC, Worktrunk, Agent Reach public no-login channels only): what it claims to do, licence as stated in its repo, one measurable test we can run in a GitHub Actions job with no logins and no secrets, the number to record, and what we already use for the same job (Graft, Superpowers, TEAM.md lanes, Firecrawl). Mark any fact you could not check as unverified.",
+  "output": "00-hq/knowledge/K094.md",
+  "min_items": 4,
+  "updated": "2026-11-13T01:55:56Z",
+  "vigil_notes": "FIX:\n- Add the required output: write keep/drop with numbers in `00-hq/research/reel-trials.md`, with one measured line per tool.\n- State the trials run only in GitHub Actions and the workflow run must be green (nothing on Akhil's PC, no logins, no secrets).\n- Mark every \"what it claims to do\" and licence for ECC, Worktrunk and Agent Reach as UNVERIFIED (only claude-mem is tagged).\n- Fix claude-mem test: benchmark claude-mem against Graft on indexing time and token cost per build-sprint query.\n- Make the existing-tool comparisons explicit: claude-mem vs Graft, ECC vs Superpowers, Worktrunk vs TEAM.md lanes, Agent Reach vs Firecrawl."
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "context_chars": 20000,
+  "tries": 4,
+  "status": "rejected",
+  "created": "2026-11-13T02:50:00Z",
+  "id": "K096",
+  "world": "hq",
+  "title": "A207 prep v2: one GitHub Actions test per tool (claude-mem, ECC, Worktrunk, Agent Reach)",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/AGENT-TOOLS.md"
+  ],
+  "details": "Short table, one row per tool: repo URL, licence as written in its LICENSE file (quote it), one shell command a GitHub Actions ubuntu job could run with no login and no secret, and the one number to record (time, tokens, pass/fail). Write UNVERIFIED next to any fact you could not see on the repo page. No install steps for a personal PC.",
+  "min_items": 4,
+  "updated": "2026-11-13T02:49:36Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-13T05:00:00Z",
+  "id": "K098",
+  "world": "hq",
+  "title": "A209 prep: fit check notes for LFM2.5 and the other reel repos",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A209 line in 00-hq/ROADMAP.md. For each tool it names: licence (from its LICENSE file), whether it runs on a free Hugging Face endpoint or GitHub Actions with no card, and one Kalpa use. Mark anything you could not open as \"unverified\". Do not recommend signing up or paying.",
+  "min_items": 4,
+  "updated": "2026-11-13T08:10:23Z",
+  "output": "00-hq/knowledge/K098.md",
+  "owner": "Forge",
+  "priority": "P2",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-13T08:45:00Z",
+  "updated": "2026-11-13T08:40:36Z",
+  "priority": "P2",
+  "id": "K101",
+  "world": "hq",
+  "title": "A207 prep: trial plan for claude-mem, ECC, Worktrunk, Agent Reach",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A207 line in 00-hq/ROADMAP.md. Write exactly 4 numbered items, one per tool (1 claude-mem, 2 ECC, 3 Worktrunk, 4 Agent Reach). For each: licence as written in its LICENSE file (or \"unverified\"), whether it can run inside a GitHub Actions job with no login and no secrets, one number we could measure against what we already use (Graft, Superpowers, TEAM.md lanes, Firecrawl). Do not recommend signing up or paying.",
+  "min_items": 4,
+  "output": "00-hq/knowledge/K101.md",
+  "owner": "Forge"
+ },
+ {
+  "tries": 2,
+  "status": "done",
+  "created": "2026-11-13T08:45:00Z",
+  "updated": "2026-11-13T10:05:13Z",
+  "priority": "P2",
+  "id": "K102",
+  "world": "hq",
+  "title": "A209 prep (retry of K098): fit check for LFM2.5, Switch, Openverse API",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A209 line in 00-hq/ROADMAP.md. Write exactly 4 numbered items, 1 to 4: 1 LFM2.5, 2 Switch, 3 Openverse API, 4 blueprint.io / Ghidra / BLA together. For each: licence name (or \"unverified\"), runs on a free Hugging Face endpoint or GitHub Actions with no card (yes/no/unverified), one Kalpa use in one line. Keep each item under 60 words.",
+  "min_items": 4,
+  "output": "00-hq/knowledge/K102.md",
+  "owner": "Forge"
+ },
+ {
+  "id": "K113",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A243 prep: Hugging Face terms for commercial use of free Spaces and keep-awake pings",
+  "details": "Find the Hugging Face Terms of Service, Content Policy and Spaces docs sections that cover: commercial use of a free CPU Basic Space, running a business backend on it, private Spaces, sleep after inactivity, and whether pinging a Space to keep it awake is allowed. Quote the exact sentence and give the official URL for each point. Say 'not stated' if the docs are silent. Claude will verify each quote.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md",
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 20000,
+  "tries": 4,
+  "status": "rejected",
+  "created": "2026-11-14T04:50:00Z",
+  "output": "00-hq/knowledge/K113.md",
+  "min_items": 5,
+  "updated": "2026-11-14T04:44:20Z",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "id": "K114",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A244 prep: do Groq, OpenRouter free, Gemini free and Cloudflare Workers AI train on API inputs?",
+  "details": "For each provider (Groq, OpenRouter free models, Google Gemini API free tier, Cloudflare Workers AI) find the official policy page that says whether API prompts/outputs are used to train or improve models, and whether that differs on the free tier. Quote the sentence, give the URL, and note any per-model exception (OpenRouter free models may log). One row per provider, 4 rows minimum. Claude verifies each quote.",
+  "read": [
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 20000,
+  "tries": 4,
+  "status": "done",
+  "created": "2026-11-14T04:50:00Z",
+  "output": "00-hq/knowledge/K114.md",
+  "min_items": 4,
+  "updated": "2026-11-19T15:00:00Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4.",
+  "used_by": "A244: Claude fetched the official pages instead (facts 2026-11-19)"
+ },
+ {
+  "id": "K115",
+  "world": "hq",
+  "priority": "P1",
+  "owner": "Forge",
+  "title": "A239 goldfish review: cf-runner design",
+  "details": "You are a zero-context goldfish reviewer. Review ONLY the design in the repo file for hidden assumptions, failure modes, races with the GitHub Actions runner, Cloudflare Workers Free limits and security gaps. Numbered list, at most 8 findings, each labelled BLOCKER/MAJOR/MINOR with a concrete fix.",
+  "read": [
+   "00-hq/cf-runner/DESIGN.md"
+  ],
+  "context_chars": 12000,
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-19T10:50:00Z",
+  "updated": "2026-11-19T10:47:09Z",
+  "output": "00-hq/knowledge/K115.md"
+ },
+ {
+  "id": "K116",
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "title": "A242 prep: one engine flow per world, test cases",
+  "details": "From DESIGN section 5, write for each of the 8 flows (b1 front desk, b2 review watcher, b3 exam alerts + doubt bot, b4 review-reply drafts, b5 deal poster with #ad, b6 X-ray intake + 14-day purge, b7 paper-trade monitor + loss-cap guard, HQ brief/runner): trigger, inputs, output, 3 test cases incl. one hostile input, and which law rule applies. Numbered 1 to 8.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "context_chars": 20000,
+  "min_items": 8,
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-19T10:50:00Z",
+  "updated": "2026-11-19T13:20:00Z",
+  "output": "00-hq/knowledge/K116.md"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-19T13:30:00Z",
+  "updated": "2026-11-19T15:00:00Z",
+  "output": "00-hq/knowledge/K118.md",
+  "id": "K118",
+  "title": "A244 prep: messages per salon per day vs free model caps",
+  "details": "For a typical Hyderabad salon using a WhatsApp front-desk bot (bookings, reminders, FAQs in 5 languages), estimate messages per day (low/typical/busy) and tokens per message. Then a table: for 1, 10 and 50 salons, daily tokens and requests. Mark every number as an estimate with its reasoning. Do not state any provider's limits; Claude will fill those from official pages.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "context_chars": 12000,
+  "min_items": 3,
+  "used_by": "A244 (volume used; 400 tokens/msg raised to ~1,500 estimate)"
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 2,
+  "status": "review",
+  "created": "2026-11-19T13:30:00Z",
+  "updated": "2026-11-19T14:50:11Z",
+  "output": "00-hq/knowledge/K119.md",
+  "id": "K119",
+  "title": "C89 prep: free always-on hosts for a Docker n8n (no card)",
+  "details": "List up to 8 hosts that might run a Docker container (n8n, 512 MB+) free with no card in Nov 2026 (e.g. Render free, Koyeb, Fly, Railway, Northflank, Back4app, Zeabur). For each: the official pricing page URL to check, claimed RAM, sleep rules, card needed? Mark everything UNVERIFIED; Claude verifies before Akhil sees it.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md",
+   "00-hq/audit/facts.md"
+  ],
+  "context_chars": 15000,
+  "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-19T15:00:00Z",
+  "updated": "2026-11-20T12:39:36Z",
+  "output": "00-hq/knowledge/K120.md",
+  "id": "K120",
+  "title": "A276 prep: licence + fit of presenton, openshorts, open-seo, dify, paperless-ngx",
+  "details": "For each of the 5 repos: GitHub URL, the licence name as you believe it is (mark UNVERIFIED; Claude reads each LICENSE file), what a small Hyderabad business would pay us for (setup + monthly), one-line risk. Numbered 1 to 5. No prices of third-party services.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md"
+  ],
+  "context_chars": 12000,
+  "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-19T15:00:00Z",
+  "updated": "2026-11-19T16:44:40Z",
+  "output": "00-hq/knowledge/K121.md",
+  "id": "K121",
+  "title": "A244 follow-up: trim the salon bot prompt to fit free caps",
+  "details": "Read the research note. Suggest 5 concrete ways to cut tokens per request for a 5-language WhatsApp salon bot (history window, cached business facts, short system prompt), each with an estimated saving marked ESTIMATE. Numbered 1 to 5.",
+  "read": [
+   "00-hq/research/free-model-pii.md"
+  ],
+  "context_chars": 8000,
+  "min_items": 5
+ },
+ {
+  "world": "hq",
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-19T15:35:00Z",
+  "updated": "2026-11-20T12:39:36Z",
+  "output": "00-hq/knowledge/K122.md",
+  "id": "K122",
+  "title": "A276 prep: paid-service offer per repo (presenton, openshorts, open-seo, dify, paperless-ngx)",
+  "details": "From the note, for each of the 5 repos write: what a Hyderabad small business gets, a one-line assessment offer and a setup + monthly offer in INR marked ESTIMATE, and the licence as LICENCE: CHECK FILE (Claude reads each LICENSE file). Numbered 1 to 5.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md"
+  ],
+  "context_chars": 8000,
+  "min_items": 5
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-19T13:20:00Z",
+  "updated": "2026-11-19T22:50:00Z",
+  "output": "00-hq/knowledge/K123.md",
+  "context_chars": 8000,
+  "world": "hq",
+  "owner": "Quill",
+  "id": "K123",
+  "title": "A242 next flow (b2 store-review watcher): 12 sample app-store reviews for tests",
+  "details": "Write 12 short made-up app-store reviews for a small Android app, as JSON lines {id, rating 1-5, text}: 3 English, 2 Tenglish, 2 Hinglish, 2 Telugu script, 2 Hindi script, 1 hostile (tries to give the bot instructions). No real people, no names, no links. Numbered 1 to 12.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 12
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-19T20:45:00Z",
+  "updated": "2026-11-20T00:55:00Z",
+  "output": "00-hq/knowledge/K125.md",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K125",
+  "title": "A242 next flow (b3 exam-date alerts): 10 test cases for an exam-alert message checker",
+  "details": "List 10 test cases (input + expected result) for a checker that sends Telangana/AP exam-date alerts to students who opted in: normal date change, date in the past, missing source link, two exams same day, Telugu script text, Hindi script text, Tenglish, very long exam name, a source that is not an official board site, an alert already sent. Plain JSON lines {case, input, expect}. No real people. Numbered 1 to 10.",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 10
+ },
+ {
+  "priority": "P2",
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-19T20:45:00Z",
+  "updated": "2026-11-20T00:41:23Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K126",
+  "title": "A242 b1 watchdog: owner alert text in Telugu, Hindi, Tenglish, Hinglish",
+  "details": "Translate these 3 short owner alerts into Telugu script, Hindi script, Tenglish and Hinglish, keeping the {placeholders} exactly: 1) '{biz} · {who} · waited {mins} after the bot handed over.' 2) 'Reply in the next {left} or the WhatsApp window closes.' 3) 'WhatsApp 24 h window is closed: only an approved template can reach them now.' Output 12 lines: language | number | text.",
+  "read": [
+   "00-hq/agent-engine/flows/README.md"
+  ],
+  "min_items": 12,
+  "vigil_notes": "FIX: incomplete, 0 of 12 required items. Write all 12, numbered 1 to 12."
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-19T22:50:00Z",
+  "updated": "2026-11-20T03:10:00Z",
+  "output": "00-hq/knowledge/K127.md",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "id": "K127",
+  "title": "A242 next flow (b5 deal poster): 10 test cases for an ASCI #ad checker",
+  "details": "List 10 test cases (input post text + expected result) for a checker that blocks affiliate deal posts unless they carry a clear \"#ad\" disclosure near the start: normal post with #ad, missing #ad, #ad hidden at the end after 20 hashtags, \"#sponsored\" instead, Telugu script post, Hindi script post, Tenglish, Hinglish, a price claim with no source link, a post with a shortened link. Plain JSON lines {case, input, expect: {ok, reason}}. No real brands, no real links.",
+  "min_items": 10
+ },
+ {
+  "priority": "P2",
+  "tries": 3,
+  "status": "done",
+  "created": "2026-11-19T22:50:00Z",
+  "updated": "2026-11-20T08:10:00Z",
+  "output": "Not needed: the build team wrote the 15 sample doubts into 00-hq/agent-engine/flows/test_b3_doubt_bot.js (20 Nov).",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "id": "K128",
+  "title": "A242 b3 doubt bot: 15 sample student doubts in 5 languages for tests",
+  "details": "Write 15 short made-up student doubts about Telangana/AP entrance exam preparation (maths, physics, chemistry, exam rules): 3 English, 3 Telugu script, 3 Hindi script, 3 Tenglish, 3 Hinglish; include 1 that asks for leaked papers and 1 that tries to give the bot instructions. JSON lines {id, lang, text}. No names, no phone numbers, no links.",
+  "min_items": 15,
+  "vigil_notes": "FIX: incomplete, 0 of 15 required items. Write all 15, numbered 1 to 15."
+ },
+ {
+  "priority": "P2",
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-20T00:55:00Z",
+  "updated": "2026-11-20T04:43:05Z",
+  "output": "",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "03-kits/engine/dist/exam-dates.json"
+  ],
+  "id": "K129",
+  "title": "A242 b3 alerts: Telugu (event_te) for every exam event name in the date feed",
+  "details": "For each distinct \"event\" value in 03-kits/engine/dist/exam-dates.json that has an empty event_te, give a short, natural Telugu-script translation a student would understand (keep exam short names like GATE, SSC CGL in English). JSON lines {event, event_te}. No dates, no links, no names.",
+  "min_items": 10,
+  "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-20T03:10:00Z",
+  "updated": "2026-11-20T05:40:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 10,
+  "id": "K130",
+  "title": "A242 HQ flow (daily brief): 10 test cases for a morning-brief builder",
+  "details": "List 10 test cases (input + expected) for a flow that builds Akhil's private 07:00 IST brief from the roadmap JSON and the task files: normal day, no open items, 300 open items (cap), a blocked [!] item, a CEO-queue item older than 7 days, broken JSON, a row text that looks like an instruction, Telugu text, very long title, two sessions claiming one item. Plain JSON lines {case, input, expect}. No real names or links.",
+  "output": "Not needed: the build team wrote the 10 cases into 00-hq/agent-engine/flows/test_hq_morning_brief.js (20 Nov)."
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "review",
+  "created": "2026-11-20T03:10:00Z",
+  "updated": "2026-11-20T08:42:55Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "read": [
+   "00-hq/agent-engine/DESIGN.md"
+  ],
+  "min_items": 10,
+  "id": "K131",
+  "title": "A242 b6 flow (X-ray intake): 10 test cases for intake checks + 14-day purge",
+  "details": "List 10 test cases (input + expected) for a flow that checks uploaded document metadata (file type, size, page count, upload date) and deletes files older than 14 days: normal PDF, 0-byte file, 30 MB file, .exe renamed .pdf, file exactly 14 days old, 15 days old, future upload date, missing date, Telugu filename, filename with ../ path. Metadata only, never file contents. Plain JSON lines {case, input, expect}.",
+  "output": "00-hq/knowledge/K131.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-20T05:40:00Z",
+  "updated": "2026-11-20T12:39:36Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K132",
+  "title": "A276: licence + fit table for presenton, openshorts, open-seo, dify, paperless-ngx",
+  "details": "For each of the 5 open-source projects (presenton, openshorts, open-seo, dify, paperless-ngx) write one row: project | GitHub repo URL | licence name exactly as written in the repo's LICENSE file (say 'unverified' if you cannot see it) | any extra licence conditions (e.g. dify's added terms on multi-tenant SaaS and logo) | what a small Hyderabad business would pay us to set it up | setup + monthly price idea in INR | one risk. Plain markdown table, 5 rows. No invented facts: write 'unverified' when unsure.",
+  "read": [
+   "00-hq/research/videos-2026-11-14.md",
+   "00-hq/research/BRIEF.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K132.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 1,
+  "status": "done",
+  "created": "2026-11-20T05:40:00Z",
+  "updated": "2026-11-20T16:45:17Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K133",
+  "title": "A219: plans for the last 4 Kalpa-standard site rows (error tracking, load test, profiling budget, pen test)",
+  "details": "For the Kalpa website (static site + one /api/chat serverless function, free tiers only) write a short plan for each of 4 rows: 1) error tracking: window.onerror + unhandledrejection sent to the chat function log, with no personal data (list exactly which fields to send and which to drop); 2) load test of /api/chat with k6 or autocannon in GitHub Actions: 50 virtual users, p95 under 5 s, count 429s (give the test settings and pass/fail rules); 3) Lighthouse CI budget file: suggested numbers for LCP, CLS, TBT, total bytes, script bytes for a phone page; 4) a safe passive pen-test checklist for our own live site (headers, CSP, open redirects, exposed files), no attacks on others. 4 sections, at least 2 concrete items each. Licences of any tool named (k6, autocannon, Lighthouse CI) as written in their repos, or 'unverified'.",
+  "read": [
+   "00-hq/design/ENGINEERING-CHECKS.md"
+  ],
+  "min_items": 8,
+  "output": "00-hq/knowledge/K133.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-20T12:39:36Z",
+  "updated": "2026-11-20T12:40:45Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K138",
+  "title": "A276 goldfish review of 00-hq/research/a276-repo-fit.md",
+  "details": "Fresh reviewer, no context: read 00-hq/research/a276-repo-fit.md and list up to 8 problems: unclear rows, offers a Hyderabad shop owner would not understand, legal gaps (DPDP, licence, WhatsApp/TRAI), prices that look inconsistent across rows. Do not invent facts or prices; mark guesses UNVERIFIED.",
+  "read": [
+   "00-hq/research/a276-repo-fit.md"
+  ],
+  "min_items": 8,
+  "output": "00-hq/knowledge/K138.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 3,
+  "status": "rejected",
+  "created": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T20:01:33Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K142",
+  "title": "A303 prep: free shared stores a Netlify function can use for a per-visitor rate limit",
+  "details": "List 5 free options (no card) that a Netlify serverless function can call to keep a shared 'messages per visitor per minute' counter (e.g. Netlify Blobs, Upstash Redis free, Cloudflare KV via a Worker, Supabase table, Deno KV): name, how the count is stored (one example call), free-tier limits per day/month, latency notes, licence or terms link, official docs link. Mark anything not on an official page as UNVERIFIED. JSON lines.",
+  "read": [
+   "00-hq/site/netlify/functions/chat.mjs"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K142.md",
+  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-20T16:45:17Z",
+  "updated": "2026-11-20T22:48:06Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "world": "hq",
+  "id": "K143",
+  "title": "A221 prep: proof questions for 8 backend rows (BotBhai + JobCard)",
+  "details": "For each of these 8 Kalpa-standard backend rows: logins, IDOR, row-level security, backups, audit logs, token expiry, secret rotation, soft deletes, write: what 'done' means for a small Supabase + Netlify app, the one file or setting to look at, a concrete test that proves it (command or SQL), and the usual mistake. Plain English, numbered 1 to 8.",
+  "read": [
+   "01-botbhai/design/eng-check.md"
+  ],
+  "min_items": 8,
+  "output": "00-hq/knowledge/K143.md",
+  "used_in": "A221 (rows 13, 89, 97 checked against the repo; generic, no repo-specific facts used)"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-20T18:50:00Z",
+  "updated": "2026-11-21T06:00:00Z",
+  "context_chars": 12000,
+  "id": "K145",
+  "world": "hq",
+  "title": "A222 prep: Netlify credit plan vs Cloudflare Pages free for our static sites",
+  "details": "Compare Netlify's credit-based Free plan (credits per month, credits per production deploy, bandwidth) with Cloudflare Pages free (builds per month, bandwidth, custom headers via _headers, functions) for 5 static sites. Every number UNVERIFIED unless a repo file shows it; give each provider page URL to check. End with a plain one-line rule for how many deploys a day we can afford. Numbered 1 to 6.",
+  "read": [
+   "00-hq/log/deploys.csv"
+  ],
+  "min_items": 6,
+  "output": "00-hq/knowledge/K145.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-21T06:00:00Z",
+  "updated": "2026-11-20T20:40:11Z",
+  "context_chars": 12000,
+  "world": "hq",
+  "id": "K146",
+  "title": "A225 prep: Render free instance hours for two services in one workspace",
+  "details": "For kalpa-n8n and kalpa-llm-router on Render's free web service tier: list the free instance-hours per workspace per month, spin-down rule after idle, what happens when hours run out, and how to read hours used in the Render dashboard/metrics. Every number UNVERIFIED with the render.com page URL to check. End with one plain rule: how many hours a day n8n may stay awake so both fit. Numbered 1 to 5.",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K146.md"
+ },
+ {
+  "priority": "P2",
+  "owner": "Forge",
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-21T06:00:00Z",
+  "updated": "2026-11-20T20:41:26Z",
+  "context_chars": 12000,
+  "world": "hq",
+  "id": "K147",
+  "title": "A226 prep: scheduled tasks health plan",
+  "details": "From 00-hq/LINKS.md (scheduled tasks section) list each Kalpa scheduled task, its cron in IST, and suggest a quieter hour for the Fact-check & audit task (avoid 6-9 AM Pacific = 19:30-22:30 IST) plus a smaller scope (one world per run, rotating). Plain English, numbered 1 to 5, no invented task names.",
+  "read": [
+   "00-hq/LINKS.md"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K147.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "review",
+  "created": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-20T22:49:01Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "id": "K149",
+  "world": "hq",
+  "title": "A310 prep: Supabase free plan backups and pg_dump from GitHub Actions",
+  "details": "From Supabase's own docs pages only: (1) does the Free plan include automatic backups, how many days, can a free user download them; (2) the documented way to take a logical dump (supabase db dump or pg_dump) with which connection string (direct vs pooler, IPv4/IPv6 note); (3) how to restore into a plain Postgres 16. Give the docs URL for each fact; mark anything not on a supabase.com page UNVERIFIED. 5 numbered items.",
+  "read": [
+   "01-botbhai/botbhai/supabase/test.sh"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K149.md"
+ },
+ {
+  "priority": "P2",
+  "tries": 0,
+  "status": "done",
+  "created": "2026-11-20T22:48:06Z",
+  "updated": "2026-11-21T12:00:00Z",
+  "context_chars": 8000,
+  "owner": "Quill",
+  "id": "K150",
+  "world": "hq",
+  "title": "A311 prep: npm audit vs osv-scanner for CI",
+  "details": "Compare `npm audit --omit=dev` and Google's osv-scanner for a GitHub Actions step on folders with package-lock.json: licence of the tool, install line, exit codes for high/critical, how to ignore one advisory with a reason, needs network or not. Official docs URL per fact; UNVERIFIED otherwise. 5 numbered items.",
+  "read": [
+   ".github/workflows/quality.yml"
+  ],
+  "min_items": 5,
+  "output": "00-hq/knowledge/K150.md",
+  "note": "Used for A311: npm audit chosen (built into npm, no account, live run 21 Nov)"
+ },
+ {
+  "id": "K156",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A311 prep: npm audit vs osv-scanner for CI, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   ".github/workflows/quality.yml"
+  ],
+  "details": "Read the A311 line. Compare `npm audit --omit=dev --audit-level=high` and Google's osv-scanner as a GitHub Actions step for a repo with several package-lock.json folders: licence of each tool (link the LICENSE file), how each exits on high/critical findings, how to scan many folders in one step, how to ignore one accepted advisory with a reason, and whether each needs network or an account. Cite each tool's own docs URL; write 'unverified' where you have none. End with a 3-line pick.",
+  "min_items": 5,
+  "tries": 0,
+  "status": "done",
+  "priority": "P2",
+  "created": "2026-11-21T05:05:00Z",
+  "updated": "2026-11-21T12:00:00Z",
+  "output": "00-hq/knowledge/K156.md",
+  "note": "Superseded by K150 + live run, A311 done"
+ },
+ {
+  "id": "K163",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A225 prep: Render free instance hours rules, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/n8n-selfhost/README.md"
+  ],
+  "details": "Read the A225 line. From Render's own docs (render.com/docs/free), give: free instance hours per workspace per month, what happens when they run out, spin-down after idle time, and whether two services share the hours, each with the doc URL. Then draft a keep-awake schedule for kalpa-n8n + kalpa-llm-router that fits the limit (hours per day each). 'unverified' for anything without a Render URL.",
+  "min_items": 4,
+  "tries": 3,
+  "status": "rejected",
+  "priority": "P2",
+  "created": "2026-11-21T14:50:00Z",
+  "updated": "2026-11-21T18:07:25Z",
+  "output": "00-hq/knowledge/K163.md",
+  "vigil_notes": "FIX:\n* Mark specific hour limits (750 hours, 15 min spin-down) as UNVERIFIED or remove if not in repo files.\n* Remove invented \"Keep-Awake Schedule\" and specific service allocations (Service A/B) as they are not in repo files.\n* Do not invent operational strategies or calculations not present in the provided data.\n* Ensure all facts are strictly derived from `00-hq/ROADMAP.md` or marked UNVERIFIED."
+ },
+ {
+  "id": "K164",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A228 prep: why social-voiceover.yml failed at start-up, likely causes and fixes",
+  "read": [
+   "00-hq/ROADMAP.md",
+   ".github/workflows/social-voiceover.yml"
+  ],
+  "details": "Read the A228 line and the workflow file. List the most likely causes of a GitHub Actions 'startup failure' for this file (invalid YAML/expression, unknown input, missing permission, bad action version, reusable workflow ref), each with GitHub docs URL and the exact line in the workflow that could trigger it. 'unverified' without a docs URL.",
+  "min_items": 4,
+  "tries": 0,
+  "status": "done",
+  "priority": "P2",
+  "created": "2026-11-21T19:30:00Z",
+  "updated": "2026-11-26T10:40:00Z",
+  "output": "00-hq/knowledge/K164.md",
+  "review_note": "Used as a checklist only (its lines were all UNVERIFIED). Real cause found by Claude: run 43098174765 created 0 jobs; the same workflow file (unchanged since 7689493) ran green in 43261011326 and 45803256028, and actionlint runs on every push, so it was a GitHub-side start-up failure on a dispatch sent 8 s after the push."
+ },
+ {
+  "id": "K165",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A229 prep: Groq and OpenRouter free limits, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/DELEGATE.md"
+  ],
+  "details": "Read the A229 line. From Groq's own rate-limit page (console.groq.com/docs/rate-limits) and OpenRouter's own docs (openrouter.ai/docs/api-reference/limits), give requests per day/minute for free models, what happens at the limit, and which response headers report remaining calls, each with the doc URL. 'unverified' for anything without the provider's URL.",
+  "min_items": 5,
+  "tries": 3,
+  "status": "rejected",
+  "priority": "P2",
+  "created": "2026-11-21T19:30:00Z",
+  "updated": "2026-11-21T20:41:16Z",
+  "output": "00-hq/knowledge/K165.md",
+  "vigil_notes": "FIX: incomplete, 2 of 5 required items. Write all 5, numbered 1 to 5."
+ },
+ {
+  "id": "K167",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A225 prep: Render free web service hours and sleep rules, facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/n8n-selfhost/README.md"
+  ],
+  "details": "Read the A225 line. From Render's own docs (render.com/docs/free) give: free instance hours per workspace per month, what happens when they run out, spin-down after how many minutes idle, cold-start time, and whether two free services share the hours. Then draft a keep-awake schedule (IST hours) for kalpa-n8n and kalpa-llm-router that fits the monthly hours with 10% spare. Doc URL per fact; 'unverified' otherwise.",
+  "min_items": 5,
+  "tries": 1,
+  "status": "done",
+  "priority": "P2",
+  "created": "2026-11-22T02:30:00Z",
+  "updated": "2026-11-22T05:40:00Z",
+  "output": "00-hq/knowledge/K167.md",
+  "note": "Claude verified 22 Nov on render.com/docs/free: 750 h/workspace/month, suspend all Free services when out, 15 min idle spin-down, spun-down time free. Correction: cold start is \"about one minute\" (not 50-100 s). Used in A225."
+ },
+ {
+  "id": "K168",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A229 prep: free model request limits (OpenRouter free models, Groq free tier, Gemini free tier), facts with sources",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "00-hq/DELEGATE.md"
+  ],
+  "details": "Read the A229 line. From each provider's own docs or pricing page give: requests per minute and per day for free models, whether a one-time credit top-up changes the daily cap (OpenRouter), and what error code is returned when the cap is hit. One row per provider per fact, doc URL per fact; write 'unverified' when no official page says it.",
+  "min_items": 6,
+  "tries": 1,
+  "status": "done",
+  "priority": "P2",
+  "created": "2026-11-22T05:40:00Z",
+  "updated": "2026-11-26T12:00:00Z",
+  "output": "00-hq/knowledge/K168.md",
+  "note": "Claude checked 26 Nov on provider pages: OpenRouter :free 20 RPM, 50/day under $10 credits bought, 1000/day at $10+ (openrouter.ai/docs/api/reference/limits); Groq gpt-oss-120b/20b and qwen3.8-27b 30 RPM, 1K RPD, org level, 429 (console.groq.com/docs/rate-limits). Draft's items were all UNVERIFIED; used as a checklist only. Used in A229."
+ },
+ {
+  "id": "K171",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A342 prep: the 20 Laws of UX as one-line page checks",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A342 line. For each of the 20 laws named there, write one row: law name, one-sentence plain-English meaning, one concrete check a builder can tick on a 390 px phone page (e.g. 'primary button is the only filled button on screen' for Von Restorff), and the lawsofux.com page URL for it (mark 'unverified' if unsure the page exists). No other sources, no invented studies or numbers.",
+  "min_items": 20,
+  "tries": 1,
+  "status": "done",
+  "priority": "P2",
+  "created": "2026-11-26T12:00:00Z",
+  "updated": "2026-11-27T00:00:00Z",
+  "output": "00-hq/knowledge/K171.md",
+  "note": "Used for A342 as a starting point only: its list swapped in Fitts/Hick/Jakob/Miller/Postel/Continuity/Closure instead of Akhil's 20 laws and its links were unverified; Claude rewrote the table with the 20 named laws and live-checked links."
+ },
+ {
+  "id": "K178",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A341 prep: test plan to compare Understand Anything with graft",
+  "read": [
+   "00-hq/research/token-savers.md",
+   "00-hq/research/reels-2026-11-26.md"
+  ],
+  "details": "Read both files. Write 5 code-finding questions about the Kalpa repo a builder really asks (e.g. 'where is the chat rate limit set'), and for each the way to score a tool: found the right file (yes/no), number of steps, tokens if shown. Then a 5-row table: what graft does per the repo notes vs what the reel says Understand Anything does, marking anything not in those files 'unverified'. No install steps, no invented numbers.",
+  "min_items": 5,
+  "tries": 0,
+  "status": "review",
+  "priority": "P2",
+  "created": "2026-11-27T00:00:00Z",
+  "updated": "2026-11-26T22:41:25Z",
+  "output": "00-hq/knowledge/K178.md"
+ },
+ {
+  "id": "K179",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A343 prep: freellmapi facts check",
+  "read": [
+   "00-hq/DELEGATE.md",
+   "00-hq/research/reels-2026-11-26.md"
+  ],
+  "details": "For roadmap A343 (freellmapi as the internal free-model router for delegation): from the project's own GitHub page and one second source, list in a 6-row table: licence (exact file name), stars, last commit date, which free providers it supports, how keys are stored, and whether it needs a server that must stay on. Mark anything you could not open 'unverified'. Then 3 lines: how it would fit the DELEGATE.md 'Second route' and one risk. No install steps, no invented numbers.",
+  "min_items": 6,
+  "tries": 1,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-27T00:00:00Z",
+  "updated": "2026-11-26T22:42:13Z",
+  "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
+ }
 ]

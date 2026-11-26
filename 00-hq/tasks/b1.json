@@ -557,14 +557,15 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-26T14:30:00Z",
-  "updated": "2026-11-26T14:30:00Z",
+  "updated": "2026-11-26T14:42:01Z",
   "id": "K172",
   "title": "A348 prep: Kalpa site privacy notice draft (plain English)",
   "min_items": 8,
-  "details": "Read rows D1-D5, D10, D11 of dpdp-2027.md and the A348 line. Draft a privacy notice for the Kalpa Labs website in plain English (class 8 reading level), exactly 8 numbered sections: 1 who we are + contact, 2 what we collect from the contact form (name, phone/WhatsApp, what you need), 3 what the chat collects (your messages go to an AI model provider to write replies; a callback saves name + phone only after you say yes), 4 why we use it, 5 how long we keep it (leads deleted after 12 months unless you become a customer), 6 how to withdraw consent or ask for deletion with one WhatsApp message, 7 your rights (see, correct, erase, nominate someone, complain; we reply within 90 days at most), 8 complaint to the Data Protection Board of India. Leave [PROVIDER] and [CONTACT] as placeholders. No legal claims beyond these points."
+  "details": "Read rows D1-D5, D10, D11 of dpdp-2027.md and the A348 line. Draft a privacy notice for the Kalpa Labs website in plain English (class 8 reading level), exactly 8 numbered sections: 1 who we are + contact, 2 what we collect from the contact form (name, phone/WhatsApp, what you need), 3 what the chat collects (your messages go to an AI model provider to write replies; a callback saves name + phone only after you say yes), 4 why we use it, 5 how long we keep it (leads deleted after 12 months unless you become a customer), 6 how to withdraw consent or ask for deletion with one WhatsApp message, 7 your rights (see, correct, erase, nominate someone, complain; we reply within 90 days at most), 8 complaint to the Data Protection Board of India. Leave [PROVIDER] and [CONTACT] as placeholders. No legal claims beyond these points.",
+  "output": "00-hq/knowledge/K172.md"
  },
  {
   "world": "b1",
@@ -574,13 +575,14 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-26T14:30:00Z",
-  "updated": "2026-11-26T14:30:00Z",
+  "updated": "2026-11-26T14:42:50Z",
   "id": "K173",
   "title": "A350 prep: breach notice templates (person + Board)",
   "min_items": 2,
-  "details": "Read row D9 of dpdp-2027.md and the A350 line. Write exactly 2 templates in plain English with [BRACKET] placeholders: (1) message to an affected person: what happened and when, what data, likely effect on them, what we did, what they can do to stay safe, who to contact; (2) detailed report to the Data Protection Board within 72 hours: updated description, facts and reasons, mitigation, findings on who caused it, steps to prevent it again, report on notices sent to people. No dates or legal claims beyond this."
+  "details": "Read row D9 of dpdp-2027.md and the A350 line. Write exactly 2 templates in plain English with [BRACKET] placeholders: (1) message to an affected person: what happened and when, what data, likely effect on them, what we did, what they can do to stay safe, who to contact; (2) detailed report to the Data Protection Board within 72 hours: updated description, facts and reasons, mitigation, findings on who caused it, steps to prevent it again, report on notices sent to people. No dates or legal claims beyond this.",
+  "output": "00-hq/knowledge/K173.md"
  }
 ]

@@ -2,7 +2,7 @@
 """A144: Kalpa agent task runner on GitHub Actions (replaces the n8n Cloud Task Runner; trial ended 31 Oct 2026).
 
 Queues: 00-hq/tasks/<world>.json; the Action runs one job per world in parallel. Each run takes up to MAX_TASKS `todo` tasks (P0 first, then oldest),
-the owner agent drafts the deliverable with free models (Groq → OpenRouter → Hugging Face router), reading the repo
+the owner agent drafts the deliverable with free models (Groq first, then Gemini/OpenRouter/Cloudflare; daily calls counted in 00-hq/agents/usage/), reading the repo
 files named in the task and its agency-agents playbook. Vigil (a second free model) checks it against Kalpa rules.
 PASS → 00-hq/knowledge/<id>.md + status "review"; FIX → status "todo" with Vigil's notes (max 2 retries, then "rejected").
 The Action commits the changes. No web search (YouTube/Reddit/GitHub links named in a task are read through reach.py, no login): agents must mark any fact they cannot see in the repo as UNVERIFIED.
@@ -67,9 +67,91 @@ def now():
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+# A229: free daily caps, checked 26 Nov 2026 on the providers' own pages. Groq console.groq.com/docs/rate-limits:
+# 1,000 requests/day per model (gpt-oss-120b, gpt-oss-20b, qwen3.8-27b), per organization. OpenRouter
+# openrouter.ai/docs/api/reference/limits: 50 requests/day across all :free models while under $10 credits bought.
+# Gemini and Cloudflare are counted but not capped here (caps unverified).
+CAP_MODEL = {"GROQ_API_KEY": 1000}
+CAP_PROVIDER = {"OPENROUTER_API_KEY": 50}
+USAGE = {}  # {"date", "calls": {"KEY|model": n} made by this world today, "base": same for other worlds, "spent": [KEY]}
+USAGE_DIR = os.path.join(ROOT, "00-hq/agents/usage")  # one file per world so parallel jobs never conflict
+
+
+def today():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")  # provider daily limits reset on UTC days
+
+
+def day_totals(folder=USAGE_DIR, skip=None):
+    """Today's calls from every world's file: "KEY|model" counts plus a per-provider total under "KEY"."""
+    tot = {}
+    for f in sorted(os.listdir(folder)) if os.path.isdir(folder) else []:
+        if not f.endswith(".json") or f[:-5] == skip:
+            continue
+        try:
+            d = json.load(open(os.path.join(folder, f), encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if d.get("date") != today():
+            continue
+        for k, n in d.get("calls", {}).items():
+            tot[k] = tot.get(k, 0) + n
+            tot[k.split("|")[0]] = tot.get(k.split("|")[0], 0) + n
+        for k in d.get("spent", []):
+            tot[k] = max(tot.get(k, 0), CAP_PROVIDER.get(k, 0))
+    return tot
+
+
+def load_usage(world, folder=USAGE_DIR):
+    own = {}
+    try:
+        own = json.load(open(os.path.join(folder, world + ".json"), encoding="utf-8"))
+    except (OSError, ValueError):
+        pass
+    if own.get("date") != today():
+        own = {}
+    USAGE.clear()
+    USAGE.update({"date": today(), "calls": own.get("calls", {}), "spent": own.get("spent", []), "base": day_totals(folder, skip=world)})
+
+
+def save_usage(world, folder=USAGE_DIR):
+    os.makedirs(folder, exist_ok=True)
+    out = {"date": USAGE.get("date", today()), "calls": USAGE.get("calls", {}), "spent": USAGE.get("spent", [])}
+    with open(os.path.join(folder, world + ".json"), "w", encoding="utf-8") as fh:
+        json.dump(out, fh, indent=1, sort_keys=True)
+        fh.write("\n")
+
+
+def used(key, model):
+    """(calls today on this model, calls today on this provider) across all worlds."""
+    if USAGE.get("date") != today():
+        USAGE.clear()
+        USAGE.update({"date": today(), "calls": {}, "spent": [], "base": {}})
+    USAGE.setdefault("calls", {}); USAGE.setdefault("spent", []); USAGE.setdefault("base", {})
+    calls, base = USAGE["calls"], USAGE["base"]
+    m = calls.get(f"{key}|{model}", 0) + base.get(f"{key}|{model}", 0)
+    p = sum(n for k, n in calls.items() if k.split("|")[0] == key) + base.get(key, 0)
+    if key in USAGE["spent"]:
+        p = max(p, CAP_PROVIDER.get(key, 0))
+    return m, p
+
+
+def at_cap(key, model):
+    m, p = used(key, model)
+    return m >= CAP_MODEL.get(key, 10**9) or p >= CAP_PROVIDER.get(key, 10**9)
+
+
+def count(key, model):
+    used(key, model)  # rolls the day over if needed
+    k = f"{key}|{model}"
+    USAGE["calls"][k] = USAGE["calls"].get(k, 0) + 1
+
+
 def call(models, messages, env, post):
     for key, url, model in models:
         if not env.get(key):
+            continue
+        if at_cap(key, model):  # free daily cap reached: don't waste a request (and a 30 s wait) on a sure 429
+            print(f"  model {model} skipped: free daily cap reached", file=sys.stderr)
             continue
         if "{CLOUDFLARE_ACCOUNT_ID}" in url:  # account id is part of the Cloudflare URL
             if not env.get("CLOUDFLARE_ACCOUNT_ID"):
@@ -81,12 +163,19 @@ def call(models, messages, env, post):
             if "generativelanguage" in url:  # Gemini thinks inside max_tokens: keep thinking short so the answer fits
                 pay["reasoning_effort"] = "low"
             try:
+                count(key, model)
                 body = post(url, hdr, pay)
             except urllib.error.HTTPError as e:
                 if e.code != 429:
                     raise
                 time.sleep(float(env.get("KL_RETRY_WAIT", 30)))  # free per-minute limit: wait once, retry
-                body = post(url, hdr, pay)
+                try:
+                    count(key, model)
+                    body = post(url, hdr, pay)
+                except urllib.error.HTTPError as e2:
+                    if e2.code == 429 and key in CAP_PROVIDER and key not in USAGE["spent"]:
+                        USAGE["spent"].append(key)  # still 429 after the wait: today's free requests are used up
+                    raise
             choice = (body.get("choices") or [{}])[0]
             text = choice.get("message", {}).get("content") or ""
             if choice.get("finish_reason") == "length":  # ran out of room mid-answer: never accept half a draft
@@ -224,12 +313,12 @@ PREFER_KEYS = {"openrouter": "OPENROUTER_API_KEY", "gemini": "GEMINI_API_KEY", "
 
 
 def ordered(models, prefer):
-    """Parallel world jobs share keys, so each world starts on a different free provider (Groq, OpenRouter, Google Gemini);
-    the rest stay as fallbacks. Vigil uses the opposite order so a draft is checked by a different provider when possible."""
+    """A229: Groq always first (1,000 free requests/day per model; OpenRouter free allows only 50/day in total).
+    After Groq, parallel world jobs rotate the next provider (OpenRouter or Google Gemini) so fallbacks spread out.
+    Vigil drafts are checked by a different Groq model (qwen) than the worker's (gpt-oss), then other providers."""
     key = PREFER_KEYS.get(prefer)
-    if not key:
-        return models
-    return [m for m in models if m[0] == key] + [m for m in models if m[0] != key]
+    rank = lambda m: 0 if m[0] == "GROQ_API_KEY" else 1 if m[0] == key else 2
+    return sorted(models, key=rank)  # stable: keeps each provider's model order
 
 
 VIGIL_FOR = {"gemini": "groq", "groq": "gemini", "openrouter": "gemini", "": "gemini"}
@@ -244,6 +333,11 @@ def main(argv):
     global MODELS, VIGIL_MODELS
     prefer = os.environ.get("KL_PREFER", "")
     MODELS, VIGIL_MODELS = ordered(MODELS, prefer), ordered(VIGIL_MODELS, VIGIL_FOR.get(prefer, ""))
+    if "--usage" in argv:  # today's free-model calls across all worlds vs the daily caps
+        tot = day_totals()
+        print(json.dumps({"date": today(), "calls": tot, "cap_per_model": CAP_MODEL, "cap_per_provider": CAP_PROVIDER}, indent=1, sort_keys=True))
+        return 0
+    load_usage(world)
     path = os.path.join(TASKS, world + ".json")
     if not os.path.exists(path):
         print(world, "queue empty")
@@ -260,6 +354,8 @@ def main(argv):
         if i:
             time.sleep(45)  # stay under the free models' per-minute token limits
         print(t["id"], "→", apply(t, work(t, os.environ)))
+    if "--dry-run" not in argv:
+        save_usage(world)
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(queue, fh, ensure_ascii=False, indent=1)
         fh.write("\n")

@@ -106,15 +106,15 @@ class Runner(unittest.TestCase):
         R.work(self.task, self.env, post, self.root)  # temp root has no skill: still works
         self.assertNotIn("humanizer", post.calls[0][1]["messages"][0]["content"])
 
-    def test_gemini_first_and_vigil_checks_with_another_provider(self):
-        self.assertEqual(R.ordered(R.MODELS, "gemini")[0][0], "GEMINI_API_KEY")
-        self.assertEqual(R.ordered(R.VIGIL_MODELS, R.VIGIL_FOR["gemini"])[0][0], "GROQ_API_KEY")
-        self.assertEqual(R.ordered(R.VIGIL_MODELS, R.VIGIL_FOR[""])[0][0], "GEMINI_API_KEY")
+    def test_groq_always_first_then_preferred_provider(self):  # A229: Groq has 1,000/day per model, OpenRouter free only 50/day
+        for prefer in ["gemini", "openrouter", "groq", ""]:
+            self.assertEqual(R.ordered(R.MODELS, prefer)[0][0], "GROQ_API_KEY")
+            self.assertEqual(R.ordered(R.VIGIL_MODELS, R.VIGIL_FOR.get(prefer, ""))[0][0], "GROQ_API_KEY")
+            self.assertEqual(sorted(R.ordered(R.MODELS, prefer)), sorted(R.MODELS))  # nothing lost
+        after_groq = [m for m in R.ordered(R.MODELS, "gemini") if m[0] != "GROQ_API_KEY"]
+        self.assertEqual(after_groq[0][0], "GEMINI_API_KEY")
+        self.assertEqual([m for m in R.ordered(R.MODELS, "openrouter") if m[0] != "GROQ_API_KEY"][0][0], "OPENROUTER_API_KEY")
         self.assertTrue(all("googleapis.com" in m[1] for m in R.MODELS if m[0] == "GEMINI_API_KEY"))
-
-    def test_prefer_openrouter_reorders(self):
-        self.assertEqual(R.ordered(R.MODELS, "openrouter")[0][0], "OPENROUTER_API_KEY")
-        self.assertEqual(R.ordered(R.MODELS, ""), R.MODELS)
 
     def test_real_queues_are_valid(self):
         q, ids = [], []
@@ -165,6 +165,45 @@ class CloudflareBackupTest(unittest.TestCase):
         self.assertEqual(text, "ok")
         self.assertEqual(seen[0], "https://api.cloudflare.com/client/v4/accounts/abc/ai/v1/chat/completions")
 
+
+class DailyCountTest(unittest.TestCase):  # A229: count calls per day, skip a provider at its free daily cap
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        R.USAGE.clear()
+
+    def tearDown(self):
+        R.USAGE.clear()
+
+    def test_counts_calls_and_skips_at_cap(self):
+        models = [("OPENROUTER_API_KEY", "https://openrouter.ai/x", "a:free"), ("GROQ_API_KEY", "https://api.groq.com/x", "g")]
+        env = {"OPENROUTER_API_KEY": "k", "GROQ_API_KEY": "k"}
+        R.USAGE.update({"date": R.today(), "calls": {"OPENROUTER_API_KEY|b:free": 50}})  # OpenRouter's 50/day shared by all free models
+        seen = []
+        def post(url, hdr, pay):
+            seen.append(pay["model"])
+            return {"choices": [{"message": {"content": "ok"}}]}
+        self.assertEqual(R.call(models, [], env, post), ("ok", "g"))
+        self.assertEqual(seen, ["g"])  # OpenRouter skipped, no wasted request
+        self.assertEqual(R.USAGE["calls"]["GROQ_API_KEY|g"], 1)
+
+    def test_daily_429_marks_provider_spent_and_usage_files_merge(self):
+        env = {"KL_RETRY_WAIT": "0", "OPENROUTER_API_KEY": "k"}
+        models = [("OPENROUTER_API_KEY", "u", "a:free"), ("OPENROUTER_API_KEY", "u", "b:free")]
+        n = []
+        def post(url, hdr, pay):
+            n.append(1)
+            raise R.urllib.error.HTTPError(url, 429, "limit", {}, None)
+        self.assertEqual(R.call(models, [], env, post), (None, None))
+        self.assertEqual(len(n), 2)  # first model: try + one retry; second model skipped as spent
+        R.save_usage("b1", self.d)
+        json.dump({"date": R.today(), "calls": {"GROQ_API_KEY|g": 7}}, open(os.path.join(self.d, "b2.json"), "w"))
+        json.dump({"date": "2000-01-01", "calls": {"GROQ_API_KEY|g": 999}}, open(os.path.join(self.d, "b3.json"), "w"))
+        tot = R.day_totals(self.d)
+        self.assertEqual(tot["GROQ_API_KEY|g"], 7)  # old days ignored
+        self.assertGreaterEqual(tot["OPENROUTER_API_KEY"], 50)
+        R.USAGE.clear()
+        R.load_usage("b1", self.d)
+        self.assertEqual(R.used("GROQ_API_KEY", "g"), (7, 7))  # other worlds' calls count toward shared caps
 
 
 if __name__ == "__main__":

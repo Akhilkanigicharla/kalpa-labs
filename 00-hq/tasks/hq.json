@@ -1218,10 +1218,29 @@
   "details": "Read the A229 line. From each provider's own docs or pricing page give: requests per minute and per day for free models, whether a one-time credit top-up changes the daily cap (OpenRouter), and what error code is returned when the cap is hit. One row per provider per fact, doc URL per fact; write 'unverified' when no official page says it.",
   "min_items": 6,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-22T05:40:00Z",
-  "updated": "2026-11-21T23:26:41Z",
-  "output": "00-hq/knowledge/K168.md"
+  "updated": "2026-11-26T12:00:00Z",
+  "output": "00-hq/knowledge/K168.md",
+  "note": "Claude checked 26 Nov on provider pages: OpenRouter :free 20 RPM, 50/day under $10 credits bought, 1000/day at $10+ (openrouter.ai/docs/api/reference/limits); Groq gpt-oss-120b/20b and qwen3.8-27b 30 RPM, 1K RPD, org level, 429 (console.groq.com/docs/rate-limits). Draft's items were all UNVERIFIED; used as a checklist only. Used in A229."
+ },
+ {
+  "id": "K171",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A342 prep: the 20 Laws of UX as one-line page checks",
+  "read": [
+   "00-hq/design/UX-PATTERNS.md",
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A342 line. For each of the 20 laws named there, write one row: law name, one-sentence plain-English meaning, one concrete check a builder can tick on a 390 px phone page (e.g. 'primary button is the only filled button on screen' for Von Restorff), and the lawsofux.com page URL for it (mark 'unverified' if unsure the page exists). No other sources, no invented studies or numbers.",
+  "min_items": 20,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-26T12:00:00Z",
+  "updated": "2026-11-26T12:00:00Z",
+  "output": "00-hq/knowledge/K171.md"
  }
 ]

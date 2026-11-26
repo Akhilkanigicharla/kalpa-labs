@@ -368,7 +368,7 @@ bool ScheduledEventNear(int win_min, string &why)
    datetime now = TimeGMT();
    for(int i = 0; i < ArraySize(KALPA_US_EVENTS_UTC); i++)
    {
-      if(MathAbs((double)(now - KALPA_US_EVENTS_UTC[i])) <= win_min * 60.0)
+      if(MathAbs((double)((long)now - (long)KALPA_US_EVENTS_UTC[i])) <= win_min * 60.0)   // signed: the "after" half of the window too
       {
          why = "scheduled_us_event@" + TimeToString(KALPA_US_EVENTS_UTC[i], TIME_DATE | TIME_MINUTES) + "UTC";
          return true;
@@ -436,7 +436,7 @@ bool UpcomingEventWithin(int minutes)
    datetime now = TimeGMT();
    for(int i = 0; i < ArraySize(KALPA_US_EVENTS_UTC); i++)
    {
-      long dt = (long)(KALPA_US_EVENTS_UTC[i] - now);
+      long dt = (long)KALPA_US_EVENTS_UTC[i] - (long)now;
       if(dt >= 0 && dt <= (long)minutes * 60) return true;
    }
    datetime srv = TimeTradeServer();
@@ -457,6 +457,8 @@ void NewsDerisk()
    static bool     near = false;
    if(TimeGMT() - last_check >= 30) { near = UpcomingEventWithin(inp_NewsDeriskMin); last_check = TimeGMT(); }
    if(!near) return;
+   static datetime fail_t = 0;                              // debug pass 26 Nov: a failed close is retried every 10 s, not every tick
+   if(fail_t != 0 && TimeCurrent() - fail_t < 10) return;
    double contract = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_CONTRACT_SIZE);
    double price    = SymbolInfoDouble(_Symbol, SYMBOL_BID);
    if(contract <= 0 || price <= 0) return;
@@ -498,7 +500,8 @@ void NewsDerisk()
       tr.SetExpertMagicNumber((ulong)PositionGetInteger(POSITION_MAGIC));
       if(!tr.PositionClose(pick))
       {
-         Logger.Error("NEWS_DERISK", StringFormat("close failed ticket=%I64u retcode=%u", pick, tr.ResultRetcode()), "");
+         Logger.Error("NEWS_DERISK", StringFormat("close failed ticket=%I64u retcode=%u (retry in 10 s)", pick, tr.ResultRetcode()), "");
+         fail_t = TimeCurrent();
          return;
       }
       Logger.Info("NEWS_DERISK", StringFormat("closed ticket=%I64u before news (net %.2f lots, room $%.2f)", pick, net, room));

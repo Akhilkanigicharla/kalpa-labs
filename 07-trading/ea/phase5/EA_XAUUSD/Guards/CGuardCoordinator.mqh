@@ -376,9 +376,14 @@ private:
          StringFormat("Emergency close complete. closed=%d failed=%d",
                       closed, failed));
 
-      if(failed > 0)
+      //--- debug pass 26 Nov: market closed -> this repeats every 5 s; pop the Alert at most every 10 min
+      static datetime last_alert = 0;
+      if(failed > 0 && (last_alert == 0 || TimeCurrent() - last_alert >= 600))
+      {
+         last_alert = TimeCurrent();
          Alert(EA_NAME, " WARNING: ", failed,
                " position(s) could not be closed. Manual action required.");
+      }
    }
 
    //--- Close a single position by ticket
@@ -808,7 +813,7 @@ public:
       if(desc.manual_reset_required)
       {
          // Log once per 10 minutes to remind operator
-         if(StateManager.GetStateAge() % 600 == 0 &&
+         if(((long)StateManager.GetStateAge()) % 600 == 0 &&
             StateManager.GetStateAge() > 0)
          {
             Logger.Warn("GUARD_COORD",

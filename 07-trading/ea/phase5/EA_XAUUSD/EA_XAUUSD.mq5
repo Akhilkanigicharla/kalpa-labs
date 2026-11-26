@@ -89,6 +89,7 @@ CCooldownManager    GuardCooldown;
 #include "Scoring/CTradeScorer.mqh"
 #include "Execution/CPositionSizer.mqh"
 #include "Execution/CTradeCalculator.mqh"
+bool HasOpenPosition();   // A348: prototype - defined below, called from CEntryEngine
 #include "Execution/CEntryEngine.mqh"
 #include "Execution/CMixEngine.mqh"         // A327: the 12 extra strategies of the best gold mix
 // #include "Execution/CRiskEngine.mqh"
@@ -154,7 +155,8 @@ int OnInit()
    // --- Step 3: Validate account type (must be able to hedge)
    ENUM_ACCOUNT_MARGIN_MODE margin_mode =
       (ENUM_ACCOUNT_MARGIN_MODE)AccountInfoInteger(ACCOUNT_MARGIN_MODE);
-   if(margin_mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING)
+   // Debug pass 26 Nov: before login (VPS reboot) ACCOUNT_MARGIN_MODE reads 0 = NETTING; only trust it once logged in
+   if(margin_mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0)
    {
       Logger.Fatal("INIT",
          "Account is NETTING — EA requires HEDGING mode");
@@ -661,6 +663,15 @@ void ManageOpenPosition()
       g_mng_risk    = MathAbs(open - sl);
       g_mng_half    = (sl > 0 && (sl - open) * side >= 0);     // stop already at/after entry
       g_mng_partial = g_mng_half;
+      //--- debug pass 26 Nov: restart between the TP1 half-close and the breakeven move must not
+      //    close half AGAIN. An OUT deal already on this position = the half-close went through.
+      if(!g_mng_partial && HistorySelectByPosition(ticket))
+         for(int d = HistoryDealsTotal() - 1; d >= 0; d--)
+         {
+            ulong dk = HistoryDealGetTicket(d);
+            if(dk != 0 && HistoryDealGetInteger(dk, DEAL_ENTRY) == DEAL_ENTRY_OUT) { g_mng_partial = true; break; }
+         }
+      if(!PositionSelectByTicket(ticket)) return;               // re-select after the history call
    }
    if(g_mng_risk <= 0 || sl <= 0) return;
    MqlTick tk;

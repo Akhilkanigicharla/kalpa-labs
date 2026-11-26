@@ -77,9 +77,13 @@ public:
       //   Tier2 = floor + $400 = $9,500  (50% sizing)
       //   Tier1 = floor + $700 = $9,800  (warning only)
       double floor = Config.EquityFloor;
-      m_tier3_threshold = floor + 200.0;
-      m_tier2_threshold = floor + 400.0;
-      m_tier1_threshold = floor + 700.0;
+      //--- A348 (26 Nov 2026): Tier 3 used to sit at floor + $200 ($9,500 on E8) and suspend until equity came
+      //    back above it, which can never happen with no trades open -> a permanent stop at -5% while E8 allows -8%
+      //    and the backtests trade on down to the $9,300 floor. Tier 3 now coincides with the floor itself
+      //    (the floor guard closes everything there anyway); tiers 1-2 stay as early warnings.
+      m_tier3_threshold = floor;
+      m_tier2_threshold = floor + 200.0;
+      m_tier1_threshold = floor + 400.0;
 
       m_meta.initialized = true;
       m_initialized      = true;

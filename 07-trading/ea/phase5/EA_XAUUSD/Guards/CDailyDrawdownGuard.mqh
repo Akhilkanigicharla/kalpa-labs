@@ -93,13 +93,14 @@ public:
                             DailyStats.GetTradeCount(),
                             Config.MaxDailyTrades));
          }
-         RecordTrigger(GUARD_SUSPEND);
-         return GuardSuspend(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
-                             SUSPEND_MAX_TRADES,
-                             StringFormat("Trades today=%d max=%d",
-                                          DailyStats.GetTradeCount(),
-                                          Config.MaxDailyTrades),
-                             "Resets at 00:00 server time");
+         //--- A348: BLOCK the main strategy only. A SUSPEND here stopped the whole EA (and cancelled the
+         //    13-strategy mix), which no backtest did. The mix keeps its own gate (CMixEngine::GateOk).
+         RecordTrigger(GUARD_BLOCK);
+         return GuardBlock(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
+                           StringFormat("Trades today=%d max=%d",
+                                        DailyStats.GetTradeCount(),
+                                        Config.MaxDailyTrades),
+                           "Resets at 00:00 server time");
       }
 
       //--- [D3] Consecutive loss pause (1-hour)
@@ -114,12 +115,11 @@ public:
                             DailyStats.GetConsecLosses(),
                             CONSEC_LOSS_LIMIT));
          }
-         RecordTrigger(GUARD_SUSPEND);
-         return GuardSuspend(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
-                             SUSPEND_CONSEC_LOSSES,
-                             StringFormat("%d consecutive losses — cooling down",
-                                          DailyStats.GetConsecLosses()),
-                             "Resumes after 1-hour pause");
+         RecordTrigger(GUARD_BLOCK);                        // A348: main strategy only, see [D2]
+         return GuardBlock(GPRIO_DAILY_DRAWDOWN, m_meta.name, m_meta.index,
+                           StringFormat("%d consecutive losses — cooling down",
+                                        DailyStats.GetConsecLosses()),
+                           "Resumes after 1-hour pause");
       }
 
       //--- [D4] Post-trade cooldown (15 min — returns BLOCK not SUSPEND)

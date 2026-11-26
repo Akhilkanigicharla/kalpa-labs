@@ -35,7 +35,7 @@
 #define HEALTH_CONN_CACHE_SEC     5   // Connectivity check interval
 #define HEALTH_STARTUP_GRACE_SEC 90   // Grace period before timer check
 #define HEALTH_PRICE_MIN        1000.0 // XAUUSD below this = data error
-#define HEALTH_PRICE_MAX        5000.0 // XAUUSD above this = data error
+#define HEALTH_PRICE_MAX       10000.0 // XAUUSD above this = data error (debug pass 26 Nov: was 5000, too close to a ~$3.5-4K market)
 #define HEALTH_CONSEC_DISC_MAX     2   // Consecutive disconnects before suspend
 
 class CSystemHealthCheck : public IGuard
@@ -161,7 +161,8 @@ private:
       ENUM_ACCOUNT_MARGIN_MODE mode =
          (ENUM_ACCOUNT_MARGIN_MODE)AccountInfoInteger(ACCOUNT_MARGIN_MODE);
 
-      if(mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING)
+      // Debug pass 26 Nov: account not loaded yet (login 0) reads as NETTING; do not latch a fatal on it
+      if(mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0)
       {
          Logger.Fatal("SYS_HEALTH",
             "Account is NETTING mode — EA requires HEDGING. "

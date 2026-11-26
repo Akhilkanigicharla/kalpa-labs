@@ -70,6 +70,14 @@ public:
       // Pip value = tick value × (pip_size / tick_size)
       double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
       double tick_size  = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+      //--- debug pass 26 Nov: right after a VPS reboot the symbol data can still be loading;
+      //    wait up to ~5 s before giving up (INIT_FAILED would unload the EA for good)
+      for(int w = 0; w < 10 && (tick_size <= 0 || tick_value <= 0); w++)
+      {
+         Sleep(500);
+         tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+         tick_size  = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+      }
       // A336 (#27): no silent fallback. A wrong pip value (old fallback 1.0, real ~100) would
       //             undersize by 100x and hide a symbol-data fault.
       if(tick_size <= 0 || tick_value <= 0)

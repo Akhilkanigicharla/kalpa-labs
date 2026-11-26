@@ -300,3 +300,15 @@ def test_presets_send_real_orders_and_funded_floor_rises_after_payout():
     assert "inp_FloorAfterPayoutPct=101" in _ea("presets/E8_Pro_10K_funded.set")
     assert "double FloorNow()" in _ea("EA_XAUUSD/Core/CDailyStats.mqh")
     assert "FloorNow()" in _ea("EA_XAUUSD/Guards/CGuardCoordinator.mqh")
+
+
+def test_no_permanent_stop_above_the_floor():
+    g = _ea("EA_XAUUSD/Guards/CEquityGuard.mqh")
+    assert "m_tier3_threshold = floor;" in g
+    assert "bool HasOpenPosition();" in _ea("EA_XAUUSD/EA_XAUUSD.mq5")
+
+
+def test_main_trade_cap_blocks_main_only():
+    g = _ea("EA_XAUUSD/Guards/CDailyDrawdownGuard.mqh")
+    assert "SUSPEND_MAX_TRADES,\n" not in g and "SUSPEND_CONSEC_LOSSES,\n" not in g
+    assert g.count("return GuardBlock(GPRIO_DAILY_DRAWDOWN") >= 3

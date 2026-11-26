@@ -609,17 +609,17 @@
   "read": [
    "00-hq/ROADMAP.md"
   ],
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "priority": "P2",
   "created": "2026-11-26T16:55:00Z",
-  "updated": "2026-11-26T17:15:23Z",
+  "updated": "2026-11-26T18:42:41Z",
   "id": "K175",
   "title": "A349 prep: how long Netlify keeps form submissions and function logs",
   "min_items": 3,
   "details": "For the A349 line: find how long Netlify keeps (1) form submissions, (2) function logs, (3) access/request logs on the Free plan. For each give the number, the exact quote, and two source URLs (Netlify's own docs page first). Say 'unknown' if a page does not state it. No guesses.",
   "output": "00-hq/knowledge/K175.md",
-  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3."
+  "vigil_notes": "FIX: incomplete, 2 of 3 required items. Write all 3, numbered 1 to 3."
  },
  {
   "world": "b1",
@@ -627,15 +627,16 @@
   "read": [
    "00-hq/site/privacy.html"
   ],
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-26T18:42:09Z",
-  "updated": "2026-11-26T18:42:09Z",
+  "updated": "2026-11-26T18:43:28Z",
   "id": "K176",
   "title": "A348 check: Telugu and Hindi text of the privacy page",
   "min_items": 5,
   "details": "Read the Telugu (section id te) and Hindi (section id hi) parts of 00-hq/site/privacy.html. List up to 10 lines where the grammar, spelling or word choice is wrong or hard for an everyday reader, numbered, each with: section, the exact current text, your better text, and why. Do not change meaning (12 months, 48 hours, 30 days, 90 days, DELETE, Netlify, Groq, OpenRouter must stay). Say 'no change' if a part is fine.",
-  "output": "00-hq/knowledge/K176.md"
+  "output": "00-hq/knowledge/K176.md",
+  "vigil_notes": "FIX: incomplete, 4 of 5 required items. Write all 5, numbered 1 to 5."
  }
 ]

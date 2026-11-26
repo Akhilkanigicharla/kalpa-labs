@@ -1,6 +1,6 @@
 {
  "calls": {
-  "GROQ_API_KEY|openai/gpt-oss-120b": 6,
+  "GROQ_API_KEY|openai/gpt-oss-120b": 8,
   "GROQ_API_KEY|qwen/qwen3.8-27b": 4
  },
  "date": "2026-11-26",

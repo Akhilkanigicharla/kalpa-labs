@@ -1236,11 +1236,12 @@
   ],
   "details": "Read the A342 line. For each of the 20 laws named there, write one row: law name, one-sentence plain-English meaning, one concrete check a builder can tick on a 390 px phone page (e.g. 'primary button is the only filled button on screen' for Von Restorff), and the lawsofux.com page URL for it (mark 'unverified' if unsure the page exists). No other sources, no invented studies or numbers.",
   "min_items": 20,
-  "tries": 0,
+  "tries": 1,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-26T12:00:00Z",
-  "updated": "2026-11-26T12:00:00Z",
-  "output": "00-hq/knowledge/K171.md"
+  "updated": "2026-11-26T12:41:12Z",
+  "output": "00-hq/knowledge/K171.md",
+  "vigil_notes": "FIX: incomplete, 0 of 20 required items. Write all 20, numbered 1 to 20."
  }
 ]

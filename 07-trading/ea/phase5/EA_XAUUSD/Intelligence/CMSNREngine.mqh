@@ -345,6 +345,44 @@ bool CalendarSynced()
    return g_cal_synced;
 }
 
+//--- A345: official US schedule as a backup (UTC). Sources, fetched 26 Nov 2026:
+//    FOMC: federalreserve.gov/monetarypolicy/fomccalendars.htm (statement 14:00 New York time)
+//    CPI + jobs report: bls.gov/schedule/2027 and BLS 2026 schedule (08:30 New York time)
+//    Used (1) always, as a second check next to the MT5 calendar, and (2) instead of the MT5
+//    calendar when that is missing or not synced (common on a Wine VPS), so the bot keeps
+//    trading safely. After the last date below it fails closed again: update the list yearly.
+const datetime KALPA_US_EVENTS_UTC[] = {
+   D'2026.12.04 13:30', D'2026.12.09 19:00', D'2026.12.10 13:30', D'2027.01.08 13:30',
+   D'2027.01.13 13:30', D'2027.01.27 19:00', D'2027.02.05 13:30', D'2027.02.11 13:30',
+   D'2027.03.05 13:30', D'2027.03.10 13:30', D'2027.03.17 18:00', D'2027.04.02 12:30',
+   D'2027.04.13 12:30', D'2027.04.28 18:00', D'2027.05.07 12:30', D'2027.05.12 12:30',
+   D'2027.06.04 12:30', D'2027.06.09 18:00', D'2027.06.10 12:30', D'2027.07.02 12:30',
+   D'2027.07.14 12:30', D'2027.07.28 18:00', D'2027.08.06 12:30', D'2027.08.11 12:30',
+   D'2027.09.03 12:30', D'2027.09.14 12:30', D'2027.09.15 18:00', D'2027.10.08 12:30',
+   D'2027.10.14 12:30', D'2027.10.27 18:00', D'2027.11.05 12:30', D'2027.11.10 13:30',
+   D'2027.11.17 19:00', D'2027.12.03 13:30', D'2027.12.10 13:30'
+};
+
+bool ScheduledEventNear(int win_min, string &why)
+{
+   datetime now = TimeGMT();
+   for(int i = 0; i < ArraySize(KALPA_US_EVENTS_UTC); i++)
+   {
+      if(MathAbs((double)(now - KALPA_US_EVENTS_UTC[i])) <= win_min * 60.0)
+      {
+         why = "scheduled_us_event@" + TimeToString(KALPA_US_EVENTS_UTC[i], TIME_DATE | TIME_MINUTES) + "UTC";
+         return true;
+      }
+   }
+   return false;
+}
+
+bool ScheduleCovers()
+{
+   int n = ArraySize(KALPA_US_EVENTS_UTC);
+   return n > 0 && TimeGMT() <= KALPA_US_EVENTS_UTC[n - 1];
+}
+
 bool NewsBlackout(string &why)
 {
    why = "";
@@ -353,16 +391,19 @@ bool NewsBlackout(string &why)
    datetime now = TimeTradeServer();
    MqlCalendarValue v[];
    ResetLastError();
+   if(ScheduledEventNear(win, why)) return true;           // A345: official schedule, always checked
    int n = CalendarValueHistory(v, now - win * 60, now + win * 60, "US", "USD");
    if(n < 0)
    {
       why = StringFormat("calendar_error_%d", GetLastError());
       CalendarLog(why);
+      if(ScheduleCovers()) { why = ""; return false; }      // A345: backup schedule covers CPI/NFP/FOMC
       return true;                                          // fail closed
    }
    if(!CalendarSynced())
    {
       why = "calendar_not_synced";
+      if(ScheduleCovers()) { why = ""; return false; }      // A345: backup schedule covers CPI/NFP/FOMC
       return true;                                          // fail closed
    }
    for(int i = 0; i < n; i++)

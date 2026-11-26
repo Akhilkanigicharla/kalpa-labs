@@ -270,3 +270,10 @@ def test_e8_preset_uses_safer_risk_from_nearby_check():
     kv = dict(l.split("=", 1) for l in _ea("presets/E8_Pro_10K_challenge.set").splitlines()
               if "=" in l and not l.startswith(";"))
     assert kv["inp_MixRiskPct"] == "0.30" and kv["inp_RiskPct"] == "0.30"
+
+
+def test_official_us_schedule_backup_in_news_guard():
+    s = _ea("EA_XAUUSD/Intelligence/CMSNREngine.mqh")
+    assert "const datetime KALPA_US_EVENTS_UTC[]" in s and "ScheduledEventNear(win, why)" in s
+    assert "D'2027.12.10 13:30'" in s and "D'2027.01.27 19:00'" in s      # last CPI, first 2027 FOMC
+    assert s.count("if(ScheduleCovers())") == 2                          # used only when the MT5 calendar fails

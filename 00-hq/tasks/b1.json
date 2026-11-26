@@ -593,16 +593,15 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-26T16:55:00Z",
-  "updated": "2026-11-26T16:41:23Z",
+  "updated": "2026-11-26T17:14:36Z",
   "id": "K174",
   "title": "A351 prep: under-18 phrases + parent-ask replies in 5 languages",
   "min_items": 30,
   "details": "Read row D12 of dpdp-2027.md and the A351 line. Write a table of exactly 20 rows: a customer message that says or clearly implies the writer is under 18 (4 each in English, Telugu script, Hindi script, Tenglish, Hinglish; e.g. 'I am 15', 'I'm in 9th class'), plus 10 tricky messages that must NOT count (e.g. '18 years old', 'my son is 12', 'class 10 tuition for my daughter'). Then one short polite reply per language asking for a parent or guardian to continue and saying we will not save their details. No legal claims.",
-  "output": "00-hq/knowledge/K174.md",
-  "vigil_notes": "FIX: incomplete, 20 of 30 required items. Write all 30, numbered 1 to 30."
+  "output": "00-hq/knowledge/K174.md"
  },
  {
   "world": "b1",
@@ -610,16 +609,16 @@
   "read": [
    "00-hq/ROADMAP.md"
   ],
-  "tries": 1,
+  "tries": 2,
   "status": "todo",
   "priority": "P2",
   "created": "2026-11-26T16:55:00Z",
-  "updated": "2026-11-26T16:42:12Z",
+  "updated": "2026-11-26T17:15:23Z",
   "id": "K175",
   "title": "A349 prep: how long Netlify keeps form submissions and function logs",
   "min_items": 3,
   "details": "For the A349 line: find how long Netlify keeps (1) form submissions, (2) function logs, (3) access/request logs on the Free plan. For each give the number, the exact quote, and two source URLs (Netlify's own docs page first). Say 'unknown' if a page does not state it. No guesses.",
   "output": "00-hq/knowledge/K175.md",
-  "vigil_notes": "FIX:\n- Mark \"30 days\" for form submissions as UNVERIFIED (not in repo files).\n- Mark \"7 days\" for function logs as UNVERIFIED (not in repo files).\n- Mark \"7 days\" for access logs as UNVERIFIED (not in repo files).\n- Remove specific URLs and \"Exact quote\" columns as they are not in repo files and constitute unverified external facts.\n- Ensure all specific retention numbers are explicitly labeled UNVERIFIED per rules."
+  "vigil_notes": "FIX: incomplete, 0 of 3 required items. Write all 3, numbered 1 to 3."
  }
 ]

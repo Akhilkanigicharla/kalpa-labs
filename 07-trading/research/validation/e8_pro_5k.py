@@ -49,7 +49,7 @@ def main():
     mix = pd.concat([cand[k]().assign(strategy=k) for k in em.MIX])
     ea = em.ea_rules_trades(fr)[["t_in", "t_out", "side", "r", "strategy"]]
     allt = pd.concat([mix[["t_in", "t_out", "side", "r", "strategy"]], ea])
-    kw = dict(mix_risk=0.004, weights=em.WEIGHTS_2026_11_21, friday_cut=0.0125, gap_pct=0.0375, gap_budget=0.03,
+    kw = dict(mix_risk=float(sys.argv[3]) / 100 if len(sys.argv) > 3 else 0.004, weights=em.WEIGHTS_2026_11_21, friday_cut=0.0125, gap_pct=0.0375, gap_budget=0.03,
               extra_cost=0.30, min_stop=1.5, lot_cap=0.10, day_stop_eq=float(sys.argv[2]) if len(sys.argv) > 2 else 0.015, eq_floor=INIT * 0.93, day_profit_cap=0.02,
               margin_lev=15.0)
     p, mt, ck = S.run(allt, fr, kw)
@@ -80,7 +80,7 @@ def main():
                 payouts_6m_median_usd=float(full.payouts_usd.median()) if len(full) else None,
                 payouts_6m_p10_usd=float(full.payouts_usd.quantile(.1)) if len(full) else None)
     print(df.to_string(index=False)); print(json.dumps(summ, indent=1))
-    json.dump(dict(rules=__doc__, summary=summ, months=rows), open(f"reports/ea-e8-pro-{int(INIT//1000)}k-2026-11-22.json", "w"),
+    json.dump(dict(rules=__doc__, summary=summ, months=rows), open(f"reports/ea-e8-pro-{int(INIT//1000)}k-r{sys.argv[3] if len(sys.argv) > 3 else '0.40'}.json", "w"),
               indent=1, default=str)
 
 if __name__ == "__main__":

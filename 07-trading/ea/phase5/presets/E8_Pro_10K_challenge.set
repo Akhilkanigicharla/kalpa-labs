@@ -1,4 +1,5 @@
 ; Kalpa gold EA - E8 Markets "E8 Pro" $10K, challenge stage (A337, rules from E8 help centre 22 Nov 2026)
+; A340 (26 Nov 2026): risk 0.30% per trade. Nearby-settings check: 0.50% hit the 8% floor in the first months; 0.30% kept equity >= $9,842.
 ; E8 Pro: 8% target, only 2%/day counts, 2.5% daily drawdown, 8% static max loss, metals 1:15.
 inp_Stage=1
 inp_Program=8
@@ -11,3 +12,5 @@ inp_DailyProfitCapPct=2.0
 inp_MetalLeverage=15
 inp_ProfitTarget=10850
 inp_EquityFloor=0
+inp_MixRiskPct=0.30
+inp_RiskPct=0.30

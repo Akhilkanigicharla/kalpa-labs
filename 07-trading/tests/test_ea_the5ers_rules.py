@@ -264,3 +264,9 @@ def test_e8_preset_matches_verified_rules():
     assert kv["inp_FirmDailyLossPct"] == "2.5" and kv["inp_FirmMaxLossPct"] == "8"
     assert float(kv["inp_PropDailyStopPct"]) < 2.5 and kv["inp_DailyProfitCapPct"] == "2.0"
     assert kv["inp_MetalLeverage"] == "15" and kv["inp_MinProfitDays"] == "0"
+
+
+def test_e8_preset_uses_safer_risk_from_nearby_check():
+    kv = dict(l.split("=", 1) for l in _ea("presets/E8_Pro_10K_challenge.set").splitlines()
+              if "=" in l and not l.startswith(";"))
+    assert kv["inp_MixRiskPct"] == "0.30" and kv["inp_RiskPct"] == "0.30"

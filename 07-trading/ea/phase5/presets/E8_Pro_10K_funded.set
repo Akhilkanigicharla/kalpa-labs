@@ -11,3 +11,5 @@ inp_DailyProfitCapPct=2.0
 inp_MetalLeverage=15
 inp_ProfitTarget=0
 inp_EquityFloor=0
+inp_MixRiskPct=0.30
+inp_RiskPct=0.30

@@ -575,14 +575,49 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-26T14:30:00Z",
-  "updated": "2026-11-26T14:42:50Z",
+  "updated": "2026-11-26T16:55:00Z",
   "id": "K173",
   "title": "A350 prep: breach notice templates (person + Board)",
   "min_items": 2,
   "details": "Read row D9 of dpdp-2027.md and the A350 line. Write exactly 2 templates in plain English with [BRACKET] placeholders: (1) message to an affected person: what happened and when, what data, likely effect on them, what we did, what they can do to stay safe, who to contact; (2) detailed report to the Data Protection Board within 72 hours: updated description, facts and reasons, mitigation, findings on who caused it, steps to prevent it again, report on notices sent to people. No dates or legal claims beyond this.",
   "output": "00-hq/knowledge/K173.md"
+ },
+ {
+  "world": "b1",
+  "owner": "Quill",
+  "read": [
+   "01-botbhai/docs/legal/dpdp-2027.md",
+   "00-hq/ROADMAP.md"
+  ],
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-26T16:55:00Z",
+  "updated": "2026-11-26T16:55:00Z",
+  "id": "K174",
+  "title": "A351 prep: under-18 phrases + parent-ask replies in 5 languages",
+  "min_items": 30,
+  "details": "Read row D12 of dpdp-2027.md and the A351 line. Write a table of exactly 20 rows: a customer message that says or clearly implies the writer is under 18 (4 each in English, Telugu script, Hindi script, Tenglish, Hinglish; e.g. 'I am 15', 'I'm in 9th class'), plus 10 tricky messages that must NOT count (e.g. '18 years old', 'my son is 12', 'class 10 tuition for my daughter'). Then one short polite reply per language asking for a parent or guardian to continue and saying we will not save their details. No legal claims.",
+  "output": "00-hq/knowledge/K174.md"
+ },
+ {
+  "world": "b1",
+  "owner": "Quill",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-26T16:55:00Z",
+  "updated": "2026-11-26T16:55:00Z",
+  "id": "K175",
+  "title": "A349 prep: how long Netlify keeps form submissions and function logs",
+  "min_items": 3,
+  "details": "For the A349 line: find how long Netlify keeps (1) form submissions, (2) function logs, (3) access/request logs on the Free plan. For each give the number, the exact quote, and two source URLs (Netlify's own docs page first). Say 'unknown' if a page does not state it. No guesses.",
+  "output": "00-hq/knowledge/K175.md"
  }
 ]

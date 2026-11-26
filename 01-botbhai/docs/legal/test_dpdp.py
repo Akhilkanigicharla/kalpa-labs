@@ -31,11 +31,30 @@ def check(doc: str, roadmap: str) -> list[str]:
     return errs
 
 
+# A350: the breach runbook must carry every Rule 7 item, both clocks, 5 languages and a logged drill.
+RUNBOOK_NEEDS = ["without delay", "72 hours", "24 hours", "First hour",
+                 "Template A", "Template B", "Template C", "Template D",
+                 "What happened", "What it may mean for you", "What we did", "What you can do", "Questions:",
+                 "Updated description", "Facts and reasons", "Mitigation", "Who caused it",
+                 "Stop it happening again", "Notices to people",
+                 "**English**", "**తెలుగు**", "**हिन्दी**", "**Tenglish**", "**Hinglish**"]
+
+
+def check_runbook(text: str, drill: str) -> list[str]:
+    errs = [f"runbook missing: {n}" for n in RUNBOOK_NEEDS if n not in text]
+    if not re.search(r"\| *\d+ min *\|", drill) or "Gaps found" not in drill:
+        errs.append("drill log has no timed steps or no gaps section")
+    return errs
+
+
 if __name__ == "__main__":
     # self-test: a broken table must fail
     bad = "| D1 | x | r | soon | maybe | done | planned A999 |"
     assert len(check(bad, "")) >= 3, "self-test failed"
+    assert len(check_runbook("Template A", "")) >= 20, "runbook self-test failed"
     errs = check((HERE / "dpdp-2027.md").read_text(), (ROOT / "00-hq/ROADMAP.md").read_text())
+    errs += check_runbook((HERE / "breach-runbook.md").read_text(),
+                          (ROOT / "00-hq/log/incidents/drill-2026-11-26.md").read_text())
     for e in errs:
         print("FAIL", e)
     print("PASS dpdp-2027.md" if not errs else f"{len(errs)} problems")

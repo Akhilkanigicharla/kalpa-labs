@@ -1,0 +1,9 @@
+{
+  "name": "kalpa-hq-site",
+  "private": true,
+  "type": "module",
+  "description": "A303: @netlify/blobs (MIT) holds the shared chat rate-limit count across function copies",
+  "dependencies": {
+    "@netlify/blobs": "11.1.12"
+  }
+}

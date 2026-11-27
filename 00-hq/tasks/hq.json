@@ -1344,11 +1344,29 @@
   ],
   "details": "Read the A303 line in ROADMAP.md. From each provider's own pricing/limits page, list free tiers usable from a Netlify Function to keep a 12-per-minute counter per visitor: Netlify Blobs, Upstash Redis, Cloudflare Workers KV, Supabase (Postgres). For each: free requests/day or month, write limits, consistency (KV is eventually consistent: say so), card needed or not, page URL. Mark any number you could not see on the provider's page as 'unverified'.",
   "min_items": 4,
-  "status": "review",
+  "status": "done",
   "tries": 2,
   "priority": "P2",
   "created": "2026-11-27T04:45:00Z",
-  "updated": "2026-11-27T07:18:30Z",
-  "output": "00-hq/knowledge/K185.md"
+  "updated": "2026-11-27T16:55:00Z",
+  "output": "00-hq/knowledge/K185.md",
+  "review_note": "Used for A303 (Netlify Blobs chosen: no new account). Its Blobs quotas were UNVERIFIED and are not relied on: docs.netlify.com (27 Nov) lists Blob storage on the Free plan with no separate Blobs meter; function compute + web requests are metered."
+ },
+ {
+  "id": "K188",
+  "world": "hq",
+  "owner": "Kavi",
+  "title": "A303: proof-read the chat 'busy' message in 5 languages",
+  "read": [
+   "00-hq/site/netlify/functions/chat.mjs"
+  ],
+  "details": "Read BUSY_TEXT in chat.mjs (en, te, hi, te-latn, hi-latn). For each: is it natural, polite, short, and in the right script (Telugu script / Devanagari / English letters only for te-latn and hi-latn)? Give a corrected line only if a native speaker would change it, with one-line reason. Keep meaning: assistant busy, try in a minute, or use the form below the chat.",
+  "min_items": 5,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P3",
+  "created": "2026-11-27T16:55:00Z",
+  "updated": "2026-11-27T16:55:00Z",
+  "output": "00-hq/knowledge/K188.md"
  }
 ]

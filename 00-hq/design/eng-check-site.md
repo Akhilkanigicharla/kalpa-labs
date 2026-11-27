@@ -25,7 +25,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
 | Failover (AI calls fall back to another model or a fixed reply) | PASS | 1 file(s) call AI, all with fallback |
 | Graceful Degradation (browser fetch failures are caught) | PASS | 2 file(s) call the server, all catch errors |
-| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 170 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | index.html: 171 KB |
 
 ## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 
@@ -94,7 +94,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py hq-site --md`; the rest
 | 61 | API Versioning | manual |
 | 62 | API Documentation | manual |
 | 63 | Unit vs Integration vs End-to-End Tests | manual |
-| 64 | Load Testing | missing: A303: `tests/load_chat.mjs`: local 50 users p95 1.4 s PASS; live 20 Nov p95 8.1 s, 4/70 = 503, limiter gave 0 429s |
+| 64 | Load Testing | missing: A303: `tests/load_chat.mjs`: local 50 users p95 1.4 s PASS; live 20 Nov p95 8.1 s, 4/70 = 503, limiter gave 0 429s. 27 Nov fix built (shared count in Netlify Blobs, hashed day keys; 4.5 s model deadline → polite busy 429): `limiter.test.mjs` + `limiter_blobs.test.mjs` PASS; live re-run after the HQ deploy go |
 | 65 | Debugging | manual |
 | 66 | Profiling | missing: A302: Lighthouse budget `00-hq/site/lighthouserc.json` (job hq-site in lighthouse.yml): LCP 1.9 s, 275 KB, 0 third-party PASS; CLS 0.116 + TBT 1.1 s warn |
 | 67 | Time Zones | manual |

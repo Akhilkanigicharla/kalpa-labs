@@ -336,5 +336,22 @@
   "created": "2026-11-27T11:00:00Z",
   "updated": "2026-11-27T12:41:41Z",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
+ },
+ {
+  "id": "K189",
+  "world": "b3",
+  "owner": "Quill",
+  "title": "A163 prep: exam-alert Telegram texts (opt-in, 7/3/1-day reminders) in English + Telugu",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A163 line. Draft: (1) the /start opt-in welcome (what alerts they get, how to stop with /stop, no other messages), (2) the 7-day, 3-day and 1-day reminder for an exam date with placeholders {exam}, {date}, {official_url}, (3) the /stop goodbye. English and Telugu script, each under 300 characters, no promises of results, always link the official site. Then list Telegram Bot API limits that matter (message length, rate limits for bots sending to many users) with the core.telegram.org URL; mark any number not seen on that page 'unverified'.",
+  "min_items": 5,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P2",
+  "created": "2026-11-27T16:55:00Z",
+  "updated": "2026-11-27T16:55:00Z",
+  "output": "00-hq/knowledge/K189.md"
  }
 ]

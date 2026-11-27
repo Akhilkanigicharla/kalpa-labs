@@ -2,15 +2,28 @@
 // POST /.netlify/functions/chat  {sessionId, chatInput, history:[{role:'user'|'assistant', content}]}  →  {output}
 // Models (free): Groq gpt-oss-20b → Groq qwen → OpenRouter free model. Env set by Akhil in Netlify: GROQ_API_KEY, OPENROUTER_API_KEY.
 // Callbacks are saved as a Netlify Forms submission of the existing "contact" form (no database), only with a real name,
-// a real phone number and the visitor's explicit yes. No dependencies.
+// a real phone number and the visitor's explicit yes. One dependency: @netlify/blobs (A303 shared rate limit).
 
 // A351: under-18 visitors get a fixed parent/guardian reply, no model call and no callback saved (DPDP s.9).
 // One detector for BotBhai and this chat; node_bundler = "esbuild" in netlify.toml inlines it into the function.
 import Minor from "../../../../01-botbhai/botbhai/core/minor.js";
+// A303: the per-copy Map alone did not hold on the live site (Netlify runs many function copies, each with its own memory),
+// so the count also lives in Netlify Blobs (MIT package, Free plan includes Blob storage; docs.netlify.com, 27 Nov 2026).
+import { getStore } from "@netlify/blobs";
+import { createHash } from "node:crypto";
 
 const SITE = process.env.URL || "https://kalpalabs.dpdns.org";
 const MAX_IN = 600, MAX_HISTORY = 8;
-const hits = new Map(); // best-effort per-instance rate limit: ip -> [timestamps]
+const hits = new Map(); // this copy's own count, used when the shared store is slow or down: key -> [timestamps]
+export const LIMIT = 12; // messages a minute per visitor
+export const BUSY = Object.freeze({ busy: true }); // reply() result when every free model is too slow
+export const BUSY_TEXT = { // in the visitor's own language and script (rule 10); K188 asks a free model to proof-read
+  en: "Sorry, our assistant is busy right now. Please try again in a minute, or use the form below the chat.",
+  te: "క్షమించండి, మా అసిస్టెంట్ ఇప్పుడు బిజీగా ఉంది. ఒక నిమిషం తర్వాత మళ్ళీ ప్రయత్నించండి, లేదా చాట్ కింద ఉన్న ఫారం వాడండి.",
+  hi: "माफ़ कीजिए, हमारा असिस्टेंट अभी व्यस्त है। एक मिनट बाद फिर कोशिश करें, या चैट के नीचे वाला फ़ॉर्म भरें।",
+  "te-latn": "Sorry, maa assistant ippudu busy ga undi. Oka nimisham tarvata malli try cheyyandi, leda chat kinda unna form vaadandi.",
+  "hi-latn": "Sorry, hamara assistant abhi busy hai. Ek minute baad phir try karein, ya chat ke neeche wala form bharein.",
+};
 
 export const SYSTEM = `You are "Kalpa Bhai", the website assistant of Kalpa Labs, a Hyderabad company (founder: Akhil Kanigicharla, Udyam-registered MSME). You are an AI; say so if asked.
 
@@ -98,12 +111,14 @@ async function saveLead(a, fetchImpl) {
   } catch { return "NOT SAVED. Our system had a problem; ask them to use the form below the chat."; }
 }
 
-async function complete(messages, fetchImpl, env) {
+async function complete(messages, fetchImpl, env, until = Infinity) {
   for (const m of MODELS) {
     if (!env[m.key]) continue;
+    const left = Math.min(20000, until - Date.now());
+    if (left <= 0) break; // out of time: reply() answers "busy"
     try {
       const r = await fetchImpl(m.url, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${env[m.key]}` },
-        body: JSON.stringify({ model: m.model, messages, tools: [TOOL], temperature: 0.4, max_tokens: 3000 }), signal: AbortSignal.timeout(20000) });
+        body: JSON.stringify({ model: m.model, messages, tools: [TOOL], temperature: 0.4, max_tokens: 3000 }), signal: AbortSignal.timeout(left) });
       if (!r.ok) continue;
       const msg = (await r.json()).choices?.[0]?.message;
       if (msg && (msg.content || msg.tool_calls?.length)) return msg;
@@ -114,35 +129,67 @@ async function complete(messages, fetchImpl, env) {
 
 const clean = (s) => String(s || "").replace(/<think>[\s\S]*?<\/think>/g, "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/^#+\s*/gm, "").trim();
 
-export async function reply({ chatInput, history }, { fetchImpl = fetch, env = process.env } = {}) {
+// deadlineMs: time for the model calls before we say "busy" (A303: keep p95 under 5 s). After a callback is saved the
+// clock restarts, so a slow model never makes the visitor retry and save the same callback twice.
+export async function reply({ chatInput, history }, { fetchImpl = fetch, env = process.env, deadlineMs = +(env.CHAT_DEADLINE_MS || 4500) } = {}) {
   const hist = (Array.isArray(history) ? history : []).slice(-MAX_HISTORY)
     .filter((h) => h && (h.role === "user" || h.role === "assistant") && typeof h.content === "string")
     .map((h) => ({ role: h.role, content: h.content.slice(0, MAX_IN) }));
   const lang = detectLang(chatInput);
   if ([...hist.filter((h) => h.role === "user").map((h) => h.content), String(chatInput)].some((m) => Minor.isMinor(m))) return Minor.reply(lang);
   const messages = [{ role: "system", content: SYSTEM }, ...hist, { role: "system", content: HINT[lang] }, { role: "user", content: String(chatInput).slice(0, MAX_IN) }];
+  let until = Date.now() + deadlineMs;
   for (let step = 0; step < 3; step++) {
-    const msg = await complete(messages, fetchImpl, env);
-    if (!msg) return null;
+    const msg = await complete(messages, fetchImpl, env, until);
+    if (!msg) return Date.now() >= until ? BUSY : null;
     if (!msg.tool_calls?.length) return clean(msg.content) || null;
     messages.push({ role: "assistant", content: msg.content || "", tool_calls: msg.tool_calls });
     for (const tc of msg.tool_calls) {
       let args = {}; try { args = JSON.parse(tc.function?.arguments || "{}"); } catch {}
       const result = tc.function?.name === "save_callback" ? await saveLead(args, fetchImpl) : "Unknown tool.";
       messages.push({ role: "tool", tool_call_id: tc.id, content: result });
+      if (result === "SAVED") until = Date.now() + deadlineMs;
     }
   }
   return null;
 }
 
-function limited(ip, now = Date.now()) {
-  const arr = (hits.get(ip) || []).filter((t) => now - t < 60_000);
-  arr.push(now); hits.set(ip, arr);
-  if (hits.size > 5000) hits.clear();
-  return arr.length > 12; // 12 messages a minute per visitor
+function limited(key, now = Date.now(), mem = hits) {
+  const arr = (mem.get(key) || []).filter((t) => now - t < 60_000);
+  arr.push(now); mem.set(key, arr);
+  if (mem.size > 5000) mem.clear();
+  return arr.length > LIMIT;
 }
 
-const json = (status, obj) => new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
+// Shared count: one small JSON per visitor per day, key "YYYY-MM-DD/<hash>". The hash uses the day as salt, so no raw IP
+// is stored and keys can't be linked across days; old days are deleted (about 1 in 50 requests sweeps).
+// Fixed 60 s window, last write wins (Blobs has no locks): a burst can slip a message or two, never a flood.
+// Store slow (> timeoutMs) or down: this copy's own count decides (graceful degradation, never blocks the chat).
+const timebox = (p, ms) => { let id; return Promise.race([p, new Promise((_, j) => { id = setTimeout(() => j(new Error("store timeout")), ms); })]).finally(() => clearTimeout(id)); };
+export async function limitedShared(ip, { store, mem = hits, now = Date.now(), timeoutMs = 800, sweep = Math.random() < 0.02 } = {}) {
+  const day = new Date(now).toISOString().slice(0, 10);
+  const key = `${day}/${createHash("sha256").update(`${day}|${ip}`).digest("hex").slice(0, 32)}`;
+  const local = limited(key, now, mem);
+  if (!store) return local;
+  try {
+    return await timebox((async () => {
+      const s = await store.get(key, { type: "json" });
+      const cur = s && now - s.t < 60_000 && now >= s.t ? { t: s.t, n: s.n + 1 } : { t: now, n: 1 };
+      await store.setJSON(key, cur);
+      if (sweep) {
+        const { blobs } = await store.list();
+        await Promise.all(blobs.filter((b) => b.key.slice(0, 10) < day).slice(0, 200).map((b) => store.delete(b.key)));
+      }
+      return cur.n > LIMIT || local;
+    })(), timeoutMs);
+  } catch { return local; }
+}
+
+function sharedStore() {
+  try { return getStore({ name: "chat-limit", consistency: "strong" }); } catch { return null; } // no Blobs (local tests): local count only
+}
+
+const json = (status, obj, extra = {}) => new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...extra } });
 
 // one JSON line per request for Netlify logs: no message text, no IP (DPDP: we log only what we need)
 const log = (status, t0, extra = {}) => console.log(JSON.stringify({ at: new Date().toISOString(), fn: "chat", status, ms: Date.now() - t0, ...extra }));
@@ -167,13 +214,14 @@ export default async (req, context) => {
 async function handle(req, context) {
   if (req.method !== "POST") return json(405, { error: "method" });
   const ip = context?.ip || req.headers.get("x-nf-client-connection-ip") || "anon";
-  if (limited(ip)) return json(429, { output: "You're sending messages very fast 🙂 Please wait a minute and try again." });
+  if (await limitedShared(ip, { store: sharedStore() })) return json(429, { output: "You're sending messages very fast 🙂 Please wait a minute and try again." });
   let body; try { body = await req.json(); } catch { return json(400, { error: "json" }); }
   if (body?.type === "client_error") { log(204, Date.now(), { client_error: cleanClientError(body) }); return new Response(null, { status: 204 }); }
   const text = String(body?.chatInput || "").trim();
   if (!text) return json(400, { error: "empty" });
   if (text.length > 1000) return json(413, { error: "too long" }); // the box allows 500; anything bigger is not a person typing
   const out = await reply({ chatInput: text, history: body.history });
+  if (out === BUSY) return json(429, { busy: true, output: BUSY_TEXT[detectLang(text)] || BUSY_TEXT.en }, { "Retry-After": "60" });
   return out ? json(200, { output: out }) : json(503, { error: "models unavailable" });
 }
 

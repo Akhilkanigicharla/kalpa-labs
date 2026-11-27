@@ -320,5 +320,21 @@
   "updated": "2026-11-27T08:40:59Z",
   "output": "",
   "vigil_notes": "FIX: incomplete, 0 of 2 required items. Write all 2, numbered 1 to 2."
+ },
+ {
+  "id": "K187",
+  "world": "b3",
+  "owner": "Quill",
+  "title": "A161 prep: official facts for the last 4 kits (AP police constable, TS DSC, AP DSC, IBPS RRB PO/Clerk)",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "For each of the 4 exams: official notification page URL (slprb.ap.gov.in, schooledu.telangana.gov.in, apdsc.apcfss.in, ibps.in), latest notification year, eligibility (age, education), exam pattern (papers, subjects, marks, negative marking), syllabus headings, fee by category. Give the official URL plus 2 other sources dated 2025-2026 for each row; mark any fact you could not see on the official page as UNVERIFIED. Plain table per exam.",
+  "min_items": 4,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P2",
+  "created": "2026-11-27T11:00:00Z",
+  "updated": "2026-11-27T11:00:00Z"
  }
 ]

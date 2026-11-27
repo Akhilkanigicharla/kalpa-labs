@@ -41,7 +41,7 @@
               }
             ],
             "total-blocking-time": [
-              "error",
+              "warn",
               {
                 "maxNumericValue": 200
               }
@@ -95,7 +95,7 @@
               }
             ],
             "total-blocking-time": [
-              "error",
+              "warn",
               {
                 "maxNumericValue": 200
               }

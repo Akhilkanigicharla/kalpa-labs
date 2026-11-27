@@ -1308,13 +1308,13 @@
   ],
   "details": "Read the A296 line in ROADMAP.md. From the public GitHub page of ShawnPana/phone-harness and the README of reactivecircus/android-emulator-runner, write: (1) licence of each (quote the LICENSE file name), (2) the exact steps to start an Android emulator in a free GitHub Actions ubuntu runner (KVM), (3) how phone-harness drives Chrome on that emulator to open a URL and tap, (4) how long a run takes and free-minute cost, (5) 3 risks. Give a source link for every fact; write 'unverified' if not found.",
   "min_items": 5,
-  "status": "todo",
-  "tries": 2,
+  "status": "rejected",
+  "tries": 3,
   "priority": "P2",
   "created": "2026-11-27T02:49:38Z",
-  "updated": "2026-11-27T02:55:42Z",
+  "updated": "2026-11-27T04:36:12Z",
   "output": "",
-  "vigil_notes": "FIX:\n- Remove Section 7 entirely; \"ECC\", \"Worktrunk\", \"Agent Reach\", and \"claude-mem\" are not in the provided repo files and appear to be invented or hallucinated tools.\n- Section 6 claims a \"green workflow run we observed\" and specific timings (4 min boot, 3 min script); these results are not in the repo files and must be marked UNVERIFIED or removed.\n- Section 4 states \"GitHub free tier provides 2,000 minutes/month\"; this specific quota figure is not in the provided files and should be marked UNVERIFIED.\n- Section 3 assumes `phone-harness` is an npm package with specific CLI commands (`launch chrome`, `tap`); since the source is UNVERIFIED, do not present these as confirmed steps, or mark the entire section as hypothetical/UNVERIFIED.\n- Ensure all \"UNVERIFIED\" tags are consistent; currently, some specific technical details (like `api-level: 30` being \"widely supported\") are presented as fact without verification."
+  "vigil_notes": "FIX: incomplete, 4 of 5 required items. Write all 5, numbered 1 to 5."
  },
  {
   "id": "K183",
@@ -1326,12 +1326,12 @@
   ],
   "details": "Read the A298 line in ROADMAP.md. From the public GitHub repo of SignuDoc (Kevin Rose) and the official pricing pages of Vercel, Neon and Resend, write a table: licence (LICENSE file), what the app stores, env vars it needs, free-tier limits that matter (requests, storage, emails per day/month, card needed or not), and whether an e-signature made this way is valid under India's IT Act 2000 s.3A / s.5 (cite the Act text). Source link per row; 'unverified' when not found.",
   "min_items": 6,
-  "status": "todo",
-  "tries": 2,
+  "status": "rejected",
+  "tries": 3,
   "priority": "P2",
   "created": "2026-11-27T02:49:38Z",
-  "updated": "2026-11-27T02:56:32Z",
+  "updated": "2026-11-27T04:37:02Z",
   "output": "",
-  "vigil_notes": "FIX: incomplete, 4 of 6 required items. Write all 6, numbered 1 to 6."
+  "vigil_notes": "FIX:\n- Row 4: Vercel free tier does not include 125k serverless invocations (that is a paid tier metric); remove or mark UNVERIFIED.\n- Row 4: Neon free tier does not have a \"20k rows\" limit; remove this invented constraint.\n- Row 6: Citing \"IT Act 2000 §3A\" is incorrect; Section 3A was added in 2008 (IT Amendment Act), not the original 2000 Act.\n- Row 6: Claiming the signature is \"legally admissible\" based on a generic description is a legal opinion; mark as UNVERIFIED or remove the definitive \"Yes\".\n- Row 5: Marking \"no-card\" as UNVERIFIED is correct, but the draft implies it is a fact in the \"Key take-aways\" section; ensure the takeaway reflects the uncertainty or verify the fact."
  }
 ]

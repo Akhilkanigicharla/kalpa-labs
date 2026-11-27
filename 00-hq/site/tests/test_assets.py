@@ -4,6 +4,7 @@
 - security headers in netlify.toml: CSP with script-src 'self', frame-ancestors 'none', X-Frame-Options, Permissions-Policy
 - no inline <script> that runs code (CSP would block it), no inline on*= handlers
 - performance budget: index.html + app.js under 160 KB, 404 page under 20 KB
+- Anek Telugu only loads for Telugu text (unicode-range; A302 LCP)
 - 404 page shows a hostile address as text, never as HTML, and cut to 80 characters (browser test)
 
 Run: python3 00-hq/site/tests/test_assets.py [--fix]
@@ -27,6 +28,14 @@ if "--fix" in sys.argv and m and m.group(1) != ver:
     html = html.replace(m.group(0), f'src="app.js?v={ver}"')
     (SITE / "index.html").write_text(html, encoding="utf-8")
     m = re.search(r'src="app\.js\?v=([0-9a-f]{8})"', html)
+# A302: Anek Telugu (~85 KB a file) must carry a unicode-range, or the browser fetches it for any
+# glyph Anek Latin lacks and it lands in the LCP chain on English pages; the one Telugu word on the
+# English page (the language button) uses the phone's own Telugu font.
+for page in ("index.html", "404.html", "privacy.html"):
+    for face in re.findall(r'@font-face\{font-family:"Anek Telugu";[^}]*\}', (SITE / page).read_text(encoding="utf-8")):
+        check("unicode-range:U+0951-0952,U+0964-0965,U+0C00-0C7F" in face, f"{page}: Anek Telugu @font-face has no Telugu unicode-range")
+check('html:not([lang=te]) .lang button[data-lang=te]{font-family:"Anek Latin"' in html, "index.html: Telugu language button would load the Anek Telugu files on the English page")
+
 import subprocess  # noqa: E402
 syn = subprocess.run(["node", "--check", str(SITE / "app.js")], capture_output=True, text=True)
 check(syn.returncode == 0, "app.js syntax error: " + syn.stderr.strip()[:200])

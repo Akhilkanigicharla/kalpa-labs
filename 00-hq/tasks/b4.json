@@ -258,5 +258,37 @@
   "min_items": 5,
   "output": "00-hq/knowledge/K148.md",
   "vigil_notes": "FIX:\n*   Remove item 2 (Closet Tools): Repo explicitly states \"Closet Tools-style posting bots... are out\" due to Kalpa rules.\n*   Mark \"Working Replacement Today\" as UNVERIFIED for all items: Repo files do not verify the existence or status of Mailmeteor, PosherVA, Hoverify, TweetHunter X, or Wordtune as replacements.\n*   Mark \"Top 3 One-Star Complaints\" as UNVERIFIED for all items: Specific technical failure modes (e.g., \"popup button does not attach,\" \"session timeouts\") are not present in the provided repo files.\n*   Mark \"Rating\" and \"Last Updated\" as UNVERIFIED for all items: Specific ratings (4.7, 4.2, etc.) and dates are not found in the repo files.\n*   Mark \"Users\" as UNVERIFIED for items 2, 3, 4, and 5: Only GMass (~400,000) is verified in the repo; user counts for the others are not provided in the source files."
+ },
+ {
+  "priority": "P2",
+  "context_chars": 8000,
+  "owner": "Lifeboat",
+  "world": "b4",
+  "status": "todo",
+  "created": "2026-11-27T18:41:30Z",
+  "id": "K190",
+  "title": "A356 #6 importer formats: Edge Collections CSV, Pocket export, Toby JSON, bookmarks HTML",
+  "details": "Public docs, GitHub issues and help pages only (no logins). For each of 4 formats give one numbered item: (1) Microsoft Edge Collections export (CSV or other; columns and an example row), (2) Pocket export file (ril_export.html and the CSV export after July 2025 shutdown: structure, tags, time_added), (3) Toby JSON export (top-level keys, lists/cards, title/url fields), (4) Netscape bookmarks HTML (DL/DT/H3/A structure, ADD_DATE). Each item: exact field names, a tiny made-up example (no real personal data), known quirks (encoding, quotes, nested folders), and the source URL. Say 'unverified' if you could not see the source.",
+  "min_items": 4,
+  "read": [
+   "04-extensions/src/lib/importers.ts"
+  ],
+  "output": "00-hq/knowledge/K190.md"
+ },
+ {
+  "priority": "P2",
+  "context_chars": 8000,
+  "owner": "Lifeboat",
+  "world": "b4",
+  "status": "todo",
+  "created": "2026-11-27T18:41:30Z",
+  "id": "K191",
+  "title": "Tab Lifeboat v0.3 'What's new' copy for the store listing and the options page",
+  "details": "Write plain, honest English (no hype, no emoji) for Tab Lifeboat v0.3 free features: restore skips tabs already open; download as Markdown or plain text (OneTab format); plus planned: popup search, save this window/picked tabs with a name, edit a session, importers for Edge Collections/Pocket/Toby/bookmarks, a warning when auto-save stops, a 'your tabs are safe, restore?' banner after a crash or update. Give: (1) a 5-bullet 'What's new in 0.3' list, each under 90 characters; (2) one 132-character store short description; (3) a 3-sentence release note. Do not claim anything not in this list.",
+  "min_items": 3,
+  "read": [
+   "04-extensions/research/pro-plan-2026-11-27.md"
+  ],
+  "output": "00-hq/knowledge/K191.md"
  }
 ]

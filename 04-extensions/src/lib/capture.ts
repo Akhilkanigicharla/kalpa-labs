@@ -1,5 +1,6 @@
 // Capture and restore through the browser APIs (chrome.tabs / chrome.tabGroups / chrome.windows).
 import { type GroupColor, type SavedWindow, type Session, newId, restorable } from "./model";
+import { normUrl } from "./tools";
 
 import type { browser } from "wxt/browser";
 
@@ -27,12 +28,15 @@ export async function captureAll(br: Br, kind: Session["kind"] = "manual", name?
  *  Big sessions (more than LAZY_AT tabs) open "asleep": at most LOADING tabs load at once, and each one is put to sleep
  *  (chrome.tabs.discard) after it finishes loading, so it keeps its address and title but frees memory until clicked.
  *  Reopening hundreds of tabs at once freezes or crashes the browser (a common complaint in tab-saver reviews).
- *  Tested in real Chrome: discarding a tab that is still loading crashed the browser, and discarding gives the tab a new id. */
-export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeMajor() >= SLEEP_FROM): Promise<{ windows: number; tabs: number; skipped: number; asleep: number }> {
-  let tabs = 0, skipped = 0, asleep = 0;
-  const lazy = s.windows.reduce((n, w) => n + w.tabs.filter((t) => restorable(t.url)).length, 0) > LAZY_AT;
+ *  Tested in real Chrome: discarding a tab that is still loading crashed the browser, and discarding gives the tab a new id.
+ *  A356 #2: tabs whose page is already open (same normalised URL, see openUrls) are not opened again (pain #9). */
+export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeMajor() >= SLEEP_FROM, open: ReadonlySet<string> = new Set()): Promise<{ windows: number; tabs: number; skipped: number; asleep: number; alreadyOpen: number }> {
+  let tabs = 0, skipped = 0, asleep = 0, alreadyOpen = 0;
+  const isOpen = (u: string) => open.size > 0 && open.has(normUrl(u));
+  const lazy = s.windows.reduce((n, w) => n + w.tabs.filter((t) => restorable(t.url) && !isOpen(t.url)).length, 0) > LAZY_AT;
   for (const w of s.windows) {
-    const ok = w.tabs.filter((t) => restorable(t.url)); skipped += w.tabs.length - ok.length;
+    const web = w.tabs.filter((t) => restorable(t.url)); skipped += w.tabs.length - web.length;
+    const ok = web.filter((t) => !isOpen(t.url)); alreadyOpen += web.length - ok.length;
     const head = ok[0];
     if (!head) continue;
     const win = await br.windows.create({ url: head.url, focused: !!w.focused });
@@ -58,7 +62,13 @@ export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeM
       await br.tabGroups.update(gid, { title: g.title, color: g.color, collapsed: g.collapsed });
     }
   }
-  return { windows: s.windows.length, tabs, skipped, asleep };
+  return { windows: s.windows.length, tabs, skipped, asleep, alreadyOpen };
+}
+
+/** Normalised URLs of every tab open now, in all normal windows (for restore's skip list). */
+export async function openUrls(br: Br): Promise<Set<string>> {
+  const tabs = await br.tabs.query({});
+  return new Set(tabs.map((t) => t.url).filter((u): u is string => !!u).map(normUrl));
 }
 
 /** Tested 12 Nov 2026: discarding a second tab crashed Chrome 153 (SIGSEGV, same machine) and worked on Chrome 156

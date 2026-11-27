@@ -1,10 +1,11 @@
 import { backupFileName, parseBackup, toBackup } from "../lib/backup";
-import { captureAll, restore } from "../lib/capture";
+import { captureAll, openUrls, restore } from "../lib/capture";
 import { DRIVE_SCOPE, type DriveDeps, DriveError, deviceName, download as driveDownload, driveFileName, list as driveList, remove as driveRemove, upload as driveUpload, gunzip, gzip, sha256, toPrune } from "../lib/drive";
 import { answerRating, formLink, RATE_DEFAULT, type RateState, STORE_REVIEW_URL, shouldAskRating, UNINSTALL_FORM_URL } from "../lib/feedback";
 import { detectAndParse } from "../lib/importers";
 import { countTabs } from "../lib/model";
 import { deleteForever, getSession, LIMITS, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
+import { textFileName, toMarkdown, toPlain } from "../lib/export";
 import { backupDue, findDuplicates, findStale, type OpenTab, searchTabs, tabTimeline, upgradeNudge } from "../lib/tools";
 
 export const SNAPSHOT_MINUTES = 5;
@@ -117,7 +118,7 @@ export default defineBackground(() => {
         case "list": return { ok: true, sessions: (await listSessions()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) })) };
         case "restore": {
           const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" };
-          const out = await restore(br, s);
+          const out = await restore(br, s, undefined, undefined, await openUrls(br));   // A356: never open a second copy of an open tab
           const { rate } = await browser.storage.local.get("rate"); const r = { ...RATE_DEFAULT, ...(rate as RateState | undefined) };
           await browser.storage.local.set({ rate: { ...r, restores: r.restores + 1 } });   // a count only, nothing about the tabs
           return { ok: true, ...out };
@@ -183,6 +184,7 @@ export default defineBackground(() => {
           await browser.permissions.remove({ permissions: ["identity"] }).catch(() => false);
           return { ok: true };
         }
+        case "export-text": { const md = msg.name === "md"; const all = await listSessions(); return { ok: true, fileName: textFileName(md ? "md" : "txt"), text: md ? toMarkdown(all) : toPlain(all) }; }
         case "export": { const now = Date.now(); await browser.storage.local.set({ lastFileAt: now }); return { ok: true, fileName: backupFileName(now), json: JSON.stringify(toBackup(await listSessions(), now)) }; }
         case "preview-backup": { const p = parseBackup(msg.text ?? ""); return { ok: true, sessions: p.sessions.length, tabs: p.tabs, groups: p.groups, skipped: p.skipped }; }
         case "restore-backup": { const p = parseBackup(msg.text ?? ""); for (const s of p.sessions) await putSession(s); return { ok: true, sessions: p.sessions.length, tabs: p.tabs }; }

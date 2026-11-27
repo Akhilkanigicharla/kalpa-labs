@@ -20,7 +20,7 @@ async function refresh() {
     const name = document.createElement("strong"); name.textContent = s.name;
     const sub = document.createElement("span"); sub.textContent = `${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}`;
     meta.append(name, sub);
-    const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = x.ok ? `Opened ${plural(x.tabs, "tab")}${x.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
+    const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number; asleep: number; alreadyOpen: number }>({ type: "restore", id: s.id }); open.textContent = !x.ok ? "Could not open" : !x.tabs && x.alreadyOpen ? "All already open" : `Opened ${plural(x.tabs, "tab")}${x.alreadyOpen ? `, ${x.alreadyOpen} already open` : ""}${x.asleep ? ", they load when clicked" : ""}`; };
     const del = document.createElement("button"); del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
     del.onclick = async () => { const r = await send({ type: "delete", id: s.id }); if (r.ok) offerUndo(s.id, s.name); await refresh(); };
     li.append(meta, open, del); ul.append(li);

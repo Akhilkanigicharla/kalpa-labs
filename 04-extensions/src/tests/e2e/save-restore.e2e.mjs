@@ -50,6 +50,11 @@ try {
   check(["/a", "/b", "/c"].every((p) => after.urls.includes(base + p)), "all 3 pages are back");
   const g = after.groups.find((x) => x.title === "Research");
   check(!!g && g.color === "purple" && g.members.sort().join() === "/b,/c", `group restored: ${JSON.stringify(g)}`);
+  const again = await popup.evaluate((sid) => chrome.runtime.sendMessage({ type: "restore", id: sid }), saved.session.id);
+  check(again.ok && again.tabs === 0 && again.alreadyOpen >= 3, `A356: restoring again opens no copies (${again.tabs} opened, ${again.alreadyOpen} already open)`);
+  const md = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "export-text", name: "md" }));
+  const txt = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "export-text", name: "txt" }));
+  check(md.ok && /\.md$/.test(md.fileName) && md.text.includes(`](${base}/a)`) && txt.ok && txt.text.includes(`${base}/a | `), "A356: Markdown + plain-text export carry the saved tabs");
   const alarm = await sw.evaluate(() => chrome.alarms.get("snapshot"));
   check(alarm?.periodInMinutes === 5, `auto-snapshot alarm every ${alarm?.periodInMinutes} min`);
   await popup.evaluate(() => chrome.runtime.sendMessage({ type: "snapshot" }));

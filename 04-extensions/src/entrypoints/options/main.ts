@@ -104,6 +104,15 @@ $("download").addEventListener("click", async () => {
   $("backup-age").textContent = "Last backup file: today."; $("backup-age").classList.remove("warn");
 });
 
+for (const kind of ["md", "txt"] as const) $(`download-${kind}`).addEventListener("click", async () => {
+  const r = await send<{ fileName: string; text: string }>({ type: "export-text", name: kind });
+  if (!r.ok) { $("download-msg").textContent = err(r.error); return; }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([r.text], { type: kind === "md" ? "text/markdown" : "text/plain" })); a.download = r.fileName; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+  $("download-msg").textContent = `Saved ${r.fileName} to your Downloads folder.`;
+});
+
 let pending = "";
 $("restore-file").addEventListener("change", async () => {
   const f = $<HTMLInputElement>("restore-file").files?.[0]; const go = $<HTMLButtonElement>("restore-go");

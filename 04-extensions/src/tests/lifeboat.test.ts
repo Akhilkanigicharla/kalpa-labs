@@ -94,6 +94,16 @@ function fakeBrowser(seed: { incognito?: boolean; tabs: { url: string; title?: s
 }
 
 describe("capture and restore (E3)", () => {
+  it("A356: skips tabs already open (normalised: #hash, utm_, trailing slash) and windows left empty", async () => {
+    const { br, created } = fakeBrowser([], {});
+    const s: Session = { id: "x", name: "x", createdAt: 0, kind: "manual", windows: [
+      { groups: [], tabs: [{ url: "https://a.test/#top", title: "" }, { url: "https://b.test/page?utm_source=x", title: "" }, { url: "https://c.test", title: "" }] },
+      { groups: [], tabs: [{ url: "https://A.test/", title: "" }] },
+    ] };
+    const open = new Set(["https://a.test", "https://b.test/page"]);
+    expect(await restore(br, s, 0, false, open)).toEqual({ windows: 2, tabs: 1, skipped: 0, asleep: 0, alreadyOpen: 3 });
+    expect(created.map((c) => c.url)).toEqual(["https://c.test"]);
+  });
   it("round-trips windows, pinned tabs and tab groups (title, colour, collapsed); skips incognito and chrome://", async () => {
     const { br, created, madeGroups } = fakeBrowser([
       { tabs: [{ url: "https://mail.test", pinned: true }, { url: "https://a.test", groupId: 7 }, { url: "https://b.test", groupId: 7 }, { url: "chrome://settings" }] },
@@ -104,7 +114,7 @@ describe("capture and restore (E3)", () => {
     expect(countTabs(s)).toEqual({ tabs: 5, groups: 2, windows: 2 });
     expect(JSON.stringify(s)).not.toContain("secret.test");
     const r = await restore(br, s);
-    expect(r).toEqual({ windows: 2, tabs: 4, skipped: 1, asleep: 0 });
+    expect(r).toEqual({ windows: 2, tabs: 4, skipped: 1, asleep: 0, alreadyOpen: 0 });
     expect(created.map((c) => c.url)).toEqual(["https://mail.test", "https://a.test", "https://b.test", "https://c.test"]);
     expect(created[0]!.pinned).toBe(true);
     expect(created[1]!.group).toBe(created[2]!.group);
@@ -114,7 +124,7 @@ describe("capture and restore (E3)", () => {
     const urls = Array.from({ length: 20 }, (_, i) => ({ url: `https://site${i}.test` }));
     const { br, created, discarded } = fakeBrowser([{ tabs: urls }], {});
     const r = await restore(br, await captureAll(br, "manual", "Big"), 0, true);
-    expect(r).toEqual({ windows: 1, tabs: 20, skipped: 0, asleep: 19 });
+    expect(r).toEqual({ windows: 1, tabs: 20, skipped: 0, asleep: 19, alreadyOpen: 0 });
     expect(created.map((c) => c.url)).toEqual(urls.map((u) => u.url));   // every tab keeps its address
     expect(discarded).not.toContain(100);                                 // the first tab stays awake
   });
@@ -124,7 +134,7 @@ describe("capture and restore (E3)", () => {
     expect(small.discarded).toEqual([]);
     const big = fakeBrowser([{ tabs: Array.from({ length: 18 }, (_, i) => ({ url: `https://x${i}.test` })) }], {});
     big.setFailDiscard(true);
-    expect(await restore(big.br, await captureAll(big.br), 0, true)).toEqual({ windows: 1, tabs: 18, skipped: 0, asleep: 0 });
+    expect(await restore(big.br, await captureAll(big.br), 0, true)).toEqual({ windows: 1, tabs: 18, skipped: 0, asleep: 0, alreadyOpen: 0 });
   });
   it("a big session keeps its tab groups even though sleeping tabs get new ids", async () => {
     const tabs = Array.from({ length: 20 }, (_, i) => ({ url: `https://g${i}.test`, groupId: i < 10 ? 7 : undefined }));
@@ -137,7 +147,7 @@ describe("capture and restore (E3)", () => {
   });
   it("on Chrome older than 156 a big session opens gently but never sleeps (discard crashed Chrome 153)", async () => {
     const { br, created, discarded } = fakeBrowser([{ tabs: Array.from({ length: 20 }, (_, i) => ({ url: `https://o${i}.test` })) }], {});
-    expect(await restore(br, await captureAll(br), 0, false)).toEqual({ windows: 1, tabs: 20, skipped: 0, asleep: 0 });
+    expect(await restore(br, await captureAll(br), 0, false)).toEqual({ windows: 1, tabs: 20, skipped: 0, asleep: 0, alreadyOpen: 0 });
     expect([created.length, discarded.length]).toEqual([20, 0]);
     expect([chromeMajor("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36"), chromeMajor("Node.js/22"), chromeMajor("Firefox/140")]).toEqual([156, 0, 0]);
   });

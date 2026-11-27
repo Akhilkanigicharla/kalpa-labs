@@ -25,10 +25,11 @@
 <meta name="twitter:image" content="https://kalpalabs.dpdns.org/og.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://kalpalabs.dpdns.org/#org", "name": "Kalpa Labs", "url": "https://kalpalabs.dpdns.org/", "logo": "https://kalpalabs.dpdns.org/og.png", "description": "AI helpers for Indian small businesses: WhatsApp assistants that reply in Telugu, Hindi and English.", "address": {"@type": "PostalAddress", "addressLocality": "Hyderabad", "addressRegion": "Telangana", "addressCountry": "IN"}, "areaServed": "IN", "knowsLanguage": ["en", "te", "hi"]}, {"@type": "WebSite", "@id": "https://kalpalabs.dpdns.org/#site", "name": "Kalpa Labs", "url": "https://kalpalabs.dpdns.org/", "inLanguage": ["en", "te"], "publisher": {"@id": "https://kalpalabs.dpdns.org/#org"}}]}</script>
 <link rel="preload" href="fonts/rozha-one-latin-400-normal.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/anek-latin-latin-600-normal.woff" as="font" type="font/woff" crossorigin>
 <style>
 @font-face{font-family:"Rozha One";src:url(fonts/rozha-one-latin-400-normal.woff) format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-600-normal.woff) format("woff");font-weight:400 600;font-display:swap}
-@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-700-normal.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-600-normal.woff) format("woff");font-weight:400 600;font-display:optional}
+@font-face{font-family:"Anek Latin";src:url(fonts/anek-latin-latin-700-normal.woff) format("woff");font-weight:700;font-display:optional}
 @font-face{font-family:"Anek Telugu";src:url(fonts/anek-telugu-telugu-400-normal.woff) format("woff");font-weight:400;font-display:swap}
 @font-face{font-family:"Anek Telugu";src:url(fonts/anek-telugu-telugu-700-normal.woff) format("woff");font-weight:700;font-display:swap}
 /* Kalpavruksha tokens (00-hq/design/tokens.css) */
@@ -148,7 +149,7 @@ nav.links a:hover{color:var(--fg)}
  @keyframes rise{from{transform:scaleY(0)}}
  .grow .br{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1s ease-out .2s forwards}
  .grow .blob{animation:leafin .7s cubic-bezier(.2,.8,.3,1.2) both}
- .grow .lf{animation:leafin .5s cubic-bezier(.2,.8,.3,1.4) both}
+ .leafset{transform-box:fill-box;transform-origin:50% 50%}.grow .leafset{animation:leafin .5s cubic-bezier(.2,.8,.3,1.4) both}.grow .leafset .blos{animation:none}
  .grow .limbs{animation:ripen .7s ease-out both}
  .grow .blos{animation:leafin .6s cubic-bezier(.2,.8,.3,1.4) both}.blos{transform-box:fill-box;transform-origin:50% 50%}
  .grow .fruit{animation:ripen .5s ease-out both}
@@ -517,6 +518,6 @@ button.mate:hover{transform:translateY(-3px)}button.mate[aria-expanded=true]{bor
 </footer>
 <div class="mbar"><a class="btn btn-gold" href="#demo" data-i="mb1">Chat with our AI</a><a class="btn btn-ghost" href="#founding" data-i="mb2">Free salon pilot</a></div>
 
-<script src="app.js?v=c1af0512" defer></script>
+<script src="app.js?v=d2085dda" defer></script>
 </body>
 </html>

@@ -5,6 +5,9 @@ const report=(kind,msg,file,line,col)=>{if(errSent++>=3)return;try{fetch('/api/c
 addEventListener('error',e=>{if(e.message)report('error',e.message,e.filename,e.lineno,e.colno);});
 addEventListener('unhandledrejection',e=>report('rejection',e.reason&&e.reason.message||e.reason,'',0,0));
 const NS='http://www.w3.org/2000/svg';
+/* path maths on a detached copy, so reading a point never forces the browser to restyle the whole tree (A302) */
+const GEO=new WeakMap(), DETACHED=(()=>{try{const r=document.createElementNS(NS,'path');r.setAttribute('d','M0 0L3 4');return Math.abs(r.getTotalLength()-5)<.01;}catch(e){return false;}})();
+function G(p){if(!DETACHED)return p;let r=GEO.get(p);if(!r){r=document.createElementNS(NS,'path');r.setAttribute('d',p.getAttribute('d'));GEO.set(p,r);}return r;}
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.append(e);return e;};
 /* humanoid mini robot */
@@ -135,8 +138,9 @@ let busy=false, started=false, talked=false;
 let sid; try{sid=sessionStorage.getItem('kl-sid');}catch(e){}
 if(!sid){sid='web-'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{sessionStorage.setItem('kl-sid',sid);}catch(e){}}
 const now=()=>new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'});
-function bubble(t,side){const m=document.createElement('div');m.className='msg '+side;m.textContent=t;const tm=document.createElement('time');tm.textContent=now()+(side==='out'?' ✓✓':'');m.append(tm);chat.append(m);chat.scrollTop=chat.scrollHeight;return m;}
-function typing(){const ty=document.createElement('div');ty.className='typing';ty.setAttribute('aria-label','typing');ty.innerHTML='<i></i><i></i><i></i>';chat.append(ty);chat.scrollTop=chat.scrollHeight;return ty;}
+const toEnd=()=>requestAnimationFrame(()=>{chat.scrollTop=chat.scrollHeight;}); // scroll on the next frame: no forced layout mid-build (A302)
+function bubble(t,side){const m=document.createElement('div');m.className='msg '+side;m.textContent=t;const tm=document.createElement('time');tm.textContent=now()+(side==='out'?' ✓✓':'');m.append(tm);chat.append(m);toEnd();return m;}
+function typing(){const ty=document.createElement('div');ty.className='typing';ty.setAttribute('aria-label','typing');ty.innerHTML='<i></i><i></i><i></i>';chat.append(ty);toEnd();return ty;}
 function clean(s){return String(s||'').replace(/\*\*(.+?)\*\*/g,'$1').replace(/^#+\s*/gm,'').replace(/\u2011/g,'-').replace(/\u202f/g,' ').trim();}
 async function send(text){
  text=String(text||'').trim(); if(!text||busy) return; busy=true; setBusy();
@@ -227,16 +231,18 @@ const LEAF='M0 0C5-8 17-9 26 0C17 9 5 8 0 0Z', VEIN='M2 0H23M8 0l4-3.5M8 0l4 3.5
 function leaf(par,attrs){const g=el('g',Object.assign({class:'lf'},attrs),par);el('path',{d:LEAF},g);el('path',{class:'vein',d:VEIN},g);return g;}
 function cluster(par,cx,cy,R,n){
  for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'url(#blob'+(1+(k%2))+')',style:'animation-delay:'+(1.2+Math.hypot(cx-300,cy-560)/600*1.2).toFixed(2)+'s'},par);
+ // one grow animation per ring of leaves, not per leaf (A302: 800 separate animations cost ~1.3 s of blocking time on phones)
+ const set=d=>el('g',{class:'leafset',style:'animation-delay:'+d.toFixed(2)+'s'},par), d0=1.1+Math.hypot(cx-300,cy-560)/600*1.2, rings=[0,1,2].map(k=>set(d0+k*.15));
  for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
   const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
-  const d=(1.1+Math.hypot(x-300,y-560)/600*1.2+rnd()*.3).toFixed(2);
-  leaf(g,{fill:'var(--tl'+(1+Math.floor(rnd()*5))+')',style:'animation-delay:'+d+'s'});}
- for(let k=0;k<Math.round(n/9);k++){const a=rnd()*6.283,rr=R*.85*Math.sqrt(rnd());bloom(par,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8,3+rnd()*1.6,(2+rnd()).toFixed(2));}}
+  rnd(); rings[Math.min(2,Math.floor(rr/R*3))].append(g); leaf(g,{fill:'var(--tl'+(1+Math.floor(rnd()*5))+')'});}
+ const bl=set(2.5);
+ for(let k=0;k<Math.round(n/9);k++){const a=rnd()*6.283,rr=R*.85*Math.sqrt(rnd());bloom(bl,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8,3+rnd()*1.6,(2+rnd()).toFixed(2));}}
 // wish-tree blossoms: five cream petals around a gold heart
 function bloom(par,x,y,r,delay){const g=el('g',{class:'blos',transform:`translate(${x.toFixed(1)} ${y.toFixed(1)})`,style:'animation-delay:'+delay+'s'},par);
  for(let k=0;k<5;k++)el('ellipse',{cx:0,cy:-r,rx:r*.62,ry:r,transform:`rotate(${k*72})`},g); el('circle',{class:'hb',r:r*.45},g);}
 // a branch as a filled, tapering shape (thick at the trunk, thin at the tip), with a sunlit upper edge
-function limbShape(par,p,w0,w1,cls){const L=p.getTotalLength(),N=22,lft=[],rgt=[],top=[];
+function limbShape(par,p,w0,w1,cls){p=G(p);const L=p.getTotalLength(),N=22,lft=[],rgt=[],top=[];
  for(let k=0;k<=N;k++){const t=k/N,a=p.getPointAtLength(L*t),b=p.getPointAtLength(Math.min(L,L*t+.5)),c=k===N?p.getPointAtLength(L*t-.5):a;
   let dx=b.x-a.x,dy=b.y-a.y; if(k===N){dx=a.x-c.x;dy=a.y-c.y;} const m=Math.hypot(dx,dy)||1,nx=-dy/m,ny=dx/m,w=(w0+(w1-w0)*Math.pow(t,.8))/2;
   lft.push([a.x+nx*w,a.y+ny*w]); rgt.push([a.x-nx*w,a.y-ny*w]); top.push(ny<0?[a.x+nx*w*.55,a.y+ny*w*.55]:[a.x-nx*w*.55,a.y-ny*w*.55]);}
@@ -250,19 +256,21 @@ const fruits=[], paths=[], tlimbs=document.getElementById('tlimbs');
 BR.forEach(([d,w,id,name,col],i)=>{
  const back=el('g',{},tback), front=el('g',{},tfront);
  const limbs=el('g',{class:'limbs',style:'animation-delay:'+(.75+i*.09)+'s'},tlimbs);
- const p=el('path',{d,class:'guide'},front); const L=p.getTotalLength(); paths.push(p); // invisible: robots, birds and fruit follow it
+ const p=el('path',{d,class:'guide'},front); const L=G(p).getTotalLength(); paths.push(p); // invisible: robots, birds and fruit follow it
  limbShape(limbs,p,w*1.9,w*.42);
- const e=p.getPointAtLength(L), m=p.getPointAtLength(L*.55);
+ const e=G(p).getPointAtLength(L), m=G(p).getPointAtLength(L*.55);
  cluster(back,e.x,e.y-6,i===6?58:i<2?60:54,i<2?52:46); cluster(back,m.x,m.y-14,34,20);
  // twigs fork off the branch, alternating sides, each ending in a small spray of leaves
- [.42,.64,.84].forEach((t,k)=>{if(i===6&&k===0)return;const a=p.getPointAtLength(L*t),b=p.getPointAtLength(L*t+1),ang=Math.atan2(b.y-a.y,b.x-a.x)+(k%2?.75:-.75)*(i%2?-1:1),len=22+rnd()*14;
+ [.42,.64,.84].forEach((t,k)=>{if(i===6&&k===0)return;const a=G(p).getPointAtLength(L*t),b=G(p).getPointAtLength(L*t+1),ang=Math.atan2(b.y-a.y,b.x-a.x)+(k%2?.75:-.75)*(i%2?-1:1),len=22+rnd()*14;
   const ex=a.x+Math.cos(ang)*len,ey=a.y+Math.sin(ang)*len-6,tw=el('path',{d:`M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${((a.x+ex)/2).toFixed(1)} ${((a.y+ey)/2-6).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`},front);
   tw.setAttribute('class','guide'); limbShape(front,tw,w*.55,1.4,'limb-s twig'); tw.remove();
-  for(let j=0;j<6;j++){const g=el('g',{transform:`translate(${(ex+(rnd()-.5)*10).toFixed(1)} ${(ey+(rnd()-.5)*8).toFixed(1)}) rotate(${(ang*57.3+(j-2.5)*34).toFixed(0)}) scale(${(.6+rnd()*.25).toFixed(2)})`},front);
-   leaf(g,{fill:'var(--tl'+(3+j%3)+')',style:'animation-delay:'+(1.6+i*.1+j*.05).toFixed(2)+'s'});}});
+  const ls=el('g',{class:'leafset',style:'animation-delay:'+(1.6+i*.1).toFixed(2)+'s'},front);
+  for(let j=0;j<6;j++){const g=el('g',{transform:`translate(${(ex+(rnd()-.5)*10).toFixed(1)} ${(ey+(rnd()-.5)*8).toFixed(1)}) rotate(${(ang*57.3+(j-2.5)*34).toFixed(0)}) scale(${(.6+rnd()*.25).toFixed(2)})`},ls);
+   leaf(g,{fill:'var(--tl'+(3+j%3)+')'});}});
  // a little foliage in front of the tip, so the branch disappears into the leaves instead of ending like a stick
- for(let j=0;j<10;j++){const a=rnd()*6.283,rr=(i===6?34:30)*Math.sqrt(rnd()),g=el('g',{transform:`translate(${(e.x+Math.cos(a)*rr).toFixed(1)} ${(e.y-8+Math.sin(a)*rr*.7).toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*60).toFixed(0)}) scale(${(.65+rnd()*.3).toFixed(2)})`},front);
-  leaf(g,{fill:'var(--tl'+(4+j%2)+')',style:'animation-delay:'+(1.9+i*.1).toFixed(2)+'s'});}
+ const tip=el('g',{class:'leafset',style:'animation-delay:'+(1.9+i*.1).toFixed(2)+'s'},front);
+ for(let j=0;j<10;j++){const a=rnd()*6.283,rr=(i===6?34:30)*Math.sqrt(rnd()),g=el('g',{transform:`translate(${(e.x+Math.cos(a)*rr).toFixed(1)} ${(e.y-8+Math.sin(a)*rr*.7).toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*60).toFixed(0)}) scale(${(.65+rnd()*.3).toFixed(2)})`},tip);
+  leaf(g,{fill:'var(--tl'+(4+j%2)+')'});}
  if(i<2)bloom(front,e.x+(i?-22:22),e.y-24,4.4,'2.2'); 
  const fx=e.x, fy=e.y+(i===6?-6:20);
  const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(2.3+i*.12)+'s'},front);
@@ -341,7 +349,7 @@ function peaFrame(p,t,dt){
 })();
 
 /* hanging garlands: gold beads and a little bell, swinging with their branch */
-[[0,.62],[0,.8],[1,.6],[1,.78]].forEach(([b,at],k)=>{const p=paths[b],q=p.getPointAtLength(p.getTotalLength()*at),n=4+k%2,g=el('g',{class:'garland','aria-hidden':'true'},tfront.children[b]);
+[[0,.62],[0,.8],[1,.6],[1,.78]].forEach(([b,at],k)=>{const p=G(paths[b]),q=p.getPointAtLength(p.getTotalLength()*at),n=4+k%2,g=el('g',{class:'garland','aria-hidden':'true'},tfront.children[b]);
  el('path',{d:`M${q.x.toFixed(1)} ${(q.y+3).toFixed(1)}v${n*7+4}`,stroke:'var(--gold)','stroke-width':1,opacity:.8},g);
  for(let j=1;j<=n;j++)el('circle',{cx:q.x.toFixed(1),cy:(q.y+3+j*7).toFixed(1),r:j===n?0:2,class:'bead'},g);
  el('path',{class:'bell',d:`M${(q.x-4).toFixed(1)} ${(q.y+n*7+12).toFixed(1)}q4-12 8 0z`},g);});
@@ -376,7 +384,7 @@ const WALK=[ // branch, name, tool, tasks [en, te]; colour comes from the branch
 const bubbles=document.getElementById('bubbles');
 /* birds resting in the tree: tap one (or shake the tree) and they fly off; they come back after a while */
 const PERCH=[[0,.24,1],[1,.22,-1],[6,.62,1]].map(([b,at,face],k)=>{
- const pt=paths[b].getPointAtLength(paths[b].getTotalLength()*at);
+ const pt=G(paths[b]).getPointAtLength(G(paths[b]).getTotalLength()*at);
  const g=el('g',{class:'perch','aria-hidden':'true',transform:`translate(${pt.x.toFixed(1)} ${(pt.y-4).toFixed(1)}) scale(${face*1.15} 1.15)`,style:'--pd:'+(k*1.3)+'s'},tfront);
  el('circle',{cx:0,cy:-12,r:30,fill:'transparent'},g); // 44 px tap target on a phone
  el('path',{class:'bd',d:'M-9-8L-19-4L-9-5Z'},g);                       // tail
@@ -391,12 +399,12 @@ function scare(list){list.forEach(p=>{if(p.away)return;p.away=true;p.g.classList
  else setTimeout(()=>{p.away=false;p.g.classList.remove('away');},6000);});}
 PERCH.forEach(p=>p.g.addEventListener('pointerdown',e=>{e.stopPropagation();scare([p]);}));
 const walkers=WALK.map(([b,name,tool,tasks],k)=>{ const col='var('+BR[b][4]+')';
- const front=tfront.children[b], p=paths[b], L=p.getTotalLength();
+ const front=tfront.children[b], p=paths[b], L=G(p).getTotalLength();
  const g=el('g',{class:'walker'},front); const inner=el('g',{},g); bot(inner,col,'working',tool);
  const bub=document.createElement('div'); bub.className='bub'; bub.style.setProperty('--c',col); bubbles.append(bub);
  return {g,p,L,t:.42+k*.08,v:(k%2?-1:1)*.045,name,tasks,n:k,bub,on:false};});
 function placeBot(w,time){
- const pt=w.p.getPointAtLength(w.L*w.t), a=w.p.getPointAtLength(Math.min(w.L,w.L*w.t+1)), dir=a.x>=pt.x?1:-1, face=w.v*dir>0?1:-1;
+ const pt=G(w.p).getPointAtLength(w.L*w.t), a=G(w.p).getPointAtLength(Math.min(w.L,w.L*w.t+1)), dir=a.x>=pt.x?1:-1, face=w.v*dir>0?1:-1;
  const bob=reduce?0:Math.abs(Math.sin(time*6+w.n))*1.6;
  w.g.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${(pt.y-5-bob).toFixed(1)}) scale(${face} 1)`);}
 function placeBubble(w){
@@ -421,11 +429,12 @@ new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).obse
 function frame(ms){
  const time=ms/1000, dt=Math.min(.05,time-(last||time)); last=time;
  if(visible&&!document.hidden){
+  walkers.forEach(placeBubble); // reads first (last frame's layout is still clean), writes after: no forced layout per frame (A302)
   PEA.forEach(p=>peaFrame(p,time,dt));
   if(!reduce){sway.forEach(([els,x,y,amp,ph])=>{const a=(Math.sin(time*(.9+WIND.v/90)+ph)*amp*(1+WIND.v/45)+(WIND.v-16)*.03*amp+Math.sin(time*19+ph)*WIND.shake*3.2).toFixed(2);els.forEach(g=>g.setAttribute('transform',`rotate(${a} ${x} ${y})`));});
    grassEls.forEach((g,k)=>g.setAttribute('transform',`rotate(${(Math.sin(time*2.2+k*.5)*4+WIND.v*.18).toFixed(1)} ${g.dataset.x} 568)`));
    walkers.forEach(w=>{w.t+=w.v*dt;if(w.t>.86||w.t<.34){w.v=-w.v;w.t=Math.max(.34,Math.min(.86,w.t));}});}
-  walkers.forEach(w=>{placeBot(w,time);placeBubble(w);});}
+  walkers.forEach(w=>placeBot(w,time));}
  requestAnimationFrame(frame);}
 walkers.forEach(w=>placeBot(w,0));
 requestAnimationFrame(frame);
@@ -436,7 +445,7 @@ setTimeout(()=>{nextBubble();setInterval(()=>{if(visible&&!document.hidden)nextB
 const steps=document.querySelector('.steps'), vine=steps.querySelector('.vine i'), stepEls=[...steps.querySelectorAll('.step')];
 function grow(){const r=steps.getBoundingClientRect(), mid=innerHeight*.6; const p=Math.max(0,Math.min(1,(mid-r.top)/r.height));
  vine.style.setProperty('--p',p.toFixed(3)); stepEls.forEach(s=>s.classList.toggle('lit',s.getBoundingClientRect().top+20<mid));}
-if(!reduce){addEventListener('scroll',grow,{passive:true});grow();}else{stepEls.forEach(s=>s.classList.add('lit'));}
+if(!reduce){addEventListener('scroll',grow,{passive:true});requestAnimationFrame(grow);}else{stepEls.forEach(s=>s.classList.add('lit'));}
 
 
 /* ---------- nature sounds (off until tapped; browsers never autoplay): breeze that follows the wind + birdsong.
@@ -473,7 +482,8 @@ const SND=(function(){
 
 /* ---------- wind: a gust of leaves when the site opens, leaves drifting down the whole page,
    your finger or mouse pushes them, tap the tree to shake it, tap the sky for a gust ---------- */
-(function windLayer(){
+// started on the first frame, not during page start-up: reading the window size forces a full layout (A302)
+requestAnimationFrame(function windLayer(){
  if(reduce) return;
  const cv=document.createElement('canvas'); cv.id='wind'; cv.setAttribute('aria-hidden','true'); document.body.append(cv);
  const cx=cv.getContext('2d'); let W=0,H=0,dpr=1;
@@ -540,7 +550,7 @@ const SND=(function(){
     if(b.x<-80||b.x>W+80){B.splice(i,1);continue;}drawBird(b,t);}}
   requestAnimationFrame(tick);}
  requestAnimationFrame(tick);
-})();
+});
 
 setLang(lang);
 })();

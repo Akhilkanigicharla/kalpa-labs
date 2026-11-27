@@ -35,13 +35,13 @@
               }
             ],
             "cumulative-layout-shift": [
-              "warn",
+              "error",
               {
                 "maxNumericValue": 0.1
               }
             ],
             "total-blocking-time": [
-              "warn",
+              "error",
               {
                 "maxNumericValue": 200
               }
@@ -89,13 +89,13 @@
               }
             ],
             "cumulative-layout-shift": [
-              "warn",
+              "error",
               {
                 "maxNumericValue": 0.1
               }
             ],
             "total-blocking-time": [
-              "warn",
+              "error",
               {
                 "maxNumericValue": 200
               }

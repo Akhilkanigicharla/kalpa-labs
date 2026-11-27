@@ -67,13 +67,11 @@ if [ "$MODE" = "wine" ]; then
   run curl -fsSL -o /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
   run curl -fsSL -o /etc/apt/sources.list.d/winehq-noble.sources https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
   run apt-get update -qq
-  # 27 Nov 2026 first real run: Wine 11 trips MT5's anti-debugger check ("A debugger has been found running
-  # in your system"); MQL5 forum threads 503128 and 168573 report Wine 10 works. Pin the newest 10.x.
-  W10="$(apt-cache madison wine-stable 2>/dev/null | awk '{print $3}' | grep '^10\.' | head -1 || true)"
-  [ -n "$W10" ] || [ "$DRY_RUN" = "1" ] || fail "no Wine 10 package found in the WineHQ repo"
-  run env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --allow-downgrades --install-recommends \
-      "winehq-stable=${W10}" "wine-stable=${W10}" "wine-stable-amd64=${W10}" "wine-stable-i386:i386=${W10}"
-  run apt-mark hold winehq-stable wine-stable wine-stable-amd64 wine-stable-i386:i386
+  # 27 Nov 2026 first real run: wine-stable 11.0 and 10.0 both tripped MT5's anti-debugger check ("A debugger
+  # has been found running in your system"). wine-staging (what MetaQuotes' own mt5linux.sh installs) ran MT5.
+  run apt-mark unhold winehq-stable wine-stable wine-stable-amd64 wine-stable-i386:i386 >/dev/null 2>&1 || true
+  run env DEBIAN_FRONTEND=noninteractive apt-get remove -y -qq winehq-stable wine-stable wine-stable-amd64 "wine-stable-i386:i386" >/dev/null 2>&1 || true
+  run env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --install-recommends winehq-staging libegl1 libgl1
 else
   TMP="$(mktemp -d)"
   run curl -fsSL -o "${TMP}/hangover.tar" "https://github.com/AndreRH/hangover/releases/download/hangover-${HANGOVER_VER}/hangover_${HANGOVER_VER}_ubuntu2404_noble_arm64.tar"
@@ -146,6 +144,12 @@ as_mt5 wine "C:/Program Files/MetaTrader 5/MetaEditor64.exe" /portable "/compile
 if [ "$DRY_RUN" != "1" ]; then
   CL="${PREFIX}/drive_c/users/${MT5_USER}/compile.log"
   [ -f "$CL" ] && iconv -f UTF-16 -t UTF-8 "$CL" > "$LOG" 2>/dev/null || cp "$CL" "$LOG" 2>/dev/null || true
+  # 27 Nov 2026 first real run: MetaEditor /compile quit silently under Wine, but the terminal compiles new
+  # .mq5 sources in MQL5/Experts at start-up (EA_XAUUSD.ex5 appeared within 60 s). Use that as the fallback.
+  if [ ! -f "${EA_DIR}/${EA_NAME}.ex5" ]; then
+    as_mt5 timeout 150 wine "C:/Program Files/MetaTrader 5/terminal64.exe" /portable || true
+    pkill -f terminal64.exe || true; sleep 3
+  fi
   if [ -f "${EA_DIR}/${EA_NAME}.ex5" ]; then ok "compiled: ${EA_NAME}.ex5"; else
     echo "    The EA did not compile. Last lines of the log (send these to Claude):"
     tail -n 40 "$LOG" 2>/dev/null || echo "    (no log)"

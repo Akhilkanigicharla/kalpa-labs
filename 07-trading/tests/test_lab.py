@@ -253,7 +253,9 @@ def test_gate_can_pass_a_planted_trend(tmp_path):
     reg = tmp_path / "trials.csv"
     close = data.synthetic_prices(5040, seed=2, regime_days=250, regime_drift=0.35)["close"]
     tid = trials.log_trial("H1-tsmom-vt", "tsmom_vt", {}, "synthetic planted trend", 4, path=reg)
-    v = gate.evaluate(close, "tsmom_vt", tid, registry=reg)
+    basket = {s: data.synthetic_prices(5040, seed=s, regime_days=250, regime_drift=0.35)["close"]
+              for s in (2, 4, 5, 6)}                   # A247 check 8 needs a basket
+    v = gate.evaluate(close, "tsmom_vt", tid, registry=reg, basket=basket)
     assert v.verdict == "paper", v.summary()
     assert v.numbers["oos_sharpe"] > v.numbers["bh_sharpe"]
 

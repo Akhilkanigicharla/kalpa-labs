@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import costs, risk
+from . import costs, risk, trials
 from .strategies import weights
 
 STOP_PCT = 0.05            # research default for sizing; part of the Q7.8 sign-off
@@ -73,9 +73,13 @@ def _qty_for_buy(target_qty: int, held: int, entry: float, pot: float, limits: d
 
 def dry_run(bars: pd.DataFrame, strategy: str, *, days: int = 20, symbol: str = "NIFTYBEES",
             pot: float = 25_000.0, ledger: Path | None = None, trial: str = "dry-run",
-            include_last: bool = False, breach_log: Path | None = None, **params) -> PaperRun:
+            include_last: bool = False, breach_log: Path | None = None,
+            registry: Path | None = None, **params) -> PaperRun:
     """Replay the last `days` signal days. With include_last=False the final bar is used only
-    as the next open for the day before it (so every signal in the window can fill)."""
+    as the next open for the day before it (so every signal in the window can fill).
+    A real trial id (anything but "dry-run") must be frozen first (A247: trials.freeze)."""
+    if trial != "dry-run":
+        trials.verify_frozen(trial, strategy, params, symbol, path=registry)
     bars = bars.sort_index()
     close, open_ = bars["close"], bars["open"]
     w = weights(strategy, close, **params).reindex(close.index).fillna(0.0).clip(0.0, 1.0)

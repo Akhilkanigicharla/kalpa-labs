@@ -29,14 +29,20 @@ class Result:
         return float(self.cost.sum())
 
 
+def check_delay(delay) -> None:
+    """A247 look-ahead guard: a whole number of bars, at least 1 (0, 0.5, True or -1 would let a
+    fill happen on or before the bar that made the signal)."""
+    if isinstance(delay, bool) or not isinstance(delay, (int, np.integer)) or delay < 1:
+        raise ValueError(f"delay must be a whole number >= 1, got {delay!r} (below 1 would look ahead)")
+
+
 def run(close: pd.Series, weight: pd.Series, *, delay: int = 1, cost_mult: float = 1.0,
         capital: float = 100_000.0, cash_rate: float = 0.0) -> Result:
     """cash_rate: yearly return earned on the part NOT in the market (e.g. a liquid ETF such as
     LIQUIDBEES, 4.69%/yr since 2003 after its 0.69% fee, anandrathi.com 1 Jun 2025). Default 0
     keeps the gate's numbers unchanged; switching between equity and liquid ETF costs are
     charged on the equity leg only (liquid ETF brokerage is ignored: tiny, flagged in notes)."""
-    if delay < 1:
-        raise ValueError("delay must be >= 1 (delay 0 would look ahead)")
+    check_delay(delay)
     if cost_mult <= 0:
         raise ValueError("zero-cost runs are not allowed")
     w = weight.reindex(close.index).fillna(0.0).clip(0.0, 1.0)
@@ -87,4 +93,4 @@ def cagr(returns: pd.Series) -> float:
     return float(eq.iloc[-1] ** (1 / years) - 1) if years > 0 and eq.iloc[-1] > 0 else float("nan")
 
 
-__all__ = ["Result", "run", "buy_and_hold", "config_matrix", "equity", "max_drawdown", "cagr", "np"]
+__all__ = ["Result", "check_delay", "run", "buy_and_hold", "config_matrix", "equity", "max_drawdown", "cagr", "np"]

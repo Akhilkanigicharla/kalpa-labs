@@ -650,11 +650,11 @@
   "details": "Read the A351 line in ROADMAP.md. Write (a) one short consent line 'I am 18 or older and agree to the privacy notice' and (b) one short, kind bot reply for someone who says they are under 18: stop collecting their details, ask them to have a parent or guardian contact us, no questions about age proof. Give both in English, Telugu script, Hindi script, Tenglish (Telugu in Latin letters) and Hinglish. Plain words, under 25 words each. No legal claims or section numbers.",
   "min_items": 10,
   "tries": 1,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-27T00:00:00Z",
-  "updated": "2026-11-26T22:40:21Z",
-  "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
+  "updated": "2026-11-27T00:40:53Z",
+  "output": "00-hq/knowledge/K177.md"
  },
  {
   "id": "K181",
@@ -667,10 +667,10 @@
   "details": "For roadmap item A349 (BotBhai keeps messages and logs 365 days instead of 180, DPDP Rule 8(3)): draft the customer notice line in plain English and in Telugu script (max 2 sentences each, no legal promises beyond 'we keep chats and logs for one year, then delete them'). Then list 5 questions about how long Netlify keeps form submissions and function logs on the Free plan, each with the Netlify docs page where the answer should be checked; mark every answer 'unverified'. Draft only; a lawyer reads it first (C23).",
   "min_items": 5,
   "tries": 0,
-  "status": "todo",
+  "status": "review",
   "priority": "P2",
   "created": "2026-11-27T06:30:00Z",
-  "updated": "2026-11-27T06:30:00Z",
-  "vigil_notes": ""
+  "updated": "2026-11-27T00:42:11Z",
+  "output": "00-hq/knowledge/K181.md"
  }
 ]

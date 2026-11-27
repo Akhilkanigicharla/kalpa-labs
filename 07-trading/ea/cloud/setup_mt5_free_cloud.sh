@@ -67,7 +67,13 @@ if [ "$MODE" = "wine" ]; then
   run curl -fsSL -o /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
   run curl -fsSL -o /etc/apt/sources.list.d/winehq-noble.sources https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
   run apt-get update -qq
-  run env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --install-recommends winehq-stable
+  # 27 Nov 2026 first real run: Wine 11 trips MT5's anti-debugger check ("A debugger has been found running
+  # in your system"); MQL5 forum threads 503128 and 168573 report Wine 10 works. Pin the newest 10.x.
+  W10="$(apt-cache madison wine-stable 2>/dev/null | awk '{print $3}' | grep '^10\.' | head -1 || true)"
+  [ -n "$W10" ] || [ "$DRY_RUN" = "1" ] || fail "no Wine 10 package found in the WineHQ repo"
+  run env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --allow-downgrades --install-recommends \
+      "winehq-stable=${W10}" "wine-stable=${W10}" "wine-stable-amd64=${W10}" "wine-stable-i386:i386=${W10}"
+  run apt-mark hold winehq-stable wine-stable wine-stable-amd64 wine-stable-i386:i386
 else
   TMP="$(mktemp -d)"
   run curl -fsSL -o "${TMP}/hangover.tar" "https://github.com/AndreRH/hangover/releases/download/hangover-${HANGOVER_VER}/hangover_${HANGOVER_VER}_ubuntu2404_noble_arm64.tar"

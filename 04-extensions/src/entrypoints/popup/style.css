@@ -35,6 +35,11 @@ li.empty { color: var(--muted); justify-content: center; }
 .meta span { font: 500 11px var(--f-mono); color: var(--muted); }
 details { margin-top: 16px; } summary { cursor: pointer; color: var(--accent); font-weight: 600; }
 textarea { width: 100%; margin-top: 8px; border-radius: 12px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); padding: 8px; font: 12px var(--f-mono); }
-.link { display: block; margin: 12px auto 0; border: 0; background: none; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.link { display: block; min-height: 44px; margin: 12px auto 0; border: 0; background: none; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .undo { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 4px 4px 4px 12px; }
 .undo[hidden] { display: none; }
+
+/* Feedback (27 Nov 2026): rating ask, same card as the backup nudge */
+#rate { color: var(--fg); border: 1px solid var(--gold); border-radius: 12px; padding: 8px 12px; }
+#rate .row { display: flex; gap: 8px; margin-top: 8px; }
+#rate button { min-height: 44px; }

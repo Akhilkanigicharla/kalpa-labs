@@ -1,3 +1,4 @@
+import { FEEDBACK_FORM_URL, formLink } from "../../lib/feedback";
 import { backupReminder } from "../../lib/tools";
 import "./style.css";
 
@@ -65,4 +66,10 @@ async function status() {
   $("auto").textContent = mins === null ? "Auto-save every 5 min" : mins < 1 ? "Last snapshot just now" : `Last snapshot ${mins} min ago`;
 }
 $("more").addEventListener("click", () => void browser.runtime.openOptionsPage());
-void refresh(); void status();
+// Feedback (27 Nov 2026): opt-in only. The form link stays hidden until Akhil sets it in lib/feedback.ts.
+const form = formLink(FEEDBACK_FORM_URL);
+if (form) { $("feedback").hidden = false; $("feedback").addEventListener("click", () => void browser.tabs.create({ url: form })); }
+async function rateAsk() { const r = await send<{ ask: boolean }>({ type: "rate-ask" }); $("rate").hidden = !(r.ok && r.ask); }
+for (const [id, a] of [["rate-yes", "rate"], ["rate-no", "later"]] as const)
+  $(id).addEventListener("click", async () => { $("rate").hidden = true; await send({ type: "rate-answer", name: a }); });
+void refresh(); void status(); void rateAsk();

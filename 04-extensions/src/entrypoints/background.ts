@@ -1,10 +1,11 @@
-import { captureAll, restore } from "../lib/capture";
-import { detectAndParse } from "../lib/importers";
 import { backupFileName, parseBackup, toBackup } from "../lib/backup";
+import { captureAll, restore } from "../lib/capture";
+import { DRIVE_SCOPE, type DriveDeps, DriveError, deviceName, download as driveDownload, driveFileName, list as driveList, remove as driveRemove, upload as driveUpload, gunzip, gzip, sha256, toPrune } from "../lib/drive";
+import { answerRating, formLink, RATE_DEFAULT, type RateState, STORE_REVIEW_URL, shouldAskRating, UNINSTALL_FORM_URL } from "../lib/feedback";
+import { detectAndParse } from "../lib/importers";
 import { countTabs } from "../lib/model";
-import { LIMITS, deleteForever, getSession, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
-import { DRIVE_SCOPE, DriveError, deviceName, driveFileName, gunzip, gzip, list as driveList, download as driveDownload, remove as driveRemove, sha256, toPrune, upload as driveUpload, type DriveDeps } from "../lib/drive";
-import { backupDue, findDuplicates, findStale, searchTabs, tabTimeline, upgradeNudge, type OpenTab } from "../lib/tools";
+import { deleteForever, getSession, LIMITS, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
+import { backupDue, findDuplicates, findStale, type OpenTab, searchTabs, tabTimeline, upgradeNudge } from "../lib/tools";
 
 export const SNAPSHOT_MINUTES = 5;
 
@@ -93,6 +94,8 @@ export default defineBackground(() => {
   // ask the browser not to evict our IndexedDB under disk pressure (OneTab users lost data this way)
   void (globalThis.navigator?.storage?.persist?.() ?? Promise.resolve(false));
   browser.runtime.onInstalled.addListener(() => browser.alarms.create("snapshot", { periodInMinutes: SNAPSHOT_MINUTES }));
+  // Feedback (27 Nov 2026): the uninstall form opens once, only when the user removes Tab Lifeboat; off until Akhil sets the link.
+  const bye = formLink(UNINSTALL_FORM_URL); if (bye) void browser.runtime.setUninstallURL(bye).catch(() => {});
   browser.runtime.onStartup.addListener(() => browser.alarms.create("snapshot", { periodInMinutes: SNAPSHOT_MINUTES }));
   browser.runtime.onInstalled.addListener(() => browser.alarms.create("daily-backup", { periodInMinutes: 60 }));
   browser.runtime.onStartup.addListener(() => browser.alarms.create("daily-backup", { periodInMinutes: 60 }));
@@ -112,7 +115,21 @@ export default defineBackground(() => {
         case "snapshot": return { ok: true, session: await snapshot() };
         case "status": { const { lastSnapshot, lastFileAt, lastBackupAt } = await browser.storage.local.get(["lastSnapshot", "lastFileAt", "lastBackupAt"]); const files = [lastFileAt, lastBackupAt].filter((x): x is number => typeof x === "number"); return { ok: true, lastSnapshot: lastSnapshot ?? null, lastFileAt: files.length ? Math.max(...files) : null, sessions: (await listSessions()).length, persisted: (await globalThis.navigator?.storage?.persisted?.()) ?? false, plan: await plan(), every: SNAPSHOT_MINUTES, limits: LIMITS }; }
         case "list": return { ok: true, sessions: (await listSessions()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) })) };
-        case "restore": { const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" }; return { ok: true, ...(await restore(br, s)) }; }
+        case "restore": {
+          const s = await getSession(msg.id!); if (!s) return { ok: false, error: "not found" };
+          const out = await restore(br, s);
+          const { rate } = await browser.storage.local.get("rate"); const r = { ...RATE_DEFAULT, ...(rate as RateState | undefined) };
+          await browser.storage.local.set({ rate: { ...r, restores: r.restores + 1 } });   // a count only, nothing about the tabs
+          return { ok: true, ...out };
+        }
+        case "rate-ask": { const { rate } = await browser.storage.local.get("rate"); return { ok: true, ask: shouldAskRating({ ...RATE_DEFAULT, ...(rate as RateState | undefined) }) }; }
+        case "rate-answer": {
+          const { rate } = await browser.storage.local.get("rate");
+          const a = msg.name === "rate" ? "rate" : "later";
+          await browser.storage.local.set({ rate: answerRating({ ...RATE_DEFAULT, ...(rate as RateState | undefined) }, a) });
+          if (a === "rate") await browser.tabs.create({ url: STORE_REVIEW_URL });
+          return { ok: true };
+        }
         case "delete": return (await trashSession(msg.id ?? "")) ? { ok: true } : { ok: false, error: "That session is already gone." };   // A231: 7 days in Recently deleted
         case "trash-list": return { ok: true, sessions: (await listTrash()).map((s) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, deletedAt: s.deletedAt, ...countTabs(s) })) };
         case "undelete": return (await undeleteSession(msg.id ?? "")) ? { ok: true } : { ok: false, error: "That session is no longer in Recently deleted." };

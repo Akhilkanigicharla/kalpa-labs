@@ -1,0 +1,29 @@
+{
+ "name": "^NSEBANK 15m",
+ "bars": 1098,
+ "up_share": 0.5282,
+ "base_rate_train": 0.46,
+ "brier": {
+  "kronos": 0.34153,
+  "random_walk": 0.25,
+  "base_rate": 0.25386
+ },
+ "log_loss": {
+  "kronos": 1.00203,
+  "random_walk": 0.69315,
+  "base_rate": 0.70088
+ },
+ "direction_accuracy": 0.4872,
+ "long_share": 0.4107,
+ "return_after_costs": -0.1031,
+ "return_hold": 0.1188,
+ "worst_fall_bot": -0.1296,
+ "worst_fall_hold": -0.0511,
+ "random_signals_beat_bot": 0.0,
+ "beats_baselines": false,
+ "beats_hold_after_costs": false,
+ "passes": false,
+ "from": "2026-09-23 09:15:00",
+ "to": "2026-11-27 15:00:00",
+ "samples": 10
+}

@@ -1,0 +1,29 @@
+{
+ "name": "^NSEBANK 1d",
+ "bars": 322,
+ "up_share": 0.5404,
+ "base_rate_train": 0.514,
+ "brier": {
+  "kronos": 0.33352,
+  "random_walk": 0.25,
+  "base_rate": 0.24906
+ },
+ "log_loss": {
+  "kronos": 0.9551,
+  "random_walk": 0.69315,
+  "base_rate": 0.69128
+ },
+ "direction_accuracy": 0.4596,
+ "long_share": 0.2671,
+ "return_after_costs": 0.0004,
+ "return_hold": 0.1499,
+ "worst_fall_bot": -0.1068,
+ "worst_fall_hold": -0.179,
+ "random_signals_beat_bot": 0.31,
+ "beats_baselines": false,
+ "beats_hold_after_costs": false,
+ "passes": false,
+ "from": "2025-08-01 00:00:00",
+ "to": "2026-11-25 00:00:00",
+ "samples": 20
+}

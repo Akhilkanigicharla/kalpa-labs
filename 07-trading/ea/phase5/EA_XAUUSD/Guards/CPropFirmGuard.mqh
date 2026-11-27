@@ -229,7 +229,9 @@ public:
       }
 
       //--- [P2] Profit target reached (use BALANCE — recognized profit)
-      if(!m_target_reached && ctx.balance >= Config.ProfitTarget
+      // 27 Nov 2026 first live start: a 100K demo with the $10K preset latched "target reached" for good.
+      // Only trust the target when the balance matches inp_AccountSize (AccountSizeOk).
+      if(!m_target_reached && Config.AccountSizeOk && ctx.balance >= Config.ProfitTarget
          && CountProfitableDays() >= inp_MinProfitDays)          // A335: The5%ers also needs 3 profitable days
       {
          m_target_reached = true;

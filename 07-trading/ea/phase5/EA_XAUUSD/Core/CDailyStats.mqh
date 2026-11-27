@@ -419,14 +419,15 @@ public:
          if((ty == DEAL_TYPE_BUY || ty == DEAL_TYPE_SELL) && HistoryDealGetInteger(t, DEAL_ENTRY) == DEAL_ENTRY_IN)
             if(dt > last_open) last_open = dt;
       }
-      datetime ref = (last_open > 0) ? last_open : ((first_deal > 0) ? first_deal : from);
+      if(first_deal == 0) return;   // 27 Nov 2026: a brand-new account has no deals yet - not idle
+      datetime ref = (last_open > 0) ? last_open : first_deal;
       int idle_days = (int)((TimeCurrent() - ref) / 86400);
       if(idle_days >= 25 && m_inactivity_warned_day != TodayServer())
       {
          m_inactivity_warned_day = TodayServer();
-         Logger.Critical("STATS", "INACTIVITY WARNING: no new trade opened for 25+ days - The5%ers expires the account at 30 days",
+         Logger.Critical("STATS", "INACTIVITY WARNING: no new trade opened for 25+ days - firm inactivity limits: The5%ers 30 days, E8 60 days",
             StringFormat("idle_days=%d last_open=%s", idle_days, TimeToString(ref, TIME_DATE|TIME_MINUTES)));
-         Alert(EA_NAME, ": no new trade for ", idle_days, " days. The5%ers expires the account after 30 days without a new trade.");
+         Alert(EA_NAME, ": no new trade for ", idle_days, " days. Prop firms close idle accounts (The5%ers 30 days, E8 60 days).");
       }
    }
 

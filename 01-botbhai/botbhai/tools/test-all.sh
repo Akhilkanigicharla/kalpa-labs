@@ -15,6 +15,7 @@ node core/automations.test.js
 node core/nudges.test.js
 node webhook-door/test.mjs
 node core/lang.test.js
+node core/minor.test.js
 node core/models.test.js
 node core/humanize.test.js
 node core/fallback.test.js

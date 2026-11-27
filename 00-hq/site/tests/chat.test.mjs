@@ -96,3 +96,21 @@ console.log("site chat tests passed (9 groups)");
   assert.ok(!JSON.stringify(logged).includes("err-test"), "IP must not be logged");
   console.log("client error beacon: PASS");
 }
+
+// A351: under-18 visitor: fixed parent reply in their language, no model call, no callback saved, even later in the chat
+{
+  const M = (await import("../../../01-botbhai/botbhai/core/minor.js")).default;
+  const env = { GROQ_API_KEY: "k" };
+  const cases = { "I am 15, call me on 9876543210": "en", "నాకు 16 ఏళ్ళు": "te", "मैं 15 साल का हूँ": "hi", "nenu 9th class, cheppandi": "te-latn", "main 15 saal ka hoon, batao kya hai": "hi-latn" };
+  for (const [msg, lg] of Object.entries(cases)) {
+    const f = fake([{ content: "model must not be called" }]);
+    assert.strictEqual(await reply({ chatInput: msg }, { fetchImpl: f, env }), M.reply(lg), msg);
+    assert.strictEqual(f.calls.length, 0, "no model or form call for " + msg);
+  }
+  const f = fake([{ content: "x" }]);
+  const later = await reply({ chatInput: "my name is Ravi 9876543210 yes call me", history: [{ role: "user", content: "I'm 16" }, { role: "assistant", content: "..." }] }, { fetchImpl: f, env });
+  assert.strictEqual(later, M.reply("en")); assert.strictEqual(f.calls.length, 0);
+  const g = fake([{ content: "Sure, here are the prices." }]);
+  assert.strictEqual(await reply({ chatInput: "booking for my son, he is 12" }, { fetchImpl: g, env }), "Sure, here are the prices.");
+  console.log("under-18 path: PASS");
+}

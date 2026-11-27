@@ -22,6 +22,9 @@
   // (window.BotBhaiSlots); otherwise the built-in v3.0 fixed-slot logic below is used.
   let Slots = null;
   try { Slots = typeof require === "function" ? require("./slots.js") : (typeof self !== "undefined" && self.BotBhaiSlots) || null; } catch (e) { Slots = null; }
+  // A351: under-18 visitors (DPDP s.9). core/minor.js; build.py puts it before this file in the web app.
+  let Minor = null;
+  try { Minor = typeof require === "function" ? require("./minor.js") : (typeof self !== "undefined" && self.BotBhaiMinor) || null; } catch (e) { Minor = null; }
 
   const NICHES = {};
   function register(cfg) { if (!cfg || !cfg.id) throw new Error("config needs an id"); NICHES[cfg.id] = cfg; return cfg; }
@@ -498,6 +501,7 @@
       if (intent && !state.lead.intents.includes(intent)) state.lead.intents.push(intent);
     }
     function leadSnapshot(state, meta) {
+      if (state.minor) return { niche: cfg.id, business: cfg.business, contact: meta.contact || null, source: meta.source || "whatsapp", name: null, score: "cold", status: "minor", intents: [], turns: state.turns, marketing_opt_in: false }; // A351
       const data = Object.assign({}, state.data); delete data.correct;
       return Object.assign({ niche: cfg.id, business: cfg.business, contact: meta.contact || null, source: meta.source || "whatsapp" }, data, {
         name: state.data.name || (meta.known && meta.known.name) || meta.profileName || null,
@@ -819,6 +823,14 @@
         replies = [{ text: T("unsub") }];
       } else if (state.optedOut && !/^start$/.test(t)) {
         replies = [];
+      } else if (state.minor) {
+        replies = []; // A351: an under-18 visitor; only a parent or guardian, through the owner, can continue
+      } else if (Minor && Minor.isMinor(raw)) { // A351: stop collecting, forget what they typed, ask for a parent
+        state.minor = true; state.step = -1; state.data = {}; delete state.pending; delete state.prev; delete state.rescheduling; delete state.bridal;
+        state.lead = { score: "cold", status: "minor", intents: [], marketing: false };
+        events.push({ type: "minor_stop" });
+        events.push({ type: "notify_owner", text: "🧒 A visitor said they are under 18. The bot stopped and asked for a parent or guardian; nothing they typed is kept." });
+        replies = [{ text: Minor.reply(LG) }];
       } else if (paused && !/^(bot|menu|start)$/.test(t)) {
         events.push({ type: "forward_to_owner", text: `💬 ${meta.profileName || state.data.name || meta.contact}: ${raw.slice(0, 300)}` });
         replies = []; // a person is handling this chat

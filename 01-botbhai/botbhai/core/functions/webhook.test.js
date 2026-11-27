@@ -137,5 +137,20 @@ const inbound = (msg, from = "919812345678") => {
   assert.strictEqual((await api("POST", { action: "reply", contact: "919811111111", text: "hi" })).statusCode, 404); console.log("  ✓ unknown contact → 404");
   assert.strictEqual((await api("POST", { action: "explode", contact: C })).statusCode, 400); console.log("  ✓ unknown action refused");
   assert.strictEqual((await inboxApi({ httpMethod: "DELETE", headers: { authorization: "Bearer " + TOKEN } })).statusCode, 405); console.log("  ✓ other methods refused");
+  // A351: a visitor who says they are under 18 gets the parent reply; their earlier lines and lead are deleted, nothing new is kept
+  const KID = "919877700001";
+  await inbound({ type: "text", text: { body: "hi" } }, KID);
+  await inbound({ type: "text", text: { body: "book haircut, my name is Chintu" } }, KID);
+  assert.ok(store.messages.some((m) => m.contact === KID));
+  await inbound({ type: "text", text: { body: "nenu 9th class" } }, KID);
+  const kidOut = sent.list.filter((m) => m.to === KID).pop();
+  assert.ok(kidOut.text && /18/.test(kidOut.text.body) && /parents|guardian/i.test(kidOut.text.body), JSON.stringify(kidOut));
+  assert.ok(!store.messages.some((m) => m.contact === KID) && !store.leads.some((l) => l.contact === KID), "minor data deleted");
+  const kidSess = store.sessions.find((x) => x.contact === KID);
+  assert.ok(kidSess.state.minor && !kidSess.state.data.name && JSON.stringify(kidSess.state).indexOf("Chintu") < 0, "session keeps no name");
+  const kidN = sent.list.length; await inbound({ type: "text", text: { body: "my number is 9876543210" } }, KID);
+  assert.strictEqual(sent.list.filter((m, i) => i >= kidN && m.to === KID).length, 0);
+  assert.ok(!store.messages.some((m) => m.contact === KID) && !store.leads.some((l) => l.contact === KID));
+  console.log("  ✓ A351 under-18 visitor: parent reply, data deleted, bot stays quiet");
   console.log("\nwebhook tests passed");
 })().catch((e) => { console.error(e); process.exit(1); });

@@ -25,6 +25,7 @@
 
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild" # A351: inlines core/minor.js from 01-botbhai into chat.mjs
 
 # Row 107 pen test (20 Nov 2026): source and test files in this folder must not be served.
 [[redirects]]

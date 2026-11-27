@@ -593,7 +593,7 @@
    "00-hq/ROADMAP.md"
   ],
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-26T16:55:00Z",
   "updated": "2026-11-26T17:14:36Z",
@@ -601,7 +601,8 @@
   "title": "A351 prep: under-18 phrases + parent-ask replies in 5 languages",
   "min_items": 30,
   "details": "Read row D12 of dpdp-2027.md and the A351 line. Write a table of exactly 20 rows: a customer message that says or clearly implies the writer is under 18 (4 each in English, Telugu script, Hindi script, Tenglish, Hinglish; e.g. 'I am 15', 'I'm in 9th class'), plus 10 tricky messages that must NOT count (e.g. '18 years old', 'my son is 12', 'class 10 tuition for my daughter'). Then one short polite reply per language asking for a parent or guardian to continue and saying we will not save their details. No legal claims.",
-  "output": "00-hq/knowledge/K174.md"
+  "output": "00-hq/knowledge/K174.md",
+  "note": "used in A351 (27 Nov): replies rewritten by Claude (K174 Tenglish rows were English; K177 Tenglish reply said \"Mana\" = our)"
  },
  {
   "world": "b1",
@@ -650,11 +651,12 @@
   "details": "Read the A351 line in ROADMAP.md. Write (a) one short consent line 'I am 18 or older and agree to the privacy notice' and (b) one short, kind bot reply for someone who says they are under 18: stop collecting their details, ask them to have a parent or guardian contact us, no questions about age proof. Give both in English, Telugu script, Hindi script, Tenglish (Telugu in Latin letters) and Hinglish. Plain words, under 25 words each. No legal claims or section numbers.",
   "min_items": 10,
   "tries": 1,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-27T00:00:00Z",
   "updated": "2026-11-27T00:40:53Z",
-  "output": "00-hq/knowledge/K177.md"
+  "output": "00-hq/knowledge/K177.md",
+  "note": "used in A351 (27 Nov): replies rewritten by Claude (K174 Tenglish rows were English; K177 Tenglish reply said \"Mana\" = our)"
  },
  {
   "id": "K181",

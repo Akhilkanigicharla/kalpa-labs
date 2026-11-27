@@ -4,6 +4,10 @@
 // Callbacks are saved as a Netlify Forms submission of the existing "contact" form (no database), only with a real name,
 // a real phone number and the visitor's explicit yes. No dependencies.
 
+// A351: under-18 visitors get a fixed parent/guardian reply, no model call and no callback saved (DPDP s.9).
+// One detector for BotBhai and this chat; node_bundler = "esbuild" in netlify.toml inlines it into the function.
+import Minor from "../../../../01-botbhai/botbhai/core/minor.js";
+
 const SITE = process.env.URL || "https://kalpalabs.dpdns.org";
 const MAX_IN = 600, MAX_HISTORY = 8;
 const hits = new Map(); // best-effort per-instance rate limit: ip -> [timestamps]
@@ -115,6 +119,7 @@ export async function reply({ chatInput, history }, { fetchImpl = fetch, env = p
     .filter((h) => h && (h.role === "user" || h.role === "assistant") && typeof h.content === "string")
     .map((h) => ({ role: h.role, content: h.content.slice(0, MAX_IN) }));
   const lang = detectLang(chatInput);
+  if ([...hist.filter((h) => h.role === "user").map((h) => h.content), String(chatInput)].some((m) => Minor.isMinor(m))) return Minor.reply(lang);
   const messages = [{ role: "system", content: SYSTEM }, ...hist, { role: "system", content: HINT[lang] }, { role: "user", content: String(chatInput).slice(0, MAX_IN) }];
   for (let step = 0; step < 3; step++) {
     const msg = await complete(messages, fetchImpl, env);

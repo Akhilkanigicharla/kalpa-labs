@@ -15,7 +15,7 @@ for k, c in cfgs.items():
 register = "\n".join(f"BotBhai.register({json.dumps(cfgs[s], ensure_ascii=False)});" for s in setups)
 page = (root / "web" / "index.src.html").read_text()
 # A220 strict CSP: the page has no inline script; engine + setups + page script ship as one file, app.js
-app = (root / "core" / "engine.js").read_text() + "\n" + register + "\n" + (root / "web" / "page.js").read_text()
+app = (root / "core" / "minor.js").read_text() + "\n" + (root / "core" / "engine.js").read_text() + "\n" + register + "\n" + (root / "web" / "page.js").read_text()
 APP_TAG = '<script src="app.js"></script>'
 assert page.count(APP_TAG) == 1 and "<script>" not in page, "index.src.html must load app.js and carry no inline script"
 # A211 price ladder: rendered from the one price file, so the page can never drift from PLAN.md §2

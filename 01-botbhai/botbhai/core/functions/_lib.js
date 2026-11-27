@@ -100,6 +100,13 @@ async function applyCalendarEvents(client, contact, events, source) {
   return ok;
 }
 
+// A351: a visitor said they are under 18 (DPDP s.9): delete their lead and chat lines; only the bare session stays
+// (so the bot keeps quiet) and it holds no name, number or message text.
+async function forgetMinor(client, contact) {
+  const q = `client_id=eq.${client.id}&contact=eq.${enc(contact)}`;
+  return Promise.all([db(`leads?${q}`, { method: "DELETE", prefer: "return=minimal" }), db(`messages?${q}`, { method: "DELETE", prefer: "return=minimal" })]);
+}
+
 // Save lead without wiping what other agents wrote (reminder flags, consent, ad answers).
 async function saveLead(client, contact, lead, prev) {
   const { niche, business, contact: _c, source, name, score, status, marketing_opt_in, ...details } = lead;
@@ -187,5 +194,5 @@ function metaSignatureOk(event) {
   return sig.length === expected.length && require("crypto").timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-module.exports = { opsAlert, metaSignatureOk, db, dbAll, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead,
+module.exports = { opsAlert, metaSignatureOk, db, dbAll, json, enc, rateHit, turnstileOk, clientToken, istTodayIso, firstTime, inboxStatus, busySlots, bookSlot, setBookingStatus, applyCalendarEvents, saveLead, forgetMinor,
   graph, sendTemplate, sendText, sendImage, sendReply, cardUrl, alertOwner, templatesFor, tplParam, GRAPH };

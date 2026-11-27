@@ -65,6 +65,7 @@ module.exports = function installFake(seed) {
         rows.sort((a, b) => (String(a[c]) < String(b[c]) ? -1 : String(a[c]) > String(b[c]) ? 1 : 0) * (d === "desc" ? -1 : 1)); }
       const off = +(u.searchParams.get("offset") || 0), lim = u.searchParams.get("limit");
       return ok(rows.slice(off, off + Math.min(lim == null ? 1000 : +lim, 1000))); } // Supabase max rows = 1,000
+    if (method === "DELETE") { const gone = new Set(filt(store[table])); store[table] = store[table].filter((r) => !gone.has(r)); return ok([]); }
     if (method === "PATCH") { const b = JSON.parse(opts.body); filt(store[table]).forEach((r) => Object.assign(r, b)); return ok([]); }
     const body = [].concat(JSON.parse(opts.body)); const keys = (u.searchParams.get("on_conflict") || "").split(",").filter(Boolean);
     const ignore = /ignore-duplicates/.test((opts.headers || {}).Prefer || ""); const out = [];

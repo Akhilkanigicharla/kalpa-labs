@@ -1297,5 +1297,39 @@
   "created": "2026-11-27T06:30:00Z",
   "updated": "2026-11-27T00:41:40Z",
   "output": "00-hq/knowledge/K180.md"
+ },
+ {
+  "id": "K182",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A296 prep: phone-harness on a free Android emulator in GitHub Actions",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A296 line in ROADMAP.md. From the public GitHub page of ShawnPana/phone-harness and the README of reactivecircus/android-emulator-runner, write: (1) licence of each (quote the LICENSE file name), (2) the exact steps to start an Android emulator in a free GitHub Actions ubuntu runner (KVM), (3) how phone-harness drives Chrome on that emulator to open a URL and tap, (4) how long a run takes and free-minute cost, (5) 3 risks. Give a source link for every fact; write 'unverified' if not found.",
+  "min_items": 5,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P2",
+  "created": "2026-11-27T02:49:38Z",
+  "updated": "2026-11-27T02:49:38Z",
+  "output": ""
+ },
+ {
+  "id": "K183",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A298 prep: SignuDoc deploy facts (licence, Vercel + Neon + Resend free tiers)",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A298 line in ROADMAP.md. From the public GitHub repo of SignuDoc (Kevin Rose) and the official pricing pages of Vercel, Neon and Resend, write a table: licence (LICENSE file), what the app stores, env vars it needs, free-tier limits that matter (requests, storage, emails per day/month, card needed or not), and whether an e-signature made this way is valid under India's IT Act 2000 s.3A / s.5 (cite the Act text). Source link per row; 'unverified' when not found.",
+  "min_items": 6,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P2",
+  "created": "2026-11-27T02:49:38Z",
+  "updated": "2026-11-27T02:49:38Z",
+  "output": ""
  }
 ]

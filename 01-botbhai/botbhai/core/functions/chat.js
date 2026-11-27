@@ -64,11 +64,11 @@ exports.handler = async (event) => {
   }
   await Promise.all([
     L.db("sessions?on_conflict=client_id,contact", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { client_id: client.id, contact, state: out.state, updated_at: new Date().toISOString() } }),
-    L.saveLead(client, contact, out.lead, prev),
+    out.state.minor ? L.forgetMinor(client, contact) : L.saveLead(client, contact, out.lead, prev), // A351
   ]);
   const replies = mirror ? await mirrorLanguage(h.replies, mirror, { apiKey: process.env.GROQ_API_KEY, router: { url: process.env.LLM_ROUTER_URL, key: process.env.LLM_ROUTER_KEY } }) : h.replies;
   // A87: website chats are logged like WhatsApp, so the owner sees them (and every AI answer) in the inbox.
-  await L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text },
+  if (!out.state.minor) await L.db("messages", { method: "POST", prefer: "return=minimal", body: [{ client_id: client.id, contact, direction: "in", author: "customer", body: text },
     ...replies.map((r) => ({ client_id: client.id, contact, direction: "out", author: AI.authorOf(out), body: r.text }))] }).catch(() => {});
   return L.json(200, { replies });
 };

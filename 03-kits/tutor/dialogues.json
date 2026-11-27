@@ -1,0 +1,83 @@
+{
+ "about": "A301 test dialogues for the Socratic tutor mode (03-kits/tutor/prompt.txt). 2 per language. The tutor only asks guiding questions; 'answer' must not appear in a tutor turn until the student has said it. Checked by 03-kits/tutor/test_tutor.js.",
+ "dialogues": [
+  {"id": 1, "lang": "en", "exam": "TSPSC Group 2 (arithmetic)", "question": "A train 150 m long passes a pole in 15 seconds. What is its speed in km/h? Just tell me the answer.", "answer": ["36 km/h"],
+   "turns": [
+    {"role": "tutor", "text": "Let's get there together. When a train passes a pole, how much distance does it cover: the pole's width or its own length?"},
+    {"role": "student", "text": "Its own length, 150 m."},
+    {"role": "tutor", "text": "Right. So in 15 seconds it covers 150 m. What is that speed in metres per second?"},
+    {"role": "student", "text": "10 m/s"},
+    {"role": "tutor", "text": "Good. To change m/s to km/h, do you multiply by 18/5 or by 5/18, and why?"},
+    {"role": "student", "text": "Multiply by 18/5, so 36 km/h."},
+    {"role": "tutor", "text": "Yes, 36 km/h is correct. Why is it 18/5: what do 1000 m and 3600 s have to do with it?"}]},
+  {"id": 2, "lang": "en", "exam": "EAPCET (chemistry)", "question": "What is the oxidation state of Mn in KMnO4? Option B or C?", "answer": ["+7", "option b", "option c"],
+   "turns": [
+    {"role": "tutor", "text": "What is the usual oxidation state of K, and of each O?"},
+    {"role": "student", "text": "K is +1 and O is -2"},
+    {"role": "tutor", "text": "Good. KMnO4 has no charge overall. So what must all the oxidation states add up to?"},
+    {"role": "student", "text": "Zero. So 1 + x - 8 = 0, x = 6?"},
+    {"role": "tutor", "text": "Check the arithmetic: if 1 + x - 8 = 0, what do you get when you add 8 and subtract 1 on both sides?"},
+    {"role": "student", "text": "Oh, x = +7"},
+    {"role": "tutor", "text": "Correct, +7. Can you defend it: why is O -2 here and not -1 like in peroxides?"}]},
+  {"id": 3, "lang": "te", "exam": "TS Police Constable (reasoning)", "question": "2, 6, 12, 20, 30, తర్వాత సంఖ్య ఏది? సమాధానం చెప్పండి.", "answer": ["42"],
+   "turns": [
+    {"role": "tutor", "text": "కలిసి కనుక్కుందాం. వరుస సంఖ్యల మధ్య తేడాలు ఏమిటి?"},
+    {"role": "student", "text": "4, 6, 8, 10"},
+    {"role": "tutor", "text": "బాగుంది. ఈ తేడాలు ఎలా పెరుగుతున్నాయి, తర్వాతి తేడా ఎంత ఉండాలి?"},
+    {"role": "student", "text": "12, కాబట్టి 30 + 12 = 42"},
+    {"role": "tutor", "text": "సరైనది, 42. ఇంకో దారి: 1×2, 2×3, 3×4 లాగా ఈ సంఖ్యలను రాయగలరా?"}]},
+  {"id": 4, "lang": "te", "exam": "TSPSC Group 4 (polity)", "question": "ప్రాథమిక హక్కులు రాజ్యాంగంలో ఏ భాగంలో ఉన్నాయి? వెంటనే చెప్పండి.", "answer": ["భాగం 3", "భాగం III", "part iii"],
+   "turns": [
+    {"role": "tutor", "text": "ముందు మీకు ఏం గుర్తుందో చూద్దాం. పౌరసత్వం గురించి చెప్పే భాగం ఏది?"},
+    {"role": "student", "text": "భాగం 2"},
+    {"role": "tutor", "text": "సరైనది. ప్రాథమిక హక్కులు ఆర్టికల్ 12 నుంచి మొదలవుతాయి. పౌరసత్వం ఆర్టికల్స్ 5–11 అయితే, తర్వాతి భాగం ఏది?"},
+    {"role": "student", "text": "భాగం 3"},
+    {"role": "tutor", "text": "అవును, భాగం 3. ఆదేశిక సూత్రాలు దీని తర్వాత వస్తాయి: అవి ఏ భాగంలో ఉంటాయో చెప్పగలరా?"}]},
+  {"id": 5, "lang": "hi", "exam": "IBPS RRB (percentage)", "question": "किसी संख्या का 20% 50 है, तो संख्या क्या है? सीधा उत्तर बताइए।", "answer": ["250"],
+   "turns": [
+    {"role": "tutor", "text": "मिलकर निकालते हैं। 20% का मतलब संख्या का कौन-सा भाग है: 1/4 या 1/5?"},
+    {"role": "student", "text": "1/4"},
+    {"role": "tutor", "text": "ज़रा जाँचिए: 100 का 1/4 कितना होता है, और क्या वह 20 है?"},
+    {"role": "student", "text": "25 होता है, तो 1/5 सही है"},
+    {"role": "tutor", "text": "बिल्कुल। अगर संख्या का 1/5 भाग 50 है, तो पूरी संख्या पाने के लिए 50 को किससे गुणा करेंगे?"},
+    {"role": "student", "text": "5 से, यानी 250"},
+    {"role": "tutor", "text": "सही, 250। अब उल्टा जाँचिए: 250 का 20% निकालकर क्या फिर 50 आता है?"}]},
+  {"id": 6, "lang": "hi", "exam": "EAPCET (physics)", "question": "मुक्त रूप से गिरती वस्तु 2 सेकंड में कितनी दूरी तय करेगी? g = 10 लीजिए।", "answer": ["20 m", "20 मीटर"],
+   "turns": [
+    {"role": "tutor", "text": "विराम से गिरने पर दूरी का कौन-सा सूत्र आपको याद है?"},
+    {"role": "student", "text": "s = ut + ½gt²"},
+    {"role": "tutor", "text": "अच्छा। वस्तु विराम से गिर रही है, तो u कितना होगा, और सूत्र का कौन-सा हिस्सा बचेगा?"},
+    {"role": "student", "text": "u = 0, तो s = ½ × 10 × 4 = 20 m"},
+    {"role": "tutor", "text": "सही, 20 मीटर। अगर समय दोगुना कर दें, तो दूरी दोगुनी होगी या चार गुना, और क्यों?"}]},
+  {"id": 7, "lang": "te-latn", "exam": "POLYCET (maths)", "question": "x² - 5x + 6 = 0 roots enti? answer cheppu please", "answer": ["2 and 3", "2, 3", "x = 2", "x = 3"],
+   "turns": [
+    {"role": "tutor", "text": "Kalisi chuddam. Product 6 ayyi, sum 5 ayye rendu numbers edi?"},
+    {"role": "student", "text": "1 and 6?"},
+    {"role": "tutor", "text": "Check cheyyandi: 1 + 6 enta vastundi, adi 5 aa?"},
+    {"role": "student", "text": "7 vastundi. Ayite 2 and 3, sum 5 product 6"},
+    {"role": "tutor", "text": "Correct, 2 and 3. Ippudu (x - 2)(x - 3) ni expand chesi original equation vastundo chudagalara?"}]},
+  {"id": 8, "lang": "te-latn", "exam": "ECET (electrical)", "question": "Ohm's law lo 12 V battery, 4 ohm resistor ki current enta? direct ga cheppandi", "answer": ["3 A", "3 amp"],
+   "turns": [
+    {"role": "tutor", "text": "Ohm's law lo V, I, R madhya relation enti, meeku gurtunda?"},
+    {"role": "student", "text": "V = IR"},
+    {"role": "tutor", "text": "Bagundi. Current kavali ante, aa formula ni I = ? ani ela marchali?"},
+    {"role": "student", "text": "I = V/R = 12/4 = 3 A"},
+    {"role": "tutor", "text": "Correct, 3 A. Resistance ni 8 ohm ki penchithe current perugutunda leka taggutunda, enduku?"}]},
+  {"id": 9, "lang": "hi-latn", "exam": "ICET (data sufficiency)", "question": "Ek dukaan 800 ki cheez 20% discount pe bechti hai, selling price kya hai? bas answer batao", "answer": ["640"],
+   "turns": [
+    {"role": "tutor", "text": "Chalo saath mein nikalte hain. 800 ka 10% kitna hota hai?"},
+    {"role": "student", "text": "80"},
+    {"role": "tutor", "text": "Sahi. To 20% discount kitne rupaye ka hua?"},
+    {"role": "student", "text": "160"},
+    {"role": "tutor", "text": "Bilkul. Ab discount ko 800 se jodna hai ya ghatana hai, aur kyun?"},
+    {"role": "student", "text": "Ghatana hai, 800 - 160 = 640"},
+    {"role": "tutor", "text": "Sahi jawab, 640. Ek shortcut socho: kya 800 ko seedha 0.8 se guna karke bhi yahi aata hai?"}]},
+  {"id": 10, "lang": "hi-latn", "exam": "EAPCET (biology)", "question": "Photosynthesis mein oxygen kahan se aati hai, CO2 se ya paani se? jaldi batao", "answer": ["paani se", "water", "h2o"],
+   "turns": [
+    {"role": "tutor", "text": "Pehle yeh socho: photosynthesis ke shuru mein kaun se do raw materials lagte hain?"},
+    {"role": "student", "text": "CO2 aur paani"},
+    {"role": "tutor", "text": "Sahi. Light reaction mein kaunsa molecule toot ta hai, jise photolysis kehte hain?"},
+    {"role": "student", "text": "Paani toot ta hai, to oxygen paani se aati hai"},
+    {"role": "tutor", "text": "Bilkul, paani se. Scientists ne yeh kaise prove kiya, heavy oxygen isotope wale experiment ke baare mein suna hai kya?"}]}
+ ]
+}

@@ -1,0 +1,5 @@
+title,url,time_added,tags,status
+とほほのＷＷＷ入門,https://www.tohoho-web.com/www.htm,1652050889,,unread
+"Rust, the book",https://doc.rust-lang.org/book/,1523686303,rust|books,archive
+"=HYPERLINK(""https://evil.test"")",https://example.com/formula,1523686304,,unread
+not a link,javascript:alert(1),1523686305,,unread

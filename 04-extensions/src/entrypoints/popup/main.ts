@@ -1,5 +1,8 @@
 import { FEEDBACK_FORM_URL, formLink } from "../../lib/feedback";
-import { backupReminder } from "../../lib/tools";
+import { prepareImport } from "../../lib/html-import";
+import { restorable } from "../../lib/model";
+import { wireRestore } from "../../lib/restore-ui";
+import { backupReminder, clock } from "../../lib/tools";
 import "./style.css";
 
 type Row = { id: string; name: string; kind: string; createdAt: number; tabs: number; groups: number; windows: number };
@@ -7,7 +10,8 @@ type Row = { id: string; name: string; kind: string; createdAt: number; tabs: nu
 const send = <T = Record<string, unknown>>(msg: object) =>
   (browser.runtime.sendMessage(msg) as Promise<T & { ok: boolean; error?: string }>).catch(() => ({ ok: false, error: "Tab Lifeboat is busy. Try again." }) as T & { ok: boolean; error?: string });
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const plural = (n: number, w: string) => `${n.toLocaleString("en-IN")} ${w}${n === 1 ? "" : "s"}`;
+const n = (x: number) => x.toLocaleString("en-IN");
+const plural = (x: number, w: string) => `${n(x)} ${w}${x === 1 ? "" : "s"}`;
 
 async function refresh() {
   const r = await send<{ sessions: Row[] }>({ type: "list" });
@@ -20,7 +24,8 @@ async function refresh() {
     const name = document.createElement("strong"); name.textContent = s.name;
     const sub = document.createElement("span"); sub.textContent = `${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}`;
     meta.append(name, sub);
-    const open = document.createElement("button"); open.textContent = "Restore"; open.onclick = async () => { const x = await send<{ tabs: number; asleep: number; alreadyOpen: number }>({ type: "restore", id: s.id }); open.textContent = !x.ok ? "Could not open" : !x.tabs && x.alreadyOpen ? "All already open" : `Opened ${plural(x.tabs, "tab")}${x.alreadyOpen ? `, ${x.alreadyOpen} already open` : ""}${x.asleep ? ", they load when clicked" : ""}`; };
+    sub.setAttribute("aria-live", "polite");
+    const open = document.createElement("button"); open.type = "button"; open.setAttribute("aria-label", `Restore ${s.name}`); wireRestore(open, sub, s.id, s.tabs, send);
     const del = document.createElement("button"); del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
     del.onclick = async () => { const r = await send({ type: "delete", id: s.id }); if (r.ok) offerUndo(s.id, s.name); await refresh(); };
     li.append(meta, open, del); ul.append(li);
@@ -37,34 +42,95 @@ $("undo-btn").addEventListener("click", async () => {
   clearTimeout(undoT); const r = await send({ type: "undelete", id: undoId });
   $("undo-msg").textContent = r.ok ? "Put back." : (r.error || "Could not undo."); setTimeout(() => { $("undo").hidden = true; }, 2500); await refresh();
 });
-$("save").addEventListener("click", async () => {
-  const b = $<HTMLButtonElement>("save"); b.disabled = true;
-  const r = await send<{ counts: { tabs: number; groups: number } }>({ type: "save" });
-  b.textContent = r.ok ? `Saved ${plural(r.counts.tabs, "tab")}` : "Could not save"; b.disabled = false;
-  setTimeout(() => (b.textContent = "Save all tabs"), 2000); await refresh();
+// v0.3: optional name, and three scopes. The name is kept if saving fails (e.g. disk full), cleared after a good save.
+const SAVES = [["save", "all"], ["save-window", "window"], ["save-selected", "selected"]] as const;
+for (const [id, scope] of SAVES) $(id).addEventListener("click", async () => {
+  const btns = SAVES.map(([x]) => $<HTMLButtonElement>(x)); for (const x of btns) x.disabled = true;
+  const r = await send<{ counts: { tabs: number; groups: number } }>({ type: "save", scope, name: $<HTMLInputElement>("save-name").value.trim() || undefined });
+  for (const x of btns) x.disabled = false;
+  $("save-msg").textContent = r.ok ? `Saved ${plural(r.counts.tabs, "tab")}${r.counts.groups ? ` in ${plural(r.counts.groups, "group")}` : ""}. Nothing was closed.` : (r.error || "Could not save. Try again.");
+  $("save-msg").classList.toggle("warn", !r.ok);
+  if (r.ok) { $<HTMLInputElement>("save-name").value = ""; await refresh(); }
 });
+$("save-name").addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") $("save").click(); });
 let previewT: ReturnType<typeof setTimeout> | undefined;
 $("importText").addEventListener("input", () => {  // wait for a pause before parsing a big paste (UX pattern 7)
   clearTimeout(previewT); $<HTMLButtonElement>("doImport").disabled = true;
   previewT = setTimeout(async () => {
-    const text = $<HTMLTextAreaElement>("importText").value;
-    const r = text.trim() ? await send<{ tabs: number; groups: number; skipped: number }>({ type: "preview-import", text }) : null;
-    $("preview").textContent = r?.ok ? `${plural(r.tabs, "tab")} in ${plural(r.groups, "group")}${r.skipped ? `, ${r.skipped} skipped` : ""}` : r ? (r.error || "Could not read that text.") : "";
+    const text = prepareImport($<HTMLTextAreaElement>("importText").value);
+    const r = text.trim() ? await send<{ tabs: number; sessions: number; skipped: number }>({ type: "preview-import", text }) : null;
+    $("preview").textContent = r?.ok ? `Found ${plural(r.tabs, "tab")} in ${plural(r.sessions, "session")}${r.skipped ? `. ${plural(r.skipped, "link")} that can't be reopened left out` : ""}.` : r ? (r.error || "Could not read that text.") : "";
     $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
   }, 250);
 });
 $("doImport").addEventListener("click", async () => {
-  const r = await send({ type: "import", text: $<HTMLTextAreaElement>("importText").value });
+  const r = await send({ type: "import", text: prepareImport($<HTMLTextAreaElement>("importText").value) });
   if (!r.ok) { $("preview").textContent = r.error || "Could not import."; return; }  // keep the pasted text so nothing is lost
   $<HTMLTextAreaElement>("importText").value = ""; $<HTMLButtonElement>("doImport").disabled = true; $("preview").textContent = "Imported."; await refresh();
 });
+type BannerInfo = { kind: "restart" | "update" | "chrome-update"; id: string; tabs: number; missing: number; savedAt: number };
+const BANNER_TEXT = { restart: "Chrome restarted.", update: "Tab Lifeboat was updated.", "chrome-update": "Chrome was updated." };
 async function status() {
-  const r = await send<{ lastSnapshot: number | null; lastFileAt: number | null; sessions: number }>({ type: "status" }); if (!r.ok) return;
+  const r = await send<{ lastSnapshot: number | null; lastFileAt: number | null; sessions: number; stale: number | null; banner: BannerInfo | null }>({ type: "status" }); if (!r.ok) return;
+  $("stale").hidden = r.stale == null;
+  if (r.stale != null) $("stale-msg").textContent = `Auto-save hasn't run since ${clock(r.stale)}. Your saved sessions are fine; save now to be safe.`;
+  const b = r.banner; $("banner").hidden = !b;
+  if (b) {
+    wireRestore($<HTMLButtonElement>("banner-restore"), $("banner-msg"), b.id, b.tabs, send, "Restore", () => {
+      $("banner-dismiss").textContent = "Close"; void send({ type: "banner-dismiss" });
+    });
+    $("banner-msg").textContent = `${BANNER_TEXT[b.kind] ?? "Chrome restarted."} Your ${plural(b.tabs, "tab")} from ${clock(b.savedAt)} are safe.`; }
   const nudge = backupReminder({ lastFileAt: r.lastFileAt, sessions: r.sessions });
   $("nudge").hidden = !nudge; $("nudge").textContent = nudge ? `${nudge} Download one in Backups and settings.` : "";
   const mins = r.lastSnapshot ? Math.round((Date.now() - r.lastSnapshot) / 60000) : null;
   $("auto").textContent = mins === null ? "Auto-save every 5 min" : mins < 1 ? "Last snapshot just now" : `Last snapshot ${mins} min ago`;
 }
+$("banner-dismiss").addEventListener("click", async () => { $("banner").hidden = true; await send({ type: "banner-dismiss" }); });
+$("stale-save").addEventListener("click", async () => {
+  const b = $<HTMLButtonElement>("stale-save"); b.disabled = true; b.textContent = "Saving…";
+  const r = await send({ type: "snapshot" });
+  b.disabled = false; b.textContent = "Save now";
+  if (r.ok) { $("stale").hidden = true; void status(); } else $("stale-msg").textContent = `Could not save: ${r.error || "try again"}. Download a backup file in Backups and settings.`;
+});
+// ---- v0.3 Group B: search every saved tab (title + address). "/" focuses, arrows move, Enter opens in a new tab, Esc clears.
+type Hit = { url: string; title: string; sessionName: string; alsoIn: number };
+let hits: Hit[] = []; let pick = -1; let findT: ReturnType<typeof setTimeout> | undefined; let findSeq = 0;
+const find = $<HTMLInputElement>("find"), hitList = $("hits");
+function showHits(text?: string) {
+  hitList.replaceChildren(); hitList.hidden = !find.value.trim(); find.setAttribute("aria-expanded", String(!hitList.hidden));
+  if (text !== undefined) { const li = document.createElement("div"); li.className = "empty off"; li.setAttribute("role", "status"); li.textContent = text; hitList.append(li); return; }
+  hits.forEach((h, i) => {
+    const li = document.createElement("div"); li.id = `hit-${i}`; li.setAttribute("role", "option"); li.setAttribute("aria-selected", String(i === pick));
+    if (!restorable(h.url)) li.classList.add("off");   // javascript:, file: … from an old import: shown, never opened
+    const meta = document.createElement("div"); meta.className = "meta";
+    const b = document.createElement("strong"); b.textContent = h.title || h.url;
+    const sub = document.createElement("span"); sub.textContent = `${h.sessionName}${h.alsoIn ? ` · +${n(h.alsoIn)} older` : ""} · ${h.url}`;
+    meta.append(b, sub); li.append(meta); li.onclick = () => openHit(i); hitList.append(li);
+  });
+  if (pick >= 0) { find.setAttribute("aria-activedescendant", `hit-${pick}`); document.getElementById(`hit-${pick}`)?.scrollIntoView({ block: "nearest" }); }
+  else find.removeAttribute("aria-activedescendant");
+}
+function openHit(i: number) { const h = hits[i]; if (h && restorable(h.url)) void browser.tabs.create({ url: h.url }); }
+find.addEventListener("input", () => {
+  clearTimeout(findT); const q = find.value; const seq = ++findSeq;
+  if (!q.trim()) { hits = []; pick = -1; showHits(); return; }
+  findT = setTimeout(async () => {   // debounced; an older answer arriving late is ignored
+    const r = await send<{ hits: Hit[] }>({ type: "search", text: q.slice(0, 200) });
+    if (seq !== findSeq) return;
+    hits = r.ok ? (r.hits ?? []).slice(0, 50) : []; pick = hits.length ? 0 : -1;
+    showHits(!r.ok ? (r.error || "Search is busy. Try again.") : hits.length ? undefined : "No matches");
+  }, 150);
+});
+find.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!hits.length) return; pick = (pick + (e.key === "ArrowDown" ? 1 : hits.length - 1)) % hits.length; showHits(); }
+  else if (e.key === "Enter" && pick >= 0) { e.preventDefault(); openHit(pick); }
+  else if (e.key === "Escape" && find.value) { e.preventDefault(); find.value = ""; find.dispatchEvent(new Event("input")); }
+});
+document.addEventListener("keydown", (e) => {
+  const t = e.target as HTMLElement;
+  if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) { e.preventDefault(); find.focus(); }
+});
+
 $("more").addEventListener("click", () => void browser.runtime.openOptionsPage());
 // Feedback (27 Nov 2026): opt-in only. The form link stays hidden until Akhil sets it in lib/feedback.ts.
 const form = formLink(FEEDBACK_FORM_URL);

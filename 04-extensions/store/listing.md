@@ -65,6 +65,7 @@ Save and restore the user's browser tabs, windows and tab groups, including auto
 - **alarms**: take an automatic snapshot every few minutes.
 - **storage**: keep settings and snapshot times.
 - **unlimitedStorage**: keep large sessions (thousands of tabs) in IndexedDB without hitting the default quota.
+- **contextMenus**: the right-click menu on the toolbar icon ("Save all tabs", "Save this window", "Save selected tabs"). It reads nothing from pages and shows no install warning.
 - **downloads** (optional, requested only when a Pro user turns on the daily backup file): save one backup file a day to Downloads/Tab Lifeboat on the user's own computer.
 - Remote code: none. All code ships in the package.
 

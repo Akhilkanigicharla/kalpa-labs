@@ -33,37 +33,61 @@
         </ul>
       </section>
 
+      <section class="card" aria-labelledby="h-restore">
+        <h2 id="h-restore">Restoring</h2>
+        <label class="check"><input id="dupes" type="checkbox" /> Open duplicates anyway</label>
+        <p id="dupes-msg" class="hint" role="status" aria-live="polite">Off: Restore skips pages that are already open, so nothing opens twice.</p>
+        <h3 class="sub">Quick save</h3>
+        <p>Right-click the Tab Lifeboat icon to save all tabs, this window, or the tabs you selected. Keyboard shortcut: <b id="shortcut">Alt+Shift+Y</b>.</p>
+        <button id="shortcut-change" type="button" class="ghost">Change the shortcut</button>
+      </section>
+
       <section class="card" aria-labelledby="h-file">
         <h2 id="h-file">Backup file</h2>
         <p>One file with every saved session. Keep it in Drive, email it to yourself, or copy it to a new computer.</p>
-        <p id="backup-age" class="hint" role="status"></p>
+        <p id="backup-age" class="hint" role="status" aria-live="polite"></p>
         <button id="download" type="button" class="primary">Download backup file</button>
-        <p id="download-msg" class="hint" role="status"></p>
-        <p>Or keep a list you can read anywhere: Markdown pastes into Notion, Obsidian or Google Docs; plain text imports into OneTab and most tab savers.</p>
-        <div class="row-btns"><button id="download-md" type="button">Download as Markdown</button> <button id="download-txt" type="button">Download as plain text</button></div>
+        <p id="download-msg" class="hint" role="status" aria-live="polite"></p>
         <label class="file">Restore from a backup file
           <input id="restore-file" type="file" accept="application/json,.json" />
         </label>
-        <p id="restore-preview" class="hint" role="status"></p>
+        <p id="restore-preview" class="hint" role="status" aria-live="polite"></p>
         <button id="restore-go" type="button" hidden>Add these sessions</button>
+        <h3 class="sub">Export as text</h3>
+        <p>Markdown for notes apps (Obsidian, Notion), a plain list of links (OneTab format), or CSV for Excel and Google Sheets.</p>
+        <label class="field" for="exp-which">Which sessions</label>
+        <select id="exp-which"><option value="">All sessions</option></select>
+        <div class="row exp"><button id="exp-md" type="button">Markdown</button><button id="exp-txt" type="button">Link list</button><button id="exp-csv" type="button">CSV</button></div>
+        <p id="exp-msg" class="hint" role="status" aria-live="polite"></p>
       </section>
 
       <section class="card" aria-labelledby="h-import">
-        <h2 id="h-import">Move in from OneTab or Session Buddy</h2>
-        <p>Paste OneTab's "Export URLs" text or a Session Buddy backup (JSON, CSV or title/URL list), or open the file. You see the count before anything is saved.</p>
-        <label class="file">Open a OneTab or Session Buddy file
-          <input id="importFile" type="file" accept=".json,.txt,.csv,application/json,text/plain,text/csv" />
+        <h2 id="h-import">Move in from another tab saver</h2>
+        <p>OneTab, Session Buddy, Toby (JSON), Pocket (CSV or HTML), Edge Collections (CSV, or Favorites exported as HTML) and any browser's bookmarks file. Each bookmarks folder becomes a session. You see the count before anything is saved.</p>
+        <label class="file">Open an export file (up to 20 MB)
+          <input id="importFile" type="file" accept=".json,.txt,.csv,.html,.htm,.zip,application/json,text/plain,text/csv,text/html" />
         </label>
-        <textarea id="importText" rows="4" aria-label="OneTab text or Session Buddy JSON" placeholder="https://example.com | Example"></textarea>
-        <p id="preview" class="hint" role="status"></p>
+        <textarea id="importText" rows="4" aria-label="Paste an export: OneTab text, JSON, CSV or bookmarks HTML" placeholder="https://example.com | Example"></textarea>
+        <p id="preview" class="hint" role="status" aria-live="polite"></p>
         <button id="doImport" type="button" disabled>Import</button>
       </section>
 
       <section class="card" aria-labelledby="h-list">
         <div class="row"><h2 id="h-list">Saved sessions</h2>
           <input id="q" type="search" placeholder="Search names" aria-label="Search saved sessions" /></div>
-        <p id="undo" class="hint undo" role="status" hidden><span id="undo-msg"></span> <button id="undo-btn" type="button">Undo</button></p>
+        <p id="undo" class="hint undo" role="status" aria-live="polite" hidden><span id="undo-msg"></span> <button id="undo-btn" type="button">Undo</button></p>
         <ul id="list" class="sessions" aria-live="polite"><li class="empty">Loading…</li></ul>
+      </section>
+      <section id="edit" class="card" aria-labelledby="h-edit" hidden>
+        <div class="row"><h2 id="h-edit">Edit session</h2><button id="edit-done" type="button" class="ghost">Done</button></div>
+        <label class="field" for="edit-name">Name</label>
+        <div class="row"><input id="edit-name" type="text" maxlength="80" autocomplete="off" /><button id="edit-rename" type="button">Save name</button></div>
+        <label class="field" for="edit-other">Other session (for Move and Merge)</label>
+        <div class="row"><select id="edit-other"></select><button id="edit-merge" type="button">Merge into it</button></div>
+        <p class="hint">Move sends one tab to the other session. Merge adds every tab here to the other session and moves this one to Recently deleted. Each change has Undo.</p>
+        <p id="edit-msg" class="hint" role="status" aria-live="polite"></p>
+        <ul id="edit-tabs" class="sessions tabs" aria-live="polite"></ul>
+        <button id="edit-more" type="button" hidden>Show more tabs</button>
       </section>
       <section class="card" aria-labelledby="h-trash">
         <h2 id="h-trash">Recently deleted</h2>
@@ -90,7 +114,7 @@
         <div id="pro-tools" hidden>
           <section class="drive" aria-labelledby="h-drive">
             <h3 id="h-drive">Google Drive backup</h3>
-            <p id="drive-state" class="hint" role="status">Off. Your tabs are only on this computer.</p>
+            <p id="drive-state" class="hint" role="status" aria-live="polite">Off. Your tabs are only on this computer.</p>
             <div class="row">
               <button id="drive-connect" type="button" class="primary">Connect Google Drive</button>
               <button id="drive-now" type="button" hidden>Back up now</button>
@@ -105,11 +129,11 @@
             <p class="hint">Saved in a hidden Tab Lifeboat folder in your own Google Drive. Only Tab Lifeboat can open it. Kalpa Labs never sees your tabs.</p>
           </section>
           <label class="check"><input id="daily" type="checkbox" /> Save a backup file every day</label>
-          <p id="daily-msg" class="hint" role="status"></p>
-          <p id="clean-preview" class="hint" role="status"></p>
+          <p id="daily-msg" class="hint" role="status" aria-live="polite"></p>
+          <p id="clean-preview" class="hint" role="status" aria-live="polite"></p>
           <div class="row"><button id="clean-dupes" type="button">Close duplicates</button><button id="clean-stale" type="button" class="ghost">Duplicates + unused for a week</button></div>
           <input id="where" type="url" placeholder="Paste a page address" aria-label="Where did this tab go" />
-          <p id="where-msg" class="hint" role="status"></p>
+          <p id="where-msg" class="hint" role="status" aria-live="polite"></p>
         </div>
         <p class="hint">Not on sale yet. Pro will be monthly or a one-time lifetime licence; the price shows here before it opens. Saving, restoring, imports, snapshots and the backup file stay free.</p>
       </section>

@@ -17,11 +17,11 @@ describe("Session Buddy samples (A213)", () => {
     expect(tabsOf(p)[0]!.favIconUrl).toBe("https://en.wikipedia.org/static/favicon/wikipedia.ico");
   });
 
-  it("v3 JSON backup: `name` wins over `title`, chrome:// kept in the archive but never reopened", () => {
+  it("v3 JSON backup: `name` wins over `title`; chrome:// left out at import (hardening rule 2) and counted", () => {
     const p = detectAndParse(sample("sessionbuddy-v3-object.json"));
-    expect([p.format, p.tabs, p.session.windows.length]).toEqual(["sessionbuddy-v3", 3, 2]);
+    expect([p.format, p.tabs, p.skipped]).toEqual(["sessionbuddy-v3", 2, 1]);
     expect(groupTitles(p)).toEqual(["Mail"]);
-    expect(tabsOf(p).filter((t) => !restorable(t.url)).map((t) => t.url)).toEqual(["chrome://settings/"]);
+    expect(tabsOf(p).filter((t) => !restorable(t.url))).toEqual([]);
   });
 
   it("CSV export: quoted commas, one window per folder, header order free", () => {

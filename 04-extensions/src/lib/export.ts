@@ -1,45 +1,59 @@
-// A356 #7: plain-text and Markdown export, so people own their tabs outside the extension (pain #6, F10).
-// Plain text uses OneTab's "url | title" lines, so it imports back into Tab Lifeboat, OneTab and most tab savers.
+// v0.3 exports: Markdown, plain URL list (OneTab-style, re-imports), CSV. Escaping per hardening rule 5.
 import { restorable, type Session } from "./model";
 
-const oneLine = (s: string) => s.replace(/[\r\n]+/g, " ").trim();
-/** Markdown-escape link text and headings; < > become entities so a title can't smuggle HTML into a notes app. */
-const mdText = (s: string) => oneLine(s).replace(/[\\`*_[\]#]/g, "\\$&").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-/** Percent-encode what would end or break a Markdown link target. */
-const mdUrl = (u: string) => u.replace(/[ ()<>]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
+const line = (s: string) => s.replace(/[\r\n\t\u2028\u2029]+/g, " ").trim();
 
-const day = (at: number) => new Date(at).toISOString().slice(0, 10);
+/** Markdown text: backslash before every character Markdown or HTML could act on. */
+export const mdText = (s: string) => line(s).replace(/[\\[\]()*_`<>#!|~]/g, (c) => `\\${c}`);
+/** Markdown link target in <…>: only http(s); <, > and spaces percent-encoded so the link can't break out. */
+export const mdUrl = (u: string) => `<${u.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/ /g, "%20")}>`;
 
 export function toMarkdown(sessions: Session[]): string {
   const out: string[] = [];
   for (const s of sessions) {
-    const wins = s.windows.map((w) => ({ ...w, tabs: w.tabs.filter((t) => restorable(t.url)) })).filter((w) => w.tabs.length);
-    if (!wins.length) continue;
-    out.push(`## ${mdText(s.name)} (${day(s.createdAt)})`, "");
-    wins.forEach((w, i) => {
-      if (wins.length > 1) out.push(`### Window ${i + 1}`, "");
+    out.push(`## ${mdText(s.name)}`, "");
+    const cant: string[] = [];
+    for (const w of s.windows) {
       let group: string | null | undefined;
       for (const t of w.tabs) {
-        if ((t.groupKey ?? null) !== (group ?? null)) {
+        if (!restorable(t.url)) { cant.push(`- ${mdText(t.url)}`); continue; }
+        if ((t.groupKey ?? null) !== group) {
           group = t.groupKey ?? null;
           const g = w.groups.find((x) => x.key === group);
-          if (g) out.push("", `**${mdText(g.title || "Group")}**`, "");
+          if (g) out.push(`### ${mdText(g.title || "Tab group")}`, "");
         }
-        out.push(`- [${mdText(t.title || t.url)}](${mdUrl(t.url)})`);
+        out.push(`- [${mdText(t.title || t.url) || "link"}](${mdUrl(t.url)})`);
       }
-      out.push("");
-    });
+    }
+    if (cant.length) out.push("", "Can't reopen:", ...cant);
+    out.push("");
   }
-  return out.length ? `# Tab Lifeboat export\n\n${out.join("\n").replace(/\n{3,}/g, "\n\n")}` : "# Tab Lifeboat export\n\nNo saved tabs yet.\n";
+  return out.join("\n");
 }
 
-export function toPlain(sessions: Session[]): string {
-  const blocks: string[] = [];
-  for (const s of sessions) for (const w of s.windows) {
-    const lines = w.tabs.filter((t) => restorable(t.url)).map((t) => `${t.url} | ${oneLine(t.title || t.url)}`);
-    if (lines.length) blocks.push(lines.join("\n"));
-  }
-  return blocks.length ? `${blocks.join("\n\n")}\n` : "";
+/** "url | title" per line, a blank line between sessions: the OneTab format, so it imports back into Tab Lifeboat or OneTab. */
+export function toUrlList(sessions: Session[]): string {
+  const body = sessions.map((s) => s.windows.flatMap((w) => w.tabs).map((t) => { const ti = line(t.title); return ti && ti !== t.url ? `${line(t.url)} | ${ti}` : line(t.url); }).join("\n")).join("\n\n");
+  return `${body}\n`;
 }
 
-export const textFileName = (ext: "md" | "txt", now = Date.now()) => `tab-lifeboat-${day(now)}.${ext}`;
+/** CSV cell: always quoted, quotes doubled, and a ' in front of anything a spreadsheet would run as a formula. */
+export function csvCell(v: string): string {
+  const s = /^[=+\-@\t\r\uFF1D\uFF0B\uFF0D\uFF20]/.test(v) ? `'${v}` : v;
+  return `"${s.replace(/"/g, '""')}"`;
+}
+
+/** UTF-8 BOM (Excel then shows Telugu and Hindi correctly), CRLF line ends, header row. */
+export function toCsv(sessions: Session[]): string {
+  const rows = [["Session", "Group", "Title", "URL", "Saved"]];
+  for (const s of sessions) for (const w of s.windows) for (const t of w.tabs)
+    rows.push([s.name, w.groups.find((g) => g.key === t.groupKey)?.title ?? "", t.title, t.url, new Date(s.createdAt).toISOString()]);
+  return `\uFEFF${rows.map((r) => r.map(csvCell).join(",")).join("\r\n")}\r\n`;
+}
+
+/** tab-lifeboat-2026-11-28-Work-stuff.md: local date, only [A-Za-z0-9._-], at most 100 characters. */
+export function exportName(what: string, ext: string, now = new Date()): string {
+  const d = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const base = `tab-lifeboat-${d}-${what}`.replace(/[^\w.-]+/g, "-").replace(/-+/g, "-").replace(/-$/, "").slice(0, 100 - ext.length - 1);
+  return `${base}.${ext}`;
+}

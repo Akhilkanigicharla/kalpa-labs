@@ -43,3 +43,32 @@ textarea { width: 100%; margin-top: 8px; border-radius: 12px; border: 1px solid 
 #rate { color: var(--fg); border: 1px solid var(--gold); border-radius: 12px; padding: 8px 12px; }
 #rate .row { display: flex; gap: 8px; margin-top: 8px; }
 #rate button { min-height: 44px; }
+
+/* v0.3 Group A: restart/update banner and stale-snapshot warning */
+.card-note { margin: 12px 0 0; color: var(--fg); background: var(--panel); border: 1px solid var(--gold); border-radius: 12px; padding: 8px 12px; }
+.card-note p { margin: 0; }
+.card-note[hidden] { display: none; }
+.card-note.bad { border-color: var(--bad); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.solid { background: var(--accent); color: var(--accent-fg); border: 0; }
+
+/* v0.3 Group B: search every saved tab */
+.search { margin-top: 12px; }
+#find { width: 100%; min-height: 44px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); padding: 0 16px; font: 14px var(--f-body); }
+#find:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.search { display: block; }
+.hits { display: grid; margin-top: 8px; max-height: 300px; overflow: auto; gap: 4px; }
+.hits[hidden] { display: none; }
+.hits > div { display: flex; align-items: center; min-height: 44px; padding: 6px 12px; cursor: pointer; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; }
+.hits > div[aria-selected="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.hits > .off { cursor: default; }
+.hits > .empty { color: var(--muted); justify-content: center; }
+.hits .meta span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* v0.3 Group C: name + save this window / selected tabs */
+#save-name { width: 100%; min-height: 44px; margin-top: 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); padding: 0 16px; font: 14px var(--f-body); }
+#save-name:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+#save-name + .primary { margin-top: 8px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+#save-window, #save-selected { padding: 0 8px; }
+

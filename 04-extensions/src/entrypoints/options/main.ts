@@ -1,7 +1,9 @@
 import "../popup/style.css";
 import "./options.css";
 import { stamp } from "../../lib/capture";
-import { restorable } from "../../lib/model";
+import { prepareImport } from "../../lib/html-import";
+import { CAPS, restorable } from "../../lib/model";
+import { wireRestore } from "../../lib/restore-ui";
 import { backupReminder, daysAgo } from "../../lib/tools";
 
 type Row = { id: string; name: string; kind: string; createdAt: number; tabs: number; groups: number; windows: number };
@@ -28,10 +30,10 @@ function draw() {
     const name = document.createElement("strong"); name.textContent = s.name;
     const sub = document.createElement("span"); sub.textContent = `${when(s.createdAt)} · ${plural(s.tabs, "tab")}${s.groups ? ` · ${plural(s.groups, "group")}` : ""}${s.kind === "auto" ? " · auto" : s.kind === "import" ? " · imported" : ""}`;
     meta.append(name, sub);
-    const open = document.createElement("button"); open.type = "button"; open.textContent = "Restore"; open.setAttribute("aria-label", `Restore ${s.name}`);
-    open.onclick = async () => { const r = await send<{ tabs: number; asleep: number }>({ type: "restore", id: s.id }); open.textContent = r.ok ? `Opened ${plural(r.tabs, "tab")}${r.asleep ? ", they load when clicked" : ""}` : "Could not open"; };
-    const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Rename"; ren.setAttribute("aria-label", `Rename ${s.name}`);
-    ren.onclick = async () => { const v = prompt("New name for this session", s.name); if (v && v.trim() && v.trim() !== s.name) { await send({ type: "rename", id: s.id, name: v }); await refresh(); } };
+    sub.setAttribute("aria-live", "polite");
+    const open = document.createElement("button"); open.type = "button"; open.setAttribute("aria-label", `Restore ${s.name}`); wireRestore(open, sub, s.id, s.tabs, send);
+    const ren = document.createElement("button"); ren.type = "button"; ren.className = "ghost"; ren.textContent = "Edit"; ren.setAttribute("aria-label", `Edit ${s.name}`);
+    ren.onclick = () => void openEditor(s.id);
     const del = document.createElement("button"); del.type = "button"; del.className = "ghost"; del.textContent = "Delete"; del.setAttribute("aria-label", `Delete ${s.name}`);
     del.onclick = async () => { const r = await send({ type: "delete", id: s.id }); if (r.ok) offerUndo(s.id, s.name); await refresh(); };
     li.append(meta, open, ren, del); ul.append(li);
@@ -59,14 +61,75 @@ async function drawTrash() {
   }
 }
 // A231: Delete needs no confirm; it moves the session to Recently deleted and offers Undo for 10 s.
-let undoT: ReturnType<typeof setTimeout> | undefined; let undoId = "";
-function offerUndo(id: string, name: string) {
-  undoId = id; $("undo-msg").textContent = `Deleted "${name.length > 40 ? `${name.slice(0, 40)}…` : name}".`; $("undo").hidden = false;
-  clearTimeout(undoT); undoT = setTimeout(() => { $("undo").hidden = true; }, 10_000);
+// v0.3: edits (rename, remove, move, merge) use the same bar for 8 s.
+let undoT: ReturnType<typeof setTimeout> | undefined; let undoMsg: object = {};
+const short = (t: string, max = 40) => (t.length > max ? `${t.slice(0, max)}…` : t);
+function showUndo(text: string, msg: object, ms: number) {
+  undoMsg = msg; $("undo-msg").textContent = text; $("undo").hidden = false;
+  clearTimeout(undoT); undoT = setTimeout(() => { $("undo").hidden = true; }, ms);
 }
+const offerUndo = (id: string, name: string) => showUndo(`Deleted "${short(name)}".`, { type: "undelete", id }, 10_000);
 $("undo-btn").addEventListener("click", async () => {
-  clearTimeout(undoT); const r = await send({ type: "undelete", id: undoId });
-  $("undo-msg").textContent = r.ok ? "Put back." : (r.error || "Could not undo."); setTimeout(() => { $("undo").hidden = true; }, 2500); await refresh();
+  clearTimeout(undoT); const r = await send(undoMsg);
+  $("undo-msg").textContent = r.ok ? ((undoMsg as { type: string }).type === "undelete" ? "Put back." : "Undone.") : (r.error || "Could not undo."); setTimeout(() => { $("undo").hidden = true; }, 2500);
+  await refresh(); if (editing) void openEditor(editing);
+});
+
+// ---- v0.3 Group B: edit one saved session. Every change goes through the background in one transaction, with Undo.
+type Tab = { url: string; title: string };
+type Full = { id: string; name: string; windows: { tabs: Tab[] }[] };
+let editing = "", shown = 200;
+async function openEditor(id: string, keepScroll = false) {
+  const r = await send<{ session: Full; others: Row[] }>({ type: "session-get", id });
+  if (!r.ok) { closeEditor(); $("undo-msg").textContent = err(r.error); return; }
+  if (editing !== id) shown = 200;
+  editing = id; const s = r.session; $("edit").hidden = false;
+  $("h-edit").textContent = `Edit: ${short(s.name, 60)}`;
+  $<HTMLInputElement>("edit-name").value = s.name;
+  const sel = $<HTMLSelectElement>("edit-other"); const was = sel.value;
+  sel.replaceChildren(...r.others.map((o) => { const op = document.createElement("option"); op.value = o.id; op.textContent = `${short(o.name, 50)} (${plural(o.tabs, "tab")})`; return op; }));
+  if (r.others.some((o) => o.id === was)) sel.value = was;
+  const none = !r.others.length; $<HTMLButtonElement>("edit-merge").disabled = none; sel.disabled = none;
+  if (none) { const op = document.createElement("option"); op.textContent = "No other session yet"; sel.append(op); }
+  const ul = $("edit-tabs"); ul.replaceChildren();
+  const all = s.windows.flatMap((w, wi) => w.tabs.map((t, ti) => ({ t, wi, ti })));
+  for (const { t, wi, ti } of all.slice(0, shown)) {
+    const li = document.createElement("li"); const meta = document.createElement("div"); meta.className = "meta";
+    const b = document.createElement("strong"); b.textContent = t.title || t.url;
+    const u = document.createElement("span"); u.textContent = short(t.url, 120); meta.append(b, u);
+    const mv = document.createElement("button"); mv.type = "button"; mv.textContent = "Move"; mv.disabled = none; mv.setAttribute("aria-label", `Move ${short(t.title || t.url)} to the other session`);
+    mv.onclick = () => void change({ type: "edit-move-tab", id, wi, ti, url: t.url, to: sel.value }, `Moved "${short(t.title || t.url)}".`);
+    const rm = document.createElement("button"); rm.type = "button"; rm.className = "ghost"; rm.textContent = "Remove"; rm.setAttribute("aria-label", `Remove ${short(t.title || t.url)}`);
+    rm.onclick = () => void change({ type: "edit-remove-tab", id, wi, ti, url: t.url }, `Removed "${short(t.title || t.url)}".`);
+    li.append(meta, mv, rm); ul.append(li);
+  }
+  $("edit-more").hidden = all.length <= shown;
+  $("edit-more").textContent = `Show more tabs (${n(all.length - shown)} more)`;
+  if (!keepScroll) $("edit").scrollIntoView({ block: "start" });
+}
+function closeEditor() { editing = ""; $("edit").hidden = true; }
+/** One edit: buttons can't double-fire (all disabled while it runs), then Undo for 8 s. */
+async function change(msg: object, done: string) {
+  const btns = [...$("edit").querySelectorAll("button")]; for (const b of btns) b.disabled = true;
+  const r = await send<{ trashed: boolean }>(msg);
+  for (const b of btns) b.disabled = false;
+  if (!r.ok) { $("edit-msg").textContent = err(r.error); await refresh(); if (editing) await openEditor(editing, true); return; }
+  $("edit-msg").textContent = "";
+  showUndo(r.trashed ? `${done} The emptied session went to Recently deleted.` : done, { type: "edit-undo" }, 8_000);
+  await refresh();
+  if (r.trashed) closeEditor(); else await openEditor(editing, true);
+}
+$("edit-done").addEventListener("click", closeEditor);
+$("edit-more").addEventListener("click", () => { shown += 200; void openEditor(editing, true); });
+$("edit-rename").addEventListener("click", () => {
+  const v = $<HTMLInputElement>("edit-name").value.trim();
+  if (!v) { $("edit-msg").textContent = "A name can't be empty."; return; }
+  void change({ type: "rename", id: editing, name: v }, `Renamed to "${short(v)}".`);
+});
+$("edit-name").addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") $("edit-rename").click(); });
+$("edit-merge").addEventListener("click", () => {
+  const to = $<HTMLSelectElement>("edit-other"); const name = to.selectedOptions[0]?.textContent ?? "the other session";
+  void change({ type: "edit-merge", id: editing, to: to.value }, `Merged into ${short(name, 60)}.`);
 });
 
 async function refresh() {
@@ -90,10 +153,32 @@ async function refresh() {
   }
   $("every").textContent = String(st.every ?? 5);
   if (st.limits) { $("free-n").textContent = String(st.limits.freeAutoSnapshots); $("pro-d").textContent = String(st.limits.proAutoDays); }
+  const ex = $<HTMLSelectElement>("exp-which"); const keep = ex.value; const all = document.createElement("option"); all.value = ""; all.textContent = "All sessions";
+  ex.replaceChildren(all, ...rows.map((r) => { const o = document.createElement("option"); o.value = r.id; o.textContent = `${r.name.length > 50 ? `${r.name.slice(0, 50)}…` : r.name} (${plural(r.tabs, "tab")})`; return o; }));
+  if (rows.some((r) => r.id === keep)) ex.value = keep;
   draw(); await drawTrash();
 }
 
 $("q").addEventListener("input", draw);
+// v0.3: exports are built by the background and downloaded here as a Blob (never a data: URL)
+for (const [id, kind] of [["exp-md", "md"], ["exp-txt", "txt"], ["exp-csv", "csv"]] as const) $(id).addEventListener("click", async () => {
+  const b = $<HTMLButtonElement>(id); b.disabled = true;
+  const r = await send<{ text: string; mime: string; fileName: string }>({ type: "export-text", name: kind, id: $<HTMLSelectElement>("exp-which").value || undefined });
+  b.disabled = false;
+  if (!r.ok) { $("exp-msg").textContent = err(r.error); return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([r.text], { type: `${r.mime};charset=utf-8` })); a.download = r.fileName; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+  $("exp-msg").textContent = `Saved ${r.fileName} to your Downloads folder.`;
+});
+void browser.commands?.getAll().then((c) => { const k = c.find((x) => x.name === "save-all")?.shortcut; $("shortcut").textContent = k || "not set"; }).catch(() => {});
+$("shortcut-change").addEventListener("click", () => void browser.tabs.create({ url: "chrome://extensions/shortcuts" }));
+const dupesText = (on: boolean) => (on ? "On: Restore opens every saved page, even ones already open." : "Off: Restore skips pages that are already open, so nothing opens twice.");
+void browser.storage.local.get("openDupes").then(({ openDupes }) => { $<HTMLInputElement>("dupes").checked = openDupes === true; $("dupes-msg").textContent = dupesText(openDupes === true); }).catch(() => {});
+$("dupes").addEventListener("change", async () => {
+  const on = $<HTMLInputElement>("dupes").checked;
+  try { await browser.storage.local.set({ openDupes: on }); $("dupes-msg").textContent = dupesText(on); }
+  catch { $<HTMLInputElement>("dupes").checked = !on; $("dupes-msg").textContent = "Could not save the setting. Try again."; }
+});
 $("download").addEventListener("click", async () => {
   const r = await send<{ fileName: string; json: string }>({ type: "export" });
   if (!r.ok) { $("download-msg").textContent = err(r.error); return; }
@@ -102,15 +187,6 @@ $("download").addEventListener("click", async () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
   $("download-msg").textContent = `Saved ${r.fileName} to your Downloads folder.`;
   $("backup-age").textContent = "Last backup file: today."; $("backup-age").classList.remove("warn");
-});
-
-for (const kind of ["md", "txt"] as const) $(`download-${kind}`).addEventListener("click", async () => {
-  const r = await send<{ fileName: string; text: string }>({ type: "export-text", name: kind });
-  if (!r.ok) { $("download-msg").textContent = err(r.error); return; }
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([r.text], { type: kind === "md" ? "text/markdown" : "text/plain" })); a.download = r.fileName; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
-  $("download-msg").textContent = `Saved ${r.fileName} to your Downloads folder.`;
 });
 
 let pending = "";
@@ -135,24 +211,29 @@ let previewT: ReturnType<typeof setTimeout> | undefined;
 $("importText").addEventListener("input", () => {  // wait for a pause before parsing a big paste (UX pattern 7)
   clearTimeout(previewT); $<HTMLButtonElement>("doImport").disabled = true;
   previewT = setTimeout(async () => {
-    const text = $<HTMLTextAreaElement>("importText").value;
-    const r = text.trim() ? await send<{ tabs: number; groups: number; skipped: number }>({ type: "preview-import", text }) : null;
-    $("preview").textContent = r?.ok ? `${plural(r.tabs, "tab")} in ${plural(r.groups, "group")}${r.skipped ? `, ${n(r.skipped)} skipped` : ""}` : r ? err(r.error) : "";
+    let text = $<HTMLTextAreaElement>("importText").value;
+    try { text = prepareImport(text); } catch { $("preview").textContent = "This file couldn't be read. Nothing was changed."; return; }
+    const r = text.trim() ? await send<{ tabs: number; sessions: number; skipped: number }>({ type: "preview-import", text }) : null;
+    $("preview").textContent = r?.ok ? `Found ${plural(r.tabs, "tab")} in ${plural(r.sessions, "session")}${r.skipped ? `. ${plural(r.skipped, "link")} that can't be reopened (not web pages) left out` : ""}.` : r ? err(r.error) : "";
     $<HTMLButtonElement>("doImport").disabled = !r?.ok || !r.tabs;
+    $("doImport").textContent = r?.ok && r.tabs ? `Import ${plural(r.tabs, "tab")}` : "Import";
   }, 250);
 });
 $("importFile").addEventListener("change", async () => {
   const input = $<HTMLInputElement>("importFile"); const f = input.files?.[0];
   if (!f) return;
-  if (f.size > 5 * 1024 * 1024) { $("preview").textContent = "That file is over 5 MB, too big to be a OneTab or Session Buddy export."; input.value = ""; return; }
+  if (/\.zip$/i.test(f.name)) { $("preview").textContent = "Unzip it first, then choose the .csv or .html inside."; input.value = ""; return; }
+  if (f.size > CAPS.fileBytes) { $("preview").textContent = "That file is over 20 MB, too big to import. Split it into smaller files."; input.value = ""; return; }
   const box = $<HTMLTextAreaElement>("importText");
   box.value = await f.text(); input.value = "";
   box.dispatchEvent(new Event("input"));
 });
 $("doImport").addEventListener("click", async () => {
-  const r = await send<{ nudge: string | null }>({ type: "import", text: $<HTMLTextAreaElement>("importText").value });
+  let text = ""; try { text = prepareImport($<HTMLTextAreaElement>("importText").value); } catch { $("preview").textContent = "This file couldn't be read. Nothing was changed."; return; }
+  const r = await send<{ nudge: string | null }>({ type: "import", text });
+  if (!r.ok) { $("preview").textContent = err(r.error); return; }   // keep the pasted text so nothing is lost
   $<HTMLTextAreaElement>("importText").value = ""; $<HTMLButtonElement>("doImport").disabled = true;
-  $("preview").textContent = r.ok ? `Imported.${r.nudge ? " " + r.nudge : ""}` : err(r.error); await refresh();
+  $("preview").textContent = `Imported.${r.nudge ? ` ${r.nudge}` : ""}`; $("doImport").textContent = "Import"; await refresh();
 });
 
 let findT: ReturnType<typeof setTimeout> | undefined;

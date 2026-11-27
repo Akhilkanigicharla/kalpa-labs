@@ -10,18 +10,29 @@
     <div class="temple" aria-hidden="true"></div>
     <main>
       <header><h1>Tab Lifeboat</h1><span id="auto" class="eyebrow">Auto-save every 5 min</span></header>
+      <section id="banner" class="card-note" role="status" aria-live="polite" hidden><p id="banner-msg"></p>
+        <span class="actions"><button id="banner-restore" type="button" class="solid">Restore</button><button id="banner-dismiss" type="button" class="ghost">Dismiss</button></span></section>
+      <p id="stale" class="card-note bad" role="alert" aria-live="assertive" hidden><span id="stale-msg"></span>
+        <span class="actions"><button id="stale-save" type="button">Save now</button></span></p>
+      <search class="search">
+        <input id="find" type="search" placeholder="Search saved tabs  ( / )" aria-label="Search every saved tab" autocomplete="off"
+          role="combobox" aria-expanded="false" aria-controls="hits" aria-autocomplete="list" />
+        <div id="hits" class="hits" role="listbox" aria-label="Saved tabs found" hidden></div>
+      </search>
+      <input id="save-name" type="text" maxlength="200" autocomplete="off" placeholder="Name (optional)" aria-label="Name for this save (optional)" />
       <button id="save" type="button" class="primary">Save all tabs</button>
-      <p class="hint">Saving never closes your tabs.</p>
+      <div class="split"><button id="save-window" type="button">Save this window</button><button id="save-selected" type="button">Save selected tabs</button></div>
+      <p id="save-msg" class="hint" role="status" aria-live="polite">Saving never closes your tabs.</p>
       <h2>Saved</h2>
-      <p id="undo" class="hint undo" role="status" hidden><span id="undo-msg"></span> <button id="undo-btn" type="button">Undo</button></p>
+      <p id="undo" class="hint undo" role="status" aria-live="polite" hidden><span id="undo-msg"></span> <button id="undo-btn" type="button">Undo</button></p>
       <ul id="list" aria-live="polite" aria-busy="true"><li class="empty">Loading…</li></ul>
-      <details id="importBox"><summary>Import from OneTab or Session Buddy</summary>
-        <textarea id="importText" rows="4" placeholder="Paste OneTab's export text or Session Buddy JSON"></textarea>
-        <p id="preview" class="hint"></p>
+      <details id="importBox"><summary>Import (OneTab, Session Buddy, Toby, Pocket…)</summary>
+        <textarea id="importText" rows="4" placeholder="Paste OneTab text, Session Buddy or Toby JSON, a CSV or bookmarks HTML"></textarea>
+        <p id="preview" class="hint" role="status" aria-live="polite"></p>
         <button id="doImport" type="button" disabled>Import</button>
       </details>
-      <p id="nudge" class="hint" role="status" hidden></p>
-      <p id="rate" class="hint rate" role="status" hidden>Has Tab Lifeboat saved your tabs? A quick rating helps other people find it.
+      <p id="nudge" class="hint" role="status" aria-live="polite" hidden></p>
+      <p id="rate" class="hint rate" role="status" aria-live="polite" hidden>Has Tab Lifeboat saved your tabs? A quick rating helps other people find it.
         <span class="row"><button id="rate-yes" type="button">Rate Tab Lifeboat</button><button id="rate-no" type="button" class="ghost">Not now</button></span></p>
       <button id="more" type="button" class="link">Backups and settings →</button>
       <button id="feedback" type="button" class="link" hidden>Tell us what you need →</button>

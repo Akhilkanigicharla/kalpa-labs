@@ -1,5 +1,5 @@
 // Tab Lifeboat tools: search every saved tab (Free), cleanup + timeline + daily backup (Pro). Pure functions, tested.
-import type { Session } from "./model";
+import { restorable, type Session, sameKey } from "./model";
 
 const TRACKING = /^(utm_\w+|fbclid|gclid|mc_eid|mc_cid|igshid|ref_src)$/i;
 
@@ -100,4 +100,36 @@ export function backupReminder(o: { lastFileAt: number | null; sessions: number;
 export function daysAgo(at: number, now = Date.now()): string {
   const d = Math.floor((now - at) / 86_400_000);
   return d <= 0 ? "today" : d === 1 ? "yesterday" : `${d.toLocaleString("en-US")} days ago`;
+}
+
+// ---- v0.3 Group A: safety
+
+/** "21:10" today, "26 Nov 21:10" on another day: for the stale-snapshot warning and the restart banner. */
+export function clock(at: number, now = Date.now()): string {
+  const d = new Date(at), t = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return d.toDateString() === new Date(now).toDateString() ? t : `${d.getDate()} ${d.toLocaleString("en-GB", { month: "short" })} ${t}`;
+}
+
+/** Auto-save is stale when it has not run for 3 intervals while the browser has been running (time the browser was
+ *  closed doesn't count: the clock starts again at bootAt). Returns the time it last ran (or bootAt), or null when fine. */
+export function staleSince(o: { lastRun: number | null; bootAt: number; now: number; everyMin: number }): number | null {
+  const ref = Math.max(o.lastRun ?? 0, o.bootAt);
+  return o.now - ref > 3 * o.everyMin * 60_000 ? (o.lastRun ?? o.bootAt) : null;
+}
+
+export type BannerKind = "restart" | "update" | "chrome-update";
+export interface Banner { kind: BannerKind; at: number; id: string }
+export const BANNER_DAYS = 3;
+
+/** The session the "your tabs are safe" banner points at: the newest automatic snapshot taken before the restart
+ *  (else the newest session of any kind). null when there is nothing worth restoring. */
+export function bannerSession(sessions: Session[], at: number): Session | null {
+  const before = sessions.filter((s) => s.createdAt <= at && s.windows.some((w) => w.tabs.length)).sort((a, b) => b.createdAt - a.createdAt);
+  return before.find((s) => s.kind === "auto") ?? before[0] ?? null;
+}
+
+/** Tabs of a session that are not open right now (exact address, trailing slash ignored). */
+export function missingTabs(s: Session, openUrls: Iterable<string>): number {
+  const open = new Set([...openUrls].map(sameKey));
+  return s.windows.reduce((n, w) => n + w.tabs.filter((t) => restorable(t.url) && !open.has(sameKey(t.url))).length, 0);
 }

@@ -1,17 +1,18 @@
 // Capture and restore through the browser APIs (chrome.tabs / chrome.tabGroups / chrome.windows).
-import { type GroupColor, type SavedWindow, type Session, newId, restorable } from "./model";
-import { normUrl } from "./tools";
+import { CAPS, clip, type GroupColor, type SavedWindow, type Session, newId, restorable, sameKey } from "./model";
 
 import type { browser } from "wxt/browser";
 
 export type Br = typeof browser;
 
-export async function captureAll(br: Br, kind: Session["kind"] = "manual", name?: string): Promise<Session> {
+/** v0.3: `only` limits the capture to one window, and `selected` to its highlighted tabs (Ctrl/Shift-click in the tab strip). */
+export async function captureAll(br: Br, kind: Session["kind"] = "manual", name?: string, only?: { windowId: number; selected?: boolean }): Promise<Session> {
   const wins = await br.windows.getAll({ populate: true, windowTypes: ["normal"] });
   const windows: SavedWindow[] = [];
   for (const w of wins) {
     if (w.incognito) continue; // never store private browsing
-    const wt = w.tabs ?? [];
+    if (only && w.id !== only.windowId) continue;
+    const wt = (w.tabs ?? []).filter((t) => !only?.selected || t.highlighted);
     const groupIds = [...new Set(wt.map((t) => t.groupId).filter((g): g is number => g !== undefined && g >= 0))];
     const groups = br.tabGroups ? await Promise.all(groupIds.map((id) => br.tabGroups.get(id))) : [];
     windows.push({
@@ -21,22 +22,26 @@ export async function captureAll(br: Br, kind: Session["kind"] = "manual", name?
     });
   }
   const d = new Date();
-  return { id: newId(), kind, createdAt: d.getTime(), windows, name: name ?? `${kind === "auto" ? "Auto snapshot" : "Saved"} ${stamp(d)}` };
+  return { id: newId(), kind, createdAt: d.getTime(), windows, name: clip(name, CAPS.name) || `${kind === "auto" ? "Auto snapshot" : "Saved"} ${stamp(d)}` };
 }
 
 /** Reopens every window of a session with pinned tabs and tab groups (title, colour, collapsed). Never closes anything.
  *  Big sessions (more than LAZY_AT tabs) open "asleep": at most LOADING tabs load at once, and each one is put to sleep
  *  (chrome.tabs.discard) after it finishes loading, so it keeps its address and title but frees memory until clicked.
  *  Reopening hundreds of tabs at once freezes or crashes the browser (a common complaint in tab-saver reviews).
- *  Tested in real Chrome: discarding a tab that is still loading crashed the browser, and discarding gives the tab a new id.
- *  A356 #2: tabs whose page is already open (same normalised URL, see openUrls) are not opened again (pain #9). */
-export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeMajor() >= SLEEP_FROM, open: ReadonlySet<string> = new Set()): Promise<{ windows: number; tabs: number; skipped: number; asleep: number; alreadyOpen: number }> {
+ *  Tested in real Chrome: discarding a tab that is still loading crashed the browser, and discarding gives the tab a new id. */
+export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeMajor() >= SLEEP_FROM, openUrls?: Iterable<string>, onlyOpen = false): Promise<{ windows: number; tabs: number; skipped: number; asleep: number; alreadyOpen: number }> {
   let tabs = 0, skipped = 0, asleep = 0, alreadyOpen = 0;
-  const isOpen = (u: string) => open.size > 0 && open.has(normUrl(u));
-  const lazy = s.windows.reduce((n, w) => n + w.tabs.filter((t) => restorable(t.url) && !isOpen(t.url)).length, 0) > LAZY_AT;
-  for (const w of s.windows) {
-    const web = w.tabs.filter((t) => restorable(t.url)); skipped += w.tabs.length - web.length;
-    const ok = web.filter((t) => !isOpen(t.url)); alreadyOpen += web.length - ok.length;
+  // v0.3: pages already open (exact address, only a trailing slash ignored) are not opened twice
+  const open = new Set([...(openUrls ?? [])].map(sameKey));
+  const wanted = s.windows.map((w) => {
+    const ok = w.tabs.filter((t) => restorable(t.url)); skipped += w.tabs.length - ok.length;
+    // onlyOpen ("Open them anyway"): the reverse, only pages that are open now are opened again
+    const fresh = ok.filter((t) => open.has(sameKey(t.url)) === onlyOpen); alreadyOpen += ok.length - fresh.length;
+    return { w, ok: fresh };
+  });
+  const lazy = wanted.reduce((n, x) => n + x.ok.length, 0) > LAZY_AT;
+  for (const { w, ok } of wanted) {
     const head = ok[0];
     if (!head) continue;
     const win = await br.windows.create({ url: head.url, focused: !!w.focused });
@@ -63,12 +68,6 @@ export async function restore(br: Br, s: Session, wait = 250, canSleep = chromeM
     }
   }
   return { windows: s.windows.length, tabs, skipped, asleep, alreadyOpen };
-}
-
-/** Normalised URLs of every tab open now, in all normal windows (for restore's skip list). */
-export async function openUrls(br: Br): Promise<Set<string>> {
-  const tabs = await br.tabs.query({});
-  return new Set(tabs.map((t) => t.url).filter((u): u is string => !!u).map(normUrl));
 }
 
 /** Tested 12 Nov 2026: discarding a second tab crashed Chrome 153 (SIGSEGV, same machine) and worked on Chrome 156

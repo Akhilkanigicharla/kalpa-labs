@@ -16,17 +16,44 @@ function db() {
 }
 export async function _clearForTests() { const d = await db(); await d.clear("sessions"); await d.clear("trash"); }
 
+/** Data read back from IndexedDB is checked before use: a record without an id or a windows list (old bug, manual edit) is ignored. */
+const valid = (s: unknown): s is Session => !!s && typeof (s as Session).id === "string" && Array.isArray((s as Session).windows)
+  && (s as Session).windows.every((w) => !!w && Array.isArray(w.tabs) && Array.isArray(w.groups ?? []));
 export async function putSession(s: Session) { await (await db()).put("sessions", s); return s; }
-export async function getSession(id: string) { return (await db()).get("sessions", id) as Promise<Session | undefined>; }
+export async function getSession(id: string): Promise<Session | undefined> { const s = await (await db()).get("sessions", id); return valid(s) ? s : undefined; }
 export async function listSessions(): Promise<Session[]> {
-  const all = (await (await db()).getAllFromIndex("sessions", "createdAt")) as Session[];
-  return all.reverse(); // newest first
+  const all = (await (await db()).getAllFromIndex("sessions", "createdAt")) as unknown[];
+  return all.filter(valid).reverse(); // newest first
+}
+
+/** v0.3 edits: one transaction writes every changed session first, then moves emptied/merged ones to Recently deleted.
+ *  Either all of it happens or none of it (IndexedDB aborts the whole transaction on any error). */
+export async function applyEdit(puts: Session[], trashIds: string[] = [], now = Date.now()) {
+  const tx = (await db()).transaction(["sessions", "trash"], "readwrite");
+  const ss = tx.objectStore("sessions"), tr = tx.objectStore("trash");
+  await all(tx, async () => {
+    for (const s of puts) await ss.put(s);
+    for (const id of trashIds) { const s = (await ss.get(id)) as Session | undefined; if (s) { await tr.put({ ...s, deletedAt: now }); await ss.delete(id); } }
+  });
+}
+/** A request can throw before IndexedDB sees it (bad key, uncloneable value); that does NOT abort the transaction by
+ *  itself, so abort it here: none of the earlier writes are kept. */
+async function all(tx: { abort(): void; done: Promise<void> }, work: () => Promise<void>) {
+  try { await work(); } catch (e) { try { tx.abort(); } catch { /* already finished */ } await tx.done.catch(() => {}); throw e; }
+  await tx.done;
+}
+/** Undo of applyEdit: put the old copies back and take the trashed ones out of Recently deleted, in one transaction. */
+export async function undoEdit(prev: Session[], trashIds: string[] = []) {
+  const tx = (await db()).transaction(["sessions", "trash"], "readwrite");
+  const ss = tx.objectStore("sessions"), tr = tx.objectStore("trash");
+  await all(tx, async () => { for (const s of prev) await ss.put(s); for (const id of trashIds) await tr.delete(id); });
 }
 export async function deleteSession(id: string) { await (await db()).delete("sessions", id); }
 
 /** Keep manual and imported sessions forever; prune automatic snapshots by plan. */
-export async function pruneAuto(plan: "free" | "pro", now = Date.now()) {
-  const autos = (await listSessions()).filter((s) => s.kind === "auto");
+export async function pruneAuto(plan: "free" | "pro", now = Date.now(), keep: string[] = []) {
+  // keep = the snapshot the restart banner points at: it must outlive the new snapshots taken after a crash
+  const autos = (await listSessions()).filter((s) => s.kind === "auto" && !keep.includes(s.id));
   const drop = plan === "free" ? autos.slice(LIMITS.freeAutoSnapshots) : autos.filter((s) => now - s.createdAt > LIMITS.proAutoDays * 864e5);
   for (const s of drop) await deleteSession(s.id);
   return drop.length;

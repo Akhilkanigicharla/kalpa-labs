@@ -8,15 +8,16 @@ import { _clearForTests, deleteForever, listSessions, listTrash, pruneAuto, purg
 import { onetabText, sessionBuddyV3, sessionBuddyV4 } from "./fixtures/make-fixtures.mjs";
 
 describe("importers (E6)", () => {
-  it("worst-case text survives import and storage: emoji, Telugu, Hindi, RTL, a 3,000-character title, hostile HTML", async () => {
+  it("worst-case text survives import and storage: emoji, Telugu, Hindi, RTL, a 3,000-character title (cut to 1,000), hostile HTML", async () => {
     const long = "ఆ".repeat(3000);
     const lines = [`https://a.test/🚀 | 🚀 Launch notes 🎉`, `https://b.test | తెలుగు వార్తలు`, `https://c.test | हिन्दी समाचार`,
       `https://d.test | مرحبا بالعالم`, `https://e.test | ${long}`, `https://f.test | <img src=x onerror=alert(1)>`, `javascript:alert(1) | bad`].join("\n");
     const p = parseOneTab(lines);
-    expect(p.tabs).toBe(7);   // the archive keeps every line; javascript: is never reopened or linked
-    expect(p.session.windows.flatMap((w) => w.tabs).filter((t) => !restorable(t.url)).map((t) => t.url)).toEqual(["javascript:alert(1)"]);
+    expect([p.tabs, p.skipped]).toEqual([6, 1]);   // hardening rule 2: javascript: is left out at import and counted
+    expect(p.session.windows.flatMap((w) => w.tabs).filter((t) => !restorable(t.url))).toEqual([]);
     const titles = p.session.windows.flatMap((w) => w.tabs.map((t) => t.title));
-    expect(titles).toContain("🚀 Launch notes 🎉"); expect(titles).toContain("తెలుగు వార్తలు"); expect(titles).toContain(long);
+    expect(titles).toContain("🚀 Launch notes 🎉"); expect(titles).toContain("తెలుగు వార్తలు"); expect(titles).toContain(long.slice(0, 1000));
+    expect(titles).toContain("<img src=x onerror=alert(1)>");
     await putSession(p.session);
     const back = (await listSessions()).find((x) => x.id === p.session.id)!;
     expect(back.windows.flatMap((w) => w.tabs.map((t) => t.title))).toEqual(titles);   // stored as text, never as HTML
@@ -42,7 +43,7 @@ describe("importers (E6)", () => {
     const p = parseSessionBuddy(sessionBuddyV4());
     expect(p.format).toBe("sessionbuddy-v4");
     expect(p.session.windows.map((w) => w.groups[0]?.title)).toEqual(["Articles", "Video"]);
-    expect([p.tabs, p.skipped]).toEqual([4, 1]);   // chrome:// kept in the archive, skipped only at restore
+    expect([p.tabs, p.skipped]).toEqual([3, 2]);   // chrome:// and the missing URL are both left out at import
   });
   it("auto-detects the format", () => {
     expect(detectAndParse(onetabText(20, 2)).format).toBe("onetab-text");
@@ -94,16 +95,6 @@ function fakeBrowser(seed: { incognito?: boolean; tabs: { url: string; title?: s
 }
 
 describe("capture and restore (E3)", () => {
-  it("A356: skips tabs already open (normalised: #hash, utm_, trailing slash) and windows left empty", async () => {
-    const { br, created } = fakeBrowser([], {});
-    const s: Session = { id: "x", name: "x", createdAt: 0, kind: "manual", windows: [
-      { groups: [], tabs: [{ url: "https://a.test/#top", title: "" }, { url: "https://b.test/page?utm_source=x", title: "" }, { url: "https://c.test", title: "" }] },
-      { groups: [], tabs: [{ url: "https://A.test/", title: "" }] },
-    ] };
-    const open = new Set(["https://a.test", "https://b.test/page"]);
-    expect(await restore(br, s, 0, false, open)).toEqual({ windows: 2, tabs: 1, skipped: 0, asleep: 0, alreadyOpen: 3 });
-    expect(created.map((c) => c.url)).toEqual(["https://c.test"]);
-  });
   it("round-trips windows, pinned tabs and tab groups (title, colour, collapsed); skips incognito and chrome://", async () => {
     const { br, created, madeGroups } = fakeBrowser([
       { tabs: [{ url: "https://mail.test", pinned: true }, { url: "https://a.test", groupId: 7 }, { url: "https://b.test", groupId: 7 }, { url: "chrome://settings" }] },

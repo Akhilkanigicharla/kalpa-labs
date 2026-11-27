@@ -1,6 +1,6 @@
 // Free off-device backup (research gap 7): one JSON file with every saved session, which the user keeps
 // wherever they like. Restoring the same file twice is safe because session ids are kept (put = upsert).
-import { COLORS, type GroupColor, type SavedGroup, type SavedTab, type SavedWindow, type Session, restorable } from "./model";
+import { CAPS, COLORS, clip, type GroupColor, type SavedGroup, type SavedTab, type SavedWindow, type Session, safeUrl } from "./model";
 
 export const BACKUP_FORMAT = "tab-lifeboat-backup";
 export const BACKUP_VERSION = 1;
@@ -25,6 +25,7 @@ export function parseBackup(text: string): BackupPreview {
   try { data = JSON.parse(text); } catch { throw new Error("This file is not a Tab Lifeboat backup."); }
   if (!data || data.format !== BACKUP_FORMAT || !Array.isArray(data.sessions)) throw new Error("This file is not a Tab Lifeboat backup.");
   if (typeof data.version !== "number" || data.version > BACKUP_VERSION) throw new Error("This backup was made by a newer version of Tab Lifeboat. Update the extension first.");
+  if (data.sessions.length > CAPS.sessions) throw new Error(`This backup has ${data.sessions.length.toLocaleString("en-US")} sessions; Tab Lifeboat restores up to ${CAPS.sessions.toLocaleString("en-US")} at a time.`);
   let tabs = 0, groups = 0, skipped = 0;
   const sessions: Session[] = [];
   for (const r of data.sessions as Record<string, unknown>[]) {
@@ -33,24 +34,25 @@ export function parseBackup(text: string): BackupPreview {
     for (const w of (Array.isArray(r.windows) ? r.windows : []) as Record<string, unknown>[]) {
       const ts: SavedTab[] = [];
       for (const t of (Array.isArray(w?.tabs) ? w.tabs : []) as Record<string, unknown>[]) {
-        const url = str(t?.url);
-        if (!restorable(url)) { skipped++; continue; }
-        const tab: SavedTab = { url, title: str(t.title) || url };
+        const url = safeUrl(t?.url);
+        if (!url) { skipped++; continue; }
+        if (++tabs > CAPS.tabs) throw new Error(`This backup has more than ${CAPS.tabs.toLocaleString("en-US")} tabs; Tab Lifeboat restores up to that many at a time.`);
+        const tab: SavedTab = { url, title: clip(t.title, CAPS.title) || url };
         if (t.pinned === true) tab.pinned = true;
         if (typeof t.groupKey === "string") tab.groupKey = t.groupKey; else if (t.groupKey === null) tab.groupKey = null;
         ts.push(tab);
       }
       const gs: SavedGroup[] = ((Array.isArray(w?.groups) ? w.groups : []) as Record<string, unknown>[])
         .filter((g) => g && typeof g.key === "string")
-        .map((g) => ({ key: g.key as string, title: str(g.title), color: (COLORS.includes(g.color as GroupColor) ? g.color : "grey") as GroupColor, collapsed: g.collapsed === true }));
+        .map((g) => ({ key: g.key as string, title: clip(g.title, CAPS.group), color: (COLORS.includes(g.color as GroupColor) ? g.color : "grey") as GroupColor, collapsed: g.collapsed === true }));
       if (!ts.length) continue;
-      tabs += ts.length; groups += gs.length;
+      groups += gs.length;
       const win: SavedWindow = { tabs: ts, groups: gs };
       if (w.focused === true) win.focused = true;
       windows.push(win);
     }
     if (!windows.length) continue;
-    const s: Session = { id: str(r.id), name: str(r.name) || "Restored session", createdAt: Number(r.createdAt) || Date.now(),
+    const s: Session = { id: str(r.id), name: clip(r.name, CAPS.name) || "Restored session", createdAt: Number(r.createdAt) || Date.now(),
       kind: KINDS.includes(r.kind as Session["kind"]) ? (r.kind as Session["kind"]) : "import", windows };
     if (typeof r.source === "string") s.source = r.source;
     sessions.push(s);

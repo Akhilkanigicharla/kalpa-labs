@@ -331,10 +331,10 @@
   "details": "For each of the 4 exams: official notification page URL (slprb.ap.gov.in, schooledu.telangana.gov.in, apdsc.apcfss.in, ibps.in), latest notification year, eligibility (age, education), exam pattern (papers, subjects, marks, negative marking), syllabus headings, fee by category. Give the official URL plus 2 other sources dated 2025-2026 for each row; mark any fact you could not see on the official page as UNVERIFIED. Plain table per exam.",
   "min_items": 4,
   "status": "todo",
-  "tries": 1,
+  "tries": 2,
   "priority": "P2",
   "created": "2026-11-27T11:00:00Z",
-  "updated": "2026-11-27T11:00:44Z",
+  "updated": "2026-11-27T12:40:48Z",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

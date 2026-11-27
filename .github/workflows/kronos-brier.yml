@@ -1,0 +1,71 @@
+# b7 A250: Kronos-small probability test (Brier + log-loss vs random walk / base rate, returns after
+# costs vs holding) on Nifty + Bank Nifty, daily + 15-min. Research only: no broker, no keys, no secrets.
+# Runs when the test script changes, or by hand. Results land in 07-trading/research/kronos_brier/.
+name: Kronos Brier test (A250)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["07-trading/research/kronos_brier.py", "07-trading/src/kronos_score.py"]
+permissions:
+  contents: read
+concurrency:
+  group: kronos-brier
+  cancel-in-progress: true
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { symbol: "^NSEI", interval: "1d", samples: 20 }
+          - { symbol: "^NSEBANK", interval: "1d", samples: 20 }
+          - { symbol: "^NSEI", interval: "15m", samples: 10 }
+          - { symbol: "^NSEBANK", interval: "15m", samples: 10 }
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: kronos-small-901c26c1-tok-0e011738
+      - name: Install pinned packages
+        run: |
+          pip install numpy==2.5.4 pandas==3.0.6 yfinance==1.7.0
+          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.15.0
+          pip install einops==0.8.1 huggingface_hub==0.33.1 safetensors==0.6.2 tqdm==4.67.1
+      - name: Score
+        working-directory: 07-trading
+        run: python -u -m research.kronos_brier --symbol "${{ matrix.symbol }}" --interval "${{ matrix.interval }}" --samples "${{ matrix.samples }}" --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kronos-${{ matrix.interval }}-${{ strategy.job-index }}
+          path: 07-trading/out/
+  save:
+    needs: score
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/download-artifact@v4
+        with: { path: dl, pattern: "kronos-*", merge-multiple: true }
+      - name: Save results (research/kronos_brier only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p 07-trading/research/kronos_brier
+          cp dl/* 07-trading/research/kronos_brier/ 2>/dev/null || { echo "no results"; exit 1; }
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git config user.name "kalpa-paper-bot"
+          git config user.email "84580207+Akhilkanigicharla@users.noreply.github.com"
+          git add 07-trading/research/kronos_brier
+          git diff --cached --quiet && exit 0
+          git commit -q -m "b7 A250: Kronos Brier results $(TZ=Asia/Kolkata date +%F)"
+          for _ in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 10 + 3)); done; exit 1

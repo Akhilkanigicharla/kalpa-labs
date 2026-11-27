@@ -506,6 +506,7 @@ void OnState_GuardCheck()
 //    Phase 5 (EntryEngine) will read this when it exists. Until then,
 //    a valid decision is logged and we return to guard check.
 TradeDecision g_last_trade_decision;
+datetime      g_last_entry_bar = 0;   // audit 27 Nov: closed M15 bar of the last entry attempt
 
 void OnState_SeekEntry()
 {
@@ -528,6 +529,15 @@ void OnState_SeekEntry()
 
    if(decision.valid)
    {
+      //--- audit 27 Nov: the signal comes from the last CLOSED M15 bar, so it stays "valid" for the
+      //    whole bar. After a refused size or a failed/rejected send the EA came back every other
+      //    tick and re-sent (order spam to the broker, log flood). One attempt per closed M15 bar.
+      datetime sig_bar = iTime(EA_SYMBOL, PERIOD_M15, 1);
+      if(sig_bar != 0 && sig_bar == g_last_entry_bar)
+      {
+         StateManager.Transition(STATE_GUARD_CHECK, "entry_bar_already_tried");
+         return;
+      }
       //=================================================================
       // PHASE 5: build levels -> size -> execute.
       //   1. TradeCalculator: SL/TP prices + real-RR gate.
@@ -553,7 +563,8 @@ void OnState_SeekEntry()
          return;
       }
 
-      //--- 2. Position sizing
+      //--- 2. Position sizing (from here on this bar counts as tried)
+      g_last_entry_bar = sig_bar;
       double risk_dollars = 0.0;
       double lot = PositionSizer.ComputeLot(plan.sl_pips, risk_dollars);
       if(lot <= 0.0)

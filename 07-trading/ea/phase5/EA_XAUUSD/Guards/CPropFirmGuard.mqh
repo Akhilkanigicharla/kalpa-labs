@@ -188,7 +188,8 @@ public:
 
       //--- [P1] Hard equity floor — CRITICAL
       //    Use live equity from context (pre-populated this tick)
-      if(ctx.equity <= FloorNow())
+      // audit 27 Nov: equity 0 = account data not loaded; never write the PERMANENT lock file on it
+      if(ctx.equity > 0.0 && ctx.equity <= FloorNow())
       {
          m_lock_engaged  = true;
          m_lock_time     = TimeCurrent();

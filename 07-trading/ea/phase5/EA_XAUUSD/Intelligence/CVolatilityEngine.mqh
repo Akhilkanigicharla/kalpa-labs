@@ -79,6 +79,8 @@ private:
       //             VOL_STABILITY_WINDOW, so anything shorter would be "array out of range"
       if(copied < VOL_STABILITY_WINDOW + 1)
       {
+         ArrayResize(m_atr_m15_buf, VOL_LOOKBACK_M15);            // audit 27 Nov: restore size after a short copy
+         ArrayInitialize(m_atr_m15_buf, 0.0);
          Logger.Error("VOLATILITY",
             StringFormat("CopyBuffer M15 ATR failed: copied=%d error=%d",
                           copied, GetLastError()));

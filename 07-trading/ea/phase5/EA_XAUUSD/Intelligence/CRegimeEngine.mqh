@@ -153,6 +153,10 @@ private:
       int copied = CopyBuffer(m_ema50_h4_handle, 0, 1, n, m_ema50_buf);
       if(copied < REGIME_EMA_SLOPE_WINDOW + 1)
       {
+         //--- audit 27 Nov: a short copy shrinks the dynamic array; restore it so [0]/[window] reads
+         //    elsewhere (Init log, slope, BuildResult) never go out of range (= EA stopped by MT5)
+         ArrayResize(m_ema50_buf, 30);
+         ArrayInitialize(m_ema50_buf, 0.0);
          Logger.Error("REGIME",
             StringFormat("EMA50 H4 buffer failed: copied=%d need=%d err=%d",
                           copied, REGIME_EMA_SLOPE_WINDOW+1, GetLastError()));
@@ -171,6 +175,7 @@ private:
          Logger.Warn("REGIME",
             StringFormat("EMA200 H4 buffer failed: copied=%d — C2 will score 0",
                           copied));
+         ArrayResize(m_ema200_buf, 10);                 // audit 27 Nov: never leave it at size 0
          ArrayInitialize(m_ema200_buf, 0.0);
          return false;
       }
@@ -219,6 +224,7 @@ private:
    double ComputeEMA50Slope() const
    {
       int window = REGIME_EMA_SLOPE_WINDOW;
+      if(ArraySize(m_ema50_buf) <= window) return 0.0;   // audit 27 Nov: bounds
       if(m_ema50_buf[0] <= 0 || m_ema50_buf[window] <= 0) return 0.0;
       double delta_price = m_ema50_buf[0] - m_ema50_buf[window];
       return PriceToPips(MathAbs(delta_price)) *

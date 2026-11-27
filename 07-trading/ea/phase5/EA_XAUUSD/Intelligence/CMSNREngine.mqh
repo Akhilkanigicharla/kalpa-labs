@@ -498,7 +498,10 @@ void NewsDerisk()
       //    else the close is magic 0 and OnTradeTransaction/daily stats/streaks never see it.
       if(!PositionSelectByTicket(pick)) continue;
       tr.SetExpertMagicNumber((ulong)PositionGetInteger(POSITION_MAGIC));
-      if(!tr.PositionClose(pick))
+      //--- audit 27 Nov: PositionClose() is true once the request is sent; a server reject (retcode)
+      //    left the position open and the loop resent up to 20 closes in a row
+      if(!tr.PositionClose(pick) ||
+         (tr.ResultRetcode() != TRADE_RETCODE_DONE && tr.ResultRetcode() != TRADE_RETCODE_DONE_PARTIAL))
       {
          Logger.Error("NEWS_DERISK", StringFormat("close failed ticket=%I64u retcode=%u (retry in 10 s)", pick, tr.ResultRetcode()), "");
          fail_t = TimeCurrent();

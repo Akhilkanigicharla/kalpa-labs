@@ -52,11 +52,28 @@ If the server is ever stopped, every open trade still has its stop-loss and targ
    - Step 6 asks for the MT5 login, server and password. Type them there yourself; never send the password to Claude.
 8. **Check it works:**
    - `systemctl status kalpa-mt5` should say **active (running)**; the script itself ends with `OK MT5 is running with the EA`.
-   - EA messages: `sudo sh -c 'f=$(ls -t "/home/mt5/.wine/drive_c/Program Files/MetaTrader 5/MQL5/Logs/"*.log | head -1); iconv -f UTF-16 -t UTF-8 "$f" | tail -n 20'` should show EA_XAUUSD loaded on XAUUSD,H1.
+   - Login + EA loaded (wait 2 minutes after the setup ends):
+     ```
+     sudo sh -c 'cd "/home/mt5/.wine/drive_c/Program Files/MetaTrader 5"; for f in $(ls -t Logs/*.log | head -1) $(ls -t MQL5/Logs/*.log | head -1); do iconv -f UTF-16 -t UTF-8 "$f" | grep -aiE "authorized|loaded|FATAL|INIT|DryRun" | tail -n 8; done'
+     ```
+     You want a line with **authorized on** your server and one with **EA_XAUUSD (XAUUSD,H1) loaded successfully**. A `FATAL` line, `not found`, `invalid account` or `NETTING` means stop and send those lines to Claude.
    - Trades: on the MT5 phone app, log in with the same login and server (Manage accounts → + → log in to an existing account → search the server name). Trades appear when the EA finds a setup; some days have none.
-9. **Switch to E8 later:**
-   - After you buy **E8 Pro $10K**, E8 emails an MT5 login, password and server. Log in with ssh (step 6) and run the same command as step 7, typing the E8 details: `sudo PRESET=E8_Pro_10K_challenge.set bash setup_mt5_free_cloud.sh EA_XAUUSD_E8.zip`. The script restarts MT5 with the new login.
-   - After you **pass**, E8 gives a new funded login. Run it again with `PRESET=E8_Pro_10K_funded.set` and the funded details.
+9. **Go live on E8 (after the demo has run for a few days):**
+   1. Buy **E8 Pro, $10K, platform MT5** on e8markets.com (you pay; Claude never does).
+   2. Open the E8X dashboard (https://e8x.e8markets.com), go to the account overview, point at the new account and click the **key symbol**. Write down the **login number**, the **server** (E8's MT5 server is named `E8Markets-Server`) and the **master password** (not the investor/read-only password: with that one the EA cannot trade).
+   3. ssh in (step 6, second command only) and run the setup again with the challenge preset, typing the E8 login, server and master password when step 6 asks:
+      ```
+      sudo PRESET=E8_Pro_10K_challenge.set bash setup_mt5_free_cloud.sh EA_XAUUSD_E8.zip
+      ```
+      The script sees the new login, moves the demo's EA memory aside (so a demo target or loss lock can't block E8) and restarts MT5 on E8.
+   4. Run the step 8 checks. The line must say **authorized on E8Markets-Server**.
+   5. After you **pass**, E8 gives a new funded login: repeat 2–4 with `PRESET=E8_Pro_10K_funded.set`.
+
+### Go-live checklist (tick each one on the first live day)
+- [ ] **Server clock:** `timedatectl` shows `System clock synchronized: yes` (the EA's sessions and news times use this clock).
+- [ ] **First trades:** on the phone app, every new trade has a **stop-loss** and its size is small (about 0.01–0.10 lot for $10K). A trade with no stop-loss or a bigger size: run `sudo systemctl stop kalpa-mt5`, close it on the phone and send Claude a screenshot.
+- [ ] **One account only:** the EA runs only on this server and only on this one E8 account. Don't attach it in MT5 on your PC too, don't run it on a second E8 account, and don't trade this account by hand.
+- [ ] **Real orders:** the presets set `inp_DryRun=false`, so it really trades. To pause it: `sudo systemctl stop kalpa-mt5` (open trades keep their stop-loss).
 
 ## Daily commands (on the server)
 

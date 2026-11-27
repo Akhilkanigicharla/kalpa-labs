@@ -340,13 +340,11 @@ private:
    {
       if(m_emergency_close_attempted)
       {
-         // Prevent duplicate emergency close calls in same session
+         // Prevent duplicate emergency close calls in same session.
+         // audit 27 Nov: silent - TimeCurrent() freezes while the market is closed, so this
+         // branch runs every second (tick + 1 s timer) and the old warning flooded the log.
          if(TimeCurrent() - m_emergency_close_time < 5)
-         {
-            Logger.Warn("GUARD_COORD",
-               "EmergencyCloseAll called again within 5s — skipping duplicate");
             return;
-         }
       }
 
       m_emergency_close_attempted = true;
@@ -579,6 +577,7 @@ public:
    {
       if(!WeekendCutActive()) return;
       if(ServerDayOfWeek() != 5) return;                           // market closed Sat/Sun: nothing to send
+      if(AccountInfoDouble(ACCOUNT_EQUITY) <= 0.0) return;         // audit 27 Nov: account not loaded -> cap 0 would close everything
       static datetime last_run = 0;
       if(last_run != 0 && TimeCurrent() - last_run < 10) return;
       last_run = TimeCurrent();
@@ -738,7 +737,9 @@ public:
       // Fast equity check — always runs, bypasses throttle
       // This is our last line of defense against account termination
       double current_equity = AccountInfoDouble(ACCOUNT_EQUITY);
-      if(current_equity <= FloorNow())
+      // audit 27 Nov: equity 0 = account not loaded (reconnect/re-login); same rule as FastSafetyCheck,
+      // else a transient 0 latches FATAL for good
+      if(current_equity > 0.0 && current_equity <= FloorNow())
       {
          // Don't even wait for throttle — this is CRITICAL
          GuardEvalResult fatal = GuardFatal(GPRIO_PROP_FIRM, "EQUITY_FAST_CHECK", 0,

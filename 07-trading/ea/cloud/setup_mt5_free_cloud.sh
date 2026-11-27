@@ -152,6 +152,10 @@ else
   IFS= read -r -s -p "    MT5 password (not shown): " PASS; echo
   [[ "$LOGIN" =~ ^[0-9]{4,12}$ ]] || fail "login must be the account number"
   [[ "$SERVER" =~ ^[A-Za-z0-9._-]{3,64}$ ]] || fail "server name looks wrong"
+  # Release check 27 Nov: the EA's state files (target/floor lock, day stats) are not per account,
+  # so a new login (demo -> E8 -> funded) must start clean or the demo's lock would block E8
+  OLD_LOGIN="$(sed -n 's/^Login=//p' "$INI" 2>/dev/null || true)"
+  NEW_ACCOUNT=0; [ "$OLD_LOGIN" != "$LOGIN" ] && NEW_ACCOUNT=1
   umask 077
   cat > "$INI" <<EOF
 [Common]
@@ -222,6 +226,15 @@ OnUnitActiveSec=5min
 WantedBy=timers.target
 EOF
 systemctl daemon-reload
+systemctl stop kalpa-mt5 2>/dev/null || true; pkill -f terminal64.exe || true; sleep 3
+# Release check 27 Nov: drop saved charts so only the start-up chart (new preset) runs the EA;
+# a restored old chart would take the EA's one-instance lock with the old settings
+rm -f "${MT5_DIR}/MQL5/Profiles/Charts/"*/chart*.chr
+if [ "${NEW_ACCOUNT:-0}" = "1" ] && ls "${MT5_DIR}/MQL5/Files/"EA_XAUUSD_*.txt >/dev/null 2>&1; then
+  B="${MT5_DIR}/MQL5/Files/old-account-$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$B"; mv "${MT5_DIR}/MQL5/Files/"EA_XAUUSD_*.txt "$B/"; chown -R "${MT5_USER}:${MT5_USER}" "$B"
+  ok "new login: old EA state moved to ${B}"
+fi
 pkill -f "^Xvfb :99" || true   # the temporary screen from step 3; the service takes over :99
 systemctl enable kalpa-xvfb kalpa-mt5 kalpa-watchdog.timer
 systemctl restart kalpa-xvfb kalpa-mt5 kalpa-watchdog.timer   # restart, so a re-run loads the new login, preset and EA

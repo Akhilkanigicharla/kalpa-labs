@@ -235,6 +235,14 @@ bool OrderAllowed(int side, double lot, double price, string &why)
    double contract = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_CONTRACT_SIZE);
    double m25 = (contract > 0) ? lot * contract * price / inp_MetalLeverage : 0.0;
    margin = MathMax(margin, m25);
+   //--- audit 27 Nov: our resting limit orders take margin only when they fill. Several of them can
+   //    fill in one fast move, so count their 1:inp_MetalLeverage margin as already used.
+   for(int i = OrdersTotal() - 1; i >= 0; i--)
+   {
+      ulong t = OrderGetTicket(i);
+      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || !IsOurMagic(OrderGetInteger(ORDER_MAGIC))) continue;
+      if(contract > 0) margin += OrderGetDouble(ORDER_VOLUME_CURRENT) * contract * OrderGetDouble(ORDER_PRICE_OPEN) / inp_MetalLeverage;
+   }
    double free_m = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
    if(margin > 0.5 * free_m)
    {

@@ -234,15 +234,20 @@ public:
       }
       if(hist_ok)
       {
-         m_stats.closed_pnl  = our_closed;                      // authoritative: all our magics
+         //--- audit 27 Nov: right after a terminal start the deal history can still be empty.
+         //    Today's file already had closes -> keep the saved P&L instead of resetting it to 0.
+         bool hist_empty = (our_closed == 0.0 && our_opens == 0);
+         if(!(hist_empty && m_stats.closed_pnl != 0.0))
+            m_stats.closed_pnl = our_closed;                    // authoritative: all our magics
          m_stats.trade_count = MathMax(m_stats.trade_count, our_opens);
       }
 
       //--- restore the day's stop flags
+      //    audit 27 Nov: before login equity and base read 0, and "0 <= 0" locked the whole day
       double stop_line = m_stats.open_equity * (1.0 - Config.DailyStopPct / 100.0);
       m_daily_limit_hit = m_stats.forced_limit
                        || (m_stats.closed_pnl <= -(Config.DailyLossLimit))
-                       || (eq <= stop_line);
+                       || (eq > 0.0 && stop_line > 0.0 && eq <= stop_line);
       m_max_trades_hit  = (m_stats.trade_count >= Config.MaxDailyTrades);
       Persistence.WriteDaily(m_stats);
 

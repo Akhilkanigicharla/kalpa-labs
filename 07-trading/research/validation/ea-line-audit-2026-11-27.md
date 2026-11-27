@@ -1,0 +1,36 @@
+# EA_XAUUSD line audit (27 Nov 2026)
+
+Scope: every .mq5/.mqh in `07-trading/ea/phase5/EA_XAUUSD/`, read in the order EA_XAUUSD.mq5 includes them, with preset `presets/E8_Pro_10K_challenge.set` (E8 Pro $10K, Wine VPS, 24/5). There is no compiler here, so this was a desk check. I read the two 26 Nov audits first and did not repeat their findings. This pass looked for what they missed: paths where a short-lived condition leaves the EA dead for good, runtime array-out-of-range errors (MT5 stops the EA on these), order spam, and lost restart evidence.
+
+## Fixed (minimal edits; not committed)
+
+| Sev | File:line (after edit) | Problem | Fix |
+|---|---|---|---|
+| HIGH | Intelligence/CStructureEngine.mqh:~935 (Init), ~864 (UpdateTimeframe) | After a VPS or terminal restart, CopyHigh returns -1 while history syncs. If all 3 timeframes failed, `Init` returned false, OnInit returned INIT_FAILED, and MT5 unloaded the EA for good: the mix engine, guards and open-position management all stopped. A timeframe that failed alone also stayed dead (`if(!tfs.initialized) return;`). | Before: `return false`. After: log the error and start degraded. `UpdateTimeframe` re-runs `InitTimeframe` on every new bar until it succeeds. |
+| HIGH | Guards/CGuardCoordinator.mqh:~741 (Evaluate); Guards/CPropFirmGuard.mqh:~191 | `FastSafetyCheck` skips equity 0 (account not loaded), but these two floor checks did not. If equity read 0 after a reconnect, the EA latched FATAL, and PropFirm wrote the PERMANENT lock file, so it stayed locked after every restart. | `eq <= FloorNow()` becomes `eq > 0.0 && eq <= FloorNow()`. |
+| MEDIUM | Core/CDailyStats.mqh:~236-250 (Init) | (a) Before login, equity is 0 and the stop line is 0, so `eq <= stop_line` was true and the whole day was locked. (b) If deal history was still empty at start, today's saved `closed_pnl` was overwritten with 0, so the $ daily loss limit was forgotten. | The stop check needs `eq > 0 && stop_line > 0`. The file's P&L is kept when history shows no deals at all. |
+| MEDIUM | Core/CLogger.mqh:82, 96, ~139 | `FileOpen(FILE_WRITE)` without `FILE_READ` truncates the file. Every EA restart wiped the log and trade CSV, which is the crash evidence you need most. Rotation did not archive either (it just truncated). | Open with `FILE_READ\|FILE_WRITE` (append). Rotation now calls `FileMove(log, 0, archived, FILE_REWRITE)` and only truncates if the move fails. |
+| MEDIUM | EA_XAUUSD.mq5:~516-560 (OnState_SeekEntry) | The main signal comes from the last CLOSED M15 bar, so it stays valid for 15 minutes. After a sizing refusal or a failed or rejected send, the EA tried again every other tick: order spam to the broker plus a flood of log lines. | `g_last_entry_bar`: one sizing/send attempt per closed M15 bar. A rejection for spread or real RR can still retry within the bar. |
+| MEDIUM | Execution/CPositionSizer.mqh:~237 (OrderAllowed) | The 1:15 margin check looked at one order against free margin. It ignored our resting limit orders, which can all fill in one fast move. | The margin of our own pending orders (volume × contract × price / inp_MetalLeverage) is added before the 50%-of-free-margin test. |
+| MEDIUM | Intelligence/CRegimeEngine.mqh (RefreshEMA50/200, ComputeEMA50Slope), CTrendEngine.mqh (RefreshEMABuffers), CVolatilityEngine.mqh (RefreshM15ATR) | A short CopyBuffer copy resizes a dynamic array. Later reads of `[0]`, `[3]` or `[window]` (in the Init log, slope and cross checks) can then go out of range, and MT5 stops the EA. Trend accepted 2 bars but reads index 3. | On failure, restore the array size and zero it. Slope has a bounds check. Trend needs the full 5 bars. |
+| LOW | Intelligence/CMSNREngine.mqh:~501 (NewsDerisk) | `PositionClose()` is true once the request is sent. A server reject left the position open and the loop sent up to 20 more closes. | Also check that the retcode is DONE or DONE_PARTIAL. |
+| LOW | Guards/CGuardCoordinator.mqh:~585 (WeekendRiskCut) | If equity read 0, the Friday cap became 0 and the cut would close everything. | Return early when equity ≤ 0. |
+| LOW | Guards/CGuardCoordinator.mqh:~341 (EmergencyCloseAll) | `TimeCurrent()` stops moving while the market is closed. The "skipping duplicate" warning then logged every second until quotes came back. | The skip is now silent. Retry timing is unchanged. |
+
+No test strings changed. `python3 -m pytest -q tests`: **285 passed**. The brace/paren/bracket balance check (comments, strings, char and `D'..'` literals stripped; counts and nesting order) is **OK on all 35 files**. No duplicate inputs (97 in total), and all 15 preset keys exist.
+
+## Checked OK (beyond the earlier audits)
+- **Orders:** every order has an SL at send (main rejects SL ≤ 0; mix uses zone, mirror or EMA stops). Volume is floored to the step, the minimum lot is used only up to 1.5× the risk budget, and the cap is 0.10 for main and per mix order. Prices go through NormalizeDouble(_Digits). Filling is set by symbol, with a RETURN fallback for limit orders. Retcodes are checked on entry, close and delete. Duplicates are blocked: one position for main; one trade or pending per strategy and bar for the mix. `DryRun=false` reaches CTrade Buy/Sell (main) and Buy/BuyLimit/SellLimit (mix).
+- **Money:** the daily stop is min(1.5, 2.5 − 1) = 1.5% of max(bal, eq) at server midnight. The floor is $9,300 (firm line $9,200). The profit cap is start balance + $200. Friday cut runs at 22:00 server with a gap budget of 1.5%. Mix open-risk cap is 2%.
+- **State machine:** suspensions for daily limit, session, rollover, news, spread, circuit breaker and system health all resume, and the daily limit clears at the next server day. String indexing `line[0]` is valid MQL5 (strings can be subscripted).
+- **News list:** checked against federalreserve.gov (FOMC 2027, including 26-27 Oct and 16-17 Nov) and bls.gov/schedule/2027 (all CPI and NFP dates). The UTC times match the US DST switch dates. The Dec 2026 dates were not re-fetched.
+- **Performance:** CalendarValueHistory runs at most once a second (GateOk cache) and every 30 s (derisk). The HistorySelect scans are hourly, every 60 s (funded floor) or run once at init.
+
+## Not fixed (need a decision or a VPS check)
+1. **MEDIUM:** mix time exits count clock time, so a weekend counts toward the hold. H1/H2 trades held over Friday are force-closed at Monday's open, when spreads are wide. Python counts bars. Re-test before changing.
+2. **MEDIUM:** while SUSPENDED, the mix only cancels pendings and manages trades. That happens every night (rollover suspend, 23:50-00:20 server) and from Friday 20:00 GMT until London opens Monday (07:30 GMT). The backtests did not model this.
+3. **VPS check:** the Friday cut (22:00 server) and the daily reset assume an E8 server clock of GMT+2/+3. Confirm the init log's `TimeTradeServer` vs `TimeGMT`, and confirm Wine's TimeGMT is real UTC (the news list uses it).
+4. **LOW:** a close is not counted toward daily P&L if `HistoryDealSelect` fails in OnTradeTransaction (the equity stop still covers it). Mix limit orders inside the stops level are rejected once and logged.
+5. From earlier audits, still open: EquityGuard tier behaviour, and E8's daily reset time vs server midnight.
+
+A real MetaEditor compile and a demo run on the VPS are still required before real money.

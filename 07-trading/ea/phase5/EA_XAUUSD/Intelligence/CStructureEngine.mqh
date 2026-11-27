@@ -862,7 +862,13 @@ private:
       //   3. Recompute patterns and clarity.
       //   4. Update last_bar_time.
 
-      if(!tfs.initialized) return;
+      //--- audit 27 Nov: history was not loaded at Init (cold VPS start) -> retry the full init
+      //    on each new bar instead of staying dead until the EA is re-attached
+      if(!tfs.initialized)
+      {
+         if(tfs.tf != PERIOD_CURRENT) InitTimeframe(tfs, tfs.tf, tfs.min_swing_pips, lookback);
+         return;
+      }
 
       if(!RefreshPriceBuffer(tfs, lookback))
       {
@@ -932,12 +938,11 @@ public:
       if(!m15_ok) Logger.Warn("STRUCTURE", "M15 timeframe init failed — degraded");
 
       // At least one timeframe must be operational
+      //--- audit 27 Nov: right after a VPS/terminal restart CopyHigh returns -1 while history
+      //    syncs. Returning false here made OnInit fail and MT5 unload the EA for good (mix
+      //    engine and all guards gone). Start degraded; UpdateTimeframe re-inits on new bars.
       if(!h4_ok && !h1_ok && !m15_ok)
-      {
-         Logger.Error("STRUCTURE", "All timeframes failed — engine unavailable");
-         m_initialized = false;
-         return false;
-      }
+         Logger.Error("STRUCTURE", "All timeframes failed (history not loaded yet?) - starting degraded, retried on each new bar");
 
       // Build initial cached result
       BuildResult();

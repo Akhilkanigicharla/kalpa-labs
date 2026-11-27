@@ -52,8 +52,12 @@ private:
       ArraySetAsSeries(m_ema50_buf, true);
       int c20 = CopyBuffer(m_ema20_handle, 0, 1, TREND_LOOKBACK_H1, m_ema20_buf);
       int c50 = CopyBuffer(m_ema50_handle, 0, 1, TREND_LOOKBACK_H1, m_ema50_buf);
-      if(c20 < 2 || c50 < 2)
+      //--- audit 27 Nov: CheckRecentCross reads index TREND_CROSS_LOOKBACK; a short copy shrinks the
+      //    dynamic arrays, so require the full depth and restore size + zeros on failure
+      if(c20 < TREND_LOOKBACK_H1 || c50 < TREND_LOOKBACK_H1)
       {
+         ArrayResize(m_ema20_buf, TREND_LOOKBACK_H1); ArrayInitialize(m_ema20_buf, 0.0);
+         ArrayResize(m_ema50_buf, TREND_LOOKBACK_H1); ArrayInitialize(m_ema50_buf, 0.0);
          Logger.Error("TREND",
             StringFormat("EMA buffer refresh failed: c20=%d c50=%d err=%d",
                           c20, c50, GetLastError()));

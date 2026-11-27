@@ -77,8 +77,9 @@ private:
       // CSV file: if new, write header row first.
       // If either handle fails: Print() to Experts tab as fallback.
 
+      // audit 27 Nov: FILE_READ added - FILE_WRITE alone truncates, so every restart wiped the log
       m_log_handle = FileOpen(m_log_filename,
-                              FILE_WRITE|FILE_TXT|FILE_SHARE_READ|FILE_ANSI,
+                              FILE_READ|FILE_WRITE|FILE_TXT|FILE_SHARE_READ|FILE_ANSI,
                               '\n');
       if(m_log_handle == INVALID_HANDLE)
       {
@@ -92,7 +93,7 @@ private:
       // CSV file
       bool csv_new = !FileIsExist(m_csv_filename);
       m_csv_handle = FileOpen(m_csv_filename,
-                              FILE_WRITE|FILE_CSV|FILE_SHARE_READ|FILE_ANSI,
+                              FILE_READ|FILE_WRITE|FILE_CSV|FILE_SHARE_READ|FILE_ANSI,   // audit 27 Nov: keep old trades
                               ',');
       if(m_csv_handle == INVALID_HANDLE)
       {
@@ -135,8 +136,10 @@ private:
       string archived = StringFormat("EA_XAUUSD_log_%04d%02d%02d_%02d%02d%02d.txt",
                                      dt.year, dt.mon, dt.day,
                                      dt.hour, dt.min, dt.sec);
-      // MQL5 has no FileRename — write final line then work with new file
-      // This is an MQL5 limitation: we close and open a new file
+      // audit 27 Nov: keep the full log as the archive (FileMove), then start a new file.
+      //    If the move fails, the reopen below (no FILE_READ) truncates as before.
+      if(!FileMove(m_log_filename, 0, archived, FILE_REWRITE))
+         Print("[LOGGER] archive move failed err=", GetLastError(), " - log truncated");
       m_log_bytes_written = 0;
 
       m_log_handle = FileOpen(m_log_filename,

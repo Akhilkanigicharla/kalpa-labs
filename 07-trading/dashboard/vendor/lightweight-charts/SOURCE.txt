@@ -1,0 +1,2 @@
+TradingView Lightweight Charts v5.3.0, unmodified, from npm (lightweight-charts@5.3.0, dist/lightweight-charts.standalone.production.js).
+Licence: Apache-2.0 (LICENSE). Attribution: NOTICE text + a link to https://www.tradingview.com/ on the page (README "License" section, checked 2026-11-28); the chart keeps attributionLogo on and the footer carries the notice.

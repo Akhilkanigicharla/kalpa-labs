@@ -1256,10 +1256,10 @@
   "details": "Read both files. Write 5 code-finding questions about the Kalpa repo a builder really asks (e.g. 'where is the chat rate limit set'), and for each the way to score a tool: found the right file (yes/no), number of steps, tokens if shown. Then a 5-row table: what graft does per the repo notes vs what the reel says Understand Anything does, marking anything not in those files 'unverified'. No install steps, no invented numbers.",
   "min_items": 5,
   "tries": 0,
-  "status": "review",
+  "status": "done",
   "priority": "P2",
   "created": "2026-11-27T00:00:00Z",
-  "updated": "2026-11-26T22:41:25Z",
+  "updated": "2026-11-27T06:30:00Z",
   "output": "00-hq/knowledge/K178.md"
  },
  {
@@ -1279,5 +1279,23 @@
   "created": "2026-11-27T00:00:00Z",
   "updated": "2026-11-26T22:42:13Z",
   "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
+ },
+ {
+  "id": "K180",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A343 prep: freellmapi as the delegation router, what DELEGATE.md must say",
+  "read": [
+   "00-hq/DELEGATE.md",
+   "00-hq/research/reels-2026-11-26.md"
+  ],
+  "details": "Read both files. List 5 questions we must answer before using freellmapi (licence, which providers it supports, where keys live, rate-limit and fallback behaviour, the README's personal-use note) and for each say where the answer must come from (its GitHub repo files); mark every fact not in these two files 'unverified'. Then draft a 6-line 'Third route: freellmapi' section for DELEGATE.md in plain English. No install steps, no invented numbers.",
+  "min_items": 5,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-27T06:30:00Z",
+  "updated": "2026-11-27T06:30:00Z",
+  "vigil_notes": ""
  }
 ]

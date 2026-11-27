@@ -655,5 +655,22 @@
   "created": "2026-11-27T00:00:00Z",
   "updated": "2026-11-26T22:40:21Z",
   "vigil_notes": "FIX: incomplete, 0 of 10 required items. Write all 10, numbered 1 to 10."
+ },
+ {
+  "id": "K181",
+  "world": "b1",
+  "owner": "Quill",
+  "title": "A349 prep: one-year retention notice text (EN + Telugu) and Netlify log retention questions",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "For roadmap item A349 (BotBhai keeps messages and logs 365 days instead of 180, DPDP Rule 8(3)): draft the customer notice line in plain English and in Telugu script (max 2 sentences each, no legal promises beyond 'we keep chats and logs for one year, then delete them'). Then list 5 questions about how long Netlify keeps form submissions and function logs on the Free plan, each with the Netlify docs page where the answer should be checked; mark every answer 'unverified'. Draft only; a lawyer reads it first (C23).",
+  "min_items": 5,
+  "tries": 0,
+  "status": "todo",
+  "priority": "P2",
+  "created": "2026-11-27T06:30:00Z",
+  "updated": "2026-11-27T06:30:00Z",
+  "vigil_notes": ""
  }
 ]

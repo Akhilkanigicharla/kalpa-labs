@@ -1345,10 +1345,10 @@
   "details": "Read the A303 line in ROADMAP.md. From each provider's own pricing/limits page, list free tiers usable from a Netlify Function to keep a 12-per-minute counter per visitor: Netlify Blobs, Upstash Redis, Cloudflare Workers KV, Supabase (Postgres). For each: free requests/day or month, write limits, consistency (KV is eventually consistent: say so), card needed or not, page URL. Mark any number you could not see on the provider's page as 'unverified'.",
   "min_items": 4,
   "status": "todo",
-  "tries": 1,
+  "tries": 2,
   "priority": "P2",
   "created": "2026-11-27T04:45:00Z",
-  "updated": "2026-11-27T04:39:54Z",
+  "updated": "2026-11-27T06:42:32Z",
   "output": "",
   "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }

@@ -1273,11 +1273,11 @@
   ],
   "details": "For roadmap A343 (freellmapi as the internal free-model router for delegation): from the project's own GitHub page and one second source, list in a 6-row table: licence (exact file name), stars, last commit date, which free providers it supports, how keys are stored, and whether it needs a server that must stay on. Mark anything you could not open 'unverified'. Then 3 lines: how it would fit the DELEGATE.md 'Second route' and one risk. No install steps, no invented numbers.",
   "min_items": 6,
-  "tries": 2,
-  "status": "todo",
+  "tries": 3,
+  "status": "rejected",
   "priority": "P2",
   "created": "2026-11-27T00:00:00Z",
-  "updated": "2026-11-27T00:40:52Z",
+  "updated": "2026-11-27T01:37:16Z",
   "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
  },
  {

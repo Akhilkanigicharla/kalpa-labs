@@ -313,13 +313,12 @@
   ],
   "details": "Read the payment-gateway table in 03-kits/PLAN.md (rows Razorpay Payment Pages, Cashfree Payment Forms). For each, find the provider's own pricing page and one second source dated 2026, and report: fee % today, any new-merchant offer still live, and net per ₹199 sale incl. 18% GST on the fee. Mark each claim VERIFIED / WRONG / UNVERIFIED with both links. Plain table, no advice.",
   "min_items": 2,
-  "status": "todo",
+  "status": "review",
   "tries": 1,
   "priority": "P2",
   "created": "2026-11-27T08:20:00Z",
-  "updated": "2026-11-27T08:40:59Z",
-  "output": "",
-  "vigil_notes": "FIX: incomplete, 0 of 2 required items. Write all 2, numbered 1 to 2."
+  "updated": "2026-11-27T10:59:49Z",
+  "output": "00-hq/knowledge/K186.md"
  },
  {
   "id": "K187",
@@ -332,9 +331,10 @@
   "details": "For each of the 4 exams: official notification page URL (slprb.ap.gov.in, schooledu.telangana.gov.in, apdsc.apcfss.in, ibps.in), latest notification year, eligibility (age, education), exam pattern (papers, subjects, marks, negative marking), syllabus headings, fee by category. Give the official URL plus 2 other sources dated 2025-2026 for each row; mark any fact you could not see on the official page as UNVERIFIED. Plain table per exam.",
   "min_items": 4,
   "status": "todo",
-  "tries": 0,
+  "tries": 1,
   "priority": "P2",
   "created": "2026-11-27T11:00:00Z",
-  "updated": "2026-11-27T11:00:00Z"
+  "updated": "2026-11-27T11:00:44Z",
+  "vigil_notes": "FIX: incomplete, 0 of 4 required items. Write all 4, numbered 1 to 4."
  }
 ]

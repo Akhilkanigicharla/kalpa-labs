@@ -1,4 +1,4 @@
-Kalpa b7 · Kronos daily signal · PAPER · 2026-11-25 · Rs 5,000
-Nifty close 25,819.25, Kronos predicts 25,745.70 (-0.28%) -> LIQUID ETF from tomorrow's open
-Paper equity Rs 5,013.59 (+0.27%) vs holding NIFTYBEES Rs 4,992.87 (-0.14%); booked days 7, up days 6
-Paper days: 9/90. Out-of-sample test: +13% vs +2% (Aug 2025-Nov 2026). Paper only. Not advice.
+Kalpa b7 · Kronos daily signal · PAPER · 2026-11-26 · Rs 5,000
+Nifty close 25,884.50, Kronos predicts 25,703.74 (-0.70%) -> LIQUID ETF from tomorrow's open
+Paper equity Rs 5,014.50 (+0.29%) vs holding NIFTYBEES Rs 5,034.68 (+0.69%); booked days 8, up days 7
+Paper days: 10/90. Out-of-sample test: +13% vs +2% (Aug 2025-Nov 2026). Paper only. Not advice.

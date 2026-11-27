@@ -1,13 +1,12 @@
 {
- "date": "2026-11-26",
- "run_ist": "2026-11-27 01:20",
+ "date": "2026-11-27",
+ "run_ist": "2026-11-28 01:09",
  "paper_only": true,
  "funded": {
-  "ema_vwap_10/5": 0.299,
-  "rel_strength_10/5": 0.274,
-  "rel_strength_6/3": 0.427
+  "rel_strength_10/5": 0.346,
+  "rel_strength_6/3": 0.5
  },
- "trades": 4,
- "net_rs": -349.1,
- "charges_rs": 73.08
+ "trades": 3,
+ "net_rs": -318.43,
+ "charges_rs": 70.71
 }

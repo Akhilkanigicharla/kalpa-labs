@@ -1,21 +1,21 @@
-WORLD CHECK · 2026-11-27 · alerts only (the bot trades the tested trend rule)
-Risk flags on: 2/4 (Global trend, Fear)
-  [!] Global trend: S&P 500 7,183 vs 200-day avg 7,352
-  [!] Fear: India VIX 17.7 vs 1-year top-20% line 17.5
-  [ ] Dollar squeeze: US 10Y +0.18 pts and USD/INR -3.1% in 3 months (alert at +0.50 and +2%)
-  [ ] Oil shock: Brent +2.7% in 3 months (alert at +30%)
+WORLD CHECK · 2026-11-28 · alerts only (the bot trades the tested trend rule)
+Risk flags on: 1/4 (Global trend)
+  [!] Global trend: S&P 500 7,297 vs 200-day avg 7,354
+  [ ] Fear: India VIX 16.8 vs 1-year top-20% line 17.5
+  [ ] Dollar squeeze: US 10Y +0.21 pts and USD/INR -2.2% in 3 months (alert at +0.50 and +2%)
+  [ ] Oil shock: Brent +1.6% in 3 months (alert at +30%)
 Markets (last, 1 day, 3 months):
-  Nifty 50       25,819.25   +1.85%    +6.46%
-  India VIX          17.67   -0.17%   +57.77%
-  S&P 500         7,182.78   -0.25%    -7.09%
-  Nasdaq-100     26,046.90   -0.64%   -12.13%
-  Nikkei 225     57,011.62   -2.78%   -13.90%
-  Hang Seng      21,966.01   -1.14%   -14.37%
-  US 10Y yield        4.85%   -1.14%    +3.77%
-  Dollar index      103.77   +0.10%    +4.09%
-  USD/INR            92.43   -0.40%    -3.09%
-  Brent oil          91.73   -3.04%    +2.71%
-  US VIX             26.80   -5.27%   +79.62%
+  Nifty 50       25,884.50   +0.25%    +6.88%
+  India VIX          16.84   -4.70%   +46.05%
+  S&P 500         7,297.49   +1.60%    -5.37%
+  Nasdaq-100     26,726.39   +2.61%    -9.20%
+  Nikkei 225     57,499.16   +0.86%   -12.90%
+  Hang Seng      22,226.88   +1.19%   -13.06%
+  US 10Y yield        4.93%   +1.77%    +4.53%
+  Dollar index      104.05   +0.37%    +4.36%
+  USD/INR            92.98   +0.80%    -2.24%
+  Brent oil          90.77   -4.06%    +1.63%
+  US VIX             23.81  -11.16%   +45.72%
 Coming up (14 days):
   2026-12-04 RBI MPC policy decision (meeting Dec 2-4)
   2026-12-10 US Fed (FOMC) decision, out after India close on Dec 9 US time; India reacts Dec 10
@@ -24,7 +24,7 @@ Latest Fed news:
   - Agencies announce dollar thresholds for smaller loan exemption from appraisal requirements for higher-priced mortgage loans
   - Minutes of the Board's discount rate meetings on October 19 and October 28, 2026
 Latest RBI news:
-  - RBI to conduct 3-day Variable Rate Repo (VRR) auction under LAF on November 27, 2026
-  - Reserve Money and Money Supply for the fortnight ended on November 15, 2026
-  - Result: First Conversion/Switch Auction of State Government Securities
+  - RBI Issues Amendment Directions on ‘Suspected Money Mule Accounts to Prevent Cyber-enabled Financial Frauds’
+  - RBI to conduct Overnight Variable Rate Repo (VRR) auction under LAF on November 30, 2026
+  - Auction of State Government Securities
 Not investment advice.

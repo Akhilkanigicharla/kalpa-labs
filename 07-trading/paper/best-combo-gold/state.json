@@ -2,44 +2,29 @@
  "status": "running",
  "start": "2026-11-21",
  "end": "2027-05-21",
- "days_done": 5,
+ "days_done": 6,
  "risk_per_trade_pct": 0.25,
- "data_up_to": "2026-11-26 04:00:00",
- "trades": 30,
- "wins": 14,
- "losses": 16,
+ "data_up_to": "2026-11-27 17:30:00",
+ "trades": 33,
+ "wins": 16,
+ "losses": 17,
  "breakeven": 0,
- "win_rate": 0.467,
- "avg_r": 0.291,
- "total_r": 8.7,
+ "win_rate": 0.485,
+ "avg_r": 0.327,
+ "total_r": 10.8,
  "open_trades": [
   {
    "strategy": "MSNR fresh_v long 1h",
    "t_in": "2026-11-25 23:00:00",
    "side": "LONG"
-  },
-  {
-   "strategy": "EMA9 2h",
-   "t_in": "2026-11-24 16:00:00",
-   "side": "SHORT"
-  },
-  {
-   "strategy": "MSNR fresh_v long 2h",
-   "t_in": "2026-11-26 00:00:00",
-   "side": "LONG"
-  },
-  {
-   "strategy": "MSNR fresh_v long 4h",
-   "t_in": "2026-11-26 00:00:00",
-   "side": "LONG"
   }
  ],
- "profit_usd": 218.0,
+ "profit_usd": 270.0,
  "worst_drop_pct": 1.1,
  "worst_day_usd": -52.0,
  "best_day_usd": 160.0,
  "max_open_together": 6,
- "trades_per_month": 30.0,
+ "trades_per_month": 33.0,
  "profit_months": "1 of 1",
  "backtest_expected": {
   "avg_r": 0.143,
@@ -84,22 +69,22 @@
    "total_r": 2.0
   },
   "EMA9 2h": {
-   "trades": 1,
+   "trades": 2,
    "wins": 1,
-   "losses": 0,
+   "losses": 1,
    "breakeven": 0,
-   "win_rate": 1.0,
-   "avg_r": 1.991,
-   "total_r": 2.0
+   "win_rate": 0.5,
+   "avg_r": 0.314,
+   "total_r": 0.6
   },
   "MSNR fresh_v long 2h": {
-   "trades": 3,
-   "wins": 1,
+   "trades": 4,
+   "wins": 2,
    "losses": 2,
    "breakeven": 0,
-   "win_rate": 0.333,
-   "avg_r": -0.011,
-   "total_r": -0.0
+   "win_rate": 0.5,
+   "avg_r": 0.474,
+   "total_r": 1.9
   },
   "MSNR fresh_v short 2h": {
    "trades": 4,
@@ -120,13 +105,13 @@
    "total_r": 2.5
   },
   "MSNR fresh_v long 4h": {
-   "trades": 2,
-   "wins": 1,
+   "trades": 3,
+   "wins": 2,
    "losses": 1,
    "breakeven": 0,
-   "win_rate": 0.5,
-   "avg_r": 0.492,
-   "total_r": 1.0
+   "win_rate": 0.667,
+   "avg_r": 0.825,
+   "total_r": 2.5
   },
   "MSNR fresh_v short 4h": {
    "trades": 3,
@@ -139,8 +124,8 @@
   }
  },
  "with_layer_A325": {
-  "streak_sized_total_r": 6.0,
-  "streak_sized_profit_usd": 149.0,
+  "streak_sized_total_r": 6.5,
+  "streak_sized_profit_usd": 162.0,
   "near_news_trades": 0,
   "near_news_avg_r": null
  },

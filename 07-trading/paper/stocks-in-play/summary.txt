@@ -1,5 +1,5 @@
-Kalpa b7 · Stocks-in-Play 5-min ORB · PAPER · 2026-11-26 · Rs 5,000
-Busiest sectors by opening volume (x normal): FMCG 3.61x, IT 2.19x, Metals 1.65x
+Kalpa b7 · Stocks-in-Play 5-min ORB · PAPER · 2026-11-27 · Rs 5,000
+Busiest sectors by opening volume (x normal): Financials 4.24x, Consumer 3.65x, Infra 1.97x
   no breakout today
-Running: 3 trades over 8 sessions, win 0%, net -0.38% of capital
+Running: 3 trades over 9 sessions, win 0%, net -0.38% of capital
 REJECTED on Aug-Nov 2026 data (-3.7% after costs). Paper only. Not advice.

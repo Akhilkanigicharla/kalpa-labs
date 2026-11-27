@@ -159,7 +159,7 @@ if [ "$DRY_RUN" != "1" ]; then
 fi
 
 say "6/7 Your MT5 login: demo first, then the prop-firm account (typed here only)"
-INI="${PREFIX}/drive_c/kalpa_start.ini"   # no space in the path: MT5 split "/config:C:/Program Files/..." at the space (27 Nov 2026 first run)
+INI="${PREFIX}/drive_c/kalpa_start.ini"   # MT5 reads "/" as a new switch and splits at spaces, so: C:\kalpa_start.ini (27 Nov 2026 first run)
 if [ "$DRY_RUN" = "1" ]; then
   printf '    would ask for login / server / password and write %s (chmod 600)\n' "$INI"
 else
@@ -219,7 +219,7 @@ Requires=kalpa-xvfb.service
 [Service]
 User=${MT5_USER}
 Environment=WINEPREFIX=${PREFIX} DISPLAY=:99 WINEDEBUG=-all
-ExecStart=${WINE_BIN} "C:/Program Files/MetaTrader 5/terminal64.exe" /portable /config:C:/kalpa_start.ini
+ExecStart=${WINE_BIN} "C:/Program Files/MetaTrader 5/terminal64.exe" /portable /config:C:\\\\kalpa_start.ini
 Restart=always
 RestartSec=30
 [Install]

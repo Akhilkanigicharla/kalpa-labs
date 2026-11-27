@@ -156,7 +156,7 @@ int OnInit()
    ENUM_ACCOUNT_MARGIN_MODE margin_mode =
       (ENUM_ACCOUNT_MARGIN_MODE)AccountInfoInteger(ACCOUNT_MARGIN_MODE);
    // Debug pass 26 Nov: before login (VPS reboot) ACCOUNT_MARGIN_MODE reads 0 = NETTING; only trust it once logged in
-   if(margin_mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0)
+   if(margin_mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0 && TerminalInfoInteger(TERMINAL_CONNECTED) && AccountInfoDouble(ACCOUNT_BALANCE) > 0)
    {
       Logger.Fatal("INIT",
          "Account is NETTING — EA requires HEDGING mode");

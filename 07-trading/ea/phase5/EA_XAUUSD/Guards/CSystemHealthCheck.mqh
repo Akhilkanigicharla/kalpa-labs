@@ -162,7 +162,7 @@ private:
          (ENUM_ACCOUNT_MARGIN_MODE)AccountInfoInteger(ACCOUNT_MARGIN_MODE);
 
       // Debug pass 26 Nov: account not loaded yet (login 0) reads as NETTING; do not latch a fatal on it
-      if(mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0)
+      if(mode == ACCOUNT_MARGIN_MODE_RETAIL_NETTING && AccountInfoInteger(ACCOUNT_LOGIN) > 0 && TerminalInfoInteger(TERMINAL_CONNECTED) && AccountInfoDouble(ACCOUNT_BALANCE) > 0)
       {
          Logger.Fatal("SYS_HEALTH",
             "Account is NETTING mode — EA requires HEDGING. "

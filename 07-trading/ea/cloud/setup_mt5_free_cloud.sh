@@ -221,7 +221,10 @@ User=${MT5_USER}
 Environment=WINEPREFIX=${PREFIX} DISPLAY=:99 WINEDEBUG=-all
 ExecStart=${WINE_BIN} "C:/Program Files/MetaTrader 5/terminal64.exe" /portable /config:C:\\\\kalpa_start.ini
 Restart=always
-RestartSec=30
+RestartSec=120
+# 27 Nov 2026 first real run: MT5 LiveUpdate closes the terminal and finishes the update in a helper
+# process; the default KillMode killed that helper, so the update never finished (restart loop x9).
+KillMode=process
 [Install]
 WantedBy=multi-user.target
 EOF

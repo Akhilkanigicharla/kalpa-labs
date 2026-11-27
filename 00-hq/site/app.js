@@ -229,15 +229,27 @@ const BR=[ // [path, width, world id, name, world colour]
 const SHORT={kits:'Kits',deals:'Deals',ledger:'Ledger'};
 const LEAF='M0 0C5-8 17-9 26 0C17 9 5 8 0 0Z', VEIN='M2 0H23M8 0l4-3.5M8 0l4 3.5M14 0l4-3M14 0l4 3';
 function leaf(par,attrs){const g=el('g',Object.assign({class:'lf'},attrs),par);el('path',{d:LEAF},g);el('path',{class:'vein',d:VEIN},g);return g;}
-function cluster(par,cx,cy,R,n){
- for(let k=0;k<4;k++)el('circle',{class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'url(#blob'+(1+(k%2))+')',style:'animation-delay:'+(1.2+Math.hypot(cx-300,cy-560)/600*1.2).toFixed(2)+'s'},par);
+// a leaf with translate/rotate/scale baked into its points: no transform per leaf, so ~700 fewer paint chunks every frame (A302)
+const LEAFP=[[0,0],[5,-8],[17,-9],[26,0],[17,9],[5,8],[0,0]], VEINP=[[2,0],[23,0],[8,0],[12,-3.5],[8,0],[12,3.5],[14,0],[18,-3],[14,0],[18,3]];
+function leafAt(par,x,y,deg,k,fill){const r=deg*Math.PI/180,c=Math.cos(r)*k,s=Math.sin(r)*k,P=([u,v])=>(x+c*u-s*v).toFixed(1)+' '+(y+s*u+c*v).toFixed(1),L=LEAFP.map(P),V=VEINP.map(P);
+ const g=el('g',{class:'lf',fill,style:'stroke-width:'+(.9*k).toFixed(2)},par);el('path',{d:`M${L[0]}C${L[1]} ${L[2]} ${L[3]}C${L[4]} ${L[5]} ${L[6]}Z`},g);
+ el('path',{class:'vein',style:'stroke-width:'+(.7*k).toFixed(2),d:'M'+V[0]+'L'+V[1]+'M'+V[2]+'L'+V[3]+'M'+V[4]+'L'+V[5]+'M'+V[6]+'L'+V[7]+'M'+V[8]+'L'+V[9]},g);return g;}
+// foliage is drawn a cluster per task after start-up (A302: one ~400 ms start-up task on phones became ~16 short ones).
+// The random numbers are drawn now, in the same order as before, so the tree looks exactly the same; delays subtract the wait.
+const T0=performance.now(), JOBS=[], late=d=>Math.max(0,d-(performance.now()-T0)/1000).toFixed(2)+'s';
+function work(){const j=JOBS.shift();if(j){j();if(JOBS.length)setTimeout(work,0);}}
+function cluster(par,cx,cy,R,n){const job=[], d0=1.1+Math.hypot(cx-300,cy-560)/600*1.2, sets=[];
+ for(let k=0;k<4;k++){const a={class:'blob',cx:cx+(rnd()-.5)*R*.9,cy:cy+(rnd()-.5)*R*.6,r:R*(.42+.2*rnd()),fill:'url(#blob'+(1+(k%2))+')'};
+  job.push(()=>{a.style='animation-delay:'+late(1.2+Math.hypot(cx-300,cy-560)/600*1.2);el('circle',a,par);});}
  // one grow animation per ring of leaves, not per leaf (A302: 800 separate animations cost ~1.3 s of blocking time on phones)
- const set=d=>el('g',{class:'leafset',style:'animation-delay:'+d.toFixed(2)+'s'},par), d0=1.1+Math.hypot(cx-300,cy-560)/600*1.2, rings=[0,1,2].map(k=>set(d0+k*.15));
+ const set=d=>el('g',{class:'leafset',style:'animation-delay:'+late(d)},par);
+ job.push(()=>[0,1,2].forEach(k=>sets[k]=set(d0+k*.15)));
  for(let k=0;k<n;k++){const a=rnd()*6.283,rr=R*Math.sqrt(rnd()),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.8;
-  const g=el('g',{transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*70).toFixed(0)}) scale(${(.7+rnd()*.6).toFixed(2)})`},par);
-  rnd(); rings[Math.min(2,Math.floor(rr/R*3))].append(g); leaf(g,{fill:'var(--tl'+(1+Math.floor(rnd()*5))+')'});}
- const bl=set(2.5);
- for(let k=0;k<Math.round(n/9);k++){const a=rnd()*6.283,rr=R*.85*Math.sqrt(rnd());bloom(bl,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8,3+rnd()*1.6,(2+rnd()).toFixed(2));}}
+  const deg=+(a*57.3+(rnd()-.5)*70).toFixed(0), k=+(.7+rnd()*.6).toFixed(2); rnd(); const ri=Math.min(2,Math.floor(rr/R*3)), fill='var(--tl'+(1+Math.floor(rnd()*5))+')';
+  job.push(()=>leafAt(sets[ri],+x.toFixed(1),+y.toFixed(1),deg,k,fill));}
+ job.push(()=>sets[3]=set(2.5));
+ for(let k=0;k<Math.round(n/9);k++){const a=rnd()*6.283,rr=R*.85*Math.sqrt(rnd()),r=3+rnd()*1.6,dl=(2+rnd()).toFixed(2);job.push(()=>bloom(sets[3],cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8,r,dl));}
+ JOBS.push(()=>job.forEach(f=>f()));}
 // wish-tree blossoms: five cream petals around a gold heart
 function bloom(par,x,y,r,delay){const g=el('g',{class:'blos',transform:`translate(${x.toFixed(1)} ${y.toFixed(1)})`,style:'animation-delay:'+delay+'s'},par);
  for(let k=0;k<5;k++)el('ellipse',{cx:0,cy:-r,rx:r*.62,ry:r,transform:`rotate(${k*72})`},g); el('circle',{class:'hb',r:r*.45},g);}
@@ -265,12 +277,12 @@ BR.forEach(([d,w,id,name,col],i)=>{
   const ex=a.x+Math.cos(ang)*len,ey=a.y+Math.sin(ang)*len-6,tw=el('path',{d:`M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${((a.x+ex)/2).toFixed(1)} ${((a.y+ey)/2-6).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`},front);
   tw.setAttribute('class','guide'); limbShape(front,tw,w*.55,1.4,'limb-s twig'); tw.remove();
   const ls=el('g',{class:'leafset',style:'animation-delay:'+(1.6+i*.1).toFixed(2)+'s'},front);
-  for(let j=0;j<6;j++){const g=el('g',{transform:`translate(${(ex+(rnd()-.5)*10).toFixed(1)} ${(ey+(rnd()-.5)*8).toFixed(1)}) rotate(${(ang*57.3+(j-2.5)*34).toFixed(0)}) scale(${(.6+rnd()*.25).toFixed(2)})`},ls);
-   leaf(g,{fill:'var(--tl'+(3+j%3)+')'});}});
+  for(let j=0;j<6;j++){const x=+(ex+(rnd()-.5)*10).toFixed(1),y=+(ey+(rnd()-.5)*8).toFixed(1);
+   leafAt(ls,x,y,+(ang*57.3+(j-2.5)*34).toFixed(0),+(.6+rnd()*.25).toFixed(2),'var(--tl'+(3+j%3)+')');}});
  // a little foliage in front of the tip, so the branch disappears into the leaves instead of ending like a stick
  const tip=el('g',{class:'leafset',style:'animation-delay:'+(1.9+i*.1).toFixed(2)+'s'},front);
- for(let j=0;j<10;j++){const a=rnd()*6.283,rr=(i===6?34:30)*Math.sqrt(rnd()),g=el('g',{transform:`translate(${(e.x+Math.cos(a)*rr).toFixed(1)} ${(e.y-8+Math.sin(a)*rr*.7).toFixed(1)}) rotate(${(a*57.3+(rnd()-.5)*60).toFixed(0)}) scale(${(.65+rnd()*.3).toFixed(2)})`},tip);
-  leaf(g,{fill:'var(--tl'+(4+j%2)+')'});}
+ for(let j=0;j<10;j++){const a=rnd()*6.283,rr=(i===6?34:30)*Math.sqrt(rnd()),deg=+(a*57.3+(rnd()-.5)*60).toFixed(0);
+  leafAt(tip,+(e.x+Math.cos(a)*rr).toFixed(1),+(e.y-8+Math.sin(a)*rr*.7).toFixed(1),deg,+(.65+rnd()*.3).toFixed(2),'var(--tl'+(4+j%2)+')');}
  if(i<2)bloom(front,e.x+(i?-22:22),e.y-24,4.4,'2.2'); 
  const fx=e.x, fy=e.y+(i===6?-6:20);
  const f=el('g',{class:'fruit',tabindex:'0',role:'button','aria-label':name,style:'animation-delay:'+(2.3+i*.12)+'s'},front);
@@ -289,6 +301,7 @@ BR.forEach(([d,w,id,name,col],i)=>{
  f.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openTip(i);}});
  fruits.push(f); sway.push([[back,front,limbs],+d.split(' ')[0].slice(1),+d.split(' ')[1].split('C')[0],1.1+(i%3)*.3,i*1.3]);
 });
+setTimeout(work,0); // start drawing the queued foliage once the branches are in place
 // grass tufts along the ground
 const grassEls=[];for(let k=0;k<30;k++){const x=(60+k*16+rnd()*8).toFixed(0),h=(8+rnd()*12).toFixed(0);const g=el('path',{class:'grass','data-x':x,d:`M${x} 568q-3-${h} -6-${+h+3}M${x} 568q1-${+h+2} 4-${+h+4}`},document.getElementById('grass'));grassEls.push(g);}
 
@@ -424,9 +437,10 @@ const fall=document.getElementById('falling');
 for(let k=0;k<10;k++){const i=document.createElement('i');i.className='ff';i.style.cssText=`left:${(50+rnd()*48).toFixed(0)}%;top:${(15+rnd()*70).toFixed(0)}%;--d:${(-rnd()*4).toFixed(1)}s`;fall.append(i);}
 
 /* one animation loop, paused when the tree is off screen or the tab is hidden */
-let visible=true, last=0;
+let visible=true, last=0, odd=false;
 new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).observe(tbox);
 function frame(ms){
+ odd=!odd; if(odd){requestAnimationFrame(frame);return;} // tree moves at 30 fps: the slow sway looks the same and each frame stays under 50 ms on phones (A302)
  const time=ms/1000, dt=Math.min(.05,time-(last||time)); last=time;
  if(visible&&!document.hidden){
   walkers.forEach(placeBubble); // reads first (last frame's layout is still clean), writes after: no forced layout per frame (A302)

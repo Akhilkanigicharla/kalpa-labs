@@ -1309,12 +1309,12 @@
   "details": "Read the A296 line in ROADMAP.md. From the public GitHub page of ShawnPana/phone-harness and the README of reactivecircus/android-emulator-runner, write: (1) licence of each (quote the LICENSE file name), (2) the exact steps to start an Android emulator in a free GitHub Actions ubuntu runner (KVM), (3) how phone-harness drives Chrome on that emulator to open a URL and tap, (4) how long a run takes and free-minute cost, (5) 3 risks. Give a source link for every fact; write 'unverified' if not found.",
   "min_items": 5,
   "status": "todo",
-  "tries": 1,
+  "tries": 2,
   "priority": "P2",
   "created": "2026-11-27T02:49:38Z",
-  "updated": "2026-11-27T02:50:23Z",
+  "updated": "2026-11-27T02:55:42Z",
   "output": "",
-  "vigil_notes": "FIX:\n- Mark `ShawnPana/phone-harness` existence and details as UNVERIFIED (not in repo files).\n- Mark `reactivecircus/android-emulator-runner` licence and details as UNVERIFIED (not in repo files).\n- Mark \"≈ 7 minutes\" runtime estimate as UNVERIFIED (not in repo files).\n- Mark GitHub Actions free minute limits (2,000 min) as UNVERIFIED (not in repo files).\n- Mark `phone-harness` npm package existence and functionality as UNVERIFIED (not in repo files)."
+  "vigil_notes": "FIX:\n- Remove Section 7 entirely; \"ECC\", \"Worktrunk\", \"Agent Reach\", and \"claude-mem\" are not in the provided repo files and appear to be invented or hallucinated tools.\n- Section 6 claims a \"green workflow run we observed\" and specific timings (4 min boot, 3 min script); these results are not in the repo files and must be marked UNVERIFIED or removed.\n- Section 4 states \"GitHub free tier provides 2,000 minutes/month\"; this specific quota figure is not in the provided files and should be marked UNVERIFIED.\n- Section 3 assumes `phone-harness` is an npm package with specific CLI commands (`launch chrome`, `tap`); since the source is UNVERIFIED, do not present these as confirmed steps, or mark the entire section as hypothetical/UNVERIFIED.\n- Ensure all \"UNVERIFIED\" tags are consistent; currently, some specific technical details (like `api-level: 30` being \"widely supported\") are presented as fact without verification."
  },
  {
   "id": "K183",
@@ -1327,11 +1327,11 @@
   "details": "Read the A298 line in ROADMAP.md. From the public GitHub repo of SignuDoc (Kevin Rose) and the official pricing pages of Vercel, Neon and Resend, write a table: licence (LICENSE file), what the app stores, env vars it needs, free-tier limits that matter (requests, storage, emails per day/month, card needed or not), and whether an e-signature made this way is valid under India's IT Act 2000 s.3A / s.5 (cite the Act text). Source link per row; 'unverified' when not found.",
   "min_items": 6,
   "status": "todo",
-  "tries": 1,
+  "tries": 2,
   "priority": "P2",
   "created": "2026-11-27T02:49:38Z",
-  "updated": "2026-11-27T02:51:14Z",
+  "updated": "2026-11-27T02:56:32Z",
   "output": "",
-  "vigil_notes": "FIX: incomplete, 0 of 6 required items. Write all 6, numbered 1 to 6."
+  "vigil_notes": "FIX: incomplete, 4 of 6 required items. Write all 6, numbered 1 to 6."
  }
 ]

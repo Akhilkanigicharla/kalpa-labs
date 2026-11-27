@@ -1333,5 +1333,23 @@
   "updated": "2026-11-27T04:37:02Z",
   "output": "",
   "vigil_notes": "FIX:\n- Row 4: Vercel free tier does not include 125k serverless invocations (that is a paid tier metric); remove or mark UNVERIFIED.\n- Row 4: Neon free tier does not have a \"20k rows\" limit; remove this invented constraint.\n- Row 6: Citing \"IT Act 2000 §3A\" is incorrect; Section 3A was added in 2008 (IT Amendment Act), not the original 2000 Act.\n- Row 6: Claiming the signature is \"legally admissible\" based on a generic description is a legal opinion; mark as UNVERIFIED or remove the definitive \"Yes\".\n- Row 5: Marking \"no-card\" as UNVERIFIED is correct, but the draft implies it is a fact in the \"Key take-aways\" section; ensure the takeaway reflects the uncertainty or verify the fact."
+ },
+ {
+  "id": "K185",
+  "world": "hq",
+  "owner": "Quill",
+  "title": "A303 prep: free shared stores for a per-visitor rate limit",
+  "read": [
+   "00-hq/ROADMAP.md"
+  ],
+  "details": "Read the A303 line in ROADMAP.md. From each provider's own pricing/limits page, list free tiers usable from a Netlify Function to keep a 12-per-minute counter per visitor: Netlify Blobs, Upstash Redis, Cloudflare Workers KV, Supabase (Postgres). For each: free requests/day or month, write limits, consistency (KV is eventually consistent: say so), card needed or not, page URL. Mark any number you could not see on the provider's page as 'unverified'.",
+  "min_items": 4,
+  "status": "todo",
+  "tries": 0,
+  "priority": "P2",
+  "created": "2026-11-27T04:45:00Z",
+  "updated": "2026-11-27T04:45:00Z",
+  "output": "",
+  "vigil_notes": ""
  }
 ]

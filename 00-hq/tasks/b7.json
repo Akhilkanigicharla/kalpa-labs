@@ -125,5 +125,43 @@
   "created": "2026-11-21T02:55:00Z",
   "updated": "2026-11-21T16:59:15Z",
   "output": "00-hq/knowledge/K155.md"
+ },
+ {
+  "id": "K192",
+  "world": "b7",
+  "priority": "P2",
+  "owner": "Trading",
+  "title": "A250 explainer: Brier score and log-loss in plain English + Telugu for Akhil",
+  "details": "Read the A250 line and 07-trading/src/kronos_score.py docstring. Write 5 numbered points, each one plain English sentence then the same in Telugu script: what P(up) is, what Brier score measures, what log-loss measures and why a confident wrong guess is punished hard, what the 'random walk' and 'base rate' baselines are, and why a model must beat both before paper trading. No numbers about any market, no trade tips, no predictions.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "07-trading/src/kronos_score.py"
+  ],
+  "context_chars": 20000,
+  "min_items": 5,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-28T00:00:00Z",
+  "updated": "2026-11-28T00:00:00Z",
+  "output": "00-hq/knowledge/K192.md"
+ },
+ {
+  "id": "K193",
+  "world": "b7",
+  "priority": "P2",
+  "owner": "Goldfish",
+  "title": "A290 prep (retry of K137): 10 official NSE sources for Nifty 100 / 200 index changes",
+  "details": "Read the A290 line. Write exactly 10 numbered items. Each item: one official niftyindices.com or nseindia.com page or file type where Nifty 100 / Nifty 200 reconstitution press releases or constituent lists were published (page title, URL pattern, file format, years covered, known gaps). Only official NSE / NSE Indices pages; mark anything you did not check as UNVERIFIED. No trade tips, no predictions.",
+  "read": [
+   "00-hq/ROADMAP.md",
+   "07-trading/README.md"
+  ],
+  "context_chars": 20000,
+  "min_items": 10,
+  "tries": 0,
+  "status": "todo",
+  "created": "2026-11-28T00:00:00Z",
+  "updated": "2026-11-28T00:00:00Z",
+  "output": "00-hq/knowledge/K193.md"
  }
 ]

@@ -87,7 +87,13 @@ as_mt5 wineboot --init
 if [ -f "${MT5_DIR}/terminal64.exe" ]; then ok "MT5 already installed"; else
   run curl -fsSL -o /tmp/mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe
   run chmod 644 /tmp/mt5setup.exe
-  as_mt5 timeout 900 wine /tmp/mt5setup.exe /auto || true
+  # 27 Nov 2026 first real run: mt5setup quit without installing. MetaQuotes' own mt5linux.sh sets Windows 11
+  # mode and installs the WebView2 runtime first (fetched 27 Nov 2026 from download.mql5.com/.../mt5linux.sh).
+  as_mt5 winecfg -v=win11 || true
+  run curl -fsSL -o /tmp/webview2.exe "https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/f2910a1e-e5a6-4f17-b52d-7faf525d17f8/MicrosoftEdgeWebview2Setup.exe"
+  run chmod 644 /tmp/webview2.exe
+  as_mt5 timeout 900 wine /tmp/webview2.exe /silent /install || true
+  as_mt5 timeout 1200 wine /tmp/mt5setup.exe /auto || true
   if [ "$DRY_RUN" != "1" ]; then
     for _ in $(seq 1 60); do [ -f "${MT5_DIR}/terminal64.exe" ] && break; sleep 10; done
     [ -f "${MT5_DIR}/terminal64.exe" ] || fail "MT5 did not install (send Claude: journalctl -n 50)"

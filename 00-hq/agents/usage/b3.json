@@ -1,6 +1,6 @@
 {
  "calls": {
-  "GROQ_API_KEY|openai/gpt-oss-120b": 1
+  "GROQ_API_KEY|openai/gpt-oss-120b": 2
  },
  "date": "2026-11-27",
  "spent": []

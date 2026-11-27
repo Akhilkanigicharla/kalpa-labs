@@ -1,7 +1,11 @@
 """What would the final bot do right now? Fresh 1h gold (GC=F) from Yahoo, the 7 live MSNR strategies with their
 live weights, 0.30% risk on $10K. Lists (1) trades the bot would be holding now and (2) limit orders it would
 have waiting, with entry, stop, target and lot size. The main EA+MSNR strategy (rare, ~2 trades/month) is not
-replayed here. Prices are gold futures; E8's XAUUSD quote can differ by a few dollars."""
+replayed here. Price alignment (Akhil 27 Nov 2026: "live market price and our bot should be same"): Yahoo's GC=F is the
+NEXT futures contract (Feb), which trades ~$25-30 above spot gold. Levels are shifted to spot by the gap
+between GC=F and the nearest contract (FRONT, e.g. GCZ26 = Dec 2026) at their last common minute, and the live
+XAUUSD spot quote from Swissquote's free public feed is used to say what each trade looks like right now.
+On the live server none of this is needed: the EA reads E8's own XAUUSD prices tick by tick."""
 import sys, pathlib, json
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent)); sys.path.insert(0, str(HERE.parent.parent))
@@ -13,6 +17,25 @@ import ea_mix_backtest as em
 from src.smc import simulate
 W = em.WEIGHTS_2026_11_21
 RISK = 0.003 * 10000
+
+
+FRONT = "GCZ26.CMX"          # nearest gold futures contract; roll to GCG27.CMX after late-Dec expiry
+
+
+def live_spot():
+    import urllib.request
+    u = "https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD"
+    with urllib.request.urlopen(u, timeout=20) as r:
+        p = json.loads(r.read())[0]["spreadProfilePrices"][0]
+    return round((p["bid"] + p["ask"]) / 2, 2), round(p["bid"], 2), round(p["ask"], 2)
+
+
+def basis():
+    import yfinance as yf
+    a = yf.download("GC=F", period="2d", interval="1m", progress=False)["Close"].iloc[:, 0]
+    f = yf.download(FRONT, period="2d", interval="1m", progress=False)["Close"].iloc[:, 0]
+    j = pd.concat([a, f], axis=1, join="inner").dropna()
+    return round(float(j.iloc[-1, 0] - j.iloc[-1, 1]), 2), str(j.index[-1])
 
 
 def run():
@@ -55,7 +78,23 @@ def run():
                             risk_usd=round(RISK * w, 1), lots=round(lots, 3),
                             bot_takes_it=bool(lots >= 0.01 or 0.01 * abs(entry - stop) * 100 <= 1.5 * RISK * w)))
     px = fr["1h"].iloc[-1]
-    return dict(last_bar=str(last), last_close=round(float(px.close), 2), signals=out)
+    gap, gap_at = basis(); mid, bid, ask = live_spot()
+    for o in out:                                    # to spot prices, then status at the live quote
+        for k in ("entry", "stop", "target"):
+            o[k] = round(o[k] - gap, 2)
+        buy = o["side"].startswith("BUY")
+        if o["status"] == "OPEN":
+            if (bid <= o["stop"]) if buy else (ask >= o["stop"]):
+                o["now"] = "STOPPED OUT by the live price"
+            elif (bid >= o["target"]) if buy else (ask <= o["target"]):
+                o["now"] = "TARGET HIT by the live price"
+            else:
+                o["now"] = f"still open, {'+' if (bid - o['entry']) * (1 if buy else -1) >= 0 else ''}{round((bid - o['entry']) * (1 if buy else -1), 2)} $/oz"
+        else:
+            o["now"] = "waiting" if ((ask > o["entry"]) if buy else (bid < o["entry"])) else "price is already through the entry"
+    return dict(history_last_bar_utc=str(last), futures_last=round(float(px.close), 2), futures_minus_spot=gap,
+                gap_measured_at=gap_at, live_spot_mid=mid, live_bid=bid, live_ask=ask,
+                live_utc=str(pd.Timestamp.utcnow().floor("s")), signals=out)
 
 
 if __name__ == "__main__":

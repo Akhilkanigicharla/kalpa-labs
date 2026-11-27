@@ -24,6 +24,8 @@ def main():
         assert r["answer"] in "abcd" and len({r[k] for k in "abcd"}) == 4, r["day"]
         assert r["question"] and r["explanation"] and len(r["question"]) <= 300, r["day"]  # Telegram poll question limit is 300 characters
         assert all(len(r[k]) <= 100 for k in "abcd"), r["day"]                            # poll option limit is 100 characters
+        assert len(r["explanation"]) <= 200 and r["explanation"].count("\n") <= 2, r["day"]  # quiz explanation: 0-200 chars, at most 2 line feeds
+        assert 1 <= sum(1 for k in "abcd" if r[k]) <= 12, r["day"]                          # sendPoll takes 1-12 options (core.telegram.org/bots/api#sendpoll)
         assert "guarantee" not in (r["question"] + r["explanation"]).lower()
     subjects = {r["subject"] for r in ROWS}
     assert len(subjects) == 10, subjects

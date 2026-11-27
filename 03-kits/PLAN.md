@@ -32,7 +32,7 @@ b3 earns money by selling copy-to-your-Drive Google Sheets kits for ₹199–499
 | Kit | Evidence | Paid competitors proving people pay |
 |---|---|---|
 | GATE 2027 Final-120-Days Tracker | Exam 6, 7, 13, 14, 20, 21 Feb 2027 (IIT Madras). Registration closed in Sep/Oct 2026, so the buyer pool is fixed and committed. | "GATE 2027 Tracker" Notion template at 299 on Carrd + Cashfree; GateOS at ₹99/month or ₹999/year |
-| UPSC CSE 2027 Prelims Tracker | 8,19,732 applied for CSE 2026; prelims 2027 on 23 May 2027 | Topmate "UPSC Syllabus Tracker" at ₹49 (struck through from ₹299) |
+| UPSC CSE 2027 Prelims Tracker | 8,19,372 applied for CSE 2026; prelims 2027 on 23 May 2027 | Topmate "UPSC Syllabus Tracker" at ₹49 (struck through from ₹299) |
 | Salary Tax-Regime + SIP Goal Planner | 10.02 crore contributing SIP accounts and 66.4 lakh new SIP registrations in Aug 2026. Most free sheets miss 87A marginal relief; taxcalcindia is off by ₹40,300 at ₹13L gross. | freefincal tools (free); many Gumroad budget sheets (free–₹500) |
 | (Kit 4, on trigger) TGPSC/APPSC Group, in Telugu | TGPSC has about 15 more notifications planned for about 3,800 posts, but the groups aren't confirmed. SSC CGL 2026 drew 28 lakh+ applications. | Coaching material only; almost no Telugu Sheets trackers found |
 
@@ -87,8 +87,8 @@ b3 earns money by selling copy-to-your-Drive Google Sheets kits for ₹199–499
 |---|---|---|---|---|
 | **Razorpay Payment Pages** | 2% + GST on fee; 0% for first 90 days / ₹5L for new merchants (₹199 KYC). Custom success message or redirect; webhook. | ₹194 | Yes | **PICK** |
 | Cashfree Payment Forms | 1.95% + tax; forms free; festive offer waives fee on first ₹20L for eligible new merchants | ₹195 | Yes | Backup if Razorpay KYC stalls |
-| Instamojo | 2% + ₹3 standard; digital-product store 5% + ₹3 (figures from a 2019-era article, so re-check) | ₹186 | Yes | Skip |
-| Topmate | 10% via your own profile link, 20% via its marketplace (+ gateway, unclear); ECO TDS 0.1% u/s 194-O | ₹175 / ₹155 | Yes | **Second listing for discovery only** |
+| Instamojo | Payment links 2% + ₹3; digital products on its store 10% + ₹3 (free Lite) or 5% + ₹3 (Growth, ₹14,999/yr) (instamojo.com/pricing + wise.com, checked 27 Nov 2026) | ₹191 link / ₹172 store (incl. 18% GST on fee) | Yes | Skip |
+| Topmate | 10% via your own profile link, 20% via its marketplace, plus transaction fees 2%–6% (topmate.io/pricing, checked 27 Nov 2026); ECO TDS 0.1% u/s 194-O | ≈ ₹167–175 / ≈ ₹147–155 (before GST on fees) | Yes | **Second listing for discovery only** |
 | Gumroad | 10% + $0.50 direct (30% via Discover) + card processing; Merchant of Record (MoR); no fee refunds | ≈ ₹100 | Not listed | No; the fixed fee kills ₹199 pricing |
 | Lemon Squeezy | 5% + $0.50; MoR; in "help users migrate to Stripe Managed Payments" mode since Jan 2026; India payouts uncertain | ≈ ₹140 | Not listed | No |
 

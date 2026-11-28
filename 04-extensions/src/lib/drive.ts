@@ -135,9 +135,19 @@ export async function gzip(text: string): Promise<Uint8Array> {
   const stream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
   return new Uint8Array(await new Response(stream).arrayBuffer());
 }
-export async function gunzip(bytes: Uint8Array): Promise<string> {
-  const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream("gzip"));
-  return await new Response(stream).text();
+/** A Drive backup unpacks to at most this many bytes (a 20 MB import cap with lots of room; stops a gzip bomb). */
+export const MAX_UNZIPPED = 100 * 1024 * 1024;
+export async function gunzip(bytes: Uint8Array, max = MAX_UNZIPPED): Promise<string> {
+  const reader = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream("gzip")).getReader();
+  const parts: Uint8Array[] = []; let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > max) { await reader.cancel().catch(() => {}); throw new Error("This backup is too big to open (over 100 MB unpacked)."); }
+    parts.push(value);
+  }
+  return await new Blob(parts as BlobPart[]).text();
 }
 export async function sha256(text: string): Promise<string> {
   const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));

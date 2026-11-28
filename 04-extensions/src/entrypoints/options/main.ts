@@ -77,13 +77,13 @@ $("undo-btn").addEventListener("click", async () => {
 
 // ---- v0.3 Group B: edit one saved session. Every change goes through the background in one transaction, with Undo.
 type Tab = { url: string; title: string };
-type Full = { id: string; name: string; windows: { tabs: Tab[] }[] };
-let editing = "", shown = 200;
+type Full = { id: string; name: string; createdAt: number; updatedAt?: number; windows: { tabs: Tab[] }[] };
+let editing = "", shown = 200, editingV = 0;   // editingV: the session version this page shows (A357 conflict check)
 async function openEditor(id: string, keepScroll = false) {
   const r = await send<{ session: Full; others: Row[] }>({ type: "session-get", id });
   if (!r.ok) { closeEditor(); $("undo-msg").textContent = err(r.error); return; }
   if (editing !== id) shown = 200;
-  editing = id; const s = r.session; $("edit").hidden = false;
+  editing = id; const s = r.session; editingV = s.updatedAt ?? s.createdAt; $("edit").hidden = false;
   $("h-edit").textContent = `Edit: ${short(s.name, 60)}`;
   $<HTMLInputElement>("edit-name").value = s.name;
   const sel = $<HTMLSelectElement>("edit-other"); const was = sel.value;
@@ -111,7 +111,7 @@ function closeEditor() { editing = ""; $("edit").hidden = true; }
 /** One edit: buttons can't double-fire (all disabled while it runs), then Undo for 8 s. */
 async function change(msg: object, done: string) {
   const btns = [...$("edit").querySelectorAll("button")]; for (const b of btns) b.disabled = true;
-  const r = await send<{ trashed: boolean }>(msg);
+  const r = await send<{ trashed: boolean }>({ ...msg, v: editingV });
   for (const b of btns) b.disabled = false;
   if (!r.ok) { $("edit-msg").textContent = err(r.error); await refresh(); if (editing) await openEditor(editing, true); return; }
   $("edit-msg").textContent = "";

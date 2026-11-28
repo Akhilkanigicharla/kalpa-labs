@@ -13,7 +13,7 @@ export const TYPES = new Set([
   "session-get", "edit-remove-tab", "edit-move-tab", "edit-merge", "edit-undo", "export-text",
 ]);
 
-export interface Msg { type: string; id?: string; to?: string; text?: string; name?: string; wi?: number; ti?: number; url?: string; scope?: string }
+export interface Msg { type: string; id?: string; to?: string; text?: string; name?: string; wi?: number; ti?: number; url?: string; scope?: string; v?: number }
 
 const str = (v: unknown, max: number) => (typeof v === "string" && v.length <= max ? v : undefined);
 const idx = (v: unknown) => (Number.isInteger(v) && (v as number) >= 0 && (v as number) < 1_000_000 ? (v as number) : undefined);
@@ -34,6 +34,10 @@ export function checkMsg(m: unknown): Msg | null {
     if (o[k] === undefined) continue;
     const n = idx(o[k]); if (n === undefined) return null;
     out[k] = n;
+  }
+  if (o.v !== undefined) {   // the session version the page saw (a millisecond time)
+    if (!Number.isSafeInteger(o.v) || (o.v as number) < 0) return null;
+    out.v = o.v as number;
   }
   return out;
 }

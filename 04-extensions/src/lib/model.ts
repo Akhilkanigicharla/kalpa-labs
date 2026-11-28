@@ -6,6 +6,8 @@ export interface SavedWindow { tabs: SavedTab[]; groups: SavedGroup[]; focused?:
 export interface Session {
   id: string; name: string; createdAt: number; kind: "manual" | "auto" | "import";
   source?: string; windows: SavedWindow[];
+  /** v0.3: set on every hand edit, so a second open page (or an old backup) can't silently overwrite it. */
+  updatedAt?: number;
 }
 export const COLORS: GroupColor[] = ["grey", "blue", "red", "yellow", "green", "pink", "purple", "cyan", "orange"];
 

@@ -18,5 +18,10 @@ export default defineConfig({
     // Google Drive backup: public OAuth client id from the build setting (not a secret). Without it the Drive card says "being set up".
     ...(process.env.WXT_GOOGLE_CLIENT_ID ? { oauth2: { client_id: process.env.WXT_GOOGLE_CLIENT_ID, scopes: ["https://www.googleapis.com/auth/drive.appdata"] } } : {}),
     action: { default_title: "Tab Lifeboat" },
+    // A357: explicit CSP for our pages (research/v03-hardening-2026-11-27.md 1.1). Only our own scripts, no plugins,
+    // images from the extension or data: (favicons we draw), network only to Google Drive + its token endpoint.
+    content_security_policy: {
+      extension_pages: "default-src 'self'; script-src 'self'; object-src 'none'; img-src 'self' data:; connect-src https://www.googleapis.com https://oauth2.googleapis.com; base-uri 'none'; form-action 'none'",
+    },
   },
 });

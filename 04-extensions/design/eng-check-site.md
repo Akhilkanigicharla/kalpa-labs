@@ -23,7 +23,7 @@ Machine rows come from `python3 00-hq/tools/eng_check.py extension-site --md`; t
 | Pagination + Limits (every list read has limit= or pages) | PASS | no unbounded list reads |
 | Failover (AI calls fall back to another model or a fixed reply) | PASS | no AI calls |
 | Graceful Degradation (browser fetch failures are caught) | PASS | no server calls |
-| Performance Budgets (page + JS < 250 KB) | PASS | privacy.html: 12 KB |
+| Performance Budgets (page + JS < 250 KB) | PASS | privacy.html: 13 KB |
 
 ## All 113 items (fill: done / not relevant + why / missing + roadmap id)
 

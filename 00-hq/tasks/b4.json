@@ -1,294 +1,326 @@
 [
- {
-  "id": "K009",
-  "world": "b4",
-  "priority": "P0",
-  "owner": "Lifeboat",
-  "playbook": "marketing-content-creator",
-  "title": "Tab Lifeboat Chrome Web Store listing: short description (132 chars), full description, 5 screenshot captions, FAQ, in English (also Hindi version)",
-  "details": "Use the real features in the plan and DEPTH.md only.",
-  "read": [
-   "04-extensions/PLAN.md",
-   "04-extensions/DEPTH.md",
-   "04-extensions/store/listing.md"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-05T12:31:02Z",
-  "output": "00-hq/knowledge/K009.md"
- },
- {
-  "id": "K010",
-  "world": "b4",
-  "priority": "P0",
-  "owner": "Lifeboat",
-  "playbook": "business-strategist",
-  "title": "Tab Lifeboat Pro plan: what is free vs Pro, price options in USD and INR with reasons, and launch-week offer",
-  "details": "Free tools only; payment provider not chosen yet (C54); mark prices as PROPOSED.",
-  "read": [
-   "04-extensions/PLAN.md",
-   "04-extensions/DEPTH.md"
-  ],
-  "status": "rejected",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-06T01:38:23Z",
-  "tries": 3,
-  "vigil_notes": "FIX:\n- Founding Lifetime $19 / ₹899 is invented; repo only lists $29 lifetime / ₹1,199 (and a cut-off $1 row). Mark UNVERIFIED or remove.\n- \"Priority support / early access\" and \"Believer\" competitor tier are not in repo; remove or mark UNVERIFIED.\n- Duplicate-tab cleanup and \"where did this tab go\" timeline are Pro-only in repo; do not list under Free.\n- \"Payment provider still pending\" contradicts repo (Dodo Payments is named); correct or mark UNVERIFIED.\n- Launch-week offer is marked UNVERIFIED (good); keep all promo details clearly flagged as placeholders."
- },
- {
-  "id": "K011",
-  "world": "b4",
-  "priority": "P1",
-  "owner": "Lifeboat",
-  "playbook": "marketing-growth-hacker",
-  "title": "Tab Lifeboat launch posts: Product Hunt text, 3 Reddit posts for the right subreddits (follow their self-promo rules), 1 X thread, 1 LinkedIn post",
-  "details": "Honest, no fake reviews, no vote begging.",
-  "read": [
-   "04-extensions/PLAN.md",
-   "00-hq/marketing/launch/places-to-post.md"
-  ],
-  "status": "review",
-  "created": "2026-11-04T08:00:00Z",
-  "updated": "2026-11-04T22:41:06Z",
-  "last_error": "no model answered",
-  "output": "00-hq/knowledge/K011.md"
- },
- {
-  "id": "K028",
-  "world": "b4",
-  "priority": "P0",
-  "owner": "Lifeboat",
-  "playbook": "marketing-content-creator",
-  "title": "Tab Lifeboat: 5 store screenshot scenes (what to show, caption on each, in English), privacy-policy summary in plain words, and 10 FAQ answers",
-  "details": "Real features only (DEPTH.md).",
-  "read": [
-   "04-extensions/DEPTH.md",
-   "04-extensions/PLAN.md"
-  ],
-  "status": "review",
-  "created": "2026-11-06T13:20:00Z",
-  "updated": "2026-11-06T12:32:21Z",
-  "output": "00-hq/knowledge/K028.md"
- },
- {
-  "id": "K040",
-  "world": "b4",
-  "priority": "P1",
-  "owner": "Goldfish",
-  "title": "Elephant-Goldfish review of 04-extensions/PLAN.md: you are a zero-context goldfish reviewer",
-  "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
-  "read": [
-   "00-hq/vendor/egm/agents/zoom_out.md",
-   "00-hq/vendor/egm/agents/implementation_readiness.md",
-   "04-extensions/PLAN.md"
-  ],
-  "context_chars": 38000,
-  "status": "review",
-  "created": "2026-11-06T19:05:00Z",
-  "updated": "2026-11-06T18:55:04Z",
-  "output": "00-hq/knowledge/K040.md"
- },
- {
-  "id": "K051",
-  "world": "b4",
-  "priority": "P1",
-  "owner": "Forge",
-  "title": "Tab Lifeboat popup + store site UX pattern audit",
-  "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
-  "read": [
-   "00-hq/design/UX-PATTERNS.md",
-   "04-extensions/src/entrypoints/popup/index.html",
-   "04-extensions/src/entrypoints/popup/main.ts",
-   "04-extensions/src/entrypoints/popup/style.css",
-   "04-extensions/site/index.html"
-  ],
-  "min_items": 20,
-  "context_chars": 38000,
-  "status": "rejected",
-  "created": "2026-11-08T12:45:00Z",
-  "output": "00-hq/knowledge/K051.md",
-  "updated": "2026-11-08T19:31:20Z",
-  "tries": 3,
-  "vigil_notes": "FIX:\n- Row 13: `Alt+Shift+L` is not in any repo file; remove it or mark it UNVERIFIED.\n- Row 8: The save button disables on click to prevent double-fire, so throttling is relevant; change ➖ Not relevant to ✅.\n- Row 17: `➖ UNVERIFIED` mixes symbols; use plain `UNVERIFIED` for the missing custom 404 page."
- },
- {
-  "id": "K064",
-  "world": "b4",
-  "priority": "P1",
-  "owner": "Lifeboat",
-  "title": "Tab Lifeboat store listing: never lose your tabs",
-  "details": "Write a Chrome Web Store listing for Tab Lifeboat. Angle: never lose your tabs: free saving and restoring with no daily limit, import from other tab savers' export files, automatic local backups and an export file; paid plan only for cloud backup and sync. Give 8 numbered blocks: short description (under 132 characters), 3 headline options (one block), long description, 5 feature bullets (one block), privacy paragraph (data stays on the device unless sync is on), free vs paid table in text, 4 FAQ, 5 screenshot captions. No rival names, no user counts, no claims about other products' bugs.",
-  "read": [
-   "00-hq/research/competitors-2026-11-11.md"
-  ],
-  "min_items": 8,
-  "context_chars": 14000,
-  "status": "review",
-  "created": "2026-11-11T09:30:00Z",
-  "output": "00-hq/knowledge/K064.md",
-  "updated": "2026-11-11T09:36:19Z",
-  "tries": 1
- },
- {
-  "id": "K100",
-  "world": "b4",
-  "title": "A213 prep: Session Buddy and OneTab export file formats + data-loss reports",
-  "read": [
-   "00-hq/ROADMAP.md",
-   "00-hq/research/competitors-2026-11-11.md"
-  ],
-  "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
-  "min_items": 4,
-  "tries": 3,
-  "status": "rejected",
-  "created": "2026-11-13T07:30:00Z",
-  "updated": "2026-11-13T08:10:25Z",
-  "output": "00-hq/knowledge/K100.md",
-  "owner": "Lifeboat",
-  "priority": "P1",
-  "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
- },
- {
-  "priority": "P2",
-  "tries": 0,
-  "status": "done",
-  "created": "2026-11-19T13:20:00Z",
-  "updated": "2026-11-20T14:40:55Z",
-  "output": "00-hq/knowledge/K124.md",
-  "context_chars": 8000,
-  "world": "b4",
-  "owner": "Quill",
-  "id": "K124",
-  "title": "A231 prep: UI copy for Tab Lifeboat 'Recently deleted' (undo delete session)",
-  "details": "Write plain, short English UI text for: the undo toast after deleting a session, the 'Recently deleted' list title, its empty state, the 'Restore' and 'Delete forever' buttons, the confirm text for 'Delete forever', and the note that items go after 7 days. Max 60 characters each. Numbered 1 to 7.",
-  "read": [
-   "04-extensions/README.md"
-  ],
-  "min_items": 7
- },
- {
-  "priority": "P2",
-  "tries": 1,
-  "status": "done",
-  "created": "2026-11-20T08:10:00Z",
-  "updated": "2026-11-20T14:40:55Z",
-  "context_chars": 8000,
-  "owner": "Quill",
-  "world": "b4",
-  "id": "K134",
-  "title": "A231 Tab Lifeboat undo delete: UI copy for the Recently deleted list",
-  "details": "Write 8 short UI strings for a Chrome extension that keeps deleted tab sessions for 7 days: list title, empty state, 'deleted N days ago' label, restore button, delete-forever button, confirm text for delete forever, undo toast after delete, toast after restore. Plain English, each under 50 characters, no emoji. JSON lines {key, text}.",
-  "read": [
-   "04-extensions/README.md"
-  ],
-  "min_items": 8,
-  "output": "00-hq/knowledge/K134.md"
- },
- {
-  "priority": "P2",
-  "tries": 3,
-  "status": "rejected",
-  "created": "2026-11-20T12:39:36Z",
-  "updated": "2026-11-20T13:14:50Z",
-  "context_chars": 6000,
-  "owner": "Lifeboat",
-  "world": "b4",
-  "id": "K139",
-  "title": "A232 prep: free static hosts that send custom security headers",
-  "details": "List free static hosting options (no card) that let a site set custom response headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS) via a _headers or config file: e.g. Cloudflare Pages, Netlify, Vercel, Firebase Hosting. For each: header file name/format, free-tier limits, official docs URL. Mark every limit UNVERIFIED; Claude checks them.",
-  "read": [
-   "04-extensions/design/eng-check-site.md"
-  ],
-  "min_items": 8,
-  "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
- },
- {
-  "priority": "P2",
-  "tries": 3,
-  "status": "rejected",
-  "created": "2026-11-20T14:40:55Z",
-  "updated": "2026-11-20T16:46:49Z",
-  "context_chars": 8000,
-  "owner": "Quill",
-  "world": "b4",
-  "id": "K140",
-  "title": "A217 prep: 5 Manifest V2 extensions removed 31 Aug 2026 with no working replacement",
-  "details": "From public pages only (Chrome Web Store listings, news, GitHub issues, Reddit threads quoted in news). For each of 5 candidates: name, users before removal, rating, last update, does a working MV3 replacement exist today (name + link), top 3 one-star complaints, one way to charge, two source links. Mark anything you cannot source as UNVERIFIED. JSON lines.",
-  "read": [
-   "04-extensions/research/extension-2-review-mining.md"
-  ],
-  "min_items": 5,
-  "output": "00-hq/knowledge/K140.md",
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
- },
- {
-  "priority": "P2",
-  "tries": 3,
-  "status": "rejected",
-  "created": "2026-11-20T14:40:55Z",
-  "updated": "2026-11-20T16:48:23Z",
-  "context_chars": 8000,
-  "owner": "Quill",
-  "world": "b4",
-  "id": "K141",
-  "title": "A232 prep: free static hosts that let a site set its own security headers",
-  "details": "List 5 free static hosting options (no card) that let a site send custom HTTP headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Permissions-Policy): host, how headers are set (file name + one example line), free-tier limits, link to the official docs page. Mark anything not on an official page as UNVERIFIED. JSON lines.",
-  "read": [
-   "04-extensions/design/eng-check-site.md"
-  ],
-  "min_items": 5,
-  "output": "00-hq/knowledge/K141.md",
-  "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
- },
- {
-  "priority": "P2",
-  "tries": 3,
-  "status": "rejected",
-  "created": "2026-11-20T22:48:06Z",
-  "updated": "2026-11-21T00:53:31Z",
-  "context_chars": 8000,
-  "owner": "Quill",
-  "world": "b4",
-  "id": "K148",
-  "title": "A217 retry: 5 Chrome extensions with many users and many 'stopped working' reviews",
-  "details": "Public pages only (Chrome Web Store listing pages, the developer's site, news articles). List 5 extensions that either Google disabled for Manifest V2 or that have 100k+ users and many recent 1-star 'does not work' reviews. Per extension, one numbered item with: name, users (from the store page), rating, last updated date, is there a working replacement today (name it), top 3 one-star complaints in your own words (no reviewer names), one way to charge, and two source URLs. UNVERIFIED for anything without a URL. Write all 5 items.",
-  "read": [
-   "04-extensions/research/extension-2-review-mining.md"
-  ],
-  "min_items": 5,
-  "output": "00-hq/knowledge/K148.md",
-  "vigil_notes": "FIX:\n*   Remove item 2 (Closet Tools): Repo explicitly states \"Closet Tools-style posting bots... are out\" due to Kalpa rules.\n*   Mark \"Working Replacement Today\" as UNVERIFIED for all items: Repo files do not verify the existence or status of Mailmeteor, PosherVA, Hoverify, TweetHunter X, or Wordtune as replacements.\n*   Mark \"Top 3 One-Star Complaints\" as UNVERIFIED for all items: Specific technical failure modes (e.g., \"popup button does not attach,\" \"session timeouts\") are not present in the provided repo files.\n*   Mark \"Rating\" and \"Last Updated\" as UNVERIFIED for all items: Specific ratings (4.7, 4.2, etc.) and dates are not found in the repo files.\n*   Mark \"Users\" as UNVERIFIED for items 2, 3, 4, and 5: Only GMass (~400,000) is verified in the repo; user counts for the others are not provided in the source files."
- },
- {
-  "priority": "P2",
-  "context_chars": 8000,
-  "owner": "Lifeboat",
-  "world": "b4",
-  "status": "todo",
-  "created": "2026-11-27T18:41:30Z",
-  "id": "K190",
-  "title": "A356 #6 importer formats: Edge Collections CSV, Pocket export, Toby JSON, bookmarks HTML",
-  "details": "Public docs, GitHub issues and help pages only (no logins). For each of 4 formats give one numbered item: (1) Microsoft Edge Collections export (CSV or other; columns and an example row), (2) Pocket export file (ril_export.html and the CSV export after July 2025 shutdown: structure, tags, time_added), (3) Toby JSON export (top-level keys, lists/cards, title/url fields), (4) Netscape bookmarks HTML (DL/DT/H3/A structure, ADD_DATE). Each item: exact field names, a tiny made-up example (no real personal data), known quirks (encoding, quotes, nested folders), and the source URL. Say 'unverified' if you could not see the source.",
-  "min_items": 4,
-  "read": [
-   "04-extensions/src/lib/importers.ts"
-  ],
-  "output": "00-hq/knowledge/K190.md"
- },
- {
-  "priority": "P2",
-  "context_chars": 8000,
-  "owner": "Lifeboat",
-  "world": "b4",
-  "status": "todo",
-  "created": "2026-11-27T18:41:30Z",
-  "id": "K191",
-  "title": "Tab Lifeboat v0.3 'What's new' copy for the store listing and the options page",
-  "details": "Write plain, honest English (no hype, no emoji) for Tab Lifeboat v0.3 free features: restore skips tabs already open; download as Markdown or plain text (OneTab format); plus planned: popup search, save this window/picked tabs with a name, edit a session, importers for Edge Collections/Pocket/Toby/bookmarks, a warning when auto-save stops, a 'your tabs are safe, restore?' banner after a crash or update. Give: (1) a 5-bullet 'What's new in 0.3' list, each under 90 characters; (2) one 132-character store short description; (3) a 3-sentence release note. Do not claim anything not in this list.",
-  "min_items": 3,
-  "read": [
-   "04-extensions/research/pro-plan-2026-11-27.md"
-  ],
-  "output": "00-hq/knowledge/K191.md"
- }
+  {
+    "id": "K009",
+    "world": "b4",
+    "priority": "P0",
+    "owner": "Lifeboat",
+    "playbook": "marketing-content-creator",
+    "title": "Tab Lifeboat Chrome Web Store listing: short description (132 chars), full description, 5 screenshot captions, FAQ, in English (also Hindi version)",
+    "details": "Use the real features in the plan and DEPTH.md only.",
+    "read": [
+      "04-extensions/PLAN.md",
+      "04-extensions/DEPTH.md",
+      "04-extensions/store/listing.md"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-05T12:31:02Z",
+    "output": "00-hq/knowledge/K009.md"
+  },
+  {
+    "id": "K010",
+    "world": "b4",
+    "priority": "P0",
+    "owner": "Lifeboat",
+    "playbook": "business-strategist",
+    "title": "Tab Lifeboat Pro plan: what is free vs Pro, price options in USD and INR with reasons, and launch-week offer",
+    "details": "Free tools only; payment provider not chosen yet (C54); mark prices as PROPOSED.",
+    "read": [
+      "04-extensions/PLAN.md",
+      "04-extensions/DEPTH.md"
+    ],
+    "status": "rejected",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-06T01:38:23Z",
+    "tries": 3,
+    "vigil_notes": "FIX:\n- Founding Lifetime $19 / ₹899 is invented; repo only lists $29 lifetime / ₹1,199 (and a cut-off $1 row). Mark UNVERIFIED or remove.\n- \"Priority support / early access\" and \"Believer\" competitor tier are not in repo; remove or mark UNVERIFIED.\n- Duplicate-tab cleanup and \"where did this tab go\" timeline are Pro-only in repo; do not list under Free.\n- \"Payment provider still pending\" contradicts repo (Dodo Payments is named); correct or mark UNVERIFIED.\n- Launch-week offer is marked UNVERIFIED (good); keep all promo details clearly flagged as placeholders."
+  },
+  {
+    "id": "K011",
+    "world": "b4",
+    "priority": "P1",
+    "owner": "Lifeboat",
+    "playbook": "marketing-growth-hacker",
+    "title": "Tab Lifeboat launch posts: Product Hunt text, 3 Reddit posts for the right subreddits (follow their self-promo rules), 1 X thread, 1 LinkedIn post",
+    "details": "Honest, no fake reviews, no vote begging.",
+    "read": [
+      "04-extensions/PLAN.md",
+      "00-hq/marketing/launch/places-to-post.md"
+    ],
+    "status": "review",
+    "created": "2026-11-04T08:00:00Z",
+    "updated": "2026-11-04T22:41:06Z",
+    "last_error": "no model answered",
+    "output": "00-hq/knowledge/K011.md"
+  },
+  {
+    "id": "K028",
+    "world": "b4",
+    "priority": "P0",
+    "owner": "Lifeboat",
+    "playbook": "marketing-content-creator",
+    "title": "Tab Lifeboat: 5 store screenshot scenes (what to show, caption on each, in English), privacy-policy summary in plain words, and 10 FAQ answers",
+    "details": "Real features only (DEPTH.md).",
+    "read": [
+      "04-extensions/DEPTH.md",
+      "04-extensions/PLAN.md"
+    ],
+    "status": "review",
+    "created": "2026-11-06T13:20:00Z",
+    "updated": "2026-11-06T12:32:21Z",
+    "output": "00-hq/knowledge/K028.md"
+  },
+  {
+    "id": "K040",
+    "world": "b4",
+    "priority": "P1",
+    "owner": "Goldfish",
+    "title": "Elephant-Goldfish review of 04-extensions/PLAN.md: you are a zero-context goldfish reviewer",
+    "details": "Follow the two EGM reviewer prompts given (zoom-out + implementation readiness). Read ONLY the plan text. Output: 1) up to 10 findings, each with severity (blocker/major/minor), the exact plan line it is about, and a one-line fix; 2) unstated assumptions; 3) open questions only Akhil can answer. Do not invent facts about the code; say UNVERIFIED where unsure. Plain short English.",
+    "read": [
+      "00-hq/vendor/egm/agents/zoom_out.md",
+      "00-hq/vendor/egm/agents/implementation_readiness.md",
+      "04-extensions/PLAN.md"
+    ],
+    "context_chars": 38000,
+    "status": "review",
+    "created": "2026-11-06T19:05:00Z",
+    "updated": "2026-11-06T18:55:04Z",
+    "output": "00-hq/knowledge/K040.md"
+  },
+  {
+    "id": "K051",
+    "world": "b4",
+    "priority": "P1",
+    "owner": "Forge",
+    "title": "Tab Lifeboat popup + store site UX pattern audit",
+    "details": "Audit this UI against the 20 Kalpa UX patterns in 00-hq/design/UX-PATTERNS.md. Output the per-UI table from that file (all 20 rows): for each pattern write done / not relevant (why) / missing, with the file and a short quote or line as evidence. You only see part of long files: anything you cannot see is UNVERIFIED, never guessed. Then list the top 5 missing patterns in fix order, each with a 1-2 line fix plan that uses the Kalpa design system (no new colours or fonts). Plain short English. No code longer than 10 lines.",
+    "read": [
+      "00-hq/design/UX-PATTERNS.md",
+      "04-extensions/src/entrypoints/popup/index.html",
+      "04-extensions/src/entrypoints/popup/main.ts",
+      "04-extensions/src/entrypoints/popup/style.css",
+      "04-extensions/site/index.html"
+    ],
+    "min_items": 20,
+    "context_chars": 38000,
+    "status": "rejected",
+    "created": "2026-11-08T12:45:00Z",
+    "output": "00-hq/knowledge/K051.md",
+    "updated": "2026-11-08T19:31:20Z",
+    "tries": 3,
+    "vigil_notes": "FIX:\n- Row 13: `Alt+Shift+L` is not in any repo file; remove it or mark it UNVERIFIED.\n- Row 8: The save button disables on click to prevent double-fire, so throttling is relevant; change ➖ Not relevant to ✅.\n- Row 17: `➖ UNVERIFIED` mixes symbols; use plain `UNVERIFIED` for the missing custom 404 page."
+  },
+  {
+    "id": "K064",
+    "world": "b4",
+    "priority": "P1",
+    "owner": "Lifeboat",
+    "title": "Tab Lifeboat store listing: never lose your tabs",
+    "details": "Write a Chrome Web Store listing for Tab Lifeboat. Angle: never lose your tabs: free saving and restoring with no daily limit, import from other tab savers' export files, automatic local backups and an export file; paid plan only for cloud backup and sync. Give 8 numbered blocks: short description (under 132 characters), 3 headline options (one block), long description, 5 feature bullets (one block), privacy paragraph (data stays on the device unless sync is on), free vs paid table in text, 4 FAQ, 5 screenshot captions. No rival names, no user counts, no claims about other products' bugs.",
+    "read": [
+      "00-hq/research/competitors-2026-11-11.md"
+    ],
+    "min_items": 8,
+    "context_chars": 14000,
+    "status": "review",
+    "created": "2026-11-11T09:30:00Z",
+    "output": "00-hq/knowledge/K064.md",
+    "updated": "2026-11-11T09:36:19Z",
+    "tries": 1
+  },
+  {
+    "id": "K100",
+    "world": "b4",
+    "title": "A213 prep: Session Buddy and OneTab export file formats + data-loss reports",
+    "read": [
+      "00-hq/ROADMAP.md",
+      "00-hq/research/competitors-2026-11-11.md"
+    ],
+    "details": "Read the A213 line in 00-hq/ROADMAP.md. (1) Describe the export file format of Session Buddy and of OneTab (fields, one small example each, with the public page you read it from). (2) List public reports of Session Buddy v4 losing user data, each with its URL and date; mark any you could not open as 'unverified'. Do not recommend signing up or paying.",
+    "min_items": 4,
+    "tries": 3,
+    "status": "rejected",
+    "created": "2026-11-13T07:30:00Z",
+    "updated": "2026-11-13T08:10:25Z",
+    "output": "00-hq/knowledge/K100.md",
+    "owner": "Lifeboat",
+    "priority": "P1",
+    "vigil_notes": "FIX: incomplete, 3 of 4 required items. Write all 4, numbered 1 to 4."
+  },
+  {
+    "priority": "P2",
+    "tries": 0,
+    "status": "done",
+    "created": "2026-11-19T13:20:00Z",
+    "updated": "2026-11-20T14:40:55Z",
+    "output": "00-hq/knowledge/K124.md",
+    "context_chars": 8000,
+    "world": "b4",
+    "owner": "Quill",
+    "id": "K124",
+    "title": "A231 prep: UI copy for Tab Lifeboat 'Recently deleted' (undo delete session)",
+    "details": "Write plain, short English UI text for: the undo toast after deleting a session, the 'Recently deleted' list title, its empty state, the 'Restore' and 'Delete forever' buttons, the confirm text for 'Delete forever', and the note that items go after 7 days. Max 60 characters each. Numbered 1 to 7.",
+    "read": [
+      "04-extensions/README.md"
+    ],
+    "min_items": 7
+  },
+  {
+    "priority": "P2",
+    "tries": 1,
+    "status": "done",
+    "created": "2026-11-20T08:10:00Z",
+    "updated": "2026-11-20T14:40:55Z",
+    "context_chars": 8000,
+    "owner": "Quill",
+    "world": "b4",
+    "id": "K134",
+    "title": "A231 Tab Lifeboat undo delete: UI copy for the Recently deleted list",
+    "details": "Write 8 short UI strings for a Chrome extension that keeps deleted tab sessions for 7 days: list title, empty state, 'deleted N days ago' label, restore button, delete-forever button, confirm text for delete forever, undo toast after delete, toast after restore. Plain English, each under 50 characters, no emoji. JSON lines {key, text}.",
+    "read": [
+      "04-extensions/README.md"
+    ],
+    "min_items": 8,
+    "output": "00-hq/knowledge/K134.md"
+  },
+  {
+    "priority": "P2",
+    "tries": 3,
+    "status": "rejected",
+    "created": "2026-11-20T12:39:36Z",
+    "updated": "2026-11-20T13:14:50Z",
+    "context_chars": 6000,
+    "owner": "Lifeboat",
+    "world": "b4",
+    "id": "K139",
+    "title": "A232 prep: free static hosts that send custom security headers",
+    "details": "List free static hosting options (no card) that let a site set custom response headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS) via a _headers or config file: e.g. Cloudflare Pages, Netlify, Vercel, Firebase Hosting. For each: header file name/format, free-tier limits, official docs URL. Mark every limit UNVERIFIED; Claude checks them.",
+    "read": [
+      "04-extensions/design/eng-check-site.md"
+    ],
+    "min_items": 8,
+    "vigil_notes": "FIX: incomplete, 5 of 8 required items. Write all 8, numbered 1 to 8."
+  },
+  {
+    "priority": "P2",
+    "tries": 3,
+    "status": "rejected",
+    "created": "2026-11-20T14:40:55Z",
+    "updated": "2026-11-20T16:46:49Z",
+    "context_chars": 8000,
+    "owner": "Quill",
+    "world": "b4",
+    "id": "K140",
+    "title": "A217 prep: 5 Manifest V2 extensions removed 31 Aug 2026 with no working replacement",
+    "details": "From public pages only (Chrome Web Store listings, news, GitHub issues, Reddit threads quoted in news). For each of 5 candidates: name, users before removal, rating, last update, does a working MV3 replacement exist today (name + link), top 3 one-star complaints, one way to charge, two source links. Mark anything you cannot source as UNVERIFIED. JSON lines.",
+    "read": [
+      "04-extensions/research/extension-2-review-mining.md"
+    ],
+    "min_items": 5,
+    "output": "00-hq/knowledge/K140.md",
+    "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  },
+  {
+    "priority": "P2",
+    "tries": 3,
+    "status": "rejected",
+    "created": "2026-11-20T14:40:55Z",
+    "updated": "2026-11-20T16:48:23Z",
+    "context_chars": 8000,
+    "owner": "Quill",
+    "world": "b4",
+    "id": "K141",
+    "title": "A232 prep: free static hosts that let a site set its own security headers",
+    "details": "List 5 free static hosting options (no card) that let a site send custom HTTP headers (Content-Security-Policy frame-ancestors, X-Content-Type-Options, Permissions-Policy): host, how headers are set (file name + one example line), free-tier limits, link to the official docs page. Mark anything not on an official page as UNVERIFIED. JSON lines.",
+    "read": [
+      "04-extensions/design/eng-check-site.md"
+    ],
+    "min_items": 5,
+    "output": "00-hq/knowledge/K141.md",
+    "vigil_notes": "FIX: incomplete, 0 of 5 required items. Write all 5, numbered 1 to 5."
+  },
+  {
+    "priority": "P2",
+    "tries": 3,
+    "status": "rejected",
+    "created": "2026-11-20T22:48:06Z",
+    "updated": "2026-11-21T00:53:31Z",
+    "context_chars": 8000,
+    "owner": "Quill",
+    "world": "b4",
+    "id": "K148",
+    "title": "A217 retry: 5 Chrome extensions with many users and many 'stopped working' reviews",
+    "details": "Public pages only (Chrome Web Store listing pages, the developer's site, news articles). List 5 extensions that either Google disabled for Manifest V2 or that have 100k+ users and many recent 1-star 'does not work' reviews. Per extension, one numbered item with: name, users (from the store page), rating, last updated date, is there a working replacement today (name it), top 3 one-star complaints in your own words (no reviewer names), one way to charge, and two source URLs. UNVERIFIED for anything without a URL. Write all 5 items.",
+    "read": [
+      "04-extensions/research/extension-2-review-mining.md"
+    ],
+    "min_items": 5,
+    "output": "00-hq/knowledge/K148.md",
+    "vigil_notes": "FIX:\n*   Remove item 2 (Closet Tools): Repo explicitly states \"Closet Tools-style posting bots... are out\" due to Kalpa rules.\n*   Mark \"Working Replacement Today\" as UNVERIFIED for all items: Repo files do not verify the existence or status of Mailmeteor, PosherVA, Hoverify, TweetHunter X, or Wordtune as replacements.\n*   Mark \"Top 3 One-Star Complaints\" as UNVERIFIED for all items: Specific technical failure modes (e.g., \"popup button does not attach,\" \"session timeouts\") are not present in the provided repo files.\n*   Mark \"Rating\" and \"Last Updated\" as UNVERIFIED for all items: Specific ratings (4.7, 4.2, etc.) and dates are not found in the repo files.\n*   Mark \"Users\" as UNVERIFIED for items 2, 3, 4, and 5: Only GMass (~400,000) is verified in the repo; user counts for the others are not provided in the source files."
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "owner": "Lifeboat",
+    "world": "b4",
+    "status": "todo",
+    "created": "2026-11-27T18:41:30Z",
+    "id": "K190",
+    "title": "A356 #6 importer formats: Edge Collections CSV, Pocket export, Toby JSON, bookmarks HTML",
+    "details": "Public docs, GitHub issues and help pages only (no logins). For each of 4 formats give one numbered item: (1) Microsoft Edge Collections export (CSV or other; columns and an example row), (2) Pocket export file (ril_export.html and the CSV export after July 2025 shutdown: structure, tags, time_added), (3) Toby JSON export (top-level keys, lists/cards, title/url fields), (4) Netscape bookmarks HTML (DL/DT/H3/A structure, ADD_DATE). Each item: exact field names, a tiny made-up example (no real personal data), known quirks (encoding, quotes, nested folders), and the source URL. Say 'unverified' if you could not see the source.",
+    "min_items": 4,
+    "read": [
+      "04-extensions/src/lib/importers.ts"
+    ],
+    "output": "00-hq/knowledge/K190.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "owner": "Lifeboat",
+    "world": "b4",
+    "status": "todo",
+    "created": "2026-11-27T18:41:30Z",
+    "id": "K191",
+    "title": "Tab Lifeboat v0.3 'What's new' copy for the store listing and the options page",
+    "details": "Write plain, honest English (no hype, no emoji) for Tab Lifeboat v0.3 free features: restore skips tabs already open; download as Markdown or plain text (OneTab format); plus planned: popup search, save this window/picked tabs with a name, edit a session, importers for Edge Collections/Pocket/Toby/bookmarks, a warning when auto-save stops, a 'your tabs are safe, restore?' banner after a crash or update. Give: (1) a 5-bullet 'What's new in 0.3' list, each under 90 characters; (2) one 132-character store short description; (3) a 3-sentence release note. Do not claim anything not in this list.",
+    "min_items": 3,
+    "read": [
+      "04-extensions/research/pro-plan-2026-11-27.md"
+    ],
+    "output": "00-hq/knowledge/K191.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T01:30:00Z",
+    "id": "K194",
+    "owner": "Lifeboat",
+    "world": "b4",
+    "title": "Microsoft Edge Collections export: exact CSV columns (A357)",
+    "details": "Find Microsoft's own documentation (support.microsoft.com or learn.microsoft.com) for exporting Edge Collections to a file, plus one second source (a forum or blog post with a real exported sample). List: the file type(s) Edge offers (CSV? Excel? HTML?), the exact header row and column order, the encoding (UTF-8 with BOM?), and how a collection name and a note appear. Give each fact with its URL and date read. Write 'unverified' for anything you could not find on a page. Do not guess column names.",
+    "min_items": 4,
+    "read": [
+      "04-extensions/src/lib/importers.ts"
+    ],
+    "output": "00-hq/knowledge/K194.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T01:30:00Z",
+    "id": "K195",
+    "owner": "Lifeboat",
+    "world": "b4",
+    "title": "Is Alt+Shift+Y free in Chrome and Edge? (A357 shortcut check)",
+    "details": "Check Google's own 'Chrome keyboard shortcuts' help page (support.google.com/chrome/answer/157179) and Microsoft's 'Keyboard shortcuts in Microsoft Edge' page for Windows, Mac (Option+Shift+Y) and ChromeOS. Say whether Alt+Shift+Y (or Option+Shift+Y) is already used by the browser or the OS (ChromeOS uses many Alt+Shift keys). Give the URL and date read for each answer; write 'unverified' where a page did not load. If it clashes, suggest 2 free alternatives that are allowed for extensions (Ctrl/Alt + Shift + a letter).",
+    "min_items": 3,
+    "read": [
+      "04-extensions/src/wxt.config.ts"
+    ],
+    "output": "00-hq/knowledge/K195.md"
+  }
 ]

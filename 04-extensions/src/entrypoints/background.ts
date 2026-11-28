@@ -1,12 +1,12 @@
-import { backupFileName, parseBackup, toBackup } from "../lib/backup";
+import { backupFileName, parseBackup, restorePlan, toBackup } from "../lib/backup";
 import { captureAll, restore } from "../lib/capture";
 import { DRIVE_SCOPE, type DriveDeps, DriveError, deviceName, download as driveDownload, driveFileName, list as driveList, remove as driveRemove, upload as driveUpload, gunzip, gzip, sha256, toPrune } from "../lib/drive";
 import { answerRating, formLink, RATE_DEFAULT, type RateState, STORE_REVIEW_URL, shouldAskRating, UNINSTALL_FORM_URL } from "../lib/feedback";
 import { detectAndParse, sessionsOf } from "../lib/importers";
-import { isEmpty, mergeSessions, moveTab, removeTab, tabAt } from "../lib/edit";
+import { changedSince, isEmpty, mergeSessions, moveTab, removeTab, tabAt, version } from "../lib/edit";
 import { exportName, toCsv, toMarkdown, toUrlList } from "../lib/export";
 import { checkMsg, errorText, fromUs } from "../lib/messages";
-import { countTabs, type Session } from "../lib/model";
+import { countTabs, newId, type Session } from "../lib/model";
 import { applyEdit, deleteForever, getSession, undoEdit, LIMITS, listSessions, listTrash, pruneAuto, purgeTrash, putSession, trashSession, undeleteSession } from "../lib/store";
 import { BANNER_DAYS, type Banner, type BannerKind, backupDue, bannerSession, clock, findDuplicates, findStale, missingTabs, type OpenTab, searchTabs, staleSince, tabTimeline, upgradeNudge } from "../lib/tools";
 
@@ -87,10 +87,14 @@ const UNDO_MS = 10_000;
 type LastEdit = { at: number; prev: Session[]; trashed: string[] };
 let lastEdit: LastEdit | null = null;
 async function edit(prev: Session[], puts: Session[], trashed: string[] = []) {
+  const now = Date.now();   // every hand edit stamps updatedAt (never equal to the version the page saw)
+  puts = puts.map((p) => { const was = prev.find((x) => x.id === p.id); return { ...p, updatedAt: Math.max(now, was ? version(was) + 1 : now) }; });
   await applyEdit(puts, trashed); lastEdit = { at: Date.now(), prev, trashed };
   await browser.storage.session.set({ lastEdit }).then(() => { lastEdit = null; }, () => browser.storage.session.remove("lastEdit").catch(() => {}));
   return { ok: true, trashed: trashed.length > 0 };
 }
+/** Restore a backup without eating newer edits: see restorePlan (lib/backup.ts). */
+async function restoreAll(sessions: Session[]) { for (const b of sessions) for (const x of restorePlan(await getSession(b.id), b, newId)) await putSession(x); }
 async function takeLastEdit(): Promise<LastEdit | null> {
   const e = lastEdit ?? ((await browser.storage.session.get("lastEdit").catch(() => ({} as Record<string, unknown>))).lastEdit as LastEdit | undefined) ?? null;
   lastEdit = null; await browser.storage.session.remove("lastEdit").catch(() => {});
@@ -131,6 +135,7 @@ const MENU: [Scope, string][] = [["all", "Save all tabs"], ["window", "Save this
 
 let restoring = false;   // one restore at a time (a double click must not open everything twice)
 const GONE = { ok: false, error: "That session changed or is gone. The page has been refreshed." };
+const CHANGED = { ok: false, error: "This session changed in another window. The page has been reloaded with the newest copy." };
 const row = (s: Session) => ({ id: s.id, name: s.name, kind: s.kind, createdAt: s.createdAt, ...countTabs(s) });
 
 async function openUrlsUnlessDupes(): Promise<string[]> {
@@ -250,18 +255,21 @@ export default defineBackground(() => {
         }
         case "edit-remove-tab": {
           const s = await getSession(msg.id ?? "");
+          if (s && changedSince(s, msg.v)) return CHANGED;
           if (!s || msg.wi === undefined || msg.ti === undefined || !tabAt(s, msg.wi, msg.ti, msg.url)) return GONE;
           const next = removeTab(s, msg.wi, msg.ti);
           return isEmpty(next) ? edit([s], [], [s.id]) : edit([s], [next]);   // last tab gone: the session goes to Recently deleted
         }
         case "edit-move-tab": {
           const [from, to] = [await getSession(msg.id ?? ""), await getSession(msg.to ?? "")];
+          if (from && changedSince(from, msg.v)) return CHANGED;
           if (!from || !to || from.id === to.id || msg.wi === undefined || msg.ti === undefined || !tabAt(from, msg.wi, msg.ti, msg.url)) return GONE;
           const [a, b] = moveTab(from, to, msg.wi, msg.ti);
           return isEmpty(a) ? edit([from, to], [b], [a.id]) : edit([from, to], [a, b]);
         }
         case "edit-merge": {   // id = merged away (goes to Recently deleted), to = kept and gets its windows
           const [src, dst] = [await getSession(msg.id ?? ""), await getSession(msg.to ?? "")];
+          if (src && changedSince(src, msg.v)) return CHANGED;
           if (!src || !dst || src.id === dst.id) return GONE;
           return edit([dst, src], [mergeSessions(dst, src)], [src.id]);
         }
@@ -311,7 +319,7 @@ export default defineBackground(() => {
           return { ok: true, ...f, fileName: exportName(msg.id ? pick[0]!.name : "all-sessions", f.ext) };
         }
         case "search": return { ok: true, hits: searchTabs(await listSessions(), msg.text ?? "") };
-        case "rename": { const s = await getSession(msg.id ?? ""); if (!s) return GONE; return edit([s], [{ ...s, name: (msg.name ?? "").trim().slice(0, 80) || s.name }]); }
+        case "rename": { const s = await getSession(msg.id ?? ""); if (!s) return GONE; if (changedSince(s, msg.v)) return CHANGED; return edit([s], [{ ...s, name: (msg.name ?? "").trim().slice(0, 80) || s.name }]); }
         case "cleanup-preview": { if ((await plan()) !== "pro") return { ok: false, error: "pro" }; const t = await openTabs(); return { ok: true, duplicates: findDuplicates(t).length, stale: findStale(t, STALE_DAYS).length, days: STALE_DAYS }; }
         case "cleanup": { // saves everything first, so a cleanup can always be undone from the list
           if ((await plan()) !== "pro") return { ok: false, error: "pro" };
@@ -341,7 +349,7 @@ export default defineBackground(() => {
         case "drive-preview": case "drive-restore": {
           try {
             const p = parseBackup(await gunzip(await driveDownload(driveDeps, msg.id ?? "")));
-            if (msg.type === "drive-restore") for (const x of p.sessions) await putSession(x);   // same ids → never doubled
+            if (msg.type === "drive-restore") await restoreAll(p.sessions);   // same ids + same tabs → never doubled
             return { ok: true, sessions: p.sessions.length, tabs: p.tabs, groups: p.groups, skipped: p.skipped };
           } catch (e) { return { ok: false, error: plainError(e) }; }
         }
@@ -353,7 +361,7 @@ export default defineBackground(() => {
         }
         case "export": { const now = Date.now(); await browser.storage.local.set({ lastFileAt: now }); return { ok: true, fileName: backupFileName(now), json: JSON.stringify(toBackup(await listSessions(), now)) }; }
         case "preview-backup": { const p = parseBackup(msg.text ?? ""); return { ok: true, sessions: p.sessions.length, tabs: p.tabs, groups: p.groups, skipped: p.skipped }; }
-        case "restore-backup": { const p = parseBackup(msg.text ?? ""); for (const s of p.sessions) await putSession(s); return { ok: true, sessions: p.sessions.length, tabs: p.tabs }; }
+        case "restore-backup": { const p = parseBackup(msg.text ?? ""); await restoreAll(p.sessions); return { ok: true, sessions: p.sessions.length, tabs: p.tabs }; }
         default: return { ok: false, error: "unknown message" };
       }
     })().then(reply, (e) => reply({ ok: false, error: plainError(e) }));

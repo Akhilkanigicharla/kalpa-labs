@@ -146,6 +146,20 @@ try {
   check((await tabsOf(saved.session.id)).includes(`${base}/x1`) && (await tabsOf("edit-b")) === null && trashNow.sessions.some((x) => x.id === "edit-b"), "Merge adds the tabs and moves the old session to Recently deleted");
   await ed.locator("#undo-btn").click(); await ed.waitForTimeout(400);
   check((await tabsOf("edit-b"))?.length === 1 && (await tabsOf(saved.session.id)).length === saved.counts.tabs, "Undo merge restores both sessions exactly");
+  // A357: an edit from a page showing an old copy is refused; restoring the old backup never eats the newer edit
+  const sendP = (m) => popup.evaluate((x) => chrome.runtime.sendMessage(x), m);
+  const s0 = (await sendP({ type: "session-get", id: "edit-b" })).session; const v0 = s0.updatedAt ?? s0.createdAt;
+  const r1 = await sendP({ type: "rename", id: "edit-b", name: "Second edited", v: v0 });
+  const r2 = await sendP({ type: "rename", id: "edit-b", name: "Stale page", v: v0 });
+  check(r1.ok && !r2.ok && /another window/.test(r2.error) && (await sendP({ type: "session-get", id: "edit-b" })).session.name === "Second edited", "edit from a stale page refused: 'changed in another window'");
+  await sendP({ type: "restore-backup", text: JSON.stringify({ format: "tab-lifeboat-backup", version: 1, exportedAt: "", sessions: [two] }) });
+  const lib = (await sendP({ type: "list" })).sessions;
+  check((await sendP({ type: "session-get", id: "edit-b" })).session.name === "Second edited" && lib.some((x) => /^Second \(from backup /.test(x.name)), "old backup restored after an edit: edit kept, backup added as a copy");
+  const before2 = (await sendP({ type: "list" })).sessions.length;
+  await sendP({ type: "restore-backup", text: JSON.stringify({ format: "tab-lifeboat-backup", version: 1, exportedAt: "", sessions: [(await sendP({ type: "session-get", id: "edit-b" })).session] }) });
+  check((await sendP({ type: "list" })).sessions.length === before2, "restoring an identical copy adds nothing");
+  const csp = await sw.evaluate(() => chrome.runtime.getManifest().content_security_policy?.extension_pages ?? "");
+  check(/object-src 'none'/.test(csp) && /connect-src https:\/\/www\.googleapis\.com/.test(csp), "explicit extension CSP loaded by Chrome");
   const small = await ed.evaluate(() => [...document.querySelectorAll("#edit button, #edit select, #edit input")].filter((e) => e.offsetParent && e.getBoundingClientRect().height < 44).map((e) => e.id || e.textContent));
   check(!small.length, `editor controls >= 44 px at 390 px (${small.join(",")})`);
   await ed.locator("#importText").fill("{ broken json"); await ed.waitForTimeout(500);

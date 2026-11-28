@@ -97,7 +97,7 @@ try {
   const pv = (await pg.textContent("#preview")).trim();
   check(pv.length > 0 && (await pg.isDisabled("#doImport")), `popup: bad import text gets a message and Import stays off ("${pv}")`);
   const pagesBefore = ctx.pages().length; await pg.click("#list li button:text-is('Restore')"); await pg.waitForTimeout(800);
-  const rb = (await pg.textContent("#list li button:has-text('Opened'), #list li button:has-text('Could not open')")) || "";
+  const rb = (await pg.textContent("#list li .meta span:has-text('Opened'), #list li .meta span:has-text('already open'), #list li .meta span:has-text('Could not open')")) || "";   // v0.3: the result shows under the session name, not on the button
   check(/Opened \d/.test(rb) && ctx.pages().length > pagesBefore, `popup: Restore opens tabs and says so ("${rb.trim()}")`);
 } finally { await ctx.close(); server.close(); }
 console.log(failed ? "SCREENS FAILED" : `SCREENS PASSED → ${out}`); process.exit(failed ? 1 : 0);

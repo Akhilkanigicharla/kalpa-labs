@@ -12,6 +12,11 @@ function tidy(s: Session): Session {
   return s;
 }
 
+/** The version a page saw: the last edit time, or the save time for a never-edited session. */
+export const version = (s: Session): number => s.updatedAt ?? s.createdAt;
+/** True when the page sent the version it saw and the stored session has moved on since (another window edited it). */
+export const changedSince = (s: Session, seen?: number): boolean => seen !== undefined && version(s) !== seen;
+
 /** The tab at windows[wi].tabs[ti], or null if it is not there or its address changed (the page showed old data). */
 export function tabAt(s: Session, wi: number, ti: number, url?: string): SavedTab | null {
   const t = s.windows[wi]?.tabs[ti];

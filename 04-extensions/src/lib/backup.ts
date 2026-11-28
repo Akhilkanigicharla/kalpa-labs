@@ -55,7 +55,28 @@ export function parseBackup(text: string): BackupPreview {
     const s: Session = { id: str(r.id), name: clip(r.name, CAPS.name) || "Restored session", createdAt: Number(r.createdAt) || Date.now(),
       kind: KINDS.includes(r.kind as Session["kind"]) ? (r.kind as Session["kind"]) : "import", windows };
     if (typeof r.source === "string") s.source = r.source;
+    if (Number.isSafeInteger(r.updatedAt) && (r.updatedAt as number) > 0) s.updatedAt = r.updatedAt as number;
     sessions.push(s);
   }
   return { sessions, tabs, groups, skipped };
+}
+
+// Compare what a person sees (name, windows, tabs, groups), not key order or extra fields from older versions.
+const shape = (x: Session) => JSON.stringify([x.name, x.windows.map((w) => [w.tabs.map((t) => [t.url, t.title, !!t.pinned, t.groupKey ?? null]),
+  (w.groups ?? []).map((g) => [g.key, g.title, g.color, !!g.collapsed])])]);
+// The stored copy goes through the same cleaning a backup file does (skipped chrome:// tabs, empty titles), so an
+// unchanged session always matches its own backup.
+const clean = (x: Session) => parseBackup(JSON.stringify(toBackup([x]))).sessions[0];
+const sameTabs = (stored: Session, b: Session) => { const c = clean(stored); return !!c && shape(c) === shape(b); };
+const when = (s: Session) => s.updatedAt ?? s.createdAt;
+
+/** What to write when restoring one backup session next to what is already stored (A357: a restore never eats an edit).
+ *  Same id and same tabs: nothing. Backup strictly newer: it replaces the stored copy. Otherwise both are kept:
+ *  the backup copy gets a new id and a "(from backup 12 Nov)" name. */
+export function restorePlan(stored: Session | undefined, b: Session, newId: () => string): Session[] {
+  if (!stored) return [b];
+  if (sameTabs(stored, b)) return [];
+  if (when(b) > when(stored)) return [b];
+  const day = new Date(when(b) + 330 * 60_000).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+  return [{ ...b, id: newId(), name: `${b.name} (from backup ${day})`.slice(0, CAPS.name) }];
 }

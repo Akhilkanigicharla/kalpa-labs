@@ -72,7 +72,7 @@ class FakeDhan:
 
 def adapter(tmp_path, fake=None, quote=287.0):
     (tmp_path / "GO").write_text("go\n")
-    env = {"LIVE_TRADING": "YES", "DHAN_CLIENT_ID": CLIENT, "DHAN_ACCESS_TOKEN": TOKEN}
+    env = {"LIVE_TRADING": "YES", "KALPA_ROUTE": "dhan-cloud", "DHAN_CLIENT_ID": CLIENT, "DHAN_ACCESS_TOKEN": TOKEN}
     fake = fake or FakeDhan()
     a = brk.DhanAdapter(env=env, go_file=tmp_path / "GO", http=fake, quote_fn=lambda s: quote, sleep=lambda s: None)
     return a, fake

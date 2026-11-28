@@ -202,14 +202,57 @@ def go_blockers(env: Mapping[str, str] | None = None, go_file: Path | None = Non
     return out
 
 
+IP_ECHO = "https://api.ipify.org"   # returns the caller's public IPv4 as plain text
+
+
+def public_ip(timeout: float = 5.0) -> str:
+    """This machine's public (egress) IP, or "" if it can't be read (then live is refused)."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(IP_ECHO, timeout=timeout) as r:   # noqa: S310 (fixed https URL)
+            return r.read(64).decode("ascii", "replace").strip()
+    except Exception:   # network down, proxy, timeout: fail closed
+        return ""
+
+
+def route_blockers(env: Mapping[str, str], *, sebi_static_ip: bool, dhan_cloud_ok: bool = False,
+                   egress_ip: Callable[[], str] | None = None) -> list[str]:
+    """A224: where a live order may be sent from (SEBI retail algo framework, in force 1 Apr 2026).
+
+    * never from GitHub Actions (hosted runners have no fixed IP; free accounts can't get one);
+    * Indian broker APIs (sebi_static_ip) accept orders only from the client's whitelisted
+      static IP, so env LIVE_STATIC_IP must be set AND equal this machine's egress IP;
+    * the one exception is Dhan Cloud (Dhan FAQ: no static IP there): env KALPA_ROUTE=dhan-cloud.
+    """
+    out = []
+    if env.get("GITHUB_ACTIONS", "").lower() == "true":
+        out.append("running inside GitHub Actions: no fixed IP, live orders never run here (A224)")
+    if not sebi_static_ip:
+        return out
+    if dhan_cloud_ok and env.get("KALPA_ROUTE", "").strip().lower() == "dhan-cloud":
+        return out
+    want = env.get("LIVE_STATIC_IP", "").strip()
+    if not want:
+        out.append("env LIVE_STATIC_IP not set (the IP whitelisted at the broker; SEBI static-IP rule)")
+        return out
+    got = (egress_ip or public_ip)()
+    if got != want:
+        out.append(f"egress IP {got or 'unknown'} is not LIVE_STATIC_IP {want}: the broker would reject the order")
+    return out
+
+
 class _LiveAdapter(Broker):
-    """Base for real adapters. Refuses to start without both go flags; reads keys from env."""
+    """Base for real adapters. Refuses to start without both go flags and a lawful route; reads keys from env."""
     ENV_KEYS: tuple[str, ...] = ()
     SDK = ""                      # pip name, imported lazily in _client()
+    SEBI_STATIC_IP = False        # Indian SEBI-regulated broker API: orders only from a whitelisted IP
+    DHAN_CLOUD_OK = False
 
-    def __init__(self, env: Mapping[str, str] | None = None, go_file: Path | None = None):
+    def __init__(self, env: Mapping[str, str] | None = None, go_file: Path | None = None, *,
+                 egress_ip: Callable[[], str] | None = None):
         env = os.environ if env is None else env
-        blockers = go_blockers(env, go_file)
+        blockers = go_blockers(env, go_file) + route_blockers(
+            env, sebi_static_ip=self.SEBI_STATIC_IP, dhan_cloud_ok=self.DHAN_CLOUD_OK, egress_ip=egress_ip)
         if blockers:
             raise LiveRefused("; ".join(blockers))
         missing = [k for k in self.ENV_KEYS if not env.get(k)]
@@ -248,6 +291,7 @@ class FyersAdapter(_LiveAdapter):
     needs_daily_login = True
     ENV_KEYS = ("FYERS_CLIENT_ID", "FYERS_ACCESS_TOKEN")
     SDK = "fyers-apiv3"
+    SEBI_STATIC_IP = True
 
 
 class DhanAdapter(_LiveAdapter):
@@ -267,13 +311,15 @@ class DhanAdapter(_LiveAdapter):
     name = "dhan"
     needs_daily_login = True
     ENV_KEYS = ("DHAN_CLIENT_ID", "DHAN_ACCESS_TOKEN")
+    SEBI_STATIC_IP = True
+    DHAN_CLOUD_OK = True
     BASE = "https://api.dhan.co/v2"
     SECURITY_IDS = {"NIFTYBEES": "10576", "GOLDBEES": "14428", "LIQUIDBEES": "11006"}   # NSE_EQ
     DONE = {"TRADED": "filled", "REJECTED": "rejected", "CANCELLED": "cancelled", "EXPIRED": "cancelled"}
 
     def __init__(self, env=None, go_file=None, *, http=None, quote_fn=None, sleep=None, poll_s: float = 1.0,
-                 poll_max: int = 20, today=None):
-        super().__init__(env=env, go_file=go_file)
+                 poll_max: int = 20, today=None, egress_ip=None):
+        super().__init__(env=env, go_file=go_file, egress_ip=egress_ip)
         import time
         self._http = http or self._urllib
         self._quote_fn = quote_fn

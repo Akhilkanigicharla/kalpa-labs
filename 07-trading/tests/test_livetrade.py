@@ -66,11 +66,13 @@ def test_adapters_refuse_without_flags_and_hide_keys(tmp_path, cls):
     with pytest.raises(brk.LiveRefused, match="go file"):
         cls(env={"LIVE_TRADING": "YES"}, go_file=go)
     go.write_text("go\n")
+    route = {"LIVE_TRADING": "YES", "LIVE_STATIC_IP": "203.0.113.7"}
+    ip = lambda: "203.0.113.7"   # noqa: E731
     with pytest.raises(brk.LiveRefused, match="missing secret env vars") as e:
-        cls(env={"LIVE_TRADING": "YES"}, go_file=go)
+        cls(env=route, go_file=go, egress_ip=ip)
     secret = "s3cr3t-value-XYZ"
-    env = {"LIVE_TRADING": "YES", **{k: secret for k in cls.ENV_KEYS}}
-    a = cls(env=env, go_file=go)
+    env = {**route, **{k: secret for k in cls.ENV_KEYS}}
+    a = cls(env=env, go_file=go, egress_ip=ip)
     assert secret not in repr(a) and secret not in str(a) and secret not in str(e.value)
     if cls is brk.DhanAdapter:      # real adapter since 14 Nov 2026: see tests/test_dhan.py
         return
@@ -85,6 +87,43 @@ def test_no_sdk_imported_and_go_flag_needs_exact_go(tmp_path):
         assert mod not in sys.modules
     (tmp_path / "GO").write_text("yes please")
     assert len(brk.go_blockers({"LIVE_TRADING": "yes"}, tmp_path / "GO")) == 2
+
+
+# ---------------- A224: lawful order route (SEBI static IP, never GitHub Actions)
+IP = "203.0.113.7"
+
+
+@pytest.mark.parametrize("cls", [brk.FyersAdapter, brk.DhanAdapter])
+def test_sebi_brokers_need_the_whitelisted_static_ip(tmp_path, cls):
+    go = tmp_path / "GO"
+    go.write_text("go\n")
+    keys = {"LIVE_TRADING": "YES", **{k: "x" for k in cls.ENV_KEYS}}
+    with pytest.raises(brk.LiveRefused, match="LIVE_STATIC_IP not set"):
+        cls(env=keys, go_file=go, egress_ip=lambda: IP)
+    for got in ("198.51.100.9", ""):        # wrong IP, or IP can't be read: fail closed
+        with pytest.raises(brk.LiveRefused, match="broker would reject"):
+            cls(env={**keys, "LIVE_STATIC_IP": IP}, go_file=go, egress_ip=lambda g=got: g)
+    cls(env={**keys, "LIVE_STATIC_IP": IP}, go_file=go, egress_ip=lambda: IP)
+
+
+@pytest.mark.parametrize("cls", [brk.FyersAdapter, brk.DhanAdapter, brk.DeltaIndiaAdapter, brk.CoinDCXAdapter])
+def test_no_live_adapter_starts_inside_github_actions(tmp_path, cls):
+    go = tmp_path / "GO"
+    go.write_text("go\n")
+    env = {"LIVE_TRADING": "YES", "LIVE_STATIC_IP": IP, "KALPA_ROUTE": "dhan-cloud", "GITHUB_ACTIONS": "true",
+           **{k: "x" for k in cls.ENV_KEYS}}
+    with pytest.raises(brk.LiveRefused, match="GitHub Actions"):
+        cls(env=env, go_file=go, egress_ip=lambda: IP)
+
+
+def test_only_dhan_may_skip_the_static_ip_on_dhan_cloud(tmp_path):
+    go = tmp_path / "GO"
+    go.write_text("go\n")
+    cloud = {"LIVE_TRADING": "YES", "KALPA_ROUTE": "dhan-cloud"}
+    never = lambda: pytest.fail("Dhan Cloud route must not look up the IP")   # noqa: E731
+    brk.DhanAdapter(env={**cloud, **{k: "x" for k in brk.DhanAdapter.ENV_KEYS}}, go_file=go, egress_ip=never)
+    with pytest.raises(brk.LiveRefused, match="LIVE_STATIC_IP"):
+        brk.FyersAdapter(env={**cloud, **{k: "x" for k in brk.FyersAdapter.ENV_KEYS}}, go_file=go)
 
 
 # ---------------- Live Guard

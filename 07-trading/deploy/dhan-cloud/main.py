@@ -79,6 +79,7 @@ def resolve_keys(env: dict) -> dict:
         return ""
     env["DHAN_ACCESS_TOKEN"] = pick("KALPA_TOKEN_VAR", ("DHAN_ACCESS_TOKEN", "ACCESS_TOKEN", "access_token", "DHAN_TOKEN"))
     env["DHAN_CLIENT_ID"] = pick("KALPA_CLIENT_VAR", ("DHAN_CLIENT_ID", "CLIENT_ID", "client_id", "dhanClientId"))
+    env.setdefault("KALPA_ROUTE", "dhan-cloud")   # this file only runs on Dhan Cloud (no static IP there, A224)
     return env
 
 

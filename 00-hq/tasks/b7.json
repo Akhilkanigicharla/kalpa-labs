@@ -120,11 +120,12 @@
     "details": "Read the A224 line. Summarise the SEBI retail algo framework as it applies to one person trading own money through a broker API: static IP registration, Algo ID, 2FA, order-per-second limit. Cite sebi.gov.in or nseindia.com circular numbers for each rule; write 'unverified' otherwise. Then list 4 options to send orders from one fixed IP at zero recurring cost (e.g. a free-tier cloud VM with a static IP), each with the provider's own pricing page URL and 'unverified' if not cited.",
     "min_items": 5,
     "tries": 1,
-    "status": "review",
+    "status": "done",
     "priority": "P2",
     "created": "2026-11-21T02:55:00Z",
     "updated": "2026-11-21T16:59:15Z",
-    "output": "00-hq/knowledge/K155.md"
+    "output": "00-hq/knowledge/K155.md",
+    "note": "used/superseded by 07-trading/research/live-route.md (A224, 28 Nov 2026); Claude re-checked every rule on SEBI/NSE/broker pages"
   },
   {
     "id": "K192",
@@ -168,7 +169,7 @@
   {
     "priority": "P2",
     "context_chars": 8000,
-    "status": "todo",
+    "status": "done",
     "created": "2026-11-28T01:30:00Z",
     "id": "K196",
     "owner": "Trading",
@@ -179,7 +180,8 @@
     "read": [
       "00-hq/ROADMAP.md"
     ],
-    "output": "00-hq/knowledge/K196.md"
+    "output": "00-hq/knowledge/K196.md",
+    "note": "used/superseded by 07-trading/research/live-route.md (A224, 28 Nov 2026); Claude re-checked every rule on SEBI/NSE/broker pages"
   },
   {
     "priority": "P2",
@@ -226,5 +228,20 @@
       "07-trading/research/a8-trading.md"
     ],
     "output": "00-hq/knowledge/K200.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T07:20:00Z",
+    "world": "b7",
+    "id": "K201",
+    "owner": "Trading",
+    "title": "A359 prep: Dhan API v2 limit orders and price-protection for algo orders",
+    "details": "Research for A359. From dhanhq.co/docs/v2 (orders page) and one more Dhan or NSE page: does Dhan reject or convert MARKET orders sent through the API since 1 Apr 2026? What fields does a LIMIT order need (price, tick size 0.01 for ETFs?), and is there a price band or 'market price protection' setting? Quote each line with URL and date read; write UNVERIFIED otherwise. No advice.",
+    "read": [
+      "07-trading/research/live-route.md"
+    ],
+    "output": "00-hq/knowledge/K201.md"
   }
 ]

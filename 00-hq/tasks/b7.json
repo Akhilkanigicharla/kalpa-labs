@@ -258,5 +258,17 @@
       "00-hq/ROADMAP.md"
     ],
     "output": "00-hq/knowledge/K202.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 6000,
+    "status": "todo",
+    "created": "2026-11-28T10:45:00Z",
+    "world": "b7",
+    "id": "K203",
+    "owner": "Trading",
+    "title": "A249 prep: titles + one-line rule summary of the 19 Critical Trading playlist videos",
+    "details": "Research for A249. For the YouTube playlist PLFdGt__jX7eNj9f1xmYRmWuVBJTcMwLX8 (19 videos): list each video's exact title and URL from the playlist page or YouTube Data API, then for each one write one line: is it a rule-based strategy on daily bars (yes/no) and, if yes, its entry, exit and stop rules in plain words as the video states them. Do not invent rules; write 'not stated' when the description does not say. No trading tips or advice (SEBI). Output a markdown table: #, title, url, daily-bar rule-based?, entry, exit, stop.",
+    "min_items": 19
   }
 ]

@@ -15,6 +15,7 @@ separate unmodified service). Research code, own money only, not advice.
 from __future__ import annotations
 
 import itertools
+import math
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -300,11 +301,15 @@ class DhanAdapter(_LiveAdapter):
     Facts from Dhan's own docs, checked 14 Nov 2026 (dhanhq.co/docs/v2):
       * base https://api.dhan.co/v2, headers `access-token` + `Content-Type: application/json`;
       * POST /orders {dhanClientId, correlationId, transactionType BUY|SELL, exchangeSegment NSE_EQ,
-        productType CNC, orderType MARKET|LIMIT, validity DAY, securityId, quantity, price}
+        productType CNC, orderType LIMIT, validity DAY, securityId, quantity, price}
         -> {orderId, orderStatus}; GET /orders/{id}; GET /orders/external/{correlationId};
         DELETE /orders/{id} -> 202; GET /holdings; GET /positions; GET /fundlimit (`availabelBalance`, sic);
       * order APIs need a whitelisted static IP, EXCEPT inside Dhan Cloud (Dhan FAQ);
       * security ids from Dhan's scrip master (images.dhan.co/api-data/api-scrip-master.csv, 14 Nov 2026).
+    A359: NSE's retail-algo FAQ 11 (3 Nov 2025) bars market orders for API (algo) orders, so every order,
+    "market" ones included, goes out as a marketable LIMIT capped CAP_PCT from the quote, on the 0.01 tick
+    (Dhan scrip master SEM_TICK_SIZE = 1 paisa for all three ETFs, read 28 Nov 2026). Buys shrink to what
+    cash covers at the cap; an order still open after the poll window is cancelled (a part fill keeps what traded).
     Safety: never logs the token; an order POST is never blindly retried (a lost reply is
     looked up by its correlationId first, so a network blip can't buy twice); GETs retry with backoff.
     """
@@ -316,6 +321,21 @@ class DhanAdapter(_LiveAdapter):
     BASE = "https://api.dhan.co/v2"
     SECURITY_IDS = {"NIFTYBEES": "10576", "GOLDBEES": "14428", "LIQUIDBEES": "11006"}   # NSE_EQ
     DONE = {"TRADED": "filled", "REJECTED": "rejected", "CANCELLED": "cancelled", "EXPIRED": "cancelled"}
+    TICK = 0.01
+    CAP_PCT = 0.005
+
+    @classmethod
+    def cap_price(cls, side: str, ref: float, tick: float | None = None) -> float:
+        """Limit price for a 'market' order: ref +/- CAP_PCT, rounded towards ref so the cap is never passed."""
+        t = tick or cls.TICK
+        raw = ref * (1 + cls.CAP_PCT) if side == "buy" else ref * (1 - cls.CAP_PCT)
+        return cls._on_tick(side, raw, t)
+
+    @staticmethod
+    def _on_tick(side: str, px: float, tick: float) -> float:
+        n = px / tick
+        n = math.floor(n + 1e-9) if side == "buy" else math.ceil(n - 1e-9)   # buy never higher, sell never lower
+        return round(n * tick, 2)
 
     def __init__(self, env=None, go_file=None, *, http=None, quote_fn=None, sleep=None, poll_s: float = 1.0,
                  poll_max: int = 20, today=None, egress_ip=None):
@@ -433,12 +453,31 @@ class DhanAdapter(_LiveAdapter):
         qty = int(req.qty)
         if qty <= 0 or qty != req.qty:
             return OrderResult("", "rejected", req.symbol, req.side, reason="NSE needs a whole number of units")
+        sid = self._sid(req.symbol)
+        if req.order_type == "limit":
+            if not req.limit_price or not req.limit_price > 0:
+                return OrderResult("", "rejected", req.symbol, req.side, reason="limit order without a price")
+            price = self._on_tick(req.side, float(req.limit_price), self.TICK)
+        else:
+            try:
+                ref = float(self.quote(req.symbol))
+            except Exception as e:                      # no price -> no cap -> no order
+                return OrderResult("", "rejected", req.symbol, req.side, reason=f"no price for the cap: {e}")
+            if not ref > 0:                             # also catches NaN
+                return OrderResult("", "rejected", req.symbol, req.side, reason=f"bad price for the cap: {ref}")
+            price = self.cap_price(req.side, ref)
+        note = ""
+        if req.side == "buy":
+            afford = int(self.cash() // price)
+            if afford <= 0:
+                return OrderResult("", "rejected", req.symbol, req.side, reason=f"not enough cash for 1 unit at Rs {price:.2f}")
+            if afford < qty:
+                note, qty = f"bought {afford} of {qty}: cash covers only that at the Rs {price:.2f} cap", afford
         corr = f"kalpa-{date.today():%Y%m%d}-{req.tag[:6]}-{next(self._seq)}"   # <= 30 chars, [A-Za-z0-9_-]
         body = {"dhanClientId": self._key("DHAN_CLIENT_ID"), "correlationId": corr,
                 "transactionType": "BUY" if req.side == "buy" else "SELL", "exchangeSegment": "NSE_EQ",
-                "productType": "CNC", "orderType": "LIMIT" if req.order_type == "limit" else "MARKET",
-                "validity": "DAY", "securityId": self._sid(req.symbol), "quantity": qty,
-                "price": float(req.limit_price or 0) if req.order_type == "limit" else 0}
+                "productType": "CNC", "orderType": "LIMIT",
+                "validity": "DAY", "securityId": sid, "quantity": qty, "price": price}
         st, d = self._call("POST", "/orders", body, retry=False)
         oid = str(d.get("orderId", "")) if isinstance(d, dict) else ""
         if st == 0 or (st >= 500 and not oid):
@@ -451,9 +490,12 @@ class DhanAdapter(_LiveAdapter):
                 return OrderResult("", "rejected", req.symbol, req.side, reason=f"order not confirmed ({self._why(st, d)}); nothing retried")
         elif st not in (200, 201) or not oid:
             return OrderResult(oid, "rejected", req.symbol, req.side, reason=self._why(st, d))
-        return self._wait(oid, req)
+        r = self._wait(oid, req, qty)
+        if note and r.status == "filled":
+            r.reason = "; ".join(x for x in (note, r.reason) if x)
+        return r
 
-    def _wait(self, oid: str, req: OrderRequest) -> OrderResult:
+    def _wait(self, oid: str, req: OrderRequest, want: int | None = None) -> OrderResult:
         rec: dict = {}
         for _ in range(self._poll_max):
             st, d = self._call("GET", f"/orders/{oid}")
@@ -463,6 +505,17 @@ class DhanAdapter(_LiveAdapter):
                 break
             self._sleep(self._poll_s)
         status = self.DONE.get(str(rec.get("orderStatus", "")).upper(), "open")
+        note = ""
+        if status == "open":
+            # a capped LIMIT may not fill: cancel the rest so nothing fills later behind the bot's back
+            self.cancel(oid)
+            st, d = self._call("GET", f"/orders/{oid}")
+            rec = ((d[0] if isinstance(d, list) and d else d) if st == 200 else None) or rec
+            status = self.DONE.get(str(rec.get("orderStatus", "")).upper(), "open")
+            done = float(rec.get("filledQty", 0) or 0)
+            note = (f"part fill {done:g} of {want or req.qty:g}, rest cancelled" if done > 0 else
+                    "not filled within the price cap, cancelled" if status == "cancelled" else
+                    "not filled and cancel not confirmed: check the Dhan order book")
         filled = float(rec.get("filledQty", 0) or 0)
         px = float(rec.get("averageTradedPrice", 0) or 0) or None
         if status == "cancelled" and filled > 0:
@@ -470,7 +523,7 @@ class DhanAdapter(_LiveAdapter):
         if status == "filled" and px and req.side == "buy" and req.symbol not in self.avg_cost:
             self.avg_cost[req.symbol] = px              # positions() refreshes the true average next run
         return OrderResult(oid, status, req.symbol, req.side, qty=filled, avg_price=px, fee=0.0,
-                           reason="" if status != "rejected" else self._why(200, rec))
+                           reason=self._why(200, rec) if status == "rejected" else note)
 
     # snapshot hooks so the runner can treat this like FakeBroker
     def to_dict(self) -> dict:

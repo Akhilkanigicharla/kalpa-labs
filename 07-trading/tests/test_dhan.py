@@ -53,6 +53,9 @@ class FakeDhan:
         if method == "GET" and path.startswith("/orders/"):
             return 200, self.orders[path.rsplit("/", 1)[1]]
         if method == "DELETE" and path.startswith("/orders/"):
+            o = self.orders.get(path.rsplit("/", 1)[1])
+            if o is not None and o["orderStatus"] in ("PENDING", "PART_TRADED"):
+                o["orderStatus"] = "CANCELLED"
             return 202, {"orderId": path.rsplit("/", 1)[1], "orderStatus": "CANCELLED"}
         return 404, {}
 
@@ -61,6 +64,11 @@ class FakeDhan:
         oid = f"5{self.n:05d}"
         traded = self.fill == "TRADED"
         px = {"10576": 287.4, "14428": 112.8, "11006": 1000.0}[b["securityId"]]
+        if self.fill == "PART_TRADED":
+            half = b["quantity"] // 2
+            self.orders[f"5{self.n:05d}"] = {**b, "orderId": f"5{self.n:05d}", "orderStatus": "PART_TRADED",
+                                             "filledQty": half, "averageTradedPrice": px, "omsErrorDescription": ""}
+            return f"5{self.n:05d}"
         sym = {"10576": "NIFTYBEES", "14428": "GOLDBEES", "11006": "LIQUIDBEES"}[b["securityId"]]
         self.orders[oid] = {**b, "orderId": oid, "orderStatus": self.fill, "filledQty": b["quantity"] if traded else 0,
                             "averageTradedPrice": px if traded else 0, "omsErrorDescription": "" if traded else "RMS: price band"}
@@ -82,17 +90,17 @@ def test_buy_sends_exact_dhan_order_body_and_waits_for_the_fill(tmp_path):
     a, f = adapter(tmp_path)
     r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 17, stop_price=230.0))
     assert (r.status, r.qty, r.avg_price) == ("filled", 17, 287.4)
-    m, path, _, body = f.calls[0]
+    m, path, _, body = next(c for c in f.calls if c[0] == "POST")      # a cash read comes first (A359)
     assert (m, path) == ("POST", "/orders")
     assert body == {"dhanClientId": CLIENT, "correlationId": body["correlationId"], "transactionType": "BUY",
-                    "exchangeSegment": "NSE_EQ", "productType": "CNC", "orderType": "MARKET", "validity": "DAY",
-                    "securityId": "10576", "quantity": 17, "price": 0}
+                    "exchangeSegment": "NSE_EQ", "productType": "CNC", "orderType": "LIMIT", "validity": "DAY",
+                    "securityId": "10576", "quantity": 17, "price": 288.43}   # 287 x 1.005 = 288.435, floored to the 0.01 tick
     assert len(body["correlationId"]) <= 30 and body["correlationId"].replace("-", "").isalnum()
 
 
 def test_rejections_come_back_in_plain_words_never_as_crashes(tmp_path):
     a, f = adapter(tmp_path)
-    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 5000))
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "sell", 5000))      # buys now shrink to cash (A359)
     assert r.status == "rejected" and "Insufficient funds" in r.reason
     f.fill = "REJECTED"
     r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 2))
@@ -214,3 +222,79 @@ def test_lost_state_rebuilds_the_stop_and_sells_below_it(tmp_path, monkeypatch):
                            flags=tmp_path, broker=leg)
     sells = [d for d in res["decisions"] if d.request.side == "sell"]
     assert sells and sells[0].request.tag == "stop" and sells[0].request.qty == 17
+
+
+# ---- A359: NSE retail-algo FAQ 11 bans market orders for API orders -> marketable LIMIT with a price cap ----
+TICK_FACT = "Dhan scrip master SEM_TICK_SIZE (paise): NIFTYBEES/GOLDBEES/LIQUIDBEES 1.0 = Rs 0.01, read 28 Nov 2026"
+
+
+def test_no_order_ever_goes_out_as_market(tmp_path):
+    a, f = adapter(tmp_path, quote=112.0)
+    f.holdings[0]["totalQty"] = 44
+    for req in (brk.OrderRequest("GOLDBEES", "buy", 3, stop_price=100.0),
+                brk.OrderRequest("GOLDBEES", "sell", 2),
+                brk.OrderRequest("GOLDBEES", "sell", 1, tag="stop"),
+                brk.OrderRequest("GOLDBEES", "sell", 1, tag="flatten")):
+        a.place_order(req)
+    posts = [c[3] for c in f.calls if c[0] == "POST"]
+    assert len(posts) == 4 and all(b["orderType"] == "LIMIT" and b["price"] > 0 for b in posts)
+
+
+def test_price_cap_is_half_a_percent_on_the_right_side_and_on_the_tick(tmp_path):
+    a, f = adapter(tmp_path, quote=287.0)
+    a.place_order(brk.OrderRequest("NIFTYBEES", "sell", 2))
+    body = [c[3] for c in f.calls if c[0] == "POST"][-1]
+    assert body["price"] == 285.57            # 287 x 0.995 = 285.565, rounded UP to the tick (never sell lower)
+    assert brk.DhanAdapter.cap_price("buy", 100.0) == 100.5 and brk.DhanAdapter.cap_price("sell", 100.0) == 99.5
+    assert brk.DhanAdapter.cap_price("buy", 0.333) == 0.33    # never above the cap
+    assert round(brk.DhanAdapter.cap_price("sell", 1000.0) * 100) % 1 == 0
+
+
+def test_own_limit_price_is_kept_but_put_on_the_tick(tmp_path):
+    a, f = adapter(tmp_path)
+    a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 1, order_type="limit", limit_price=280.129))
+    assert [c[3] for c in f.calls if c[0] == "POST"][-1]["price"] == 280.12
+
+
+def test_bad_or_missing_quote_sends_nothing(tmp_path):
+    for q in (0.0, float("nan"), -5.0):
+        a, f = adapter(tmp_path, quote=q)
+        r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 2))
+        assert r.status == "rejected" and "price" in r.reason and not any(c[0] == "POST" for c in f.calls)
+    a, f = adapter(tmp_path)
+    a._quote_fn = lambda s: (_ for _ in ()).throw(ConnectionError("yahoo down"))
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 2))
+    assert r.status == "rejected" and "yahoo down" in r.reason and not f.orders
+
+
+def test_buy_qty_shrinks_to_what_cash_covers_at_the_cap(tmp_path):
+    a, f = adapter(tmp_path, quote=287.0)
+    f.cash = 288.43 * 10 + 5                  # 10 units at the cap, not 11
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 11, stop_price=230.0))
+    assert [c[3] for c in f.calls if c[0] == "POST"][-1]["quantity"] == 10
+    assert r.status == "filled" and r.qty == 10 and "10 of 11" in r.reason
+    f.cash = 100.0
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 1))
+    assert r.status == "rejected" and "cash" in r.reason and len(f.orders) == 1
+
+
+def test_unfilled_order_is_cancelled_not_left_hanging(tmp_path):
+    a, f = adapter(tmp_path)
+    f.fill = "PENDING"
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 4))
+    assert any(c[0] == "DELETE" for c in f.calls)
+    assert r.status == "cancelled" and r.qty == 0 and "not filled" in r.reason
+
+
+def test_part_fill_keeps_what_traded_and_cancels_the_rest(tmp_path):
+    a, f = adapter(tmp_path)
+    f.fill = "PART_TRADED"
+    r = a.place_order(brk.OrderRequest("NIFTYBEES", "buy", 8, stop_price=230.0))
+    assert any(c[0] == "DELETE" for c in f.calls)
+    assert (r.status, r.qty, r.avg_price) == ("filled", 4, 287.4) and "part fill" in r.reason
+
+
+def test_source_has_no_market_order_type_for_dhan():
+    import inspect
+    src = inspect.getsource(brk.DhanAdapter)
+    assert '"MARKET"' not in src

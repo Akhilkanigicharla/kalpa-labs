@@ -26,7 +26,7 @@ Changing rule 1 is your decision only (the number is `PAPER_DAYS_MIN` in `src/li
 1. Dhan account with ₹10,000 added (free demat).
 2. web.dhan.co → profile → **DhanHQ / Dhan Cloud** → create a strategy → upload `upload/kalpa-b7-dhan-cloud.zip` (entry file `main.py`).
 3. Schedule: weekdays **09:20 IST**.
-4. Global variables: `LIVE_TRADING=YES`, `KALPA_GO=go`, `KALPA_GATE_PASS=yes` (only when rule 1 is met). If Dhan's token variable has an unusual name, set `KALPA_TOKEN_VAR` to that name.
+4. Global variables: `LIVE_TRADING=YES`, `KALPA_GO=go`, `KALPA_GATE_PASS=yes` (only when rule 1 is met), `KALPA_TRIAL_NIFTY` and `KALPA_TRIAL_GOLD` = the frozen trial ids from `07-trading/research/trials.csv` (A358: live trades only a config frozen before its paper run, and only that trial's paper days count). If Dhan's token variable has an unusual name, set `KALPA_TOKEN_VAR` to that name.
 5. Never paste your token anywhere else, including chat.
 
 Rebuild the zip after code changes: `./build.sh` (Claude does this).

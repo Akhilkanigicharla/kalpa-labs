@@ -27,7 +27,7 @@ from typing import Mapping
 
 import pandas as pd
 
-from .. import costs, crypto_tax, risk
+from .. import costs, crypto_tax, risk, trials
 from ..strategies import weights
 from . import broker as brk
 from .guard import IST, GuardConfig, LiveGuard, next_open
@@ -46,6 +46,7 @@ STRATEGIES = ("tsmom", "tsmom_vt", "ma_filter_vt", "markov_regime", "hold")
 # Track A idle money sits in a liquid ETF. LIQUIDBEES: 4.69%/yr since 2003 after its 0.69% fee
 # (anandrathi.com, 1 Jun 2025). Paper mode credits this on idle cash; liquid-ETF gains are taxed
 # at the slab rate (ignored here, so the paper number is slightly high on the cash leg).
+PRICE_GAP = 0.08     # A358: a one-day ETF move this far from its index's move is a bad tick
 CASH_RATE = {"A": 0.047, "B": 0.0}
 LEDGER_COLUMNS = ["run_at_ist", "asof", "track", "mode", "strategy", "symbol", "side", "qty",
                   "value_pct_capital", "fee_inr", "tds_inr", "status", "reasons", "target_weight",
@@ -170,14 +171,38 @@ def load_state(path: Path, capital: float) -> dict:
     return _new_state(capital)
 
 
-def live_blockers(track: str, state: dict, env: Mapping[str, str], flags: Path) -> list[str]:
+def frozen_params(trial_id: str, strategy: str, symbol: str, *, registry: Path | None = None) -> dict:
+    """A358: the params a frozen trial may trade. Refuses an unfrozen trial, another strategy or
+    symbol, and rule code changed since the freeze (trials.verify_frozen). Never re-picked."""
+    r = trials.get_trial(trial_id, path=registry)
+    if not r.get("config_hash"):
+        raise trials.TrialError(f"trial {trial_id} is not frozen; run trials.freeze() before paper starts")
+    cfg = json.loads(r["frozen_config"])
+    if cfg["strategy"] != strategy:
+        raise trials.TrialError(f"trial {trial_id} is frozen for strategy {cfg['strategy']}, not {strategy}")
+    if cfg["symbol"] != symbol.strip().upper():
+        raise trials.TrialError(f"trial {trial_id} is frozen for symbol {cfg['symbol']}, not {symbol}")
+    trials.verify_frozen(trial_id, strategy, cfg["params"], symbol, path=registry)
+    return cfg["params"]
+
+
+def live_blockers(track: str, state: dict, env: Mapping[str, str], flags: Path,
+                  trial: str | None = None) -> list[str]:
     out = brk.go_blockers(env, flags / "GO")
     if (flags / "KILL").exists():
         out.append("kill switch file present")
     if not (flags / f"GATE_PASS_{track}").exists():
         out.append(f"no gate pass file GATE_PASS_{track} (gate.py verdict 'paper' + Akhil's sign-off)")
-    n = len(state.get("paper_days", []))
-    if n < PAPER_DAYS_MIN:
+    if not trial:
+        out.append("no frozen trial (--trial <id>): live trades only a config frozen before paper started")
+        return out
+    gate = flags / f"GATE_PASS_{track}"
+    if gate.exists() and trial not in gate.read_text(encoding="utf-8").split():
+        out.append(f"GATE_PASS_{track} does not name trial {trial}")
+    n = len(state.get("paper_days", [])) if state.get("trial") == trial else 0
+    if n == 0:
+        out.append(f"no paper days logged under trial {trial} (learning-track days never count)")
+    elif n < PAPER_DAYS_MIN:
         out.append(f"only {n} of {PAPER_DAYS_MIN} paper days logged")
     return out
 
@@ -187,10 +212,11 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
               flags: Path, asof=None, flatten: bool = False, stop_pct: float | None = None,
               symbol: str | None = None, params: dict | None = None,
               signal_bars: pd.DataFrame | None = None, cash_rate: float | None = None,
-              broker: brk.Broker | None = None) -> dict:
+              broker: brk.Broker | None = None, trial: str | None = None) -> dict:
     """bars = the traded instrument (fill price). signal_bars (optional) = a cleaner series the
     strategy reads, e.g. the Nifty 50 index for NIFTYBEES (the ETF's Yahoo history has an
-    unadjusted 2019 split). params=None -> picked like the gate's walk-forward."""
+    unadjusted 2019 split). params=None -> picked like the gate's walk-forward (learning track only:
+    main() passes a frozen trial's params, A358). trial=None marks the state as a learning track."""
     t = TRACKS[track]
     symbol = symbol or t["symbol"]
     stop_pct = stop_pct or t["stop_pct"]
@@ -209,6 +235,12 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
         raise ValueError(f"refusing to trade: price {px} / target {w} is not a real number")
     if signal_bars is not None and abs((bar_ts - sig_ts).days) > 4:
         raise ValueError(f"signal bar {sig_ts.date()} and price bar {bar_ts.date()} are too far apart")
+    if signal_bars is not None and len(vis_px) > 1 and bar_ts == sig_ts:
+        vs = visible_bars(sig, asof)["close"]
+        gap = px / float(vis_px["close"].iloc[-2]) - float(vs.iloc[-1]) / float(vs.iloc[-2])
+        if abs(gap) > PRICE_GAP:
+            raise ValueError(f"refusing to trade: {symbol} close {px:g} on {bar_ts.date()} disagrees with the "
+                             f"signal series by {gap:+.1%} (bad tick?); re-run when the data is fixed")
     d = bar_ts.date()
     # simulated fill time: next NSE open after the close, or just after midnight for crypto
     if t["market"] == "NSE":
@@ -223,6 +255,10 @@ def run_paper(bars: pd.DataFrame, *, track: str, strategy: str, capital: float, 
     out.mkdir(parents=True, exist_ok=True)
     spath = out / (f"state-{track}-{symbol}-live.json" if live else f"state-{track}.json")
     st = load_state(spath, capital)
+    if st["paper_days"] and st.get("trial") != trial:
+        raise SystemExit(f"state {spath} was started for {st.get('trial') or 'the learning track'}, "
+                         f"not {trial or 'the learning track'}; use a new --out")
+    st["trial"] = trial
     if d.isoformat() in st["paper_days"] and not flatten:
         # same bar again (re-run, or an NSE holiday with no new bar): never trade or log twice
         text = f"Kalpa b7 · Track {track} · {'LIVE' if live else 'PAPER'} · {d.isoformat()} already done (no new market day). No action."
@@ -371,6 +407,8 @@ def summary_text(track, strategy, symbol, capital, d, w, decisions, bot, bench, 
         *([f"ALERT: PAUSED, {dd:.0%} below peak (limit {guard.book.limits['drawdown_stop']:.0%}). No new buys. Akhil decides."]
           if paused else []),
         f"{symbol} target {w:.0%} of Rs {capital:,.0f} ({strategy} {st.get('params') or ''})".rstrip(),
+        (f"Config: trial {st['trial']} (frozen)" if st.get("trial") else
+         "Config: LEARNING track (unfrozen, params re-picked daily); never counts towards live"),
         f"Idle cash interest so far: Rs {st.get('interest', 0.0):,.2f} (liquid-ETF rate {CASH_RATE[track]:.1%}/yr)",
         f"Order: {order}",
         f"Bot after costs + tax: Rs {bot:,.2f} ({bot / capital - 1:+.2%})",
@@ -414,6 +452,10 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
     p.add_argument("--flags", type=Path, default=brk.LIVE_DIR)
     p.add_argument("--broker", default=None, help="live adapter: fyers|dhan (A), delta|coindcx (B)")
     p.add_argument("--flatten", action="store_true", help="sell everything (only if KILL file exists)")
+    p.add_argument("--trial", default=None, help="frozen trial id (trials.freeze); trades its frozen params")
+    p.add_argument("--learning", action="store_true",
+                   help="paper only: unfrozen learning track, params re-picked daily, never counts for live")
+    p.add_argument("--registry", type=Path, default=None, help="trials registry (default research/trials.csv)")
     p.add_argument("--paper-state", type=Path, default=None,
                    help="live: the paper state whose logged days count towards the paper-days rule")
     a = p.parse_args(argv)
@@ -422,11 +464,24 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
     except ValueError as e:
         print(f"refused: {e}", file=sys.stderr)
         return 2
+    sym = (a.symbol or TRACKS[a.track]["symbol"]).upper()
+    params = None
+    if a.trial:
+        try:
+            params = frozen_params(a.trial, a.strategy, sym, registry=a.registry)
+        except trials.TrialError as e:
+            print(f"refused: {e}", file=sys.stderr)
+            return 2
+    elif a.mode == "paper" and not a.learning:
+        print("refused: no frozen config. Pass --trial <id> (frozen with trials.freeze before paper starts), "
+              "or --learning for a paper-only track that re-picks params daily and never counts for live",
+              file=sys.stderr)
+        return 2
 
     if a.mode == "live":
         pst = a.paper_state or (a.out / f"state-{a.track}.json")
         st = load_state(pst, a.capital) if pst.exists() else _new_state(a.capital)
-        blockers = live_blockers(a.track, st, env, a.flags)
+        blockers = live_blockers(a.track, st, env, a.flags, trial=a.trial)
         if blockers:
             print("LIVE REFUSED:\n  - " + "\n  - ".join(blockers), file=sys.stderr)
             return 2
@@ -441,14 +496,14 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
         except (brk.LiveRefused, NotImplementedError) as e:
             print(f"LIVE REFUSED: {e}", file=sys.stderr)
             return 3
-        sym = (a.symbol or TRACKS[a.track]["symbol"]).upper()
         leg = brk.ScopedBroker(adapter, sym, a.capital, fee_fn(a.track))
         sig = None
         if a.signal_symbol:
             from .. import data
             sig = data.get_daily(a.signal_symbol, strict=False, refresh=True)
         res = run_paper(_load_bars(a), track=a.track, strategy=a.strategy, capital=a.capital, out=a.out,
-                        flags=a.flags, flatten=a.flatten, symbol=sym, signal_bars=sig, broker=leg)
+                        flags=a.flags, flatten=a.flatten, symbol=sym, signal_bars=sig, broker=leg,
+                        params=params, trial=a.trial)
         print(res["summary"])
         bad = [d for d in res["decisions"] if d.result is not None and d.result.status == "rejected"]
         return 4 if bad else 0
@@ -461,7 +516,8 @@ def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) ->
         from .. import data
         sig = data.get_daily(a.signal_symbol, strict=False, refresh=True)
     res = run_paper(_load_bars(a), track=a.track, strategy=a.strategy, capital=a.capital, out=a.out,
-                    flags=a.flags, asof=a.asof, flatten=a.flatten, symbol=a.symbol, signal_bars=sig)
+                    flags=a.flags, asof=a.asof, flatten=a.flatten, symbol=a.symbol, signal_bars=sig,
+                    params=params, trial=a.trial)
     print(res["summary"])
     return 0
 

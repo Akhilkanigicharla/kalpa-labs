@@ -136,6 +136,26 @@ def repair_spikes(df: pd.DataFrame, limit: float = 0.40) -> tuple[pd.DataFrame, 
     return df, dropped
 
 
+def _index_gap(etf: pd.DataFrame, index: pd.DataFrame) -> pd.Series:
+    """Daily ETF close return minus its index's return, on the days both traded."""
+    both = pd.concat([etf["close"], index["close"]], axis=1, join="inner").sort_index()
+    return (both.iloc[:, 0].pct_change() - both.iloc[:, 1].pct_change()).dropna()
+
+
+def index_mismatch(etf: pd.DataFrame, index: pd.DataFrame, tol: float = 0.08) -> list[pd.Timestamp]:
+    """A358: closes where an index ETF moved more than `tol` away from its own index and snapped
+    back the next day (a bad tick; NIFTYBEES 6 Oct 2010 closed at 52.50 while the Nifty rose).
+    A move the index also made is never flagged. Uses the next day: history cleaning only."""
+    g = _index_gap(etf, index)
+    return [g.index[i] for i in range(len(g) - 1)
+            if abs(g.iloc[i]) > tol and g.iloc[i] * g.iloc[i + 1] < 0 and abs(g.iloc[i + 1]) > tol / 2]
+
+
+def drop_index_mismatch(etf: pd.DataFrame, index: pd.DataFrame, tol: float = 0.08) -> tuple[pd.DataFrame, list[str]]:
+    bad = index_mismatch(etf, index, tol)
+    return etf.drop(index=bad), [f"{d:%d %b %Y} (close {etf.loc[d, 'close']:.2f} disagrees with index)" for d in bad]
+
+
 def get_daily(symbol: str, start: str | None = None, end: str | None = None, *,
               cache_dir: Path | str | None = None, fetcher: Fetcher | None = None,
               fallback: Fetcher | None = None, refresh: bool = False,

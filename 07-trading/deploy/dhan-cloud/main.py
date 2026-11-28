@@ -25,13 +25,15 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))            # the package ships src/ next to this file
 
-RAW = "https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/07-trading/paper"
+RAW_B7 = "https://raw.githubusercontent.com/Akhilkanigicharla/kalpa-labs/main/07-trading"
+RAW = f"{RAW_B7}/paper"
 WORK = Path(os.environ.get("KALPA_WORK_DIR", HERE / "work"))
 FLAGS, OUT = WORK / "flags", WORK / "out"
-LEGS = [   # (label, runner args) mirrored from paper-trade.yml
-    ("nifty-trend", ["--strategy", "tsmom", "--signal-symbol", "^NSEI", "--symbol", "NIFTYBEES",
+REGISTRY = WORK / "trials.csv"
+LEGS = [   # (label, trial variable, runner args) mirrored from paper-trade.yml
+    ("nifty-trend", "KALPA_TRIAL_NIFTY", ["--strategy", "tsmom", "--signal-symbol", "^NSEI", "--symbol", "NIFTYBEES",
                      "--capital", "5000", "--paper-state", str(WORK / "paper-A.json")]),
-    ("gold-hold", ["--strategy", "hold", "--symbol", "GOLDBEES",
+    ("gold-hold", "KALPA_TRIAL_GOLD", ["--strategy", "hold", "--symbol", "GOLDBEES",
                    "--capital", "5000", "--paper-state", str(WORK / "paper-A-gold.json")]),
 ]
 
@@ -53,8 +55,18 @@ def prepare(env: dict) -> list[str]:
         (FLAGS / name).unlink(missing_ok=True)
     if env.get("KALPA_GO", "").strip().lower() == "go":
         (FLAGS / "GO").write_text("go\n", encoding="utf-8")
+    ids = [env.get(var, "").strip() for _, var, _ in LEGS]
+    for (label, var, _), tid in zip(LEGS, ids):
+        if not tid:
+            problems.append(f"{var} not set: the frozen trial id for {label} (A358, trials.freeze)")
     if env.get("KALPA_GATE_PASS", "").strip().lower() == "yes":
-        (FLAGS / "GATE_PASS_A").write_text("signed off by Akhil in Dhan Cloud variables\n", encoding="utf-8")
+        (FLAGS / "GATE_PASS_A").write_text("signed off by Akhil in Dhan Cloud variables\n" + "\n".join(ids) + "\n",
+                                           encoding="utf-8")
+    reg = fetch(f"{RAW_B7}/research/trials.csv")
+    if reg is None:
+        problems.append("could not read the trials registry from GitHub (no frozen config, no trade)")
+    else:
+        REGISTRY.write_bytes(reg)
     kill = fetch(f"{RAW}/track-A/flags/KILL")
     if kill is not None:
         (FLAGS / "KILL").write_text(kill.decode("utf-8", "replace") or "kill\n", encoding="utf-8")
@@ -91,10 +103,11 @@ def main(env: dict | None = None) -> int:
         return 2
     from src.livetrade import runner
     worst = 0
-    for label, args in LEGS:
+    for label, var, args in LEGS:
         print(f"== {label}")
         rc = runner.main(["--track", "A", "--mode", "live", "--broker", "dhan", "--out", str(OUT),
-                          "--flags", str(FLAGS), *args], env=env)
+                          "--flags", str(FLAGS), "--trial", env[var].strip(), "--registry", str(REGISTRY),
+                          *args], env=env)
         worst = max(worst, rc)
     return worst
 

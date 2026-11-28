@@ -18,15 +18,33 @@ def load_main(tmp_path, monkeypatch, files: dict):
     spec = importlib.util.spec_from_file_location("dhan_cloud_main", MAIN)
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    monkeypatch.setattr(m, "fetch", lambda url: files.get(url.rsplit("/paper/", 1)[1]))
+    files = {"research/trials.csv": REG, **files}
+    monkeypatch.setattr(m, "fetch", lambda url: files.get(url.split("/07-trading/", 1)[1].removeprefix("paper/")))
     return m
 
 
-def paper(days: int) -> bytes:
-    return json.dumps({**runner._new_state(5000.0), "paper_days": [f"d{i}" for i in range(days)]}).encode()
+def _frozen_registry() -> bytes:
+    """A358: both legs trade only frozen trials (T0001 tsmom NIFTYBEES, T0002 hold GOLDBEES)."""
+    import tempfile
+    from src import trials
+    reg = Path(tempfile.mkdtemp()) / "trials.csv"
+    for strat, params, sym in (("tsmom", {"lookback": 63}, "NIFTYBEES"), ("hold", {}, "GOLDBEES")):
+        tid = trials.log_trial("H-dc", strat, [params], "test", 1, path=reg)
+        trials.record_result(tid, {"verdict": "paper"}, path=reg)
+        trials.freeze(tid, strat, params, sym, path=reg)
+    return reg.read_bytes()
+
+
+REG = _frozen_registry()
+
+
+def paper(days: int, trial: str | None = "T0001") -> bytes:
+    return json.dumps({**runner._new_state(5000.0), "paper_days": [f"d{i}" for i in range(days)],
+                       "trial": trial}).encode()
 
 
 GOOD_ENV = {"LIVE_TRADING": "YES", "KALPA_GO": "go", "KALPA_GATE_PASS": "yes",
+            "KALPA_TRIAL_NIFTY": "T0001", "KALPA_TRIAL_GOLD": "T0002",
             "DHAN_CLIENT_ID": CLIENT, "DHAN_ACCESS_TOKEN": TOKEN}
 
 
@@ -35,9 +53,10 @@ def test_refuses_without_paper_records(tmp_path, monkeypatch):
     assert m.main(GOOD_ENV) == 2
 
 
-@pytest.mark.parametrize("drop", ["LIVE_TRADING", "KALPA_GO", "KALPA_GATE_PASS", "DHAN_ACCESS_TOKEN"])
+@pytest.mark.parametrize("drop", ["LIVE_TRADING", "KALPA_GO", "KALPA_GATE_PASS", "DHAN_ACCESS_TOKEN",
+                                  "KALPA_TRIAL_NIFTY", "KALPA_TRIAL_GOLD"])
 def test_each_missing_rule_refuses_before_any_order(tmp_path, monkeypatch, drop):
-    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90)}
+    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90, "T0002")}
     m = load_main(tmp_path, monkeypatch, files)
     env = {k: v for k, v in GOOD_ENV.items() if k != drop}
     sent = []
@@ -46,18 +65,18 @@ def test_each_missing_rule_refuses_before_any_order(tmp_path, monkeypatch, drop)
 
 
 def test_too_few_paper_days_refuses(tmp_path, monkeypatch):
-    m = load_main(tmp_path, monkeypatch, {"track-A/state-A.json": paper(10), "track-A-gold/state-A.json": paper(10)})
+    m = load_main(tmp_path, monkeypatch, {"track-A/state-A.json": paper(10), "track-A-gold/state-A.json": paper(10, "T0002")})
     assert m.main(GOOD_ENV) == 2
 
 
 def test_phone_kill_switch_blocks_live(tmp_path, monkeypatch):
-    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90), "track-A/flags/KILL": b""}
+    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90, "T0002"), "track-A/flags/KILL": b""}
     m = load_main(tmp_path, monkeypatch, files)
     assert m.main(GOOD_ENV) == 2
 
 
 def test_all_rules_hold_trades_both_legs_through_dhan(tmp_path, monkeypatch):
-    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90)}
+    files = {"track-A/state-A.json": paper(90), "track-A-gold/state-A.json": paper(90, "T0002")}
     m = load_main(tmp_path, monkeypatch, files)
     fake = FakeDhan(); fake.holdings = []; fake.cash = 10_000.0
     orig = brk.DhanAdapter.__init__
@@ -86,3 +105,12 @@ def test_token_found_under_dhan_cloud_style_names_and_never_printed(tmp_path, mo
     assert env["DHAN_ACCESS_TOKEN"] == "x1"
     m.main({"access_token": TOKEN})
     assert TOKEN not in capsys.readouterr().out
+
+
+def test_learning_track_paper_days_never_unlock_live(tmp_path, monkeypatch):
+    """A358: 90 days of the unfrozen learning track (today's paper record) count as 0."""
+    files = {"track-A/state-A.json": paper(90, None), "track-A-gold/state-A.json": paper(90, None)}
+    m = load_main(tmp_path, monkeypatch, files)
+    sent = []
+    monkeypatch.setattr(brk.DhanAdapter, "_urllib", lambda self, *a: sent.append(a) or (500, {}))
+    assert m.main(GOOD_ENV) == 2 and not [s for s in sent if s[0] == "POST"]

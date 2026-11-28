@@ -297,12 +297,12 @@ def test_runner_paper_mode_over_many_days(tmp_path, track):
 
 def test_runner_cli_paper_and_live_refusals(tmp_path, capsys):
     common = ["--out", str(tmp_path / "o"), "--flags", str(tmp_path / "f")]
-    assert runner.main(["--track", "A", "--synthetic", *common], env={}) == 0
+    assert runner.main(["--track", "A", "--synthetic", "--learning", *common], env={}) == 0
     assert "Buy-and-hold NIFTYBEES" in capsys.readouterr().out
     assert runner.main(["--track", "A", "--mode", "live", *common], env={}) == 2
     err = capsys.readouterr().err
-    assert "LIVE REFUSED" in err and "LIVE_TRADING" in err and "paper days" in err
-    assert runner.main(["--track", "A", "--capital", "20000", "--synthetic", *common], env={}) == 2
+    assert "LIVE REFUSED" in err and "LIVE_TRADING" in err and "frozen trial" in err
+    assert runner.main(["--track", "A", "--capital", "20000", "--synthetic", "--learning", *common], env={}) == 2
 
 
 def test_live_refuses_even_with_all_flags_because_adapters_are_stubs(tmp_path, capsys):
@@ -312,10 +312,17 @@ def test_live_refuses_even_with_all_flags_because_adapters_are_stubs(tmp_path, c
     (flags / "GATE_PASS_B").write_text("T0001")
     st = runner._new_state(5_000.0)
     st["paper_days"] = [str(date(2026, 1, 1) + timedelta(days=i)) for i in range(90)]
+    reg = tmp_path / "trials.csv"                      # A358: live needs a frozen trial
+    tid = trials.log_trial("H-b", "tsmom_vt", [{"lookback": 126}], "syn", 1, path=reg)
+    trials.record_result(tid, {"verdict": "paper"}, path=reg)
+    trials.freeze(tid, "tsmom_vt", {"lookback": 126, "target": 0.15}, "BTCINR", path=reg)
+    (flags / "GATE_PASS_B").write_text(tid)
+    st["trial"] = tid
     out.mkdir()
     (out / "state-B.json").write_text(__import__("json").dumps(st))
     env = {"LIVE_TRADING": "YES", "DELTA_API_KEY": "k-SECRET", "DELTA_API_SECRET": "s-SECRET"}
-    common = ["--track", "B", "--mode", "live", "--out", str(out), "--flags", str(flags)]
+    common = ["--track", "B", "--mode", "live", "--out", str(out), "--flags", str(flags),
+              "--trial", tid, "--registry", str(reg)]
     assert runner.main(common, env=env) == 3
     cap = capsys.readouterr()
     assert "TODO" in cap.err and "SECRET" not in cap.err + cap.out

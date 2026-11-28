@@ -29,12 +29,12 @@ jobs:
       - name: Paper decision for today's close
         working-directory: 07-trading
         run: |
-          python -m src.livetrade.runner --track A --mode paper --strategy tsmom --signal-symbol ^NSEI \
+          python -m src.livetrade.runner --track A --mode paper --learning --strategy tsmom --signal-symbol ^NSEI \
             --capital 5000 --out paper/track-A --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Gold leg of the Rs 10,000 plan (A163, buy once and hold; same KILL switch)
         working-directory: 07-trading
         run: |
-          python -m src.livetrade.runner --track A --mode paper --strategy hold --symbol GOLDBEES \
+          python -m src.livetrade.runner --track A --mode paper --learning --strategy hold --symbol GOLDBEES \
             --capital 5000 --out paper/track-A-gold --flags paper/track-A/flags | tee -a "$GITHUB_STEP_SUMMARY"
       - name: 25-strategy tournament with master agent (A279; paper only, same KILL switch)
         working-directory: 07-trading

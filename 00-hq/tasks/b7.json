@@ -243,5 +243,20 @@
       "07-trading/research/live-route.md"
     ],
     "output": "00-hq/knowledge/K201.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T09:10:00Z",
+    "world": "b7",
+    "id": "K202",
+    "owner": "Trading",
+    "title": "A306 prep: exact Hindustan 1-Step and Greenwick 2-Step prop challenge rules",
+    "details": "Research for A306. From each firm's own rules/FAQ page (and one second source each): daily loss limit (% and whether it is balance- or equity-based, reset time), max loss (trailing or static, %), profit target, consistency rule (e.g. 20% of profit from one day), minimum trading days, allowed instruments (gold/XAUUSD), news/weekend holding rules, fee. Quote each rule with URL and date read; write UNVERIFIED otherwise. No advice.",
+    "read": [
+      "00-hq/ROADMAP.md"
+    ],
+    "output": "00-hq/knowledge/K202.md"
   }
 ]

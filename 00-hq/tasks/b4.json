@@ -310,7 +310,7 @@
   {
     "priority": "P2",
     "context_chars": 8000,
-    "status": "todo",
+    "status": "done",
     "created": "2026-11-28T01:30:00Z",
     "id": "K195",
     "owner": "Lifeboat",
@@ -321,6 +321,23 @@
     "read": [
       "04-extensions/src/wxt.config.ts"
     ],
-    "output": "00-hq/knowledge/K195.md"
+    "output": "00-hq/knowledge/K195.md",
+    "note": "Answered by build sprint 28 Nov: free in Chrome + Edge (Google help 157179, MS support + deployedge commands page), Chromium accepts it in e2e."
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T03:20:00Z",
+    "id": "K197",
+    "owner": "Lifeboat",
+    "world": "b4",
+    "title": "A232: free static hosts that send custom security headers for the Tab Lifeboat site",
+    "details": "For Netlify Free, Cloudflare Pages Free and GitHub Pages: can a free site set custom response headers (Content-Security-Policy with frame-ancestors, X-Content-Type-Options, Permissions-Policy, Strict-Transport-Security)? How (_headers file, netlify.toml)? Any limit on headers or deploys on the free plan? Give each fact with the provider's own docs URL and date read, plus one second source. Write 'unverified' for anything not found on a page.",
+    "min_items": 3,
+    "read": [
+      "00-hq/tools/eng_check.py"
+    ],
+    "output": "00-hq/knowledge/K197.md"
   }
 ]

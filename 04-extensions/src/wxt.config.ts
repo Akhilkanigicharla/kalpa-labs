@@ -7,8 +7,10 @@ export default defineConfig({
     description: "Save all tabs and tab groups in one click. Automatic snapshots, so a crash or update never wipes them.",
     // contextMenus: no install warning (developer.chrome.com/docs/extensions/reference/permissions-list, read 28 Nov 2026)
     permissions: ["tabs", "tabGroups", "alarms", "storage", "unlimitedStorage", "contextMenus"],
-    // keyboard shortcuts (a manifest key, not a permission). Alt+Shift+Y was not checked against Chrome's own shortcut list
-    // (that page needed approval); Chrome ignores a clashing suggestion, and users can change it at chrome://extensions/shortcuts.
+    // keyboard shortcuts (a manifest key, not a permission). Alt+Shift+Y is free in both browsers (checked 28 Nov 2026:
+    // support.google.com/chrome/answer/157179, support.microsoft.com/en-us/edge/microsoft-edge-keyboard-shortcuts and
+    // learn.microsoft.com/en-us/deployedge/edge-learnmore-configurable-edge-commands; Chromium 1243 accepts it in e2e).
+    // Users can change it at chrome://extensions/shortcuts.
     commands: {
       "save-all": { suggested_key: { default: "Alt+Shift+Y" }, description: "Save all tabs" },
       "save-window": { description: "Save this window" },

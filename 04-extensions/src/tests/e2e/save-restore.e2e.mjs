@@ -195,6 +195,26 @@ try {
   check(sWin.ok && sWin.counts.tabs === w2.n && sWin.session.name === "Only this window 🚀", `save this window: ${sWin.counts?.tabs} tabs, "${sWin.session?.name}"`);
   const sSel = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "save", scope: "selected" }));
   check(sSel.ok && sSel.counts.tabs === 2 && sSel.session.windows[0].tabs.map((t) => t.url.split("/").pop()).join() === "w1,w3", `save selected tabs: ${sSel.session?.windows[0]?.tabs.map((t) => t.url.split("/").pop())}`);
+  // A357: right-click menu and keyboard shortcut really save (Chrome's own event dispatch runs the background listeners)
+  const manual = async () => (await popup.evaluate(() => chrome.runtime.sendMessage({ type: "list" }))).sessions.filter((s) => s.kind !== "auto");
+  const settle = async (n) => { for (let i = 0; i < 30; i++) { const l = await manual(); if (l.length >= n) return l; await new Promise((r) => setTimeout(r, 100)); } return manual(); };
+  const m0 = (await manual()).length;
+  const wTab = await sw.evaluate((wid) => chrome.tabs.query({ windowId: wid }).then((t) => t[0]), w2.id);
+  await new Promise((r) => setTimeout(r, 2100));   // past the 2 s repeat guard
+  await sw.evaluate((t) => { chrome.contextMenus.onClicked.dispatch({ menuItemId: "save-window", editable: false }, t); chrome.contextMenus.onClicked.dispatch({ menuItemId: "save-window", editable: false }, t); }, wTab);
+  const m1 = await settle(m0 + 1);
+  check(m1.length === m0 + 1, `right-click "Save this window" saved once (double click ignored): ${m1.length - m0} new`);
+  check((await sw.evaluate(() => chrome.action.getTitle({}))) === `Saved ${w2.n} tabs`, "icon title says what was saved");
+  await new Promise((r) => setTimeout(r, 2100));
+  await sw.evaluate((t) => chrome.commands.onCommand.dispatch("save-all", t), wTab);
+  const m2 = await settle(m0 + 2);
+  const allTabs = (await sw.evaluate(() => chrome.tabs.query({}))).filter((t) => /^https?:/.test(t.url || "")).length;
+  const t2 = await sw.evaluate(() => chrome.action.getTitle({}));
+  check(m2.length === m0 + 2 && Number(t2.match(/^Saved (\d+) tabs$/)?.[1]) > w2.n, `shortcut save-all saved every window ("${t2}", ${allTabs} web tabs open)`);
+  await new Promise((r) => setTimeout(r, 2100));
+  await sw.evaluate((t) => chrome.commands.onCommand.dispatch("not-ours", t), wTab);
+  await new Promise((r) => setTimeout(r, 500));
+  check((await manual()).length === m0 + 2, "unknown command saves nothing");
   await sw.evaluate((wid) => chrome.windows.remove(wid), w2.id);
   const locked = await popup.evaluate(() => chrome.runtime.sendMessage({ type: "cleanup-preview" }));
   check(!locked.ok && locked.error === "pro", "cleanup is Pro-only for free users");

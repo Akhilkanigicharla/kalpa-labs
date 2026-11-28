@@ -159,10 +159,11 @@
     "context_chars": 20000,
     "min_items": 10,
     "tries": 0,
-    "status": "todo",
+    "status": "done",
     "created": "2026-11-28T00:00:00Z",
     "updated": "2026-11-28T00:00:00Z",
-    "output": "00-hq/knowledge/K193.md"
+    "output": "00-hq/knowledge/K193.md",
+    "note": "Not needed: A290 read all 1,500+ official niftyindices.com press releases directly (28 Nov 2026)."
   },
   {
     "priority": "P2",
@@ -179,5 +180,51 @@
       "00-hq/ROADMAP.md"
     ],
     "output": "00-hq/knowledge/K196.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T05:30:00Z",
+    "world": "b7",
+    "id": "K198",
+    "owner": "Goldfish",
+    "title": "A290 explainer: survivorship bias in plain English + Telugu (for Akhil)",
+    "details": "Read 07-trading/research/a290-pit-rerun-2026-11-28.md. Write a 120-word explainer in plain English, then the same in Telugu script: what survivorship bias is, why testing on today's Nifty 100 list made A289 look like 25.9%/yr, and what the point-in-time result in that report says. Use only numbers that appear in the report. No trade tips, no predictions.",
+    "read": [
+      "07-trading/research/a290-pit-rerun-2026-11-28.md"
+    ],
+    "output": "00-hq/knowledge/K198.md",
+    "min_items": 2
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T05:30:00Z",
+    "world": "b7",
+    "id": "K199",
+    "owner": "Trading",
+    "title": "A358 prep: was there a NIFTYBEES split/bonus or bad tick around 7 Oct 2010?",
+    "details": "Research for A358. Find from official pages (NSE corporate actions, the AMC's own NIFTYBEES/Nippon India ETF Nifty 50 BeES notices, BSE) whether NIFTYBEES had a unit split, consolidation or other corporate action between Sep and Nov 2010, and what the official NAV/close was on 6, 7 and 8 Oct 2010. Give URLs and the date read. Mark anything not checked on the source page as UNVERIFIED. No trade tips.",
+    "read": [
+      "00-hq/ROADMAP.md"
+    ],
+    "output": "00-hq/knowledge/K199.md"
+  },
+  {
+    "priority": "P2",
+    "context_chars": 8000,
+    "status": "todo",
+    "created": "2026-11-28T05:30:00Z",
+    "world": "b7",
+    "id": "K200",
+    "owner": "Trading",
+    "title": "A248 prep: licence, stars, last commit of two MCP backtester repos",
+    "details": "Research for A248. For github.com/bcosm/backtester-mcp and github.com/atilaahmettaner/tradingview-mcp: read the repo page and its LICENSE file and give licence name, star count, last commit date, what it does in 2 lines, and whether it needs a paid key. Give the URLs and date read. Mark anything not seen on GitHub itself as UNVERIFIED. GPL/AGPL must be flagged.",
+    "read": [
+      "07-trading/research/a8-trading.md"
+    ],
+    "output": "00-hq/knowledge/K200.md"
   }
 ]

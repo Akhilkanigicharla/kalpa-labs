@@ -64,6 +64,17 @@ Other candidates screened:
 - **TA-Lib/ta-lib-python** (BSD-2, needs the C library) and **bukosabino/ta** (MIT, pure pandas) for indicators.
 - **twopirllc/pandas-ta**: the clone failed because the repo was moved or made private in 2025, so skip it.
 
+### A248: MCP backtesters from the 13 Nov videos (checked 28 Nov 2026)
+
+Checked on GitHub itself: stars/forks/last push from the GitHub search API, licence from the LICENSE file and `pyproject.toml` of a shallow clone (HEAD commit shown). Not installed or run: installing third-party code was blocked in this session, so features below come from the repos' own README and source, not a live test.
+
+| Repo | Stars / forks | Last commit | Licence | What it has | vs our `stress.py` | Verdict |
+|---|---|---|---|---|---|---|
+| [bcosm/backtester-mcp](https://github.com/bcosm/backtester-mcp) | 4 / 0 | 2026-04-17 (`ddc0394`) | Apache-2.0 (LICENSE + pyproject) | NumPy/Numba engine on any price array; PBO, deflated Sharpe, bootstrap Sharpe CI, walk-forward; optimistic/base/conservative cost scenarios; Optuna search with a PBO check; MCP tools `backtest_strategy`, `validate_robustness`, `optimize_parameters` | We already have CSCV PBO + DSR across all variants (`metrics.py`), a once-only 2-year hold-out, Indian costs and a random-switching baseline; it has none of the last three. Its PBO for one strategy is "perturbation PBO" (jitter parameters ±20%), a different question from ours. One student author, 4 stars, quiet since April. | **LEARN** (Apache-2.0, may copy with attribution): two ideas worth adding later, a bootstrap CI on Sharpe and a ±20% parameter-jitter check, plus a "conservative costs" run (our `cost_mult` already allows it). Do not depend on it. |
+| [atilaahmettaner/tradingview-mcp](https://github.com/atilaahmettaner/tradingview-mcp) | 5,346 / 1,040 | 2026-11-20 (`456ba41`) | MIT (LICENSE) | 39 MCP tools: screeners, indicators, Yahoo prices, news; 9 fixed backtest strategies and `walk_forward_backtest_strategy` with a ROBUST/MODERATE/WEAK/OVERFITTED label. Self-host is free; the hosted TradingMCP is paid (README: $9/mo Pro, $29/mo Pro+, unverified beyond the README) | Its overfit label is the average test/train return ratio per fold (≥0.8 ROBUST … <0.2 OVERFITTED): no PBO, no DSR, no random baseline, default costs 0.1% + 0.05% (not Indian STT/stamp/GST). NSE and BSE are listed for screeners (`coinlist/nse.txt`), but data comes from TradingView's unofficial screener and Yahoo, with optional Webshare proxies, so it is not a source we can rely on. | **SKIP** for the lab: its overfit test is weaker than ours and its costs are not Indian. Nothing to copy. |
+
+Neither changes `stress.py` today; the two LEARN ideas are small (about 30 lines each) and can be a later item if Akhil wants them.
+
 ## Tried it
 
 All runs used one fresh venv in scratch (Python 3.13, `pip install backtesting vectorbt quantstats yfinance jugaad-data bt`). The install took **2 min** and the venv is **938 MB**, mostly numba, llvmlite, scipy, plotly and matplotlib, so this belongs in Colab or Actions, not on the low-spec PC. The data was **real**: RELIANCE.NS daily, 2015-01-01 to 2026-09-30, 2,901 adjusted bars from yfinance. No credentials or broker accounts were used.

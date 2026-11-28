@@ -97,7 +97,7 @@ def signals(d: pd.DataFrame, name: str) -> tuple[np.ndarray, np.ndarray]:
     raise ValueError(name)
 
 
-def trades(d: pd.DataFrame, name: str, seed: int = 0, like: list | None = None) -> list[dict]:
+def trades(d: pd.DataFrame, name: str, seed: int = 0, like: list | None = None, first: int = 210) -> list[dict]:
     """Trade list on the full history. Entry at the next open after a signal; stop 2 ATR checked on the
     day's range (stop first); exits at the close of the exit signal day. No look-ahead."""
     o, h, lo, c = (d[k].values for k in ("open", "high", "low", "close"))
@@ -114,7 +114,7 @@ def trades(d: pd.DataFrame, name: str, seed: int = 0, like: list | None = None) 
             out.append(_run(o, h, lo, c, i, side, stop_d, max_hold=max(1, hold)))
         return [t for t in out if t]
     side, ex = signals(d, name)
-    i = 210
+    i = first                      # A306: a paper challenge starts scanning on its own start day
     while i < len(d) - 1:
         s = int(side[i])
         if s == 0 or not np.isfinite(a[i]):

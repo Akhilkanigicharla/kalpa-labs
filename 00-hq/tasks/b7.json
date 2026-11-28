@@ -270,5 +270,17 @@
     "title": "A249 prep: titles + one-line rule summary of the 19 Critical Trading playlist videos",
     "details": "Research for A249. For the YouTube playlist PLFdGt__jX7eNj9f1xmYRmWuVBJTcMwLX8 (19 videos): list each video's exact title and URL from the playlist page or YouTube Data API, then for each one write one line: is it a rule-based strategy on daily bars (yes/no) and, if yes, its entry, exit and stop rules in plain words as the video states them. Do not invent rules; write 'not stated' when the description does not say. No trading tips or advice (SEBI). Output a markdown table: #, title, url, daily-bar rule-based?, entry, exit, stop.",
     "min_items": 19
+  },
+  {
+    "id": "K204",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Trading",
+    "status": "todo",
+    "created": "2026-11-28T11:00:00Z",
+    "context_chars": 8000,
+    "title": "A307 prep: exact rules for two hourly gold strategies (session breakout, trend pullback)",
+    "details": "Research for A307 (paper only, no tips). For gold (GC=F / XAUUSD) on 1-hour bars, write ONE precise, testable rule set each for (1) a London/New York session breakout and (2) a trend-pullback entry (e.g. price above 200 EMA, pullback to 20 EMA, resume). For each: session times in UTC, entry trigger, stop, target or exit, max trades per day, and one public source (book, paper or well-known article) with its URL. No backtest numbers from videos; mark anything unsourced 'unverified'. Output a markdown table with one row per rule field.",
+    "min_items": 2
   }
 ]

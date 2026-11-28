@@ -1,0 +1,133 @@
+{
+ "data": {
+  "bars": 13762,
+  "from": "2024-07-08 04:00:00+00:00",
+  "to": "2026-11-27 17:30:00+00:00"
+ },
+ "stats": {
+  "breakout": {
+   "trades": 488,
+   "win_rate": 0.484,
+   "avg_r": -0.009,
+   "total_r": -4.3,
+   "profit_factor": 0.97
+  },
+  "breakout|random": {
+   "trades": 355.7,
+   "win_rate": 0.454,
+   "avg_r": -0.051,
+   "total_r": -18.215
+  },
+  "pullback": {
+   "trades": 503,
+   "win_rate": 0.439,
+   "avg_r": 0.001,
+   "total_r": 0.7,
+   "profit_factor": 1.0
+  },
+  "pullback|random": {
+   "trades": 393.75,
+   "win_rate": 0.403,
+   "avg_r": -0.088,
+   "total_r": -34.775
+  }
+ },
+ "prop": {
+  "HF1|breakout|0.005": {
+   "starts": 140,
+   "pass": 0.0,
+   "fail": 0.093,
+   "unfinished": 0.907,
+   "median_days_to_pass": null
+  },
+  "HF1|breakout|random|0.005": {
+   "pass": 0.0,
+   "fail": 0.236,
+   "unfinished": 0.764
+  },
+  "HF1|breakout|0.01": {
+   "starts": 140,
+   "pass": 0.0,
+   "fail": 0.464,
+   "unfinished": 0.536,
+   "median_days_to_pass": null
+  },
+  "HF1|breakout|random|0.01": {
+   "pass": 0.046,
+   "fail": 0.63,
+   "unfinished": 0.324
+  },
+  "GW2|breakout|0.005": {
+   "starts": 140,
+   "pass": 0.0,
+   "fail": 0.007,
+   "unfinished": 0.993,
+   "median_days_to_pass": null
+  },
+  "GW2|breakout|random|0.005": {
+   "pass": 0.0,
+   "fail": 0.216,
+   "unfinished": 0.784
+  },
+  "GW2|breakout|0.01": {
+   "starts": 140,
+   "pass": 0.0,
+   "fail": 0.464,
+   "unfinished": 0.536,
+   "median_days_to_pass": null
+  },
+  "GW2|breakout|random|0.01": {
+   "pass": 0.022,
+   "fail": 0.564,
+   "unfinished": 0.415
+  },
+  "HF1|pullback|0.005": {
+   "starts": 140,
+   "pass": 0.186,
+   "fail": 0.286,
+   "unfinished": 0.529,
+   "median_days_to_pass": 218.0
+  },
+  "HF1|pullback|random|0.005": {
+   "pass": 0.011,
+   "fail": 0.56,
+   "unfinished": 0.428
+  },
+  "HF1|pullback|0.01": {
+   "starts": 140,
+   "pass": 0.243,
+   "fail": 0.614,
+   "unfinished": 0.143,
+   "median_days_to_pass": 78.0
+  },
+  "HF1|pullback|random|0.01": {
+   "pass": 0.086,
+   "fail": 0.768,
+   "unfinished": 0.146
+  },
+  "GW2|pullback|0.005": {
+   "starts": 140,
+   "pass": 0.1,
+   "fail": 0.286,
+   "unfinished": 0.614,
+   "median_days_to_pass": 305.5
+  },
+  "GW2|pullback|random|0.005": {
+   "pass": 0.0,
+   "fail": 0.408,
+   "unfinished": 0.592
+  },
+  "GW2|pullback|0.01": {
+   "starts": 140,
+   "pass": 0.207,
+   "fail": 0.471,
+   "unfinished": 0.321,
+   "median_days_to_pass": 111.0
+  },
+  "GW2|pullback|random|0.01": {
+   "pass": 0.105,
+   "fail": 0.731,
+   "unfinished": 0.163
+  }
+ }
+}

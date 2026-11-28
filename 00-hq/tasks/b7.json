@@ -282,5 +282,16 @@
     "title": "A307 prep: exact rules for two hourly gold strategies (session breakout, trend pullback)",
     "details": "Research for A307 (paper only, no tips). For gold (GC=F / XAUUSD) on 1-hour bars, write ONE precise, testable rule set each for (1) a London/New York session breakout and (2) a trend-pullback entry (e.g. price above 200 EMA, pullback to 20 EMA, resume). For each: session times in UTC, entry trigger, stop, target or exit, max trades per day, and one public source (book, paper or well-known article) with its URL. No backtest numbers from videos; mark anything unsourced 'unverified'. Output a markdown table with one row per rule field.",
     "min_items": 2
+  },
+  {
+    "id": "K205",
+    "world": "b7",
+    "priority": "P2",
+    "owner": "Trading",
+    "status": "todo",
+    "created": "2026-11-28T17:00:00Z",
+    "context_chars": 6000,
+    "title": "A307 explainer: why the two hourly gold rules were dropped (English + Telugu)",
+    "details": "Read 07-trading/reports/hourly-gold-prop-2026-11-28.md. Write a 6-line plain-English note for a beginner (what was tested, what 'R' and 'profit factor' mean in one line each, why beating the random baseline is not an edge, the verdict), then the same in Telugu script. Use only numbers that are in the report. Paper research, no tips."
   }
 ]
